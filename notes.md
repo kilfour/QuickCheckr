@@ -41,3 +41,23 @@ So after Execution Shrinking, the result is:
   !! Spec Failed: Fails on Three
  ==================================
 ```
+### Action Shrinking
+This is the second step in QuickCheckr shrinking.  
+It is not common to have multiple Actions in one execution, but it is possible, and sometimes useful.  
+In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.  
+The following simple example fails on the third action.  
+```csharp
+    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+    from spec in Checkr.Spec("Fails on Three", () => counter != 3)
+    select Case.Closed;
+```
+
+Execution 1 - Action 1: noop
+Execution 1 - Action 2: noop  
+Execution 1 - Action 3: Throws => (Fails)  
+
+So after Action Shrinking, the result is:
+  
+```text
+------------------------------------------------------------
+```

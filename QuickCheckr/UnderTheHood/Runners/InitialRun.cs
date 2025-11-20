@@ -13,6 +13,7 @@ public class InitialRun(CheckrState State, CheckrOf<Case> Check)
             if (State.EvidenceRecorder.Failed())
             {
                 State.Docket.Record(new InitialRunEnded(j + 1));
+                return;
             }
         }
         State.Docket.Record(new InitialRunEnded(numberOfExecutions));

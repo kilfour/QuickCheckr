@@ -22,6 +22,7 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal)
     {
         var originalRunExecutionCount = State.ShortTermMemory.Count();
         var shrinkCount = new ExecutionShrinker(State, Check).Run();
+        shrinkCount += new ActionShrinker(State, Check).Run();
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 

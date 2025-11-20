@@ -17,12 +17,12 @@ public static class CheckrOfTRun
     [StackTraceHidden]
     public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, ExecutionCount executionsPerRun)
     {
-        //var signal = Signal.From(flow).SetArtery(FileLog.Write());
+        var signal = Signal.From(flow).SetArtery(FileLog.Write());
 
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            // var caseFile = new CheckrRunner(check, signal).Run(executionsPerRun.NumberOfExecutions);
-            var caseFile = new CheckrRunner(check, null!).Run(executionsPerRun.NumberOfExecutions);
+            var caseFile = new CheckrRunner(check, signal).Run(executionsPerRun.NumberOfExecutions);
+            //var caseFile = new CheckrRunner(check, null!).Run(executionsPerRun.NumberOfExecutions);
             // state.GetPassedSpecCount(passedSpecCount);
             if (caseFile.HasVerdict())
                 // {

@@ -13,6 +13,8 @@ public static partial class Checkr
     private static CheckrOf<TOutput> TryCatch<TOutput>(string key, Func<TOutput> func) =>
         state =>
         {
+            if (state.EvidenceRecorder.IsReplay && !state.ShortTermMemory.GetActions().Contains(key))
+                return CheckrResult.None<TOutput>(state);
             state.ShortTermMemory.StoreAction(key);
             // var execution = state.CurrentExecutionContext();
             // if (state.Shifter.CurrentPhase == QAcidPhase.NormalRun)

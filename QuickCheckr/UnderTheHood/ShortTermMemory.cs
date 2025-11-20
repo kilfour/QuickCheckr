@@ -49,6 +49,11 @@ public class ShortTermMemory
     // --------------------------------------------------------------------------
     // Actions
     private readonly Dictionary<int, HashSet<string>> actions = [];
+    public void RemoveAction(string key)
+    {
+        var keys = actions[currentExecutionNumber];
+        keys.Remove(key);
+    }
     public void StoreAction(string key)
     {
         var keys = actions[currentExecutionNumber];

@@ -12,7 +12,7 @@ It is not common to have multiple Actions in one execution, but it is possible, 
 In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.")]
 public class ActionShrinking
 {
-    [Fact(Skip = "WIP")]
+    [Fact]
     [DocContent("The following simple example fails on the third action.")]
     [DocExample(typeof(ExecutionShrinking), nameof(Example_Check))]
     [DocContent(
@@ -36,7 +36,7 @@ So after Action Shrinking, the result is:
         var execution = article.Execution(1).Read();
         Assert.Equal(1, execution.ExecutionId);
         var action = article.Execution(1).Action(1).Read();
-        Assert.Equal("three", action.Label);
+        Assert.Equal("Act Three", action.Label);
     }
 
     [CodeSnippet]
