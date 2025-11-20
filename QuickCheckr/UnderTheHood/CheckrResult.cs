@@ -12,8 +12,4 @@ public static class CheckrResult
 
 	public static CheckrResult<Case> CheckOnly(CheckrState state) =>
 		Some(state, Case.Closed);
-
-	public static bool IsSome<T>(CheckrResult<T> result) => result.Value is not null;
-
-	public static bool IsNone<T>(CheckrResult<T> result) => result.Value is null;
 }
