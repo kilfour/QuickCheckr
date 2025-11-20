@@ -8,21 +8,6 @@ public class ShortTermMemory
     public IReadOnlyList<int> Numbers => numbers;
     private int currentExecutionNumber = 0;
 
-    public int First()
-    {
-        return numbers[0];
-    }
-
-    public int NextNumber(int previous)
-    {
-        return numbers.First(a => a > previous);
-    }
-
-    public int GetMaxNumber()
-    {
-        return numbers.Max();
-    }
-
     public int Count()
     {
         return numbers.Count;
@@ -31,6 +16,7 @@ public class ShortTermMemory
     public void Remove(int executionNumber)
     {
         numbers.Remove(executionNumber);
+        // Should we remove the memory bank and the actions?
     }
 
     public int StartNewExecution()
