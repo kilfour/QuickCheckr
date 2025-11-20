@@ -14,7 +14,7 @@ public static partial class Checkr
         state =>
         {
             if (ActionNeedsToBeSkipped(key, state))
-                return CheckrResult.None<TOutput>(state);
+                return CheckrResult.Default<TOutput>(state);
             state.ShortTermMemory.StoreAction(key);
             try
             {
@@ -23,7 +23,7 @@ public static partial class Checkr
             catch (Exception ex)
             {
                 state.EvidenceRecorder.RecordFailure(ex);
-                return CheckrResult.None<TOutput>(state);
+                return CheckrResult.Default<TOutput>(state);
             }
         };
 
