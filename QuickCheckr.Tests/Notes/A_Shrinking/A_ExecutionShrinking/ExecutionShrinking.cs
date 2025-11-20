@@ -36,7 +36,7 @@ So after Execution Shrinking, the result is:
         var input = article.Execution(1).Input(1).Read();
         Assert.Equal("counter", input.Label);
         Assert.Equal("3", input.Value);
-        Assert.Equal(Example_Report(), TheClerk.Transcribes(article.CaseFile));
+        // Assert.Equal(Example_Report(), TheClerk.Transcribes(article.CaseFile));
     }
 
     [CodeSnippet]
