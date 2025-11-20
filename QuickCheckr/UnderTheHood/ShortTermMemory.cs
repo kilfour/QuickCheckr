@@ -4,13 +4,42 @@ public class ShortTermMemory
 {
     // --------------------------------------------------------------------------
     // Execution Tracking
+    private readonly List<int> numbers = [];
+    public IReadOnlyList<int> Numbers => numbers;
     private int currentExecutionNumber = 0;
 
-    public void StartNewExecution(int executionNumber)
+    public int First()
     {
-        currentExecutionNumber = executionNumber;
+        return numbers[0];
+    }
+
+    public int NextNumber(int previous)
+    {
+        return numbers.First(a => a > previous);
+    }
+
+    public int GetMaxNumber()
+    {
+        return numbers.Max();
+    }
+
+    public int Count()
+    {
+        return numbers.Count;
+    }
+
+    public void Remove(int executionNumber)
+    {
+        numbers.Remove(executionNumber);
+    }
+
+    public int StartNewExecution()
+    {
+        currentExecutionNumber++;
+        numbers.Add(currentExecutionNumber);
         inputs[currentExecutionNumber] = new MemoryBank();
         actions[currentExecutionNumber] = [];
+        return currentExecutionNumber;
     }
 
     public void GotoExecution(int executionNumber)

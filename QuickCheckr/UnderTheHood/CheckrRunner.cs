@@ -13,20 +13,19 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal)
 
     public CaseFile Run(int numberOfExecutions)
     {
-        var executions = new InitialRun(State, Check).Run(numberOfExecutions);
-        if (State.EvidenceRecorder.Failed()) return HandleFailure(executions);
+        new InitialRun(State, Check).Run(numberOfExecutions);
+        if (State.EvidenceRecorder.Failed()) return HandleFailure();
         return CaseFile.Empty();
     }
 
-    private CaseFile HandleFailure(Executions executions)
+    private CaseFile HandleFailure()
     {
-        var originalRunExecutionCount = executions.Count();
-        var shrinkCount = new ExecutionShrinker(State, Check, executions).Run();
-        return CompileTheCaseFile(executions, originalRunExecutionCount, shrinkCount);
+        var originalRunExecutionCount = State.ShortTermMemory.Count();
+        var shrinkCount = new ExecutionShrinker(State, Check).Run();
+        return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 
     private CaseFile CompileTheCaseFile(
-        Executions executions,
         int originalRunExecutionCount,
         int shrinkCount,
         bool forAssayer = false)
@@ -37,7 +36,7 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal)
                 FailingSpec: forAssayer ? null : State.EvidenceRecorder.FailingSpec,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
-                ExecutionNumbers: executions.Numbers,
+                ExecutionNumbers: State.ShortTermMemory.Numbers,
                 ShrinkCount: shrinkCount,
                 Seed: State.FuzzrState.Seed
             );
