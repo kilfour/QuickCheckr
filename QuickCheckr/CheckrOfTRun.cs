@@ -19,10 +19,9 @@ public static class CheckrOfTRun
         this CheckrOf<Case> check,
         RunCount runs,
         ExecutionCount executionsPerRun)
-    {
-        return Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
-    }
+            => Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
 
+    [StackTraceHidden]
     public static CaseFile Run(
         this CheckrOf<Case> check,
         RunCount runs,
@@ -41,8 +40,8 @@ public static class CheckrOfTRun
         return CaseFile.Empty();
     }
 
-    public record RunCount(int NumberOfRuns);
-    public record ExecutionCount(int NumberOfExecutions);
     public static RunCount Runs(this int numberOfRuns) => new(numberOfRuns);
     public static ExecutionCount ExecutionsPerRun(this int numberOfExecutions) => new(numberOfExecutions);
+    public record RunCount(int NumberOfRuns);
+    public record ExecutionCount(int NumberOfExecutions);
 }
