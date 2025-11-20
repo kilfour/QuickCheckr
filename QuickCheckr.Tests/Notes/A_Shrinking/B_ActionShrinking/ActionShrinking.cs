@@ -14,10 +14,10 @@ public class ActionShrinking
 {
     [Fact]
     [DocContent("The following simple example fails on the third action.")]
-    [DocExample(typeof(ExecutionShrinking), nameof(Example_Check))]
+    [DocExample(typeof(ActionShrinking), nameof(Example_Check))]
     [DocContent(
 @"
-Execution 1 - Action 1: noop
+Execution 1 - Action 1: noop  
 Execution 1 - Action 2: noop  
 Execution 1 - Action 3: Throws => (Fails)  
 
@@ -25,7 +25,17 @@ So after Action Shrinking, the result is:
 ")]
     [DocCode(
 @"
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ActionShrinking.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1272794573
  ------------------------------------------------------------
+  Executed (1): Act Three
+ ===========================================================================
+  !! Exception Thrown: System.Exception: BOOM
+ ===========================================================================
 ", "text")]
     public void Example()
     {

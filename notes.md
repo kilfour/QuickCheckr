@@ -47,12 +47,13 @@ It is not common to have multiple Actions in one execution, but it is possible, 
 In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.  
 The following simple example fails on the third action.  
 ```csharp
-    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from spec in Checkr.Spec("Fails on Three", () => counter != 3)
+    from actOne in Checkr.Act("Act One", () => { })
+    from actTwo in Checkr.Act("Act Two", () => { })
+    from actThree in Checkr.Act("Act Three", () => throw new Exception("BOOM"))
     select Case.Closed;
 ```
 
-Execution 1 - Action 1: noop
+Execution 1 - Action 1: noop  
 Execution 1 - Action 2: noop  
 Execution 1 - Action 3: Throws => (Fails)  
 
@@ -60,4 +61,14 @@ So after Action Shrinking, the result is:
   
 ```text
 ------------------------------------------------------------
+ Test:                    Example
+ Location:                ActionShrinking.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1272794573
+ ------------------------------------------------------------
+  Executed (1): Act Three
+ ===========================================================================
+  !! Exception Thrown: System.Exception: BOOM
+ ===========================================================================
 ```
