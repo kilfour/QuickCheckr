@@ -27,7 +27,11 @@ So after Execution Shrinking, the result is:
     [DocExample(typeof(ExecutionShrinking), nameof(Example_Report), "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(() => Example_Check().Run(1.Runs(), 50.ExecutionsPerRun(), 669391953));
+        var article = TheJournalist.Exposes(() =>
+            Example_Check().Run(
+                1.Runs(),
+                50.ExecutionsPerRun(),
+                a => a with { Seed = 669391953 }));
         Assert.Equal("Fails on Three", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());

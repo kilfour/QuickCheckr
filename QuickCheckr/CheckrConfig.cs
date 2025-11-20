@@ -1,0 +1,17 @@
+namespace QuickCheckr;
+
+public record CheckrConfig
+{
+    public required int? Seed { get; init; }
+    public required bool Diagnose { get; init; }
+
+    public static CheckrConfig Default()
+    {
+        return
+            new CheckrConfig()
+            {
+                Seed = null,
+                Diagnose = false
+            };
+    }
+}

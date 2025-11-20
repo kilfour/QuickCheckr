@@ -9,25 +9,35 @@ namespace QuickCheckr;
 
 public static class CheckrOfTRun
 {
-    private static bool diagnose = false;
     private static readonly Flow<IFiling> flow =
         from filing in Pulse.Start<IFiling>()
         from trace in Pulse.Trace(filing)
         select filing;
 
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, ExecutionCount executionsPerRun, int? seed = null)
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        RunCount runs,
+        ExecutionCount executionsPerRun)
     {
-        var signal = diagnose ? Signal.From(flow).SetArtery(FileLog.Write()) : null;
+        return Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
+    }
 
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        Func<CheckrConfig, CheckrConfig> configure)
+    {
+        var config = configure(CheckrConfig.Default());
+        var signal = config.Diagnose ? Signal.From(flow).SetArtery(FileLog.Write()) : null;
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var caseFile = new CheckrRunner(check, signal, seed).Run(executionsPerRun.NumberOfExecutions);
+            var caseFile = new CheckrRunner(check, signal, config.Seed).Run(executionsPerRun.NumberOfExecutions);
             // state.GetPassedSpecCount(passedSpecCount);
             if (caseFile.HasVerdict())
                 throw new FalsifiableException(caseFile);
         }
-
         return CaseFile.Empty();
     }
 

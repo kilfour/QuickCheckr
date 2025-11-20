@@ -25,7 +25,11 @@ So after Action Shrinking, the result is:
     [DocExample(typeof(ActionShrinking), nameof(Example_Report), "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(() => Example_Check().Run(1.Runs(), 50.ExecutionsPerRun(), 699025678));
+        var article = TheJournalist.Exposes(() =>
+            Example_Check().Run(
+                1.Runs(),
+                50.ExecutionsPerRun(),
+                a => a with { Seed = 699025678 }));
         Assert.Equal("BOOM", article.Exception().Message);
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
