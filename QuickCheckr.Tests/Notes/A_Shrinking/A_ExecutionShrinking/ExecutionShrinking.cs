@@ -40,6 +40,7 @@ So after Execution Shrinking, the result is:
     public void Example()
     {
         var article = TheJournalist.Exposes(() => Example_Check().Run(1.Runs(), 50.ExecutionsPerRun()));
+        Assert.Equal("Fails on Three", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         var execution = article.Execution(1).Read();
