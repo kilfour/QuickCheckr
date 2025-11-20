@@ -14,5 +14,4 @@ public class MemoryBank
         var val = (T?)value;
         return val;
     }
-    //public T Get<T>(string key) => (T)values[key]!;
 }

@@ -3,6 +3,7 @@ namespace QuickCheckr.UnderTheHood;
 public class EvidenceRecorder
 {
     public bool IsReplay { get; private set; }
+
     public void StartReplay()
     {
         IsReplay = true;
@@ -10,9 +11,11 @@ public class EvidenceRecorder
     }
 
     private bool runFailed;
+
     private bool currentFailed;
 
     public Exception? Exception { get; private set; } = null;
+
     public void RecordFailure(Exception exception)
     {
         if (IsReplay)
@@ -35,6 +38,7 @@ public class EvidenceRecorder
     }
 
     public string FailingSpec { get; private set; } = string.Empty;
+
     public void SpecFailed(string key)
     {
         if (IsReplay)
@@ -45,11 +49,13 @@ public class EvidenceRecorder
         FailingSpec = key;
         runFailed = true;
     }
+
     public bool Failed()
     {
         if (IsReplay) return currentFailed;
         return runFailed;
     }
+
     public void SpecPassed(string key)
     {
 
