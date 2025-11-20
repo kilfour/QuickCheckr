@@ -9,27 +9,23 @@ namespace QuickCheckr;
 
 public static class CheckrOfTRun
 {
+    private static bool diagnose = false;
     private static readonly Flow<IFiling> flow =
         from filing in Pulse.Start<IFiling>()
         from trace in Pulse.Trace(filing)
         select filing;
 
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, ExecutionCount executionsPerRun)
+    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, ExecutionCount executionsPerRun, int? seed = null)
     {
-        var signal = Signal.From(flow).SetArtery(FileLog.Write());
+        var signal = diagnose ? Signal.From(flow).SetArtery(FileLog.Write()) : null;
 
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var caseFile = new CheckrRunner(check, signal).Run(executionsPerRun.NumberOfExecutions);
-            //var caseFile = new CheckrRunner(check, null!).Run(executionsPerRun.NumberOfExecutions);
+            var caseFile = new CheckrRunner(check, signal, seed).Run(executionsPerRun.NumberOfExecutions);
             // state.GetPassedSpecCount(passedSpecCount);
             if (caseFile.HasVerdict())
-                // {
-                //     vault.AddSeed(state.Seed, executionCount.NumberOfExecutions);
-                //     //vaultMessages.Add($"Seed {seed}: added to vault.");
-                throw new FalsifiableException(caseFile); //FileIt(caseFile)
-            // }
+                throw new FalsifiableException(caseFile);
         }
 
         return CaseFile.Empty();

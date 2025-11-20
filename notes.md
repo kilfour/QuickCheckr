@@ -28,12 +28,10 @@ If the run still fails, the execution is not deemed relevant for the failure and
 So after Execution Shrinking, the result is:
   
 ```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ExecutionShrinking.cs:28:1
+ ------------------------------------------------------------
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1464227412
+ Seed:                    669391953
  ------------------------------------------------------------
   Executed (3):
    - Input: counter = 3
@@ -60,15 +58,16 @@ Execution 1 - Action 3: Throws => (Fails)
 So after Action Shrinking, the result is:
   
 ```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ActionShrinking.cs:32:1
+ ------------------------------------------------------------
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1272794573
+ Seed:                    699025678
  ------------------------------------------------------------
   Executed (1): Act Three
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__1_6() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 62
+   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 11
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 27
  ===========================================================================
 ```

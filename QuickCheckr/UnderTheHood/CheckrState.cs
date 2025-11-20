@@ -4,11 +4,11 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrState(Signal<IFiling>? signal)
+public class CheckrState(Signal<IFiling>? signal, int? seed = null)
 {
     // Used by :
     // - Checkr.Input
-    public State FuzzrState { get; init; } = new();
+    public State FuzzrState { get; init; } = seed is null ? new() : new(seed.Value);
     // Used by :
     // - Trackr.Stashed
     public LongTermMemory LongTermMemory { get; } = new();

@@ -1,6 +1,5 @@
-using QuickCheckr.Tests.Notes.A_Shrinking.A_ExecutionShrinking;
 using QuickCheckr.Tests.Tools.ThePress;
-using QuickFuzzr;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking;
@@ -23,23 +22,10 @@ Execution 1 - Action 3: Throws => (Fails)
 
 So after Action Shrinking, the result is:
 ")]
-    [DocCode(
-@"
-------------------------------------------------------------
- Test:                    Example
- Location:                ActionShrinking.cs:32:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1272794573
- ------------------------------------------------------------
-  Executed (1): Act Three
- ===========================================================================
-  !! Exception Thrown: System.Exception: BOOM
- ===========================================================================
-", "text")]
+    [DocExample(typeof(ActionShrinking), nameof(Example_Report), "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(() => Example_Check().Run(1.Runs(), 50.ExecutionsPerRun()));
+        var article = TheJournalist.Exposes(() => Example_Check().Run(1.Runs(), 50.ExecutionsPerRun(), 699025678));
         Assert.Equal("BOOM", article.Exception().Message);
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
@@ -47,6 +33,7 @@ So after Action Shrinking, the result is:
         Assert.Equal(1, execution.ExecutionId);
         var action = article.Execution(1).Action(1).Read();
         Assert.Equal("Act Three", action.Label);
+        Assert.Equal(Example_Report(), TheClerk.Transcribes(article.CaseFile));
     }
 
     [CodeSnippet]
@@ -59,4 +46,25 @@ So after Action Shrinking, the result is:
             from actThree in Checkr.Act("Act Three", () => throw new Exception("BOOM"))
             select Case.Closed;
     }
+
+    [CodeSnippet]
+    [CodeRemove("@\"")]
+    [CodeRemove("\";")]
+    [CodeRemove("Test:                    <Example>b__0_0")]
+    [CodeRemove("Location:                C:\\Code\\QuickCheckr\\QuickCheckr.Tests\\Notes\\A_Shrinking\\B_ActionShrinking\\ActionShrinking.cs:28:1")]
+    private static string Example_Report() =>
+@" ------------------------------------------------------------
+ Test:                    <Example>b__0_0
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:28:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    699025678
+ ------------------------------------------------------------
+  Executed (1): Act Three
+ ===========================================================================
+  !! Exception Thrown: System.Exception: BOOM
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__1_6() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 46
+   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 11
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 27
+ ===========================================================================";
 }

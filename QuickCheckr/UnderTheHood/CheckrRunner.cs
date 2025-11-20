@@ -6,10 +6,10 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal)
+public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal, int? seed = null)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(signal);
+    public CheckrState State { get; init; } = new(signal, seed);
 
     public CaseFile Run(int numberOfExecutions)
     {
