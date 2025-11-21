@@ -29,7 +29,7 @@ So after Input Shrinking, the result is:
         var article = TheJournalist.Exposes(ExampleTest);
         Assert.Equal("Always Fails", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(0, article.Total().Inputs()); // should be zero
+        Assert.Equal(0, article.Total().Inputs());
         var execution = article.Execution(1).Read();
         Assert.Equal(1, execution.ExecutionId);
 
@@ -83,7 +83,7 @@ Result:
         var article = TheJournalist.Exposes(Example_Two_Test);
         Assert.Equal("Should not be 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(2, article.Total().Inputs()); // should be zero
+        Assert.Equal(2, article.Total().Inputs());
         var execution = article.Execution(1).Read();
         Assert.Equal(1, execution.ExecutionId);
 
