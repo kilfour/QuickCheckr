@@ -5,13 +5,17 @@ namespace QuickCheckr.Tests.Tools;
 
 public static class WriteReport
 {
+    private static readonly bool ToDisk = false;
+
     public static void ToFile(
         string filename,
         string report,
         [CallerFilePath] string callerPath = "")
     {
+        if (!ToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
-        FileLog.Write(fullPath).Absorb(report);
+        var formattedReport = report.Replace(@"C:\Code\QuickCheckr\QuickCheckr.Tests\", "");
+        FileLog.Write(fullPath).Absorb(formattedReport);
     }
 }

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example_Two_Test
- Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:112:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:110:1
  Original failing run:    1 execution
  Seed:                    231122398
  ------------------------------------------------------------

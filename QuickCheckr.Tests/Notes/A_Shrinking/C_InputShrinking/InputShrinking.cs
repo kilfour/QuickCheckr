@@ -13,8 +13,6 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking;
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.")]
 public class InputShrinking
 {
-    private readonly bool WriteReportToDisk = false;
-
     [Fact]
     [DocContent("The following simple example has one input but always fails.")]
     [DocExample(typeof(InputShrinking), nameof(Example_Check))]
@@ -47,8 +45,7 @@ So, in the previous example, after Input Shrinking, the result is:
         Assert.Equal("  !! Spec Failed: Always Fails", reader.NextLine());
         Assert.Equal(" ================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
-        if (WriteReportToDisk)
-            WriteReport.ToFile("InputShrinking.txt", report);
+        WriteReport.ToFile("InputShrinking.txt", report);
     }
 
     private static void ExampleTest()
@@ -105,8 +102,7 @@ Result:
         Assert.Equal("  !! Spec Failed: Should not be 42", reader.NextLine());
         Assert.Equal(" ====================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
-        if (WriteReportToDisk)
-            WriteReport.ToFile("InputShrinking_Two.txt", report);
+        WriteReport.ToFile("InputShrinking_Two.txt", report);
     }
 
     private static void Example_Two_Test()

@@ -13,8 +13,6 @@ It is not common to have multiple Actions in one execution, but it is possible, 
 In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.")]
 public class ActionShrinking
 {
-    private readonly bool WriteReportToDisk = false;
-
     [Fact]
     [DocContent("The following simple example fails on the third action.")]
     [DocExample(typeof(ActionShrinking), nameof(Example_Check))]
@@ -56,8 +54,7 @@ So after Action Shrinking, the result is:
         // --
         Assert.Equal(" ===========================================================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
-        if (WriteReportToDisk)
-            WriteReport.ToFile("ActionShrinking.txt", report);
+        WriteReport.ToFile("ActionShrinking.txt", report);
     }
 
     private static void ExampleTest()

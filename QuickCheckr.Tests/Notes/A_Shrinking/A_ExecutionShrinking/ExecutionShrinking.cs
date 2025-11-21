@@ -11,8 +11,6 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.A_ExecutionShrinking;
 [DocContent("This is the first step in QuickCheckr shrinking.")]
 public class ExecutionShrinking
 {
-    private readonly bool WriteReportToDisk = false;
-
     [Fact]
     [DocContent("The following simple example fails on the third execution.")]
     [DocExample(typeof(ExecutionShrinking), nameof(Example_Check))]
@@ -56,8 +54,7 @@ So after Execution Shrinking, the result is:
         Assert.Equal("  !! Spec Failed: Fails on Three", reader.NextLine());
         Assert.Equal(" ==================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
-        if (WriteReportToDisk)
-            WriteReport.ToFile("ExecutionShrinking.txt", report);
+        WriteReport.ToFile("ExecutionShrinking.txt", report);
     }
 
     private static void ExampleTest()
