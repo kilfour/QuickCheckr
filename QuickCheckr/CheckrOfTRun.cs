@@ -23,6 +23,14 @@ public static class CheckrOfTRun
         => Run(check, 1.Runs(), 1.ExecutionsPerRun(), configure);
 
     [StackTraceHidden]
+    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs)
+        => Run(check, runs, 1.ExecutionsPerRun());
+
+    [StackTraceHidden]
+    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, Func<CheckrConfig, CheckrConfig> configure)
+        => Run(check, runs, 1.ExecutionsPerRun(), configure);
+
+    [StackTraceHidden]
     public static CaseFile Run(
         this CheckrOf<Case> check,
         RunCount runs,
@@ -41,7 +49,6 @@ public static class CheckrOfTRun
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var caseFile = new CheckrRunner(check, signal, config.Seed).Run(executionsPerRun.NumberOfExecutions);
-            // state.GetPassedSpecCount(passedSpecCount);
             if (caseFile.HasVerdict())
                 throw new FalsifiableException(caseFile);
         }
