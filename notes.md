@@ -91,12 +91,11 @@ So after Input Shrinking, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    ExampleTest
- Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:59:1
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:56:1
  Original failing run:    1 execution
  Seed:                    165641598
  ------------------------------------------------------------
-  Executed (1):
-   - Input: Irrelevant Input = 60
+  Executed (1)
  ================================
   !! Spec Failed: Always Fails
  ================================

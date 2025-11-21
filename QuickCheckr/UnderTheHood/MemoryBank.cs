@@ -14,4 +14,10 @@ public class MemoryBank
         var val = (T?)value;
         return val;
     }
+    public T Get<T>(string key)
+    {
+        values.TryGetValue(key, out object? value);
+        return (T)value!;
+    }
+    public void Set(string key, object? value) => values[key] = value;
 }

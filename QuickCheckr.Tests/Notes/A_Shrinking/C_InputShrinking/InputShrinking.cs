@@ -29,23 +29,20 @@ So after Input Shrinking, the result is:
         var article = TheJournalist.Exposes(ExampleTest);
         Assert.Equal("Always Fails", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Inputs()); // should be zero
+        Assert.Equal(0, article.Total().Inputs()); // should be zero
         var execution = article.Execution(1).Read();
         Assert.Equal(1, execution.ExecutionId);
-        var input = article.Execution(1).Input(1).Read();
-        Assert.Equal("Irrelevant Input", input.Label);
-        Assert.Equal("60", input.Value);
+
 
         var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report);//.AsAssertsToLogFile();
+        var reader = LinesReader.FromText(report);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
         Assert.Contains(" Location: ", reader.NextLine());
         Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
         Assert.Equal(" Seed:                    165641598", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1):", reader.NextLine());
-        Assert.Equal("   - Input: Irrelevant Input = 60", reader.NextLine());
+        Assert.Equal("  Executed (1)", reader.NextLine());
         Assert.Equal(" ================================", reader.NextLine());
         Assert.Equal("  !! Spec Failed: Always Fails", reader.NextLine());
         Assert.Equal(" ================================", reader.NextLine());

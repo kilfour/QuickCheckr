@@ -57,7 +57,7 @@ public static class Compile
     private static void GetInputDepositions(
         ExecutionDeposition executionDeposition, ShortTermMemory shortTermMemory, bool isVerdict)
     {
-        foreach (var (key, val) in shortTermMemory.GetInputs())
+        foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
             executionDeposition.AddInputDeposition(new InputDeposition(key, Introduce.This(val!, false)));
         }

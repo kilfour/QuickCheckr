@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking;
 
@@ -10,6 +11,15 @@ public class InputShrinker(
     {
         State.Docket.Record(new InputShrinkingStarted(State.ShortTermMemory.Count()));
         var shrinkCount = 0;
+        foreach (var executionId in State.ShortTermMemory.Numbers)
+        {
+            State.ShortTermMemory.GotoExecution(executionId);
+            var inputs = State.ShortTermMemory.GetInputs();
+            foreach (var (key, value) in inputs)
+            {
+                ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
+            }
+        }
         // for (var i = 0; i < State.ShortTermMemory.Numbers.Count && State.ShortTermMemory.Numbers.Count > 1; i++)
         // {
         //     var id = State.ShortTermMemory.Numbers[i];

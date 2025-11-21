@@ -18,6 +18,8 @@ public class ExecutionDepositionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)));
         var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed (1)", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -28,6 +30,8 @@ public class ExecutionDepositionsTests : DepositionTest
                 .AddExecutionDeposition(new ExecutionDeposition(1))
                 .AddExecutionDeposition(new ExecutionDeposition(2)));
         var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed  (2 Times)", reader.NextLine());
         EndOfContent(reader);
     }
 }

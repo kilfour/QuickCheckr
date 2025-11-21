@@ -76,9 +76,10 @@ public static class The
             a => a with { Line = Valve.Install() },
             Pulse.ToFlow(stashedDeposition, input.StashedDepositions))
         from __ in line
+        let colon = input.HasContent() ? ":" : ""
         from ___ in input.Times == 1
-                ? Pulse.Trace($"  Executed ({input.ExecutionId}):")
-                : Pulse.Trace($"  Executed :")
+                ? Pulse.Trace($"  Executed ({input.ExecutionId}){colon}")
+                : Pulse.Trace($"  Executed {colon}")
         from ____ in Pulse.Scoped<Decorum>(
             a => a with { Intersperse = Valve.Install() },
             Pulse.ToFlow(actionDeposition, input.ActionDepositions))
@@ -89,7 +90,7 @@ public static class The
 
     private readonly static Flow<ExecutionDeposition> maybeExecutionDeposition =
         from input in Pulse.Start<ExecutionDeposition>()
-        from _ in Pulse.ToFlowIf(input.HasContent(), newLine.Then(executionDeposition), () => input)
+        from _ in Pulse.ToFlow(newLine.Then(executionDeposition), input)
         select input;
 
     private readonly static Flow<RunDeposition> runDeposition =
