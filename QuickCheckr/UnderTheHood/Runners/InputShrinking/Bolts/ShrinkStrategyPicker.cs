@@ -1,8 +1,12 @@
-﻿namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
+﻿using System.Collections;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
+
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 public class ShrinkStrategyPicker
 {
-    public static void Input<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public static IEnumerable<InputShrinkingClue> Input<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
     {
         var actualType = typeof(T) == typeof(object) && value != null
             ? value.GetType()
@@ -27,8 +31,7 @@ public class ShrinkStrategyPicker
         var primitiveKey = PrimitiveShrinkStrategy.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
         if (primitiveKey != null)
         {
-            new PrimitiveShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
-            return;
+            return new PrimitiveShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
         }
 
         // if (actualType.IsEnum)
@@ -37,11 +40,10 @@ public class ShrinkStrategyPicker
         //     return;
         // }
 
-        // if (typeof(IEnumerable).IsAssignableFrom(actualType))
-        // {
-        //     new EnumerableShrinkStrategy().Shrink(state, key, value, fullKey);
-        //     return;
-        // }
+        if (typeof(IEnumerable).IsAssignableFrom(actualType))
+        {
+            return new EnumerableShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
+        }
 
         // if (actualType.IsClass)
         // {
@@ -59,5 +61,7 @@ public class ShrinkStrategyPicker
         //     Intent = ShrinkIntent.Keep,
         //     Strategy = "NoneFound"
         // });
+        return [];
+        //yield break;
     }
 }

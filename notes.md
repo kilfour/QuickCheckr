@@ -129,6 +129,27 @@ Result:
   !! Spec Failed: Should not be 42
  ====================================
 ```
+#### Collections
+##### Fails On Size
+```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10), a => a.Trace())
+from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
+select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_FailsOnSize.cs:56:1
+ Original failing run:    1 execution
+ Seed:                    1833095082
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List Input = [ 7 ]
+   - Trace: List Input = [ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]
+ ===========================================
+  !! Spec Failed: List does not contain 7
+ ===========================================
+```
 ## Building Blocks
 ### Checkr Input
 #### Enabling Tracing

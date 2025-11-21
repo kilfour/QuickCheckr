@@ -7,6 +7,9 @@ public static partial class Checkr
     public static CheckrOf<Case> Spec(this string key, Func<bool> condition)
         => InnerSpec(key, condition);
 
+    public static CheckrOf<Case> SpecIf(this string key, Func<bool> predicate, Func<bool> condition)
+        => state => predicate() ? key.InnerSpec(condition)(state) : CheckrResult.CheckOnly(state);
+
     private static CheckrOf<Case> InnerSpec(this string key, Func<bool> condition) =>
         state =>
         {

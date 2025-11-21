@@ -11,9 +11,7 @@ namespace QuickCheckr.Tests.Notes.B_BuildingBlocks.CheckrInput.B_Configuring;
 public class EnablingTracing
 {
     [Fact]
-    //[DocContent("The following simple example fails on the third execution.")]
     [DocExample(typeof(EnablingTracing), nameof(Example_Check))]
-
     [DocCodeFile("EnablingTracing.txt", "text")]
     public void Example()
     {

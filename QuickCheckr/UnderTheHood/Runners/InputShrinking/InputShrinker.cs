@@ -18,8 +18,15 @@ public class InputShrinker(
             foreach (var (key, value) in inputs)
             {
                 State.Docket.Record(new InputShrinkRunStarted(executionId, key));
-                var collector = new List<InputShrinkingClue>();
-                ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
+                var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
+                foreach (var clue in clues)
+                {
+                    if (clue.Intent == InputShrinkingClue.IntentEnum.Keep)
+                    {
+                        State.ShortTermMemory.StoreInputShrinkOutcome(clue.Key, clue.Result);
+                        break;
+                    }
+                }
                 State.Docket.Record(new InputShrinkRunStarted(executionId, key));
             }
         }

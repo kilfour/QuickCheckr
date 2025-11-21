@@ -10,9 +10,10 @@ public static class WriteReport
     public static void ToFile(
         string filename,
         string report,
+        bool writeToDisk = false,
         [CallerFilePath] string callerPath = "")
     {
-        if (!ToDisk) return;
+        if (!ToDisk && !writeToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
         var formattedReport = report

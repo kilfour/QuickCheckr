@@ -1,10 +1,43 @@
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickPulse.Show;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
 public class PrimitiveShrinkStrategy
 {
+    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    {
+        var verifier = new Verifier(state, check);
+        var actualType = typeof(T) == typeof(object) && value != null
+            ? value.GetType()
+            : typeof(T);
+        var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(actualType));
+        if (primitiveKey == null)
+            yield break;
+
+        var primitiveVals = PrimitiveValues[primitiveKey];
+        // var originalFails = verifier.RunFailed(key, value!);
+        // if (!originalFails)
+        //     return;
+
+        foreach (var candidate in primitiveVals.Where(x => !Equals(x, value)))
+        {
+            if (verifier.RunPassed(executionId, key, candidate))
+            {
+                var clue = new InputShrinkingClue
+                {
+                    ExecutionId = executionId,
+                    Key = key,
+                    Original = value,
+                    Result = value,
+                    Intent = InputShrinkingClue.IntentEnum.Keep,
+                    Reason = candidate
+                };
+                state.Docket.Record(new InputShrinkingClueFound(clue));
+                yield return clue;
+            }
+        }
+    }
+
     public static readonly Dictionary<Type, object[]> PrimitiveValues =
         new()
         {
@@ -30,30 +63,4 @@ public class PrimitiveShrinkStrategy
             { typeof(Guid),     new object[] { Guid.Empty, Guid.NewGuid() } },
             { typeof(Uri),      new object[] { null!, new Uri("http://localhost"), new Uri("https://example.com/resource?query=1") } }
         };
-
-    public void Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
-    {
-        var verifier = new Verifier(state, check);
-        var actualType = typeof(T) == typeof(object) && value != null
-            ? value.GetType()
-            : typeof(T);
-        var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(actualType));
-        if (primitiveKey == null)
-            return;
-
-        var primitiveVals = PrimitiveValues[primitiveKey];
-        // var originalFails = verifier.RunFailed(key, value!);
-        // if (!originalFails)
-        //     return;
-
-        foreach (var candidate in primitiveVals.Where(x => !Equals(x, value)))
-        {
-            if (verifier.RunPassed(executionId, key, candidate))
-            {
-                state.Docket.Record(new InputShrunk(executionId, key));
-                state.ShortTermMemory.StoreInputShrinkOutcome(key, value!);
-                return;
-            }
-        }
-    }
 }
