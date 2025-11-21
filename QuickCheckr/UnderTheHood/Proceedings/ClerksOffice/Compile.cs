@@ -33,7 +33,7 @@ public static class Compile
         //var access = shortTermMemory.AccessFor(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
         GetInputDepositions(executionDeposition, shortTermMemory, isVerdict);
-        //GetTraceDepositions(executionDeposition, memory.TracesFor(executionNumber));
+        GetTraceDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
     }
 
@@ -76,11 +76,11 @@ public static class Compile
         // }
     }
 
-    // private static void GetTraceDepositions(ExecutionDeposition executionDeposition, Dictionary<string, string> traces)
-    // {
-    //     foreach (var (key, val) in traces)
-    //     {
-    //         executionDeposition.AddTraceDeposition(new TraceDeposition(key, val));
-    //     }
-    // }
+    private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ShortTermMemory shortTermMemory)
+    {
+        foreach (var (key, val) in shortTermMemory.GetTraces())
+        {
+            executionDeposition.AddTraceDeposition(new TraceDeposition(key, Introduce.This(val!, false)));
+        }
+    }
 }

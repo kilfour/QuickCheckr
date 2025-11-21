@@ -5,15 +5,33 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
-        state =>
-        {
-            return HandleInput(state, key, fuzzr);
-        };
-
-    private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
+    public class InputCfg
     {
-        var value = state.ShortTermMemory.StoreInput(key, () => fuzzr(state.FuzzrState).Value);
+        public bool NeedsTracing { get; private set; }
+        public InputCfg Trace() { NeedsTracing = true; return this; }
+    }
+
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<InputCfg, InputCfg> configure)
+    {
+        var cfg = configure(new InputCfg());
+        return state =>
+        {
+            return HandleInput(state, key, fuzzr, cfg);
+        };
+    }
+
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr)
+    {
+        var cfg = new InputCfg();
+        return state =>
+        {
+            return HandleInput(state, key, fuzzr, cfg);
+        };
+    }
+
+    private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr, InputCfg config)
+    {
+        var value = state.ShortTermMemory.StoreInput(key, () => fuzzr(state.FuzzrState).Value, config.NeedsTracing);
         return CheckrResult.Some(state, value!);
 
         // var execution = state.CurrentExecutionContext();

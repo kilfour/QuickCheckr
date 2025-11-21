@@ -15,6 +15,14 @@ public static class CheckrOfTRun
         select filing;
 
     [StackTraceHidden]
+    public static CaseFile Run(this CheckrOf<Case> check)
+        => Run(check, 1.Runs(), 1.ExecutionsPerRun());
+
+    [StackTraceHidden]
+    public static CaseFile Run(this CheckrOf<Case> check, Func<CheckrConfig, CheckrConfig> configure)
+        => Run(check, 1.Runs(), 1.ExecutionsPerRun(), configure);
+
+    [StackTraceHidden]
     public static CaseFile Run(
         this CheckrOf<Case> check,
         RunCount runs,

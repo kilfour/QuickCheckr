@@ -20,4 +20,9 @@ public class WordCount(List<ExecutionDeposition> depositions)
     {
         return depositions.Sum(a => a.InputDepositions.Count);
     }
+
+    public int Traces()
+    {
+        return depositions.Sum(a => a.TraceDepositions.Count);
+    }
 }

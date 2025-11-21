@@ -14,6 +14,7 @@ public class ShortTermMemory
         currentExecutionNumber++;
         numbers.Add(currentExecutionNumber);
         inputs[currentExecutionNumber] = new MemoryBank();
+        traces[currentExecutionNumber] = new MemoryBank();
         actions[currentExecutionNumber] = [];
         inputShrinkOutcomes[currentExecutionNumber] = [];
         return currentExecutionNumber;
@@ -30,9 +31,26 @@ public class ShortTermMemory
 
 
     // --------------------------------------------------------------------------
+    // Traces
+    private readonly Dictionary<int, MemoryBank> traces = [];
+    public IReadOnlyDictionary<string, object?> GetTraces()
+        => CurrentTraces().Values;
+    private MemoryBank CurrentTraces() =>
+        traces[currentExecutionNumber];
+    // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
     // Inputs
-    public T? StoreInput<T>(string key, Func<T> factory)
-        => CurrentInputs().Store(key, factory);
+    public T? StoreInput<T>(string key, Func<T> factory, bool withTrace)
+    {
+        if (withTrace)
+        {
+            var val = CurrentTraces().Store(key, factory);
+            return CurrentInputs().Store(key, () => val);
+        }
+        return CurrentInputs().Store(key, factory);
+    }
 
     public IReadOnlyDictionary<string, object?> GetInputs()
         => CurrentInputs().Values;

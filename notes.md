@@ -129,3 +129,29 @@ Result:
   !! Spec Failed: Should not be 42
  ====================================
 ```
+## Building Blocks
+### Checkr Input
+#### Enabling Tracing
+```csharp
+from intInput in Checkr.Input("Int Input", Fuzzr.Int(), a => a.Trace())
+from traced in Checkr.Input("Irrelevant", Fuzzr.Int(), a => a.Trace())
+from spec in Checkr.Spec("Always Fails", () => intInput < 0)
+select Case.Closed;
+// The default int Fuzzr generates values in the range [1,100)
+// So `intInput < 0` always fails
+```
+```text
+------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                Notes\B_BuildingBlocks\CheckrInput\B_Configuring\EnablingTracing.cs:51:1
+ Original failing run:    1 execution
+ Seed:                    2030851905
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Int Input = 27
+   - Trace: Int Input = 27
+   - Trace: Irrelevant = 31
+ ================================
+  !! Spec Failed: Always Fails
+ ================================
+```
