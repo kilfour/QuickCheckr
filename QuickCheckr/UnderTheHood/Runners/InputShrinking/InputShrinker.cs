@@ -21,7 +21,7 @@ public class InputShrinker(
                 var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
                 foreach (var clue in clues)
                 {
-                    if (clue.Intent == InputShrinkingClue.IntentEnum.Keep)
+                    if (clue.Intent == ShrinkingIntent.Keep)
                     {
                         State.ShortTermMemory.StoreInputShrinkOutcome(clue.Key, clue.Result);
                         break;

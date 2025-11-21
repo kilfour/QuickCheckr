@@ -29,7 +29,7 @@ public class PrimitiveShrinkStrategy
                     Key = key,
                     Original = value,
                     Result = value,
-                    Intent = InputShrinkingClue.IntentEnum.Keep,
+                    Intent = ShrinkingIntent.Keep,
                     Reason = candidate
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));

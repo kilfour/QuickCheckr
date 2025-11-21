@@ -24,7 +24,7 @@ public class RemoveOneByOneStrategy
                     Key = $"{fullKey}.{indexKey}",
                     Original = value,
                     Result = null,
-                    Intent = InputShrinkingClue.IntentEnum.Remove,
+                    Intent = ShrinkingIntent.Remove,
                     Reason = null
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));
@@ -63,7 +63,7 @@ public class RemoveOneByOneStrategy
             Key = key,
             Original = value,
             Result = theList,
-            Intent = InputShrinkingClue.IntentEnum.Keep,
+            Intent = ShrinkingIntent.Keep,
             Reason = null
         };
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
