@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example_Two_Test
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:112:1
+ Original failing run:    1 execution
+ Seed:                    231122398
+ ------------------------------------------------------------
+  Executed (1): Result
+   - Input: Input One = 12
+   - Input: Input Three = 30
+ ====================================
+  !! Spec Failed: Should not be 42
+ ====================================

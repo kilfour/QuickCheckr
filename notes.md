@@ -80,7 +80,7 @@ This is the third step in QuickCheckr shrinking and the most complex one.
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.  
 The following simple example has one input but always fails.  
 ```csharp
-    from counter in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+    from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
     from spec in Checkr.Spec("Always Fails", () => false)
     select Case.Closed;
 ```
@@ -99,4 +99,31 @@ So after Input Shrinking, the result is:
  ================================
   !! Spec Failed: Always Fails
  ================================
+```
+Another example, slightly trickier.  
+```csharp
+    from one in Checkr.Input("Input One", Fuzzr.Int())
+    from two in Checkr.Input("Input Two", Fuzzr.Int())
+    from three in Checkr.Input("Input Three", Fuzzr.Int())
+    from result in Checkr.Act("Result", () => one + three)
+    from spec in Checkr.Spec("Should not be 42", () => result != 42)
+    select Case.Closed;
+```
+<Explanation goes here>
+
+Result:
+  
+```text
+------------------------------------------------------------
+ Test:                    Example_Two_Test
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:112:1
+ Original failing run:    1 execution
+ Seed:                    231122398
+ ------------------------------------------------------------
+  Executed (1): Result
+   - Input: Input One = 12
+   - Input: Input Three = 30
+ ====================================
+  !! Spec Failed: Should not be 42
+ ====================================
 ```
