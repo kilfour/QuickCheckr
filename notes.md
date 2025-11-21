@@ -28,7 +28,9 @@ If the run still fails, the execution is not deemed relevant for the failure and
 So after Execution Shrinking, the result is:
   
 ```text
- ------------------------------------------------------------
+------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\A_ExecutionShrinking\ExecutionShrinking.cs:65:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
@@ -58,7 +60,9 @@ Execution 1 - Action 3: Throws => (Fails)
 So after Action Shrinking, the result is:
   
 ```text
- ------------------------------------------------------------
+------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    699025678
@@ -66,8 +70,34 @@ So after Action Shrinking, the result is:
   Executed (1): Act Three
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
-   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__1_6() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 46
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__3_6() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 77
    at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 11
-   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 27
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 21
  ===========================================================================
+```
+### Input Shrinking
+This is the third step in QuickCheckr shrinking and the most complex one.  
+QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.  
+The following simple example has one input but always fails.  
+```csharp
+    from counter in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+    from spec in Checkr.Spec("Always Fails", () => false)
+    select Case.Closed;
+```
+<Explanation goes here>
+
+So after Input Shrinking, the result is:
+  
+```text
+------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:59:1
+ Original failing run:    1 execution
+ Seed:                    165641598
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Irrelevant Input = 60
+ ================================
+  !! Spec Failed: Always Fails
+ ================================
 ```

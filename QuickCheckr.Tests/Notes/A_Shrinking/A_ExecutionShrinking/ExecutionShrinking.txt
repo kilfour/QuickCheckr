@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    ExampleTest
+ Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\A_ExecutionShrinking\ExecutionShrinking.cs:65:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    669391953
+ ------------------------------------------------------------
+  Executed (3):
+   - Input: counter = 3
+ ==================================
+  !! Spec Failed: Fails on Three
+ ==================================

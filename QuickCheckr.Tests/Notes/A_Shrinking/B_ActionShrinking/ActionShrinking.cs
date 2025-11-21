@@ -1,6 +1,8 @@
+using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains;
+using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking;
 
@@ -11,6 +13,8 @@ It is not common to have multiple Actions in one execution, but it is possible, 
 In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.")]
 public class ActionShrinking
 {
+    private readonly bool WriteReportToDisk = false;
+
     [Fact]
     [DocContent("The following simple example fails on the third action.")]
     [DocExample(typeof(ActionShrinking), nameof(Example_Check))]
@@ -22,14 +26,11 @@ Execution 1 - Action 3: Throws => (Fails)
 
 So after Action Shrinking, the result is:
 ")]
-    [DocExample(typeof(ActionShrinking), nameof(Example_Report), "text")]
+    [DocCodeFile("ActionShrinking.txt", "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(() =>
-            Example_Check().Run(
-                1.Runs(),
-                50.ExecutionsPerRun(),
-                a => a with { Seed = 699025678 }));
+        var article = TheJournalist.Exposes(ExampleTest);
+
         Assert.Equal("BOOM", article.Exception().Message);
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
@@ -37,7 +38,34 @@ So after Action Shrinking, the result is:
         Assert.Equal(1, execution.ExecutionId);
         var action = article.Execution(1).Action(1).Read();
         Assert.Equal("Act Three", action.Label);
-        // Assert.Equal(Example_Report(), TheClerk.Transcribes(article.CaseFile));
+
+        var report = TheClerk.Transcribes(article.CaseFile);
+        var reader = LinesReader.FromText(report);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
+        Assert.Contains(" Location: ", reader.NextLine());
+        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
+        Assert.Equal(" Minimal failing case:    1 execution (after 2 shrinks)", reader.NextLine());
+        Assert.Equal(" Seed:                    699025678", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed (1): Act Three", reader.NextLine());
+        Assert.Equal(" ===========================================================================", reader.NextLine());
+        Assert.Equal("  !! Exception Thrown: System.Exception: BOOM", reader.NextLine());
+        // Skip the stack trace. 
+        reader.Skip(3);
+        // --
+        Assert.Equal(" ===========================================================================", reader.NextLine());
+        Assert.True(reader.EndOfContent());
+        if (WriteReportToDisk)
+            WriteReport.ToFile("ActionShrinking.txt", report);
+    }
+
+    private static void ExampleTest()
+    {
+        Example_Check().Run(
+            1.Runs(),
+            50.ExecutionsPerRun(),
+            a => a with { Seed = 699025678 });
     }
 
     [CodeSnippet]
@@ -50,25 +78,4 @@ So after Action Shrinking, the result is:
             from actThree in Checkr.Act("Act Three", () => throw new Exception("BOOM"))
             select Case.Closed;
     }
-
-    [CodeSnippet]
-    [CodeRemove("@\"")]
-    [CodeRemove("\";")]
-    [CodeRemove("Test:                    <Example>b__0_0")]
-    [CodeRemove("Location:                C:\\Code\\QuickCheckr\\QuickCheckr.Tests\\Notes\\A_Shrinking\\B_ActionShrinking\\ActionShrinking.cs:28:1")]
-    private static string Example_Report() =>
-@" ------------------------------------------------------------
- Test:                    <Example>b__0_0
- Location:                C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:28:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    699025678
- ------------------------------------------------------------
-  Executed (1): Act Three
- ===========================================================================
-  !! Exception Thrown: System.Exception: BOOM
-   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__1_6() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 46
-   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 11
-   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 27
- ===========================================================================";
 }
