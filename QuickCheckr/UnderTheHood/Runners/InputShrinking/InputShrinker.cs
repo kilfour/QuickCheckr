@@ -17,23 +17,11 @@ public class InputShrinker(
             var inputs = State.ShortTermMemory.GetInputs();
             foreach (var (key, value) in inputs)
             {
+                State.Docket.Record(new InputShrinkRunStarted(executionId, key));
                 ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
+                State.Docket.Record(new InputShrinkRunEnded(executionId, key));
             }
         }
-        // for (var i = 0; i < State.ShortTermMemory.Numbers.Count && State.ShortTermMemory.Numbers.Count > 1; i++)
-        // {
-        //     var id = State.ShortTermMemory.Numbers[i];
-        //     State.Docket.Record(new InputShrinkRunStarted(State.ShortTermMemory.Count()));
-        //     ExecuteRun(id);
-        //     if (State.EvidenceRecorder.Failed())
-        //     {
-        //         shrinkCount++;
-        //         State.ShortTermMemory.Remove(id);
-        //         i--;
-        //         // State.Docket.Record(new InputShrunk(key));
-        //     }
-        //     State.Docket.Record(new InputShrinkRunEnded(State.ShortTermMemory.Count()));
-        // }
         State.Docket.Record(new InputShrinkingEnded(State.ShortTermMemory.Count()));
         return shrinkCount;
     }

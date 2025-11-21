@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
@@ -49,20 +50,10 @@ public class PrimitiveShrinkStrategy
         {
             if (verifier.RunPassed(executionId, key, candidate))
             {
+                state.Docket.Record(new InputShrunk(executionId, key));
                 state.ShortTermMemory.StoreInputShrinkOutcome(key, value!);
                 return;
             }
         }
-
-        // state.CurrentExecutionContext().ShrinkTrace(key, ShrinkKind.PrimitiveKind, new ShrinkTrace
-        // {
-        //     ExecutionId = -1,
-        //     Key = fullKey,
-        //     Name = fullKey.Split(".").Last(),
-        //     Original = value,
-        //     Result = null,
-        //     Intent = ShrinkIntent.Irrelevant,
-        //     Strategy = "PrimitiveShrink"
-        // });
     }
 }

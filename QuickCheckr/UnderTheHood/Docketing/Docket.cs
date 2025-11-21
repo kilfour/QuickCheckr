@@ -31,7 +31,7 @@ public record struct ActionShrinkingEnded(int NumberOfExecutions) : IFiling;
 
 
 public record struct InputShrinkingStarted(int NumberOfExecutions) : IFiling;
-public record struct InputShrinkRunStarted(int NumberOfExecutions) : IFiling;
+public record struct InputShrinkRunStarted(int ExecutionId, string Key) : IFiling;
 public record struct InputShrunk(int ExecutionId, string Key) : IFiling;
-public record struct InputShrinkRunEnded(int NumberOfExecutions) : IFiling;
+public record struct InputShrinkRunEnded(int ExecutionId, string Key) : IFiling;
 public record struct InputShrinkingEnded(int NumberOfExecutions) : IFiling;
