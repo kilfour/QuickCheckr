@@ -37,7 +37,7 @@ So after Input Shrinking, the result is:
         Assert.Equal("60", input.Value);
 
         var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report).AsAssertsToLogFile();
+        var reader = LinesReader.FromText(report);//.AsAssertsToLogFile();
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
         Assert.Contains(" Location: ", reader.NextLine());

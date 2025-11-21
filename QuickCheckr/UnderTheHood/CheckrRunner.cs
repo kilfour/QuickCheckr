@@ -2,6 +2,9 @@ using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Runners;
+using QuickCheckr.UnderTheHood.Runners.ActionShrinking;
+using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking;
 using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
@@ -23,6 +26,7 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal, int? se
         var originalRunExecutionCount = State.ShortTermMemory.Count();
         var shrinkCount = new ExecutionShrinker(State, Check).Run();
         shrinkCount += new ActionShrinker(State, Check).Run();
+        shrinkCount += new InputShrinker(State, Check).Run();
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 

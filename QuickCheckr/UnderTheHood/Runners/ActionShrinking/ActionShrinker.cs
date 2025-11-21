@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Docketing;
 
-namespace QuickCheckr.UnderTheHood.Runners;
+namespace QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 
 public class ActionShrinker(
     CheckrState State,
