@@ -19,9 +19,9 @@ public class InputShrinking
     [DocContent("The following simple example has one input but always fails.")]
     [DocExample(typeof(InputShrinking), nameof(Example_Check))]
     [DocContent(
-@"<Explanation goes here>
+@"Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
 
-So after Input Shrinking, the result is:
+So, in the previous example, after Input Shrinking, the result is:
 ")]
     [DocCodeFile("InputShrinking.txt", "text")]
     public void Example()
@@ -73,7 +73,9 @@ So after Input Shrinking, the result is:
     [DocContent("Another example, slightly trickier.")]
     [DocExample(typeof(InputShrinking), nameof(Example_Two_Check))]
     [DocContent(
-@"<Explanation goes here>
+@"As you can see from the test definition, two inputs are involved in a possible failure.
+
+QuickCheckr correctly identifies the relevant inputs.
 
 Result:
 ")]

@@ -84,9 +84,9 @@ The following simple example has one input but always fails.
     from spec in Checkr.Spec("Always Fails", () => false)
     select Case.Closed;
 ```
-<Explanation goes here>
+Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
 
-So after Input Shrinking, the result is:
+So, in the previous example, after Input Shrinking, the result is:
   
 ```text
 ------------------------------------------------------------
@@ -109,7 +109,9 @@ Another example, slightly trickier.
     from spec in Checkr.Spec("Should not be 42", () => result != 42)
     select Case.Closed;
 ```
-<Explanation goes here>
+As you can see from the test definition, two inputs are involved in a possible failure.
+
+QuickCheckr correctly identifies the relevant inputs.
 
 Result:
   
