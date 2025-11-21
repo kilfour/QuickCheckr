@@ -71,8 +71,8 @@ So after Action Shrinking, the result is:
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
    at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<Example_Check>b__2_6() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 75
-   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 11
-   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 21
+   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in CheckrAct.cs:line 11
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in CheckrAct.cs:line 21
  ===========================================================================
 ```
 ### Input Shrinking

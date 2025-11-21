@@ -15,7 +15,9 @@ public static class WriteReport
         if (!ToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
-        var formattedReport = report.Replace(@"C:\Code\QuickCheckr\QuickCheckr.Tests\", "");
+        var formattedReport = report
+                .Replace(@"C:\Code\QuickCheckr\QuickCheckr.Tests\", "")
+                .Replace(@"C:\Code\QuickCheckr\QuickCheckr\", "");
         FileLog.Write(fullPath).Absorb(formattedReport);
     }
 }
