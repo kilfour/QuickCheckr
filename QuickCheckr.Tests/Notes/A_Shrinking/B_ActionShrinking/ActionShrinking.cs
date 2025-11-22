@@ -68,8 +68,8 @@ Consider the following example:")]
 @"If we enable *Action Shrinking* QuickCheckr replays the run and deactivates the action to ascertain its relevance.  
 However, the action returns a value which other `LINQ` operations might depend on, so QuickCheckr returns a `default` value.  
 
-But, and here's the confusing bit, the spec in our example fails if the action returns false, the default bool value, so the spec fails,
-and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
+But, and here's the confusing bit, the spec in our example fails if the action returns false, the default bool value,
+so the spec fails even if the action is deactivated, and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
 
 And here we find ourselves confused ;-).  
 ")]
