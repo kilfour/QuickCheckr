@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Tools.ThePress;
+namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 
 public class ExecutionArticle(ExecutionDeposition deposition)
     : AbstractArticle<ExecutionDeposition>(deposition)

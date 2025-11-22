@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
 public class ShrinkEachElementStrategy

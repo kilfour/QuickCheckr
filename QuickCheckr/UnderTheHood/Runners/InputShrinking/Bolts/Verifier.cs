@@ -10,14 +10,13 @@ public class Verifier(CheckrState State,
 
     public virtual bool RunFailed(int executionId, string key, object value)
     {
-        //State.Memory.ResetRunScopedInputs();
-        //var runNumber = State.CurrentExecutionNumber;
+        State.LongTermMemory.Reset();
         State.EvidenceRecorder.StartReplay();
-        using (State.ShortTermMemory.ScopedSwap(executionId, key, value))
+        using (State.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, value))
         {
-            foreach (var id in State.ShortTermMemory.Numbers)
+            foreach (var id in State.ShortTermMemories.Numbers)
             {
-                State.ShortTermMemory.GotoExecution(id);
+                State.ShortTermMemories.GotoExecution(id);
                 Check(State);
             }
         }

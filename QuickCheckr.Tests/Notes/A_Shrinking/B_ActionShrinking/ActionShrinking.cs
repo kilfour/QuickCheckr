@@ -1,78 +1,94 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
-using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking;
 
 [DocFile]
 [DocContent(
-@"This is the second step in QuickCheckr shrinking.  
+@"This is the second step in QuickCheckr shrinking, but it needs to be explicitely activated
+by passing in a configuration function to the Run method: `a => a with { ShrinkingActions = true }`.  
+
 It is not common to have multiple Actions in one execution, but it is possible, and sometimes useful.  
-In the same vein as with Execution Shrinking, Actions are also reevaluated and judged to be relevant for the failure.")]
-public class ActionShrinking
+
+In the same vein as with *Execution Shrinking*, Actions are also evaluated and judged to be relevant for the failure.")]
+public class ActionShrinking : BaseTest
 {
     [Fact]
     [DocContent("The following simple example fails on the third action.")]
-    [DocExample(typeof(ActionShrinking), nameof(Example_Check))]
+    [DocExample(typeof(ActionShrinking), nameof(GetCheckr))]
     [DocContent(
 @"
 Execution 1 - Action 1: noop  
 Execution 1 - Action 2: noop  
 Execution 1 - Action 3: Throws => (Fails)  
 
-So after Action Shrinking, the result is:
+So after *Action Shrinking*, the result is:
 ")]
     [DocCodeFile("ActionShrinking.txt", "text")]
-    public void Example()
+    public void RunTest()
     {
-        var article = TheJournalist.Exposes(ExampleTest);
-
-        Assert.Equal("BOOM", article.Exception().Message);
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
-        var execution = article.Execution(1).Read();
-        Assert.Equal(1, execution.ExecutionId);
-        var action = article.Execution(1).Action(1).Read();
-        Assert.Equal("Act Three", action.Label);
-
-        var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report);
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
-        Assert.Contains(" Location: ", reader.NextLine());
-        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
-        Assert.Equal(" Minimal failing case:    1 execution (after 2 shrinks)", reader.NextLine());
-        Assert.Equal(" Seed:                    699025678", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1): Act Three", reader.NextLine());
-        Assert.Equal(" ===========================================================================", reader.NextLine());
-        Assert.Equal("  !! Exception Thrown: System.Exception: BOOM", reader.NextLine());
-        // Skip the stack trace. 
-        reader.Skip(3);
-        // --
-        Assert.Equal(" ===========================================================================", reader.NextLine());
-        Assert.True(reader.EndOfContent());
-        WriteReport.ToFile("ActionShrinking.txt", report);
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(100.Runs(), 50.ExecutionsPerRun(),
+                a => a with
+                {
+                    Seed = 699025678,
+                    ShrinkingActions = true
+                }));
+        Verify(article);
     }
 
-    private static void ExampleTest()
+    private static void Verify(Article article)
     {
-        Example_Check().Run(
-            1.Runs(),
-            50.ExecutionsPerRun(),
-            a => a with { Seed = 699025678 });
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Act Three", article.Execution(1).Action(1).Read().Label);
     }
 
     [CodeSnippet]
     [CodeRemove("return")]
-    private static CheckrOf<Case> Example_Check()
+    private static CheckrOf<Case> GetCheckr()
     {
         return
             from actOne in Checkr.Act("Act One", () => { })
             from actTwo in Checkr.Act("Act Two", () => { })
             from actThree in Checkr.Act("Act Three", () => throw new Exception("BOOM"))
+            select Case.Closed;
+    }
+
+    [Fact]
+    [DocHeader("Elaborating")]
+    [DocContent(
+@"The reason *Action Shrinking* is not activated by default is because in some rare cases it can lead to confusion.  
+Consider the following example:")]
+    [DocExample(typeof(ActionShrinking), nameof(Elaborating_Checkr))]
+    [DocContent(
+@"If we enable *Action Shrinking* QuickCheckr replays the run and deactivates the action to ascertain its relevance.  
+However, the action returns a value which other `LINQ` operations might depend on, so QuickCheckr returns a `default` value.  
+
+But, and here's the confusing bit, the spec in our example fails if the action returns false, the default bool value, so the spec fails,
+and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
+
+And here we find ourselves confused ;-).  
+")]
+    public void Elaborating()
+    {
+        var article = TheJournalist.Exposes(() =>
+            Elaborating_Checkr().Run(a => a with { ShrinkingActions = true }));
+        Assert.Equal("Act returns true", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> Elaborating_Checkr()
+    {
+        return
+            from act in Checkr.Act("Act", () => false)
+            from spec in Checkr.Spec("Act returns true", () => act == true)
             select Case.Closed;
     }
 }

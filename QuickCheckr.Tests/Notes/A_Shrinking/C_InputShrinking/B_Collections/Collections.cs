@@ -77,7 +77,7 @@ public class Collections
     public void Collection_shrink_with_dep()
     {
         var check =
-            from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10), a => a.Trace())
+            from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
             from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
                 !(input.ToList()[0] == 1
                 && input.ToList()[1] == 2

@@ -72,6 +72,7 @@ public static class The
 
     private readonly static Flow<ExecutionDeposition> executionDeposition =
         from input in Pulse.Start<ExecutionDeposition>()
+        from nl in newLine
         from _ in Pulse.Scoped<Decorum>(
             a => a with { Line = Valve.Install() },
             Pulse.ToFlow(stashedDeposition, input.StashedDepositions))
@@ -88,16 +89,11 @@ public static class The
         from _______ in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
         select input;
 
-    private readonly static Flow<ExecutionDeposition> maybeExecutionDeposition =
-        from input in Pulse.Start<ExecutionDeposition>()
-        from _ in Pulse.ToFlow(newLine.Then(executionDeposition), input)
-        select input;
-
     private readonly static Flow<RunDeposition> runDeposition =
         from input in Pulse.Start<RunDeposition>()
         from _ in line
         from __ in space.Then(Pulse.Trace(input.Label))
-        from ___ in Pulse.ToFlow(maybeExecutionDeposition, input.ExecutionDepositions).Then(newLine)
+        from ___ in Pulse.ToFlow(executionDeposition, input.ExecutionDepositions).Then(newLine)
         select input;
 
     private readonly static Flow<AssayerDeposition> assayerDeposition =
@@ -123,13 +119,6 @@ public static class The
         from _1 in newLine.Then(DoubleLineOf(75)).Then(newLine)
         from _2 in Pulse.Trace($"  !! Exception Thrown: {input.Exception}").Then(newLine)
         from _3 in DoubleLineOf(75)
-        select input;
-
-    private readonly static Flow<FailureDeposition> failureDepositionAlt =
-        from input in Pulse.Start<FailureDeposition>()
-        from _1 in Pulse.ToFlowIf(input is FailedSpecDeposition, failedSpecDeposition, () => (FailedSpecDeposition)input)
-        from _2 in Pulse.ToFlowIf(input is ExceptionDeposition, exceptionDeposition, () => (ExceptionDeposition)input)
-        from _3 in Pulse.ToFlowIf(input is AssayerDeposition, assayerDeposition, () => (AssayerDeposition)input)
         select input;
 
     private readonly static Flow<FailureDeposition> failureDeposition =
@@ -159,7 +148,7 @@ public static class The
         let _22 = $"{verdict.ShrinkCount} {Pluralize(verdict.ShrinkCount, "shrink")}"
         from _2 in Pulse.TraceIf(verdict.ShrinkCount > 0, () => $" Minimal failing case:    {_21} (after {_22}){Environment.NewLine}")
         from _3 in Pulse.Trace($" Seed:                    {verdict.Seed}")
-        from _4 in Pulse.ToFlow(maybeExecutionDeposition, verdict.ExecutionDepositions)
+        from _4 in Pulse.ToFlow(executionDeposition, verdict.ExecutionDepositions)
         from _5 in Pulse.ToFlow(failureDeposition, verdict.FailureDeposition)
         select verdict;
 

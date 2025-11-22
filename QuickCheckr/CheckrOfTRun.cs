@@ -1,19 +1,12 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Configuration;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickPulse;
-using QuickPulse.Arteries;
 
 namespace QuickCheckr;
 
 public static class CheckrOfTRun
 {
-    private static readonly Flow<IFiling> flow =
-        from filing in Pulse.Start<IFiling>()
-        from trace in Pulse.Trace(filing)
-        select filing;
-
     [StackTraceHidden]
     public static CaseFile Run(this CheckrOf<Case> check)
         => Run(check, 1.Runs(), 1.ExecutionsPerRun());
@@ -52,11 +45,10 @@ public static class CheckrOfTRun
         ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure)
     {
-        var config = configure(CheckrConfig.Default());
-        var signal = config.Diagnose ? Signal.From(flow).SetArtery(FileLog.Write()) : null;
+        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var caseFile = new CheckrRunner(check, signal, config.Seed).Run(executionsPerRun.NumberOfExecutions);
+            var caseFile = new CheckrRunner(check, config).Run(executionsPerRun.NumberOfExecutions);
             if (caseFile.HasVerdict())
                 throw new FalsifiableException(caseFile);
         }

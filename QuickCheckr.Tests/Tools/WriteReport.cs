@@ -17,8 +17,9 @@ public static class WriteReport
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
         var formattedReport = report
-                .Replace(@"C:\Code\QuickCheckr\QuickCheckr.Tests\", "")
-                .Replace(@"C:\Code\QuickCheckr\QuickCheckr\", "");
+            .Replace(@"C:\Code\QuickCheckr\QuickCheckr.Tests\", "")
+            .Replace(@"C:\Code\QuickCheckr\QuickCheckr\", "")
+            .Replace(@"<RunBaseTest>b__8_0", "Example");
         FileLog.Write(fullPath).Absorb(formattedReport);
     }
 }

@@ -19,7 +19,7 @@ public class InputShrinking
     [DocContent(
 @"Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
 
-So, in the previous example, after Input Shrinking, the result is:
+So, in the previous example, after *Input Shrinking*, the result is:
 ")]
     [DocCodeFile("InputShrinking.txt", "text")]
     public void Example()

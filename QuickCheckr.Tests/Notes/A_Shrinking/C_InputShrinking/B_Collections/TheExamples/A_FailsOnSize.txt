@@ -1,6 +1,6 @@
  ------------------------------------------------------------
- Test:                    ExampleTest
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_FailsOnSize.cs:56:1
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_FailsOnSize.cs:18:1
  Original failing run:    1 execution
  Seed:                    1833095082
  ------------------------------------------------------------

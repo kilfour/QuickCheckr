@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood;
+namespace QuickCheckr.UnderTheHood.Memories;
 
 public class MemoryBank
 {

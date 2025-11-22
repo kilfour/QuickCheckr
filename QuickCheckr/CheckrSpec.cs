@@ -15,11 +15,19 @@ public static partial class Checkr
         {
             if (SpecNeedsToBeSkipped(key, state))
                 return CheckrResult.CheckOnly(state);
-            if (condition())
-                state.EvidenceRecorder.SpecPassed(key);
-            else
-                state.EvidenceRecorder.SpecFailed(key);
-            return CheckrResult.CheckOnly(state);
+            try
+            {
+                if (condition())
+                    state.EvidenceRecorder.SpecPassed(key);
+                else
+                    state.EvidenceRecorder.SpecFailed(key);
+                return CheckrResult.CheckOnly(state);
+            }
+            catch (Exception exception)
+            {
+                state.EvidenceRecorder.RecordFailure(exception);
+                return CheckrResult.CheckOnly(state);
+            }
         };
 
     private static bool SpecNeedsToBeSkipped(string key, CheckrState state)

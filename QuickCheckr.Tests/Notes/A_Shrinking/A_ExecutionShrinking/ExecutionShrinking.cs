@@ -24,13 +24,13 @@ During execution shrinking the values from counter are not regenerated, but retr
 So the ExecutionShrinker retries the run with the same values, but tries to remove executions, one by one.  
 If the run still fails, the execution is not deemed relevant for the failure and is removed.  
 
-So after Execution Shrinking, the result is:
+So after *Execution Shrinking*, the result is:
 ")]
     [DocCodeFile("ExecutionShrinking.txt", "text")]
     public void Example()
     {
         var article = TheJournalist.Exposes(ExampleTest);
-        Assert.Equal("Fails on Three", article.FailedSpec());
+        Assert.Equal("Counter does not equal 3", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         var execution = article.Execution(1).Read();
@@ -50,9 +50,9 @@ So after Execution Shrinking, the result is:
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed (3):", reader.NextLine());
         Assert.Equal("   - Input: counter = 3", reader.NextLine());
-        Assert.Equal(" ==================================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Fails on Three", reader.NextLine());
-        Assert.Equal(" ==================================", reader.NextLine());
+        Assert.Equal(" ============================================", reader.NextLine());
+        Assert.Equal("  !! Spec Failed: Counter does not equal 3", reader.NextLine());
+        Assert.Equal(" ============================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
         WriteReport.ToFile("ExecutionShrinking.txt", report);
     }
@@ -71,7 +71,7 @@ So after Execution Shrinking, the result is:
     {
         return
             from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-            from spec in Checkr.Spec("Fails on Three", () => counter != 3)
+            from spec in Checkr.Spec("Counter does not equal 3", () => counter != 3)
             select Case.Closed;
     }
 }

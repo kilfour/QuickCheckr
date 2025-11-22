@@ -1,18 +1,17 @@
-using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Configuration;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
-using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal, int? seed = null)
+public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(signal, seed);
+    public CheckrState State { get; init; } = new(config.Signal, config.Seed);
 
     public CaseFile Run(int numberOfExecutions)
     {
@@ -23,9 +22,10 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal, int? se
 
     private CaseFile HandleFailure()
     {
-        var originalRunExecutionCount = State.ShortTermMemory.Count();
+        var originalRunExecutionCount = State.ShortTermMemories.Count();
         var shrinkCount = new ExecutionShrinker(State, Check).Run();
-        shrinkCount += new ActionShrinker(State, Check).Run();
+        if (config.ShrinkingActions)
+            shrinkCount += new ActionShrinker(State, Check).Run();
         shrinkCount += new InputShrinker(State, Check).Run();
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
@@ -41,10 +41,10 @@ public class CheckrRunner(CheckrOf<Case> check, Signal<IFiling>? signal, int? se
                 FailingSpec: forAssayer ? null : State.EvidenceRecorder.FailingSpec,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
-                ExecutionNumbers: State.ShortTermMemory.Numbers,
+                ExecutionNumbers: State.ShortTermMemories.Numbers,
                 ShrinkCount: shrinkCount,
                 Seed: State.FuzzrState.Seed
             );
-        return Compile.TheCaseFile(dossier, State.ShortTermMemory);
+        return Compile.TheCaseFile(dossier, State.ShortTermMemories);
     }
 }

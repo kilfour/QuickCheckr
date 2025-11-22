@@ -1,15 +1,16 @@
+using QuickCheckr.UnderTheHood.Memories;
 using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class Compile
 {
-    public static CaseFile TheCaseFile(Dossier dossier, ShortTermMemory shortTermMemory)// , Memory Memory)
+    public static CaseFile TheCaseFile(Dossier dossier, ShortTermMemories shortTermMemories)// , Memory Memory)
     {
         var verdict = Verdict.FromDossier(dossier);
         foreach (var executionNumber in dossier.ExecutionNumbers.ToList())
         {
-            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionNumber, true));
+            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemories.GetMemory(executionNumber), executionNumber, true));
         }
         return CaseFile.WithVerdict(verdict);
     }
@@ -28,7 +29,6 @@ public static class Compile
         ShortTermMemory shortTermMemory, int executionNumber, bool isVerdict)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
-        shortTermMemory.GotoExecution(executionNumber);
         //GetStashedDepositions(memory, executionNumber, executionDeposition);
         //var access = shortTermMemory.AccessFor(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
@@ -80,7 +80,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetTraces())
         {
-            executionDeposition.AddTraceDeposition(new TraceDeposition(key, Introduce.This(val!, false)));
+            executionDeposition.AddTraceDeposition(new TraceDeposition(key, (string)val!));
         }
     }
 }

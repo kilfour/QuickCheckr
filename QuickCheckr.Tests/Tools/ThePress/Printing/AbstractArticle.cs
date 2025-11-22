@@ -1,4 +1,4 @@
-namespace QuickCheckr.Tests.Tools.ThePress;
+namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 
 public abstract class AbstractArticle<T>(T deposition)
 {
