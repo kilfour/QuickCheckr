@@ -10,6 +10,6 @@ public static class CheckrResult
 	public static CheckrResult<TValue> Default<TValue>(CheckrState state) =>
 		new(state, default!);
 
-	public static CheckrResult<Case> CheckOnly(CheckrState state) =>
+	public static CheckrResult<Case> CaseOnly(CheckrState state) =>
 		Some(state, Case.Closed);
 }

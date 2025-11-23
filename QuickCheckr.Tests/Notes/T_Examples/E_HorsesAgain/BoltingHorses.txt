@@ -1,0 +1,18 @@
+ ------------------------------------------------------------
+ Test:                    CheckIt
+ Location:                Notes\T_Examples\D_HorsesAgain\BoltingHorses.cs:24:1
+ Original failing run:    15 executions
+ Minimal failing case:    4 executions (after 11 shrinks)
+ Seed:                    13918324
+ ------------------------------------------------------------
+  Executed (1): Create Course
+ ------------------------------------------------------------
+  Executed (2): Create Coach
+ ------------------------------------------------------------
+  Executed (8): Assign Coach to Course
+ ------------------------------------------------------------
+  Executed (15): Update Course Skills
+   - Input: Course Skills = [ _ ]
+ =====================================================
+  !! Spec Failed: Assigned Coaches Must Be Suitable
+ =====================================================

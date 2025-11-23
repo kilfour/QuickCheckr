@@ -69,7 +69,7 @@ public class ShortTermMemory
 
 
     // --------------------------------------------------------------------------
-    // Shrinkers
+    // Reducers
     private readonly MemoryBank reducers = new();
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => reducers.Store(key, () => reducer);

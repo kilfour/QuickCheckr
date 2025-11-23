@@ -4,29 +4,29 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
-    public static CheckrOf<Case> Spec(this string key, Func<bool> condition)
+    public static CheckrOf<Case> Spec(string key, Func<bool> condition)
         => InnerSpec(key, condition);
 
-    public static CheckrOf<Case> SpecIf(this string key, Func<bool> predicate, Func<bool> condition)
-        => state => predicate() ? key.InnerSpec(condition)(state) : CheckrResult.CheckOnly(state);
+    public static CheckrOf<Case> SpecIf(string key, Func<bool> predicate, Func<bool> condition)
+        => state => predicate() ? InnerSpec(key, condition)(state) : CheckrResult.CaseOnly(state);
 
-    private static CheckrOf<Case> InnerSpec(this string key, Func<bool> condition) =>
+    private static CheckrOf<Case> InnerSpec(string key, Func<bool> condition) =>
         state =>
         {
             if (SpecNeedsToBeSkipped(key, state))
-                return CheckrResult.CheckOnly(state);
+                return CheckrResult.CaseOnly(state);
             try
             {
                 if (condition())
                     state.EvidenceRecorder.SpecPassed(key);
                 else
                     state.EvidenceRecorder.SpecFailed(key);
-                return CheckrResult.CheckOnly(state);
+                return CheckrResult.CaseOnly(state);
             }
             catch (Exception exception)
             {
                 state.EvidenceRecorder.RecordFailure(exception);
-                return CheckrResult.CheckOnly(state);
+                return CheckrResult.CaseOnly(state);
             }
         };
 

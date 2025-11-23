@@ -1,34 +1,38 @@
-# Input Reduction
+# There Is Always An Account
+## The Model:
 ```csharp
-    from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-    from spec in Checkr.Spec("Int should be smaller than 42", () => i < 42)
-    from trace in Checkr.Trace("Int", i)
-    select Case.Closed;
-```
-```csharp
-private static IEnumerable<int> TowardsZero(int input)
+public class Account
 {
-    var local = input;
-    while (local != 0)
-    {
-        if (local > 0)
-            yield return --local;
-        else
-            yield return ++local;
-    }
+    public int Balance { get; private set; }
+    public void Deposit(int amount) => Balance += amount;
+    public void WithDraw(int amount) => Balance -= amount;
 }
 ```
+## The Checkr:
+```csharp
+    from account in Trackr.Stashed(() => new Account())
+    from amount in Checkr.Input("Amount", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
+    from trace in Checkr.Trace("Amount", amount)
+    from operations in Checkr.OneOf(
+        Checkr.Act("Deposit", () => account.Deposit(amount)),
+        Checkr.Act("Withdraw", () => account.WithDraw(amount))
+    )
+    from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+    select Case.Closed;
+```
+## The Report:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
- Original failing run:    1 execution
- Seed:                    1681332589
+ Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:24:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1863050139
  ------------------------------------------------------------
-  Executed (1):
-   - Input: Int = 42
-   - Trace: Int = 79
- =================================================
-  !! Spec Failed: Int should be smaller than 42
- =================================================
+  Executed (5): Withdraw
+   - Input: Amount = 1
+   - Trace: Amount = 88
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
 ```

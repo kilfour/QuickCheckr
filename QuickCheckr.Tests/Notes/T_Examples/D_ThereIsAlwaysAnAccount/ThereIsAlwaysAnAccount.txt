@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:24:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1863050139
+ ------------------------------------------------------------
+  Executed (5): Withdraw
+   - Input: Amount = 1
+   - Trace: Amount = 88
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
