@@ -4,18 +4,18 @@ namespace QuickCheckr.UnderTheHood.Memories;
 public class ShortTermMemories
 {
     private readonly Dictionary<int, ShortTermMemory> memories = [];
-    private int currentExecutionNumber = 0;
+    public int CurrentExecutionNumber { get; private set; } = 0;
     public int Count() => memories.Count;
 
     public IReadOnlyList<int> Numbers => [.. memories.Keys];
 
-    public ShortTermMemory Current => memories[currentExecutionNumber];
+    public ShortTermMemory Current => memories[CurrentExecutionNumber];
 
     public int StartNewExecution()
     {
-        currentExecutionNumber++;
-        memories[currentExecutionNumber] = new ShortTermMemory();
-        return currentExecutionNumber;
+        CurrentExecutionNumber++;
+        memories[CurrentExecutionNumber] = new ShortTermMemory();
+        return CurrentExecutionNumber;
     }
 
     public void Remove(int executionNumber)
@@ -24,7 +24,7 @@ public class ShortTermMemories
     }
 
     public void GotoExecution(int executionNumber)
-        => currentExecutionNumber = executionNumber;
+        => CurrentExecutionNumber = executionNumber;
 
     public ShortTermMemory GetMemory(int executionNumber)
         => memories[executionNumber];

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
@@ -21,12 +22,11 @@ public class ShrinkStrategyPicker
         //     return;
         // }
 
-        // var customShrinker = state.ShrinkingRegistry.TryGetShrinker<T>();
-        // if (customShrinker != null)
-        // {
-        //     new CustomShrinkStrategy(new ShrinkerBox<T>(customShrinker)).Shrink(state, key, value!);
-        //     return;
-        // }
+        var customShrinker = state.ShortTermMemories.Current.GetShrinker<T>(key);
+        if (customShrinker != null)
+        {
+            return new CustomShrinkStrategy<T>(customShrinker).Shrink(state, check, executionId, key, value, fullKey);
+        }
 
         var primitiveKey = PrimitiveShrinkStrategy.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
         if (primitiveKey != null)

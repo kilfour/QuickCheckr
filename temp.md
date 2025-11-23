@@ -1,33 +1,24 @@
-# Irrelevant Element But List Length Is Not
-When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
-and leaves irrelevant details untouched. 
-
-In cases like this example where the predicate depends solely on the length of the list,
-the individual element values play no role.  
-QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
-removing elements, and converging toward the smallest list that still violates the condition.
-
-This yields minimal, focused shrinking artifacts:
-the report shows only the structural signal that mattered (here: the list being *too long*),
-without introducing noise from element-level changes that could not affect the outcome anyway.  
+# Fuzzr Shrinking
 ```csharp
-    from length in Checkr.Input("Length", Fuzzr.Int(0, 10))
-    from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-    from trace in Checkr.Trace("Original List", list)
-    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
+    from one in Checkr.Input("One", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
+    from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
+    from traceOne in Checkr.Trace("Original One", one)
+    from traceTwo in Checkr.Trace("Original Two", two)
+    from spec in Checkr.Spec("One should not be 42", () => one != 42)
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
  Original failing run:    1 execution
- Seed:                    1994546166
+ Seed:                    2122063655
  ------------------------------------------------------------
   Executed (1):
-   - Input: List = [ _, _, _ ]
-   - Trace: Original List = [ 26, 42, 46, 35, 23, 62 ]
- ===============================
-  !! Spec Failed: Length <= 2
- ===============================
+   - Input: One = 42
+   - Trace: Original One = 42
+   - Trace: Original Two = 90
+ ========================================
+  !! Spec Failed: One should not be 42
+ ========================================
 ```

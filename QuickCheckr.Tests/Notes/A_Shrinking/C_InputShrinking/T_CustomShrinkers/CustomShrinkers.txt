@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:17:1
+ Original failing run:    1 execution
+ Seed:                    2122063655
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: One = 42
+   - Trace: Original One = 42
+   - Trace: Original Two = 90
+ ========================================
+  !! Spec Failed: One should not be 42
+ ========================================

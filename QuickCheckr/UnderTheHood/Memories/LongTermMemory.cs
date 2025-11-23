@@ -1,3 +1,4 @@
+
 namespace QuickCheckr.UnderTheHood.Memories;
 
 public class LongTermMemory
