@@ -24,11 +24,15 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
     private CaseFile HandleFailure()
     {
         var originalRunExecutionCount = State.ShortTermMemories.Count();
-        var shrinkCount = new ExecutionShrinker(State, Check).Run();
-        if (config.ShrinkingActions)
-            shrinkCount += new ActionShrinker(State, Check).Run();
-        shrinkCount += new InputShrinker(State, Check).Run();
-        shrinkCount += new InputReducer(State, Check).Run();
+        var shrinkCount = 0;
+        if (!config.NoShrinking)
+        {
+            shrinkCount += new ExecutionShrinker(State, Check).Run();
+            if (config.ShrinkingActions)
+                shrinkCount += new ActionShrinker(State, Check).Run();
+            shrinkCount += new InputShrinker(State, Check).Run();
+            shrinkCount += new InputReducer(State, Check).Run();
+        }
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 

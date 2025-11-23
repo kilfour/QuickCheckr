@@ -12,9 +12,11 @@ public record CheckrRunnerConfig
         Seed = config.Seed;
         Signal = config.Diagnose ? QuickPulse.Signal.From(flow).SetArtery(FileLog.Write()) : null;
         ShrinkingActions = config.ShrinkingActions;
+        NoShrinking = config.NoShrinking;
     }
     public int? Seed { get; init; }
     public Signal<IFiling>? Signal { get; init; }
+    public bool NoShrinking { get; init; }
     public bool ShrinkingActions { get; init; }
     private static readonly Flow<IFiling> flow =
         from filing in Pulse.Start<IFiling>()

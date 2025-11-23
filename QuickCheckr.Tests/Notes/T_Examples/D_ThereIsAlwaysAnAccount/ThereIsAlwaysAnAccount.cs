@@ -1,4 +1,3 @@
-using QuickCheckr;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -18,14 +17,16 @@ public class ThereIsAlwaysAnAccount : BaseTest
     [DocExample(typeof(ThereIsAlwaysAnAccount), nameof(GetCheckr))]
     [DocHeader("The Report:")]
     [DocCodeFile("ThereIsAlwaysAnAccount.txt", "text")]
+    [DocHeader("Original Run:")]
+    [DocCodeFile("ThereIsAlwaysAnAccountFullRun.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
+            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139, /*NoShrinking = true*/ }));
         WriteAsserts(article);
+        WriteReport(article, "ThereIsAlwaysAnAccountFullRun.txt");
         WriteReport<ThereIsAlwaysAnAccount>(article);
         Verify(article);
-        ExplainMe<ThereIsAlwaysAnAccount>();
     }
 
     private static void Verify(Article article)
