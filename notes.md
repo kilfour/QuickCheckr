@@ -583,6 +583,32 @@ public class Account
   !! Spec Failed: No Overdraft
  ================================
 ```
+#### Original Run:
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:24:1
+ Original failing run:    5 executions
+ Seed:                    1863050139
+ ------------------------------------------------------------
+  Executed (1): Deposit
+   - Trace: Amount = 94
+ ------------------------------------------------------------
+  Executed (2): Deposit
+   - Trace: Amount = 59
+ ------------------------------------------------------------
+  Executed (3): Withdraw
+   - Trace: Amount = 43
+ ------------------------------------------------------------
+  Executed (4): Withdraw
+   - Trace: Amount = 63
+ ------------------------------------------------------------
+  Executed (5): Withdraw
+   - Trace: Amount = 88
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
+```
 ### Bolting Horses
 For this example we are going the use a simplified version of the `HorsesForCourses` domain.  
 The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)

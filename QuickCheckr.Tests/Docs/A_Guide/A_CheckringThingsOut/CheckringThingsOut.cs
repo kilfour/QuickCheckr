@@ -39,12 +39,12 @@ The report shows:
 ")]
     public void SpecAlwaysFalse()
     {
-        var article = TheJournalist.Exposes(() => SpecAlwaysFalse_Checkr().Run());
+        var article = TheJournalist.Exposes(() => SpecAlwaysFalse_Checkr().Run(a => a with { Seed = 1642083259 }));
         Assert.Equal("Always true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
-        WriteReport(article, "SpecAlwaysFalse.txt", true);
+        WriteReport(article, "SpecAlwaysFalse.txt");
     }
 
     [CodeSnippet]
