@@ -26,6 +26,8 @@ public static partial class Checkr
             }
             if (cfg.Shrinker != null)
                 state.ShortTermMemories.Current.StoreShrinker<object>(key, a => cfg.Shrinker((T)a).Cast<object>());
+            if (cfg.Reducer != null)
+                state.ShortTermMemories.Current.StoreReducer<object>(key, a => cfg.Reducer((T)a).Cast<object>());
             return HandleInput(state, key, fuzzr);
         };
     }

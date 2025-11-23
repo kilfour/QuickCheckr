@@ -21,14 +21,14 @@ public class InputShrinker(
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
                 {
-                    shortTermMemory.StoreInputShrinkOutcome(key, replace.Report);
+                    shortTermMemory.StoreInputShrinkOutcome(key, replace);
                 }
                 else
                 {
                     var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
                     if (keep != null)
                     {
-                        shortTermMemory.StoreInputShrinkOutcome(key, keep.Report);
+                        shortTermMemory.StoreInputShrinkOutcome(key, keep);
                     }
                 }
                 State.Docket.Record(new InputShrinkRunEnded(executionId, key));

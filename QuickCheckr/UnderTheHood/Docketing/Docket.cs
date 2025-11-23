@@ -37,3 +37,10 @@ public record struct InputShrinkingClueFound(InputShrinkingClue Clue) : IFiling;
 public record struct InputShrunk(int ExecutionId, string Key) : IFiling;
 public record struct InputShrinkRunEnded(int ExecutionId, string Key) : IFiling;
 public record struct InputShrinkingEnded(int NumberOfExecutions) : IFiling;
+
+
+public record struct InputReductionStarted(int NumberOfExecutions) : IFiling;
+public record struct InputReductionRunStarted(int ExecutionId, string Key) : IFiling;
+public record struct InputReduced(int ExecutionId, string Key) : IFiling;
+public record struct InputReductionRunEnded(int ExecutionId, string Key) : IFiling;
+public record struct InputReductionEnded(int NumberOfExecutions) : IFiling;

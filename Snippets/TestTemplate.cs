@@ -12,6 +12,8 @@ namespace QuickCheckr.Tests;
 public class TestTemplate : BaseTest
 {
     [Fact]
+    [DocExample(typeof(TestTemplate), nameof(GetCheckr))]
+    [DocCodeFile("TestTemplate.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>

@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -59,7 +60,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
-            executionDeposition.AddInputDeposition(new InputDeposition(key, val!)); //Introduce.This(val!, false)));
+            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!)); //Introduce.This(val!, false)));
         }
         // foreach (var (key, val) in access.GetAll())
         // {

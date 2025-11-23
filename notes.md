@@ -210,7 +210,88 @@ without introducing noise from element-level changes that could not affect the o
   !! Spec Failed: Length <= 2
  ===============================
 ```
-#### Test Template
+#### Custom Shrinkers
+```csharp
+    from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
+    from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
+    from traceOne in Checkr.Trace("Original One", one)
+    from traceTwo in Checkr.Trace("Original Two", two)
+    from spec in Checkr.Spec("One should not be 42", () => one != 42)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:17:1
+ Original failing run:    1 execution
+ Seed:                    2122063655
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: One = 42
+   - Trace: Original One = 42
+   - Trace: Original Two = 90
+ ========================================
+  !! Spec Failed: One should not be 42
+ ========================================
+```
+#### Fuzzr Shrinking
+```csharp
+    from one in Checkr.Input("One", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
+    from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
+    from traceOne in Checkr.Trace("Original One", one)
+    from traceTwo in Checkr.Trace("Original Two", two)
+    from spec in Checkr.Spec("One should not be 42", () => one != 42)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    2122063655
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: One = 42
+   - Trace: Original One = 42
+   - Trace: Original Two = 90
+ ========================================
+  !! Spec Failed: One should not be 42
+ ========================================
+```
+#### Input Reduction
+```csharp
+    from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
+    from spec in Checkr.Spec("Int should be smaller than 42", () => i < 42)
+    from trace in Checkr.Trace("Int", i)
+    select Case.Closed;
+```
+```csharp
+private static IEnumerable<int> TowardsZero(int input)
+{
+    var local = input;
+    while (local != 0)
+    {
+        if (local > 0)
+            yield return --local;
+        else
+            yield return ++local;
+    }
+}
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Int = 42
+   - Trace: Int = 79
+ =================================================
+  !! Spec Failed: Int should be smaller than 42
+ =================================================
+```
 ## Building Blocks
 ### Checkr Input
 ## Examples

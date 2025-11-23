@@ -20,7 +20,6 @@ public class FuzzrShrinking : BaseTest
         WriteAsserts(article);
         WriteReport<FuzzrShrinking>(article);
         Verify(article);
-        ExplainMe<FuzzrShrinking>();
     }
 
     private static void Verify(Article article)
