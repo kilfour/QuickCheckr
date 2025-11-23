@@ -7,18 +7,27 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.TheExamples;
 
 [DocFile]
-public class A_FailsOnSize : BaseTest
+[DocContent(
+@"When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
+Instead, it removes items one by one, replaying the run each time to test whether the removed element was relevant for the failure.
+
+This means that if only some elements in a list contribute to the failing condition, QuickCheckr will aggressively trim the rest away. The result is a minimal list containing only the values that still trigger the failure, even if the original list was large or noisy.
+
+Consider a test that forbids the value `7`:")]
+[DocExample(typeof(A_RemovingIrrelevantItems), nameof(GetCheckr))]
+[DocContent(@"Even if the original list was long and varied, QuickCheckr isolates the single relevant element:")]
+[DocCodeFile("A_RemovingIrrelevantItems.txt", "text")]
+public class A_RemovingIrrelevantItems : BaseTest
 {
     [Fact]
-    [DocExample(typeof(A_FailsOnSize), nameof(GetCheckr))]
-    [DocCodeFile("A_FailsOnSize.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 1833095082 }));
         WriteAsserts(article);
-        WriteReport<A_FailsOnSize>(article);
+        WriteReport<A_RemovingIrrelevantItems>(article);
         Verify(article);
+        ExplainMe<A_RemovingIrrelevantItems>();
     }
 
     private static void Verify(Article article)

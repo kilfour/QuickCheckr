@@ -3,6 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Arteries;
+using QuickPulse.Explains;
 
 
 namespace QuickCheckr.Tests.Tools;
@@ -34,4 +35,7 @@ public abstract class BaseTest
         if (writeToDisk)
             TheJournalist.Transcribes(article);
     }
+
+    protected static void ExplainMe<T>()
+        => Explain.OnlyThis<T>("temp.md");
 }

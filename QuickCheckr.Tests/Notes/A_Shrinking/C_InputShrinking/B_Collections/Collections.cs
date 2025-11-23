@@ -60,19 +60,6 @@ public class Collections
     //     Assert.Equal("[ _, 42 ]", entry.Value);
     // }
 
-    // public static FuzzrOf<IEnumerable<int>> GrowingListUp()
-    // {
-    //     var counter = 3;
-    //     return
-    //         state =>
-    //             {
-    //                 var list = new List<int>();
-    //                 for (int i = 1; i < counter; i++)
-    //                     list.Add(i++);
-    //                 return new Result<IEnumerable<int>>(list, state);
-    //             };
-    // }
-
     [Fact]
     public void Collection_shrink_with_dep()
     {
