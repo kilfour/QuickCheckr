@@ -266,3 +266,160 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
   !! Spec Failed: Returns true
  ================================
 ```
+#### Third Times the Harm
+```csharp
+public class BugHouse
+{
+    private int count;
+    public bool Run(int a)
+    {
+        if (a == 6) count++;
+        return !(count == 3);
+    }
+}
+```
+Throws as soon as the value 6 has been seen three times.  
+A straightforward counter-based failure condition.  
+```csharp
+    from a in Checkr.Input("a", Fuzzr.Int())
+    from bughouse in Trackr.Stashed(() => new BugHouse())
+    from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
+    from spec in Checkr.Spec("Returns true", () => output)
+    select Case.Closed;
+```
+##### Minimal Fail Case:
+- **Length:** 3 executions.
+- **Example input:** `[6, 6, 6]`
+```csharp
+count = 0
+Run( a = 6 ) // count = 1
+Run( a = 6 ) // count = 2
+Run( a = 6 ) // count == 3 → fail
+```  
+##### Report:
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
+ Original failing run:    36 executions
+ Minimal failing case:    3 executions (after 33 shrinks)
+ Seed:                    766917706
+ ------------------------------------------------------------
+  Executed : BugHouse.Run (3 Times)
+   - Input: a = 6
+ ================================
+  !! Spec Failed: Returns true
+ ================================
+```
+#### Convoluted Countdown
+```csharp
+public class BugHouse
+{
+	private int count;
+	public bool Run(int a)
+	{
+		if (a == 6 && count != 3) count++;
+		if (count >= 3) count++;
+		if (count == 5) return false; return true;
+	}
+}
+```
+Fails after a more complex sequence: specific inputs increment the counter in different ways, 
+requiring a particular input dance to trigger the failure.  
+```csharp
+from a in Checkr.Input("a", Fuzzr.Int())
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
+from spec in Checkr.Spec("Returns true", () => output)
+select Case.Closed;
+```
+##### Minimal Fail Case:
+- **Length:** 4 executions.
+- **Example input:** `[6, 6, 6, 42]`
+```csharp
+count = 0
+Run( a = 6 ) // +1 → 1
+Run( a = 6 ) // +1 → 2
+Run( a = 6 ) // +1 → 3, then >=3 → +1 → 4
+Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
+```  
+##### Reports:
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
+ Original failing run:    36 executions
+ Minimal failing case:    3 executions (after 33 shrinks)
+ Seed:                    766917706
+ ------------------------------------------------------------
+  Executed : BugHouse.Run (3 Times)
+   - Input: a = 6
+ ================================
+  !! Spec Failed: Returns true
+ ================================
+```
+#### Multiple Methods
+```csharp
+public class BugHouse
+{
+	private string? bug;
+	public bool RunInt(int a)
+	{
+		bug += "1";
+		if (bug.EndsWith("1221") && a == 6) return false;
+		return true;
+	}
+	public bool RunString(string a)
+	{
+		bug += "2";
+		if (bug.EndsWith("122") && a == "p") return false;
+		return true;
+	}
+}
+```
+Exception occurs only from a specific interleaving of RunInt and RunString calls, each appending different markers to state.
+Demonstrates multi-method state interaction.  
+```csharp
+	from bughouse in Trackr.Stashed(() => new BugHouse())
+	from ops in Checkr.OneOf(
+		// --
+		from i in Checkr.Input("Int", Fuzzr.Int())
+		from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
+		from spec in Checkr.Spec("RunInt s true", () => output)
+		select Case.Closed,
+		// --
+		from str in Checkr.Input("String", Fuzzr.String())
+		from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
+		from spec in Checkr.Spec("RunString s true", () => output)
+		select Case.Closed)
+		//--
+	select Case.Closed;
+```
+##### Minimal Fail Case (one example):
+- **Length:** 4 executions.
+- **Example input sequence:**
+```csharp
+RunInt(<any>)        // bug = "1"
+RunString(<any>)     // bug = "12"
+RunString(<any>)     // bug = "122"
+RunInt(6)            // bug ends with "1221" and `a == 6` → fail
+```  
+##### Reports:
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\D_MultipleMethods.cs:34:1
+ Original failing run:    59 executions
+ Minimal failing case:    4 executions (after 55 shrinks)
+ Seed:                    1292206393
+ ------------------------------------------------------------
+  Executed (56): BugHouse.RunInt
+ ------------------------------------------------------------
+  Executed : BugHouse.RunString (2 Times)
+ ------------------------------------------------------------
+  Executed (59): BugHouse.RunInt
+   - Input: Int = 6
+ =======================================
+  !! Spec Failed: RunInt returns true
+ =======================================
+```

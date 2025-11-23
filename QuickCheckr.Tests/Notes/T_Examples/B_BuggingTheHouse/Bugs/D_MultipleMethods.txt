@@ -1,0 +1,16 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\D_MultipleMethods.cs:34:1
+ Original failing run:    59 executions
+ Minimal failing case:    4 executions (after 55 shrinks)
+ Seed:                    1292206393
+ ------------------------------------------------------------
+  Executed (56): BugHouse.RunInt
+ ------------------------------------------------------------
+  Executed : BugHouse.RunString (2 Times)
+ ------------------------------------------------------------
+  Executed (59): BugHouse.RunInt
+   - Input: Int = 6
+ =======================================
+  !! Spec Failed: RunInt returns true
+ =======================================

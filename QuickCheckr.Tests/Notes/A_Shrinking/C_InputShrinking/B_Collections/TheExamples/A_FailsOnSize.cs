@@ -16,8 +16,8 @@ public class A_FailsOnSize : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 1833095082 }));
-        WriteAsserts(article, true);
-        WriteReport<A_FailsOnSize>(article, true);
+        WriteAsserts(article);
+        WriteReport<A_FailsOnSize>(article);
         Verify(article);
     }
 

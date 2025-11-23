@@ -38,6 +38,18 @@ public class ShortTermMemory
 
 
     // --------------------------------------------------------------------------
+    // OneOf Operations & maybe future variables
+    private readonly MemoryBank variables = new();
+
+    public T? StoreVariable<T>(string key, Func<T> factory)
+        => variables.Store(key, factory);
+
+    public IReadOnlyDictionary<string, object?> GetVariables()
+        => variables.Values;
+    // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
     // Traces
     private readonly MemoryBank traces = new();
 
