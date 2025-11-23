@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    TimeToAct
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:178:1
+ Original failing run:    1 execution
+ Seed:                    1642083259
+ ------------------------------------------------------------
+  Executed (1): One plus Three
+   - Input: One = 24
+   - Input: Three = 18
+ =============================
+  !! Spec Failed: Sum /= 42
+ =============================

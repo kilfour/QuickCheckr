@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    AddingAnInput
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:62:1
+ Original failing run:    1 execution
+ Seed:                    203154598
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input = 42
+ ===============================
+  !! Spec Failed: Input /= 42
+ ===============================

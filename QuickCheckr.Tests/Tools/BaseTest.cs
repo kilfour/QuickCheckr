@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -15,9 +16,18 @@ public abstract class BaseTest
         Article article,
         bool writeToDisk = false,
         [CallerFilePath] string callerPath = "")
+            => DoTheWriting(article, typeof(T).Name + ".txt", callerPath, writeToDisk);
+
+    protected static void WriteReport(
+        Article article,
+        string filename,
+        bool writeToDisk = false,
+        [CallerFilePath] string callerPath = "")
+            => DoTheWriting(article, filename, callerPath, writeToDisk);
+
+    private static void DoTheWriting(Article article, string filename, string callerPath, bool writeToDisk)
     {
         if (!writeToDisk) return;
-        var filename = typeof(T).Name + ".txt";
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
         var report = TheClerk.Transcribes(article.CaseFile);
@@ -25,7 +35,11 @@ public abstract class BaseTest
             .Replace(@$"{basePath}QuickCheckr\QuickCheckr.Tests\", "")
             .Replace(@$"{basePath}QuickCheckr\QuickCheckr\", "")
             .Replace(@"<RunTest>b__0_0", "Example");
-        FileLog.Write(fullPath).Absorb(formattedReport);
+        var cleaned = Regex.Replace(
+            formattedReport,
+            @"<(?<name>[^>]+)>b__[\d_]+",
+            m => m.Groups["name"].Value);
+        FileLog.Write(fullPath).Absorb(cleaned);
     }
 
     protected static void WriteAsserts(

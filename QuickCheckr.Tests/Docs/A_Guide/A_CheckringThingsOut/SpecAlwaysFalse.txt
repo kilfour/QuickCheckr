@@ -1,0 +1,10 @@
+ ------------------------------------------------------------
+ Test:                    SpecAlwaysFalse
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:42:1
+ Original failing run:    1 execution
+ Seed:                    433264643
+ ------------------------------------------------------------
+  Executed (1)
+ ===============================
+  !! Spec Failed: Always true
+ ===============================

@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    NotWithoutATrace
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:143:1
+ Original failing run:    1 execution
+ Seed:                    769641533
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input = 42
+   - Trace: Irrelevant Input = 47
+ ===============================
+  !! Spec Failed: Input /= 42
+ ===============================
