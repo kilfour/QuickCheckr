@@ -59,7 +59,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
-            executionDeposition.AddInputDeposition(new InputDeposition(key, Introduce.This(val!, false)));
+            executionDeposition.AddInputDeposition(new InputDeposition(key, val!)); //Introduce.This(val!, false)));
         }
         // foreach (var (key, val) in access.GetAll())
         // {

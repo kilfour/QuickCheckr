@@ -18,12 +18,17 @@ public class InputShrinker(
             {
                 State.Docket.Record(new InputShrinkRunStarted(executionId, key));
                 var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
-                foreach (var clue in clues)
+                var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
+                if (replace != null)
                 {
-                    if (clue.Intent == ShrinkingIntent.Keep)
+                    shortTermMemory.StoreInputShrinkOutcome(key, replace.Report);
+                }
+                else
+                {
+                    var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
+                    if (keep != null)
                     {
-                        shortTermMemory.StoreInputShrinkOutcome(clue.Key, clue.Result);
-                        break;
+                        shortTermMemory.StoreInputShrinkOutcome(key, keep.Report);
                     }
                 }
                 State.Docket.Record(new InputShrinkRunEnded(executionId, key));

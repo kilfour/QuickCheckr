@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Original failing run:    1 execution
+ Seed:                    1994546166
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List = [ _, _, _ ]
+   - Trace: Original List = [ 26, 42, 46, 35, 23, 62 ]
+ ===============================
+  !! Spec Failed: Length <= 2
+ ===============================

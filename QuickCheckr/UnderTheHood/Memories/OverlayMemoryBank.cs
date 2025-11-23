@@ -2,14 +2,6 @@ namespace QuickCheckr.UnderTheHood.Memories;
 
 public class OverlayMemoryBank : MemoryBank
 {
-    public class MemoryLens(
-        Func<object, object> get,
-        Func<object, object, object> set)
-    {
-        public Func<object, object> Get { get; init; } = get;
-        public Func<object, object, object> Set { get; init; } = set;
-    }
-
     private readonly Stack<MemoryLens> swappers = new();
 
     public IDisposable NestedValue(MemoryLens swapper)

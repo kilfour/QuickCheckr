@@ -27,7 +27,6 @@ public class A_RemovingIrrelevantItems : BaseTest
         WriteAsserts(article);
         WriteReport<A_RemovingIrrelevantItems>(article);
         Verify(article);
-        ExplainMe<A_RemovingIrrelevantItems>();
     }
 
     private static void Verify(Article article)

@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Docketing;
+using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
@@ -29,6 +30,7 @@ public class PrimitiveShrinkStrategy
                     Key = key,
                     Original = value,
                     Result = value,
+                    Report = Introduce.This(value!, false),
                     Intent = ShrinkingIntent.Keep,
                     Reason = candidate
                 };

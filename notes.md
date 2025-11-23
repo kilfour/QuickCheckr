@@ -149,17 +149,24 @@ Result:
  ====================================
 ```
 #### Collections
-##### Fails On Size
+##### Removing Irrelevant Items
+When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
+Instead, it removes items one by one, replaying the run each time to test whether the removed element was relevant for the failure.
+
+This means that if only some elements in a list contribute to the failing condition, QuickCheckr will aggressively trim the rest away. The result is a minimal list containing only the values that still trigger the failure, even if the original list was large or noisy.
+
+Consider a test that forbids the value `7`:  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
     from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
     from trace in Checkr.Trace("List Input", listInput)
     select Case.Closed;
 ```
+Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_FailsOnSize.cs:18:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:18:1
  Original failing run:    1 execution
  Seed:                    1833095082
  ------------------------------------------------------------
@@ -170,6 +177,40 @@ Result:
   !! Spec Failed: List does not contain 7
  ===========================================
 ```
+##### Irrelevant Element But List Length Is Not
+When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
+and leaves irrelevant details untouched. 
+
+In cases like this example where the predicate depends solely on the length of the list,
+the individual element values play no role.  
+QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
+removing elements, and converging toward the smallest list that still violates the condition.
+
+This yields minimal, focused shrinking artifacts:
+the report shows only the structural signal that mattered (here: the list being *too long*),
+without introducing noise from element-level changes that could not affect the outcome anyway.  
+```csharp
+    from length in Checkr.Input("Length", Fuzzr.Int(0, 10))
+    from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
+    from trace in Checkr.Trace("Original List", list)
+    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Original failing run:    1 execution
+ Seed:                    1994546166
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List = [ _, _, _ ]
+   - Trace: Original List = [ 26, 42, 46, 35, 23, 62 ]
+ ===============================
+  !! Spec Failed: Length <= 2
+ ===============================
+```
+#### Test Template
 ## Building Blocks
 ### Checkr Input
 ## Examples

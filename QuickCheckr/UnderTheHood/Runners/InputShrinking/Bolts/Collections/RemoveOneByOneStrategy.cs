@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Docketing;
+using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
@@ -24,6 +25,7 @@ public class RemoveOneByOneStrategy
                     Key = $"{fullKey}.{indexKey}",
                     Original = value,
                     Result = null,
+                    Report = null,
                     Intent = ShrinkingIntent.Remove,
                     Reason = null
                 };
@@ -63,6 +65,7 @@ public class RemoveOneByOneStrategy
             Key = key,
             Original = value,
             Result = theList,
+            Report = Introduce.This(theList, false),
             Intent = ShrinkingIntent.Keep,
             Reason = null
         };

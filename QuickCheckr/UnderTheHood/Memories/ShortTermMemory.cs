@@ -17,6 +17,9 @@ public class ShortTermMemory
 
     public IDisposable ScopedSwap(string key, object value)
         => inputs.ScopedSwap(key, value);
+
+    public IDisposable NestedValue(MemoryLens swapper)
+        => inputs.NestedValue(swapper);
     // --------------------------------------------------------------------------
 
 

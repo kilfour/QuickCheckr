@@ -9,23 +9,6 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections;
 [DocFile]
 public class Collections
 {
-    // [Fact]µ
-    // public void Collection_shrink()
-    // {
-    //     var check =
-    //         from input in "input".Input(Fuzzr.Constant<IEnumerable<int>>([1, 2, 3]))
-    //         from act in "act".Act(() => { })
-    //         from spec in "spec".Spec(() => input.Count() <= 2)
-    //         select Case.Closed;
-
-    //     var article = TheJournalist.Exposes(() =>
-    //         QState.Run(script)
-    //             .WithOneRun()
-    //             .And(15.ExecutionsPerRun()));
-
-    //     Assert.Equal("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
-    // }
-
     // [Fact]
     // public void Collection_nested_shrink()
     // {

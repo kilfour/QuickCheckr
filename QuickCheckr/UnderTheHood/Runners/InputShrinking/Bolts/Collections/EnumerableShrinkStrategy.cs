@@ -18,8 +18,16 @@ public class EnumerableShrinkStrategy
         // state.ShrinkingRegistry.GetCollectionStrategies()
         //     .ToList()
         //     .ForEach(a => { a.Shrink(state, key, value, fullKey); });
-        return new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
+        var clues = new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
+
         // new GreedyShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey);
-        // new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey);
+        var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
+        if (keep != null)
+        {
+            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey));
+        }
+        else
+            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey));
+        return clues;
     }
 }
