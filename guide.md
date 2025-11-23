@@ -135,7 +135,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
   !! Spec Failed: Input /= 42
  ===============================
 ```
-As demonstrated, the name of the executed action is included in the report, as well as the two relevant inputs.  
+As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
 ### Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
 ```csharp

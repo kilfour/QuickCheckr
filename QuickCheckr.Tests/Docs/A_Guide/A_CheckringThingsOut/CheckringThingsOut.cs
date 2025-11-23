@@ -148,7 +148,7 @@ QuickCheckr is built with transparancy and discoverabily as a first class concer
     [DocExample(typeof(CheckringThingsOut), nameof(NotWithoutATrace_Checkr))]
     [DocContent("By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:")]
     [DocCodeFile("NotWithoutATrace.txt", "text")]
-    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the two relevant inputs.")]
+    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant input.")]
     public void NotWithoutATrace()
     {
         var article = TheJournalist.Exposes(() => NotWithoutATrace_Checkr().Run(a => a with { Seed = 769641533 }));
