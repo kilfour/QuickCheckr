@@ -21,7 +21,7 @@ public class ParsingNumbers : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), a => a with { Seed = null }));
         //WriteAsserts(article, true);
-        WriteReport<ParsingNumbers>(article, true);
+        WriteReport<ParsingNumbers>(article);
         Verify(article);
     }
 
