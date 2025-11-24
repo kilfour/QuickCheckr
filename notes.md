@@ -253,7 +253,7 @@ without introducing noise from element-level changes that could not affect the o
 ```
 ##### Nested Collections
 ```csharp
-    from input in Checkr.Input("List", Fuzzr.Int().Many(0, 10).Many(0, 10))
+    from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
     from trace in Checkr.Trace("List", input)
     from spec in Checkr.SpecIf("List[0][0] is not 42",
         () => input.Any() && input.First().Any(),
@@ -265,11 +265,11 @@ without introducing noise from element-level changes that could not affect the o
  Test:                    Example
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:20:1
  Original failing run:    1 execution
- Seed:                    960809284
+ Seed:                    146712596
  ------------------------------------------------------------
   Executed (1):
    - Input: List = [ [ 42 ] ]
-   - Trace: List = [ [ 42, 87, 57, 49, 71, 31, 32 ], [ 35, 55, 28, 23 ], [ 24 ], [ ], [ 20, 14, 51, 56, 98 ], [ 10, 29 ], [ 80, 47 ], [ 79, 61, 57, 81, 94, 49, 79, 70 ] ]
+   - Trace: List = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
  ========================================
   !! Spec Failed: List[0][0] is not 42
  ========================================
