@@ -12,9 +12,11 @@ public class CheckrState(Signal<IFiling>? signal, int? seed = null)
     public ShortTermMemories ShortTermMemories { get; } = new();
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signal);
-    // public Replay Replay { get; private set; } = Replay.Empty;
-    // public void StartReplay() => Replay = new Replay(ShortTermMemories);
 }
+
+
+// public Replay Replay { get; private set; } = Replay.Empty;
+    // public void StartReplay() => Replay = new Replay(ShortTermMemories);
 
 // public class Replay(ShortTermMemories shortTermMemories)
 // {
