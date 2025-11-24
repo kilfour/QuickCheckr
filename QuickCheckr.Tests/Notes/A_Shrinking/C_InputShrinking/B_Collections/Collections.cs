@@ -31,10 +31,7 @@ public class Collections
     // public void Collection_shrink_with_extra()
     // {
     //     var check =
-    //         from input in "input".Input(Fuzzr.Constant<IEnumerable<int>>([666, 42]))
-    //         from act in "act".Act(() => { })
-    //         from spec in "spec".SpecIf(() => input.Count() > 1, () => input.ElementAt(1) != 42)
-    //         select Case.Closed;
+
     //     var article = TheJournalist.Exposes(() => QState.Run(script)
     //         .WithOneRun()
     //         .And(15.ExecutionsPerRun()));
@@ -43,38 +40,6 @@ public class Collections
     //     Assert.Equal("[ _, 42 ]", entry.Value);
     // }
 
-    [Fact]
-    public void Collection_shrink_with_dep()
-    {
-        var check =
-            from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
-            from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
-                !(input.ToList()[0] == 1
-                && input.ToList()[1] == 2
-                && input.ToList()[2] == 3))
-            select Case.Closed;
-        var article = TheJournalist.Exposes(() => check.Run(a => a with { Seed = 193643681 }));
-
-        var entry = article.Execution(1).Input(1).Read();
-        Assert.Equal("[ 1, 2, 3 ]", entry.Value);
-        var report = TheClerk.Transcribes(article.CaseFile);
-        WriteReport.ToFile("Collection_shrink_with_dep.txt", report);
-    }
-
-    // [Fact]
-    // public void Collection_irrelevant_not_in_report()
-    // {
-    //     var check =
-    //         from input in "input".Input(Fuzzr.Int().Many(3))
-    //         from act in "act".Act(() => { })
-    //         from spec in "spec".Spec(() => false)
-    //         select Case.Closed;
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
-    //         .WithOneRun()
-    //         .AndOneExecutionPerRun());
-
-    //     Assert.Equal(0, article.Total().Inputs());
-    // }
 
     // [Fact]
     // public void Collection_shrink_with_haha()

@@ -232,6 +232,25 @@ without introducing noise from element-level changes that could not affect the o
   !! Spec Failed: spec
  ========================
 ```
+##### Relevant Element And Size
+```csharp
+    from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<int>>([666, 42]))
+    from spec in Checkr.SpecIf("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\E_RelevantElementAndSize.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    1058309953
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List = [ _, 42 ]
+ ============================================
+  !! Spec Failed: Second element is not 42
+ ============================================
+```
 #### Custom Shrinkers
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })

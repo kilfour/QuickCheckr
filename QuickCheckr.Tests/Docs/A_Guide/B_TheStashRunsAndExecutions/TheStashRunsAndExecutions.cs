@@ -7,7 +7,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 
-[DocFile]
+//[DocFile]
 public class TheStashRunsAndExecutions : BaseTest
 {
     //[Fact]
