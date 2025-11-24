@@ -1,9 +1,12 @@
+using QuickCheckr.UnderTheHood.Docketing;
+using QuickPulse;
+
 namespace QuickCheckr.UnderTheHood.Configuration;
 
 public record CheckrConfig
 {
     public required int? Seed { get; init; }
-    public required bool Diagnose { get; init; }
+    public required Flow<IFiling>? Diagnose { get; init; }
     public required bool NoShrinking { get; init; }
     public required bool ShrinkingActions { get; init; }
 
@@ -13,7 +16,7 @@ public record CheckrConfig
             new CheckrConfig()
             {
                 Seed = null,
-                Diagnose = false,
+                Diagnose = null,
                 NoShrinking = false,
                 ShrinkingActions = false
             };

@@ -21,9 +21,10 @@ public class ShrinkEachElementStrategy
             var ix = index;
             var before = theList[ix];
             var valueType = before!.GetType();
-            var elementType = valueType.IsGenericType
-                ? valueType.GetGenericArguments().First()
-                : typeof(object);
+            var elementType = valueType;
+            // var elementType = valueType.IsGenericType
+            //     ? valueType.GetGenericArguments().First()
+            //     : typeof(object);
             using (state.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, theList))
             {
                 var swapper = new MemoryLens(
@@ -31,7 +32,7 @@ public class ShrinkEachElementStrategy
                     (list, element) =>
                     {
                         if (element == null || elementType.IsAssignableFrom(element.GetType()))
-                            ((IList)list)[ix] = element;
+                            ((IList)list)[ix] = element; // NESTED LIST do not get here
                         return list;
                     });
                 using (state.ShortTermMemories.GetMemory(executionId).NestedValue(swapper))

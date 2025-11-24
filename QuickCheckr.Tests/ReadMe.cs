@@ -15,7 +15,6 @@ TODO: One line description
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)")]
 public class ReadMe
 {
-    private readonly bool ToFile = false;
     // [Fact]
     [DocHeader("TODO : Example")]
     public void Example()

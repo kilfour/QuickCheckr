@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Configuration;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -16,7 +17,7 @@ public class F_NestedCollections : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 960809284 }));
+            GetCheckr().Run(a => a with { Seed = 960809284, Diagnose = Diagnose.Shrinking }));
         // WriteAsserts(article, true);
         // WriteReport<F_NestedCollections>(article, true);
         Verify(article);
@@ -33,6 +34,7 @@ public class F_NestedCollections : BaseTest
     {
         return
             from input in Checkr.Input("List", Fuzzr.Int().Many(0, 10).Many(0, 10))
+            from trace in Checkr.Trace("List", input)
             from spec in Checkr.SpecIf("List[0][0] is not 42",
                 () => input.Any() && input.First().Any(),
                 () => input.First().First() != 42)

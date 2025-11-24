@@ -32,30 +32,6 @@ public class RemoveOneByOneStrategy
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 continue;
             }
-            // if (state.VerifyIf.RunFailed(key, theList!))
-            // {
-            //     state.CurrentExecutionContext().ShrinkTrace(key, ShrinkKind.KeepSameKind, new ShrinkTrace
-            //     {
-            //         ExecutionId = -1,
-            //         Key = $"{fullKey}.{indexKey}",
-            //         Name = indexKey.ToString(),
-            //         Original = before,
-            //         Result = null,
-            //         Intent = ShrinkIntent.Remove,
-            //         Strategy = "RemoveOneByOneStrategy"
-            //     });
-            //     continue;
-            // }
-            // state.CurrentExecutionContext().ShrinkTrace(key, ShrinkKind.KeepSameKind, new ShrinkTrace
-            // {
-            //     ExecutionId = -1,
-            //     Key = $"{fullKey}.{indexKey}",
-            //     Name = indexKey.ToString(),
-            //     Original = before,
-            //     Result = before,
-            //     Intent = ShrinkIntent.Keep,
-            //     Strategy = "RemoveOneByOneStrategy"
-            // });
             theList.Insert(ix, before);
             index++;
         }

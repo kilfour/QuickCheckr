@@ -2,6 +2,7 @@ using QuickCheckr;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse;
 using QuickPulse.Arteries;
+using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Configuration;
 
@@ -10,7 +11,7 @@ public record CheckrRunnerConfig
     public CheckrRunnerConfig(CheckrConfig config)
     {
         Seed = config.Seed;
-        Signal = config.Diagnose ? QuickPulse.Signal.From(flow).SetArtery(FileLog.Write()) : null;
+        Signal = config.Diagnose == null ? null : QuickPulse.Signal.From(config.Diagnose).SetArtery(FileLog.Write());
         ShrinkingActions = config.ShrinkingActions;
         NoShrinking = config.NoShrinking;
     }
@@ -18,8 +19,6 @@ public record CheckrRunnerConfig
     public Signal<IFiling>? Signal { get; init; }
     public bool NoShrinking { get; init; }
     public bool ShrinkingActions { get; init; }
-    private static readonly Flow<IFiling> flow =
-        from filing in Pulse.Start<IFiling>()
-        from trace in Pulse.Trace(filing)
-        select filing;
+
+
 }
