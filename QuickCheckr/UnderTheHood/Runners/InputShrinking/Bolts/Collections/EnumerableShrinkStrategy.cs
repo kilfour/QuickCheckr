@@ -21,7 +21,7 @@ public class EnumerableShrinkStrategy
         var clues = new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
         if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
         // new GreedyShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey);
-        var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
+        var keep = clues.FirstOrDefault(a => a.Intent != ShrinkingIntent.Ignore);
         if (keep != null)
         {
             clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey));

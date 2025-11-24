@@ -9,4 +9,5 @@ public class InputShrinkingClue
     public string? Report { get; set; } = null;
     public ShrinkingIntent Intent { get; set; } = ShrinkingIntent.Ignore;
     public object? Reason { get; set; } = null;
+    public string Strategy { get; set; } = string.Empty;
 }

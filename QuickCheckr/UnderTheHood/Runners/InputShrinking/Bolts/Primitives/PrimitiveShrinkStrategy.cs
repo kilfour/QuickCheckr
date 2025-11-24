@@ -27,15 +27,17 @@ public class PrimitiveShrinkStrategy
                 var clue = new InputShrinkingClue
                 {
                     ExecutionId = executionId,
-                    Key = key,
+                    Key = fullKey,
                     Original = value,
                     Result = value,
                     Report = Introduce.This(value!, false),
                     Intent = ShrinkingIntent.Keep,
-                    Reason = candidate
+                    Reason = candidate,
+                    Strategy = typeof(PrimitiveShrinkStrategy).Name
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
+                yield break;
             }
         }
     }

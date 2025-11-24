@@ -19,10 +19,8 @@ public static partial class Diagnose
 
     public static readonly Flow<IFiling> Shrinking =
         from filing in Pulse.Start<IFiling>()
-        let isClue = filing is InputShrinkingClueFound
-        from traceClue in Pulse.ToFlowIf(isClue, clueFlow, () => (InputShrinkingClueFound)filing)
+        from traceClue in Pulse.OnType(clueFlow, () => filing)
         select filing;
-
 
     public static readonly Flow<IFiling> Raw =
         from filing in Pulse.Start<IFiling>()

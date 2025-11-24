@@ -48,7 +48,7 @@ public class ShrinkEachElementStrategy
                     }
                     else
                     {
-                        values.Add(Introduce.This(before, false));
+                        values.Add(clues.First().Report!);
                         theList[ix] = before;
                     }
                     index++;
@@ -61,12 +61,13 @@ public class ShrinkEachElementStrategy
         var finalClue = new InputShrinkingClue
         {
             ExecutionId = executionId,
-            Key = key,
+            Key = fullKey,
             Original = value,
             Result = theList,
             Report = $"[ {string.Join(", ", values)} ]",
             Intent = ShrinkingIntent.Replace,
-            Reason = null
+            Reason = null,
+            Strategy = typeof(ShrinkEachElementStrategy).Name
         };
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];

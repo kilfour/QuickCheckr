@@ -23,7 +23,8 @@ public class CustomShrinkStrategy<T>(Func<T, IEnumerable<T>> shrinker)
                     Result = value,
                     Report = Introduce.This(value!, false),
                     Intent = ShrinkingIntent.Keep,
-                    Reason = candidate
+                    Reason = candidate,
+                    Strategy = typeof(CustomShrinkStrategy<T>).Name
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;

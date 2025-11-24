@@ -51,7 +51,8 @@ public class InputReducer(
                     Result = lastCandidate,
                     Report = Introduce.This(lastCandidate!, false),
                     Intent = ShrinkingIntent.Replace,
-                    Reason = lastCandidate
+                    Reason = lastCandidate,
+                    Strategy = typeof(InputReducer).Name
                 };
                 State.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;

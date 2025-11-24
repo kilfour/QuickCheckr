@@ -24,14 +24,29 @@ public class RemoveOneByOneStrategy
                     ExecutionId = executionId,
                     Key = $"{fullKey}.{indexKey}",
                     Original = value,
-                    Result = null,
+                    Result = theList,
                     Report = null,
                     Intent = ShrinkingIntent.Remove,
-                    Reason = null
+                    Reason = null,
+                    Strategy = typeof(RemoveOneByOneStrategy).Name
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 continue;
             }
+            // else
+            // {
+            //     var clue = new InputShrinkingClue
+            //     {
+            //         ExecutionId = executionId,
+            //         Key = $"{fullKey}.{indexKey}",
+            //         Original = value,
+            //         Result = value,
+            //         Report = null,
+            //         Intent = ShrinkingIntent.Keep,
+            //         Reason = null
+            //     };
+            //     state.Docket.Record(new InputShrinkingClueFound(clue));
+            // }
             theList.Insert(ix, before);
             index++;
         }
@@ -41,12 +56,13 @@ public class RemoveOneByOneStrategy
             var finalClue = new InputShrinkingClue
             {
                 ExecutionId = executionId,
-                Key = key,
+                Key = fullKey,
                 Original = value,
                 Result = theList,
                 Report = Introduce.This(theList, false),
                 Intent = ShrinkingIntent.Keep,
-                Reason = null
+                Reason = null,
+                Strategy = typeof(RemoveOneByOneStrategy).Name
             };
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
@@ -56,12 +72,13 @@ public class RemoveOneByOneStrategy
             var finalClue = new InputShrinkingClue
             {
                 ExecutionId = executionId,
-                Key = key,
+                Key = fullKey,
                 Original = value,
                 Result = null,
                 Report = null,
                 Intent = ShrinkingIntent.Ignore,
-                Reason = null
+                Reason = null,
+                Strategy = typeof(RemoveOneByOneStrategy).Name
             };
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
