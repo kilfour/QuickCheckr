@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    960809284
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List = [ [ 42, 87, 57, 49, 71, 31, 32 ] ]
+ ========================================
+  !! Spec Failed: List[0][0] is not 42
+ ========================================

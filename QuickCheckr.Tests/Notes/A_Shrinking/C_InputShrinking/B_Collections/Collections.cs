@@ -10,38 +10,6 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections;
 public class Collections
 {
     // [Fact]
-    // public void Collection_nested_shrink()
-    // {
-    //     var check =
-    //         from input in "input".Input(Fuzzr.Constant<IEnumerable<List<int>>>([[42]]))
-    //         from act in "act".Act(() => { })
-    //         from spec in "spec".SpecIf(
-    //             () => input.Any() && input.First().Count != 0,
-    //             () => input.First().First() != 42)
-    //         select Case.Closed;
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
-    //         .WithOneRun()
-    //         .And(15.ExecutionsPerRun()));
-
-    //     var entry = article.Execution(1).Input(1).Read();
-    //     Assert.Equal("[ [ 42 ] ]", entry.Value);
-    // }
-
-    // [Fact]
-    // public void Collection_shrink_with_extra()
-    // {
-    //     var check =
-
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
-    //         .WithOneRun()
-    //         .And(15.ExecutionsPerRun()));
-
-    //     var entry = article.Execution(1).Input(1).Read();
-    //     Assert.Equal("[ _, 42 ]", entry.Value);
-    // }
-
-
-    // [Fact]
     // public void Collection_shrink_with_haha()
     // {
     //     var check =

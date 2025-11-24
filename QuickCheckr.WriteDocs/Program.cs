@@ -1,4 +1,5 @@
-﻿using QuickCheckr.Tests.Docs.A_Guide;
+﻿using QuickCheckr.Tests;
+using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 
@@ -9,5 +10,5 @@ Explain.This<Guide>("guide.md");
 // Explain.This<Reference>("reference.md");
 // Explain.This<Cookbook>("cookbook.md");
 
-// Explain.OnlyThis<ReadMe>("README.md");
+Explain.OnlyThis<ReadMe>("README.md");
 
