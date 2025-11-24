@@ -29,5 +29,4 @@ public class Verifier(CheckrState State,
         }
         return State.EvidenceRecorder.Failed();
     }
-
 }

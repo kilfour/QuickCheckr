@@ -32,17 +32,10 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr)
-    {
-        return state =>
-        {
-            return HandleInput(state, key, fuzzr);
-        };
-    }
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
+        state => HandleInput(state, key, fuzzr);
 
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
-    {
-        var value = state.ShortTermMemories.Current.StoreInput(key, () => fuzzr(state.FuzzrState).Value);
-        return CheckrResult.Some(state, value!);
-    }
+        => CheckrResult.Some(state,
+            state.ShortTermMemories.Current.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
 }

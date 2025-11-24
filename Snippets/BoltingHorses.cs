@@ -7,12 +7,10 @@ namespace QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain;
 
 public class BoltingHorses : BaseTest
 {
-    //[Fact(Skip = "demo")]
     [Fact]
     public void CheckIt()
     {
         var check =
-            from coachesPool in Trackr.Pool<Coach>()
             from coaches in Trackr.Stashed(() => new Dictionary<int, Coach>())
             from courses in Trackr.Stashed(() => new Dictionary<int, Course>())
             from operations in Checkr.OneOfIf(
@@ -25,16 +23,6 @@ public class BoltingHorses : BaseTest
             from invariant in AssignedCoachesMustBeSuitable(coaches)
             select Case.Closed;
         var article = TheJournalist.Exposes(() => check.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));
-        // Assert.Equal("Sum /= 42", article.FailedSpec());
-        // Assert.Equal(1, article.Total().Executions());
-        // Assert.Equal(1, article.Total().Actions());
-        // Assert.Equal(2, article.Total().Inputs());
-        // Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        // Assert.Equal("One plus Three", article.Execution(1).Action(1).Read().Label);
-        // Assert.Equal("One", article.Execution(1).Input(1).Read().Label);
-        // Assert.Equal("24", article.Execution(1).Input(1).Read().Value);
-        // Assert.Equal("Three", article.Execution(1).Input(2).Read().Label);
-        // Assert.Equal("18", article.Execution(1).Input(2).Read().Value);
         WriteAsserts(article, true);
         WriteReport(article, "BoltingHorses.txt", true);
     }
@@ -45,18 +33,12 @@ public class BoltingHorses : BaseTest
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
         from store in Trackr.Execute(() => coaches[id] = coach)
-        from toPool in Trackr.Pool(coach)
         select Case.Closed;
 
     private static CheckrOf<Case> UpdateCoachSkills(Dictionary<int, Coach> coaches) =>
         from coachId in Checkr.Input("Coach Id", Fuzzr.OneOf(coaches.Keys.AsEnumerable()))
         from coach in Trackr.Execute(() => { if (coaches.TryGetValue(coachId, out Coach? value)) return value; return null; })
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            // from coachNotNull in Checkr.When(() => coach is not null,
-            //     from updateSkills in Checkr.Act("Update Coach Skills", () => coach.UpdateSkills(skills))
-            //     from checkSkills in Checkr.Spec("Coach Skills Set",
-            //         () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
-            //     select Case.Closed)
         from updateSkills in Checkr.ActIf("Update Coach Skills",
             () => coach is not null,
             () => coach.UpdateSkills(skills))
