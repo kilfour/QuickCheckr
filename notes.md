@@ -210,6 +210,28 @@ without introducing noise from element-level changes that could not affect the o
   !! Spec Failed: Length <= 2
  ===============================
 ```
+##### Relevant Multiple Eelements
+```csharp
+    from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
+    from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
+        !(input.ToList()[0] == 1
+        && input.ToList()[1] == 2
+        && input.ToList()[2] == 3))
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\D_RelevantMultipleEelements.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    500957855
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: input = [ 1, 2, 3 ]
+ ========================
+  !! Spec Failed: spec
+ ========================
+```
 #### Custom Shrinkers
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })

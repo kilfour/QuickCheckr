@@ -15,11 +15,12 @@ is irrelevant for the failure, QuickCheckr will remove it.")]
 [DocCodeFile("B_RemovingIrrelevantCollection.txt", "text")]
 public class B_RemovingIrrelevantCollection : BaseTest
 {
-    [Fact(Skip = "WIP")]
+    [Fact]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 2014608033 }));
+        WriteAsserts(article);
         WriteReport<B_RemovingIrrelevantCollection>(article);
         Verify(article);
     }

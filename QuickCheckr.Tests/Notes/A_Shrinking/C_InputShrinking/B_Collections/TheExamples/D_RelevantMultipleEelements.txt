@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\D_RelevantMultipleEelements.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    500957855
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: input = [ 1, 2, 3 ]
+ ========================
+  !! Spec Failed: spec
+ ========================

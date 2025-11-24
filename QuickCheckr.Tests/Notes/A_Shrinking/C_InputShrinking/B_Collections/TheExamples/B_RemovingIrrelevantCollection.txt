@@ -1,11 +1,10 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:21:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:22:1
  Original failing run:    1 execution
  Seed:                    2014608033
  ------------------------------------------------------------
-  Executed (1):
-   - Input: List Input = [ ]
+  Executed (1)
  ================================
   !! Spec Failed: Always fails
  ================================

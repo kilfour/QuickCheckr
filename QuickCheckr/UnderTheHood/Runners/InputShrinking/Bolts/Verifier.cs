@@ -10,15 +10,22 @@ public class Verifier(CheckrState State,
 
     public virtual bool RunFailed(int executionId, string key, object value)
     {
-        State.LongTermMemory.Reset();
-        State.EvidenceRecorder.StartReplay();
-        using (State.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, value))
+        try
         {
-            foreach (var id in State.ShortTermMemories.Numbers)
+            State.LongTermMemory.Reset();
+            State.EvidenceRecorder.StartReplay();
+            using (State.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, value))
             {
-                State.ShortTermMemories.GotoExecution(id);
-                Check(State);
+                foreach (var id in State.ShortTermMemories.Numbers)
+                {
+                    State.ShortTermMemories.GotoExecution(id);
+                    Check(State);
+                }
             }
+        }
+        catch (Exception exception)
+        {
+            State.EvidenceRecorder.RecordFailure(exception);
         }
         return State.EvidenceRecorder.Failed();
     }

@@ -59,17 +59,36 @@ public class RemoveOneByOneStrategy
             theList.Insert(ix, before);
             index++;
         }
-        var finalClue = new InputShrinkingClue
+
+        if (verifier.RunPassed(executionId, key, null!))
         {
-            ExecutionId = executionId,
-            Key = key,
-            Original = value,
-            Result = theList,
-            Report = Introduce.This(theList, false),
-            Intent = ShrinkingIntent.Keep,
-            Reason = null
-        };
-        state.Docket.Record(new InputShrinkingClueFound(finalClue));
-        return [finalClue];
+            var finalClue = new InputShrinkingClue
+            {
+                ExecutionId = executionId,
+                Key = key,
+                Original = value,
+                Result = theList,
+                Report = Introduce.This(theList, false),
+                Intent = ShrinkingIntent.Keep,
+                Reason = null
+            };
+            state.Docket.Record(new InputShrinkingClueFound(finalClue));
+            return [finalClue];
+        }
+        else
+        {
+            var finalClue = new InputShrinkingClue
+            {
+                ExecutionId = executionId,
+                Key = key,
+                Original = value,
+                Result = null,
+                Report = null,
+                Intent = ShrinkingIntent.Ignore,
+                Reason = null
+            };
+            state.Docket.Record(new InputShrinkingClueFound(finalClue));
+            return [finalClue];
+        }
     }
 }

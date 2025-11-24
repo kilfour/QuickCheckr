@@ -16,7 +16,7 @@ public class TheEditor
         let inputArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
         from inputValue in Emit($"Assert.Equal(\"{inputArticle.Value}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
-        from newline in Pulse.Trace("")
+            // from newline in Pulse.Trace("")
         select cursor;
 
     private static readonly Flow<(int, int)> Input =
@@ -25,7 +25,7 @@ public class TheEditor
         let inputArticle = article.Execution(cursor.executionIndex).Input(cursor.inputIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Label);")
         from inputValue in Emit($"Assert.Equal(\"{inputArticle.Value}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
-        from newline in Pulse.Trace("")
+            // from newline in Pulse.Trace("")
         select cursor;
 
     private static readonly Flow<(int, int)> Action =
@@ -33,7 +33,7 @@ public class TheEditor
         from article in Pulse.Draw<Article>()
         let actionArticle = article.Execution(cursor.executionIndex).Action(cursor.actionIndex).Read()
         from action in Emit($"Assert.Equal(\"{actionArticle.Label}\", article.Execution({cursor.executionIndex}).Action({cursor.actionIndex}).Read().Label);")
-        from newline in Pulse.Trace("")
+            // from newline in Pulse.Trace("")
         select cursor;
 
     private static readonly Flow<int> Execution =
@@ -42,7 +42,7 @@ public class TheEditor
         let executionDeposition = article.Execution(index).Read()
         from execution in Emit($"Assert.Equal({executionDeposition.ExecutionId}, article.Execution({index}).Read().ExecutionId);")
         from times in EmitIf(executionDeposition.Times > 1, $"Assert.Equal({executionDeposition.Times}, article.Execution({index}).Read().Times);")
-        from newline in Pulse.Trace("")
+            // from newline in Pulse.Trace("")
         from actions in Pulse.ToFlow(Action, Enumerable.Range(1, executionDeposition.ActionDepositions.Count).Select(a => (index, a)))
         from inputs in Pulse.ToFlow(Input, Enumerable.Range(1, executionDeposition.InputDepositions.Count).Select(a => (index, a)))
         from traces in Pulse.ToFlow(Trace, Enumerable.Range(1, executionDeposition.TraceDepositions.Count).Select(a => (index, a)))
@@ -54,7 +54,7 @@ public class TheEditor
         from failedSpec in EmitIf(
             article.FailedSpec() is not null,
             $"Assert.Equal(\"{article.FailedSpec()}\", article.FailedSpec());")
-        from newline1 in Pulse.Trace("")
+            // from newline1 in Pulse.Trace("")
         from executionCount in EmitIf(
             article.Total().Executions() > 0,
             $"Assert.Equal({article.Total().Executions()}, article.Total().Executions());")
@@ -67,7 +67,7 @@ public class TheEditor
         from traceCount in EmitIf(
             article.Total().Traces() > 0,
             $"Assert.Equal({article.Total().Traces()}, article.Total().Traces());")
-        from newline2 in Pulse.Trace("")
+            // from newline2 in Pulse.Trace("")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
         select article;
 }
