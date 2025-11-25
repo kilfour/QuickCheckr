@@ -66,7 +66,7 @@ A Checkr is just a LINQ expression that evaluates step by step,
 and the final select clause must return a value representing the completed case.
 `Case.Closed` simply signals ""this case finished successfully, there are no more steps"".
 
-QuickChekr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
+QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on avarage, once every hundred times.  
 Not ideal, so let's up the run number, like so:")]

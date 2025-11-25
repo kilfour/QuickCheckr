@@ -56,7 +56,7 @@ A Checkr is just a LINQ expression that evaluates step by step,
 and the final select clause must return a value representing the completed case.
 `Case.Closed` simply signals "this case finished successfully, there are no more steps".
 
-QuickChekr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
+QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on avarage, once every hundred times.  
 Not ideal, so let's up the run number, like so:  
@@ -67,9 +67,9 @@ Now the test fails consistently:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:62:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:81:1
  Original failing run:    1 execution
- Seed:                    203154598
+ Seed:                    127648209
  ------------------------------------------------------------
   Executed (1):
    - Input: Input = 42
@@ -91,7 +91,7 @@ The following happens:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:104:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:121:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
@@ -112,14 +112,14 @@ var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
     from spec in Checkr.Spec("Input /= 42", () => input != 42)
-    from trace in Checkr.Trace("Irrelevant Input", irrelevant)
+    from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
     select Case.Closed;
 ```
 By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:  
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:143:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:157:1
  Original failing run:    1 execution
  Seed:                    769641533
  ------------------------------------------------------------
@@ -147,7 +147,7 @@ And here's the report:
 ```text
 ------------------------------------------------------------
  Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:178:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:193:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
