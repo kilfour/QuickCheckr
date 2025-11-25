@@ -12,13 +12,13 @@ public class Verifier(CheckrState State,
     {
         try
         {
-            State.LongTermMemory.Reset();
+            State.Memory.LongTermMemory.Reset();
             State.EvidenceRecorder.StartReplay();
-            using (State.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, value))
+            using (State.Memory.ShortTermMemory.GetMemory(executionId).ScopedSwap(key, value))
             {
-                foreach (var id in State.ShortTermMemories.Numbers)
+                foreach (var id in State.Memory.ShortTermMemory.Numbers)
                 {
-                    State.ShortTermMemories.GotoExecution(id);
+                    State.Memory.ShortTermMemory.GotoExecution(id);
                     Check(State);
                 }
             }

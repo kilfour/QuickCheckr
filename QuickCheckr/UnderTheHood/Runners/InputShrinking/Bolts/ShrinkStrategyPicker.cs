@@ -22,7 +22,7 @@ public class ShrinkStrategyPicker
         //     return;
         // }
 
-        var customShrinker = state.ShortTermMemories.GetShrinker<T>(key);
+        var customShrinker = state.Memory.GetShrinker<T>(key);
         if (customShrinker != null)
         {
             return new CustomShrinkStrategy<T>(customShrinker).Shrink(state, check, executionId, key, value, fullKey);

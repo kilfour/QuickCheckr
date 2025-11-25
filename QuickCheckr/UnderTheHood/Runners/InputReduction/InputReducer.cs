@@ -10,9 +10,9 @@ public class InputReducer(
 {
     public int Run()
     {
-        State.Docket.Record(new InputReductionStarted(State.ShortTermMemories.Count()));
+        State.Docket.Record(new InputReductionStarted(State.Memory.ShortTermMemory.Count()));
         var shrinkCount = 0;
-        foreach (var (executionId, shortTermMemory) in State.ShortTermMemories.Entries())
+        foreach (var (executionId, shortTermMemory) in State.Memory.ShortTermMemory.Entries())
         {
 
             var shrinkOutcomes = shortTermMemory.GetInputShrinkOutcomes();
@@ -31,7 +31,7 @@ public class InputReducer(
                 State.Docket.Record(new InputReductionRunEnded(executionId, key));
             }
         }
-        State.Docket.Record(new InputReductionEnded(State.ShortTermMemories.Count()));
+        State.Docket.Record(new InputReductionEnded(State.Memory.ShortTermMemory.Count()));
         return shrinkCount;
     }
 

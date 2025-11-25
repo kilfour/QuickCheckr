@@ -24,7 +24,7 @@ public class ShrinkEachElementStrategy
             // var elementType = valueType.IsGenericType
             //     ? valueType.GetGenericArguments().First()
             //     : typeof(object);
-            using (state.ShortTermMemories.GetMemory(executionId).ScopedSwap(key, theList))
+            using (state.Memory.ShortTermMemory.GetMemory(executionId).ScopedSwap(key, theList))
             {
                 var swapper = new MemoryLens(
                     list => ((IList)list)[ix]!,
@@ -34,7 +34,7 @@ public class ShrinkEachElementStrategy
                             ((IList)list)[ix] = element; // NESTED LIST do not get here
                         return list;
                     });
-                using (state.ShortTermMemories.GetMemory(executionId).NestedValue(swapper))
+                using (state.Memory.ShortTermMemory.GetMemory(executionId).NestedValue(swapper))
                 {
                     var clues = ShrinkStrategyPicker.Input(state, check, executionId, key, before, $"{fullKey}.{GetMappedIndex(index)}");
                     var removeForShrinking = !clues.Any();

@@ -20,14 +20,14 @@ public static partial class Checkr
         {
             if (cfg.FuzzrShrinker > 0)
             {
-                var executionId = state.ShortTermMemories.CurrentExecutionNumber;
-                state.ShortTermMemories.StoreShrinker<object>(key,
+                var executionId = state.Memory.ShortTermMemory.CurrentExecutionNumber; // TODO: this is a hack, FIXME
+                state.Memory.StoreShrinker<object>(key,
                     a => fuzzr.Unique($"{executionId}-{key}").Many(cfg.FuzzrShrinker)(state.FuzzrState).Value.Cast<object>());
             }
             if (cfg.Shrinker != null)
-                state.ShortTermMemories.StoreShrinker<object>(key, a => cfg.Shrinker((T)a).Cast<object>());
+                state.Memory.StoreShrinker<object>(key, a => cfg.Shrinker((T)a).Cast<object>());
             if (cfg.Reducer != null)
-                state.ShortTermMemories.StoreReducer<object>(key, a => cfg.Reducer((T)a).Cast<object>());
+                state.Memory.StoreReducer<object>(key, a => cfg.Reducer((T)a).Cast<object>());
             return HandleInput(state, key, fuzzr);
         };
     }
@@ -37,5 +37,5 @@ public static partial class Checkr
 
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
         => CheckrResult.Some(state,
-            state.ShortTermMemories.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
+            state.Memory.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
 }

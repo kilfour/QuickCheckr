@@ -1,11 +1,31 @@
 
+using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
+
 namespace QuickCheckr.UnderTheHood.Memories;
 
 public class LongTermMemory
 {
+    public void Reset()
+    {
+        stashed = new();
+        pools = new();
+        ClearGuards();
+    }
+
     // --------------------------------------------------------------------------
-    // Stash
+    // Guards
+    private DuplicateKeyWriteGuardForStashed stashedGuard = new();
+    public void ClearGuards()
+    {
+        stashedGuard = new();
+    }
+    // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
+    // Stashed
     private MemoryBank stashed = new();
+    private readonly Dictionary<string, object?> values = [];
     public T StoreStashed<T>(string key, Func<T> factory)
         => stashed.Store(key, factory)!;
     public T GetStashed<T>(string key) => stashed.Get<T>(key)!;
@@ -59,9 +79,4 @@ public class LongTermMemory
         return value;
     }
     // --------------------------------------------------------------------------
-    public void Reset()
-    {
-        stashed = new();
-        pools = new();
-    }
 }

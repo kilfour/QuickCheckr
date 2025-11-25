@@ -1,5 +1,5 @@
 
-using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 
 namespace QuickCheckr.UnderTheHood.Memories;
 
@@ -16,7 +16,7 @@ public class ShortTermMemory
     {
         CurrentExecutionNumber++;
         memories[CurrentExecutionNumber] = new ExecutionMemory();
-        ClearExecutionGuards();
+        ClearGuards();
         return CurrentExecutionNumber;
     }
 
@@ -25,7 +25,7 @@ public class ShortTermMemory
 
     public void GotoExecution(int executionNumber)
     {
-        ClearExecutionGuards();
+        ClearGuards();
         CurrentExecutionNumber = executionNumber;
     }
 
@@ -37,25 +37,10 @@ public class ShortTermMemory
 
     // --------------------------------------------------------------------------
     // Guards
-    public class DuplicateKeyWriteGuard(string operation, string scope)
+    private DuplicateKeyWriteGuardForInputs inputGuard = new();
+    private void ClearGuards()
     {
-        private List<string> keysWritten = [];
-        public string Check(string key)
-        {
-            if (keysWritten.Contains(key))
-            {
-                throw new DuplicateKeyWriteException(key, operation, scope);
-            }
-            keysWritten.Add(key);
-            return key;
-        }
-    }
-
-    private DuplicateKeyWriteGuard inputGuard = new("Checkr.Input", "execution");
-
-    private void ClearExecutionGuards()
-    {
-        inputGuard = new("Checkr.Input", "execution");
+        inputGuard = new();
     }
     // --------------------------------------------------------------------------
 
