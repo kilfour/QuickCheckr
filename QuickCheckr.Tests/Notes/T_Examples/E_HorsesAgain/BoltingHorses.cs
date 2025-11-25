@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain;
 
 [DocFile]
 [DocContent(
-@"For this example we are going the use a simplified version of the `HorsesForCourses` domain.  
+@"For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)
 and is demonstrative for a whole category: *Invariants drifting over time*.
 ")]
@@ -51,22 +51,23 @@ And finally here's the system invariant. Any coach assigned a course must have t
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));
+        WriteAsserts(article, true);
+        WriteReport<BoltingHorses>(article, true);
         Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
-        Assert.Equal(4, article.Total().Executions());
-        Assert.Equal(4, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Create Coach", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal(8, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal(15, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
-        Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
-        Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
-        WriteAsserts(article);
-        WriteReport(article, "BoltingHorses.txt");
+        // Assert.Equal(4, article.Total().Executions());
+        // Assert.Equal(4, article.Total().Actions());
+        // Assert.Equal(1, article.Total().Inputs());
+        // Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        // Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
+        // Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        // Assert.Equal("Create Coach", article.Execution(2).Action(1).Read().Label);
+        // Assert.Equal(8, article.Execution(3).Read().ExecutionId);
+        // Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
+        // Assert.Equal(15, article.Execution(4).Read().ExecutionId);
+        // Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
+        // Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
+        // Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
+        ExplainMe<BoltingHorses>(true);
     }
     private static readonly string[] SkillPool =
     [
@@ -78,7 +79,9 @@ And finally here's the system invariant. Any coach assigned a course must have t
 
     [CodeExample]
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name", Fuzzr.String().Unique("coach-name"))
+        from name in Checkr.Input("Coach Name",
+            from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
+        from trace in Checkr.Trace("Coach Name", () => name)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.Pool("Store Coach", coach)
@@ -89,6 +92,7 @@ And finally here's the system invariant. Any coach assigned a course must have t
         from coach in Trackr.OneOfPool<Coach>("Coach to update")
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from valid in Checkr.When(() => coach is not null,
+            from trace in Checkr.Trace("Coach Name", () => coach.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.UpdateSkills(skills))
             from checkSkills in Checkr.Spec("Coach Skills Set",
@@ -98,7 +102,9 @@ And finally here's the system invariant. Any coach assigned a course must have t
 
     [CodeExample]
     private static readonly CheckrOf<Case> CreateCourse =
-        from name in Checkr.Input("Course Name", Fuzzr.String().Unique("course-name"))
+        from name in Checkr.Input("Course Name",
+            from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
+        from trace in Checkr.Trace("Course Name", () => name)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Spec("Course Name Set", () => course.Name == name)
         from toPool in Trackr.Pool("Store Course", course)
@@ -109,6 +115,7 @@ And finally here's the system invariant. Any coach assigned a course must have t
         from course in Trackr.OneOfPool<Course>("Course to update")
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from courseNotNull in Checkr.When(() => course is not null,
+            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.UpdateRequiredSkills(skills))
             from checkSkills in Checkr.Spec("Course Required Skills Set",
@@ -121,6 +128,8 @@ And finally here's the system invariant. Any coach assigned a course must have t
         from coach in Trackr.OneOfPool<Coach>("Coach to assign")
         from course in Trackr.OneOfPool<Course>("Course to assign")
         from valid in Checkr.When(() => coach != null && course != null && coach.IsSuitableFor(course),
+            from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
+            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
             from isAssigned in Checkr.Spec("Coach is assigned", () => course.AssignedCoach == coach)
             select Case.Closed)

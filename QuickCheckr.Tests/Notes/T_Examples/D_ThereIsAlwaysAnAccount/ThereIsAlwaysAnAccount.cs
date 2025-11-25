@@ -51,7 +51,7 @@ public class ThereIsAlwaysAnAccount : BaseTest
         return
             from account in Trackr.Stashed(() => new Account())
             from amount in Checkr.Input("Amount", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-            from trace in Checkr.Trace("Amount", amount)
+            from trace in Checkr.Trace("Amount", () => amount)
             from operations in Checkr.OneOf(
                 Checkr.Act("Deposit", () => account.Deposit(amount)),
                 Checkr.Act("Withdraw", () => account.WithDraw(amount))

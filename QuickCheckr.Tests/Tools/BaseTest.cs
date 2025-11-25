@@ -52,6 +52,9 @@ public abstract class BaseTest
             TheJournalist.Transcribes(article);
     }
 
-    protected static void ExplainMe<T>()
-        => Explain.OnlyThis<T>("temp.md");
+    protected static void ExplainMe<T>(bool writeToDisk = false)
+    {
+        if (!writeToDisk) return;
+        Explain.OnlyThis<T>(typeof(T).Name + ".md");
+    }
 }

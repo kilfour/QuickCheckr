@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:62:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:81:1
  Original failing run:    1 execution
- Seed:                    203154598
+ Seed:                    127648209
  ------------------------------------------------------------
   Executed (1):
    - Input: Input = 42

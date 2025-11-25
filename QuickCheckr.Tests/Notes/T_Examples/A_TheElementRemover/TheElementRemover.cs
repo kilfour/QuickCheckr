@@ -80,7 +80,7 @@ public class TheElementRemover : BaseTest
             from listDoesNotContainElement in Checkr.Spec(
                 "List Does Not Contain Element",
                 () => !output.Contains(element))
-            from traceList in Checkr.Trace("List Before Shrinking", list)
+            from traceList in Checkr.Trace("List Before Shrinking", () => list)
             select Case.Closed;
     }
 

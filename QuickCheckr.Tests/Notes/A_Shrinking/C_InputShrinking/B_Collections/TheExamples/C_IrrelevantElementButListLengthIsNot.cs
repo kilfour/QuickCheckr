@@ -50,7 +50,7 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
         return
             from length in Checkr.Input("Length", Fuzzr.Int(0, 10))
             from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-            from trace in Checkr.Trace("Original List", list)
+            from trace in Checkr.Trace("Original List", () => list)
             from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
             select Case.Closed;
     }

@@ -36,9 +36,9 @@ public class ParsingNumbers : BaseTest
             from input in Checkr.Input("Input", ParseFuzzr.Expression(), a => a with { Reducer = a => [a] })
             from result in Checkr.Act("Result", () => LostIn.Translation(input.Text).Eval())
             from spec in Checkr.Spec("Parser evaluates correctly", () => result == input.Value)
-            from traceExpression in Checkr.Trace("Expression", input.Text)
-            from traceValue in Checkr.Trace("Desired Result", input.Value)
-            from traceResult in Checkr.Trace("Result", result)
+            from traceExpression in Checkr.Trace("Expression", () => input.Text)
+            from traceValue in Checkr.Trace("Desired Result", () => input.Value)
+            from traceResult in Checkr.Trace("Result", () => result)
             select Case.Closed;
     }
 }

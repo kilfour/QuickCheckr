@@ -159,14 +159,14 @@ Consider a test that forbids the value `7`:
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
     from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
-    from trace in Checkr.Trace("List Input", listInput)
+    from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
 Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:18:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
  Original failing run:    1 execution
  Seed:                    1833095082
  ------------------------------------------------------------
@@ -192,7 +192,7 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from length in Checkr.Input("Length", Fuzzr.Int(0, 10))
     from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-    from trace in Checkr.Trace("Original List", list)
+    from trace in Checkr.Trace("Original List", () => list)
     from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
     select Case.Closed;
 ```
@@ -254,7 +254,7 @@ without introducing noise from element-level changes that could not affect the o
 ##### Nested Collections
 ```csharp
     from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
-    from trace in Checkr.Trace("List", input)
+    from trace in Checkr.Trace("List", () => input)
     from spec in Checkr.SpecIf("List[0][0] is not 42",
         () => input.Any() && input.First().Any(),
         () => input.First().First() != 42)
@@ -263,7 +263,7 @@ without introducing noise from element-level changes that could not affect the o
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:20:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:19:1
  Original failing run:    1 execution
  Seed:                    146712596
  ------------------------------------------------------------
@@ -278,15 +278,15 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
     from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
-    from traceOne in Checkr.Trace("Original One", one)
-    from traceTwo in Checkr.Trace("Original Two", two)
+    from traceOne in Checkr.Trace("Original One", () => one)
+    from traceTwo in Checkr.Trace("Original Two", () => two)
     from spec in Checkr.Spec("One should not be 42", () => one != 42)
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:17:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    1 execution
  Seed:                    2122063655
  ------------------------------------------------------------
@@ -302,8 +302,8 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
     from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
-    from traceOne in Checkr.Trace("Original One", one)
-    from traceTwo in Checkr.Trace("Original Two", two)
+    from traceOne in Checkr.Trace("Original One", () => one)
+    from traceTwo in Checkr.Trace("Original Two", () => two)
     from spec in Checkr.Spec("One should not be 42", () => one != 42)
     select Case.Closed;
 ```
@@ -326,7 +326,7 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
     from spec in Checkr.Spec("Int should be smaller than 42", () => i < 42)
-    from trace in Checkr.Trace("Int", i)
+    from trace in Checkr.Trace("Int", () => i)
     select Case.Closed;
 ```
 ```csharp
@@ -382,7 +382,7 @@ the test captures the minimal failing case where the list contains multiple copi
     from listDoesNotContainElement in Checkr.Spec(
         "List Does Not Contain Element",
         () => !output.Contains(element))
-    from traceList in Checkr.Trace("List Before Shrinking", list)
+    from traceList in Checkr.Trace("List Before Shrinking", () => list)
     select Case.Closed;
 ```
 QuickAcid reduces the failing run to a list like `[ 5, 5 ]` with `5` as the element to remove,
@@ -623,7 +623,7 @@ public class Account
 ```csharp
     from account in Trackr.Stashed(() => new Account())
     from amount in Checkr.Input("Amount", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-    from trace in Checkr.Trace("Amount", amount)
+    from trace in Checkr.Trace("Amount", () => amount)
     from operations in Checkr.OneOf(
         Checkr.Act("Deposit", () => account.Deposit(amount)),
         Checkr.Act("Withdraw", () => account.WithDraw(amount))
@@ -635,7 +635,7 @@ public class Account
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:24:1
+ Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:25:1
  Original failing run:    5 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1863050139
@@ -651,30 +651,20 @@ public class Account
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:24:1
+ Location:                Notes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:25:1
  Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1863050139
  ------------------------------------------------------------
-  Executed (1): Deposit
-   - Trace: Amount = 94
- ------------------------------------------------------------
-  Executed (2): Deposit
-   - Trace: Amount = 59
- ------------------------------------------------------------
-  Executed (3): Withdraw
-   - Trace: Amount = 43
- ------------------------------------------------------------
-  Executed (4): Withdraw
-   - Trace: Amount = 63
- ------------------------------------------------------------
   Executed (5): Withdraw
+   - Input: Amount = 1
    - Trace: Amount = 88
  ================================
   !! Spec Failed: No Overdraft
  ================================
 ```
 ### Bolting Horses
-For this example we are going the use a simplified version of the `HorsesForCourses` domain.  
+For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)
 and is demonstrative for a whole category: *Invariants drifting over time*.
   
@@ -740,7 +730,9 @@ private static readonly CheckrOf<Case> TheCheckr =
 In this one we create a coach with a random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCoach =
-    from name in Checkr.Input("Coach Name", Fuzzr.String().Unique("coach-name"))
+    from name in Checkr.Input("Coach Name",
+        from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
+    from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
     from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
     from toPool in Trackr.Pool("Store Coach", coach)
@@ -753,6 +745,7 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
     from coach in Trackr.OneOfPool<Coach>("Coach to update")
     from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
     from valid in Checkr.When(() => coach is not null,
+        from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => coach.UpdateSkills(skills))
         from checkSkills in Checkr.Spec("Coach Skills Set",
@@ -764,7 +757,9 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
 Same pattern as the *Create Coach Checkr*.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCourse =
-    from name in Checkr.Input("Course Name", Fuzzr.String().Unique("course-name"))
+    from name in Checkr.Input("Course Name",
+        from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
+    from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", () => new Course(name))
     from checkName in Checkr.Spec("Course Name Set", () => course.Name == name)
     from toPool in Trackr.Pool("Store Course", course)
@@ -777,6 +772,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     from course in Trackr.OneOfPool<Course>("Course to update")
     from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
     from courseNotNull in Checkr.When(() => course is not null,
+        from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             () => course.UpdateRequiredSkills(skills))
         from checkSkills in Checkr.Spec("Course Required Skills Set",
@@ -798,20 +794,25 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    CheckIt
- Location:                Notes\T_Examples\D_HorsesAgain\BoltingHorses.cs:24:1
- Original failing run:    15 executions
- Minimal failing case:    4 executions (after 11 shrinks)
+ Test:                    Example
+ Location:                Notes\T_Examples\E_HorsesAgain\BoltingHorses.cs:53:1
+ Original failing run:    20 executions
+ Minimal failing case:    4 executions (after 16 shrinks)
  Seed:                    13918324
  ------------------------------------------------------------
-  Executed (1): Create Course
+  Executed (8): Create Coach
+   - Trace: Coach Name = Coach-5
  ------------------------------------------------------------
-  Executed (2): Create Coach
+  Executed (10): Create Course
+   - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (8): Assign Coach to Course
+  Executed (13): Assign Coach to Course
+   - Trace: Coach Name = Coach-5
+   - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (15): Update Course Skills
+  Executed (20): Update Course Skills
    - Input: Course Skills = [ _ ]
+   - Trace: Course Name = Course-3
  =====================================================
   !! Spec Failed: Assigned Coaches Must Be Suitable
  =====================================================

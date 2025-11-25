@@ -44,8 +44,8 @@ public class FuzzrShrinking : BaseTest
         return
             from one in Checkr.Input("One", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
             from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
-            from traceOne in Checkr.Trace("Original One", one)
-            from traceTwo in Checkr.Trace("Original Two", two)
+            from traceOne in Checkr.Trace("Original One", () => one)
+            from traceTwo in Checkr.Trace("Original Two", () => two)
             from spec in Checkr.Spec("One should not be 42", () => one != 42)
             select Case.Closed;
     }

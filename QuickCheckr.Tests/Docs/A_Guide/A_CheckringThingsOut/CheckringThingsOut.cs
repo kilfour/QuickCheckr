@@ -45,6 +45,7 @@ The report shows:
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
         WriteReport(article, "SpecAlwaysFalse.txt");
+        ExplainMe<CheckringThingsOut>();
     }
 
     [CodeSnippet]
@@ -64,6 +65,8 @@ The report shows:
 A Checkr is just a LINQ expression that evaluates step by step,
 and the final select clause must return a value representing the completed case.
 `Case.Closed` simply signals ""this case finished successfully, there are no more steps"".
+
+QuickChekr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on avarage, once every hundred times.  
 Not ideal, so let's up the run number, like so:")]
@@ -173,7 +176,7 @@ QuickCheckr is built with transparancy and discoverabily as a first class concer
             from input in Checkr.Input("Input", Fuzzr.Int())
             from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
             from spec in Checkr.Spec("Input /= 42", () => input != 42)
-            from trace in Checkr.Trace("Irrelevant Input", irrelevant)
+            from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
             select Case.Closed;
         return check;
     }

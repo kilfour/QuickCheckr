@@ -5,10 +5,10 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
-    public static CheckrOf<Case> Trace<T>(string key, T? obj) =>
+    public static CheckrOf<Case> Trace<T>(string key, Func<T?> factory) =>
         state =>
         {
-            state.ShortTermMemories.StoreTrace(key, () => Introduce.This(obj!, false));
+            state.ShortTermMemories.StoreTrace(key, () => Introduce.This(factory()!, false));
             return CheckrResult.CaseOnly(state);
         };
 

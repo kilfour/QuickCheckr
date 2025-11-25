@@ -62,8 +62,8 @@ public class CheckrOneOf : BaseTest
             Checkr.Act("Ops 2, Add 1", () => collector2.Absorb(1)),
             Checkr.Act("Ops 2, Add 2", () => collector2.Absorb(2))
         )
-        from trace1 in Checkr.Trace("1", collector1)
-        from trace2 in Checkr.Trace("2", collector2)
+        from trace1 in Checkr.Trace("1", () => collector1)
+        from trace2 in Checkr.Trace("2", () => collector2)
         from spec in Checkr.Spec("Counter fails on 10", () => counter != 10)
         select Case.Closed;
     }
