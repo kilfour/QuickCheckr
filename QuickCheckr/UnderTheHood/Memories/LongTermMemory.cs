@@ -8,6 +8,7 @@ public class LongTermMemory
     private MemoryBank stashed = new();
     public T StoreStashed<T>(string key, Func<T> factory)
         => stashed.Store(key, factory)!;
+    public T GetStashed<T>(string key) => stashed.Get<T>(key)!;
     // --------------------------------------------------------------------------
 
 

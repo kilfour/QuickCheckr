@@ -11,23 +11,25 @@ namespace QuickCheckr.Tests.Tools;
 
 public abstract class BaseTest
 {
-    const string basePath = @"C:\Code\";
-    protected static void WriteReport<T>(
+    private const string basePath = @"C:\Code\";
+    private readonly bool writeAllToDisk = false;
+
+    protected void WriteReport<T>(
         Article article,
         bool writeToDisk = false,
         [CallerFilePath] string callerPath = "")
             => DoTheWriting(article, typeof(T).Name + ".txt", callerPath, writeToDisk);
 
-    protected static void WriteReport(
+    protected void WriteReport(
         Article article,
         string filename,
         bool writeToDisk = false,
         [CallerFilePath] string callerPath = "")
             => DoTheWriting(article, filename, callerPath, writeToDisk);
 
-    private static void DoTheWriting(Article article, string filename, string callerPath, bool writeToDisk)
+    private void DoTheWriting(Article article, string filename, string callerPath, bool writeToDisk)
     {
-        if (!writeToDisk) return;
+        if (!writeToDisk && !writeAllToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
         var report = TheClerk.Transcribes(article.CaseFile);
@@ -42,11 +44,11 @@ public abstract class BaseTest
         FileLog.Write(fullPath).Absorb(cleaned);
     }
 
-    protected static void WriteAsserts(
+    protected void WriteAsserts(
         Article article,
         bool writeToDisk = false)
     {
-        if (writeToDisk)
+        if (writeToDisk && !writeAllToDisk)
             TheJournalist.Transcribes(article);
     }
 

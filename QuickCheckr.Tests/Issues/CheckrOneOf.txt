@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Issues\CheckrOneOf.cs:24:1
+ Original failing run:    10 executions
+ Minimal failing case:    1 execution (after 9 shrinks)
+ Seed:                    1794561593
+ ------------------------------------------------------------
+  Executed (10): Ops 2, Add 1, Ops1, Add 1
+   - Input: counter = 10
+   - Trace: 1 = { Values: [ 2, 2, 1, 1, 2, 2, 2, 2, 2, 1 ] }
+   - Trace: 2 = { Values: [ 2, 2, 1, 1, 2, 2, 2, 2, 2, 1 ] }
+ =======================================
+  !! Spec Failed: Counter fails on 10
+ =======================================
