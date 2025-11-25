@@ -14,16 +14,18 @@ public class ShortTermMemories
     {
         CurrentExecutionNumber++;
         memories[CurrentExecutionNumber] = new ShortTermMemory();
+        inputAccessPerExecution = [];
         return CurrentExecutionNumber;
     }
 
     public void Remove(int executionNumber)
-    {
-        memories.Remove(executionNumber);
-    }
+        => memories.Remove(executionNumber);
 
     public void GotoExecution(int executionNumber)
-        => CurrentExecutionNumber = executionNumber;
+    {
+        inputAccessPerExecution = [];
+        CurrentExecutionNumber = executionNumber;
+    }
 
     public ShortTermMemory GetMemory(int executionNumber)
         => memories[executionNumber];
@@ -33,8 +35,17 @@ public class ShortTermMemories
 
     // --------------------------------------------------------------------------
     // Inputs
+    private List<string> inputAccessPerExecution = [];
     public T? StoreInput<T>(string key, Func<T> factory)
-        => Current.StoreInput(key, factory);
+    {
+        if (inputAccessPerExecution.Contains(key))
+        {
+            throw new InvalidOperationException($"Input {key} has already been used in this execution.");
+        }
+        inputAccessPerExecution.Add(key);
+        return Current.StoreInput(key, factory);
+    }
+
     // --------------------------------------------------------------------------
     // Actions
     public void StoreAction(string key)

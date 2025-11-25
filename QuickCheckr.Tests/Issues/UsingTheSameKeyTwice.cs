@@ -15,8 +15,9 @@ public class UsingTheSameKeyTwice : BaseTest
     [DocCodeFile("TestTemplate.txt", "text")]
     public void RunTest()
     {
-        // TODO: THIS SHOULD FAIL
-        GetCheckr().Run(100.Runs(), 100.ExecutionsPerRun(), a => a with { Seed = null });
+        // TODO: Better exception
+        Assert.Throws<InvalidOperationException>(
+            () => GetCheckr().Run(100.Runs(), 100.ExecutionsPerRun(), a => a with { Seed = null }));
         // WriteAsserts(article, true);
         // WriteReport<UsingTheSameKeyTwice>(article, true);
         // Verify(article);
