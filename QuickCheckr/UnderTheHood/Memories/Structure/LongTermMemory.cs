@@ -8,18 +8,7 @@ public class LongTermMemory
     {
         stashed = new();
         pools = new();
-        ClearGuards();
     }
-
-    // --------------------------------------------------------------------------
-    // Guards
-    private DuplicateKeyWriteGuardForStashed stashedGuard = new();
-    public void ClearGuards()
-    {
-        stashedGuard = new();
-    }
-    // --------------------------------------------------------------------------
-
 
     // --------------------------------------------------------------------------
     // Stashed

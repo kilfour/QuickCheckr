@@ -818,7 +818,8 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  =====================================================
 ```
 ## It Is Written, ... But Only Once
-In QuickCheckr, the strings you pass to `Checkr.Input`, `Checkr.Act`, `Checkr.Spec`, etcetera, are not just pretty captions in a report.
+In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
+are not just pretty captions in a report.
 
 They function as **stable identifiers**.
 
@@ -831,6 +832,21 @@ Because of this dual role, **each key may only be written once per relevant scop
 
 If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
   
+- `Trackr.Stashed`:  
+```csharp
+    from one in Trackr.Stashed(() => 42)
+    from two in Trackr.Stashed(() => 666)
+    from spec in Checkr.Spec("Always passes", () => true)
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'System.Int32' is written more than once in a single 'Trackr.Stashed' run.
+QuickCheckr treats keys as stable identifiers. 
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+Possible solutions:
+- Ensure each 'Trackr.Stashed' uses a unique key.
+```
 - `Checkr.Input`:  
 ```csharp
     from one in Checkr.Input("reused", Fuzzr.Int())

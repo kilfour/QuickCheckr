@@ -15,7 +15,6 @@ public class ShortTermMemory
     {
         CurrentExecutionNumber++;
         memories[CurrentExecutionNumber] = new ExecutionMemory();
-        ClearGuards();
         return CurrentExecutionNumber;
     }
 
@@ -28,10 +27,7 @@ public class ShortTermMemory
         => memories[executionId].NestedValue(swapper);
 
     public void GotoExecution(int executionNumber)
-    {
-        ClearGuards();
-        CurrentExecutionNumber = executionNumber;
-    }
+        => CurrentExecutionNumber = executionNumber;
 
     public ExecutionMemory GetMemory(int executionNumber)
         => memories[executionNumber];
@@ -40,19 +36,9 @@ public class ShortTermMemory
         => memories.Select(kv => (kv.Key, kv.Value));
 
     // --------------------------------------------------------------------------
-    // Guards
-    private DuplicateKeyWriteGuardForInputs inputGuard = new();
-    private void ClearGuards()
-    {
-        inputGuard = new();
-    }
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
-        => Current.StoreInput(inputGuard.Check(key), factory);
+        => Current.StoreInput(key, factory);
 
     // --------------------------------------------------------------------------
     // Actions

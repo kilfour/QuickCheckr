@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 using QuickCheckr.UnderTheHood.Memories.Structure;
 
 namespace QuickCheckr.UnderTheHood.Memories;
@@ -6,17 +7,19 @@ public class Memory
 {
     public int StartNewExecution()
     {
+        ClearGuards();
         return ShortTermMemory.StartNewExecution();
+    }
+
+    public void GotoExecution(int executionNumber)
+    {
+        ClearGuards();
+        ShortTermMemory.GotoExecution(executionNumber);
     }
 
     public void Reset()
     {
         LongTermMemory.Reset();
-    }
-
-    public void GotoExecution(int executionNumber)
-    {
-        ShortTermMemory.GotoExecution(executionNumber);
     }
 
     public IReadOnlyList<int> Numbers => ShortTermMemory.Numbers;
@@ -27,6 +30,17 @@ public class Memory
         => ShortTermMemory.ScopedSwap(executionId, key, value);
     public IDisposable NestedValue(int executionId, MemoryLens swapper)
         => ShortTermMemory.NestedValue(executionId, swapper);
+    // --------------------------------------------------------------------------
+    // Guards
+    private DuplicateKeyWriteGuardForInputs inputGuard = new();
+    private DuplicateKeyWriteGuardForStashed stashedGuard = new();
+    private void ClearGuards()
+    {
+        inputGuard = new();
+        stashedGuard = new();
+    }
+    // --------------------------------------------------------------------------
+
 
     // ==========================================================================
     // Long Term
@@ -35,7 +49,7 @@ public class Memory
     // --------------------------------------------------------------------------
     // Stashed
     public T StoreStashed<T>(string key, Func<T> factory)
-        => LongTermMemory.StoreStashed(key, factory);
+        => LongTermMemory.StoreStashed(stashedGuard.Check(key), factory);
     public T GetStashed<T>(string key)
         => LongTermMemory.GetStashed<T>(key);
     // --------------------------------------------------------------------------
@@ -61,7 +75,7 @@ public class Memory
     // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
-        => ShortTermMemory.StoreInput(key, factory);
+        => ShortTermMemory.StoreInput(inputGuard.Check(key), factory);
 
     // --------------------------------------------------------------------------
     // Actions

@@ -26,7 +26,7 @@ If you try to write the same key in the same scope twice or more, using the same
 ")]
 public class A_ItIsWrittenButOnlyOnce : BaseTest
 {
-    [Fact(Skip = "WIP")]
+    [Fact]
     [DocContent("- `Trackr.Stashed`:")]
     [DocExample(typeof(A_ItIsWrittenButOnlyOnce), nameof(TrackrStashed_GetCheckr))]
     [DocContent("  Throws:")]
@@ -52,7 +52,7 @@ public class A_ItIsWrittenButOnlyOnce : BaseTest
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string TrackrStashed_Message() =>
-@"Key 'reused' is written more than once in a single 'Trackr.Stashed' execution.
+@"Key 'System.Int32' is written more than once in a single 'Trackr.Stashed' run.
 
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
