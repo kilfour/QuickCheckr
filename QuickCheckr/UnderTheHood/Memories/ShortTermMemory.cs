@@ -1,79 +1,92 @@
-using QuickCheckr.UnderTheHood.Memories;
 
-namespace QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
+namespace QuickCheckr.UnderTheHood.Memories;
 
 public class ShortTermMemory
 {
+    private readonly Dictionary<int, ExecutionMemory> memories = [];
+    private ExecutionMemory Current => memories[CurrentExecutionNumber];
+    public int CurrentExecutionNumber { get; private set; } = 0;
+    public int Count() => memories.Count;
+
+    public IReadOnlyList<int> Numbers => [.. memories.Keys];
+
+    public int StartNewExecution()
+    {
+        CurrentExecutionNumber++;
+        memories[CurrentExecutionNumber] = new ExecutionMemory();
+        ClearExecutionGuards();
+        return CurrentExecutionNumber;
+    }
+
+    public void Remove(int executionNumber)
+        => memories.Remove(executionNumber);
+
+    public void GotoExecution(int executionNumber)
+    {
+        ClearExecutionGuards();
+        CurrentExecutionNumber = executionNumber;
+    }
+
+    public ExecutionMemory GetMemory(int executionNumber)
+        => memories[executionNumber];
+
+    public IEnumerable<(int ExecutionId, ExecutionMemory)> Entries()
+        => memories.Select(kv => (kv.Key, kv.Value));
+
     // --------------------------------------------------------------------------
-    // Inputs
-    private readonly OverlayMemoryBank inputs = new();
-    public T? StoreInput<T>(string key, Func<T> factory)
-        => inputs.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetInputs() => inputs.Values;
-    public IDisposable ScopedSwap(string key, object value)
-        => inputs.ScopedSwap(key, value);
-    public IDisposable NestedValue(MemoryLens swapper)
-        => inputs.NestedValue(swapper);
+    // Guards
+    public class DuplicateKeyWriteGuard(string operation, string scope)
+    {
+        private List<string> keysWritten = [];
+        public string Check(string key)
+        {
+            if (keysWritten.Contains(key))
+            {
+                throw new DuplicateKeyWriteException(key, operation, scope);
+            }
+            keysWritten.Add(key);
+            return key;
+        }
+    }
+
+    private DuplicateKeyWriteGuard inputGuard = new("Checkr.Input", "execution");
+
+    private void ClearExecutionGuards()
+    {
+        inputGuard = new("Checkr.Input", "execution");
+    }
     // --------------------------------------------------------------------------
 
+
+    // --------------------------------------------------------------------------
+    // Inputs
+    public T? StoreInput<T>(string key, Func<T> factory)
+        => Current.StoreInput(inputGuard.Check(key), factory);
 
     // --------------------------------------------------------------------------
     // Actions
-    public void RemoveAction(string key) => actions.Remove(key);
-    public void StoreAction(string key) => actions.Add(key);
-    public bool HasAction(string key) => actions.Contains(key);
-    public IReadOnlyList<string> GetActions() => [.. actions.Order()];
-    private readonly HashSet<string> actions = [];
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
-    // Variables
-    private readonly MemoryBank variables = new();
-    public T? StoreVariable<T>(string key, Func<T> factory)
-        => variables.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetVariables()
-        => variables.Values;
-    // --------------------------------------------------------------------------
-
-
+    public void StoreAction(string key)
+        => Current.StoreAction(key);
+    public bool HasAction(string key)
+        => Current.GetActions().Contains(key);
     // --------------------------------------------------------------------------
     // Traces
-    private readonly MemoryBank traces = new();
     public void StoreTrace(string key, Func<string> factory)
-        => traces.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetTraces()
-        => traces.Values;
+        => Current.StoreTrace(key, factory);
     // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
-    // Shrink Outcomes
-    private readonly Dictionary<string, object?> inputShrinkOutcomes = [];
-    public void StoreInputShrinkOutcome(string key, object? result)
-        => inputShrinkOutcomes[key] = result;
-    public IReadOnlyDictionary<string, object?> GetInputShrinkOutcomes()
-        => inputShrinkOutcomes; // Order ?
-    // --------------------------------------------------------------------------
-
-
+    // Variables
+    public T? StoreVariable<T>(string key, Func<T> factory)
+        => Current.StoreVariable(key, factory);
     // --------------------------------------------------------------------------
     // Shrinkers
-    private readonly MemoryBank shrinkers = new();
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
-        => shrinkers.Store(key, () => shrinker);
+        => Current.StoreShrinker(key, shrinker);
     public Func<T, IEnumerable<T>> GetShrinker<T>(string key)
-        => shrinkers.Get<Func<T, IEnumerable<T>>>(key)!;
-    // --------------------------------------------------------------------------
-
-
+        => Current.GetShrinker<T>(key);
     // --------------------------------------------------------------------------
     // Reducers
-    private readonly MemoryBank reducers = new();
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
-        => reducers.Store(key, () => reducer);
-    public Func<T, IEnumerable<T>> GetReducer<T>(string key)
-        => reducers.Get<Func<T, IEnumerable<T>>>(key)!;
-    // --------------------------------------------------------------------------
+        => Current.StoreReducer(key, reducer);
 }

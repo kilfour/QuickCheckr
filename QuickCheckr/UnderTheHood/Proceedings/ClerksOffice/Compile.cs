@@ -5,7 +5,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class Compile
 {
-    public static CaseFile TheCaseFile(Dossier dossier, ShortTermMemories shortTermMemories)// , Memory Memory)
+    public static CaseFile TheCaseFile(Dossier dossier, ShortTermMemory shortTermMemories)// , Memory Memory)
     {
         var verdict = Verdict.FromDossier(dossier);
         foreach (var executionNumber in dossier.ExecutionNumbers.ToList())
@@ -16,7 +16,7 @@ public static class Compile
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
-        ShortTermMemory shortTermMemory, int executionNumber, bool isVerdict)
+        ExecutionMemory shortTermMemory, int executionNumber, bool isVerdict)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
@@ -25,7 +25,7 @@ public static class Compile
         return executionDeposition;
     }
 
-    private static void GetActionDepositions(ExecutionDeposition executionDeposition, ShortTermMemory shortTermMemory)//, Access access)
+    private static void GetActionDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)//, Access access)
     {
         foreach (var action in shortTermMemory.GetActions())
         {
@@ -34,7 +34,7 @@ public static class Compile
     }
 
     private static void GetInputDepositions(
-        ExecutionDeposition executionDeposition, ShortTermMemory shortTermMemory, bool isVerdict)
+        ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool isVerdict)
     {
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
@@ -42,7 +42,7 @@ public static class Compile
         }
     }
 
-    private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ShortTermMemory shortTermMemory)
+    private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
     {
         foreach (var (key, val) in shortTermMemory.GetTraces())
         {
