@@ -45,7 +45,7 @@ The report shows:
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
         WriteReport(article, "SpecAlwaysFalse.txt");
-        ExplainMe<CheckringThingsOut>();
+        ExplainMe<CheckringThingsOut>(true);
     }
 
     [CodeSnippet]
@@ -147,11 +147,10 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
 @"QuickCheckr's *shrinking* can sometimes seem magical. Not a problem in this simple test,
 but when you are writing a more complex test, it is always helpful to see what's really going on.
 
-QuickCheckr is built with transparancy and discoverabily as a first class concern:")]
+QuickCheckr is built with transparancy and discoverability as a first class concern:")]
     [DocExample(typeof(CheckringThingsOut), nameof(NotWithoutATrace_Checkr))]
     [DocContent("By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:")]
     [DocCodeFile("NotWithoutATrace.txt", "text")]
-    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant input.")]
     public void NotWithoutATrace()
     {
         var article = TheJournalist.Exposes(() => NotWithoutATrace_Checkr().Run(a => a with { Seed = 769641533 }));
@@ -188,6 +187,7 @@ QuickCheckr is built with transparancy and discoverabily as a first class concer
     [DocContent("Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.")]
     [DocContent("And here's the report:")]
     [DocCodeFile("TimeToAct.txt", "text")]
+    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant input.")]
     public void TimeToAct()
     {
         var article = TheJournalist.Exposes(() => TimeToAct_Checkr().Run(a => a with { Seed = 1642083259 }));

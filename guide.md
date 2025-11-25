@@ -113,7 +113,7 @@ That's basically the same thing as before, because QuickCheckr does not report i
 QuickCheckr's *shrinking* can sometimes seem magical. Not a problem in this simple test,
 but when you are writing a more complex test, it is always helpful to see what's really going on.
 
-QuickCheckr is built with transparancy and discoverabily as a first class concern:  
+QuickCheckr is built with transparancy and discoverability as a first class concern:  
 ```csharp
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
@@ -137,7 +137,6 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
   !! Spec Failed: Input /= 42
  ===============================
 ```
-As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
 ### Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
 ```csharp
@@ -165,3 +164,4 @@ And here's the report:
   !! Spec Failed: Sum /= 42
  =============================
 ```
+As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
