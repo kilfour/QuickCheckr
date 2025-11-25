@@ -1,6 +1,6 @@
-using QuickCheckr.UnderTheHood.Configuration;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;

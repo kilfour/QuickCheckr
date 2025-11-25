@@ -1,10 +1,9 @@
-using QuickCheckr;
+using QuickCheckr.UnderTheHood.Configuration;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse;
 using QuickPulse.Arteries;
-using QuickPulse.Show;
 
-namespace QuickCheckr.UnderTheHood.Configuration;
+namespace QuickCheckr.UnderTheHood.Protocol;
 
 public record CheckrRunnerConfig
 {

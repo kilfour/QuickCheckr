@@ -1,7 +1,3 @@
-using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections;

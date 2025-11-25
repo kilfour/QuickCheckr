@@ -1,9 +1,10 @@
+using QuickCheckr;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse;
 using QuickPulse.Show;
 using QuickPulse.Show.Bolts;
 
-namespace QuickCheckr.UnderTheHood.Configuration;
+namespace QuickCheckr.UnderTheHood.Protocol;
 
 
 public static partial class Diagnose
