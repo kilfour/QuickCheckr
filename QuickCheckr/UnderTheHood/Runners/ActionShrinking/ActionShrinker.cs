@@ -37,8 +37,7 @@ public class ActionShrinker(
     private void ExecuteRun()
     {
         State.Docket.Record(new ActionShrinkRunStarted(State.Memory.Count()));
-        State.Memory.LongTermMemory.Reset();
-        State.EvidenceRecorder.StartReplay();
+        State.StartReplay();
         foreach (var executionNumber in State.Memory.Numbers)
         {
             PerformExecution(executionNumber);

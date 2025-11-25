@@ -12,8 +12,7 @@ public class Verifier(CheckrState State,
     {
         try
         {
-            State.Memory.LongTermMemory.Reset();
-            State.EvidenceRecorder.StartReplay();
+            State.StartReplay();
             using (State.Memory.ScopedSwap(executionId, key, value))
             {
                 foreach (var id in State.Memory.Numbers)

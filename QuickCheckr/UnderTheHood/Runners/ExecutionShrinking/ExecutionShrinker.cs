@@ -30,8 +30,7 @@ public class ExecutionShrinker(
 
     private void ExecuteRun(int current)
     {
-        State.Memory.LongTermMemory.Reset();
-        State.EvidenceRecorder.StartReplay();
+        State.StartReplay();
         foreach (var executionNumber in State.Memory.Numbers)
         {
             if (executionNumber != current)

@@ -6,7 +6,10 @@ public class Memory
     {
         return ShortTermMemory.StartNewExecution();
     }
-
+    public void Reset()
+    {
+        LongTermMemory.Reset();
+    }
     public void GotoExecution(int executionNumber)
     {
         ShortTermMemory.GotoExecution(executionNumber);
