@@ -22,7 +22,7 @@ public class Verdict
         return new Verdict(GetFailureDeposition(dossier))
         {
             OriginalRunExecutionCount = dossier.OriginalRunExecutionCount,
-            ExecutionCount = dossier.ExecutionNumbers.Count,
+            ExecutionCount = dossier.ExecutionCount,
             ShrinkCount = dossier.ShrinkCount,
             Seed = dossier.Seed
         };

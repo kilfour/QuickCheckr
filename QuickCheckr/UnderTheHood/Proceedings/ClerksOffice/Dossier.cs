@@ -5,6 +5,6 @@ public record Dossier(
     Exception? Exception,
     string? AssayerSpec,
     int OriginalRunExecutionCount,
-    IReadOnlyList<int> ExecutionNumbers,
+    int ExecutionCount,
     int ShrinkCount,
     int Seed);

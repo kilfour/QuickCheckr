@@ -15,7 +15,7 @@ public abstract class DepositionTest
                 Exception: null,
                 AssayerSpec: null,
                 OriginalRunExecutionCount: 10,
-                ExecutionNumbers: [1, 2, 3, 4],
+                ExecutionCount: 4,
                 ShrinkCount: 1,
                 Seed: 12345678
             );

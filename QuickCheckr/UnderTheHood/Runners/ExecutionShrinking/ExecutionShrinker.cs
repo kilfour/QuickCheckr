@@ -8,23 +8,23 @@ public class ExecutionShrinker(
 {
     public int Run()
     {
-        State.Docket.Record(new ExecutionShrinkingStarted(State.Memory.ShortTermMemory.Count()));
+        State.Docket.Record(new ExecutionShrinkingStarted(State.Memory.Count()));
         var shrinkCount = 0;
-        for (var i = 0; i < State.Memory.ShortTermMemory.Numbers.Count && State.Memory.ShortTermMemory.Numbers.Count > 1; i++)
+        for (var i = 0; i < State.Memory.Numbers.Count && State.Memory.Numbers.Count > 1; i++)
         {
-            var id = State.Memory.ShortTermMemory.Numbers[i];
-            State.Docket.Record(new ExecutionShrinkRunStarted(State.Memory.ShortTermMemory.Count()));
+            var id = State.Memory.Numbers[i];
+            State.Docket.Record(new ExecutionShrinkRunStarted(State.Memory.Count()));
             ExecuteRun(id);
             if (State.EvidenceRecorder.Failed())
             {
                 shrinkCount++;
-                State.Memory.ShortTermMemory.Remove(id);
+                State.Memory.Remove(id);
                 i--;
                 State.Docket.Record(new ExecutionRemoved(id));
             }
-            State.Docket.Record(new ExecutionShrinkRunEnded(State.Memory.ShortTermMemory.Count()));
+            State.Docket.Record(new ExecutionShrinkRunEnded(State.Memory.Count()));
         }
-        State.Docket.Record(new ExecutionShrinkingEnded(State.Memory.ShortTermMemory.Count()));
+        State.Docket.Record(new ExecutionShrinkingEnded(State.Memory.Count()));
         return shrinkCount;
     }
 
@@ -32,7 +32,7 @@ public class ExecutionShrinker(
     {
         State.Memory.LongTermMemory.Reset();
         State.EvidenceRecorder.StartReplay();
-        foreach (var executionNumber in State.Memory.ShortTermMemory.Numbers)
+        foreach (var executionNumber in State.Memory.Numbers)
         {
             if (executionNumber != current)
                 PerformExecution(executionNumber);
@@ -42,7 +42,7 @@ public class ExecutionShrinker(
     private void PerformExecution(int executionNumber)
     {
         State.Docket.Record(new ExecutionStarted(executionNumber));
-        State.Memory.ShortTermMemory.GotoExecution(executionNumber);
+        State.Memory.GotoExecution(executionNumber);
         Check(State);
         State.Docket.Record(new ExecutionFinished(executionNumber));
     }

@@ -23,6 +23,11 @@ public class ShortTermMemory
     public void Remove(int executionNumber)
         => memories.Remove(executionNumber);
 
+    public IDisposable ScopedSwap(int executionId, string key, object value)
+        => memories[executionId].ScopedSwap(key, value);
+    public IDisposable NestedValue(int executionId, MemoryLens swapper)
+        => memories[executionId].NestedValue(swapper);
+
     public void GotoExecution(int executionNumber)
     {
         ClearGuards();

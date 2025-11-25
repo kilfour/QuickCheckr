@@ -15,7 +15,7 @@ public class AssayerDepositionsTests : DepositionTest
                 Exception: null,
                 AssayerSpec: "Some Invariant",
                 OriginalRunExecutionCount: 10,
-                ExecutionNumbers: [1, 2, 3, 4],
+                ExecutionCount: 4,
                 ShrinkCount: 0,
                 Seed: 12345678
             )));

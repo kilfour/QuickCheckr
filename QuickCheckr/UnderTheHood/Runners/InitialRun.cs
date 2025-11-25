@@ -21,7 +21,7 @@ public class InitialRun(CheckrState State, CheckrOf<Case> Check)
 
     private void PerformExecution()
     {
-        var executionNumber = State.Memory.ShortTermMemory.StartNewExecution();
+        var executionNumber = State.Memory.StartNewExecution();
         State.Docket.Record(new ExecutionStarted(executionNumber));
         Check(State);
         State.Docket.Record(new ExecutionFinished(executionNumber));

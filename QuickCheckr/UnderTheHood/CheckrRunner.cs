@@ -23,7 +23,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
 
     private CaseFile HandleFailure()
     {
-        var originalRunExecutionCount = State.Memory.ShortTermMemory.Count();
+        var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
         if (!config.NoShrinking)
         {
@@ -47,10 +47,10 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
                 FailingSpec: forAssayer ? null : State.EvidenceRecorder.FailingSpec,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
-                ExecutionNumbers: State.Memory.ShortTermMemory.Numbers,
+                ExecutionCount: State.Memory.Count(),
                 ShrinkCount: shrinkCount,
                 Seed: State.FuzzrState.Seed
             );
-        return Compile.TheCaseFile(dossier, State.Memory.ShortTermMemory);
+        return Compile.TheCaseFile(dossier, State.Memory);
     }
 }

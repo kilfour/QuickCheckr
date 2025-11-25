@@ -20,9 +20,8 @@ public static partial class Checkr
         {
             if (cfg.FuzzrShrinker > 0)
             {
-                var executionId = state.Memory.ShortTermMemory.CurrentExecutionNumber; // TODO: this is a hack, FIXME
                 state.Memory.StoreShrinker<object>(key,
-                    a => fuzzr.Unique($"{executionId}-{key}").Many(cfg.FuzzrShrinker)(state.FuzzrState).Value.Cast<object>());
+                    a => fuzzr.Unique($"{key}").Many(cfg.FuzzrShrinker)(state.FuzzrState).Value.Cast<object>());
             }
             if (cfg.Shrinker != null)
                 state.Memory.StoreShrinker<object>(key, a => cfg.Shrinker((T)a).Cast<object>());

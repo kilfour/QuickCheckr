@@ -5,22 +5,22 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class Compile
 {
-    public static CaseFile TheCaseFile(Dossier dossier, ShortTermMemory shortTermMemories)// , Memory Memory)
+    public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
-        foreach (var executionNumber in dossier.ExecutionNumbers.ToList())
+        foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
-            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemories.GetMemory(executionNumber), executionNumber, true));
+            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
         }
         return CaseFile.WithVerdict(verdict);
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
-        ExecutionMemory shortTermMemory, int executionNumber, bool isVerdict)
+        ExecutionMemory shortTermMemory, int executionNumber)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
-        GetInputDepositions(executionDeposition, shortTermMemory, isVerdict);
+        GetInputDepositions(executionDeposition, shortTermMemory);
         GetTraceDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
     }
@@ -34,7 +34,7 @@ public static class Compile
     }
 
     private static void GetInputDepositions(
-        ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool isVerdict)
+        ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
     {
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {

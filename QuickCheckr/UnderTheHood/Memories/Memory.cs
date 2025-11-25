@@ -2,6 +2,25 @@ namespace QuickCheckr.UnderTheHood.Memories;
 
 public class Memory
 {
+    public int StartNewExecution()
+    {
+        return ShortTermMemory.StartNewExecution();
+    }
+
+    public void GotoExecution(int executionNumber)
+    {
+        ShortTermMemory.GotoExecution(executionNumber);
+    }
+
+    public IReadOnlyList<int> Numbers => ShortTermMemory.Numbers;
+    public int Count() => ShortTermMemory.Count();
+    public IEnumerable<(int ExecutionId, ExecutionMemory)> Entries() => ShortTermMemory.Entries();
+    public void Remove(int executionNumber) => ShortTermMemory.Remove(executionNumber);
+    public IDisposable ScopedSwap(int executionId, string key, object value)
+        => ShortTermMemory.ScopedSwap(executionId, key, value);
+    public IDisposable NestedValue(int executionId, MemoryLens swapper)
+        => ShortTermMemory.NestedValue(executionId, swapper);
+
     // ==========================================================================
     // Long Term
     // == 

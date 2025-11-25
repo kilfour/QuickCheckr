@@ -14,11 +14,11 @@ public class Verifier(CheckrState State,
         {
             State.Memory.LongTermMemory.Reset();
             State.EvidenceRecorder.StartReplay();
-            using (State.Memory.ShortTermMemory.GetMemory(executionId).ScopedSwap(key, value))
+            using (State.Memory.ScopedSwap(executionId, key, value))
             {
-                foreach (var id in State.Memory.ShortTermMemory.Numbers)
+                foreach (var id in State.Memory.Numbers)
                 {
-                    State.Memory.ShortTermMemory.GotoExecution(id);
+                    State.Memory.GotoExecution(id);
                     Check(State);
                 }
             }

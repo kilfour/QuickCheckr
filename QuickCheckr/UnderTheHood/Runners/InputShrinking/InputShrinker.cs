@@ -9,9 +9,9 @@ public class InputShrinker(
 {
     public int Run()
     {
-        State.Docket.Record(new InputShrinkingStarted(State.Memory.ShortTermMemory.Count()));
+        State.Docket.Record(new InputShrinkingStarted(State.Memory.Count()));
         var shrinkCount = 0;
-        foreach (var (executionId, shortTermMemory) in State.Memory.ShortTermMemory.Entries())
+        foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
             var inputs = shortTermMemory.GetInputs();
             foreach (var (key, value) in inputs)
@@ -34,7 +34,7 @@ public class InputShrinker(
                 State.Docket.Record(new InputShrinkRunEnded(executionId, key));
             }
         }
-        State.Docket.Record(new InputShrinkingEnded(State.Memory.ShortTermMemory.Count()));
+        State.Docket.Record(new InputShrinkingEnded(State.Memory.Count()));
         return shrinkCount;
     }
 }
