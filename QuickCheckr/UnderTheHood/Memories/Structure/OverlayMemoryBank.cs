@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Memories;
+namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class OverlayMemoryBank : MemoryBank
 {

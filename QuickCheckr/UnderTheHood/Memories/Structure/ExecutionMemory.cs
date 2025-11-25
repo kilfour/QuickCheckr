@@ -1,7 +1,4 @@
-using QuickCheckr.UnderTheHood.Memories;
-
-namespace QuickCheckr.UnderTheHood;
-
+namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class ExecutionMemory
 {

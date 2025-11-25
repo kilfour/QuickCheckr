@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories;
+using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;

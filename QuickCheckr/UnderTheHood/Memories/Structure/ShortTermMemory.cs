@@ -1,7 +1,6 @@
-
 using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 
-namespace QuickCheckr.UnderTheHood.Memories;
+namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class ShortTermMemory
 {

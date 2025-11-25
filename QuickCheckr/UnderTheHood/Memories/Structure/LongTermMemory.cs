@@ -1,7 +1,6 @@
-
 using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 
-namespace QuickCheckr.UnderTheHood.Memories;
+namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class LongTermMemory
 {
@@ -25,7 +24,6 @@ public class LongTermMemory
     // --------------------------------------------------------------------------
     // Stashed
     private MemoryBank stashed = new();
-    private readonly Dictionary<string, object?> values = [];
     public T StoreStashed<T>(string key, Func<T> factory)
         => stashed.Store(key, factory)!;
     public T GetStashed<T>(string key) => stashed.Get<T>(key)!;

@@ -1,6 +1,6 @@
 using System.Collections;
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickCheckr.UnderTheHood.Memories;
+using QuickCheckr.UnderTheHood.Memories.Structure;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
@@ -21,9 +21,6 @@ public class ShrinkEachElementStrategy
             var before = theList[ix];
             var valueType = before!.GetType();
             var elementType = valueType;
-            // var elementType = valueType.IsGenericType
-            //     ? valueType.GetGenericArguments().First()
-            //     : typeof(object);
             using (state.Memory.ScopedSwap(executionId, key, theList))
             {
                 var swapper = new MemoryLens(
@@ -38,8 +35,6 @@ public class ShrinkEachElementStrategy
                 {
                     var clues = ShrinkStrategyPicker.Input(state, check, executionId, key, before, $"{fullKey}.{GetMappedIndex(index)}");
                     var removeForShrinking = !clues.Any();
-                    // state.Memory.AccessForForThisExecution().GetDecorated(key).GetShrinkTraces()
-                    //     .Any(a => a.Key == $"{fullKey}.{GetMappedIndex(index)}" && a.IsIrrelevant);
                     if (removeForShrinking)
                     {
                         values.Add("_");
@@ -54,9 +49,6 @@ public class ShrinkEachElementStrategy
                 }
             }
         }
-        // var shrinkValues = Children.Values.Select(a => a.GetShrinkReportString("_")).Where(a => !string.IsNullOrEmpty(a));
-        //     if (shrinkValues.Any())
-        //         return $"[ {string.Join(", ", shrinkValues)} ]";
         var finalClue = new InputShrinkingClue
         {
             ExecutionId = executionId,
