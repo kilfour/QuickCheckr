@@ -21,7 +21,7 @@ public static partial class Checkr
         {
             if (ActionNeedsToBeSkipped(key, state))
                 return CheckrResult.Default<T>(state);
-            state.ShortTermMemories.Current.StoreAction(key);
+            state.ShortTermMemories.StoreAction(key);
             try
             {
                 return CheckrResult.Some(state, func());
@@ -34,5 +34,5 @@ public static partial class Checkr
         };
 
     private static bool ActionNeedsToBeSkipped(string key, CheckrState state)
-        => state.EvidenceRecorder.IsReplay && !state.ShortTermMemories.Current.GetActions().Contains(key);
+        => state.EvidenceRecorder.IsReplay && !state.ShortTermMemories.HasAction(key);
 }

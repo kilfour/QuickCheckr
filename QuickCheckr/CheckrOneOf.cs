@@ -18,7 +18,7 @@ public static partial class Checkr
         var key = $"OneOf|{Path.GetFileName(file)}:{line}|{member}|{scripts.Length}";
         return state =>
             {
-                var index = state.ShortTermMemories.Current.StoreVariable(key,
+                var index = state.ShortTermMemories.StoreVariable(key,
                     () => Fuzzr.Int(0, scripts.Length)(state.FuzzrState).Value);
                 return scripts[index](state);
             };
@@ -40,7 +40,7 @@ public static partial class Checkr
                     scripts.Select((a, ix) => (ix, a.condition))
                         .Where(a => a.condition())
                         .Select(a => a.ix);
-                var index = state.ShortTermMemories.Current.StoreVariable(key,
+                var index = state.ShortTermMemories.StoreVariable(key,
                     () => Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value);
                 var script = scripts[index];
                 if (script.condition())

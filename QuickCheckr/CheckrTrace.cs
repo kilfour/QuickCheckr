@@ -8,21 +8,21 @@ public static partial class Checkr
     public static CheckrOf<Case> Trace<T>(string key, T? obj) =>
         state =>
         {
-            state.ShortTermMemories.Current.StoreTrace(key, () => Introduce.This(obj!, false));
+            state.ShortTermMemories.StoreTrace(key, () => Introduce.This(obj!, false));
             return CheckrResult.CaseOnly(state);
         };
 
     public static CheckrOf<Case> Trace<T>(string key, T? obj, Func<string, string> formatter) =>
         state =>
         {
-            state.ShortTermMemories.Current.StoreTrace(key, () => formatter(Introduce.This(obj!, false)));
+            state.ShortTermMemories.StoreTrace(key, () => formatter(Introduce.This(obj!, false)));
             return CheckrResult.CaseOnly(state);
         };
 
     public static CheckrOf<Case> Trace(string key, Func<string> trace) =>
         state =>
         {
-            state.ShortTermMemories.Current.StoreTrace(key, trace);
+            state.ShortTermMemories.StoreTrace(key, trace);
             return CheckrResult.CaseOnly(state);
         };
 

@@ -29,7 +29,7 @@ public class ShortTermMemory
 
 
     // --------------------------------------------------------------------------
-    // OneOf Operations & maybe future variables
+    // Variables
     private readonly MemoryBank variables = new();
     public T? StoreVariable<T>(string key, Func<T> factory)
         => variables.Store(key, factory);
