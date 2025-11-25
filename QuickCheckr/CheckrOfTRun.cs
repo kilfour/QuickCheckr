@@ -2,6 +2,7 @@ using System.Diagnostics;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Configuration;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Protocol;
 
 namespace QuickCheckr;
 
