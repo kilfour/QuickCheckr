@@ -56,3 +56,4 @@ nunit-*.xml
 *.log
 
 temp*.md
+obfuscation.md

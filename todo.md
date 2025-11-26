@@ -2,7 +2,6 @@
 * QOL (major): throw exception when multiple writes occur to the same memorybank with the same key on the same execution
   * check OneOf, more than one in same checkr => same key => problem
   * guard against reuse keys all over
-* passed specs
 * port
   * the remaining collection shrinking tests
   * object shrinking
