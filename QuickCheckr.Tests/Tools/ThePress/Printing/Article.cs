@@ -45,9 +45,6 @@ public class Article(CaseFile caseFile)
     public PassedSpecArticle PassedSpec(int number)
         => new(caseFile.PassedSpecDepositions[number - 1]);
 
-
-    public WordCount Total()
-        => new(caseFile.Verdict!.ExecutionDepositions);
-
+    public WordCount Total() => new(caseFile);
     public int Seed() => caseFile.Verdict!.Seed;
 }

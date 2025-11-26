@@ -21,3 +21,11 @@
  =====================================================
   !! Spec Failed: Assigned Coaches Must Be Suitable
  =====================================================
+ Passed Specs
+ - Course Name Set: 4x
+ - Coach Name is set: 9x
+ - Coach Skills Set: 2x
+ - Coach is assigned: 4x
+ - Assigned Coaches Must Be Suitable: 9x
+ - Course Required Skills Set: 1x
+ ------------------------------------------------------------

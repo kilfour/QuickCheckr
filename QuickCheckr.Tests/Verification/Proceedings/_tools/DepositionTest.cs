@@ -17,7 +17,8 @@ public abstract class DepositionTest
                 OriginalRunExecutionCount: 10,
                 ExecutionCount: 4,
                 ShrinkCount: 1,
-                Seed: 12345678
+                Seed: 12345678,
+                PassedSpecs: new Dictionary<string, int>()
             );
 
     protected LinesReader Transcribe(CaseFile caseFile)

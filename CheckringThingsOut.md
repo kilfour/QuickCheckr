@@ -119,7 +119,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:157:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:156:1
  Original failing run:    1 execution
  Seed:                    769641533
  ------------------------------------------------------------

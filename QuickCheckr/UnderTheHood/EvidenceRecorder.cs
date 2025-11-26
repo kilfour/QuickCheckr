@@ -55,9 +55,12 @@ public class EvidenceRecorder
         if (IsReplay) return currentFailed;
         return runFailed;
     }
-
+    private readonly Dictionary<string, int> passedSpecs = [];
+    public IReadOnlyDictionary<string, int> PassedSpecs => passedSpecs;
     public void SpecPassed(string key)
     {
-
+        if (IsReplay) return;
+        if (passedSpecs.TryGetValue(key, out int value)) passedSpecs[key] = ++value;
+        else passedSpecs.Add(key, 1);
     }
 }

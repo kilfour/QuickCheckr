@@ -7,4 +7,5 @@ public record Dossier(
     int OriginalRunExecutionCount,
     int ExecutionCount,
     int ShrinkCount,
-    int Seed);
+    int Seed,
+    IReadOnlyDictionary<string, int> PassedSpecs);

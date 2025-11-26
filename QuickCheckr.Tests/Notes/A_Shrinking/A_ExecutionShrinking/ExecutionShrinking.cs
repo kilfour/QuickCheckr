@@ -1,5 +1,6 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -9,7 +10,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.A_ExecutionShrinking;
 
 [DocFile]
 [DocContent("This is the first step in QuickCheckr shrinking.")]
-public class ExecutionShrinking
+public class ExecutionShrinking : BaseTest
 {
     [Fact]
     [DocContent("The following simple example fails on the third execution.")]
@@ -30,31 +31,22 @@ So after *Execution Shrinking*, the result is:
     public void Example()
     {
         var article = TheJournalist.Exposes(ExampleTest);
+        WriteAsserts(article);
+        WriteReport<ExecutionShrinking>(article);
+        Verify(article);
+    }
+
+    private static void Verify(Article article)
+    {
         Assert.Equal("Counter does not equal 3", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        var execution = article.Execution(1).Read();
-        Assert.Equal(3, execution.ExecutionId);
-        var input = article.Execution(1).Input(1).Read();
-        Assert.Equal("counter", input.Label);
-        Assert.Equal("3", input.Value);
-
-        var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report);
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
-        Assert.Contains(" Location: ", reader.NextLine());
-        Assert.Equal(" Original failing run:    3 executions", reader.NextLine());
-        Assert.Equal(" Minimal failing case:    1 execution (after 2 shrinks)", reader.NextLine());
-        Assert.Equal(" Seed:                    669391953", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (3):", reader.NextLine());
-        Assert.Equal("   - Input: counter = 3", reader.NextLine());
-        Assert.Equal(" ============================================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Counter does not equal 3", reader.NextLine());
-        Assert.Equal(" ============================================", reader.NextLine());
-        Assert.True(reader.EndOfContent());
-        WriteReport.ToFile("ExecutionShrinking.txt", report);
+        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(3, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Counter does not equal 3", article.PassedSpec(1).Read().Label);
+        Assert.Equal(2, article.PassedSpec(1).Read().TimesPassed);
     }
 
     private static void ExampleTest()

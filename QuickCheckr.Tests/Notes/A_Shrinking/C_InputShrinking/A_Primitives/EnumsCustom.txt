@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest_Custom
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:50:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
  Original failing run:    1 execution
  Seed:                    1205305161
  ------------------------------------------------------------

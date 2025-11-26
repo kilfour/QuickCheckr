@@ -34,6 +34,7 @@ public class CheckrOneOf : BaseTest
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
+        Assert.Equal(1, article.Total().PassedSpecs());
         Assert.Equal(10, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Ops 2, Add 1", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Ops1, Add 1", article.Execution(1).Action(2).Read().Label);
@@ -43,7 +44,8 @@ public class CheckrOneOf : BaseTest
         Assert.Equal("{ Values: [ 2, 2, 1, 1, 2, 2, 2, 2, 2, 1 ] }", article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("2", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("{ Values: [ 2, 2, 1, 1, 2, 2, 2, 2, 2, 1 ] }", article.Execution(1).Trace(2).Read().Value);
-
+        Assert.Equal("Counter fails on 10", article.PassedSpec(1).Read().Label);
+        Assert.Equal(9, article.PassedSpec(1).Read().TimesPassed);
     }
 
     [CodeSnippet]

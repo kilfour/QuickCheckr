@@ -49,7 +49,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
                 OriginalRunExecutionCount: originalRunExecutionCount,
                 ExecutionCount: State.Memory.Count(),
                 ShrinkCount: shrinkCount,
-                Seed: State.FuzzrState.Seed
+                Seed: State.FuzzrState.Seed,
+                PassedSpecs: State.EvidenceRecorder.PassedSpecs
             );
         return Compile.TheCaseFile(dossier, State.Memory);
     }

@@ -13,7 +13,10 @@ public static class Compile
         {
             verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
         }
-        return CaseFile.WithVerdict(verdict);
+        var caseFile = CaseFile.WithVerdict(verdict);
+        foreach (var passedSpec in dossier.PassedSpecs)
+            caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
+        return caseFile;
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
