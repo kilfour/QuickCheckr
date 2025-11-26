@@ -13,11 +13,12 @@ public record CheckrRunnerConfig
         Signal = config.Diagnose == null ? null : QuickPulse.Signal.From(config.Diagnose).SetArtery(FileLog.Write());
         ShrinkingActions = config.ShrinkingActions;
         NoShrinking = config.NoShrinking;
+        FileAs = config.FileAs;
     }
+
     public int? Seed { get; init; }
     public Signal<IFiling>? Signal { get; init; }
     public bool NoShrinking { get; init; }
     public bool ShrinkingActions { get; init; }
-
-
+    public string FileAs { get; init; }
 }

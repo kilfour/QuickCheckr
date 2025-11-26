@@ -79,7 +79,6 @@ And finally here's the system invariant. Any coach assigned a course must have t
         Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Course Name", article.Execution(4).Trace(1).Read().Label);
         Assert.Equal("Course-3", article.Execution(4).Trace(1).Read().Value);
-        ExplainMe<BoltingHorses>(false);
     }
     private static readonly string[] SkillPool =
     [

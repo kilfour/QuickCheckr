@@ -45,7 +45,6 @@ The report shows:
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
         WriteReport(article, "SpecAlwaysFalse.txt");
-        ExplainMe<CheckringThingsOut>(true);
     }
 
     [CodeSnippet]

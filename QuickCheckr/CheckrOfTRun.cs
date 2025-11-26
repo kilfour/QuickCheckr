@@ -6,6 +6,7 @@ using QuickCheckr.UnderTheHood.Protocol;
 
 namespace QuickCheckr;
 
+
 public static class CheckrOfTRun
 {
     [StackTraceHidden]
@@ -51,7 +52,9 @@ public static class CheckrOfTRun
         {
             var caseFile = new CheckrRunner(check, config).Run(executionsPerRun.NumberOfExecutions);
             if (caseFile.HasVerdict())
+            {
                 throw new FalsifiableException(caseFile);
+            }
         }
         return CaseFile.Empty();
     }

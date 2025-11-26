@@ -21,7 +21,6 @@ public class ActingOutOfSync : BaseTest
         WriteAsserts(article);
         WriteReport<ActingOutOfSync>(article);
         Verify(article);
-        ExplainMe<ActingOutOfSync>(true);
     }
 
     private static void Verify(Article article)

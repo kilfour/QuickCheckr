@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Protocol;
@@ -6,6 +7,8 @@ using QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
+using QuickPulse;
+using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -13,11 +16,25 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
 {
     public CheckrOf<Case> Check { get; init; } = check;
     public CheckrState State { get; init; } = new(config.Signal, config.Seed);
+    private readonly Vault vault =
+        string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config.FileAs);
 
     public CaseFile Run(int numberOfExecutions)
     {
         new InitialRun(State, Check).Run(numberOfExecutions);
-        if (State.EvidenceRecorder.Failed()) return HandleFailure();
+        if (State.EvidenceRecorder.Failed())
+        {
+            var caseFile = HandleFailure();
+            vault.AddSeed(State.FuzzrState.Seed, numberOfExecutions);
+            if (!string.IsNullOrWhiteSpace(config.FileAs))
+            {
+                var filenameCf = Path.Combine(".quickcheckr", config.FileAs, $"report.qr");
+                Signal.From<string>(a => Pulse.Trace(a))
+                    .SetArtery(FileLog.Write(filenameCf))
+                    .Pulse(TheClerk.Transcribes(caseFile));
+            }
+            return caseFile;
+        }
         return CaseFile.Empty();
     }
 
