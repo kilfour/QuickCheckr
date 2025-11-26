@@ -1,22 +1,11 @@
 ### Main
-* check OneOf, more than one in same checkr => same key => problem
-* guard against reuse keys all over
-## Keys as Stable Identifiers
-
-
-
-If QuickCheckr detects that a key is written more than once, it throws a descriptive exception immediately. This ensures:
-
-* **Consistent, trustworthy reports** – every label refers to exactly one value or action.
-* **Predictable shrinking** – the engine always knows which value corresponds to which key.
-* **Early, precise feedback** – accidental reuse is caught instantly during development.
-
-
+* QOL (major): throw exception when multiple writes occur to the same memorybank with the same key on the same execution
+  * check OneOf, more than one in same checkr => same key => problem
+  * guard against reuse keys all over
 * passed specs
 * port
   * the remaining collection shrinking tests
   * object shrinking
-* QOL (major): throw exception when multiple writes occur to the same memorybank with the same key on the same execution
 * async !!
 
 ### Minor
