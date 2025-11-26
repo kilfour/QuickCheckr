@@ -6,7 +6,7 @@
 * port
   * the remaining collection shrinking tests
   * object shrinking
-* async !!
+* async : Act, add overloads ...If and Action variants
 
 ### Minor
 !! fix InputShrinking shrinkCount

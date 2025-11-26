@@ -4,6 +4,10 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
+    // TODO : Add overloads ...If and Action variants
+    public static CheckrOf<T> Act<T>(string key, Func<Task<T>> func)
+        => TryCatch(key, () => func().GetAwaiter().GetResult());
+
     public static CheckrOf<T> Act<T>(string key, Func<T> func)
         => TryCatch(key, func);
 
