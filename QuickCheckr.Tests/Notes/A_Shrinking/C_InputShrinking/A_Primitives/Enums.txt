@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    1732064051
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input Two = Monday
+ ========================================
+  !! Spec Failed: Should not be Monday
+ ========================================

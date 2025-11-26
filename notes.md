@@ -148,6 +148,45 @@ Result:
   !! Spec Failed: Should not be 42
  ====================================
 ```
+#### Enums
+```csharp
+    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
+    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
+    from spec in Checkr.Spec("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    1732064051
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input Two = Monday
+ ========================================
+  !! Spec Failed: Should not be Monday
+ ========================================
+```
+```csharp
+    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
+    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
+    from spec in Checkr.Spec("Should not be Two", () => inputTwo != SoundCheck.Two)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTest_Custom
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:50:1
+ Original failing run:    1 execution
+ Seed:                    1205305161
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input Two = Two
+ =====================================
+  !! Spec Failed: Should not be Two
+ =====================================
+```
 #### Collections
 ##### Removing Irrelevant Items
 When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.

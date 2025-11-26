@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_Custom
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:50:1
+ Original failing run:    1 execution
+ Seed:                    1205305161
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input Two = Two
+ =====================================
+  !! Spec Failed: Should not be Two
+ =====================================

@@ -51,23 +51,35 @@ And finally here's the system invariant. Any coach assigned a course must have t
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));
-        WriteAsserts(article, true);
-        WriteReport<BoltingHorses>(article, true);
+        WriteAsserts(article);
+        WriteReport<BoltingHorses>(article);
         Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
-        // Assert.Equal(4, article.Total().Executions());
-        // Assert.Equal(4, article.Total().Actions());
-        // Assert.Equal(1, article.Total().Inputs());
-        // Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        // Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
-        // Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        // Assert.Equal("Create Coach", article.Execution(2).Action(1).Read().Label);
-        // Assert.Equal(8, article.Execution(3).Read().ExecutionId);
-        // Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
-        // Assert.Equal(15, article.Execution(4).Read().ExecutionId);
-        // Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
-        // Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
-        // Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
-        ExplainMe<BoltingHorses>(true);
+        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
+        Assert.Equal(4, article.Total().Executions());
+        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(5, article.Total().Traces());
+        Assert.Equal(8, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Coach Name", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("Coach-5", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(10, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Create Course", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Course Name", article.Execution(2).Trace(1).Read().Label);
+        Assert.Equal("Course-3", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(13, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Coach Name", article.Execution(3).Trace(1).Read().Label);
+        Assert.Equal("Coach-5", article.Execution(3).Trace(1).Read().Value);
+        Assert.Equal("Course Name", article.Execution(3).Trace(2).Read().Label);
+        Assert.Equal("Course-3", article.Execution(3).Trace(2).Read().Value);
+        Assert.Equal(20, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
+        Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("Course Name", article.Execution(4).Trace(1).Read().Label);
+        Assert.Equal("Course-3", article.Execution(4).Trace(1).Read().Value);
+        ExplainMe<BoltingHorses>(false);
     }
     private static readonly string[] SkillPool =
     [

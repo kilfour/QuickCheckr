@@ -34,7 +34,7 @@ public class A_ItIsWrittenButOnlyOnce : BaseTest
     public void TrackrStashed()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => TrackrStashed_GetCheckr().Run());
-        Assert.Equal(TrackrStashed_Message(), ex.Message.PulseToLog());
+        Assert.Equal(TrackrStashed_Message(), ex.Message);
     }
 
     [CodeSnippet]
@@ -70,7 +70,7 @@ Possible solutions:
     public void CheckrInput()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => CheckrInput_GetCheckr().Run());
-        Assert.Equal(CheckrInput_Message(), ex.Message.PulseToLog());
+        Assert.Equal(CheckrInput_Message(), ex.Message);
     }
 
     [CodeSnippet]
