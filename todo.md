@@ -7,6 +7,7 @@
   * the remaining collection shrinking tests
   * object shrinking
 * async : Act, add overloads ...If and Action variants
+* test ActCarefully more
 
 ### Minor
 !! fix InputShrinking shrinkCount
