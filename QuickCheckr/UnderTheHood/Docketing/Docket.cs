@@ -24,11 +24,11 @@ public record struct ExecutionRemoved(int ExecutionId) : IFiling;
 public record struct ExecutionShrinkRunEnded(int NumberOfExecutions) : IFiling;
 public record struct ExecutionShrinkingEnded(int NumberOfExecutions) : IFiling;
 
-public record struct ActionShrinkingStarted(int NumberOfExecutions) : IFiling;
-public record struct ActionShrinkRunStarted(int NumberOfExecutions) : IFiling;
+public record struct ActionShrinkingStarted() : IFiling;
+public record struct ActionShrinkRunStarted() : IFiling;
 public record struct ActionRemoved(int ExecutionId, string Key) : IFiling;
-public record struct ActionShrinkRunEnded(int NumberOfExecutions) : IFiling;
-public record struct ActionShrinkingEnded(int NumberOfExecutions) : IFiling;
+public record struct ActionShrinkRunEnded() : IFiling;
+public record struct ActionShrinkingEnded() : IFiling;
 
 
 public record struct InputShrinkingStarted(int NumberOfExecutions) : IFiling;

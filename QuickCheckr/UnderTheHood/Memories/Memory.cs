@@ -17,9 +17,16 @@ public class Memory
         ShortTermMemory.GotoExecution(executionNumber);
     }
 
-    public void Reset()
+    public int NextExecution()
+    {
+        ClearGuards();
+        return ShortTermMemory.NextExecution();
+    }
+
+    public int Reset()
     {
         LongTermMemory.Reset();
+        return ShortTermMemory.Reset();
     }
 
     public IReadOnlyList<int> Numbers => ShortTermMemory.Numbers;
@@ -95,8 +102,8 @@ public class Memory
     // Shrinkers
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
         => ShortTermMemory.StoreShrinker(key, shrinker);
-    public Func<T, IEnumerable<T>> GetShrinker<T>(string key)
-        => ShortTermMemory.GetShrinker<T>(key);
+    public Func<T, IEnumerable<T>> GetShrinker<T>(int executionId, string key)
+        => ShortTermMemory.GetShrinker<T>(executionId, key);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

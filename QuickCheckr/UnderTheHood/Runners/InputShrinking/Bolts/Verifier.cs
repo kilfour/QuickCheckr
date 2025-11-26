@@ -12,6 +12,12 @@ public class Verifier(CheckrState State,
     {
         try
         {
+            // var id = State.StartReplay();
+            // while (id > 0)
+            // {
+            //     Check(State);
+            //     id = State.Memory.NextExecution();
+            // }
             State.StartReplay();
             using (State.Memory.ScopedSwap(executionId, key, value))
             {

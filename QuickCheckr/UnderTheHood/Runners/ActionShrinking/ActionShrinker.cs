@@ -8,9 +8,8 @@ public class ActionShrinker(
 {
     public int Run()
     {
-        State.Docket.Record(new ActionShrinkingStarted(State.Memory.Count()));
         var shrinkCount = 0;
-        foreach (var (id, shortTermMemory) in State.Memory.Entries())
+        foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
             var actionKeys = shortTermMemory.GetActions();
             if (actionKeys.Count < 1) continue;
@@ -20,7 +19,7 @@ public class ActionShrinker(
                 ExecuteRun();
                 if (State.EvidenceRecorder.Failed())
                 {
-                    State.Docket.Record(new ActionRemoved(id, key));
+                    State.Docket.Record(new ActionRemoved(executionId, key));
                     shrinkCount++;
                 }
                 else
@@ -28,28 +27,17 @@ public class ActionShrinker(
                     shortTermMemory.StoreAction(key);
                 }
             }
-            State.Docket.Record(new ActionShrinkRunEnded(State.Memory.Count()));
         }
-        State.Docket.Record(new ActionShrinkingEnded(State.Memory.Count()));
         return shrinkCount;
     }
 
     private void ExecuteRun()
     {
-        State.Docket.Record(new ActionShrinkRunStarted(State.Memory.Count()));
-        State.StartReplay();
-        foreach (var executionNumber in State.Memory.Numbers)
+        var executionId = State.StartReplay();
+        while (executionId > 0)
         {
-            PerformExecution(executionNumber);
+            Check(State);
+            executionId = State.Memory.NextExecution();
         }
-        State.Docket.Record(new ActionShrinkRunEnded(State.Memory.Count()));
-    }
-
-    private void PerformExecution(int executionNumber)
-    {
-        State.Docket.Record(new ExecutionStarted(executionNumber));
-        State.Memory.GotoExecution(executionNumber);
-        Check(State);
-        State.Docket.Record(new ExecutionFinished(executionNumber));
     }
 }

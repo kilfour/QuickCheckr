@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
-
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class ShortTermMemory
@@ -11,12 +9,21 @@ public class ShortTermMemory
 
     public IReadOnlyList<int> Numbers => [.. memories.Keys];
 
+    public int Reset()
+        => CurrentExecutionNumber = Numbers.FirstOrDefault();
+
     public int StartNewExecution()
     {
         CurrentExecutionNumber++;
         memories[CurrentExecutionNumber] = new ExecutionMemory();
         return CurrentExecutionNumber;
     }
+
+    public void GotoExecution(int executionNumber)
+        => CurrentExecutionNumber = executionNumber;
+
+    public int NextExecution()
+        => CurrentExecutionNumber = Numbers.FirstOrDefault(a => a > CurrentExecutionNumber);
 
     public void Remove(int executionNumber)
         => memories.Remove(executionNumber);
@@ -26,8 +33,6 @@ public class ShortTermMemory
     public IDisposable NestedValue(int executionId, MemoryLens swapper)
         => memories[executionId].NestedValue(swapper);
 
-    public void GotoExecution(int executionNumber)
-        => CurrentExecutionNumber = executionNumber;
 
     public ExecutionMemory GetMemory(int executionNumber)
         => memories[executionNumber];
@@ -58,8 +63,8 @@ public class ShortTermMemory
     // Shrinkers
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
         => Current.StoreShrinker(key, shrinker);
-    public Func<T, IEnumerable<T>> GetShrinker<T>(string key)
-        => Current.GetShrinker<T>(key);
+    public Func<T, IEnumerable<T>> GetShrinker<T>(int executionId, string key)
+        => memories[executionId].GetShrinker<T>(key);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

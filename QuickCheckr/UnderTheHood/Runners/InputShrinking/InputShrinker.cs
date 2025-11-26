@@ -1,4 +1,3 @@
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking;
@@ -9,14 +8,12 @@ public class InputShrinker(
 {
     public int Run()
     {
-        State.Docket.Record(new InputShrinkingStarted(State.Memory.Count()));
         var shrinkCount = 0;
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
             var inputs = shortTermMemory.GetInputs();
             foreach (var (key, value) in inputs)
             {
-                State.Docket.Record(new InputShrinkRunStarted(executionId, key));
                 var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
@@ -31,10 +28,8 @@ public class InputShrinker(
                         shortTermMemory.StoreInputShrinkOutcome(key, keep);
                     }
                 }
-                State.Docket.Record(new InputShrinkRunEnded(executionId, key));
             }
         }
-        State.Docket.Record(new InputShrinkingEnded(State.Memory.Count()));
         return shrinkCount;
     }
 }

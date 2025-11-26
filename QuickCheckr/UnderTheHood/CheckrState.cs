@@ -12,9 +12,9 @@ public class CheckrState(Signal<IFiling>? signal, int? seed = null)
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signal);
 
-    public void StartReplay()
+    public int StartReplay()
     {
-        Memory.Reset();
         EvidenceRecorder.StartReplay();
+        return Memory.Reset();
     }
 }
