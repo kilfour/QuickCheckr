@@ -30,7 +30,7 @@ So after *Execution Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    ExampleTest
- Location:                Notes\A_Shrinking\A_ExecutionShrinking\ExecutionShrinking.cs:62:1
+ Location:                Notes\A_Shrinking\A_ExecutionShrinking\ExecutionShrinking.cs:54:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
@@ -40,6 +40,9 @@ So after *Execution Shrinking*, the result is:
  ============================================
   !! Spec Failed: Counter does not equal 3
  ============================================
+ Passed Specs
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
 ```
 ### Action Shrinking
 This is the second step in QuickCheckr shrinking, but it needs to be explicitely activated
@@ -177,7 +180,7 @@ Result:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Custom
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:50:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
  Original failing run:    1 execution
  Seed:                    1205305161
  ------------------------------------------------------------
@@ -535,6 +538,9 @@ Run( a = 6 ) // count == 3 → fail
  ================================
   !! Spec Failed: Returns true
  ================================
+ Passed Specs
+ - Returns true: 35x
+ ------------------------------------------------------------
 ```
 #### Convoluted Countdown
 ```csharp
@@ -582,6 +588,9 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
  ================================
   !! Spec Failed: Returns true
  ================================
+ Passed Specs
+ - Returns true: 35x
+ ------------------------------------------------------------
 ```
 #### Multiple Methods
 ```csharp
@@ -647,6 +656,10 @@ RunInt(6)            // bug ends with "1221" and `a == 6` → fail
  =======================================
   !! Spec Failed: RunInt returns true
  =======================================
+ Passed Specs
+ - RunString returns true: 34x
+ - RunInt returns true: 24x
+ ------------------------------------------------------------
 ```
 ### There Is Always An Account
 #### The Model:
@@ -685,6 +698,9 @@ public class Account
  ================================
   !! Spec Failed: No Overdraft
  ================================
+ Passed Specs
+ - No Overdraft: 4x
+ ------------------------------------------------------------
 ```
 #### Original Run:
 ```text
@@ -701,6 +717,9 @@ public class Account
  ================================
   !! Spec Failed: No Overdraft
  ================================
+ Passed Specs
+ - No Overdraft: 4x
+ ------------------------------------------------------------
 ```
 ### Bolting Horses
 For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
@@ -855,6 +874,14 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  =====================================================
   !! Spec Failed: Assigned Coaches Must Be Suitable
  =====================================================
+ Passed Specs
+ - Course Name Set: 4x
+ - Coach Name is set: 9x
+ - Coach Skills Set: 2x
+ - Coach is assigned: 4x
+ - Assigned Coaches Must Be Suitable: 9x
+ - Course Required Skills Set: 1x
+ ------------------------------------------------------------
 ```
 ## It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
@@ -900,4 +927,33 @@ QuickCheckr treats keys as stable identifiers.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 Possible solutions:
 - Ensure each 'Checkr.Input' uses a unique key.
+```
+## Acting Out Of Sync
+```csharp
+public class Eventually
+{
+    public static Task<int> AddOne(int input)
+    {
+        return Task.FromResult(input + 1);
+    }
+}
+```
+```csharp
+    from input in Checkr.Input("Input", Fuzzr.Int())
+    from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
+    from spec in Checkr.Spec("Is not 42", () => result != 42)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\Y_Async\ActingOutOfSync.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    367926403
+ ------------------------------------------------------------
+  Executed (1): Eventually.AddOne
+   - Input: Input = 41
+ =============================
+  !! Spec Failed: Is not 42
+ =============================
 ```
