@@ -2,7 +2,6 @@ using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 
 namespace QuickCheckr.Tests.Notes.X_Various;
