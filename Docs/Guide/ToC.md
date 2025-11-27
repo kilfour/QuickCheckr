@@ -1,0 +1,3 @@
+- [Guide](Guide.md)
+  - [Checkr-ing Things Out](A_CheckringThingsOut/CheckringThingsOut.md)
+  - [Bolting Horses](E_HorsesAgain/BoltingHorses.md)

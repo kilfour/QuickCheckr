@@ -1,4 +1,4 @@
-using QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain.Model;
+using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 
 namespace QuickCheckr.Tests.Notes.Y_Async;
 

@@ -1,10 +1,11 @@
-using QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain.Model;
+using QuickCheckr;
+using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain;
+namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 
 [DocFile]
 [DocContent(

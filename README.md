@@ -4,7 +4,7 @@
 
 Property-based testing for the pragmatic.  
 
-[![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/guide.md)
+[![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/docs/guide/guide.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)  
 ## Example
@@ -73,8 +73,8 @@ dotnet add package QuickCheckr
 QuickCheckr is in the process of being fully documented, with real, executable examples for every feature,
 and every statement in the docs is backed by a test.
 
-You can explore it here:
-* **[One File Guide](https://github.com/kilfour/QuickCheckr/blob/main/guide.md)**
+- **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/docs/guide/a-checkring-things-out/checkring-things-out.md)
+- **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/docs/guide/b-bolting-horses/bolting-horses.md)
   
 ## Roadmap
 

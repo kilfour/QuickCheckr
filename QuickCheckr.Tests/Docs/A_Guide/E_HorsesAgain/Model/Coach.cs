@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.T_Examples.E_HorsesAgain.Model;
+namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 
 [CodeExample]
 public class Coach(string name)
