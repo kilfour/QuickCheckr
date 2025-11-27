@@ -9,8 +9,8 @@ public static class ToLinq
 		Func<TValueOne, TValueTwo> selector) =>
 			state =>
 				{
-					// if (state.Shifter.CurrentContext.NeedsToStop())
-					// 	return CheckrResult.None<TValueTwo>(state);
+					if (state.RunStopped)
+						return CheckrResult.Default<TValueTwo>(state);
 					return CheckrResult.Some(state, selector(script(state).Value));
 				};
 
@@ -19,11 +19,11 @@ public static class ToLinq
 		Func<TSource, CheckrOf<TResult>> selector) =>
 			state =>
 				{
-					// if (state.Shifter.CurrentContext.NeedsToStop())
-					// 	return CheckrResult.None<TResult>(state);
+					if (state.RunStopped)
+						return CheckrResult.Default<TResult>(state);
 					var result = source(state);
-					// if (state.Shifter.CurrentContext.NeedsToStop())
-					// 	return CheckrResult.None<TResult>(state);
+					if (state.RunStopped)
+						return CheckrResult.Default<TResult>(state);
 					return selector(result.Value)(state);
 				};
 

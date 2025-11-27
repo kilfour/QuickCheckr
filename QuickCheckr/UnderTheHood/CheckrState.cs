@@ -17,4 +17,11 @@ public class CheckrState(Signal<IFiling>? signal, int? seed = null)
         EvidenceRecorder.StartReplay();
         return Memory.Reset();
     }
+
+    private bool runStopped = false;
+    public bool RunStopped => runStopped;
+    public void StopRun()
+    {
+        runStopped = true;
+    }
 }
