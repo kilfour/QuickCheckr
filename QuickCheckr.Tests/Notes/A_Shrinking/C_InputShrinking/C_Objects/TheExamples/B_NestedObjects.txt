@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\B_NestedObjects.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    803555194
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Universe = { Everything : { Answer : 42 } }
+ ===============================
+  !! Spec Failed: It's not 42
+ ===============================
