@@ -19,18 +19,18 @@ public class RemoveOneByOneStrategy
             theList.RemoveAt(ix);
             if (verifier.RunFailed(executionId, key, theList!))
             {
-                var clue = new InputShrinkingClue
-                {
-                    ExecutionId = executionId,
-                    Key = $"{fullKey}.{indexKey}",
-                    Original = value,
-                    Result = theList,
-                    Report = null,
-                    Intent = ShrinkingIntent.Remove,
-                    Reason = null,
-                    Strategy = typeof(RemoveOneByOneStrategy).Name
-                };
-                state.Docket.Record(new InputShrinkingClueFound(clue));
+                // var clue = new InputShrinkingClue
+                // {
+                //     ExecutionId = executionId,
+                //     Key = $"{fullKey}.{indexKey}",
+                //     Original = value,
+                //     Result = theList,
+                //     Report = null,
+                //     Intent = ShrinkingIntent.Remove,
+                //     Reason = null,
+                //     Strategy = typeof(RemoveOneByOneStrategy).Name
+                // };
+                // state.Docket.Record(new InputShrinkingClueFound(clue));
                 continue;
             }
             // else

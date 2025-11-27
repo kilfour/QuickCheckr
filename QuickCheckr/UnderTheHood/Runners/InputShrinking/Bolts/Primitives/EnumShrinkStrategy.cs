@@ -37,6 +37,9 @@ public class EnumShrinkStrategy
                 yield break;
             }
         }
+        var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(executionId, fullKey, value);
+        state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
+        yield return ignoreClue;
     }
 
     private static IEnumerable<object> GetEnumValues(Type type)

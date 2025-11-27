@@ -14,7 +14,8 @@ public class InputShrinker(
             var inputs = shortTermMemory.GetInputs();
             foreach (var (key, value) in inputs)
             {
-                var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key);
+                var clues = ShrinkStrategyPicker.Input(State, Check, executionId, key, value, key).ToList();
+                shrinkCount += clues.Count(a => a.Intent != ShrinkingIntent.Keep);
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
                 {

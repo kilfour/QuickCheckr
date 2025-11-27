@@ -44,6 +44,7 @@ So after *Action Shrinking*, the result is:
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal("Act Three", article.Execution(1).Action(1).Read().Label);
     }
 

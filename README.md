@@ -84,6 +84,12 @@ and every statement in the docs is backed by a test.
 * Additional diagnostic flows
 * Cookbook
   
+## Dependencies
+
+* [QuickFuzzr](https://github.com/kilfour/QuickFuzzr/blob/main/README.md): For the random input generation.
+* [QuickPulse.Show](https://github.com/kilfour/QuickPulse.Show/blob/main/README.md): For *stringifying* any C# object or value.
+* [QuickPulse](https://github.com/kilfour/QuickPulse/blob/main/README.md): Implicit through QuickPulse.Show. But also used for diagnostics filtering and transformations.
+  
 ## License
 
 This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).  
