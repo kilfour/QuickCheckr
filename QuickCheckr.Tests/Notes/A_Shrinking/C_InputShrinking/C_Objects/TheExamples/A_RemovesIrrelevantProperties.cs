@@ -5,7 +5,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects;
+namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples;
 
 [DocFile]
 public class A_RemovesIrrelevantProperties : BaseTest
