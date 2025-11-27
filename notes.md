@@ -357,6 +357,7 @@ without introducing noise from element-level changes that could not affect the o
   !! Spec Failed: IntOne /= 42
  ================================
 ```
+#### Objects
 #### Custom Shrinkers
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
