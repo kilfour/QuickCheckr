@@ -1,8 +1,8 @@
 # From QuickNet to QuickCheckr
-> The Wonder(ing) Years
+
 
 Around 2007, I was taking a break from development, and pursuing a different career.  
-But I could never stop tinkering with code. So I ([Learned Me a Haskell for Great Good!](https://learnyouahaskell.github.io/chapters.html))
+But I could never stop tinkering with code. So I [Learned Me a Haskell for Great Good!](https://learnyouahaskell.github.io/chapters.html)
 
 That's when I first encountered **QuickCheck**, and it absolutely blew my mind.
 
@@ -47,7 +47,7 @@ By then QuickNet had become **QuickDotNetCheck**, still an OO fluent interface l
 Later it became **QuickAcid**, where I introduced the LINQ composition technique that would later make QuickFuzzr so pleasant to use.  
 But the QuickAcid engine was still unreliable.
 
-Earlier this year I got a gig teaching full-stack .NET to job-seekers.  
+Then, earlier this year I got a gig teaching full-stack .NET to job-seekers.  
 Since I hadn't written C# in five years, I decided to modernize my old library to get back into the swing of things.  
 The FP stint paid off, I got the engine running better than ever, in record time.
 
@@ -57,7 +57,7 @@ Near the end of the course, when students were preparing for internships and my 
 I had some time on my hands to finish what I started.  
 I'm not saying the journey is complete, but I've definitely reached some sort of destination ...
 
-And now I have the tool I wished I had, all the way back in 2009:
+As now I have the tool I wished I had, all the way back in 2009.
 
 **QuickCheckr: CSI .NET**
 
