@@ -2,15 +2,61 @@
 
 > **CSI: .NET**
 
-TODO: One line description
+Property-based testing for the pragmatic.  
 
 [![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/guide.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)  
-## TODO : Example
+## Example
+**Buggy Code:**  
+```csharp
+public class BugHouse
+{
+    private int count;
+    public bool Run(int number)
+    {
+        if (count == 5) throw new Exception("Here's Johnny");
+        if (number == 6 && count != 3) count++;
+        if (count >= 3) count++;
+        return true;
+    }
+}
+```
+**The Checkr:**  
+```csharp
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from number in Checkr.Input("number", Fuzzr.Int())
+from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(number))
+from spec in Checkr.Spec("Returns true", () => output)
+select Case.Closed;
+```
+**Reports:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                CreateReadMe.cs:34:1
+ Original failing run:    85 executions
+ Minimal failing case:    5 executions (after 80 shrinks)
+ Seed:                    1141724745
+ ------------------------------------------------------------
+  Executed : BugHouse.Run (3 Times)
+   - Input: number = 6
+ ------------------------------------------------------------
+  Executed : BugHouse.Run (2 Times)
+ ===========================================================================
+  !! Exception Thrown: System.Exception: Here's Johnny
+ ===========================================================================
+ Passed Specs
+ - Returns true: 84x
+ ------------------------------------------------------------
+```
 ## Highlights
 
-* **TODO:** TODO
+* **LINQ-based workflow:** Build tests using familiar query expressions.
+* **Shrinking:** Reduce randomly generated scenario's to minimal failing cases.
+* **Stateful testing:** Pools, stashed objects, and multi-step behaviours supported out of the box.
+* **Deterministic:** Reproducible runs using seeds.
+* **Fully integrated with QuickFuzzr:** Use any generator or custom shrinker.
   
 ## Installation
 
@@ -24,16 +70,19 @@ dotnet add package QuickCheckr
 ```  
 ## Documentation
 
-QuickCheckr is fully documented, with real, executable examples for every feature,
+QuickCheckr is in the process of being fully documented, with real, executable examples for every feature,
 and every statement in the docs is backed by a test.
 
 You can explore it here:
 * **[One File Guide](https://github.com/kilfour/QuickCheckr/blob/main/guide.md)**
-* **[Notes](https://github.com/kilfour/QuickCheckr/blob/main/notes.md)**
   
 ## Roadmap
 
-* ...
+* Elm-style helpfull exceptions.
+* Finish the full QuickCheckr documentation (guide and reference).
+* Async helpers
+* Additional diagnostic flows
+* Cookbook
   
 ## License
 
