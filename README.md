@@ -86,10 +86,12 @@ and every statement in the docs is backed by a test.
   
 ## Dependencies
 
-* [QuickFuzzr](https://github.com/kilfour/QuickFuzzr/blob/main/README.md): For the random input generation.
+* [QuickFuzzr](https://github.com/kilfour/QuickFuzzr/blob/main/README.md): For random input generation.
 * [QuickPulse.Show](https://github.com/kilfour/QuickPulse.Show/blob/main/README.md): For *stringifying* any C# object or value.
 * [QuickPulse](https://github.com/kilfour/QuickPulse/blob/main/README.md): Implicit through QuickPulse.Show. But also used for diagnostics filtering and transformations.
   
+## [[The Wonder(ing) Years](https://github.com/kilfour/QuickPulse/blob/main/)
+> Why QuickCheckr Exists  
 ## License
 
 This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).  

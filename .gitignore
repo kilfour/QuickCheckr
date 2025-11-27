@@ -53,11 +53,11 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-nuget.md
-
 *.log
-
 temp*.md
 
 .quickpulse/
 .quickcheckr/
+
+nuget.md
+notes.md
