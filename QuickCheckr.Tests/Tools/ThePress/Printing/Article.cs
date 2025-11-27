@@ -47,4 +47,5 @@ public class Article(CaseFile caseFile)
 
     public WordCount Total() => new(caseFile);
     public int Seed() => caseFile.Verdict!.Seed;
+    public int ShrinkCount => caseFile.Verdict!.ShrinkCount;
 }

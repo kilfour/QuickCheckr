@@ -76,6 +76,9 @@ public class TheEditor
         from passedSpecCount in EmitIf(
             article.Total().PassedSpecs() > 0,
             $"Assert.Equal({article.Total().PassedSpecs()}, article.Total().PassedSpecs());")
+        from shrinkCount in EmitIf(
+            article.Total().PassedSpecs() > 0,
+            $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
         from passedSpecs in Pulse.ToFlow(PassedSpec, Enumerable.Range(1, article.Total().PassedSpecs()))
         select article;

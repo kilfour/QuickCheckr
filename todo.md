@@ -5,7 +5,7 @@
   * guard against reuse keys all over
 * port
   * the remaining collection shrinking tests, almost done 
-  * object shrinking, (almost done)
+  * object shrinking, (just records left basically, all seems to work though)
 * async : Act, add overloads ...If and Action variants
 * test ActCarefully more
 

@@ -40,6 +40,7 @@ So after *Execution Shrinking*, the result is:
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(3, article.Execution(1).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
