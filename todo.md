@@ -7,10 +7,6 @@
   * object shrinking, in progress
 * async : Act, add overloads ...If and Action variants
 * test ActCarefully more
-* Assay
-* Analyze
-* TestifyProvenWhen
-* QuickCheckr.Tests.Verification.SwapperTests
 
 ### Minor
 !! fix InputShrinking shrinkCount
@@ -19,3 +15,4 @@ InputShrinker.Run never increments shrinkCount (Runners/InputShrinking/InputShri
 
 * Nested InputShrinkingClue ?
 * Verdict nullabillity => meh
+* QuickCheckr.Tests.Verification.SwapperTests
