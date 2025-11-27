@@ -41,17 +41,17 @@ Once a failure was found (or I was convinced the SUT was correct), I removed the
 Agatha eventually faded, its main target was Silverlight, and we all know how that ended.  
 I also burned out for a while, drifted into an easy job, and wrote too much bad code.
 
-Eventually I woke up, went freelance, and returned to writing functional code.
+But eventually I woke up, went freelance, and returned to writing functional code.
 
 By then QuickNet had become **QuickDotNetCheck**, still an OO fluent interface library.  
 Later it became **QuickAcid**, where I introduced the LINQ composition technique that would later make QuickFuzzr so pleasant to use.  
 But the QuickAcid engine was still unreliable.
 
-Then, earlier this year I got a gig teaching full-stack .NET to job-seekers.  
+Then, earlier this year, I got a gig teaching full-stack .NET to job-seekers.  
 Since I hadn't written C# in five years, I decided to modernize my old library to get back into the swing of things.  
 The FP stint paid off, I got the engine running better than ever, in record time.
 
-I used it extensively during the course to verify the code students submitted ;-).
+I also used it extensively during the course to verify the code students submitted ;-).
 
 Near the end of the course, when students were preparing for internships and my technical duties were mostly done,
 I had some time on my hands to finish what I started.  
