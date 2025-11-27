@@ -129,8 +129,8 @@ and every statement in the docs is backed by a test.
 * [QuickPulse](https://github.com/kilfour/QuickPulse/blob/main/README.md): Implicit through QuickPulse.Show. But also used for diagnostics filtering and transformations.
 ")]
     private static void Dependencies() { }
-    [DocHeader("[[The Wonder(ing) Years](https://github.com/kilfour/QuickPulse/blob/main/)")]
-    [DocContent("> Why QuickCheckr Exists")]
+    [DocHeader("The Wonder(ing) Years")]
+    [DocContent("> [Why QuickCheckr Exists](https://github.com/kilfour/QuickPulse/blob/main/)")]
     [DocHeader("License")]
     [DocContent(@"
 This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).")]
