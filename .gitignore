@@ -53,6 +53,8 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+nuget.md
+
 *.log
 
 temp*.md

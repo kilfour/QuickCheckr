@@ -83,7 +83,7 @@ public class CreateReadMe : BaseTest
     [DocHeader("Highlights")]
     [DocContent(@"
 * **LINQ-based workflow:** Build tests using familiar query expressions.
-* **Shrinking:** Reduce randomly generated scenario's to minimal failing cases.
+* **Shrinking:** Reduce randomly generated scenarios to minimal failing cases.
 * **Stateful testing:** Pools, stashed objects, and multi-step behaviours supported out of the box.
 * **Deterministic:** Reproducible runs using seeds.
 * **Fully integrated with QuickFuzzr:** Use any generator or custom shrinker.
