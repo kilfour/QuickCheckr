@@ -49,6 +49,10 @@ And finally here's the system invariant. Any coach assigned a course must have t
     [DocExample(typeof(BoltingHorses), nameof(AssignedCoachesMustBeSuitable))]
     [DocContent("**The Report:**")]
     [DocCodeFile("BoltingHorses.txt", "text")]
+    [DocContent(
+@"The shrunk case shows exactly how the invariant drifted:  
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment."
+    )]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));

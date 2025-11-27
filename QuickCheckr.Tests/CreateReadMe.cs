@@ -114,7 +114,7 @@ and every statement in the docs is backed by a test.
 
     [DocHeader("Roadmap")]
     [DocContent(@"
-* Elm-style helpfull exceptions.
+* Elm-style helpful exceptions.
 * Finish the full QuickCheckr documentation (guide and reference).
 * Async helpers
 * Additional diagnostic flows

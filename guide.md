@@ -79,7 +79,7 @@ and the final select clause must return a value representing the completed case.
 
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
-`Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on avarage, once every hundred times.  
+`Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on average, once every hundred times.  
 Not ideal, so let's up the run number, like so:  
 ```csharp
 check.Run(200.Runs());
@@ -127,7 +127,7 @@ That's basically the same thing as before, because QuickCheckr does not report i
 QuickCheckr's *shrinking* can sometimes seem magical. Not a problem in this simple test,
 but when you are writing a more complex test, it is always helpful to see what's really going on.
 
-QuickCheckr is built with transparancy and discoverability as a first class concern:  
+QuickCheckr is built with transparency and discoverability as a first class concern:  
 ```csharp
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
@@ -341,3 +341,5 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```
+The shrunk case shows exactly how the invariant drifted:  
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  

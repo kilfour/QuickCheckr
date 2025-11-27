@@ -160,3 +160,5 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```
+The shrunk case shows exactly how the invariant drifted:  
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
