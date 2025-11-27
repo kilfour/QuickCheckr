@@ -10,6 +10,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 [DocFile]
 [DocContent(
 @"For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
+
 The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)
 and is demonstrative for a whole category: *Invariants drifting over time*.
 ")]

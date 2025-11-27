@@ -181,6 +181,7 @@ And here's the report:
 As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
 ## Bolting Horses
 For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
+
 The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)
 and is demonstrative for a whole category: *Invariants drifting over time*.
   
