@@ -91,7 +91,7 @@ and every statement in the docs is backed by a test.
 * [QuickPulse](https://github.com/kilfour/QuickPulse/blob/main/README.md): Implicit through QuickPulse.Show. But also used for diagnostics filtering and transformations.
   
 ## The Wonder(ing) Years
-> [Why QuickCheckr Exists](https://github.com/kilfour/QuickPulse/blob/main/)  
+> [Why QuickCheckr Exists](https://github.com/kilfour/QuickPulse/blob/main/why-quickcheckr-exists.md)  
 ## License
 
 This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).  

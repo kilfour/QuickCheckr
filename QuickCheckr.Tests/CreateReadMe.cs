@@ -130,7 +130,7 @@ and every statement in the docs is backed by a test.
 ")]
     private static void Dependencies() { }
     [DocHeader("The Wonder(ing) Years")]
-    [DocContent("> [Why QuickCheckr Exists](https://github.com/kilfour/QuickPulse/blob/main/)")]
+    [DocContent("> [Why QuickCheckr Exists](https://github.com/kilfour/QuickPulse/blob/main/why-quickcheckr-exists.md)")]
     [DocHeader("License")]
     [DocContent(@"
 This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).")]
