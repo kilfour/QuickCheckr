@@ -27,7 +27,7 @@ public class EvidenceVault : Vault
     {
         foreach (var entry in entries)
         {
-            var state = new CheckrState(null, entry.Seed);
+            var state = new CheckrState(entry.ExecutionsPerRun, null, entry.Seed);
             new InitialRun(state, check).Run(entry.ExecutionsPerRun);
             if (!state.EvidenceRecorder.Failed())
             {

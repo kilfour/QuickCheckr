@@ -50,7 +50,7 @@ public static class CheckrOfTRun
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var caseFile = new CheckrRunner(check, config).Run(executionsPerRun.NumberOfExecutions);
+            var caseFile = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions).Run();
             if (caseFile.HasVerdict())
             {
                 throw new FalsifiableException(caseFile);

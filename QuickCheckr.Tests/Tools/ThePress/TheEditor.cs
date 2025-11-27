@@ -58,7 +58,9 @@ public class TheEditor
         from failedSpec in EmitIf(
             article.FailedSpec() is not null,
             $"Assert.Equal(\"{article.FailedSpec()}\", article.FailedSpec());")
-            // from newline1 in Pulse.Trace("")
+        from failedAssat in EmitIf(
+            article.AssayerDisagrees() is not null,
+            $"Assert.Equal(\"{article.AssayerDisagrees()}\", article.AssayerDisagrees());")
         from executionCount in EmitIf(
             article.Total().Executions() > 0,
             $"Assert.Equal({article.Total().Executions()}, article.Total().Executions());")

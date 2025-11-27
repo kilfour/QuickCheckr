@@ -5,7 +5,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrState(Signal<IFiling>? signal, int? seed = null)
+public class CheckrState(int desiredNumberOfExecutions, Signal<IFiling>? signal, int? seed = null)
 {
     public State FuzzrState { get; init; } = seed is null ? new() : new(seed.Value);
     public Memory Memory { get; init; } = new();
@@ -23,5 +23,13 @@ public class CheckrState(Signal<IFiling>? signal, int? seed = null)
     public void StopRun()
     {
         runStopped = true;
+    }
+
+    public bool IsThisTheRunsLastExecution()
+    {
+        if (EvidenceRecorder.IsReplay)
+            return Memory.ShortTermMemory.CurrentExecutionNumber
+                == Memory.ShortTermMemory.Numbers[Memory.ShortTermMemory.Numbers.Count - 1];
+        return Memory.ShortTermMemory.CurrentExecutionNumber == desiredNumberOfExecutions;
     }
 }

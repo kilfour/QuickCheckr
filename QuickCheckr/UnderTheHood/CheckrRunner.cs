@@ -12,14 +12,14 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
+public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(config.Signal, config.Seed);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.Signal, config.Seed);
     private readonly Vault vault =
         string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config.FileAs);
 
-    public CaseFile Run(int numberOfExecutions)
+    public CaseFile Run()
     {
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
@@ -42,6 +42,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
     {
         var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
+        if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingAssay))
+            return CompileTheCaseFile(originalRunExecutionCount, shrinkCount, true);
         if (!config.NoShrinking)
         {
             shrinkCount += new ExecutionShrinker(State, Check).Run();
@@ -60,7 +62,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config)
     {
         var dossier =
             new Dossier(
-                AssayerSpec: forAssayer ? State.EvidenceRecorder.FailingSpec : null,
+                AssayerSpec: forAssayer ? State.EvidenceRecorder.FailingAssay : null,
                 FailingSpec: forAssayer ? null : State.EvidenceRecorder.FailingSpec,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
