@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.Docketing;
+
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 public class Verifier(CheckrState State,
@@ -12,12 +14,6 @@ public class Verifier(CheckrState State,
     {
         try
         {
-            // var id = State.StartReplay();
-            // while (id > 0)
-            // {
-            //     Check(State);
-            //     id = State.Memory.NextExecution();
-            // }
             State.StartReplay();
             using (State.Memory.ScopedSwap(executionId, key, value))
             {
@@ -30,6 +26,7 @@ public class Verifier(CheckrState State,
         }
         catch (Exception exception)
         {
+            State.Docket.Record(new EvidenceException(exception));
             State.EvidenceRecorder.RecordFailure(exception);
         }
         return State.EvidenceRecorder.Failed();

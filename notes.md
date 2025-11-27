@@ -316,6 +316,47 @@ without introducing noise from element-level changes that could not affect the o
   !! Spec Failed: List[0][0] is not 42
  ========================================
 ```
+##### Multiple Causes
+```csharp
+    from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
+    from trace in Checkr.Trace("List", () => input)
+    from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(1)",
+        () => input.Count() > 2, () => !input.Contains(1))
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G_MultipleCauses.cs:19:1
+ Original failing run:    1 execution
+ Seed:                    1238961515
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 1, 2, 1 ]
+ ===============================================================
+  !! Spec Failed: input.Count() > 2, () => !input.Contains(1)
+ ===============================================================
+```
+#### Removes Irrelevant Properties
+```csharp
+    from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
+    from spec in Checkr.Spec("IntOne /= 42", () => obj.IntOne != 42)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\A_RemovesIrrelevantProperties.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    488581569
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Object = { IntOne : 42 }
+ ================================
+  !! Spec Failed: IntOne /= 42
+ ================================
+```
 #### Custom Shrinkers
 ```csharp
     from one in Checkr.Input("One", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })

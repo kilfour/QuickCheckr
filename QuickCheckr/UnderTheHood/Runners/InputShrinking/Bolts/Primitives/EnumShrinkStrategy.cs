@@ -30,7 +30,7 @@ public class EnumShrinkStrategy
                     Report = Introduce.This(value!, false),
                     Intent = ShrinkingIntent.Keep,
                     Reason = candidate,
-                    Strategy = typeof(PrimitiveShrinkStrategy).Name
+                    Strategy = typeof(EnumShrinkStrategy).Name
                 };
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;

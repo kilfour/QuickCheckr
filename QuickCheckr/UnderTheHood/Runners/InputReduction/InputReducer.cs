@@ -10,7 +10,6 @@ public class InputReducer(
 {
     public int Run()
     {
-        State.Docket.Record(new InputReductionStarted(State.Memory.Count()));
         var shrinkCount = 0;
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
@@ -21,17 +20,15 @@ public class InputReducer(
                 var reducer = shortTermMemory.GetReducer<object>(key);
                 if (reducer == null) continue;
                 var clue = value as InputShrinkingClue;
-                State.Docket.Record(new InputReductionRunStarted(executionId, key));
                 var clues = Reduce(executionId, key, clue?.Result!, reducer(clue?.Result!));
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
                 {
+                    State.Docket.Record(new InputReduced(executionId, key));
                     shortTermMemory.StoreInputShrinkOutcome(key, replace);
                 }
-                State.Docket.Record(new InputReductionRunEnded(executionId, key));
             }
         }
-        State.Docket.Record(new InputReductionEnded(State.Memory.Count()));
         return shrinkCount;
     }
 

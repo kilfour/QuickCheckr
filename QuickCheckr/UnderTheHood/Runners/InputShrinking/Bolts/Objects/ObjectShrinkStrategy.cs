@@ -1,0 +1,103 @@
+
+using System.Reflection;
+using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickFuzzr;
+using QuickFuzzr.UnderTheHood;
+
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
+
+public class ObjectShrinkStrategy
+{
+    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    {
+        return HandleProperties(state, check, executionId, key, value, fullKey);
+    }
+
+    private static IEnumerable<InputShrinkingClue> HandleProperties<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    {
+        var properties = value!.GetType()
+            .GetProperties(MyBinding.Flags)
+            .Where(p =>
+                p.CanRead &&
+                p.GetIndexParameters().Length == 0 &&
+                p.SetMethod is not null &&
+                p.SetMethod.IsPublic)
+            .ToList();
+        var values = new List<(string PropertyName, string Value)>();
+        foreach (var property in properties)
+        {
+            var clues = HandleProperty(state, check, executionId, key, value, property, fullKey).ToList();
+            // iterate ienumerable once
+            var clue = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
+            if (clue != null)
+            {
+                values.Add((property.Name, clue.Report!));
+            }
+            else
+            {
+                clue = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
+                if (clue != null)
+                {
+                    values.Add((property.Name, clue.Report!));
+                }
+            }
+        }
+
+        if (values.Count == 0)
+        {
+            var clue = new InputShrinkingClue
+            {
+                ExecutionId = executionId,
+                Key = fullKey,
+                Original = value,
+                Result = null,
+                Report = string.Empty,
+                Intent = ShrinkingIntent.Ignore,
+                Reason = null,
+                Strategy = typeof(ObjectShrinkStrategy).Name
+            };
+            state.Docket.Record(new InputShrinkingClueFound(clue));
+            return [clue];
+        }
+        else
+        {
+            var clue = new InputShrinkingClue
+            {
+                ExecutionId = executionId,
+                Key = fullKey,
+                Original = value,
+                Result = value,
+                Report = $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName} : {a.Value}"))} }}",
+                Intent = ShrinkingIntent.Keep,
+                Reason = null,
+                Strategy = typeof(ObjectShrinkStrategy).Name
+            };
+            state.Docket.Record(new InputShrinkingClueFound(clue));
+            return [clue];
+        }
+    }
+
+    private static IEnumerable<InputShrinkingClue> HandleProperty<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, PropertyInfo propertyInfo, string fullKey)
+    {
+        var propertyValue = propertyInfo.GetValue(value);
+        var swapper = new MemoryLens(
+            obj => propertyInfo.GetValue(obj)!,
+            (val, propValue) => { SetPropertyValue(propertyInfo, value!, propValue); return val; });
+        using (state.Memory.NestedValue(executionId, swapper))
+        {
+            foreach (var clue in ShrinkStrategyPicker.Input(state, check, executionId, key, propertyValue, $"{fullKey}.{propertyInfo.Name}"))
+                yield return clue;
+        }
+    }
+
+    private static void SetPropertyValue(PropertyInfo propertyInfo, object target, object value)
+    {
+        var prop = propertyInfo;
+        if (!prop.CanWrite)
+            prop = propertyInfo.DeclaringType!.GetProperty(propertyInfo.Name);
+
+        if (prop != null && prop.CanWrite)
+            prop.SetValue(target, value, null);
+    }
+}

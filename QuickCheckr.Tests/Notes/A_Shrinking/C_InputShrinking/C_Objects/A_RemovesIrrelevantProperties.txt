@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\A_RemovesIrrelevantProperties.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    488581569
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Object = { IntOne : 42 }
+ ================================
+  !! Spec Failed: IntOne /= 42
+ ================================
