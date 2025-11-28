@@ -24,20 +24,6 @@ public class RemoveOneByOneStrategy
                 shrinkCount++;
                 continue;
             }
-            // else
-            // {
-            //     var clue = new InputShrinkingClue
-            //     {
-            //         ExecutionId = executionId,
-            //         Key = $"{fullKey}.{indexKey}",
-            //         Original = value,
-            //         Result = value,
-            //         Report = null,
-            //         Intent = ShrinkingIntent.Keep,
-            //         Reason = null
-            //     };
-            //     state.Docket.Record(new InputShrinkingClueFound(clue));
-            // }
             theList.Insert(ix, before);
             index++;
         }

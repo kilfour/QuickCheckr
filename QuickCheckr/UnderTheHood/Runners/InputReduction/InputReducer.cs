@@ -1,6 +1,5 @@
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
-using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputReduction;
 

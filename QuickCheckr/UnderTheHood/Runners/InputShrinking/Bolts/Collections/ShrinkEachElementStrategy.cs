@@ -1,6 +1,5 @@
-using System.Collections;
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
@@ -30,14 +29,7 @@ public class ShrinkEachElementStrategy
             var elementType = valueType;
             using (state.Memory.ScopedSwap(executionId, key, theList))
             {
-                var swapper = new MemoryLens(
-                    list => ((IList)list)[ix]!,
-                    (list, element) =>
-                    {
-                        if (element == null || elementType.IsAssignableFrom(element.GetType()))
-                            ((IList)list)[ix] = element;
-                        return list;
-                    });
+                var swapper = new ListLens(elementType, ix);
                 using (state.Memory.NestedValue(executionId, swapper))
                 {
                     var clues = ShrinkStrategyPicker.Input(state, check, executionId, key, before, $"{fullKey}.{GetMappedIndex(index)}");

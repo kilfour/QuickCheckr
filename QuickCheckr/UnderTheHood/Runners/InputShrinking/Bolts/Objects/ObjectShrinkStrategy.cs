@@ -1,7 +1,7 @@
 
 using System.Reflection;
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood;
 
@@ -63,23 +63,11 @@ public class ObjectShrinkStrategy
     private static IEnumerable<InputShrinkingClue> HandleProperty<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, PropertyInfo propertyInfo, string fullKey)
     {
         var propertyValue = propertyInfo.GetValue(value);
-        var swapper = new MemoryLens(
-            obj => propertyInfo.GetValue(obj)!,
-            (val, propValue) => { SetPropertyValue(propertyInfo, value!, propValue); return val; });
+        var swapper = new ObjectLens(propertyInfo);
         using (state.Memory.NestedValue(executionId, swapper))
         {
             foreach (var clue in ShrinkStrategyPicker.Input(state, check, executionId, key, propertyValue, $"{fullKey}.{propertyInfo.Name}"))
                 yield return clue;
         }
-    }
-
-    private static void SetPropertyValue(PropertyInfo propertyInfo, object target, object value)
-    {
-        var prop = propertyInfo;
-        if (!prop.CanWrite)
-            prop = propertyInfo.DeclaringType!.GetProperty(propertyInfo.Name);
-
-        if (prop != null && prop.CanWrite)
-            prop.SetValue(target, value, null);
     }
 }

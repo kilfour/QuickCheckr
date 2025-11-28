@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 namespace QuickCheckr.UnderTheHood.Memories;
 

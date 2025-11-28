@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class OverlayMemoryBank : MemoryBank

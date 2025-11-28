@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Memories.Structure;
+namespace QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 public class MemoryLens(
         Func<object, object> get,
