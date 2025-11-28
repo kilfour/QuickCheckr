@@ -76,7 +76,7 @@ public class InputShrinkingClue
             Report = report,
             Intent = ShrinkingIntent.Replace,
             Strategy = typeof(T).Name,
-            Count = 1
+            Count = 0
         };
 
     public static InputShrinkingClue Remove<T>(

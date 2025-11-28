@@ -24,9 +24,9 @@ public class A_RemovingIrrelevantItems : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1833095082, Diagnose = Diagnose.Shrinking }));
-        WriteAsserts(article, true);
-        WriteReport<A_RemovingIrrelevantItems>(article, true);
+            GetCheckr().Run(a => a with { Seed = 1833095082 }));
+        WriteAsserts(article);
+        WriteReport<A_RemovingIrrelevantItems>(article);
         Verify(article);
     }
 
@@ -36,6 +36,7 @@ public class A_RemovingIrrelevantItems : BaseTest
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 7 ]", article.Execution(1).Input(1).Read().Value);
