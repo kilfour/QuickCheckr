@@ -62,8 +62,8 @@ public class F_NestedCollections : BaseTest
                 () => input.First().First() != 42)
             select Case.Closed;
         var article = TheJournalist.Exposes(() =>
-            checkr.Run(a => a with { Diagnose = Diagnose.Shrinking }));
-        WriteReport(article, "F_NestedCollections_VerifyingShrinkCount.txt", true);
+            checkr.Run());
+        WriteReport(article, "F_NestedCollections_VerifyingShrinkCount.txt");
         Assert.Equal(1, article.ShrinkCount);
     }
 
