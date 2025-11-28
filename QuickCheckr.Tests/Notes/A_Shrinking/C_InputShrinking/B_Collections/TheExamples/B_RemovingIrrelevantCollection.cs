@@ -29,7 +29,7 @@ public class B_RemovingIrrelevantCollection : BaseTest
     {
         Assert.Equal("Always fails", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(0, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
