@@ -11,7 +11,7 @@ public class InputShrinkingClue
     public string? Report { get; private set; } = null;
     public ShrinkingIntent Intent { get; private set; } = ShrinkingIntent.Ignore;
     public string Strategy { get; private set; } = string.Empty;
-    public int Count { get; private set; } = 1;
+    public int Count { get; private set; } = 0;
     public int AddToCount(int number) => Count += number;
 
     public static InputShrinkingClue Ignore<T>(int executionId, string key, object? value)
@@ -23,7 +23,8 @@ public class InputShrinkingClue
             Result = null,
             Report = string.Empty,
             Intent = ShrinkingIntent.Ignore,
-            Strategy = typeof(T).Name
+            Strategy = typeof(T).Name,
+            Count = 1
         };
     public static InputShrinkingClue Keep<T>(int executionId, string key, object? value)
         => Keep<T>(executionId, key, value, Introduce.This(value!, false));
@@ -74,7 +75,8 @@ public class InputShrinkingClue
             Result = result,
             Report = report,
             Intent = ShrinkingIntent.Replace,
-            Strategy = typeof(T).Name
+            Strategy = typeof(T).Name,
+            Count = 1
         };
 
     public static InputShrinkingClue Remove<T>(
@@ -90,6 +92,7 @@ public class InputShrinkingClue
             Result = result,
             Report = null,
             Intent = ShrinkingIntent.Remove,
-            Strategy = typeof(T).Name
+            Strategy = typeof(T).Name,
+            Count = 1
         };
 }

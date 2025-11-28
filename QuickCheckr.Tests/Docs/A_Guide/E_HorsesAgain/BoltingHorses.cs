@@ -2,6 +2,7 @@ using QuickCheckr;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -56,7 +57,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
     )]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));
+        var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324, Diagnose = Diagnose.Shrinking }));
         WriteAsserts(article);
         WriteReport<BoltingHorses>(article);
         Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
@@ -65,7 +66,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(5, article.Total().Traces());
-        Assert.Equal(19, article.ShrinkCount);
+        Assert.Equal(23, article.ShrinkCount);
         Assert.Equal(8, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Coach Name", article.Execution(1).Trace(1).Read().Label);

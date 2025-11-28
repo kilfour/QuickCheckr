@@ -29,7 +29,7 @@ public class PrimitiveShrinkStrategy
                 yield break;
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(executionId, fullKey, value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(executionId, fullKey, value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         yield return ignoreClue;
     }

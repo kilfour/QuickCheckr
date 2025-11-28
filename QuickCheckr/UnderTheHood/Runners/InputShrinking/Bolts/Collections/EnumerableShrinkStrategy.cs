@@ -8,7 +8,7 @@ public class EnumerableShrinkStrategy
         var clues = new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
         if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
         var keep = clues.FirstOrDefault(a => a.Intent != ShrinkingIntent.Ignore);
-        var shrinkCount = clues.Where(a => a.Intent != ShrinkingIntent.Keep).Sum(a => a.Count);
+        var shrinkCount = clues.Sum(a => a.Count);
         if (keep != null)
         {
             clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey, shrinkCount));
