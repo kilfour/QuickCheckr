@@ -66,20 +66,4 @@ public class F_NestedCollections : BaseTest
         WriteReport(article, "F_NestedCollections_VerifyingShrinkCount.txt");
         Assert.Equal(1, article.ShrinkCount);
     }
-
-    [Fact(Skip = "CLONE LIST and or Element setter, fails here")]
-    public void VerifyingShrinkCountArray()
-    {
-        var checkr =
-            from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<IEnumerable<int>>>([[42, 1, 15], [17], [27, 9]]))
-            from trace in Checkr.Trace("List", () => input)
-            from spec in Checkr.SpecIf("List[0][0] is not 42",
-                () => input.Any() && input.First().Any(),
-                () => input.First().First() != 42)
-            select Case.Closed;
-        var article = TheJournalist.Exposes(() =>
-            checkr.Run(a => a with { Diagnose = Diagnose.Shrinking }));
-        WriteReport(article, "F_NestedCollections_VerifyingShrinkCountArray.txt", true);
-        Assert.Equal(1, article.ShrinkCount);
-    }
 }

@@ -17,6 +17,29 @@ public class RemoveOneByOneStrategy
             var ix = index;
             var before = theList[ix];
             theList.RemoveAt(ix);
+            // ------------------------------------------------------------------------------
+            // -- HACKED IN AN ARRAY
+            if (value != null)
+            {
+                var valueType = value.GetType();
+                if (value.GetType().IsArray)
+                {
+                    var elementType = valueType.GetElementType()!;
+                    var array = Array.CreateInstance(elementType, theList.Count);
+                    for (var i = 0; i < theList.Count; i++)
+                    {
+                        array.SetValue(theList[i], i);
+                    }
+                    if (verifier.RunFailed(executionId, key, array))
+                    {
+                        var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(executionId, $"{fullKey}.{indexKey}", value, theList);
+                        state.Docket.Record(new InputShrinkingClueFound(clue));
+                        shrinkCount++;
+                        continue;
+                    }
+                }
+            }
+            // ------------------------------------------------------------------------------
             if (verifier.RunFailed(executionId, key, theList!))
             {
                 var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(executionId, $"{fullKey}.{indexKey}", value, theList);
