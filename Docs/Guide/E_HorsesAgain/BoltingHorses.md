@@ -131,9 +131,9 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:54:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:60:1
  Original failing run:    20 executions
- Minimal failing case:    4 executions (after 16 shrinks)
+ Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
  ------------------------------------------------------------
   Executed (8): Create Coach

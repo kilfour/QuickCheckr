@@ -112,8 +112,9 @@ The following happens:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:121:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:122:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
   Executed (1):
@@ -140,8 +141,9 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:156:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:159:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
  ------------------------------------------------------------
   Executed (1):
@@ -167,8 +169,9 @@ And here's the report:
 ```text
 ------------------------------------------------------------
  Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:193:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:198:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed (1): One plus Three
@@ -312,9 +315,9 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:54:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:60:1
  Original failing run:    20 executions
- Minimal failing case:    4 executions (after 16 shrinks)
+ Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
  ------------------------------------------------------------
   Executed (8): Create Coach

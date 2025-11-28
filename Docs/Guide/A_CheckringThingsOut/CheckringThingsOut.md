@@ -91,8 +91,9 @@ The following happens:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:121:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:122:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
   Executed (1):
@@ -119,8 +120,9 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:156:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:159:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
  ------------------------------------------------------------
   Executed (1):
@@ -146,8 +148,9 @@ And here's the report:
 ```text
 ------------------------------------------------------------
  Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:193:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:198:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed (1): One plus Three
