@@ -10,6 +10,8 @@ public class InputShrinkingClue
     public ShrinkingIntent Intent { get; set; } = ShrinkingIntent.Ignore;
     public object? Reason { get; set; } = null;
     public string Strategy { get; set; } = string.Empty;
+    public int Count { get; private set; } = 1;
+    public int AddToCount(int number) => Count += number;
 
     public static InputShrinkingClue Ignore<T>(int executionId, string key, object? value)
         => new()

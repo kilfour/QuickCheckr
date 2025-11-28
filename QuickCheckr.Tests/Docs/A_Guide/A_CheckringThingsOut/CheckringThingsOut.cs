@@ -78,14 +78,15 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     public void AddingAnInput()
     {
         var article = TheJournalist.Exposes(() => AddingAnInput_Checkr().Run(a => a with { Seed = 127648209 }));
+        WriteAsserts(article);
+        WriteReport(article, "AddingAnInput.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("42", article.Execution(1).Input(1).Read().Value);
-        WriteAsserts(article);
-        WriteReport(article, "AddingAnInput.txt");
     }
 
     [Fact]
@@ -117,15 +118,17 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     [DocContent("That's basically the same thing as before, because QuickCheckr does not report irrelevant inputs.")]
     public void AddingAnotherInput()
     {
-        var article = TheJournalist.Exposes(() => AddingAnotherInput_Checkr().Run(a => a with { Seed = 127648209 }));
+        var article = TheJournalist.Exposes(() =>
+            AddingAnotherInput_Checkr().Run(a => a with { Seed = 127648209 }));
+        WriteAsserts(article, true);
+        WriteReport(article, "AddingAnotherInput.txt", true);
         Assert.Equal("Input /= 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("42", article.Execution(1).Input(1).Read().Value);
-        WriteAsserts(article);
-        WriteReport(article, "AddingAnotherInput.txt");
     }
 
     [CodeSnippet]
@@ -152,18 +155,20 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     [DocCodeFile("NotWithoutATrace.txt", "text")]
     public void NotWithoutATrace()
     {
-        var article = TheJournalist.Exposes(() => NotWithoutATrace_Checkr().Run(a => a with { Seed = 769641533 }));
+        var article = TheJournalist.Exposes(() =>
+            NotWithoutATrace_Checkr().Run(a => a with { Seed = 769641533 }));
+        WriteAsserts(article);
+        WriteReport(article, "NotWithoutATrace.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("42", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant Input", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("47", article.Execution(1).Trace(1).Read().Value);
-        WriteAsserts(article);
-        WriteReport(article, "NotWithoutATrace.txt");
     }
 
     [CodeSnippet]
@@ -189,19 +194,21 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant input.")]
     public void TimeToAct()
     {
-        var article = TheJournalist.Exposes(() => TimeToAct_Checkr().Run(a => a with { Seed = 1642083259 }));
+        var article = TheJournalist.Exposes(() =>
+            TimeToAct_Checkr().Run(a => a with { Seed = 1642083259 }));
+        WriteAsserts(article);
+        WriteReport(article, "TimeToAct.txt");
         Assert.Equal("Sum /= 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("One plus Three", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("One", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("24", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Three", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("18", article.Execution(1).Input(2).Read().Value);
-        WriteAsserts(article);
-        WriteReport(article, "TimeToAct.txt");
     }
 
     [CodeSnippet]

@@ -40,9 +40,9 @@ public class PrimitiveShrinkStrategy
                 yield break;
             }
         }
-        // var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(executionId, fullKey, value);
-        // state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-        // yield return ignoreClue;
+        var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(executionId, fullKey, value);
+        state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
+        yield return ignoreClue;
     }
 
     public static readonly Dictionary<Type, object[]> PrimitiveValues =

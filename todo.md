@@ -17,3 +17,5 @@ InputShrinker.Run never increments shrinkCount (Runners/InputShrinking/InputShri
 * Nested InputShrinkingClue ?
 * Verdict nullabillity => meh
 * QuickCheckr.Tests.Verification.SwapperTests
+
+* Loose the lazy IEnumerable in shrinking (yield)

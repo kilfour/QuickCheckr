@@ -34,7 +34,7 @@ public class ShrinkEachElementStrategy
                 using (state.Memory.NestedValue(executionId, swapper))
                 {
                     var clues = ShrinkStrategyPicker.Input(state, check, executionId, key, before, $"{fullKey}.{GetMappedIndex(index)}");
-                    var removeForShrinking = !clues.Any();
+                    var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
                     if (removeForShrinking)
                     {
                         values.Add("_");
