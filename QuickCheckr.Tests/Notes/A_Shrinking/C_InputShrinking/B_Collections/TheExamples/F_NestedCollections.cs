@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -18,7 +19,7 @@ public class F_NestedCollections : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 146712596 }));
         WriteAsserts(article);
-        WriteReport<F_NestedCollections>(article);
+        WriteReport<F_NestedCollections>(article, true);
         Verify(article);
     }
 
@@ -28,6 +29,7 @@ public class F_NestedCollections : BaseTest
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ 42 ] ]", article.Execution(1).Input(1).Read().Value);
@@ -46,5 +48,38 @@ public class F_NestedCollections : BaseTest
                 () => input.Any() && input.First().Any(),
                 () => input.First().First() != 42)
             select Case.Closed;
+    }
+
+    [Fact]
+    public void VerifyingShrinkCount()
+    {
+        var list = new List<List<int>> { new() { 42, 1 } };
+        var checkr =
+            from input in Checkr.Input("List", Fuzzr.Constant(list))
+            from trace in Checkr.Trace("List", () => input)
+            from spec in Checkr.SpecIf("List[0][0] is not 42",
+                () => input.Count != 0 && input.First().Any(),
+                () => input.First().First() != 42)
+            select Case.Closed;
+        var article = TheJournalist.Exposes(() =>
+            checkr.Run(a => a with { Diagnose = Diagnose.Shrinking }));
+        WriteReport(article, "F_NestedCollections_VerifyingShrinkCount.txt", true);
+        Assert.Equal(1, article.ShrinkCount);
+    }
+
+    [Fact(Skip = "CLONE LIST and or Element setter, fails here")]
+    public void VerifyingShrinkCountArray()
+    {
+        var checkr =
+            from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<IEnumerable<int>>>([[42, 1, 15], [17], [27, 9]]))
+            from trace in Checkr.Trace("List", () => input)
+            from spec in Checkr.SpecIf("List[0][0] is not 42",
+                () => input.Any() && input.First().Any(),
+                () => input.First().First() != 42)
+            select Case.Closed;
+        var article = TheJournalist.Exposes(() =>
+            checkr.Run(a => a with { Diagnose = Diagnose.Shrinking }));
+        WriteReport(article, "F_NestedCollections_VerifyingShrinkCountArray.txt", true);
+        Assert.Equal(1, article.ShrinkCount);
     }
 }

@@ -16,12 +16,12 @@ public class ShrinkEachElementStrategy
         int executionId,
         string key,
         T value,
-        string fullKey)
+        string fullKey, int incomingShrinkCount)
     {
         var theList = CloneList.AsOriginalType(value!);
         var values = new List<string>();
         int index = 0;
-        var shrinkCount = 0;
+        var shrinkCount = incomingShrinkCount;
         while (index < theList.Count)
         {
             var ix = index;
@@ -42,11 +42,11 @@ public class ShrinkEachElementStrategy
                 {
                     var clues = ShrinkStrategyPicker.Input(state, check, executionId, key, before, $"{fullKey}.{GetMappedIndex(index)}");
                     var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
+                    shrinkCount += clues.Sum(a => a.Count);
                     if (removeForShrinking)
                     {
                         values.Add("_");
                         theList[ix] = GetPlaceholder(theList[ix]!);
-                        shrinkCount++;
                     }
                     else
                     {

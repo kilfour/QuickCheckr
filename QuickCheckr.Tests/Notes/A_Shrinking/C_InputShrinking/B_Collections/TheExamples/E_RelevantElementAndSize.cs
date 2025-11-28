@@ -27,6 +27,7 @@ public class E_RelevantElementAndSize : BaseTest
         Assert.Equal("Second element is not 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
