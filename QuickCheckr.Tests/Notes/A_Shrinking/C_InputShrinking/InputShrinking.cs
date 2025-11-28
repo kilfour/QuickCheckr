@@ -1,5 +1,6 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -11,7 +12,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking;
 [DocContent(
 @"This is the third step in QuickCheckr shrinking and the most complex one.  
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.")]
-public class InputShrinking
+public class InputShrinking : BaseTest
 {
     [Fact]
     [DocContent("The following simple example has one input but always fails.")]
@@ -24,36 +25,18 @@ So, in the previous example, after *Input Shrinking*, the result is:
     [DocCodeFile("InputShrinking.txt", "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(ExampleTest);
-        Assert.Equal("Always Fails", article.FailedSpec());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(0, article.Total().Inputs());
-        var execution = article.Execution(1).Read();
-        Assert.Equal(1, execution.ExecutionId);
-
-
-        var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report);
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal(" Test:                    ExampleTest", reader.NextLine());
-        Assert.Contains(" Location: ", reader.NextLine());
-        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
-        Assert.Equal(" Seed:                    165641598", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1)", reader.NextLine());
-        Assert.Equal(" ================================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Always Fails", reader.NextLine());
-        Assert.Equal(" ================================", reader.NextLine());
-        Assert.True(reader.EndOfContent());
-        WriteReport.ToFile("InputShrinking.txt", report);
+        var article = TheJournalist.Exposes(() =>
+            Example_Check().Run(a => a with { Seed = 165641598 }));
+        WriteAsserts(article);
+        WriteReport(article, "InputShrinking.txt");
+        Verify(article);
     }
 
-    private static void ExampleTest()
+    private static void Verify(Article article)
     {
-        Example_Check().Run(
-            1.Runs(),
-            50.ExecutionsPerRun(),
-            a => a with { Seed = 165641598 });
+        Assert.Equal("Always Fails", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
     [CodeSnippet]
@@ -79,38 +62,25 @@ Result:
     [DocCodeFile("InputShrinking_Two.txt", "text")]
     public void Example_Two()
     {
-        var article = TheJournalist.Exposes(Example_Two_Test);
-        Assert.Equal("Should not be 42", article.FailedSpec());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(2, article.Total().Inputs());
-        var execution = article.Execution(1).Read();
-        Assert.Equal(1, execution.ExecutionId);
-
-
-        var report = TheClerk.Transcribes(article.CaseFile);
-        var reader = LinesReader.FromText(report);
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal(" Test:                    Example_Two_Test", reader.NextLine());
-        Assert.Contains(" Location: ", reader.NextLine());
-        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
-        Assert.Equal(" Seed:                    231122398", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1): Result", reader.NextLine());
-        Assert.Equal("   - Input: Input One = 12", reader.NextLine());
-        Assert.Equal("   - Input: Input Three = 30", reader.NextLine());
-        Assert.Equal(" ====================================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Should not be 42", reader.NextLine());
-        Assert.Equal(" ====================================", reader.NextLine());
-        Assert.True(reader.EndOfContent());
-        WriteReport.ToFile("InputShrinking_Two.txt", report);
+        var article = TheJournalist.Exposes(() =>
+            Example_Two_Check().Run(a => a with { Seed = 231122398 }));
+        WriteAsserts(article);
+        WriteReport(article, "InputShrinking_Two.txt");
+        Verify_Two(article);
     }
 
-    private static void Example_Two_Test()
+    private static void Verify_Two(Article article)
     {
-        Example_Two_Check().Run(
-            1.Runs(),
-            1.ExecutionsPerRun(),
-            a => a with { Seed = 231122398 });
+        Assert.Equal("Should not be 42", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input One", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("12", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Input Three", article.Execution(1).Input(2).Read().Label);
+        Assert.Equal("30", article.Execution(1).Input(2).Read().Value);
     }
 
     [CodeSnippet]
