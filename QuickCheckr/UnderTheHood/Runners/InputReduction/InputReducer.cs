@@ -40,17 +40,7 @@ public class InputReducer(
         {
             if (verifier.RunPassed(executionId, key, candidate!))
             {
-                var clue = new InputShrinkingClue
-                {
-                    ExecutionId = executionId,
-                    Key = key,
-                    Original = value,
-                    Result = lastCandidate,
-                    Report = Introduce.This(lastCandidate!, false),
-                    Intent = ShrinkingIntent.Replace,
-                    Reason = lastCandidate,
-                    Strategy = typeof(InputReducer).Name
-                };
+                var clue = InputShrinkingClue.Replace<InputReducer>(executionId, key, value, lastCandidate);
                 State.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
             }

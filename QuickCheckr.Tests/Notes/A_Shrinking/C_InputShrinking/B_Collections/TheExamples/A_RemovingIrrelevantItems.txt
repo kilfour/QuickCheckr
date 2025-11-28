@@ -1,7 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:27:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1833095082
  ------------------------------------------------------------
   Executed (1):

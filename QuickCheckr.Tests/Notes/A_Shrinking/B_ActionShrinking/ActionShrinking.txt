@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:32:1
+ Location:                Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:33:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    699025678
@@ -8,7 +8,7 @@
   Executed (1): Act Three
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
-   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.<GetCheckr>b__2_6() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 55
-   at QuickCheckr.Checkr.<>c__DisplayClass1_0.<Act>b__0() in CheckrAct.cs:line 12
-   at QuickCheckr.Checkr.<>c__DisplayClass2_0`1.<TryCatch>b__0(CheckrState state) in CheckrAct.cs:line 22
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 60
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in /_/QuickCheckr/CheckrAct.cs:line 16
+   at QuickCheckr.Checkr.<>c__DisplayClass5_0`1.TryCatch(CheckrState state) in /_/QuickCheckr/CheckrAct.cs:line 32
  ===========================================================================

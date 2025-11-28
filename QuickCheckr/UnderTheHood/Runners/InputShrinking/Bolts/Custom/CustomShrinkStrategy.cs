@@ -1,7 +1,6 @@
 
 
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
@@ -15,17 +14,7 @@ public class CustomShrinkStrategy<T>(Func<T, IEnumerable<T>> shrinker)
         {
             if (verifier.RunPassed(executionId, key, candidate!))
             {
-                var clue = new InputShrinkingClue
-                {
-                    ExecutionId = executionId,
-                    Key = key,
-                    Original = value,
-                    Result = value,
-                    Report = Introduce.This(value!, false),
-                    Intent = ShrinkingIntent.Keep,
-                    Reason = candidate,
-                    Strategy = typeof(CustomShrinkStrategy<T>).Name
-                };
+                var clue = InputShrinkingClue.Keep<CustomShrinkStrategy<T>>(executionId, fullKey, value);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
             }

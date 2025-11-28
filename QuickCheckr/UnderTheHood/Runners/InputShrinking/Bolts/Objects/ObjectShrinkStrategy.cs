@@ -46,33 +46,15 @@ public class ObjectShrinkStrategy
 
         if (values.Count == 0)
         {
-            var clue = new InputShrinkingClue
-            {
-                ExecutionId = executionId,
-                Key = fullKey,
-                Original = value,
-                Result = null,
-                Report = string.Empty,
-                Intent = ShrinkingIntent.Ignore,
-                Reason = null,
-                Strategy = typeof(ObjectShrinkStrategy).Name
-            };
+            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(executionId, fullKey, value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
         else
         {
-            var clue = new InputShrinkingClue
-            {
-                ExecutionId = executionId,
-                Key = fullKey,
-                Original = value,
-                Result = value,
-                Report = $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName} : {a.Value}"))} }}",
-                Intent = ShrinkingIntent.Keep,
-                Reason = null,
-                Strategy = typeof(ObjectShrinkStrategy).Name
-            };
+            var clue = InputShrinkingClue
+                .Keep<ObjectShrinkStrategy>(executionId, fullKey, value,
+                    $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName} : {a.Value}"))} }}");
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }

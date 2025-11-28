@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -23,9 +24,9 @@ public class A_RemovingIrrelevantItems : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1833095082 }));
+            GetCheckr().Run(a => a with { Seed = 1833095082, Diagnose = Diagnose.Shrinking }));
         WriteAsserts(article);
-        WriteReport<A_RemovingIrrelevantItems>(article);
+        WriteReport<A_RemovingIrrelevantItems>(article, true);
         Verify(article);
     }
 

@@ -120,8 +120,8 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     {
         var article = TheJournalist.Exposes(() =>
             AddingAnotherInput_Checkr().Run(a => a with { Seed = 127648209 }));
-        WriteAsserts(article, true);
-        WriteReport(article, "AddingAnotherInput.txt", true);
+        WriteAsserts(article);
+        WriteReport(article, "AddingAnotherInput.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());

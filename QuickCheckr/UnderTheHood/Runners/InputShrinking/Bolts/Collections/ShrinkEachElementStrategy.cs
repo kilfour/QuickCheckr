@@ -10,7 +10,14 @@ public class ShrinkEachElementStrategy
 
     private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
 
-    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public IEnumerable<InputShrinkingClue> Shrink<T>(
+        CheckrState state,
+        CheckrOf<Case> check,
+        int executionId,
+        string key,
+        T value,
+        string fullKey,
+        int shrinkCount)
     {
         var theList = CloneList.AsOriginalType(value!);
         var values = new List<string>();
@@ -49,17 +56,9 @@ public class ShrinkEachElementStrategy
                 }
             }
         }
-        var finalClue = new InputShrinkingClue
-        {
-            ExecutionId = executionId,
-            Key = fullKey,
-            Original = value,
-            Result = theList,
-            Report = $"[ {string.Join(", ", values)} ]",
-            Intent = ShrinkingIntent.Replace,
-            Reason = null,
-            Strategy = typeof(ShrinkEachElementStrategy).Name
-        };
+        var finalClue = InputShrinkingClue
+            .Replace<ShrinkEachElementStrategy>(executionId, fullKey, value, theList, $"[ {string.Join(", ", values)} ]");
+        finalClue.AddToCount(shrinkCount);
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];
     }

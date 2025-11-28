@@ -1,7 +1,8 @@
  ------------------------------------------------------------
- Test:                    ExampleTest
- Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:53:1
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:27:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
  ------------------------------------------------------------
   Executed (1)

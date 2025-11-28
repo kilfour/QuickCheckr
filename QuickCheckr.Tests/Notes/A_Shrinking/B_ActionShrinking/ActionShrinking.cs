@@ -36,6 +36,8 @@ So after *Action Shrinking*, the result is:
                     Seed = 699025678,
                     ShrinkingActions = true
                 }));
+        WriteAsserts(article);
+        WriteReport<ActionShrinking>(article);
         Verify(article);
     }
 
@@ -43,8 +45,8 @@ So after *Action Shrinking*, the result is:
     {
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Act Three", article.Execution(1).Action(1).Read().Label);
     }
 
@@ -78,8 +80,11 @@ And here we find ourselves confused ;-).
     {
         var article = TheJournalist.Exposes(() =>
             Elaborating_Checkr().Run(a => a with { ShrinkingActions = true }));
+        WriteAsserts(article);
         Assert.Equal("Act returns true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(0, article.Total().Actions()); // <=
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 

@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
@@ -21,17 +20,7 @@ public class EnumShrinkStrategy
         {
             if (verifier.RunPassed(executionId, key, candidate))
             {
-                var clue = new InputShrinkingClue
-                {
-                    ExecutionId = executionId,
-                    Key = fullKey,
-                    Original = value,
-                    Result = value,
-                    Report = Introduce.This(value!, false),
-                    Intent = ShrinkingIntent.Keep,
-                    Reason = candidate,
-                    Strategy = typeof(EnumShrinkStrategy).Name
-                };
+                var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(executionId, fullKey, value);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
                 yield break;

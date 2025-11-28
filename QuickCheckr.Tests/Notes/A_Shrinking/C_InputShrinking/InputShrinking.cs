@@ -1,10 +1,8 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking;
 
@@ -36,6 +34,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
     {
         Assert.Equal("Always Fails", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
@@ -75,6 +74,7 @@ Result:
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input One", article.Execution(1).Input(1).Read().Label);

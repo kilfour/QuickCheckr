@@ -5,29 +5,16 @@ public class EnumerableShrinkStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
     {
-        // state.CurrentExecutionContext().ShrinkTrace(key, ShrinkKind.EnumerableKind, new ShrinkTrace
-        // {
-        //     ExecutionId = -1,
-        //     Key = fullKey,
-        //     Name = fullKey.Split(".").Last(),
-        //     Original = value,
-        //     Result = null,
-        //     Intent = ShrinkIntent.Keep,
-        //     Strategy = "EnumerableShrinkStrategy"
-        // });
-        // state.ShrinkingRegistry.GetCollectionStrategies()
-        //     .ToList()
-        //     .ForEach(a => { a.Shrink(state, key, value, fullKey); });
         var clues = new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
         if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
-        // new GreedyShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey);
         var keep = clues.FirstOrDefault(a => a.Intent != ShrinkingIntent.Ignore);
+        var shrinkCount = clues.Where(a => a.Intent != ShrinkingIntent.Keep).Sum(a => a.Count);
         if (keep != null)
         {
-            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey));
+            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey, shrinkCount));
         }
         else
-            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey));
+            clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, value, fullKey, shrinkCount));
         return clues;
     }
 }

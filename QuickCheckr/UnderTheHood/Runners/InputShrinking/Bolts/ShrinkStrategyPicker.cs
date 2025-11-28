@@ -4,7 +4,6 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
-using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
@@ -34,18 +33,9 @@ public class ShrinkStrategyPicker
         if (actualType.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
 
-        var clue = new InputShrinkingClue
-        {
-            ExecutionId = executionId,
-            Key = fullKey,
-            Original = value,
-            Result = value,
-            Report = Introduce.This(value!, false),
-            Intent = ShrinkingIntent.Keep,
-            Reason = null,
-            Strategy = "No Shrinker Found"
-        };
+        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(executionId, fullKey, value);
         state.Docket.Record(new InputShrinkingClueFound(clue));
         return [clue];
     }
+    public class NoShrinkerFound { }
 }
