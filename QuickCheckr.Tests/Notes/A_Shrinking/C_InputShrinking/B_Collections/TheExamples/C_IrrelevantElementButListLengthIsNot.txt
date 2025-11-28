@@ -1,12 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:31:1
  Original failing run:    1 execution
- Seed:                    1994546166
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1393576429
  ------------------------------------------------------------
   Executed (1):
    - Input: List = [ _, _, _ ]
-   - Trace: Original List = [ 26, 42, 46, 35, 23, 62 ]
+   - Trace: Original List = [ 12, 45, 56, 18, 31 ]
  ===============================
   !! Spec Failed: Length <= 2
  ===============================

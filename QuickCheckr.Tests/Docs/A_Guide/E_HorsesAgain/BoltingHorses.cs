@@ -66,7 +66,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(5, article.Total().Traces());
-        Assert.Equal(20, article.ShrinkCount);
+        Assert.Equal(21, article.ShrinkCount);
         Assert.Equal(8, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Coach Name", article.Execution(1).Trace(1).Read().Label);

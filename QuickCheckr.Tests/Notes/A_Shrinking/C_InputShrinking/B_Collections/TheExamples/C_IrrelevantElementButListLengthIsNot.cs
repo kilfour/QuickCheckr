@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -27,7 +28,7 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1994546166 }));
+            GetCheckr().Run(100.Runs(), a => a with { Seed = 1393576429 }));
         WriteAsserts(article);
         WriteReport<C_IrrelevantElementButListLengthIsNot>(article);
         Verify(article);
@@ -38,9 +39,13 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
         Assert.Equal("Length <= 2", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(5, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original List", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ 12, 45, 56, 18, 31 ]", article.Execution(1).Trace(1).Read().Value);
     }
 
     [CodeSnippet]
@@ -48,7 +53,6 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from length in Checkr.Input("Length", Fuzzr.Int(0, 10))
             from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
             from trace in Checkr.Trace("Original List", () => list)
             from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
