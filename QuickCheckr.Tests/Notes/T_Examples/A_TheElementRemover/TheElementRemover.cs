@@ -17,7 +17,7 @@ namespace QuickCheckr.Tests.Notes.T_Examples.A_TheElementRemover;
 the test captures the minimal failing case where the list contains multiple copies of the target element.")]
 [DocExample(typeof(TheElementRemover), nameof(GetCheckr))]
 [DocContent(
-@"QuickAcid reduces the failing run to a list like `[ 5, 5 ]` with `5` as the element to remove,
+@"QuickCheckr reduces the failing run to a list like `[ 5, 5 ]` with `5` as the element to remove,
 exposing the bug clearly: the output still contains `5`.  
 The generated report shows the input, the attempted deletion, a trace of the original list before shrinking and a trace of the result from the action.  
 ")]
