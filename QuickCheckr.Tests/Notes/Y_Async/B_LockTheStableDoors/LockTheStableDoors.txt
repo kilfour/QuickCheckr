@@ -1,0 +1,26 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
+ Original failing run:    11 executions
+ Minimal failing case:    4 executions (after 12 shrinks)
+ Seed:                    1511313504
+ ------------------------------------------------------------
+  Executed (4): Create Coach
+   - Trace: Coach Name = Coach-1
+ ------------------------------------------------------------
+  Executed (5): Create Course
+   - Trace: Course Name = Course-2
+ ------------------------------------------------------------
+  Executed (6): Assign Coach to Course
+   - Trace: Coach Name = Coach-1
+   - Trace: Course Name = Course-2
+ ------------------------------------------------------------
+  Executed (11): Update Course Skills
+   - Input: Course Skills = [ _ ]
+   - Trace: Course Name = Course-2
+ =====================================================
+  !! Spec Failed: Assigned Coaches Must Be Suitable
+ =====================================================
+ Passed Specs
+ - Assigned Coaches Must Be Suitable: 5x
+ ------------------------------------------------------------

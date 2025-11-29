@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 
-namespace QuickCheckr.Tests.Notes.Y_Async;
+namespace QuickCheckr.Tests.Notes.Y_Async.B_LockTheStableDoors;
 
 public class InMemoryCoachCourseService
 {
@@ -25,11 +25,9 @@ public class InMemoryCoachCourseService
     }
 
     public Task<Coach> CreateCoachAsync(
-        string name,
-        IEnumerable<string> skills)
+        string name)
     {
         var coach = new Coach(name);
-        coach.UpdateSkills(skills);
         lock (gate)
         {
             coaches.Add(coach);
@@ -38,11 +36,9 @@ public class InMemoryCoachCourseService
     }
 
     public Task<Course> CreateCourseAsync(
-        string name,
-        IEnumerable<string> requiredSkills)
+        string name)
     {
         var course = new Course(name);
-        course.UpdateRequiredSkills(requiredSkills);
         lock (gate)
         {
             courses.Add(course);

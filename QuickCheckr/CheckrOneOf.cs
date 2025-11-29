@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 

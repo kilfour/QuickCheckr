@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
-using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.X_Various.Methods;

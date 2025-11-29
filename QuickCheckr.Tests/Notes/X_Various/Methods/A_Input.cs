@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 using QuickPulse.Explains;
