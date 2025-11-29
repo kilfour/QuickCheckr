@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
  ------------------------------------------------------------
-  Executed (1): The Answer
+  Executed: The Answer
    - Input: Everything = null
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================

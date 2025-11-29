@@ -5,10 +5,10 @@
  Minimal failing case:    4 executions (after 81 shrinks)
  Seed:                    1141724745
  ------------------------------------------------------------
-  Executed : BugHouse.Run (3 Times)
+  Executed: BugHouse.Run (3 Times)
    - Input: a = 6
  ------------------------------------------------------------
-  Executed (84): BugHouse.Run
+  Executed: BugHouse.Run
  ================================
   !! Spec Failed: Returns true
  ================================

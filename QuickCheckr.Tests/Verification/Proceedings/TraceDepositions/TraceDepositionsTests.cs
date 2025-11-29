@@ -12,7 +12,7 @@ public class TraceDepositionsTests : DepositionTest
                     .AddTraceDeposition(new TraceDeposition("Something", "I Traced"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1):", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Trace: Something = I Traced", reader.NextLine());
         EndOfContent(reader);
     }

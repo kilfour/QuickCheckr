@@ -4,7 +4,7 @@
  Original failing run:    1 execution
  Seed:                    412717959
  ------------------------------------------------------------
-  Executed (1): Act
+  Executed: Act
  ====================================================
   !! Spec Failed: Throws InvalidOperationException
  ====================================================

@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    146712596
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: List = [ [ 42 ] ]
    - Trace: List = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
  ========================================

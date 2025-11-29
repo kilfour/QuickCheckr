@@ -5,7 +5,7 @@
  Minimal failing case:    3 executions (after 33 shrinks)
  Seed:                    766917706
  ------------------------------------------------------------
-  Executed : BugHouse.Run (3 Times)
+  Executed: BugHouse.Run (3 Times)
    - Input: a = 6
  ================================
   !! Spec Failed: Returns true

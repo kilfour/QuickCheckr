@@ -18,7 +18,7 @@ public class RunDepositionsTest : DepositionTest
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" A LABEL", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1): Something I Did", reader.NextLine());
+        Assert.Equal("  Executed: Something I Did", reader.NextLine());
         Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());

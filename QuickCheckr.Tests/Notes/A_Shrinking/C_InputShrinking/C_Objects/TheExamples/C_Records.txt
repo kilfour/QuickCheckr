@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1556090131
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Person = { Age: 4 }
  ===================================
   !! Spec Failed: Is not underage

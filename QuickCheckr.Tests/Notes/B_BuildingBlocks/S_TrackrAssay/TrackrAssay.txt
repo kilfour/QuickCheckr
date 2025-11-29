@@ -4,7 +4,7 @@
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
-  Executed : Roll (20 Times)
+  Executed: Roll (20 Times)
  =========================================
   !!  The Assayer Disagrees: Contains 3
  =========================================

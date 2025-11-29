@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2122063655
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: One = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90

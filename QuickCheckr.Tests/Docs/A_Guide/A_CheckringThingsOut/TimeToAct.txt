@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1): One plus Three
+  Executed: One plus Three
    - Input: One = 24
    - Input: Three = 18
  =============================

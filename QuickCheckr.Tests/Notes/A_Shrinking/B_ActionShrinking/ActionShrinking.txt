@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    699025678
  ------------------------------------------------------------
-  Executed (1): Act Three
+  Executed: Act Three
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
    at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 60

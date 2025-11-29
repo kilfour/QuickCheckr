@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    816312044
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: List Input = [ 51 ]
    - Trace: List Input = [ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]
  ========================================

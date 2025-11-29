@@ -11,7 +11,7 @@ public class InputDepositionsTests : DepositionTest
                 .AddExecutionDeposition(new ExecutionDeposition(1)));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1)", reader.NextLine());
+        Assert.Equal("  Executed", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -23,7 +23,7 @@ public class InputDepositionsTests : DepositionTest
                     .AddInputDeposition(new InputDeposition("PropertyName", 42))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1):", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
         EndOfContent(reader);
     }
@@ -36,7 +36,7 @@ public class InputDepositionsTests : DepositionTest
                     .AddInputDeposition(new InputDeposition("PropertyName", "\"42\""))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1):", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Input: PropertyName = \"42\"", reader.NextLine());
         EndOfContent(reader);
     }
@@ -50,7 +50,7 @@ public class InputDepositionsTests : DepositionTest
                     .AddInputDeposition(new InputDeposition("Two", "\"42\""))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1):", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Input: One = 42", reader.NextLine());
         Assert.Equal("   - Input: Two = \"42\"", reader.NextLine());
         EndOfContent(reader);

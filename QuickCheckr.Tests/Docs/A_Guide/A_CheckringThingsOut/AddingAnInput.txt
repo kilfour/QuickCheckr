@@ -4,7 +4,7 @@
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
  ===============================
   !! Spec Failed: Input /= 42

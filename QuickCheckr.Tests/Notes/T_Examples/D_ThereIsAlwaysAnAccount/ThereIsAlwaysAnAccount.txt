@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1863050139
  ------------------------------------------------------------
-  Executed (5): Withdraw
+  Executed: Withdraw
    - Input: Amount = 1
    - Trace: Amount = 88
  ================================

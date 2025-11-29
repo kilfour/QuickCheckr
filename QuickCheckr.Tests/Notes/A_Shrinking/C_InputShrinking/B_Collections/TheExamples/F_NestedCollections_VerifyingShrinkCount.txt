@@ -3,9 +3,9 @@
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    977366316
+ Seed:                    161167715
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: List = [ [ 42 ] ]
    - Trace: List = [ [ 42, 1 ] ]
  ========================================

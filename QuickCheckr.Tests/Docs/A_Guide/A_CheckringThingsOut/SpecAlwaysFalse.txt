@@ -4,7 +4,7 @@
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1)
+  Executed
  ===============================
   !! Spec Failed: Always true
  ===============================

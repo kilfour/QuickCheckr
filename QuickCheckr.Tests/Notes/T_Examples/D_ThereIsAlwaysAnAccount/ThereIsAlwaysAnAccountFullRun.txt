@@ -4,19 +4,19 @@
  Original failing run:    5 executions
  Seed:                    1863050139
  ------------------------------------------------------------
-  Executed (1): Deposit
+  Executed: Deposit
    - Trace: Amount = 94
  ------------------------------------------------------------
-  Executed (2): Deposit
+  Executed: Deposit
    - Trace: Amount = 59
  ------------------------------------------------------------
-  Executed (3): Withdraw
+  Executed: Withdraw
    - Trace: Amount = 43
  ------------------------------------------------------------
-  Executed (4): Withdraw
+  Executed: Withdraw
    - Trace: Amount = 63
  ------------------------------------------------------------
-  Executed (5): Withdraw
+  Executed: Withdraw
    - Trace: Amount = 88
  ================================
   !! Spec Failed: No Overdraft

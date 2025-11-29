@@ -78,9 +78,7 @@ public static class The
             Pulse.ToFlow(stashedDeposition, input.StashedDepositions))
         from __ in line
         let colon = input.HasContent() ? ":" : ""
-        from ___ in input.Times == 1
-                ? Pulse.Trace($"  Executed ({input.ExecutionId}){colon}")
-                : Pulse.Trace($"  Executed {colon}")
+        from ___ in Pulse.Trace($"  Executed{colon}")
         from ____ in Pulse.Scoped<Decorum>(
             a => a with { Intersperse = Valve.Install() },
             Pulse.ToFlow(actionDeposition, input.ActionDepositions))

@@ -5,17 +5,17 @@
  Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
  ------------------------------------------------------------
-  Executed (8): Create Coach
+  Executed: Create Coach
    - Trace: Coach Name = Coach-5
  ------------------------------------------------------------
-  Executed (10): Create Course
+  Executed: Create Course
    - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (13): Assign Coach to Course
+  Executed: Assign Coach to Course
    - Trace: Coach Name = Coach-5
    - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (20): Update Course Skills
+  Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-3
  =====================================================

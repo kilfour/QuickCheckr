@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1732064051
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input Two = Monday
  ========================================
   !! Spec Failed: Should not be Monday

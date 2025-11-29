@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    488581569
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Object = { IntOne: 42 }
  ================================
   !! Spec Failed: IntOne /= 42

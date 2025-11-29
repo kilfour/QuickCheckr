@@ -26,7 +26,7 @@ The test fails and QuickCheckr produces the following report:
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1)
+  Executed
  ===============================
   !! Spec Failed: Always true
  ===============================
@@ -71,7 +71,7 @@ Now the test fails consistently:
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
  ===============================
   !! Spec Failed: Input /= 42
@@ -96,7 +96,7 @@ The following happens:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
  ===============================
   !! Spec Failed: Input /= 42
@@ -125,7 +125,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
    - Trace: Irrelevant Input = 47
  ===============================
@@ -153,7 +153,7 @@ And here's the report:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1): One plus Three
+  Executed: One plus Three
    - Input: One = 24
    - Input: Three = 18
  =============================

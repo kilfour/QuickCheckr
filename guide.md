@@ -47,7 +47,7 @@ The test fails and QuickCheckr produces the following report:
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1)
+  Executed
  ===============================
   !! Spec Failed: Always true
  ===============================
@@ -92,7 +92,7 @@ Now the test fails consistently:
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
  ===============================
   !! Spec Failed: Input /= 42
@@ -117,7 +117,7 @@ The following happens:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
  ===============================
   !! Spec Failed: Input /= 42
@@ -146,7 +146,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: Input = 42
    - Trace: Irrelevant Input = 47
  ===============================
@@ -174,7 +174,7 @@ And here's the report:
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
-  Executed (1): One plus Three
+  Executed: One plus Three
    - Input: One = 24
    - Input: Three = 18
  =============================
@@ -320,17 +320,17 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
  ------------------------------------------------------------
-  Executed (8): Create Coach
+  Executed: Create Coach
    - Trace: Coach Name = Coach-5
  ------------------------------------------------------------
-  Executed (10): Create Course
+  Executed: Create Course
    - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (13): Assign Coach to Course
+  Executed: Assign Coach to Course
    - Trace: Coach Name = Coach-5
    - Trace: Course Name = Course-3
  ------------------------------------------------------------
-  Executed (20): Update Course Skills
+  Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-3
  =====================================================

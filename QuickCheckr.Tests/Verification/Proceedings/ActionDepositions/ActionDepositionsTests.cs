@@ -11,7 +11,7 @@ public class ActionDepositionsTests : DepositionTest
                 .AddExecutionDeposition(new ExecutionDeposition(1)));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1)", reader.NextLine());
+        Assert.Equal("  Executed", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -23,7 +23,7 @@ public class ActionDepositionsTests : DepositionTest
                     .AddActionDeposition(new ActionDeposition("Something I Did"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1): Something I Did", reader.NextLine());
+        Assert.Equal("  Executed: Something I Did", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -36,7 +36,7 @@ public class ActionDepositionsTests : DepositionTest
                     .AddActionDeposition(new ActionDeposition("Something Else"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed (1): Something I Did, Something Else", reader.NextLine());
+        Assert.Equal("  Executed: Something I Did, Something Else", reader.NextLine());
         EndOfContent(reader);
     }
 }

@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: input = [ 1, 2, 3 ]
  ========================
   !! Spec Failed: spec

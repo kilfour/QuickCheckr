@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1100967994
  ------------------------------------------------------------
-  Executed (1):
+  Executed:
    - Input: int[] = [ 42 ]
  ====================================
   !! Spec Failed: int[0] is not 42

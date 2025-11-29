@@ -5,7 +5,7 @@
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
  ------------------------------------------------------------
-  Executed (3):
+  Executed:
    - Input: counter = 3
  ============================================
   !! Spec Failed: Counter does not equal 3

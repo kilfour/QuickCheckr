@@ -4,7 +4,7 @@
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
-  Executed (1): The Answer
+  Executed: The Answer
    - Input: The Universe = { Everything: null, Irrelevant: null }
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
