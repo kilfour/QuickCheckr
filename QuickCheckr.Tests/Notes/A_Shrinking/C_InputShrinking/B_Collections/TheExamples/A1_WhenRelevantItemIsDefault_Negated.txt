@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_Negated
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A1_WhenRelevantItemIsDefault.cs:57:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    816312044
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: List Input = [ 51 ]
+   - Trace: List Input = [ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]
+ ========================================
+  !! Spec Failed: List contains only 0
+ ========================================

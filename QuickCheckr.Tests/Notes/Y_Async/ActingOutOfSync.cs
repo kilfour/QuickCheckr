@@ -41,7 +41,7 @@ public class ActingOutOfSync : BaseTest
     {
         return
             from input in Checkr.Input("Input", Fuzzr.Int())
-            from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
+            from result in Checkr.Act("Eventually.AddOne", Eventually.AddOne(input))
             from spec in Checkr.Spec("Is not 42", () => result != 42)
             select Case.Closed;
     }
@@ -52,6 +52,59 @@ public class ActingOutOfSync : BaseTest
         public static Task<int> AddOne(int input)
         {
             return Task.FromResult(input + 1);
+        }
+    }
+
+    [Fact]
+    public void FuncAsTaskIf()
+    {
+        var check =
+            from input in Checkr.Input("Input", Fuzzr.Int())
+            from result in Checkr.ActIf("Eventually.AddOne", () => true, Eventually.AddOne(input))
+            from spec in Checkr.Spec("Is not 42", () => result != 42)
+            select Case.Closed;
+        check.Run(); // <= test passed == flag is set == Task completed
+    }
+
+    [Fact]
+    public void FuncAsTaskCarefully()
+    {
+        var check =
+            from input in Checkr.Input("Input", Fuzzr.Constant(41))
+            from result in Checkr.ActCarefully("Eventually.AddOne", Eventually.AddOne(input))
+            from spec in Checkr.Spec("Is not 42", () => result.Value == 42)
+            select Case.Closed;
+        check.Run(); // <= test passed == Task completed
+    }
+
+    [Fact]
+    public void ActionAsTask()
+    {
+        var check =
+            from eventualAction in Trackr.Stashed(() => new EventualAction())
+            from act in Checkr.Act("The Void", eventualAction.TheVoid())
+            from spec in Checkr.Spec("Flagged", () => eventualAction.Flag)
+            select Case.Closed;
+        check.Run(); // <= test passed == flag is set == Task completed
+    }
+
+    [Fact]
+    public void ActionAsTaskIf()
+    {
+        var check =
+            from eventualAction in Trackr.Stashed(() => new EventualAction())
+            from act in Checkr.ActIf("The Void", () => true, eventualAction.TheVoid())
+            from spec in Checkr.Spec("Flagged", () => eventualAction.Flag)
+            select Case.Closed;
+        check.Run(); // <= test passed == flag is set == Task completed
+    }
+
+    public class EventualAction
+    {
+        public bool Flag { get; set; }
+        public Task TheVoid()
+        {
+            return Task.Run(() => { Flag = true; });
         }
     }
 }

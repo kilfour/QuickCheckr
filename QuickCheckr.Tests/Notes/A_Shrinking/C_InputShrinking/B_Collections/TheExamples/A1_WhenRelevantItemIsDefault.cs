@@ -46,4 +46,42 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
             from trace in Checkr.Trace("List Input", () => listInput)
             select Case.Closed;
     }
+
+
+    [Fact]
+    [DocExample(typeof(A1_WhenRelevantItemIsDefault), nameof(GetCheckr_Negated))]
+    [DocCodeFile("A1_WhenRelevantItemIsDefault_Negated.txt", "text")]
+    public void RunTest_Negated()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr_Negated().Run(a => a with { Seed = 816312044 }));
+        WriteAsserts(article);
+        WriteReport(article, "A1_WhenRelevantItemIsDefault_Negated.txt");
+        Verify_Negated(article);
+    }
+
+    private static void Verify_Negated(Article article)
+    {
+        Assert.Equal("List contains only 0", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(8, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("[ 51 ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("List Input", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]", article.Execution(1).Trace(1).Read().Value);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr_Negated()
+    {
+        return
+            from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
+            from spec in Checkr.Spec("List contains only 0", () => listInput.All(a => a == 0))
+            from trace in Checkr.Trace("List Input", () => listInput)
+            select Case.Closed;
+    }
 }
