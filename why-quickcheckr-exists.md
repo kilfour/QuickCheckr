@@ -44,7 +44,7 @@ I also burned out for a while, drifted into an easy job, and wrote too much bad 
 But eventually I woke up, went freelance, and returned to writing functional code.
 
 By then QuickNet had become **QuickDotNetCheck**, still an OO fluent interface library.  
-Later it became **QuickAcid**, where I introduced the LINQ composition technique that would later make QuickFuzzr so pleasant to use.  
+Later it became **QuickAcid**, where I introduced the LINQ composition technique that would make QuickFuzzr so pleasant to use.  
 But the QuickAcid engine was still unreliable.
 
 Then, earlier this year, I got a gig teaching full-stack .NET to job-seekers.  
