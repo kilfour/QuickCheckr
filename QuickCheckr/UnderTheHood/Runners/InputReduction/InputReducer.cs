@@ -47,7 +47,7 @@ public class InputReducer(
         //     lastCandidate = candidate;
         // }
 
-        var verifier = new Verifier(State, Check);
+        var verifier = new Verifier(State, Check); // TODO: Cleanup
         object? passed = null;
         var lastCandidate = value;
         var found = false;
