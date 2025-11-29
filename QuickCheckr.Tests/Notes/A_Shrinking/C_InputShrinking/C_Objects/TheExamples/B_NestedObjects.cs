@@ -29,7 +29,7 @@ public class B_NestedObjects : BaseTest
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Universe", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ Everything : { Answer : 42 } }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Everything: { Answer: 42 } }", article.Execution(1).Input(1).Read().Value);
     }
 
     [CodeSnippet]

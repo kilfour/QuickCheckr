@@ -61,7 +61,7 @@ public class ObjectShrinkStrategy
         {
             var clue = InputShrinkingClue
                 .Keep<ObjectShrinkStrategy>(executionId, fullKey, value,
-                    $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName} : {a.Value}"))} }}");
+                    $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName}: {a.Value}"))} }}");
             clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];

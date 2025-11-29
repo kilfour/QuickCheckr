@@ -30,6 +30,6 @@ public class Collections
 
         Assert.Equal(1, article.Total().Inputs());
         var entry = article.Execution(1).Input(1).Read();
-        Assert.Equal("[ { One : 42 } ]", entry.Value);
+        Assert.Equal("[ { One: 42 } ]", entry.Value);
     }
 }

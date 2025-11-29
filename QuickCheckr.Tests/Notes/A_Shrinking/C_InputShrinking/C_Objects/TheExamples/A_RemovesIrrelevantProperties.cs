@@ -29,7 +29,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Object", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ IntOne : 42 }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ IntOne: 42 }", article.Execution(1).Input(1).Read().Value);
     }
 
     [CodeSnippet]

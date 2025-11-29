@@ -19,7 +19,7 @@ public class F_NestedCollections : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 146712596 }));
         WriteAsserts(article);
-        WriteReport<F_NestedCollections>(article, true);
+        WriteReport<F_NestedCollections>(article);
         Verify(article);
     }
 

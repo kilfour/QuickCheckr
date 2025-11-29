@@ -36,7 +36,7 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ Everything : null }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Everything: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ Everything: null, Irrelevant: { Answer: 78 } }", article.Execution(1).Trace(1).Read().Value);
     }
@@ -46,7 +46,6 @@ public class E_CheckingNulls : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            // TODO make NullableRef the default for object? props in QuickFuzzr
             from universe in Checkr.Input("The Universe",
                 from everything in Configr<TheUniverse>.Property(a => a.Everything, Fuzzr.One<Life>().NullableRef())
                 from irrelevant in Configr<TheUniverse>.Property(a => a.Irrelevant, Fuzzr.One<Life>().NullableRef())
@@ -66,7 +65,7 @@ public class E_CheckingNulls : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 1269557792 }));
         WriteAsserts(article);
-        WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt", true);
+        WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt");
         Verify_NotShrinkingNull(article);
     }
 
@@ -80,9 +79,50 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ Everything : null, Irrelevant : null }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+    }
+
+    [Fact]
+    [DocContent("The current workaround to avoid the irrelevant input reporting involves helping the shrinker by rewriting your checkr.")]
+    [DocExample(typeof(E_CheckingNulls), nameof(GetCheckr_Alternative))]
+    [DocCodeFile("E_CheckingNulls_Alternative.txt", "text")]
+    public void RunTest_Alternative()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr_Alternative().Run(100.Runs(), a => a with { Seed = 1269557792 }));
+        WriteAsserts(article);
+        WriteReport(article, "E_CheckingNulls_Alternative.txt");
+        Verify_Alternative(article);
+    }
+
+    private static void Verify_Alternative(Article article)
+    {
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Everything", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("null", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr_Alternative()
+    {
+        return
+            from everything in Checkr.Input("Everything", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
+            from irrelevant in Checkr.Input("Irrelevant", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
+            from universe in Trackr.Execute(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
+            from trace in Checkr.Trace("The Universe", () => universe)
+            from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+            select Case.Closed;
     }
 
     public class TheUniverse

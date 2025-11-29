@@ -16,8 +16,11 @@ public class CustomShrinkStrategy<T>(Func<T, IEnumerable<T>> shrinker)
             {
                 var clue = InputShrinkingClue.Keep<CustomShrinkStrategy<T>>(executionId, fullKey, value);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
-                yield return clue;
+                return [clue];
             }
         }
+        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy<T>>(executionId, fullKey, value);
+        state.Docket.Record(new InputShrinkingClueFound(ignore));
+        return [ignore];
     }
 }
