@@ -45,9 +45,6 @@ select Case.Closed;
   Executed : BugHouse.Run (2 Times)
  ===========================================================================
   !! Exception Thrown: System.Exception: Here's Johnny
-   at QuickCheckr.Tests.CreateReadMe.BugHouse.Run(Int32 number) in CreateReadMe.cs:line 76
-   at QuickCheckr.Tests.CreateReadMe.<>c__DisplayClass2_0.GetCheckr() in CreateReadMe.cs:line 64
-   at QuickCheckr.Checkr.<>c__DisplayClass5_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 32
  ===========================================================================
  Passed Specs
  - Returns true: 84x

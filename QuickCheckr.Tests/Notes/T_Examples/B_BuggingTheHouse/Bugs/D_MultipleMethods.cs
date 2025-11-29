@@ -3,6 +3,7 @@ using QuickPulse.Explains;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.UnderTheHood.Protocol;
 
 namespace QuickCheckr.Tests.Notes.T_Examples.B_BuggingTheHouse.Bugs;
 
@@ -43,6 +44,8 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 		Assert.Equal(3, article.Total().Executions());
 		Assert.Equal(3, article.Total().Actions());
 		Assert.Equal(1, article.Total().Inputs());
+		Assert.Equal(2, article.Total().PassedSpecs());
+		Assert.Equal(58, article.ShrinkCount);
 		Assert.Equal(56, article.Execution(1).Read().ExecutionId);
 		Assert.Equal("BugHouse.RunInt", article.Execution(1).Action(1).Read().Label);
 		Assert.Equal(57, article.Execution(2).Read().ExecutionId);
@@ -52,6 +55,10 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 		Assert.Equal("BugHouse.RunInt", article.Execution(3).Action(1).Read().Label);
 		Assert.Equal("Int", article.Execution(3).Input(1).Read().Label);
 		Assert.Equal("6", article.Execution(3).Input(1).Read().Value);
+		Assert.Equal("RunString returns true", article.PassedSpec(1).Read().Label);
+		Assert.Equal(34, article.PassedSpec(1).Read().TimesPassed);
+		Assert.Equal("RunInt returns true", article.PassedSpec(2).Read().Label);
+		Assert.Equal(24, article.PassedSpec(2).Read().TimesPassed);
 	}
 
 	[CodeSnippet]
