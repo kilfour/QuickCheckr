@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G1_MultipleCauses.cs:22:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1238961515
+ ------------------------------------------------------------
+  Executed (1):
+   - Input: Input = [ _, _, _ ]
+   - Trace: List = [ 0, 2, 0 ]
+ ===============================================================
+  !! Spec Failed: input.Count() > 2, () => !input.Contains(0)
+ ===============================================================
