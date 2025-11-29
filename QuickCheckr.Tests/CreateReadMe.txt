@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                CreateReadMe.cs:34:1
+ Location:                CreateReadMe.cs:33:1
  Original failing run:    85 executions
- Minimal failing case:    5 executions (after 80 shrinks)
+ Minimal failing case:    5 executions (after 82 shrinks)
  Seed:                    1141724745
  ------------------------------------------------------------
   Executed : BugHouse.Run (3 Times)

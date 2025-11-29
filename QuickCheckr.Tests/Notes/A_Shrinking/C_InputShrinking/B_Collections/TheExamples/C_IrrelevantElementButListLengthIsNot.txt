@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:31:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
+ Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1393576429
  ------------------------------------------------------------
   Executed (1):

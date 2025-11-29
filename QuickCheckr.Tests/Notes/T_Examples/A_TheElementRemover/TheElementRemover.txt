@@ -2,6 +2,7 @@
  Test:                    Example
  Location:                Notes\T_Examples\A_TheElementRemover\TheElementRemover.cs:31:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 7 shrinks)
  Seed:                    438724296
  ------------------------------------------------------------
   Executed (1): Delete from List

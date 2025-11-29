@@ -88,7 +88,7 @@ Now the test fails consistently:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:81:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:80:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
@@ -315,7 +315,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:60:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:59:1
  Original failing run:    20 executions
  Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
