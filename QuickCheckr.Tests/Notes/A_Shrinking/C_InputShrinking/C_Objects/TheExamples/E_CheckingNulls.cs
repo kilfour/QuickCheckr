@@ -23,7 +23,6 @@ public class E_CheckingNulls : BaseTest
         WriteAsserts(article);
         WriteReport<E_CheckingNulls>(article);
         Verify(article);
-        ExplainMe<E_CheckingNulls>(true);
     }
 
     private static void Verify(Article article)
