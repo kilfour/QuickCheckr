@@ -11,6 +11,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExam
 public class A_RemovesIrrelevantProperties : BaseTest
 {
     [Fact]
+    [DocExample(typeof(BaggyInters))]
     [DocExample(typeof(A_RemovesIrrelevantProperties), nameof(GetCheckr))]
     [DocCodeFile("A_RemovesIrrelevantProperties.txt", "text")]
     public void RunTest()
@@ -42,6 +43,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
             select Case.Closed;
     }
 
+    [CodeExample]
     public class BaggyInters
     {
         public int IntOne { get; set; }
