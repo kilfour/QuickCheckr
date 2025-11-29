@@ -159,4 +159,4 @@ And here's the report:
   !! Spec Failed: Sum /= 42
  =============================
 ```
-As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
+As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  

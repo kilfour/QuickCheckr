@@ -190,7 +190,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     [DocContent("Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.")]
     [DocContent("And here's the report:")]
     [DocCodeFile("TimeToAct.txt", "text")]
-    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant input.")]
+    [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.")]
     public void TimeToAct()
     {
         var article = TheJournalist.Exposes(() =>

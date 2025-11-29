@@ -180,7 +180,7 @@ And here's the report:
   !! Spec Failed: Sum /= 42
  =============================
 ```
-As demonstrated, the name of the executed action is included in the report, as well as the relevant input.  
+As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 ## Bolting Horses
 For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
