@@ -8,7 +8,8 @@ public static partial class Trackr
     public static CheckrOf<Case> ProvenWhen(string key, Func<bool> condition) =>
         state =>
         {
-            if (SpecNeedsToBeSkipped(key, state))
+            state.Memory.SpecGuard.Check(key);
+            if (state.EvidenceRecorder.SpecNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             try
             {
@@ -26,8 +27,4 @@ public static partial class Trackr
                 return CheckrResult.CaseOnly(state);
             }
         };
-
-    // TODO: Duplication: See CheckrSpec
-    private static bool SpecNeedsToBeSkipped(string key, CheckrState state)
-        => state.EvidenceRecorder.IsReplay && state.EvidenceRecorder.FailingSpec != key;
 }

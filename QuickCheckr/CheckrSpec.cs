@@ -6,7 +6,9 @@ namespace QuickCheckr;
 public static partial class Checkr
 {
     public static CheckrOf<Case> Spec(string key, Func<bool> condition)
-        => InnerSpec(key, condition);
+    {
+        return InnerSpec(key, condition);
+    }
 
     public static CheckrOf<Case> SpecIf(string key, Func<bool> predicate, Func<bool> condition)
         => state => predicate() ? InnerSpec(key, condition)(state) : CheckrResult.CaseOnly(state);
@@ -14,7 +16,8 @@ public static partial class Checkr
     private static CheckrOf<Case> InnerSpec(string key, Func<bool> condition) =>
         state =>
         {
-            if (SpecNeedsToBeSkipped(key, state))
+            state.Memory.SpecGuard.Check(key);
+            if (state.EvidenceRecorder.SpecNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             try
             {
@@ -31,9 +34,4 @@ public static partial class Checkr
                 return CheckrResult.CaseOnly(state);
             }
         };
-
-
-    // TODO:  Duplication: See TrackrProvenWhen
-    private static bool SpecNeedsToBeSkipped(string key, CheckrState state)
-        => state.EvidenceRecorder.IsReplay && state.EvidenceRecorder.FailingSpec != key;
 }

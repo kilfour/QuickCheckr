@@ -17,6 +17,9 @@ public class EvidenceRecorder
         return runFailed;
     }
 
+    public bool SpecNeedsToBeSkipped(string key)
+        => IsReplay && FailingSpec != key;
+
     public Exception? Exception { get; private set; } = null;
     public void RecordFailure(Exception exception)
     {

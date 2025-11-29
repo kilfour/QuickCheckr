@@ -10,12 +10,9 @@ public static partial class Checkr
         => OneOfInternal(scripts);
 
     private static CheckrOf<T> OneOfInternal<T>(
-        CheckrOf<T>[] scripts,
-        [CallerFilePath] string file = "",
-        [CallerLineNumber] int line = 0,
-        [CallerMemberName] string member = "")
+        CheckrOf<T>[] scripts)
     {
-        var key = $"OneOf|{Path.GetFileName(file)}:{line}|{member}|{scripts.Length}";
+        var key = $"OneOf|Default|QuickCheckr|Key";
         return state =>
             {
                 var index = state.Memory.StoreVariable(key,
@@ -28,12 +25,9 @@ public static partial class Checkr
         => OneOfIfInternal(scripts);
 
     private static CheckrOf<T> OneOfIfInternal<T>(
-         (Func<bool> condition, CheckrOf<T> script)[] scripts,
-        [CallerFilePath] string file = "",
-        [CallerLineNumber] int line = 0,
-        [CallerMemberName] string member = "")
+         (Func<bool> condition, CheckrOf<T> script)[] scripts)
     {
-        var key = $"OneOf|{Path.GetFileName(file)}:{line}|{member}|{scripts.Length}";
+        var key = $"OneOf|Default|QuickCheckr|Key";
         return state =>
             {
                 var validScriptIndexes =

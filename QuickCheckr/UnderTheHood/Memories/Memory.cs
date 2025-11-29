@@ -26,6 +26,7 @@ public class Memory
 
     public int Reset()
     {
+        ClearGuards();
         LongTermMemory.Reset();
         return ShortTermMemory.Reset();
     }
@@ -41,11 +42,21 @@ public class Memory
     // --------------------------------------------------------------------------
     // Guards
     private DuplicateKeyWriteGuardForInputs inputGuard = new();
+    private DuplicateKeyWriteGuardForActs actGuard = new();
+    public DuplicateKeyWriteGuardForSpecs SpecGuard { get; private set; } = new();
+    private DuplicateKeyWriteGuardForTraces traceGuard = new();
+    private DuplicateKeyWriteGuardForVariables variableGuard = new();
     private DuplicateKeyWriteGuardForStashed stashedGuard = new();
+    //private DuplicateKeyWriteGuardForPools poolGuard = new();
     private void ClearGuards()
     {
         inputGuard = new();
+        actGuard = new();
+        SpecGuard = new();
+        traceGuard = new();
+        variableGuard = new();
         stashedGuard = new();
+        //poolGuard = new();
     }
     // --------------------------------------------------------------------------
 
@@ -88,17 +99,17 @@ public class Memory
     // --------------------------------------------------------------------------
     // Actions
     public void StoreAction(string key)
-        => ShortTermMemory.StoreAction(key);
+        => ShortTermMemory.StoreAction(actGuard.Check(key));
     public bool HasAction(string key)
         => ShortTermMemory.HasAction(key);
     // --------------------------------------------------------------------------
     // Traces
     public void StoreTrace(string key, Func<string> factory)
-        => ShortTermMemory.StoreTrace(key, factory);
+        => ShortTermMemory.StoreTrace(traceGuard.Check(key), factory);
     // --------------------------------------------------------------------------
     // Variables
     public T? StoreVariable<T>(string key, Func<T> factory)
-        => ShortTermMemory.StoreVariable(key, factory);
+        => ShortTermMemory.StoreVariable(variableGuard.Check(key), factory);
     // --------------------------------------------------------------------------
     // Shrinkers
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)

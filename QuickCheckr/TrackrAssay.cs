@@ -7,6 +7,7 @@ public static partial class Trackr
     public static CheckrOf<Case> Assay(string key, Func<bool> condition) =>
         state =>
         {
+            state.Memory.SpecGuard.Check(key);
             if (!state.IsThisTheRunsLastExecution())
                 return CheckrResult.CaseOnly(state);
             bool passed = condition();
