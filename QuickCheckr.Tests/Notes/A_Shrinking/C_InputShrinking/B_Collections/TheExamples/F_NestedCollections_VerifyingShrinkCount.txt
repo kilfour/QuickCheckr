@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    VerifyingShrinkCount
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:65:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    71632642
+ Seed:                    977366316
  ------------------------------------------------------------
   Executed (1):
    - Input: List = [ [ 42 ] ]

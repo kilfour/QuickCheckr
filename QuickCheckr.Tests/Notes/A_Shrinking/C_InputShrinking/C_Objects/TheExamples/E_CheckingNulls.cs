@@ -118,7 +118,7 @@ public class E_CheckingNulls : BaseTest
         return
             from everything in Checkr.Input("Everything", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
-            from universe in Trackr.Execute(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
+            from universe in Trackr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
             from trace in Checkr.Trace("The Universe", () => universe)
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
             select Case.Closed;

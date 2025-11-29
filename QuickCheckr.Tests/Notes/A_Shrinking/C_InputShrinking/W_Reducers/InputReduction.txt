@@ -2,6 +2,7 @@
  Test:                    Example
  Location:                Notes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
  ------------------------------------------------------------
   Executed (1):
