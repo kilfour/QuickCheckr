@@ -33,9 +33,7 @@ The report shows:
   * Location: Source code Location of the test executing the Checkr.
   * Original failing run: Number of executions executed during the run. Let me get back to you on that one.
   * Seed: Seed used to generate the failing run. You can use this to reproduce the failing run reliably.
-* The minimal fail case:  The minimal failing input sequence. In this case original run and minimal run are the same.  
-  And details, also in this case, consist only of one execution.  
-  In this toyest of toy example it *only* specifies that an execution happened.
+* The minimal fail case: In this toyest of toy example it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
 ")]
     public void SpecAlwaysFalse()
