@@ -1,11 +1,8 @@
 ## Current Version: 0.0.1
 
 ### Major
-* QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples
-  * remove the nullableRef fuzzr
-* verify shrink count in all the existing tests, about 50% done and seems to work, but you never know
 * port
-  * object shrinking tests, (just records left basically, all seems to work though)
+  * object shrinking tests, multiple properties
 * async : Act, add overloads ...If and Action variants
 * QOL (major): throw exception when multiple writes occur to the same memorybank with the same key on the same execution
   * check OneOf, more than one in same checkr => same key => problem
