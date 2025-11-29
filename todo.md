@@ -7,6 +7,9 @@
   * done for all except pool, might need a new method there.
 * !! ShrinkEachElementStrategy.GetPlaceholder => can cause major issues. FIND THEM !! 
   * again not blocking for 0.0.2 but it would help communication spelling out to users that there might be an issue
+  *possible solutions:
+    * Trackr.StandIn<int>(-1); + GetPlaceholder(value) => placeholderexist ? placeholder : value
+    * Register a reducer for the list elements
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
   * limitations
   * known issues

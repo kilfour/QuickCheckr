@@ -38,7 +38,7 @@ public class ShrinkEachElementStrategy
                     if (removeForShrinking)
                     {
                         values.Add("_");
-                        theList[ix] = GetPlaceholder(theList[ix]!);
+                        theList[ix] = state.GetSubstitute(elementType, before);
                     }
                     else
                     {
@@ -54,11 +54,5 @@ public class ShrinkEachElementStrategy
         finalClue.AddToCount(shrinkCount);
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];
-    }
-
-    private static object GetPlaceholder(object original)
-    {
-        var type = original.GetType();
-        return type.IsValueType ? Activator.CreateInstance(type)! : null!;
     }
 }

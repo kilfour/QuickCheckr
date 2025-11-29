@@ -30,7 +30,7 @@ public class LockTheStableDoors : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 1511313504 }));
-        WriteAsserts(article, true);
+        WriteAsserts(article);
         WriteReport<LockTheStableDoors>(article);
         Verify(article);
     }
