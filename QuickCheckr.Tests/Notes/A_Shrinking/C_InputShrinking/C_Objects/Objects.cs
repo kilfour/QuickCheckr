@@ -5,40 +5,6 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects;
 [DocFile]
 public class Objects
 {
-    // public class Shrinking_a_record
-    // {
-    //     public record Person(string Name, int Age);
-
-    //     [Fact]
-    //     public void One_record()
-    //     {
-    //         var generator =
-    //             from name in Fuzzr.String()
-    //             from age in Fuzzr.Constant(42)
-    //             select new Person(name, age);
-
-    //         var script =
-    //             from input in "input".Input(generator)
-    //             from foo in "act".Act(() => { if (input.Age == 42) throw new Exception(); })
-    //             select Acid.Test;
-
-    //         var article = TheJournalist.Exposes(() => QState.Run(script)
-    //             .WithOneRun()
-    //             .AndOneExecutionPerRun());
-
-    //         Assert.Equal(1, article.Total().Inputs());
-
-    //         var inputEntry = article.Execution(1).Input(1).Read();
-    //         Assert.NotNull(inputEntry);
-    //         Assert.Equal("input", inputEntry.Label);
-    //         Assert.Equal("{ Age : 42 }", inputEntry.Value);
-
-    //         var actEntry = article.Execution(1).Action(1).Read();
-    //         Assert.NotNull(actEntry);
-    //         Assert.Equal("act", actEntry.Label);
-    //         Assert.NotNull(article.Exception());
-    //     }
-
     //     [Fact]
     //     public void Shrinker_cannot_shrink_relevant_field_in_record_YES_IT_CAN()
     //     {

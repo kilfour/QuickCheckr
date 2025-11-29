@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:21:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    315674503
+ ------------------------------------------------------------
+  Executed (1)
+ ==================================
+  !! Spec Failed: Ends on Turtle
+ ==================================

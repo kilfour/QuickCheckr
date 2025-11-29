@@ -1,6 +1,8 @@
 ## Current Version: 0.0.1
 
 ### Major
+* QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples
+  * remove the nullableRef fuzzr
 * verify shrink count in all the existing tests, about 50% done and seems to work, but you never know
 * port
   * object shrinking tests, (just records left basically, all seems to work though)
@@ -8,16 +10,15 @@
 * QOL (major): throw exception when multiple writes occur to the same memorybank with the same key on the same execution
   * check OneOf, more than one in same checkr => same key => problem
   * guard against reuse keys all over (already done for input and another one)
+* !! ShrinkEachElementStrategy.GetPlaceholder => can cause major issues. FIND THEM !! 
+  * again not blocking for 0.0.2 but it would help communication spelling out to users that there might be an issue
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
   * limitations
   * known issues
   * workarounds
-* !! ShrinkEachElementStrategy.GetPlaceholder => can cause major issues. FIND THEM !! 
-  * again not blocking for 0.0.2 but it would help communication spelling out to users that there might be an issue
-* test ActCarefully more (check if QuickAcid has some)
-
 
 ### Minor 
+* test ActCarefully more (check if QuickAcid has some), niche combinator so it can wait
 * Nested InputShrinkingClue ? ( not needed right now but i think it be cleaner)
 * Verdict nullabillity => meh
 * QuickCheckr.Tests.Verification.SwapperTests: 

@@ -16,6 +16,12 @@ public class ObjectShrinkStrategy
 
     private static IEnumerable<InputShrinkingClue> HandleProperties<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
     {
+        if (value == null)
+        {
+            var clue = InputShrinkingClue.Keep<ObjectShrinkStrategy>(executionId, fullKey, value);
+            state.Docket.Record(new InputShrinkingClueFound(clue));
+            return [clue];
+        }
         var properties = value!.GetType()
             .GetProperties(MyBinding.Flags)
             .Where(p =>
@@ -25,10 +31,11 @@ public class ObjectShrinkStrategy
                 p.SetMethod.IsPublic)
             .ToList();
         var values = new List<(string PropertyName, string Value)>();
+        var shrinkCount = 0;
         foreach (var property in properties)
         {
             var clues = HandleProperty(state, check, executionId, key, value, property, fullKey).ToList();
-            // iterate ienumerable once
+            shrinkCount += clues.Sum(a => a.Count);
             var clue = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
             if (clue != null)
             {
@@ -55,6 +62,7 @@ public class ObjectShrinkStrategy
             var clue = InputShrinkingClue
                 .Keep<ObjectShrinkStrategy>(executionId, fullKey, value,
                     $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName} : {a.Value}"))} }}");
+            clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
