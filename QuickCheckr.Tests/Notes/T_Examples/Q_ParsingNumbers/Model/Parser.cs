@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model.Lexing;
 
 namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
 
-public class Parser
+public class Parser(int unaryMinusPrecedence = 4)
 {
     public AstNode Parse(IEnumerable<Token> tokens)
     {
@@ -41,10 +41,10 @@ public class Parser
 
     private TokenKind? lastToken;
 
-    private static int Precedence(TokenKind kind) => kind switch
+    private int Precedence(TokenKind kind) => kind switch
     {
         TokenKind.Caret => 5,
-        TokenKind.UnaryMinus => 4,
+        TokenKind.UnaryMinus => unaryMinusPrecedence,
         TokenKind.Star or TokenKind.Slash => 3,
         TokenKind.Plus or TokenKind.Minus => 2,
         _ => 0

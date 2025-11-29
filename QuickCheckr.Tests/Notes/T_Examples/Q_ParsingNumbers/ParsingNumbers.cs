@@ -2,30 +2,43 @@ using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Explains;
 
 
 namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
 
-//[DocFile]
+[DocFile]
 public class ParsingNumbers : BaseTest
 {
-    //[Fact]
+    [Fact]
     [DocExample(typeof(ParsingNumbers), nameof(GetCheckr))]
     [DocCodeFile("ParsingNumbers.txt", "text")]
     public void RunTest()
     {
-        //ParseFuzzr.Expression(2).Many(5).Generate().PulseToLog();
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), a => a with { Seed = null }));
-        //WriteAsserts(article, true);
+            GetCheckr().Run(a => a with { Seed = 406406480 }));
+        WriteAsserts(article);
         WriteReport<ParsingNumbers>(article);
         Verify(article);
     }
 
     private static void Verify(Article article)
     {
-
+        Assert.Equal("Match", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(2, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Expression", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("\"2^-2^2\"", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("(2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Result", article.Execution(1).Trace(2).Read().Label);
+        Assert.Equal("Golden: 1,5000006416666136 /= Result: 2139,2800925925926", article.Execution(1).Trace(2).Read().Value);
     }
 
     [CodeSnippet]
@@ -33,18 +46,15 @@ public class ParsingNumbers : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from input in Checkr.Input("Input", ParseFuzzr.Expression(), a => a with { Reducer = a => [a] })
-            from result in Checkr.Act("Result", () => LostIn.Translation(input.Text).Eval())
-            from spec in Checkr.Spec("Parser evaluates correctly", () => result == input.Value)
-            from traceExpression in Checkr.Trace("Expression", () => input.Text)
-            from traceValue in Checkr.Trace("Desired Result", () => input.Value)
-            from traceResult in Checkr.Trace("Result", () => result)
+            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), a => a with { Reducer = ParseReducer.Reducer })
+            from trace in Checkr.Trace("Original", () => input)
+            from goldenResult in Checkr.Act("Result", () => LostIn.Translation(input).Eval())
+            from result in Checkr.Act("Result", () => LostIn.FaultyTranslation(input).Eval())
+            from traceResult in Checkr.Trace("Result", () => $"Golden: {goldenResult} /= Result: {result}")
+            from match in Checkr.SpecIf("Match",
+                () => !double.IsNaN(goldenResult),
+                () => goldenResult == result)
             select Case.Closed;
     }
 }
-
-
-
-
-
 
