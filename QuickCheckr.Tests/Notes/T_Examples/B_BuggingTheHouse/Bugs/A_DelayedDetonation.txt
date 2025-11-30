@@ -1,13 +1,17 @@
  ------------------------------------------------------------
- Test:                    <RunTest>b__1_0
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\A_DelayedDetonation.cs:42:1
+ Test:                    RunTest
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\A_DelayedDetonation.cs:43:1
  Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1914853878
  ------------------------------------------------------------
-  Executed : BugHouse.Run (2 Times)
+  Executed: BugHouse.Run (2 Times)
  ------------------------------------------------------------
-  Executed (3): BugHouse.Run
+  Executed: BugHouse.Run
    - Input: a = 1
  ================================
   !! Spec Failed: Returns true
  ================================
+ Passed Specs
+ - Returns true: 2x
+ ------------------------------------------------------------

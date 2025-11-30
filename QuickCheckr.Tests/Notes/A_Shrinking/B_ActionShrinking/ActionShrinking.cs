@@ -12,6 +12,9 @@ by passing in a configuration function to the Run method: `a => a with { Shrinki
 
 It is not common to have multiple Actions in one execution, but it is possible, and sometimes useful.  
 
+*Note:* This is still a very experimental feature, hence the opt-in and leads to problems in some cases.  
+Investigation is ongoing ...
+
 In the same vein as with *Execution Shrinking*, Actions are also evaluated and judged to be relevant for the failure.")]
 public class ActionShrinking : BaseTest
 {
@@ -30,12 +33,7 @@ So after *Action Shrinking*, the result is:
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 50.ExecutionsPerRun(),
-                a => a with
-                {
-                    Seed = 699025678,
-                    ShrinkingActions = true
-                }));
+            GetCheckr().Run(a => a with { ShrinkingActions = true }));
         WriteAsserts(article);
         WriteReport<ActionShrinking>(article);
         Verify(article);
@@ -64,15 +62,16 @@ So after *Action Shrinking*, the result is:
     [Fact]
     [DocHeader("Elaborating")]
     [DocContent(
-@"The reason *Action Shrinking* is not activated by default is because in some rare cases it can lead to confusion.  
+@"In very rare occasions *Action Shrinking* can be too greedy.  
 Consider the following example:")]
     [DocExample(typeof(ActionShrinking), nameof(Elaborating_Checkr))]
     [DocContent(
-@"If we enable *Action Shrinking* QuickCheckr replays the run and deactivates the action to ascertain its relevance.  
+@"QuickCheckr replays the run and deactivates the action to ascertain its relevance.  
 However, the action returns a value which other `LINQ` operations might depend on, so QuickCheckr returns a `default` value.  
 
 But, and here's the confusing bit, the spec in our example fails if the action returns false, the default bool value,
-so the spec fails even if the action is deactivated, and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
+so the spec fails even if the action is deactivated,
+and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
 
 And here we find ourselves confused ;-).  
 ")]
@@ -93,6 +92,35 @@ And here we find ourselves confused ;-).
     private static CheckrOf<Case> Elaborating_Checkr()
     {
         return
+            from act in Checkr.Act("Act", () => false)
+            from spec in Checkr.Spec("Act returns true", () => act == true)
+            select Case.Closed;
+    }
+
+    [Fact]
+    [DocHeader("Workaround")]
+    [DocContent(
+@"Use a stand in:")]
+    [DocExample(typeof(ActionShrinking), nameof(ElaboratingFix_Checkr))]
+    public void ElaboratingFix()
+    {
+        var article = TheJournalist.Exposes(() =>
+            ElaboratingFix_Checkr().Run(a => a with { ShrinkingActions = true }));
+        WriteAsserts(article, true);
+        Assert.Equal("Act returns true", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Act", article.Execution(1).Action(1).Read().Label);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> ElaboratingFix_Checkr()
+    {
+        return
+            from standIn in Trackr.StandIn(true)
             from act in Checkr.Act("Act", () => false)
             from spec in Checkr.Spec("Act returns true", () => act == true)
             select Case.Closed;

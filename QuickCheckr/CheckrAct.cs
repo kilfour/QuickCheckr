@@ -30,7 +30,8 @@ public static partial class Checkr
         state =>
         {
             if (ActionNeedsToBeSkipped(key, state))
-                return CheckrResult.Default<T>(state);
+                return CheckrResult.Some(state, (T)state.GetSubstitute(typeof(T), default(T)!)!);
+            //return CheckrResult.Default<T>(state);
             state.Memory.StoreAction(key);
             try
             {

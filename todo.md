@@ -1,9 +1,8 @@
 ## Current Version: 0.0.1
 
 ### Major
-* Use StandIn for action shrinking
+* Disable/Hide ActionShrinking completely for first release ? ... I do think so.
 * Setup Discord Server
-* Add Chapter 2 to the guide: The Stash Runs And Executions
 * port
   * object shrinking tests (multiple properties only ones left)
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
@@ -11,6 +10,7 @@
   * known issues
   * workarounds
 * DOC investigations
+* Doc configuration and framework integration in general
 
 ### If time allows
 Report original run or even 

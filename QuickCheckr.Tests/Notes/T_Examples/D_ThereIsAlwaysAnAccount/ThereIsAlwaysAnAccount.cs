@@ -43,11 +43,11 @@ public class ThereIsAlwaysAnAccount : BaseTest
         Assert.Equal("88", article.Execution(1).Trace(1).Read().Value);
     }
 
-    [Fact]
+    [Fact(Skip = "removed hacky full run report, do it right now")]
     public void FullRunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139, NoShrinking = true }));
+            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
         WriteAsserts(article);
         WriteReport(article, "ThereIsAlwaysAnAccountFullRun.txt");
         VerifyFullRun(article);
