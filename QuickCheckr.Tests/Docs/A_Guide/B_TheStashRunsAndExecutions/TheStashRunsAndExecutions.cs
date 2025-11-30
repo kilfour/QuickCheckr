@@ -57,8 +57,9 @@ because the test looses the state of the `BugHouse` between every run.")]
         from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
         select Case.Closed;
 
-    [CodeSnippet]
+
     [CodeRemove(", a => a with { Seed = 1854571642 }")]
+    [CodeSnippet]
     private static void RunBugHouseCheckr()
     {
         BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun(), a => a with { Seed = 1854571642 });

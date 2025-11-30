@@ -42,7 +42,7 @@ private static readonly CheckrOf<Case> BugHouseCheckr =
 ```
 **Running It:**  
 ```csharp
-Seed = 1854571642 
+BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```
 **The Report:**  
 ```text
