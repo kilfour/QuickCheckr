@@ -3,12 +3,11 @@
 ### Major
 * Disable/Hide ActionShrinking completely for first release ? ... I do think so.
 * Setup Discord Server
-* port
-  * object shrinking tests (multiple properties only ones left)
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
   * limitations
   * known issues
   * workarounds
+* DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
 * DOC investigations
 * Doc configuration
 * check out DX in NUnit, MSTest and TUnit
