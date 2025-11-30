@@ -21,7 +21,7 @@ public record CheckrRunnerConfig
     public CheckrRunnerConfig(CheckrConfig config)
     {
         Seed = config.Seed;
-        Signals = [.. config.Investigations.Select(a => Signal.From(a.Procedure).SetArtery(a.Officer))];
+        Signals = [.. config.Investigations.Select(a => Signal.From(a.Procedure).SetArtery(a.Officer()))];
         ShrinkMode = config.ShrinkMode;
         FileAs = config.FileAs;
     }

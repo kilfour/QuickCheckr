@@ -4,7 +4,7 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
 
-public record Investigation(IArtery Officer, Flow<IFiling> Procedure);
+public record Investigation(Func<IArtery> Officer, Flow<IFiling> Procedure);
 
 public record CheckrConfig
 {

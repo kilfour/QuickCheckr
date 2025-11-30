@@ -10,7 +10,11 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples;
 
 [DocFile]
-[DocContent("Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.")]
+[DocContent(
+@"Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.
+
+Check this with: 
+* `Investigations = [Investigate.NullIssues]`")]
 public class D1_IrrelevantObjectsNullIssues : BaseTest
 {
     [Fact]

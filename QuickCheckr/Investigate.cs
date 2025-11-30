@@ -9,11 +9,18 @@ namespace QuickCheckr;
 
 public static class Investigate
 {
-    public static readonly Investigation Events = new(FileLog.Write(), Procedure.Events);
+    public static readonly Investigation Events =
+        new(() => FileLog.Write(), Procedure.Events);
 
-    public static readonly Investigation EvidenceFailures = new(FileLog.Write(), Procedure.EvidenceFailures);
+    public static readonly Investigation EvidenceFailures =
+        new(() => FileLog.Write(), Procedure.EvidenceFailures);
 
-    public static readonly Investigation InputShrinking = new(FileLog.Write(), Procedure.InputShrinking);
+    public static readonly Investigation InputShrinking =
+        new(() => FileLog.Write(), Procedure.InputShrinking);
+
+    public static readonly Investigation NullIssues =
+        new(() => FileLog.Write(), Procedure.NullIssues);
+
     public static readonly Investigation[] All =
         [Events, EvidenceFailures, InputShrinking];
 }
@@ -49,5 +56,19 @@ public static class Procedure
     public static readonly Flow<IFiling> EvidenceFailures =
         from filing in Pulse.Start<IFiling>()
         from traceClue in Pulse.OnType(evidenceFailureFlow, () => filing)
+        select filing;
+
+
+    private static readonly Flow<InputShrinkingClueFound> nullIssue =
+        from filing in Pulse.Start<InputShrinkingClueFound>()
+        let relevant = filing.Clue.Strategy == "CantShrinkNull"
+        from _ in Pulse.TraceIf(relevant,
+            () => manOfWealthAndTaste.IntroduceThis(filing.Clue, true))
+        from __ in Pulse.TraceIf(relevant, () => "-------------------------------------")
+        select filing;
+
+    public static readonly Flow<IFiling> NullIssues =
+        from filing in Pulse.Start<IFiling>()
+        from traceClue in Pulse.OnType(nullIssue, () => filing)
         select filing;
 }

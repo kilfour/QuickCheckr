@@ -22,7 +22,7 @@ public class Investigations : BaseTest
                 a => a with
                 {
                     Seed = 1416432348,
-                    Investigations = [new(collector, Procedure.Events)]
+                    Investigations = [new(() => collector, Procedure.Events)]
                 }));
         var reader = LinesReader.FromStringList([.. collector.Values]);
         Assert.Equal("ExecutionRemoved", reader.NextLine());
@@ -61,7 +61,7 @@ public class Investigations : BaseTest
             a => a with
             {
                 Seed = 1393576429,
-                Investigations = [new(collector, Procedure.InputShrinking)]
+                Investigations = [new(() => collector, Procedure.InputShrinking)]
             }));
         var reader = LinesReader.FromStringList([.. collector.Values.SelectMany(a => a.Split(Environment.NewLine))]);
         Assert.Equal("{", reader.NextLine());
