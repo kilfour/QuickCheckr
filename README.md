@@ -77,16 +77,16 @@ and every statement in the docs is backed by a test.
 - **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/A_CheckringThingsOut/CheckringThingsOut.md)
 - **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/E_HorsesAgain/BoltingHorses.md)
 
-**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/Guide.md):** A work in progess. 
+**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/Guide.md):**
+This is a work in progess. Follow the link to find out what's coming next.
   
 ## Roadmap
 
 * Xml summary documentation for the public API
 * Elm-style helpful exceptions.
 * Finish the full QuickCheckr documentation (guide and reference).
-* Async helpers
 * Additional diagnostic flows
-* Cookbook
+* *True* async execution
   
 ## Dependencies
 

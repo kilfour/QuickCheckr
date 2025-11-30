@@ -25,7 +25,9 @@ This is a living document, we start small, with a short introduction and a real-
   - A real-world example of hunting down a subtle invariant bug.")]
 [DocHeader("Coming Soon")]
 [DocContent(
-@"More chapters will follow as QuickCheckr grows:  
+@"More chapters will follow as QuickCheckr grows.
+
+Up next:
 - Known Issues and Limitations
 - Shrinking 101
 - Pools
