@@ -10,8 +10,7 @@ public record CheckrConfig
 {
     public required int? Seed { get; init; }
     public required Investigation[] Investigations { get; init; }
-    public required bool NoShrinking { get; init; }
-    public required bool ShrinkingActions { get; init; }
+    public required ShrinkMode ShrinkMode { get; init; }
     public required string FileAs { get; init; } = string.Empty;
 
     public static CheckrConfig Default()
@@ -21,8 +20,7 @@ public record CheckrConfig
             {
                 Seed = null,
                 Investigations = [],
-                NoShrinking = false,
-                ShrinkingActions = false,
+                ShrinkMode = ShrinkMode.Default,
                 FileAs = string.Empty
             };
     }

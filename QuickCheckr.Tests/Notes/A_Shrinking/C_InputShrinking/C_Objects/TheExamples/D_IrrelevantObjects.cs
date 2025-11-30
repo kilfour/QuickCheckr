@@ -9,17 +9,17 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples;
 
-//[DocFile]
+[DocFile]
 public class D_IrrelevantObjects : BaseTest
 {
-    [Fact(Skip = "Wip")]
+    [Fact]
     [DocExample(typeof(D_IrrelevantObjects), nameof(GetCheckr))]
-    [DocCodeFile("TestTemplate.txt", "text")]
+    [DocCodeFile("D_IrrelevantObjects.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), a => a with { Seed = null }));
-        WriteAsserts(article, true);
+            GetCheckr().Run(100.Runs(), a => a with { Seed = null, Investigations = [Investigate.InputShrinking] }));
+        WriteAsserts(article);
         WriteReport<D_IrrelevantObjects>(article, true);
         Verify(article);
     }
@@ -33,13 +33,16 @@ public class D_IrrelevantObjects : BaseTest
     [CodeRemove("return")]
     private static CheckrOf<Case> GetCheckr()
     {
+
         return
             from turtle in Checkr.Input("Turtle",
                 from depth in Configr<Turtle>.Depth(1, 3)
                 from turtle in Fuzzr.One<Turtle>()
                 select turtle)
             from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
-            from endsOnTurtle in Checkr.SpecIf("Ends on Turtle",
+            from traceTurtle in Checkr.Trace("Turtle", () => turtle)
+            from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
+            from endsOnTurtle in Checkr.SpecIf("Turtle Ends on 'TurtlesAllTheWay'",
                 () => turtle.Down?.Down != null,
                 () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
             select Case.Closed;

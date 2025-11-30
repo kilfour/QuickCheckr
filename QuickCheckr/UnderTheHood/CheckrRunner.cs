@@ -42,16 +42,22 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
     {
         var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
+
         if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingAssay))
             return CompileTheCaseFile(originalRunExecutionCount, shrinkCount, true);
-        if (!config.NoShrinking)
-        {
+
+        if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
-            if (config.ShrinkingActions)
-                shrinkCount += new ActionShrinker(State, Check).Run();
+
+        if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
+            shrinkCount += new ActionShrinker(State, Check).Run();
+
+        if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += new InputShrinker(State, Check).Run();
+
+        if (config.ShrinkMode.HasFlag(ShrinkMode.Reduction))
             shrinkCount += new InputReducer(State, Check).Run();
-        }
+
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 

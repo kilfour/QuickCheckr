@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking;
@@ -33,7 +34,7 @@ So after *Action Shrinking*, the result is:
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { ShrinkingActions = true }));
+            GetCheckr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
         WriteAsserts(article);
         WriteReport<ActionShrinking>(article);
         Verify(article);
@@ -78,7 +79,7 @@ And here we find ourselves confused ;-).
     public void Elaborating()
     {
         var article = TheJournalist.Exposes(() =>
-            Elaborating_Checkr().Run(a => a with { ShrinkingActions = true }));
+            Elaborating_Checkr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
         WriteAsserts(article);
         Assert.Equal("Act returns true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
@@ -105,7 +106,7 @@ And here we find ourselves confused ;-).
     public void ElaboratingFix()
     {
         var article = TheJournalist.Exposes(() =>
-            ElaboratingFix_Checkr().Run(a => a with { ShrinkingActions = true }));
+            ElaboratingFix_Checkr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
         WriteAsserts(article, true);
         Assert.Equal("Act returns true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());

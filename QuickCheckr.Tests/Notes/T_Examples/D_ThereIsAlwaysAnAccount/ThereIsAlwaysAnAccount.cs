@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -43,11 +44,11 @@ public class ThereIsAlwaysAnAccount : BaseTest
         Assert.Equal("88", article.Execution(1).Trace(1).Read().Value);
     }
 
-    [Fact(Skip = "removed hacky full run report, do it right now")]
+    [Fact]
     public void FullRunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
+            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139, ShrinkMode = ShrinkMode.None }));
         WriteAsserts(article);
         WriteReport(article, "ThereIsAlwaysAnAccountFullRun.txt");
         VerifyFullRun(article);

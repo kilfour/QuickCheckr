@@ -21,7 +21,7 @@ public class E_CheckingNulls : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 358877731 }));
         WriteAsserts(article);
-        WriteReport<E_CheckingNulls>(article);
+        WriteReport<E_CheckingNulls>(article, true);
         Verify(article);
     }
 
