@@ -10,6 +10,7 @@
   * limitations
   * known issues
   * workarounds
+* DOC investigations
 
 ### If time allows
 Report original run or even 

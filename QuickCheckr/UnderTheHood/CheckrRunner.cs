@@ -15,7 +15,7 @@ namespace QuickCheckr.UnderTheHood;
 public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.Signal, config.Seed);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.Signals, config.Seed);
     private readonly Vault vault =
         string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config.FileAs);
 

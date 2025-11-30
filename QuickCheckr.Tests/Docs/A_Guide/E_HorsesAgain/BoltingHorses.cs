@@ -163,7 +163,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         select Case.Closed;
 
     [CodeExample]
-    private static readonly CheckrOf<Case> TheCheckr =
+    public static readonly CheckrOf<Case> TheCheckr =
         from coaches in Trackr.Pool<Coach>()
         from courses in Trackr.Pool<Course>()
         from operations in Checkr.OneOfIf(

@@ -18,7 +18,7 @@ public class D_IrrelevantObjects : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), a => a with { Seed = null, Diagnose = Diagnose.Shrinking }));
+            GetCheckr().Run(100.Runs(), a => a with { Seed = null }));
         WriteAsserts(article, true);
         WriteReport<D_IrrelevantObjects>(article, true);
         Verify(article);

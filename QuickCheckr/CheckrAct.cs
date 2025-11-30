@@ -38,7 +38,7 @@ public static partial class Checkr
             }
             catch (Exception exception)
             {
-                state.Docket.Record(new EvidenceException(exception));
+                state.Docket.Record(new EvidenceFailure(exception));
                 state.EvidenceRecorder.RecordFailure(exception);
                 return CheckrResult.Default<T>(state);
             }

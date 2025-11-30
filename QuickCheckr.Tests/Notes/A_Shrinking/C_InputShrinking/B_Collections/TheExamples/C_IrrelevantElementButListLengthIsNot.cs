@@ -27,7 +27,7 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), a => a with { Seed = 1393576429 }));
+            GetCheckr().Run(a => a with { Seed = 1393576429 }));
         WriteAsserts(article);
         WriteReport<C_IrrelevantElementButListLengthIsNot>(article);
         Verify(article);

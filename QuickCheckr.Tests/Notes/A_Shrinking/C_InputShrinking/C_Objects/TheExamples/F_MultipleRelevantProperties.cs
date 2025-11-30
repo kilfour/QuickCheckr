@@ -18,14 +18,23 @@ public class F_MultipleRelevantProperties : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(10000.Runs(), 1.ExecutionsPerRun(), a => a with { Seed = 1889365782 }));
-        WriteAsserts(article, true);
-        WriteReport<F_MultipleRelevantProperties>(article, true);
+        WriteAsserts(article);
+        WriteReport<F_MultipleRelevantProperties>(article);
         Verify(article);
     }
 
     private static void Verify(Article article)
     {
-
+        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("BaggyInters", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ IntThree: 1 }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ IntOne: 1, IntTwo: 69, IntThree: 1 }", article.Execution(1).Trace(1).Read().Value);
     }
 
     [CodeSnippet]
