@@ -9,7 +9,8 @@ using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Notes.U_Investigations;
 
-// [DocFile]
+[DocFile]
+[DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]
 public class Investigations : BaseTest
 {
     [Fact]
@@ -60,7 +61,7 @@ public class Investigations : BaseTest
             a => a with
             {
                 Seed = 1393576429,
-                Investigations = [Investigate.Events, Investigate.InputShrinking]
+                Investigations = [new(collector, Procedure.InputShrinking)]
             }));
         var reader = LinesReader.FromStringList([.. collector.Values.SelectMany(a => a.Split(Environment.NewLine))]);
         Assert.Equal("{", reader.NextLine());
