@@ -1,7 +1,6 @@
 ## Current Version: 0.0.1
 
 ### Major
-* XML Summary doc
 * Setup Discord Server
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
   * limitations
