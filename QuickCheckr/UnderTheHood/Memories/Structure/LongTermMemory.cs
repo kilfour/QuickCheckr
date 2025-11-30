@@ -21,6 +21,9 @@ public class LongTermMemory
     // Pool
     private MemoryBank pools = new();
     public IEnumerable<T> GetPool<T>()
+        => pools.Get<Dictionary<int, T>>(typeof(T).FullName!).Values;
+
+    public IEnumerable<T> CreatePool<T>()
     {
         var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
         if (pool is null)

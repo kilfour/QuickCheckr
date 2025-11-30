@@ -355,8 +355,8 @@ It then creates a series of actions, randomly choosing one, using `Checkr.OneOfI
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.Pool<Coach>()
-    from courses in Trackr.Pool<Course>()
+    from coaches in Trackr.PoolFor<Coach>()
+    from courses in Trackr.PoolFor<Course>()
     from operations in Checkr.OneOfIf(
         (() => coaches.Count() < 10, CreateCoach),
         (() => coaches.Any(), UpdateCoachSkills),

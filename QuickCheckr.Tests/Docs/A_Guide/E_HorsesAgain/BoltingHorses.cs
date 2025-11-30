@@ -164,8 +164,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     public static readonly CheckrOf<Case> TheCheckr =
-        from coaches in Trackr.Pool<Coach>()
-        from courses in Trackr.Pool<Course>()
+        from coaches in Trackr.PoolFor<Coach>()
+        from courses in Trackr.PoolFor<Course>()
         from operations in Checkr.OneOfIf(
             (() => coaches.Count() < 10, CreateCoach),
             (() => coaches.Any(), UpdateCoachSkills),

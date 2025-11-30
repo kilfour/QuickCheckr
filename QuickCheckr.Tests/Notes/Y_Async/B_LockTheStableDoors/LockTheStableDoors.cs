@@ -152,8 +152,8 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> TheCheckr =
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
-        from coaches in Trackr.Pool<CoachBy>()
-        from courses in Trackr.Pool<CourseBy>()
+        from coaches in Trackr.PoolFor<CoachBy>()
+        from courses in Trackr.PoolFor<CourseBy>()
         from dbCourses in Trackr.Capture(service.GetCoursesAsync())
         from operations in Checkr.OneOfIf(
             (() => coaches.Count() < 10, CreateCoach),

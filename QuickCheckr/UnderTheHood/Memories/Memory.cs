@@ -47,7 +47,7 @@ public class Memory
     private DuplicateKeyWriteGuardForTraces traceGuard = new();
     private DuplicateKeyWriteGuardForVariables variableGuard = new();
     private DuplicateKeyWriteGuardForStashed stashedGuard = new();
-    //private DuplicateKeyWriteGuardForPools poolGuard = new();
+    private DuplicateKeyWriteGuardForPools poolGuard = new();
     private void ClearGuards()
     {
         inputGuard = new();
@@ -56,7 +56,7 @@ public class Memory
         traceGuard = new();
         variableGuard = new();
         stashedGuard = new();
-        //poolGuard = new();
+        poolGuard = new();
     }
     // --------------------------------------------------------------------------
 
@@ -76,6 +76,12 @@ public class Memory
 
     // --------------------------------------------------------------------------
     // Pool
+    public IEnumerable<T> CreatePool<T>()
+    {
+        poolGuard.Check(typeof(T).FullName!);
+        return LongTermMemory.CreatePool<T>();
+    }
+
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
     public IEnumerable<int> GetPoolIds<T>()

@@ -7,8 +7,8 @@ namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 [DocFile]
 public class H_Pool
 {
-    [Fact(Skip = "to be discussed")]
-    [DocContent("- `Trackr.Pool`:")]
+    [Fact]
+    [DocContent("- `Trackr.PoolFor`:")]
     [DocExample(typeof(H_Pool), nameof(GetCheckr))]
     [DocContent("  Throws:")]
     [DocExample(typeof(H_Pool), nameof(GetMessage), "text")]
@@ -23,8 +23,8 @@ public class H_Pool
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.Pool<int>()
-            from two in Trackr.Pool<int>()
+            from one in Trackr.PoolFor<int>()
+            from two in Trackr.PoolFor<int>()
             select Case.Closed;
     }
 
@@ -32,12 +32,12 @@ public class H_Pool
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'reused' is written more than once in a single 'Trackr.Pool' run.
+@"Key 'System.Int32' is written more than once in a single 'Trackr.PoolFor' run.
 
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
 Possible solutions:
-- Ensure each 'Trackr.Pool' uses a unique key.
+- Ensure each 'Trackr.PoolFor' uses a unique key.
 ";
 }

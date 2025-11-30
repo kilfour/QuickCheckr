@@ -46,7 +46,7 @@ public class DuplicateKeyWriteGuardForStashed : DuplicateKeyWriteGuard
     public DuplicateKeyWriteGuardForStashed() : base("Trackr.Stashed", "run") { }
 }
 
-// public class DuplicateKeyWriteGuardForPools : DuplicateKeyWriteGuard
-// {
-//     public DuplicateKeyWriteGuardForPools() : base("Trackr.Pool", "run") { }
-// }
+public class DuplicateKeyWriteGuardForPools : DuplicateKeyWriteGuard
+{
+    public DuplicateKeyWriteGuardForPools() : base("Trackr.PoolFor", "run") { }
+}

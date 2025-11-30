@@ -5,6 +5,9 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
+    public static CheckrOf<IEnumerable<T>> PoolFor<T>() =>
+        state => CheckrResult.Some(state, state.Memory.CreatePool<T>());
+
     public static CheckrOf<IEnumerable<T>> Pool<T>() =>
         state => CheckrResult.Some(state, state.Memory.GetPool<T>());
 
