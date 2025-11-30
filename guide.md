@@ -190,7 +190,7 @@ As demonstrated, the name of the executed action is included in the report, as w
 ## The Stash, Runs and Executions
 Told you I was going to get back to you on that one (executions).
 
-In the previous chapter we upped the run number in order to *explore to fully explore the input space*.  
+In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:  
 ```csharp
