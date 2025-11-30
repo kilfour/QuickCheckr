@@ -10,7 +10,8 @@
   * known issues
   * workarounds
 * DOC investigations
-* Doc configuration and framework integration in general
+* Doc configuration
+* check out DX in NUnit, MSTest and TUnit
 
 ### If time allows
 Report original run or even 
