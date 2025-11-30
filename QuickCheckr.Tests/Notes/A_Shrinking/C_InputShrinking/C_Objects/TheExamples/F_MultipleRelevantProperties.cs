@@ -42,7 +42,7 @@ public class F_MultipleRelevantProperties : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from standin in Trackr.StandIn(123)
+            from standIn in Trackr.StandIn(123)
             from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
             from trace in Checkr.Trace("Original", () => obj)
             from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
