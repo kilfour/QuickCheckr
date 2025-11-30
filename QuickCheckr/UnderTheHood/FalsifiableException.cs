@@ -14,6 +14,7 @@ public class FalsifiableException : Exception
 	{
 		CaseFile = caseFile;
 	}
+
 	public FalsifiableException(CaseFile caseFile, Exception? exception)
 		: base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile)), exception)
 	{

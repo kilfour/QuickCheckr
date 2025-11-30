@@ -13,6 +13,10 @@ public static partial class Checkr
         Func<T, IEnumerable<T>>? Reducer = null
     );
 
+    /// <summary>
+    /// Draws a named input value from a fuzzr and optionally configures how it will be shrunk or reduced.  
+    /// Use when you want to attach custom shrinkers or reducers to an input so QuickCheckr can guide shrinking more precisely.
+    /// </summary>
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<InputCfg<T>, InputCfg<T>> configure)
     {
         var cfg = configure(new InputCfg<T>());
@@ -31,8 +35,13 @@ public static partial class Checkr
         };
     }
 
+    /// <summary>
+    /// Draws a named input value from a fuzzr and records it for reporting and shrinking.  
+    /// Use when you want a straightforward generated input that participates in minimal failing case discovery.
+    /// </summary>
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
+
 
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
         => CheckrResult.Some(state,

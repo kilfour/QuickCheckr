@@ -5,13 +5,20 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
+    /// <summary>
+    /// Adds a named specification that must evaluate to true for the case to pass.  
+    /// Use to assert expected behaviour and have failures trigger shrinking and detailed reporting.
+    /// </summary>
     public static CheckrOf<Case> Spec(string key, Func<bool> condition)
-    {
-        return InnerSpec(key, condition);
-    }
+        => InnerSpec(key, condition);
 
+    /// <summary>
+    /// Adds a named conditional specification that is only checked when the predicate holds.  
+    /// Use when a spec is meaningful only in certain states and should be skipped otherwise.
+    /// </summary>
     public static CheckrOf<Case> SpecIf(string key, Func<bool> predicate, Func<bool> condition)
         => state => predicate() ? InnerSpec(key, condition)(state) : CheckrResult.CaseOnly(state);
+
 
     private static CheckrOf<Case> InnerSpec(string key, Func<bool> condition) =>
         state =>

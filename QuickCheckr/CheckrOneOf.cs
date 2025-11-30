@@ -5,6 +5,10 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
+    /// <summary>
+    /// Chooses one of the provided Checkr scripts at random and executes it as the next step.  
+    /// Use when modelling behaviour where multiple alternative actions may occur, each with equal probability.
+    /// </summary>
     public static CheckrOf<T> OneOf<T>(params CheckrOf<T>[] scripts)
         => OneOfInternal(scripts);
 
@@ -20,6 +24,10 @@ public static partial class Checkr
             };
     }
 
+    /// <summary>
+    /// Chooses one of the provided Checkr scripts whose condition evaluates to true, and executes it as the next step.  
+    /// Use when modelling behaviour where only certain actions are valid in the current state.
+    /// </summary>
     public static CheckrOf<T> OneOfIf<T>(params (Func<bool> condition, CheckrOf<T> script)[] scripts)
         => OneOfIfInternal(scripts);
 
