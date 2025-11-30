@@ -118,11 +118,10 @@ This is a work in progess. Follow the link to find out what's coming next.
 
     [DocHeader("Roadmap")]
     [DocContent(@"
-* Xml summary documentation for the public API
-* Elm-style helpful exceptions.
-* Finish the full QuickCheckr documentation (guide and reference).
-* Additional diagnostic flows
-* *True* async execution
+- Elm-style helpful exceptions.
+- Full Guide + Reference documentation.
+- Additional diagnostic flows.
+- True async execution throughout the engine.
 ")]
     private static void Roadmap() { }
 
