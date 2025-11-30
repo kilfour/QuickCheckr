@@ -1,6 +1,5 @@
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse;
-using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
 
