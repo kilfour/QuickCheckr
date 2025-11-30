@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -43,11 +44,5 @@ public class A_RemovesIrrelevantProperties : BaseTest
             select Case.Closed;
     }
 
-    [CodeExample]
-    public class BaggyInters
-    {
-        public int IntOne { get; set; }
-        public int IntTwo { get; set; }
-        public int IntThree { get; set; }
-    }
+
 }

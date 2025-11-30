@@ -48,6 +48,10 @@ public class ObjectShrinkStrategy
                 {
                     values.Add((property.Name, clue.Report!));
                 }
+                else
+                {
+                    SetPropertyValue(property, value, state.GetSubstitute(property.PropertyType, property.GetValue(value)!)!);
+                }
             }
         }
 
@@ -77,5 +81,16 @@ public class ObjectShrinkStrategy
             foreach (var clue in ShrinkStrategyPicker.Input(state, check, executionId, key, propertyValue, $"{fullKey}.{propertyInfo.Name}"))
                 yield return clue;
         }
+    }
+
+    //duplicate from ObjectLens
+    private static void SetPropertyValue(PropertyInfo propertyInfo, object target, object value)
+    {
+        var prop = propertyInfo;
+        if (!prop.CanWrite)
+            prop = propertyInfo.DeclaringType!.GetProperty(propertyInfo.Name);
+
+        if (prop != null && prop.CanWrite)
+            prop.SetValue(target, value, null);
     }
 }
