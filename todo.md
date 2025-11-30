@@ -24,3 +24,7 @@ Report original run or even
   * main tests prove that this works, but it would help to to test this in isolation
 * Loose the lazy IEnumerable in shrinking (yield)
 * Scour QuickAcid for any interesting tests left behind.
+
+### Other
+* QuickPulse: add a log to file here artery
+* QuickPulse.Explains [DocFile] => just straight include file, usefull for .md's

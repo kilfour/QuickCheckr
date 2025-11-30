@@ -1,0 +1,17 @@
+ ------------------------------------------------------------
+ Test:                    RunBugHouseCheckr
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:62:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    1854571642
+ ------------------------------------------------------------
+  Executed: BugHouse.DelayedDetonation (2 Times)
+ ------------------------------------------------------------
+  Executed: BugHouse.DelayedDetonation
+   - Input: Int = 1
+ ===========================================================================
+  !! Exception Thrown: ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+ ===========================================================================
+ Passed Specs
+ - Returns true: 2x
+ ------------------------------------------------------------

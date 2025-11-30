@@ -50,7 +50,7 @@ It creates two pools, one for coaches, and one for courses, which we are going t
 It then creates a series of actions, randomly choosing one, using `Checkr.OneOfIf`, out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
-private static readonly CheckrOf<Case> TheCheckr =
+public static readonly CheckrOf<Case> TheCheckr =
     from coaches in Trackr.Pool<Coach>()
     from courses in Trackr.Pool<Course>()
     from operations in Checkr.OneOfIf(
