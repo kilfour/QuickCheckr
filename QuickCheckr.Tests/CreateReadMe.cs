@@ -87,7 +87,7 @@ public class CreateReadMe : BaseTest
 * **Shrinking:** Reduce randomly generated scenarios to minimal failing cases.
 * **Stateful testing:** Pools, stashed objects, and multi-step behaviours supported out of the box.
 * **Deterministic:** Reproducible runs using seeds.
-* **Fully integrated with QuickFuzzr:** Use any generator or custom shrinker.
+* **Built for Devs:** Transparancy and traceability as a first-class concern.
 ")]
     private static void Highlights() { }
 
@@ -110,11 +110,14 @@ and every statement in the docs is backed by a test.
 
 - **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/A_CheckringThingsOut/CheckringThingsOut.md)
 - **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/E_HorsesAgain/BoltingHorses.md)
+
+**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/Guide.md):** A work in progess. 
 ")]
     private static void Documentation() { }
 
     [DocHeader("Roadmap")]
     [DocContent(@"
+* Xml summary documentation for the public API
 * Elm-style helpful exceptions.
 * Finish the full QuickCheckr documentation (guide and reference).
 * Async helpers

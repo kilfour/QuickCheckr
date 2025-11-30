@@ -49,8 +49,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
 
-        if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
-            shrinkCount += new ActionShrinker(State, Check).Run();
+        // if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
+        //     shrinkCount += new ActionShrinker(State, Check).Run();
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += new InputShrinker(State, Check).Run();

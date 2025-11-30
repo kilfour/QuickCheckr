@@ -19,7 +19,7 @@ Investigation is ongoing ...
 In the same vein as with *Execution Shrinking*, Actions are also evaluated and judged to be relevant for the failure.")]
 public class ActionShrinking : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "actionshrinking is disabled")]
     [DocContent("The following simple example fails on the third action.")]
     [DocExample(typeof(ActionShrinking), nameof(GetCheckr))]
     [DocContent(
@@ -60,7 +60,7 @@ So after *Action Shrinking*, the result is:
             select Case.Closed;
     }
 
-    [Fact]
+    [Fact(Skip = "actionshrinking is disabled")]
     [DocHeader("Elaborating")]
     [DocContent(
 @"In very rare occasions *Action Shrinking* can be too greedy.  
@@ -98,7 +98,7 @@ And here we find ourselves confused ;-).
             select Case.Closed;
     }
 
-    [Fact]
+    [Fact(Skip = "actionshrinking is disabled")]
     [DocHeader("Workaround")]
     [DocContent(
 @"Use a stand in:")]
