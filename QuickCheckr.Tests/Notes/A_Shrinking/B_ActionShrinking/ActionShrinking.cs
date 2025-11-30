@@ -107,7 +107,7 @@ And here we find ourselves confused ;-).
     {
         var article = TheJournalist.Exposes(() =>
             ElaboratingFix_Checkr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
-        WriteAsserts(article, true);
+        WriteAsserts(article);
         Assert.Equal("Act returns true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());

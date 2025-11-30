@@ -14,14 +14,42 @@ public class ObjectShrinkStrategy
         return HandleProperties(state, check, executionId, key, value, fullKey);
     }
 
+    public record CantShrinkNull;
+
     private static IEnumerable<InputShrinkingClue> HandleProperties<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
     {
         if (value == null)
         {
-            var clue = InputShrinkingClue.Keep<ObjectShrinkStrategy>(executionId, fullKey, value);
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(executionId, fullKey, value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
+
+        // var verifier = new Verifier(state, check);
+        // if (verifier.RunFailed(executionId, key, null!))
+        // {
+        //     var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(executionId, fullKey, value);
+        //     state.Docket.Record(new InputShrinkingClueFound(clue));
+        //     return [clue];
+        // }
+
+        // if (value == null)
+        // {
+        //     var verifier = new Verifier(state, check);
+        //     if (verifier.RunFailed(executionId, key, state.GetSubstitute(typeof(T), null!)!))
+        //     {
+        //         var clue = InputShrinkingClue.Keep<ObjectShrinkStrategy>(executionId, fullKey, value);
+        //         state.Docket.Record(new InputShrinkingClueFound(clue));
+        //         return [clue];
+        //     }
+        //     else
+        //     {
+        //         var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(executionId, fullKey, value);
+        //         state.Docket.Record(new InputShrinkingClueFound(clue));
+        //         return [clue];
+        //     }
+        // }
+
         var properties = value!.GetType()
             .GetProperties(MyBinding.Flags)
             .Where(p =>

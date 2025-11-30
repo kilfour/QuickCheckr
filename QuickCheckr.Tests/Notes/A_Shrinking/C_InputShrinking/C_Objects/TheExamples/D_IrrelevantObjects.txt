@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:21:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:22:1
  Original failing run:    1 execution
- Seed:                    346547347
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1000847613
  ------------------------------------------------------------
   Executed:
-   - Input: Turtle = { Down: { Down: { Down: null } } }
-   - Input: Other Turtle = { Down: { Down: null } }
-   - Trace: Turtle = { Down: { Down: { Down: null } } }
-   - Trace: Other Turtle = { Down: { Down: null } }
- =====================================================
-  !! Spec Failed: Turtle Ends on 'TurtlesAllTheWay'
- =====================================================
+   - Input: Person = { Age: 18 }
+   - Trace: Person = { Name: "voddj", Age: 18 }
+   - Trace: Other Person = { Name: "hdpjy", Age: 85 }
+ ===============================
+  !! Spec Failed: Not aged 18
+ ===============================
