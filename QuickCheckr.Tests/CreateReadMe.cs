@@ -8,16 +8,7 @@ namespace QuickCheckr.Tests;
 
 [DocFile]
 [DocFileHeader("<img src='icon.png' width='40' align='top'/> QuickCheckr")]
-[DocContent(
-@"
-> **CSI: .NET**
-
-Property-based testing for the pragmatic.  
-
-[![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)
-[![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
-[![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)
-[![Discord](https://img.shields.io/badge/-Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.gg/2Qz5dBJjm8)")]
+[DocRawFile("CreateReadme-header.md")]
 public class CreateReadMe : BaseTest
 {
     [Fact]
@@ -28,6 +19,7 @@ public class CreateReadMe : BaseTest
     [DocExample(typeof(CreateReadMe), nameof(GetCheckr))]
     [DocContent("**Reports:**")]
     [DocCodeFile("CreateReadMe.txt", "text")]
+    [DocRawFile("CreateReadme-footer.md")]
     public void Example()
     {
         var article = TheJournalist.Exposes(() =>
@@ -80,62 +72,4 @@ public class CreateReadMe : BaseTest
             return true;
         }
     }
-
-    [DocHeader("Highlights")]
-    [DocContent(@"
-* **LINQ-based workflow:** Build tests using familiar query expressions.
-* **Shrinking:** Reduce randomly generated scenarios to minimal failing cases.
-* **Stateful testing:** Pools, stashed objects, and multi-step behaviours supported out of the box.
-* **Deterministic:** Reproducible runs using seeds.
-* **Built for Devs:** Transparancy and traceability as a first-class concern.
-")]
-    private static void Highlights() { }
-
-    [DocHeader("Installation")]
-    [DocContent(@"
-QuickCheckr is available on NuGet:
-```bash
-Install-Package QuickCheckr
-```
-Or via the .NET CLI:
-```bash
-dotnet add package QuickCheckr
-```")]
-    private static void Installation() { }
-
-    [DocHeader("Documentation")]
-    [DocContent(@"
-QuickCheckr is in the process of being fully documented, with real, executable examples for every feature,
-and every statement in the docs is backed by a test.
-
-- **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
-- **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md)
-
-**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md):**
-This is a work in progess. Follow the link to find out what's coming next.
-")]
-    private static void Documentation() { }
-
-    [DocHeader("Roadmap")]
-    [DocContent(@"
-- Elm-style helpful exceptions.
-- Full Guide + Reference documentation.
-- Additional diagnostic flows.
-- True async execution throughout the engine.
-")]
-    private static void Roadmap() { }
-
-    [DocHeader("Dependencies")]
-    [DocContent(@"
-* [QuickFuzzr](https://github.com/kilfour/QuickFuzzr/blob/main/README.md): For random input generation.
-* [QuickPulse.Show](https://github.com/kilfour/QuickPulse.Show/blob/main/README.md): For *stringifying* any C# object or value.
-* [QuickPulse](https://github.com/kilfour/QuickPulse/blob/main/README.md): Implicit through QuickPulse.Show. But also used for diagnostics filtering and transformations.
-")]
-    private static void Dependencies() { }
-    [DocHeader("The Wonder(ing) Years")]
-    [DocContent("> [Why QuickCheckr Exists](https://github.com/kilfour/QuickCheckr/blob/main/why-quickcheckr-exists.md)")]
-    [DocHeader("License")]
-    [DocContent(@"
-This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).")]
-    private static void License() { }
 }

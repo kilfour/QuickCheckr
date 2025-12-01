@@ -1,5 +1,4 @@
 # <img src='icon.png' width='40' align='top'/> QuickCheckr
-
 > **CSI: .NET**
 
 Property-based testing for the pragmatic.  
@@ -7,7 +6,7 @@ Property-based testing for the pragmatic.
 [![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)
-[![Discord](https://img.shields.io/badge/-Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.gg/2Qz5dBJjm8)  
+[![Discord](https://img.shields.io/badge/-Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.gg/2Qz5dBJjm8)    
 ## Example
 **Buggy Code:**  
 ```csharp
@@ -97,4 +96,4 @@ This is a work in progess. Follow the link to find out what's coming next.
 > [Why QuickCheckr Exists](https://github.com/kilfour/QuickCheckr/blob/main/why-quickcheckr-exists.md)  
 ## License
 
-This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).  
+This project is licensed under the [MIT License](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).    
