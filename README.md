@@ -4,7 +4,7 @@
 
 Property-based testing for the pragmatic.  
 
-[![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/Guide.md)
+[![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)
 [![Discord](https://img.shields.io/badge/-Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.gg/2Qz5dBJjm8)  
@@ -74,10 +74,10 @@ dotnet add package QuickCheckr
 QuickCheckr is in the process of being fully documented, with real, executable examples for every feature,
 and every statement in the docs is backed by a test.
 
-- **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/A_CheckringThingsOut/CheckringThingsOut.md)
-- **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/E_HorsesAgain/BoltingHorses.md)
+- **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
+- **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md)
 
-**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/Guide/Guide.md):**
+**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md):**
 This is a work in progess. Follow the link to find out what's coming next.
   
 ## Roadmap

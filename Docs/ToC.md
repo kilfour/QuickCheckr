@@ -1,0 +1,4 @@
+  - [Guide](A_Guide/Guide.md)
+    - [Checkr-ing Things Out](A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
+    - [The Stash, Runs and Executions](A_Guide/B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md)
+    - [Bolting Horses](A_Guide/E_HorsesAgain/BoltingHorses.md)
