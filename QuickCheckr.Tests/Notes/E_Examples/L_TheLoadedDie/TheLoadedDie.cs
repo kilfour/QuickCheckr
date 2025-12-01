@@ -20,7 +20,7 @@ public class TheLoadedDie : BaseTest
     [DocContent(
 @"While not strictly speaking a property-test, as there is no shrinking involved,
 this kind of test is nevertheless very useful.  
-So much so that QuickCheckr contains a specific Checkr to allow for this it.  
+So much so that QuickCheckr so much so that QuickCheckr provides a dedicated tool for it. 
 
 We're testing a simple implementation of a die:
 ")]
