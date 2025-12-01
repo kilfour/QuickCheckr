@@ -1,0 +1,10 @@
+ ------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Notes\E_Examples\L_TheLoadedDie\TheLoadedDie.cs:35:1
+ Original failing run:    100 executions
+ Seed:                    930735070
+ ------------------------------------------------------------
+  Executed: Roll (100 Times)
+ ================================================
+  !!  The Assayer Disagrees: Rolls: Contains 6
+ ================================================

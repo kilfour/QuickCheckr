@@ -1,1 +1,3 @@
 - [Notes](Notes.md)
+  - [Example](E_Examples/Example.md)
+    - [The Loaded Die](E_Examples/L_TheLoadedDie/TheLoadedDie.md)
