@@ -11,10 +11,12 @@ public record CheckrRunnerConfig
         Signals = [.. config.Investigations.Select(a => Signal.From(a.Procedure).SetArtery(a.Officer()))];
         ShrinkMode = config.ShrinkMode;
         FileAs = config.FileAs;
+        EvidenceMode = config.EvidenceMode;
     }
 
     public int? Seed { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
     public ShrinkMode ShrinkMode { get; init; }
     public string FileAs { get; init; }
+    public EvidenceMode EvidenceMode { get; init; }
 }

@@ -26,4 +26,4 @@ Report original run or even
 
 ### Other
 * QuickPulse: add a log to file here artery
-* QuickPulse.Explains [DocFile] => just straight include file, usefull for .md's
+* upgrade QP.E to 0.3.11

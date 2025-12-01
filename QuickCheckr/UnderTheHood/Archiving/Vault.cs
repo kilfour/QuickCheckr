@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickPulse.Instruments;
 
@@ -5,7 +6,7 @@ namespace QuickCheckr.UnderTheHood.Archiving;
 
 public class Vault
 {
-    public virtual void Check(CheckrOf<Case> check) { }
+    public virtual void Check(CheckrOf<Case> check, EvidenceMode evidenceMode) { }
     public virtual bool Replay() { return false; }
     public virtual void AddSeed(int seed, int numberOfExecutions) { }
 }
@@ -13,6 +14,7 @@ public class Vault
 public class EvidenceVault : Vault
 {
     private readonly string path;
+    private readonly string logPath;
     private readonly HashSet<VaultEntry> entries;
 
     public EvidenceVault(string name)
@@ -20,18 +22,26 @@ public class EvidenceVault : Vault
         var root = SolutionLocator.FindSolutionRoot();
         root ??= AppContext.BaseDirectory;
         path = Path.Combine(root!, ".quickcheckr", name, $"evidence.qv");
+        logPath = Path.Combine(root!, ".quickcheckr", name, $"evidence-log.ql");
         entries = GetVaultEntries();
     }
 
-    public override void Check(CheckrOf<Case> check)
+    public override void Check(CheckrOf<Case> check, EvidenceMode evidenceMode)
     {
+        if (evidenceMode == EvidenceMode.Ignore) return;
         foreach (var entry in entries)
         {
             var state = new CheckrState(entry.ExecutionsPerRun, null!, entry.Seed);
             new InitialRun(state, check).Run(entry.ExecutionsPerRun);
-            if (!state.EvidenceRecorder.Failed())
+            if (state.EvidenceRecorder.Failed())
             {
-                Remove(entry);
+                File.AppendAllText(logPath, $"Run failed for Seed: {entry.Seed}.{Environment.NewLine}");
+            }
+            else
+            {
+                File.AppendAllText(logPath, $"Run passed for Seed: {entry.Seed}.{Environment.NewLine}");
+                if (evidenceMode == EvidenceMode.ReviewAndPurge)
+                    Remove(entry);
             }
         }
     }
@@ -44,7 +54,11 @@ public class EvidenceVault : Vault
     private void Add(VaultEntry vaultEntry)
     {
         if (entries.Add(vaultEntry))
+        {
             Save();
+            File.AppendAllText(logPath, $"Added Seed: {vaultEntry.Seed}.{Environment.NewLine}");
+        }
+
     }
     private HashSet<VaultEntry> GetVaultEntries()
     {
@@ -72,7 +86,10 @@ public class EvidenceVault : Vault
     private void Remove(VaultEntry vaultEntry)
     {
         if (entries.Remove(vaultEntry))
+        {
             SaveOrDelete();
+            File.AppendAllText(logPath, $"Removed Seed: {vaultEntry.Seed}.{Environment.NewLine}");
+        }
     }
 
     private void Save()

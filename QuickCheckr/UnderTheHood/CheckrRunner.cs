@@ -21,6 +21,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 
     public CaseFile Run()
     {
+        vault.Check(Check, config.EvidenceMode);
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
         {
