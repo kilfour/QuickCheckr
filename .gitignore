@@ -60,4 +60,5 @@ temp*.md
 .quickcheckr/
 
 nuget.md
-notes.md
+
+/PersonalNotes/
