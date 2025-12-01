@@ -56,7 +56,7 @@ select Case.Closed;
 * **Shrinking:** Reduce randomly generated scenarios to minimal failing cases.
 * **Stateful testing:** Pools, stashed objects, and multi-step behaviours supported out of the box.
 * **Deterministic:** Reproducible runs using seeds.
-* **Built for Devs:** Transparancy and traceability as a first-class concern.
+* **Built for Devs:** Transparency and traceability as a first-class concern.
   
 ## Installation
 

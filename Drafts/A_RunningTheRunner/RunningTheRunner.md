@@ -51,7 +51,7 @@ Controls which shrinking strategies are active:
 You can also combine flags explicitly, e.g. `ShrinkMode.Executions | ShrinkMode.Inputs`.
 
 **`FileAs`:**
-An optional label that tells QuickCheckr to persist case files under a `.quickcheckr/{FileAs}` folder in your solution root.
+An optional label that tells QuickCheckr to persist case files under a `.quickcheckr/{FileAs}` folder relative to the solution root.
 * `""` (empty, default) => nothing is written to disk.
 * Any non‑empty string => 
   * Failing runs are transcribed to `report.qr`.

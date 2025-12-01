@@ -1,7 +1,6 @@
 ## Current Version: 0.0.1
 
 ### Major
-* Setup Discord Server
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
   * limitations
   * known issues
@@ -9,11 +8,6 @@
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
 * DOC investigations
 * Doc configuration
-* check out DX in NUnit, MSTest and TUnit
-
-### If time allows
-Report original run or even 
-  * Report variations Enableshrinking Bitwise Enum 
 
 ### Minor 
 * test ActCarefully more (check if QuickAcid has some), niche combinator so it can wait
@@ -26,4 +20,3 @@ Report original run or even
 
 ### Other
 * QuickPulse: add a log to file here artery
-* upgrade QP.E to 0.3.11
