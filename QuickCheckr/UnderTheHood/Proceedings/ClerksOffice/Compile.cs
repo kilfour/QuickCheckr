@@ -42,7 +42,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
-            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!)); //Introduce.This(val!, false)));
+            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!));
         }
     }
 
