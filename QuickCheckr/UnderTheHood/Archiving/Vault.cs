@@ -1,12 +1,13 @@
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickPulse.Instruments;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Archiving;
 
 public class Vault
 {
-    public virtual void Check(CheckrOf<Case> check, EvidenceMode evidenceMode) { }
+    public virtual void Check(CheckrOf<Case> check, ManOfWealthAndTaste manOfWealthAndTaste, EvidenceMode evidenceMode) { }
     public virtual bool Replay() { return false; }
     public virtual void AddSeed(int seed, int numberOfExecutions) { }
 }
@@ -26,12 +27,12 @@ public class EvidenceVault : Vault
         entries = GetVaultEntries();
     }
 
-    public override void Check(CheckrOf<Case> check, EvidenceMode evidenceMode)
+    public override void Check(CheckrOf<Case> check, ManOfWealthAndTaste manOfWealthAndTaste, EvidenceMode evidenceMode)
     {
         if (evidenceMode == EvidenceMode.Ignore) return;
         foreach (var entry in entries)
         {
-            var state = new CheckrState(entry.ExecutionsPerRun, null!, entry.Seed);
+            var state = new CheckrState(entry.ExecutionsPerRun, manOfWealthAndTaste, null!, entry.Seed);
             new InitialRun(state, check).Run(entry.ExecutionsPerRun);
             if (state.EvidenceRecorder.Failed())
             {

@@ -26,8 +26,8 @@ public class InputShrinkingClue
             Strategy = typeof(T).Name,
             Count = 1
         };
-    public static InputShrinkingClue Keep<T>(int executionId, string key, object? value)
-        => Keep<T>(executionId, key, value, Introduce.This(value!, false));
+    // public static InputShrinkingClue Keep<T>(int executionId, string key, object? value)
+    //     => Keep<T>(executionId, key, value, Introduce.This(value!, false));
 
     // this should be a replace one i reckon
     public static InputShrinkingClue Keep<T>(int executionId, string key, object? value, object? result)
@@ -54,12 +54,12 @@ public class InputShrinkingClue
             Strategy = typeof(T).Name
         };
 
-    public static InputShrinkingClue Replace<T>(
-            int executionId,
-            string key,
-            object? value,
-            object? result)
-        => Replace<T>(executionId, key, value, result, Introduce.This(result!, false));
+    // public static InputShrinkingClue Replace<T>(
+    //         int executionId,
+    //         string key,
+    //         object? value,
+    //         object? result)
+    //     => Replace<T>(executionId, key, value, result, Introduce.This(result!, false));
 
     public static InputShrinkingClue Replace<T>(
             int executionId,

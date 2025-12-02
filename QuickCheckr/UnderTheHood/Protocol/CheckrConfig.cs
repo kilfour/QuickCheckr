@@ -1,6 +1,7 @@
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickPulse;
 using QuickPulse.Arteries;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
 
@@ -18,6 +19,12 @@ public record CheckrConfig
     /// Use when you want deterministic behaviour for debugging or CI.
     /// </summary>
     public required int? Seed { get; init; }
+
+    /// <summary>
+    /// Configures how values are rendered in diagnostic output via QuickPulse.Show.  
+    /// Use to adjust formatting, verbosity, or custom display rules for traced or reported data.
+    /// </summary>
+    public required ManOfWealthAndTaste ManOfWealthAndTaste { get; init; }
 
     /// <summary>
     /// The set of enabled investigation modes.  
@@ -54,6 +61,7 @@ public record CheckrConfig
             new CheckrConfig()
             {
                 Seed = null,
+                ManOfWealthAndTaste = new ManOfWealthAndTaste().ToInline<List<int>>(),
                 Investigations = [],
                 ShrinkMode = ShrinkMode.Default,
                 FileAs = string.Empty,

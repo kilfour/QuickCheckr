@@ -12,7 +12,7 @@ public static partial class Checkr
     public static CheckrOf<Case> Trace<T>(string key, Func<T?> factory) =>
         state =>
         {
-            state.Memory.StoreTrace(key, () => Introduce.This(factory()!, false));
+            state.Memory.StoreTrace(key, () => state.ManOfWealthAndTaste.IntroduceThis(factory()));
             return CheckrResult.CaseOnly(state);
         };
 
@@ -23,7 +23,7 @@ public static partial class Checkr
     public static CheckrOf<Case> Trace<T>(string key, T? obj, Func<string, string> formatter) =>
         state =>
         {
-            state.Memory.StoreTrace(key, () => formatter(Introduce.This(obj!, false)));
+            state.Memory.StoreTrace(key, () => formatter(state.ManOfWealthAndTaste.IntroduceThis(obj)));
             return CheckrResult.CaseOnly(state);
         };
 

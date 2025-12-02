@@ -33,7 +33,7 @@ public class ShrinkStrategyPicker
         if (actualType.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
 
-        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(executionId, fullKey, value);
+        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(executionId, fullKey, value, state.ManOfWealthAndTaste.IntroduceThis(value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
         return [clue];
     }

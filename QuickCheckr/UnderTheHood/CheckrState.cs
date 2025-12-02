@@ -2,15 +2,21 @@ using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickFuzzr.UnderTheHood;
 using QuickPulse;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrState(int desiredNumberOfExecutions, Signal<IFiling>[] signals, int? seed = null)
+public class CheckrState(
+    int desiredNumberOfExecutions,
+    ManOfWealthAndTaste manOfWealthAndTaste,
+    Signal<IFiling>[] signals,
+    int? seed = null)
 {
     public State FuzzrState { get; init; } = seed is null ? new() : new(seed.Value);
     public Memory Memory { get; init; } = new();
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signals);
+    public ManOfWealthAndTaste ManOfWealthAndTaste { get; init; } = manOfWealthAndTaste;
 
     public int StartReplay()
     {

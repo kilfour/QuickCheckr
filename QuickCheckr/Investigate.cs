@@ -63,12 +63,10 @@ public static class Procedure
         from trace in Pulse.Trace(filing.GetType().Name)
         select filing;
 
-    private static readonly ManOfWealthAndTaste manOfWealthAndTaste =
-        Please.AllowMe().ToInline<List<int>>();
-
     private static readonly Flow<InputShrinkingClueFound> clueFlow =
         from filing in Pulse.Start<InputShrinkingClueFound>()
-        from _ in Pulse.Trace(manOfWealthAndTaste.IntroduceThis(filing.Clue, true))
+        from manOfWealthAndTaste in Pulse.Draw<ManOfWealthAndTaste>()
+        from _ in Pulse.Trace(manOfWealthAndTaste.ToPrettyPrint().IntroduceThis(filing.Clue))
         from __ in Pulse.Trace("-------------------------------------")
         select filing;
 
@@ -83,7 +81,8 @@ public static class Procedure
 
     private static readonly Flow<EvidenceFailure> evidenceFailureFlow =
         from filing in Pulse.Start<EvidenceFailure>()
-        from _ in Pulse.Trace(manOfWealthAndTaste.IntroduceThis(filing, true))
+        from manOfWealthAndTaste in Pulse.Draw<ManOfWealthAndTaste>()
+        from _ in Pulse.Trace(manOfWealthAndTaste.ToPrettyPrint().IntroduceThis(filing))
         from __ in Pulse.Trace("-------------------------------------")
         select filing;
 
@@ -98,9 +97,10 @@ public static class Procedure
 
     private static readonly Flow<InputShrinkingClueFound> nullIssue =
         from filing in Pulse.Start<InputShrinkingClueFound>()
+        from manOfWealthAndTaste in Pulse.Draw<ManOfWealthAndTaste>()
         let relevant = filing.Clue.Strategy == "CantShrinkNull"
         from _ in Pulse.TraceIf(relevant,
-            () => manOfWealthAndTaste.IntroduceThis(filing.Clue, true))
+            () => manOfWealthAndTaste.ToPrettyPrint().IntroduceThis(filing.Clue))
         from __ in Pulse.TraceIf(relevant, () => "-------------------------------------")
         select filing;
 

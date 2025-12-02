@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Kilfour</Authors>
 
     <PackageId>QuickCheckr</PackageId>
@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <PackageReference Include="QuickFuzzr" Version="0.1.7" />
-    <PackageReference Include="QuickPulse.Show" Version="0.1.10" />
+    <PackageReference Include="QuickPulse.Show" Version="0.1.11" />
   </ItemGroup>
 
 </Project>

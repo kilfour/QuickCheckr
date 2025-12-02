@@ -15,13 +15,13 @@ namespace QuickCheckr.UnderTheHood;
 public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.Signals, config.Seed);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.ManOfWealthAndTaste, config.Signals, config.Seed);
     private readonly Vault vault =
         string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config.FileAs);
 
     public CaseFile Run()
     {
-        vault.Check(Check, config.EvidenceMode);
+        vault.Check(Check, config.ManOfWealthAndTaste, config.EvidenceMode);
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
         {
