@@ -1,4 +1,7 @@
-## Current Version: 0.0.1
+## Current Version: 0.0.3
+* Save Reports with _Seed
+* Save Vault Reports, Sub folder ?
+* Vault to Code ?
 
 ### Major
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
