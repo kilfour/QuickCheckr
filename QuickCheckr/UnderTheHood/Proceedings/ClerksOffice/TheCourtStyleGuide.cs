@@ -62,20 +62,9 @@ public static class The
         from __ in Pulse.Trace($" {input.Label.Trim()}")
         select input;
 
-    private readonly static Flow<StashedDeposition> stashedDeposition =
-        from input in Pulse.Start<StashedDeposition>()
-        from context in Pulse.Draw<Decorum>()
-        from _ in Pulse.When<Decorum>(a => a.Line.Passable(), line)
-        from __ in Pulse.Trace($"   => {input.Label} (tracked) : {input.Value}")
-        from ___ in newLine
-        select input;
-
     private readonly static Flow<ExecutionDeposition> executionDeposition =
         from input in Pulse.Start<ExecutionDeposition>()
         from nl in newLine
-        from _ in Pulse.Scoped<Decorum>(
-            a => a with { Line = Valve.Install() },
-            Pulse.ToFlow(stashedDeposition, input.StashedDepositions))
         from __ in line
         let colon = input.HasContent() ? ":" : ""
         from ___ in Pulse.Trace($"  Executed{colon}")
