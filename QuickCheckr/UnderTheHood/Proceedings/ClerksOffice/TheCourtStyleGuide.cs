@@ -78,9 +78,8 @@ public static class The
 
     private readonly static Flow<IEnumerable<CodeDeposition>> codeDepositions =
         from input in Pulse.Start<IEnumerable<CodeDeposition>>()
-        from _1 in newLine
-        from _2 in Pulse.ToFlow(a => Pulse.Trace(a.Code).Then(newLine), input)
-        from _3 in line
+        from _1 in Pulse.ToFlow(a => newLine.Then(space).Then(Pulse.Trace(a.Code)), input)
+        from _2 in newLine.Then(space).Then(LineOf(60))
         select input;
 
     private readonly static Flow<AssayerDeposition> assayerDeposition =

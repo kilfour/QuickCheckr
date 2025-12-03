@@ -22,30 +22,42 @@ public static class Compile
         return caseFile;
     }
 
-    private static void AddExecutionDepositions(Memory memory, Verdict verdict)
-    {
-        foreach (var (executionId, shortTermMemory) in memory.Entries())
-        {
-            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
-        }
-    }
-
     private static void AddCodeDepositions(Memory memory, Verdict verdict)
     {
-        foreach (var code in memory.GetArrangeValues())
+        foreach (var code in memory.GetCodeArrangeValues())
         {
             verdict.AddCodeDeposition(new CodeDeposition((string)code!));
         }
-        // foreach (var (executionId, shortTermMemory) in memory.Entries())
-        // {
-        //     verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
-        // }
+        foreach (var (_, executionMemory) in memory.Entries())
+        {
+            GetCodeDepositions(verdict, executionMemory);
+        }
+        foreach (var code in memory.GetCodeAssertValues())
+        {
+            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
+        }
+    }
+
+    private static void GetCodeDepositions(Verdict verdict, ExecutionMemory executionMemory)
+    {
+        foreach (var code in executionMemory.GetCodeActValues())
+        {
+            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
+        }
     }
 
     private static void AddPassedSpecs(Dossier dossier, CaseFile caseFile)
     {
         foreach (var passedSpec in dossier.PassedSpecs)
             caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
+    }
+
+    private static void AddExecutionDepositions(Memory memory, Verdict verdict)
+    {
+        foreach (var (executionId, shortTermMemory) in memory.Entries())
+        {
+            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
+        }
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
@@ -58,7 +70,7 @@ public static class Compile
         return executionDeposition;
     }
 
-    private static void GetActionDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)//, Access access)
+    private static void GetActionDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
     {
         foreach (var action in shortTermMemory.GetActions())
         {

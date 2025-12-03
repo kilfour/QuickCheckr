@@ -75,4 +75,14 @@ public class ExecutionMemory
     public Func<T, IEnumerable<T>> GetReducer<T>(string key)
         => reducers.Get<Func<T, IEnumerable<T>>>(key)!;
     // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
+    // Reducers
+    private readonly MemoryBank codeAct = new();
+    public void StoreCodeAct(string key, Func<string> codeFactory)
+        => codeAct.Store(key, codeFactory);
+    public IReadOnlyList<object?> GetCodeActValues()
+        => [.. codeAct.Values.Values];
+    // --------------------------------------------------------------------------
 }

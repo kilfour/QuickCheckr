@@ -24,9 +24,8 @@ public class CodeDepositionsTests : DepositionTest
         Assert.Equal(" ==================================", reader.NextLine());
         Assert.Equal("  !! Spec Failed: Some Invariant", reader.NextLine());
         Assert.Equal(" ==================================", reader.NextLine());
-        Assert.Equal("Just a bit of code;", reader.NextLine());
+        Assert.Equal(" Just a bit of code;", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }
 }

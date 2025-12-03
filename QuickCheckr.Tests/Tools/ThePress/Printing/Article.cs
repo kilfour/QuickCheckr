@@ -45,6 +45,10 @@ public class Article(CaseFile caseFile)
     public PassedSpecArticle PassedSpec(int number)
         => new(caseFile.PassedSpecDepositions[number - 1]);
 
+    [StackTraceHidden]
+    public CodeArticle CodeLine(int number)
+        => new(caseFile.Verdict!.CodeDepositions[number - 1]);
+
     public WordCount Total() => new(caseFile);
     public int Seed() => caseFile.Verdict!.Seed;
     public int ShrinkCount => caseFile.Verdict!.ShrinkCount;

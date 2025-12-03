@@ -52,6 +52,13 @@ public class TheEditor
         from times in Emit($"Assert.Equal({passedSpecDeposition.TimesPassed}, article.PassedSpec({index}).Read().TimesPassed);")
         select index;
 
+    private static readonly Flow<int> CodeLines =
+        from index in Pulse.Start<int>()
+        from article in Pulse.Draw<Article>()
+        let codeDeposition = article.CodeLine(index).Read()
+        from label in Emit($"Assert.Equal(\"{codeDeposition.Code}\", article.CodeLine({index}).Read().Code);")
+        select index;
+
     public readonly static Flow<Article> ProofReads =
         from article in Pulse.Start<Article>()
         from prime in Pulse.Prime(() => article)
@@ -76,9 +83,13 @@ public class TheEditor
         from passedSpecCount in EmitIf(
             article.Total().PassedSpecs() > 0,
             $"Assert.Equal({article.Total().PassedSpecs()}, article.Total().PassedSpecs());")
+        from codeLineCount in EmitIf(
+            article.Total().CodeLines() > 0,
+            $"Assert.Equal({article.Total().CodeLines()}, article.Total().CodeLines());")
         from shrinkCount in Emit(
             $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
         from passedSpecs in Pulse.ToFlow(PassedSpec, Enumerable.Range(1, article.Total().PassedSpecs()))
+        from codeLines in Pulse.ToFlow(CodeLines, Enumerable.Range(1, article.Total().CodeLines()))
         select article;
 }

@@ -72,16 +72,12 @@ public class Memory
     public T GetStashed<T>(string key)
         => LongTermMemory.GetStashed<T>(key);
     // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
     // Pool
     public IEnumerable<T> CreatePool<T>()
     {
         poolGuard.Check(typeof(T).FullName!);
         return LongTermMemory.CreatePool<T>();
     }
-
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
     public IEnumerable<int> GetPoolIds<T>()
@@ -91,15 +87,17 @@ public class Memory
     public T StoreInPool<T>(int id, T value)
         => LongTermMemory.StoreInPool(id, value);
     // --------------------------------------------------------------------------
-
-
+    // Code Arrange
+    public void StoreCodeArrange(string key, Func<string> code)
+        => LongTermMemory.StoreCodeArrange(key, code);
+    public IReadOnlyList<object?> GetCodeArrangeValues()
+        => LongTermMemory.GetCodeArrangeValues();
     // --------------------------------------------------------------------------
-    // Code
-    // --------------------------------------------------------------------------
-    public void StoreArrange(string key, Func<string> code)
-        => LongTermMemory.StoreArrange(key, code);
-    public IReadOnlyList<object?> GetArrangeValues()
-        => LongTermMemory.GetArrangeValues();
+    // Code Arrange
+    public void StoreCodeAssert(string key, Func<string> code)
+        => LongTermMemory.StoreCodeAssert(key, code);
+    public IReadOnlyList<object?> GetCodeAssertValues()
+        => LongTermMemory.GetCodeAssertValues();
     // --------------------------------------------------------------------------
 
 
@@ -136,4 +134,11 @@ public class Memory
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);
+    // --------------------------------------------------------------------------
+    // Code Act
+    public void StoreCodeAct(string key, Func<string> code)
+        => ShortTermMemory.StoreCodeAct(key, code);
+    // public IReadOnlyList<object?> GetCodeArrangeValues()
+    //     => ShortTermMemory.GetCodeArrangeValues();
+    // --------------------------------------------------------------------------
 }

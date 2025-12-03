@@ -10,9 +10,10 @@
  ================================
   !! Spec Failed: No Overdraft
  ================================
-var account = new Account();
+ var account = new Account();
+ account.Withdraw(88);
+ Assert.True(account.Balance >= 0);
  ------------------------------------------------------------
-
  Passed Specs
  - No Overdraft: 4x
  ------------------------------------------------------------
