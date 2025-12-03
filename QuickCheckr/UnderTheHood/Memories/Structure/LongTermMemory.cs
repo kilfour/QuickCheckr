@@ -6,6 +6,7 @@ public class LongTermMemory
     {
         stashed = new();
         pools = new();
+        code = new();
     }
 
     // --------------------------------------------------------------------------
@@ -66,5 +67,14 @@ public class LongTermMemory
         pool[id] = value;
         return value;
     }
+    // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
+    // Code
+    // --------------------------------------------------------------------------
+    private MemoryBank code = new();
+    public void StoreArrange(string key, Func<string> codeFactory)
+        => code.Store(key, codeFactory);
     // --------------------------------------------------------------------------
 }

@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    CodeTest
+ Location:                PersonalNotes\T_Examples\D_ThereIsAlwaysAnAccount\ThereIsAlwaysAnAccount.cs:129:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    1863050139
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 1
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
+ Passed Specs
+ - No Overdraft: 4x
+ ------------------------------------------------------------

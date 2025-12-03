@@ -1,3 +1,4 @@
+using QuickCheckr.Code;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -119,5 +120,37 @@ public class ThereIsAlwaysAnAccount : BaseTest
         public int Balance { get; private set; }
         public void Deposit(int amount) => Balance += amount;
         public void WithDraw(int amount) => Balance -= amount;
+    }
+
+    [Fact]
+    public void CodeTest()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr_Code().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
+        WriteAsserts(article);
+        WriteReport(article, "ThereIsAlwaysAnAccountCode.txt", true);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr_Code()
+    {
+        return
+            from codeAccount in Codr.Arrange("Account", () => "var account = new Account();")
+            from account in Trackr.Stashed(() => new Account())
+            from amount in Checkr.Input("Amount", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
+            from operations in Checkr.OneOf(
+                //--
+                from codeDeposit in Codr.Act("Deposit", () => $"account.Deposit({amount});")
+                from deposit in Checkr.Act("Deposit", () => account.Deposit(amount))
+                select Case.Closed,
+                //--
+                from codeWithdraw in Codr.Act("Withdraw", () => $"account.Withdraw({amount});")
+                from withdraw in Checkr.Act("Withdraw", () => account.WithDraw(amount))
+                select Case.Closed
+            )
+            from codeWithdraw in Codr.Act("Withdraw", () => $"account.Withdraw({amount});")
+            from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+            select Case.Closed;
     }
 }
