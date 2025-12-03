@@ -9,14 +9,43 @@ public static class Compile
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
+        var caseFile = FromMemoryAndVerdict(memory, verdict);
+        AddPassedSpecs(dossier, caseFile);
+        return caseFile;
+    }
+
+    private static CaseFile FromMemoryAndVerdict(Memory memory, Verdict verdict)
+    {
+        AddExecutionDepositions(memory, verdict);
+        AddCodeDepositions(memory, verdict);
+        var caseFile = CaseFile.WithVerdict(verdict);
+        return caseFile;
+    }
+
+    private static void AddExecutionDepositions(Memory memory, Verdict verdict)
+    {
         foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
             verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
         }
-        var caseFile = CaseFile.WithVerdict(verdict);
+    }
+
+    private static void AddCodeDepositions(Memory memory, Verdict verdict)
+    {
+        foreach (var code in memory.GetArrangeValues())
+        {
+            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
+        }
+        // foreach (var (executionId, shortTermMemory) in memory.Entries())
+        // {
+        //     verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
+        // }
+    }
+
+    private static void AddPassedSpecs(Dossier dossier, CaseFile caseFile)
+    {
         foreach (var passedSpec in dossier.PassedSpecs)
             caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
-        return caseFile;
     }
 
     private static ExecutionDeposition GetExecutionDeposition(

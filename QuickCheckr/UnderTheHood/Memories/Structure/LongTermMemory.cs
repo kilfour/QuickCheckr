@@ -76,5 +76,7 @@ public class LongTermMemory
     private MemoryBank code = new();
     public void StoreArrange(string key, Func<string> codeFactory)
         => code.Store(key, codeFactory);
+    public IReadOnlyList<object?> GetArrangeValues()
+        => [.. code.Values.Values];
     // --------------------------------------------------------------------------
 }

@@ -16,13 +16,6 @@ public class CaseFile
         return new CaseFile(verdict);
     }
 
-    public List<RunDeposition> RunDepositions { get; } = [];
-    public CaseFile AddRunDeposition(RunDeposition runDeposition)
-    {
-        RunDepositions.Add(runDeposition);
-        return this;
-    }
-
     public List<PassedSpecDeposition> PassedSpecDepositions { get; } = [];
     public CaseFile AddPassedSpecDeposition(PassedSpecDeposition passedSpecDeposition)
     {

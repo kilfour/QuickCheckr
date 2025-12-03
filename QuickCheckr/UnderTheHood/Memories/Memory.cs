@@ -98,6 +98,8 @@ public class Memory
     // --------------------------------------------------------------------------
     public void StoreArrange(string key, Func<string> code)
         => LongTermMemory.StoreArrange(key, code);
+    public IReadOnlyList<object?> GetArrangeValues()
+        => LongTermMemory.GetArrangeValues();
     // --------------------------------------------------------------------------
 
 

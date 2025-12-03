@@ -11,10 +11,6 @@ public class Verdict
 
     public FailureDeposition FailureDeposition { get; }
 
-    public List<ExecutionDeposition> ExecutionDepositions { get; } = [];
-
-    public TestMethodInfoDeposition? TestMethodInfoDeposition { get; private set; }
-
     private Verdict(FailureDeposition failureDeposition) { FailureDeposition = failureDeposition; }
 
     public static Verdict FromDossier(Dossier dossier)
@@ -37,6 +33,7 @@ public class Verdict
         return new AssayerDeposition(dossier.AssayerSpec!);
     }
 
+    public List<ExecutionDeposition> ExecutionDepositions { get; } = [];
     public Verdict AddExecutionDeposition(ExecutionDeposition executionDepostion)
     {
         var last = ExecutionDepositions.LastOrDefault();
@@ -45,9 +42,17 @@ public class Verdict
         return this;
     }
 
+    public TestMethodInfoDeposition? TestMethodInfoDeposition { get; private set; }
     public Verdict AddTestMethodDisposition(TestMethodInfoDeposition testMethodInfoDeposition)
     {
         TestMethodInfoDeposition = testMethodInfoDeposition;
+        return this;
+    }
+
+    public List<CodeDeposition> CodeDepositions { get; } = [];
+    public Verdict AddCodeDeposition(CodeDeposition codeDepostion)
+    {
+        CodeDepositions.Add(codeDepostion);
         return this;
     }
 }
