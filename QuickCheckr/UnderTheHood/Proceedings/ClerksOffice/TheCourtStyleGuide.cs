@@ -76,12 +76,6 @@ public static class The
         from _______ in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
         select input;
 
-    private readonly static Flow<IEnumerable<CodeDeposition>> codeDepositions =
-        from input in Pulse.Start<IEnumerable<CodeDeposition>>()
-        from _1 in Pulse.ToFlow(a => newLine.Then(space).Then(Pulse.Trace(a.Code)), input)
-        from _2 in newLine.Then(space).Then(LineOf(60))
-        select input;
-
     private readonly static Flow<AssayerDeposition> assayerDeposition =
         from input in Pulse.Start<AssayerDeposition>()
         let text = $"  !!  The Assayer Disagrees: {input.FailedSpec}"
@@ -136,8 +130,6 @@ public static class The
         from _3 in Pulse.Trace($" Seed:                    {verdict.Seed}")
         from _4 in Pulse.ToFlow(executionDeposition, verdict.ExecutionDepositions)
         from _5 in Pulse.ToFlow(failureDeposition, verdict.FailureDeposition)
-        from _6 in Pulse.ToFlowIf(
-            verdict.CodeDepositions.Count > 0, codeDepositions, () => verdict.CodeDepositions)
         select verdict;
 
     private readonly static Flow<IEnumerable<PassedSpecDeposition>> passedSpecDepositions =

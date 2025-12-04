@@ -49,12 +49,6 @@ public class Verdict
         return this;
     }
 
-    public List<CodeDeposition> CodeDepositions { get; } = [];
-    public Verdict AddCodeDeposition(CodeDeposition codeDepostion)
-    {
-        CodeDepositions.Add(codeDepostion);
-        return this;
-    }
 
     public string GetFailure()
         => FailureDeposition.GetFailureDescription();

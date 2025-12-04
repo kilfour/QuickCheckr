@@ -17,33 +17,8 @@ public static class Compile
     private static CaseFile FromMemoryAndVerdict(Memory memory, Verdict verdict)
     {
         AddExecutionDepositions(memory, verdict);
-        AddCodeDepositions(memory, verdict);
         var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
-    }
-
-    private static void AddCodeDepositions(Memory memory, Verdict verdict)
-    {
-        foreach (var code in memory.GetCodeArrangeValues())
-        {
-            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
-        }
-        foreach (var (_, executionMemory) in memory.Entries())
-        {
-            GetCodeDepositions(verdict, executionMemory);
-        }
-        foreach (var code in memory.GetCodeAssertValues())
-        {
-            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
-        }
-    }
-
-    private static void GetCodeDepositions(Verdict verdict, ExecutionMemory executionMemory)
-    {
-        foreach (var code in executionMemory.GetCodeActValues())
-        {
-            verdict.AddCodeDeposition(new CodeDeposition((string)code!));
-        }
     }
 
     private static void AddPassedSpecs(Dossier dossier, CaseFile caseFile)
