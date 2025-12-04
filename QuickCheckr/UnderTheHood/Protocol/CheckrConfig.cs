@@ -42,7 +42,9 @@ public record CheckrConfig
     /// Label under which this run is filed.  
     /// Used to persist results for later retrieval.
     /// </summary>
-    public required string FileAs { get; init; } = string.Empty;
+    public required string FileAs { get; init; }
+
+    public required Func<string, IArtery> Reporter { get; init; }
 
     /// <summary>
     /// Controls how QuickCheckr uses the evidence vault during a run.
@@ -65,7 +67,8 @@ public record CheckrConfig
                 Investigations = [],
                 ShrinkMode = ShrinkMode.Default,
                 FileAs = string.Empty,
-                EvidenceMode = EvidenceMode.Ignore
+                EvidenceMode = EvidenceMode.Ignore,
+                Reporter = a => FileLog.Write(a)
             };
     }
 }

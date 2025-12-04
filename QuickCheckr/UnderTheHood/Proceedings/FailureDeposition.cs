@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Proceedings
 {
-    public abstract class FailureDeposition { };
+    public abstract class FailureDeposition { public abstract string GetFailureDescription(); };
 
     public class ExceptionDeposition : FailureDeposition
     {
@@ -9,6 +9,11 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         public ExceptionDeposition(Exception exception)
         {
             Exception = exception;
+        }
+
+        public override string GetFailureDescription()
+        {
+            return Exception.Message;
         }
     };
 
@@ -20,6 +25,11 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         {
             FailedSpec = failedSpec;
         }
+
+        public override string GetFailureDescription()
+        {
+            return FailedSpec;
+        }
     };
 
     public class AssayerDeposition : FailureDeposition
@@ -29,6 +39,11 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         public AssayerDeposition(string failedSpec)
         {
             FailedSpec = failedSpec;
+        }
+
+        public override string GetFailureDescription()
+        {
+            return FailedSpec;
         }
     };
 }

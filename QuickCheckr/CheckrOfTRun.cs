@@ -1,7 +1,10 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Protocol;
+using QuickPulse;
+using QuickPulse.Arteries;
 
 namespace QuickCheckr;
 
@@ -88,6 +91,13 @@ public static class CheckrOfTRun
             var caseFile = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions).Run();
             if (caseFile.HasVerdict())
             {
+                if (!string.IsNullOrWhiteSpace(config.FileAs))
+                {
+                    var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+                    Signal.From<string>(a => Pulse.Trace(a))
+                        .SetArtery(config.Reporter(filenameCf))
+                        .Pulse(TheClerk.Transcribes(caseFile));
+                }
                 throw new FalsifiableException(caseFile);
             }
         }

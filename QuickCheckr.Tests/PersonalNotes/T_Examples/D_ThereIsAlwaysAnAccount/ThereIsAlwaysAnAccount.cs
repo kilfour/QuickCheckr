@@ -1,4 +1,4 @@
-using QuickCheckr.Code;
+using QuickCheckr.Tests.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -112,70 +112,5 @@ public class ThereIsAlwaysAnAccount : BaseTest
             else
                 yield return ++local;
         }
-    }
-
-    [CodeExample]
-    public class Account
-    {
-        public int Balance { get; private set; }
-        public void Deposit(int amount) => Balance += amount;
-        public void WithDraw(int amount) => Balance -= amount;
-    }
-
-    [Fact]
-    [DocHeader("Codr Spike:")]
-    [DocExample(typeof(ThereIsAlwaysAnAccount), nameof(GetCheckr_Code))]
-    [DocCodeFile("ThereIsAlwaysAnAccountCode.txt", "text")]
-    public void CodeTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr_Code().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
-        WriteAsserts(article);
-        WriteReport(article, "ThereIsAlwaysAnAccountCode.txt");
-        Verify_Code(article);
-        ExplainMe<ThereIsAlwaysAnAccount>();
-    }
-
-    private static void Verify_Code(Article article)
-    {
-        Assert.Equal("No Overdraft", article.FailedSpec());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
-        Assert.Equal(3, article.Total().CodeLines());
-        Assert.Equal(5, article.ShrinkCount);
-        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Withdraw", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Amount", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("1", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("No Overdraft", article.PassedSpec(1).Read().Label);
-        Assert.Equal(4, article.PassedSpec(1).Read().TimesPassed);
-        Assert.Equal("var account = new Account();", article.CodeLine(1).Read().Code);
-        Assert.Equal("account.Withdraw(88);", article.CodeLine(2).Read().Code);
-        Assert.Equal("Assert.True(account.Balance >= 0);", article.CodeLine(3).Read().Code);
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr_Code()
-    {
-        return
-            from codeAccount in Codr.Arrange("Account", () => "var account = new Account();")
-            from account in Trackr.Stashed(() => new Account())
-            from amount in Checkr.Input("Amount", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-            from operations in Checkr.OneOf(
-                //--
-                from codeDeposit in Codr.Act("Deposit", () => $"account.Deposit({amount});")
-                from deposit in Checkr.Act("Deposit", () => account.Deposit(amount))
-                select Case.Closed,
-                //--
-                from codeWithdraw in Codr.Act("Withdraw", () => $"account.Withdraw({amount});")
-                from withdraw in Checkr.Act("Withdraw", () => account.WithDraw(amount))
-                select Case.Closed
-            )
-            from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
-            from codeNoOverDraft in Codr.Assert("No OverDraft", () => $"Assert.True(account.Balance >= 0);")
-            select Case.Closed;
     }
 }

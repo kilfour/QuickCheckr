@@ -55,4 +55,7 @@ public class Verdict
         CodeDepositions.Add(codeDepostion);
         return this;
     }
+
+    public string GetFailure()
+        => FailureDeposition.GetFailureDescription();
 }
