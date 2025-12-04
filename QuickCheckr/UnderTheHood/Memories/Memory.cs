@@ -87,18 +87,6 @@ public class Memory
     public T StoreInPool<T>(int id, T value)
         => LongTermMemory.StoreInPool(id, value);
     // --------------------------------------------------------------------------
-    // Code Arrange
-    public void StoreCodeArrange(string key, Func<string> code)
-        => LongTermMemory.StoreCodeArrange(key, code);
-    public IReadOnlyList<object?> GetCodeArrangeValues()
-        => LongTermMemory.GetCodeArrangeValues();
-    // --------------------------------------------------------------------------
-    // Code Arrange
-    public void StoreCodeAssert(string key, Func<string> code)
-        => LongTermMemory.StoreCodeAssert(key, code);
-    public IReadOnlyList<object?> GetCodeAssertValues()
-        => LongTermMemory.GetCodeAssertValues();
-    // --------------------------------------------------------------------------
 
 
     // ==========================================================================
@@ -134,11 +122,5 @@ public class Memory
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);
-    // --------------------------------------------------------------------------
-    // Code Act
-    public void StoreCodeAct(string key, Func<string> code)
-        => ShortTermMemory.StoreCodeAct(key, code);
-    // public IReadOnlyList<object?> GetCodeArrangeValues()
-    //     => ShortTermMemory.GetCodeArrangeValues();
     // --------------------------------------------------------------------------
 }

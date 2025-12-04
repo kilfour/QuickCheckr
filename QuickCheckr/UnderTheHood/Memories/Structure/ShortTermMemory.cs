@@ -72,7 +72,4 @@ public class ShortTermMemory
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => Current.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
-    // Code Act
-    public void StoreCodeAct(string key, Func<string> codeFactory)
-        => Current.StoreCodeAct(key, codeFactory);
 }

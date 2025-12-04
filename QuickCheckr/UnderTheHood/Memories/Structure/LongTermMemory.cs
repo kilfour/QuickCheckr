@@ -6,7 +6,6 @@ public class LongTermMemory
     {
         stashed = new();
         pools = new();
-        codeArrange = new();
     }
 
     // --------------------------------------------------------------------------
@@ -67,27 +66,5 @@ public class LongTermMemory
         pool[id] = value;
         return value;
     }
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
-    // Code Arrange
-    // --------------------------------------------------------------------------
-    private MemoryBank codeArrange = new();
-    public void StoreCodeArrange(string key, Func<string> codeFactory)
-        => codeArrange.Store(key, codeFactory);
-    public IReadOnlyList<object?> GetCodeArrangeValues()
-        => [.. codeArrange.Values.Values];
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
-    // Code Assert
-    // --------------------------------------------------------------------------
-    private MemoryBank codeAssert = new();
-    public void StoreCodeAssert(string key, Func<string> codeFactory)
-        => codeAssert.Store(key, codeFactory);
-    public IReadOnlyList<object?> GetCodeAssertValues()
-        => [.. codeAssert.Values.Values];
     // --------------------------------------------------------------------------
 }
