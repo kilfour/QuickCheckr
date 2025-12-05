@@ -1,12 +1,6 @@
-using QuickCheckr.UnderTheHood.Docketing;
-using QuickPulse;
-using QuickPulse.Arteries;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
-
-public record Investigation(Func<IArtery> Officer, Flow<IFiling> Procedure);
-
 
 /// <summary>
 /// Defines the configuration applied when running a Checkr.  
@@ -14,6 +8,26 @@ public record Investigation(Func<IArtery> Officer, Flow<IFiling> Procedure);
 /// </summary>
 public record CheckrConfig
 {
+
+    /// <summary>
+    /// Returns the default configuration for a Checkr run.  
+    /// Use as a baseline when applying custom configuration with <c>a => a with { ... }</c>.
+    /// </summary>
+    public static CheckrConfig Default()
+    {
+        return
+            new CheckrConfig()
+            {
+                Seed = null,
+                ManOfWealthAndTaste = new ManOfWealthAndTaste().ToInline<List<int>>(),
+                Investigations = [],
+                ShrinkMode = ShrinkMode.Default,
+                FileAs = string.Empty,
+                EvidenceMode = EvidenceMode.Ignore,
+                Custodian = Custodian.Default
+            };
+    }
+
     /// <summary>
     /// Optional fixed seed for reproducible runs.  
     /// Use when you want deterministic behaviour for debugging or CI.
@@ -44,8 +58,6 @@ public record CheckrConfig
     /// </summary>
     public required string FileAs { get; init; }
 
-    public required Func<string, IArtery> Reporter { get; init; }
-
     /// <summary>
     /// Controls how QuickCheckr uses the evidence vault during a run.
     /// Use to ignore historical failures, replay them for regression checking,
@@ -53,22 +65,5 @@ public record CheckrConfig
     /// </summary>
     public required EvidenceMode EvidenceMode { get; init; }
 
-    /// <summary>
-    /// Returns the default configuration for a Checkr run.  
-    /// Use as a baseline when applying custom configuration with <c>a => a with { ... }</c>.
-    /// </summary>
-    public static CheckrConfig Default()
-    {
-        return
-            new CheckrConfig()
-            {
-                Seed = null,
-                ManOfWealthAndTaste = new ManOfWealthAndTaste().ToInline<List<int>>(),
-                Investigations = [],
-                ShrinkMode = ShrinkMode.Default,
-                FileAs = string.Empty,
-                EvidenceMode = EvidenceMode.Ignore,
-                Reporter = a => FileLog.Write(a)
-            };
-    }
+    public required Custodian Custodian { get; init; }
 }

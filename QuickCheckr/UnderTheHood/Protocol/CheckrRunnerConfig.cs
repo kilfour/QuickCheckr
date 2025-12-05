@@ -18,7 +18,7 @@ public record CheckrRunnerConfig
                     .SetArtery(a.Officer()))];
         ShrinkMode = config.ShrinkMode;
         FileAs = config.FileAs;
-        Reporter = config.Reporter;
+        Custodian = config.Custodian;
         EvidenceMode = config.EvidenceMode;
     }
 
@@ -28,6 +28,6 @@ public record CheckrRunnerConfig
     public ShrinkMode ShrinkMode { get; init; }
     public string FileAs { get; init; }
     public EvidenceMode EvidenceMode { get; init; }
-    public Func<string, IArtery> Reporter { get; init; }
+    public Custodian Custodian { get; init; }
     internal void SetSeed(int seed) => Seed = seed;
 }
