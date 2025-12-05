@@ -1,4 +1,5 @@
 using QuickPulse.Arteries;
+using QuickPulse.Instruments;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
 
@@ -11,5 +12,8 @@ public class Custodian
         => new() { Retriever = GetVaultStrings, Recorder = a => FileLog.Write(a) };
 
     private static string[] GetVaultStrings(string path)
-        => File.Exists(path) ? File.ReadAllLines(path) : [];
+    {
+        var solutionPath = Path.Combine(SolutionLocator.FindSolutionRoot()!, path);
+        return File.Exists(solutionPath) ? File.ReadAllLines(solutionPath) : [];
+    }
 }

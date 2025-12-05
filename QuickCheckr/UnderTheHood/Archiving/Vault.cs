@@ -71,6 +71,7 @@ public class EvidenceVault : Vault
                     Remove(entry);
             }
         }
+        Save();
     }
 
     public override void AddSeed(int seed, int numberOfExecutions, string failure)

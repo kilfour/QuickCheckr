@@ -1,10 +1,9 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Protocol;
+using QuickFuzzr.UnderTheHood;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 
 namespace QuickCheckr.Tests.Drafts.F_TheEvidenceVault;
@@ -13,17 +12,27 @@ namespace QuickCheckr.Tests.Drafts.F_TheEvidenceVault;
 
 public class TheEvidenceVault : BaseTest
 {
+    private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
+
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
         => config with { FileAs = "MyQuickCheckrTest" };
 
-    private static CheckrConfig AddCustodian(CheckrConfig cfg, IArtery artery, List<string> collector)
+    private static CheckrConfig AddCustodian(
+        CheckrConfig cfg,
+        List<string> collector,
+        Func<string, IArtery>? artery = null,
+        IEnumerable<string>? entries = null)
         => cfg with
         {
             Custodian = new Custodian
             {
-                Recorder = fn => { collector.Add(fn); return artery; },
-                Retriever = fn => [],
+                Recorder = fn =>
+                {
+                    collector.Add(fn);
+                    return artery == null ? Install.Null : artery(fn);
+                },
+                Retriever = fn => entries ?? [],
             }
         };
 
@@ -32,6 +41,21 @@ public class TheEvidenceVault : BaseTest
     [CodeRemove("\";")]
     private static string DefaultFileName()
         => @".quickcheckr\MyQuickCheckrTest\report.qr";
+
+
+    [Fact]
+    [DocContent("QuickCheckr can be configured to persist the results of a failed test run.")]
+    [DocExample(typeof(TheEvidenceVault), nameof(Configure))]
+    [DocContent("Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:")]
+    [DocExample(typeof(TheEvidenceVault), nameof(DefaultFileName))]
+    public void ReportLocation()
+    {
+        var collector = new List<string>();
+        TheJournalist.Exposes(() =>
+            Checkr.Spec("Fails", () => false).Run(cfg => Configure(AddCustodian(cfg, collector))));
+        Assert.Equal(3, collector.Count);
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(collector[0]));
+    }
 
     [CodeSnippet]
     [CodeRemove("@\"")]
@@ -45,47 +69,93 @@ public class TheEvidenceVault : BaseTest
     private static string DefaultEvidenceLogFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql";
 
+    private static Func<string, IArtery> SpyArteries(
+        Collector<string> evidenceCollector,
+        Collector<string> logCollector) =>
+        fn =>
+        {
+            if (fn == DefaultEvidenceFileName()) return evidenceCollector;
+            if (fn == DefaultEvidenceLogFileName()) return logCollector;
+            return Install.Null;
+        };
+
     [Fact]
-    [DocContent("QuickCheckr can be configured to persist the results of a failed test run.")]
-    [DocExample(typeof(TheEvidenceVault), nameof(Configure))]
-    [DocContent("Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:")]
-    [DocExample(typeof(TheEvidenceVault), nameof(DefaultFileName))]
-    //[DocCodeFile("TheEvidenceVault.txt", "text")]
-    public void ReportLocation()
+    [DocContent("In addition a sub folder is created containing the evidence vault files:")]
+    [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceFileName))]
+    [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceLogFileName))]
+    [DocContent(
+@"
+- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
+- `evidence-log.ql` is a append only log of all evidence vault actions.")]
+    public void EvidenceLocation()
     {
         var collector = new List<string>();
-        var stringSink = Collect.ValuesOf<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
         TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(cfg => Configure(AddCustodian(cfg, stringSink, collector))));
-        //stringSink.Values.PulseToLog();
-
+            Checkr.Spec("Fails", () => false).Run(cfg =>
+                Configure(AddCustodian(
+                    cfg with { Seed = 1862095796 },
+                    collector,
+                    SpyArteries(evidence, log)))));
         Assert.Equal(3, collector.Count);
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(collector[0]));
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(collector[1]));
+        Assert.Single(evidence.Values);
+        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
         Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(collector[2]));
-        ExplainMe<TheEvidenceVault>(true);
+        Assert.Single(log.Values);
+        Assert.Equal($"Added Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
     }
 
-    private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
+    private static CheckrConfig AddSpies(
+        CheckrConfig cfg,
+        Func<string, IArtery> artery,
+        IEnumerable<string> entries)
+        => cfg with
+        {
+            Custodian = new Custodian
+            {
+                Recorder = fn => artery(fn),
+                Retriever = fn => entries,
+            }
+        };
+
+    [CodeSnippet]
+    private static void RunColdCasesReview(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
+        checkr.ReviewColdCases(Configure);
 
     [Fact]
-    //[DocCodeFile("TheEvidenceVault.txt", "text")]
-    public void RunTest()
+    [DocHeader("Reviewing the Cold Cases")]
+    [DocContent(
+@"Once an evidence vault exists the seeds therein contained can be reviewed.  
+This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
+    [DocExample(typeof(TheEvidenceVault), nameof(RunColdCasesReview))]
+    [DocContent(
+@"It is advised to *Dry* out the configuration as is shown here in order to avoid code drift.  
+This will create a report per seed in the evidence file and a log of all evidence vault actions.
+")]
+    public void ReviewingColdCases()
     {
-        //GetCheckr().ReviewColdCases(Configure);
-        //var collector = new List<string>();
-        var article = TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(Configure));
-        //Assert.Single(collector);
-        //Assert.Equal(".quickcheckr\\MyQuickCheckrTest\\report.qr", collector[0]);
-        // WriteAsserts(article, false);
-        // WriteReport<TheEvidenceVault>(article, false);
-        // Verify(article);
-        //ExplainMe<TheEvidenceVault>(true);
-    }
+        var collector = new List<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
 
-    private static void Verify(Article article)
-    {
+        RunColdCasesReview(Checkr.Spec("Fails", () => false),
+            cfg => Configure(AddCustodian(
+                    cfg with { Seed = 1862095796 },
+                    collector,
+                    SpyArteries(evidence, log),
+                    ["1862095796,1,Fails"])));
 
+        Assert.Equal(3, collector.Count);
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence.qv"), Normalize(collector[0]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence-log.ql"), Normalize(collector[1]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/report_1862095796.qr"), Normalize(collector[2]));
+        Assert.Single(evidence.Values);
+        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
+        Assert.Single(log.Values);
+        Assert.Equal($"Run failed for Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
+
+        // ExplainMe<TheEvidenceVault>(true);
     }
 }
