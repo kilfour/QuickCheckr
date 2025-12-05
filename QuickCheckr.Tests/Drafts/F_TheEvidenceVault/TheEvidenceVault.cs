@@ -58,12 +58,15 @@ public class TheEvidenceVault : BaseTest
         TheJournalist.Exposes(() =>
             Checkr.Spec("Fails", () => false).Run(cfg => Configure(AddCustodian(cfg, stringSink, collector))));
         //stringSink.Values.PulseToLog();
+
         Assert.Equal(3, collector.Count);
-        Assert.Equal(DefaultFileName(), collector[0]);
-        Assert.Equal(DefaultEvidenceFileName(), collector[1]);
-        Assert.Equal(DefaultEvidenceLogFileName(), collector[2]);
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(collector[0]));
+        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(collector[1]));
+        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(collector[2]));
         ExplainMe<TheEvidenceVault>(true);
     }
+
+    private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
 
     [Fact]
     //[DocCodeFile("TheEvidenceVault.txt", "text")]
