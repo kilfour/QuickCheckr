@@ -56,12 +56,6 @@ public class EvidenceVault : Vault
             var caseFile = new CheckrRunner(check, config, entry.ExecutionsPerRun).Run();
             if (caseFile.HasVerdict())
             {
-                if (!string.IsNullOrWhiteSpace(config.FileAs))
-                {
-                    Signal.From<string>(a => Pulse.Trace(a))
-                        .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
-                        .Pulse(TheClerk.Transcribes(caseFile));
-                }
                 logSignal.Pulse($"Run failed for Seed: {entry.Seed}.{Environment.NewLine}");
             }
             else
@@ -69,6 +63,12 @@ public class EvidenceVault : Vault
                 logSignal.Pulse($"Run passed for Seed: {entry.Seed}.{Environment.NewLine}");
                 if (closeResolved)
                     Remove(entry);
+            }
+            if (!string.IsNullOrWhiteSpace(config.FileAs))
+            {
+                Signal.From<string>(a => Pulse.Trace(a))
+                    .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
+                    .Pulse(TheClerk.Transcribes(caseFile));
             }
         }
         Save();

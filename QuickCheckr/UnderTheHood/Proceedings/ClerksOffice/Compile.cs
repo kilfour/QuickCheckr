@@ -6,11 +6,18 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class Compile
 {
+    public static CaseFile PassedSpecs(IReadOnlyDictionary<string, int> passedSpecs)
+    {
+        var caseFile = CaseFile.Empty();
+        AddPassedSpecs(passedSpecs, caseFile);
+        return caseFile;
+    }
+
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
         var caseFile = FromMemoryAndVerdict(memory, verdict);
-        AddPassedSpecs(dossier, caseFile);
+        AddPassedSpecs(dossier.PassedSpecs, caseFile);
         return caseFile;
     }
 
@@ -21,9 +28,9 @@ public static class Compile
         return caseFile;
     }
 
-    private static void AddPassedSpecs(Dossier dossier, CaseFile caseFile)
+    private static void AddPassedSpecs(IReadOnlyDictionary<string, int> passedSpecs, CaseFile caseFile)
     {
-        foreach (var passedSpec in dossier.PassedSpecs)
+        foreach (var passedSpec in passedSpecs)
             caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
     }
 

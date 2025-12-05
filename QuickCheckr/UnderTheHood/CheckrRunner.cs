@@ -5,7 +5,6 @@ using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
-using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -21,7 +20,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
             return HandleFailure();
-        return CaseFile.Empty();
+        return Compile.PassedSpecs(State.EvidenceRecorder.PassedSpecs);
     }
 
     private CaseFile HandleFailure()

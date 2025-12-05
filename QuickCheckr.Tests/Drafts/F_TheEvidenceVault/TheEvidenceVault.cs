@@ -4,6 +4,7 @@ using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr.UnderTheHood;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
+using QuickPulse.Explains.Text;
 
 
 namespace QuickCheckr.Tests.Drafts.F_TheEvidenceVault;
@@ -71,12 +72,16 @@ public class TheEvidenceVault : BaseTest
 
     private static Func<string, IArtery> SpyArteries(
         Collector<string> evidenceCollector,
-        Collector<string> logCollector) =>
+        Collector<string> logCollector,
+        int? seed = null,
+        StringSink? reportCollector = null) =>
         fn =>
         {
             var normalized = Normalize(fn);
             if (normalized == Normalize(DefaultEvidenceFileName())) return evidenceCollector;
             if (normalized == Normalize(DefaultEvidenceLogFileName())) return logCollector;
+            if (normalized == Normalize($".quickcheckr/MyQuickCheckrTest/vault/report_{seed}.qr"))
+                return reportCollector ?? Install.Null;
             return Install.Null;
         };
 
@@ -141,9 +146,58 @@ This will create a report per seed in the evidence file and a log of all evidenc
         Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/report_1862095796.qr"), Normalize(collector[2]));
         Assert.Single(evidence.Values);
         Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
+    }
+
+    [Fact]
+    [DocContent("- For every failing seed the report will look like the by now familiar failure report.")]
+    public void ReviewingColdCases_SeedStillFails()
+    {
+        var collector = new List<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
+        var report = Text.Capture();
+
+        RunColdCasesReview(Checkr.Spec("Fails", () => false),
+            cfg => Configure(AddCustodian(
+                    cfg with { Seed = 1862095796 },
+                    collector,
+                    SpyArteries(evidence, log, 1862095796, report),
+                    ["1862095796,1,Fails"])));
         Assert.Single(log.Values);
         Assert.Equal($"Run failed for Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
+        var reader = LinesReader.FromText(report.Content());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
+        Assert.Equal(" Seed:                    1862095796", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed", reader.NextLine());
+        Assert.Equal(" =========================", reader.NextLine());
+        Assert.Equal("  !! Spec Failed: Fails", reader.NextLine());
+        Assert.Equal(" =========================", reader.NextLine());
+        Assert.True(reader.EndOfContent());
+    }
 
-        // ExplainMe<TheEvidenceVault>(true);
+    [Fact]
+    [DocContent("- For every passing seed the report will only contain a list of passed specs.")]
+    public void ReviewingColdCases_SeedPasses()
+    {
+        var collector = new List<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
+        var report = Text.Capture();
+
+        RunColdCasesReview(Checkr.Spec("Fails", () => true),
+            cfg => Configure(AddCustodian(
+                    cfg with { Seed = 1862095796 },
+                    collector,
+                    SpyArteries(evidence, log, 1862095796, report),
+                    ["1862095796,1,Fails"])));
+        Assert.Single(log.Values);
+        Assert.Equal($"Run passed for Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
+        var reader = LinesReader.FromText(report.Content());
+        Assert.Equal(" Passed Specs", reader.NextLine());
+        Assert.Equal(" - Fails: 1x", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.True(reader.EndOfContent());
     }
 }
