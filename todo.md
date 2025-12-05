@@ -1,5 +1,8 @@
 ## Current Version: 0.0.3
 
+### Must have's for 0.0.4
+* Vault interface finished, implementation stable
+
 ### Major
 * Implement: checkr.CloseResolvedColdCases(...)
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.

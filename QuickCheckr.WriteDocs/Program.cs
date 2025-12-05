@@ -13,5 +13,8 @@ Explain.These<PersonalNotes>("PersonalNotes/");
 
 Explain.OnlyThis<CreateReadMe>("README.md");
 
-//Explain.This<Guide>("guide.md");
+Explain.This<Documentation>("Single/doc.md");
+Explain.This<Drafts>("Single/drafts.md");
+Explain.This<Notes>("Single/notes.md");
+Explain.This<PersonalNotes>("Single/personal-notes.md");
 
