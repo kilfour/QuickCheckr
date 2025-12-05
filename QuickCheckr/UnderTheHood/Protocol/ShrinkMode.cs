@@ -5,9 +5,7 @@ public enum ShrinkMode
 {
     None = 0,
     Executions = 1,
-    Actions = 2,
-    Inputs = 4,
-    Reduction = 8,
-    All = Executions | Actions | Inputs | Reduction,
+    Inputs = 2,
+    Reduction = 4,
     Default = Executions | Inputs | Reduction
 }

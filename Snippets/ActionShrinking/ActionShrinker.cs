@@ -41,3 +41,10 @@ public class ActionShrinker(
         }
     }
 }
+
+// ----------------------------------------------------------------
+// This comes from : CheckrRunner.HandleFailure
+// --
+// if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
+//     shrinkCount += new ActionShrinker(State, Check).Run();
+// ----------------------------------------------------------------

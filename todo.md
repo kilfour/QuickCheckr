@@ -1,25 +1,29 @@
 ## Current Version: 0.0.3
-* fix Action Shrinking
-* Generalize Towards(Zero) reducer
 
 ### Major
-* look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
+* 
+* DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
+  * Consilidation: Lots of info and tests in notes
+* Doc configuration
+  * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
+* look into different collection shrinking
   * limitations
   * known issues
   * workarounds
-* DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
+* Start working on the reference
 * DOC investigations
-* Doc configuration
+* Generalize Towards(Zero) reducer
+* More reducers
 
 ### Minor 
-* test ActCarefully more (check if QuickAcid has some), niche combinator so it can wait
-* Nested InputShrinkingClue ? ( not needed right now but i think it be cleaner)
-* Verdict nullabillity => ties in with "report original run"
+* Nested InputShrinkingClue ? Refactoring Target
 * QuickCheckr.Tests.Verification.SwapperTests: 
-  * main tests prove that this works, but it would help to to test this in isolation
+  * Main tests prove that this works, but it might help to to test this in isolation
+    Kind of not needed maybe, but tests are there in comment, ... if there's a need.
+    Might help with mem stuff in future.
 * Loose the lazy IEnumerable in shrinking (yield)
 * Scour QuickAcid for any interesting tests left behind.
 
 ### Other
-* QuickPulse: add a log to file here artery
+* QuickPulse: add a 'log to file here' artery, spike it in quickcheckr first
 * QuickPulse.Explains: CodeReplace with empty string => ploef
