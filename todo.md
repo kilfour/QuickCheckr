@@ -24,3 +24,4 @@
 
 ### Other
 * QuickPulse: add a log to file here artery
+* QuickPulse.Explains: CodeReplace with empty string => ploef

@@ -1,4 +1,3 @@
-using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Protocol;
@@ -6,6 +5,7 @@ using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
+using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -13,17 +13,14 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 {
     public CheckrOf<Case> Check { get; init; } = check;
     public CheckrState State { get; init; } = new(numberOfExecutions, config.ManOfWealthAndTaste, config.Signals, config.Seed);
-    private readonly Vault vault = Vault.From(config.FileAs);
+
+    public int Seed => State.FuzzrState.Seed;
 
     public CaseFile Run()
     {
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
-        {
-            var caseFile = HandleFailure();
-            vault.AddSeed(State.FuzzrState.Seed, numberOfExecutions, caseFile.Verdict!.GetFailure());
-            return caseFile;
-        }
+            return HandleFailure();
         return CaseFile.Empty();
     }
 

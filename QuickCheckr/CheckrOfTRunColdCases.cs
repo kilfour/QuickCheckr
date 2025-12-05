@@ -16,7 +16,7 @@ namespace QuickCheckr
             Func<CheckrConfig, CheckrConfig> configure)
         {
             var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
-            var vault = Vault.From(config.FileAs);
+            var vault = Vault.From(config);
             vault.Check(checkr, config, false);
         }
     }

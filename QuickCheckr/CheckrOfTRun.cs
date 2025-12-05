@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Protocol;
@@ -14,6 +15,43 @@ namespace QuickCheckr;
 /// </summary>
 public static class CheckrOfTRun
 {
+    /// <summary>
+    /// Runs the Checkr with full control over runs, executions, and configuration.  
+    /// Throws a <see cref="FalsifiableException"/> as soon as a failing minimal case is found.  
+    /// Use for complete control over test exploration and shrinking behaviour.
+    /// </summary>
+    [StackTraceHidden]
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        Func<CheckrConfig, CheckrConfig> configure)
+    {
+        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
+        for (int i = 0; i < runs.NumberOfRuns; i++)
+        {
+            var runner = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions);
+            var caseFile = runner.Run();
+            if (caseFile.HasVerdict())
+            {
+                if (!string.IsNullOrWhiteSpace(config.FileAs))
+                {
+                    var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+
+                    Signal.From<string>(a => Pulse.Trace(a))
+                        .SetArtery(config.Custodian.Recorder(filenameCf))
+                        .Pulse(TheClerk.Transcribes(caseFile));
+
+                    Vault.From(config).AddSeed(runner.Seed,
+                        executionsPerRun.NumberOfExecutions,
+                        caseFile.Verdict!.GetFailure());
+                }
+                throw new FalsifiableException(caseFile);
+            }
+        }
+        return CaseFile.Empty();
+    }
+
     /// <summary>
     /// Runs the Checkr once with a single execution.  
     /// Use for the simplest possible run when no configuration or repetition is needed.
@@ -72,37 +110,6 @@ public static class CheckrOfTRun
         RunCount runs,
         ExecutionCount executionsPerRun)
             => Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
-
-    /// <summary>
-    /// Runs the Checkr with full control over runs, executions, and configuration.  
-    /// Throws a <see cref="FalsifiableException"/> as soon as a failing minimal case is found.  
-    /// Use for complete control over test exploration and shrinking behaviour.
-    /// </summary>
-    [StackTraceHidden]
-    public static CaseFile Run(
-        this CheckrOf<Case> check,
-        RunCount runs,
-        ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure)
-    {
-        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
-        for (int i = 0; i < runs.NumberOfRuns; i++)
-        {
-            var caseFile = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions).Run();
-            if (caseFile.HasVerdict())
-            {
-                if (!string.IsNullOrWhiteSpace(config.FileAs))
-                {
-                    var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-                    Signal.From<string>(a => Pulse.Trace(a))
-                        .SetArtery(config.Reporter(filenameCf))
-                        .Pulse(TheClerk.Transcribes(caseFile));
-                }
-                throw new FalsifiableException(caseFile);
-            }
-        }
-        return CaseFile.Empty();
-    }
 
     /// <summary>
     /// Converts an integer into a <see cref="RunCount"/>.  
