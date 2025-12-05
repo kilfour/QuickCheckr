@@ -74,12 +74,13 @@ public class TheEvidenceVault : BaseTest
         Collector<string> logCollector) =>
         fn =>
         {
-            if (fn == DefaultEvidenceFileName()) return evidenceCollector;
-            if (fn == DefaultEvidenceLogFileName()) return logCollector;
+            var normalized = Normalize(fn);
+            if (normalized == Normalize(DefaultEvidenceFileName())) return evidenceCollector;
+            if (normalized == Normalize(DefaultEvidenceLogFileName())) return logCollector;
             return Install.Null;
         };
 
-    [Fact(Skip = "fails on UNIX")]
+    [Fact]
     [DocContent("In addition a sub folder is created containing the evidence vault files:")]
     [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceFileName))]
     [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceLogFileName))]
@@ -107,24 +108,11 @@ public class TheEvidenceVault : BaseTest
         Assert.Equal($"Added Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
     }
 
-    private static CheckrConfig AddSpies(
-        CheckrConfig cfg,
-        Func<string, IArtery> artery,
-        IEnumerable<string> entries)
-        => cfg with
-        {
-            Custodian = new Custodian
-            {
-                Recorder = fn => artery(fn),
-                Retriever = fn => entries,
-            }
-        };
-
     [CodeSnippet]
     private static void RunColdCasesReview(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
         checkr.ReviewColdCases(Configure);
 
-    [Fact(Skip = "fails on UNIX")]
+    [Fact]
     [DocHeader("Reviewing the Cold Cases")]
     [DocContent(
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
