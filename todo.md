@@ -1,8 +1,6 @@
 ## Current Version: 0.0.3
-* Save Reports with _Seed
-* Save Vault Reports, Sub folder ?
+* fix Action Shrinking
 * Generalize Towards(Zero) reducer
-* Refine the Reducer Idea
 
 ### Major
 * look into different collection shrinking, not blocking but would be nice to atleast have it docced before 0.0.2
