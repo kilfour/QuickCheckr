@@ -1,7 +1,8 @@
 ## Current Version: 0.0.3
 
 ### Major
-* 
+* Implement: checkr.CloseResolvedColdCases(...)
+* Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
   * Consilidation: Lots of info and tests in notes
 * Doc configuration
