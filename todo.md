@@ -7,7 +7,7 @@
 * Implement: checkr.CloseResolvedColdCases(...)
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
-  * Consilidation: Lots of info and tests in notes
+  * Consolidation: Lots of info and tests in notes
 * Doc configuration
   * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
 * look into different collection shrinking
@@ -29,5 +29,6 @@
 * Scour QuickAcid for any interesting tests left behind.
 
 ### Other
+* QuickPulse: FileLogArtery virtual Absorb
 * QuickPulse: add a 'log to file here' artery, spike it in quickcheckr first
 * QuickPulse.Explains: CodeReplace with empty string => ploef

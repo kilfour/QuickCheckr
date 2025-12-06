@@ -83,10 +83,9 @@ public class EvidenceVault : Vault
     {
         if (entries.Add(vaultEntry))
         {
-            Save();
             logSignal.Pulse($"Added Seed: {vaultEntry.Seed}.{Environment.NewLine}");
         }
-
+        Save();
     }
 
     private static VaultEntry ParseVaultEntry(string line)
@@ -103,26 +102,13 @@ public class EvidenceVault : Vault
     {
         if (entries.Remove(vaultEntry))
         {
-            SaveOrDelete();
             logSignal.Pulse($"Removed Seed: {vaultEntry.Seed}.{Environment.NewLine}");
+            Save();
         }
     }
 
     private void Save()
     {
         evidenceSignal.Pulse(entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"));
-    }
-
-    private void SaveOrDelete()
-    {
-        if (entries.Count == 0)
-        {
-            // if (File.Exists(path))
-            //     File.Delete(path);
-        }
-        else
-        {
-            Save();
-        }
     }
 }
