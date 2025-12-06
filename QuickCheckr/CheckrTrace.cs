@@ -12,7 +12,7 @@ public static partial class Checkr
     public static CheckrOf<Case> Trace<T>(string key, Func<T?> factory) =>
         state =>
         {
-            state.Memory.StoreTrace(key, () => state.ManOfWealthAndTaste.IntroduceThis(factory()));
+            state.Memory.StoreTrace(key, () => state.Editor.IntroduceThis(factory()));
             return CheckrResult.CaseOnly(state);
         };
 

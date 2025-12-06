@@ -38,7 +38,6 @@
       - [Multiple Methods](T_Examples/B_BuggingTheHouse/Bugs/D_MultipleMethods.md)
     - [There Is Always An Account](T_Examples/D_ThereIsAlwaysAnAccount/ThereIsAlwaysAnAccount.md)
     - [Parsing Numbers](T_Examples/Q_ParsingNumbers/ParsingNumbers.md)
-  - [Investigations](U_Investigations/Investigations.md)
   - [It Is Written, ... But Only Once](X_Various/A_ItIsWrittenButOnlyOnce.md)
     - [Input](X_Various/Methods/A_Input.md)
     - [Act Carefully](X_Various/Methods/C_ActCarefully.md)

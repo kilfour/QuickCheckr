@@ -1,5 +1,9 @@
 ## Current Version: 0.0.3
 
+### Doing
+* Doc configuration
+  * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
+
 ### Must have's for 0.0.4
 * Vault interface finished, implementation stable
 
@@ -8,8 +12,7 @@
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
   * Consolidation: Lots of info and tests in notes
-* Doc configuration
-  * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
+
 * look into different collection shrinking
   * limitations
   * known issues

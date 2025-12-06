@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -7,7 +8,7 @@ using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
 
-namespace QuickCheckr.Tests.PersonalNotes.U_Investigations;
+namespace QuickCheckr.Tests.Drafts.C_Configuration.H_Investigations;
 
 [DocFile]
 [DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]

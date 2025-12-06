@@ -1,2 +1,4 @@
-  - [Running the Runner](A_RunningTheRunner/RunningTheRunner.md)
-  - [The Evidence Vault](F_TheEvidenceVault/TheEvidenceVault.md)
+  - [Test Framework Integration](A_TestFrameworkIntegration/TestFrameworkIntegration.md)
+  - [Configuration](C_Configuration/Configuration.md)
+    - [The Evidence Vault](C_Configuration/F_TheEvidenceVault/TheEvidenceVault.md)
+    - [Investigations](C_Configuration/H_Investigations/Investigations.md)

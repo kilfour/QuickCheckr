@@ -1175,8 +1175,6 @@ public class Account
   !! Spec Failed: Match
  =========================
 ```
-## Investigations
-These tests show the initial version of QuickCheckrs logging configuration.  
 ## It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
 are not just pretty captions in a report.

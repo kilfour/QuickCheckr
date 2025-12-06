@@ -20,7 +20,7 @@ public class ObjectShrinkStrategy
     {
         if (value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(executionId, fullKey, value, state.ManOfWealthAndTaste.IntroduceThis(value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(executionId, fullKey, value, state.Editor.IntroduceThis(value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }

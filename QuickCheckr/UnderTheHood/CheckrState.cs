@@ -8,7 +8,7 @@ namespace QuickCheckr.UnderTheHood;
 
 public class CheckrState(
     int desiredNumberOfExecutions,
-    ManOfWealthAndTaste manOfWealthAndTaste,
+    ManOfWealthAndTaste editor,
     Signal<IFiling>[] signals,
     int? seed = null)
 {
@@ -16,7 +16,7 @@ public class CheckrState(
     public Memory Memory { get; init; } = new();
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signals);
-    public ManOfWealthAndTaste ManOfWealthAndTaste { get; init; } = manOfWealthAndTaste;
+    public ManOfWealthAndTaste Editor { get; init; } = editor;
 
     public int StartReplay()
     {

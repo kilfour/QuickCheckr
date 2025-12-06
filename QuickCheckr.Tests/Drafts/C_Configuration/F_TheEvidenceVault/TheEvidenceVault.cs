@@ -1,16 +1,14 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Protocol;
-using QuickFuzzr.UnderTheHood;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
 
-namespace QuickCheckr.Tests.Drafts.F_TheEvidenceVault;
+namespace QuickCheckr.Tests.Drafts.C_Configuration.F_TheEvidenceVault;
 
 [DocFile]
-
 public class TheEvidenceVault : BaseTest
 {
     private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
