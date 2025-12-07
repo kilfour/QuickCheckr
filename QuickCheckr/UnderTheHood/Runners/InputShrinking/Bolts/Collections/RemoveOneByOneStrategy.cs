@@ -11,11 +11,13 @@ public class RemoveOneByOneStrategy
         int index = 0;
         int indexKey = -1;
         var shrinkCount = 0;
+        var elementType = typeof(object);
         while (index < theList.Count)
         {
             indexKey++;
             var ix = index;
             var before = theList[ix];
+            elementType = before == null ? typeof(object) : before.GetType()!;
             theList.RemoveAt(ix);
             // ------------------------------------------------------------------------------
             // -- HACKED IN AN ARRAY
@@ -24,7 +26,7 @@ public class RemoveOneByOneStrategy
                 var valueType = value.GetType();
                 if (value.GetType().IsArray)
                 {
-                    var elementType = valueType.GetElementType()!;
+                    elementType = valueType.GetElementType()!;
                     var array = Array.CreateInstance(elementType, theList.Count);
                     for (var i = 0; i < theList.Count; i++)
                     {
@@ -50,8 +52,8 @@ public class RemoveOneByOneStrategy
             theList.Insert(ix, before);
             index++;
         }
-
-        if (verifier.RunPassed(executionId, key, null!))
+        Type listType = typeof(List<>).MakeGenericType(elementType);
+        if (verifier.RunPassed(executionId, key, state.GetSubstitute(listType, null!)!))
         {
             var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(executionId, fullKey, value, theList);
             finalClue.AddToCount(shrinkCount);

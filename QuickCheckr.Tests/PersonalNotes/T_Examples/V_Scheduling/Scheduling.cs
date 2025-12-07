@@ -20,13 +20,13 @@ public class Scheduling : BaseTest
     [DocCodeFile("TheFuzzr.cs", "csharp", 2)]
     [DocHeader("The Checkr:")]
     [DocExample(typeof(Scheduling), nameof(GetCheckr))]
-    [DocHeader("The Configuration:")]
-    [DocExample(typeof(Scheduling), nameof(Configure))]
+    // [DocHeader("The Configuration:")]
+    // [DocExample(typeof(Scheduling), nameof(Configure))]
     [DocHeader("The Report:")]
     [DocCodeFile("Scheduling.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(1000.Runs(), Configure));
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(Configure));
         WriteAsserts(article, false);
         WriteReport<Scheduling>(article, false);
         ExplainMe<Scheduling>(false);
@@ -35,7 +35,15 @@ public class Scheduling : BaseTest
 
     private static void Verify(Article article)
     {
-
+        Assert.Equal("Bookings do not overlap", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(8, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Booking One", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ Start: 27.December(2025), End: 2.January(2026), Schedule: { Friday: [ { Start: 12, End: 15 } ] } }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Booking Two", article.Execution(1).Input(2).Read().Label);
+        Assert.Equal("{ Start: 25.December(2025), End: 31.December(2025), Schedule: { Friday: [ { Start: 11, End: 14 } ] } }", article.Execution(1).Input(2).Read().Value);
     }
 
     [CodeExample]
@@ -43,11 +51,8 @@ public class Scheduling : BaseTest
         => config with
         {
             Seed = 511619818,
-            Editor = new ManOfWealthAndTaste()
-                .ToInline<List<Timeslot>>()
-                .ToInline<Timeslot>()
-                .ToUseNonLinearTime()
-                .ToPrettyPrint()
+            //Investigations = [Investigate.EvidenceFailures],
+            Editor = new ManOfWealthAndTaste().ToUseNonLinearTime()
         };
 
     [CodeSnippet]
@@ -55,10 +60,9 @@ public class Scheduling : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
+            from standIn in Trackr.StandIn<List<Timeslot>>([])
             from bookingOne in Checkr.Input("Booking One", TheFuzzr.ValidBooking)
             from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
-            from traceOne in Checkr.Trace("Booking One", () => bookingOne)
-            from traceTwo in Checkr.Trace("Booking Two", () => bookingTwo)
             from Spec in Checkr.Spec("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
             select Case.Closed;
     }

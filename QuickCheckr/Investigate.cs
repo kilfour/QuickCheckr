@@ -45,7 +45,7 @@ public static class Investigate
     /// Use to quickly enable broad diagnostics during development.
     /// </summary>
     public static readonly Investigation[] All =
-        [Events, EvidenceFailures, InputShrinking];
+        [Events, EvidenceFailures, NullIssues, InputShrinking];
 }
 
 /// <summary>
@@ -82,8 +82,9 @@ public static class Procedure
     private static readonly Flow<EvidenceFailure> evidenceFailureFlow =
         from filing in Pulse.Start<EvidenceFailure>()
         from manOfWealthAndTaste in Pulse.Draw<ManOfWealthAndTaste>()
-        from _ in Pulse.Trace(manOfWealthAndTaste.ToPrettyPrint().IntroduceThis(filing))
-        from __ in Pulse.Trace("-------------------------------------")
+        from _1 in Pulse.Trace(filing.Exception.Message)
+        from _2 in Pulse.Trace(filing.Exception.StackTrace!)
+        from _3 in Pulse.Trace("-------------------------------------")
         select filing;
 
     /// <summary>
