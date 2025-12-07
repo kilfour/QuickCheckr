@@ -3,9 +3,19 @@
 ```csharp
 public class Account
 {
-    public int Balance { get; private set; }
-    public void Deposit(int amount) => Balance += amount;
-    public void WithDraw(int amount) => Balance -= amount;
+    public int Balance { get; private set; } = 0;
+    public void Deposit(int amount)
+    {
+        Balance += amount;
+        ApplyFee();
+    }
+    public void WithDraw(int amount)
+    {
+        if (amount > Balance) return;
+        Balance -= amount;
+        ApplyFee();
+    }
+    private void ApplyFee() => Balance -= 1;
 }
 ```
 ## The Checkr:

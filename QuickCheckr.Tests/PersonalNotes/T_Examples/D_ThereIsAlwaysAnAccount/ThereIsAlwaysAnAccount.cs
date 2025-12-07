@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -12,7 +11,27 @@ namespace QuickCheckr.Tests.PersonalNotes.T_Examples.D_ThereIsAlwaysAnAccount;
 [DocFile]
 public class ThereIsAlwaysAnAccount : BaseTest
 {
-    [Fact]
+    [CodeExample]
+    public class Account
+    {
+        public int Balance { get; private set; } = 0;
+        public void Deposit(int amount)
+        {
+            Balance += amount;
+            ApplyFee();
+        }
+
+        public void WithDraw(int amount)
+        {
+            if (amount > Balance) return;
+            Balance -= amount;
+            ApplyFee();
+        }
+
+        private void ApplyFee() => Balance -= 1;
+    }
+
+    [Fact(Skip = "Moving this one")]
     [DocHeader("The Model:")]
     [DocExample(typeof(Account))]
     [DocHeader("The Checkr:")]
@@ -45,7 +64,7 @@ public class ThereIsAlwaysAnAccount : BaseTest
         Assert.Equal("88", article.Execution(1).Trace(1).Read().Value);
     }
 
-    [Fact]
+    [Fact(Skip = "Moving this one")]
     public void FullRunTest()
     {
         var article = TheJournalist.Exposes(() =>

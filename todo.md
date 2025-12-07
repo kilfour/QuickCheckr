@@ -3,11 +3,19 @@
 ### Doing
 * Doc configuration
   * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
-
+* Multi-start run mode to automatically search for the simplest failing case
+  - Re-run the Checkr with fresh seeds N times
+  - Shrink each failing run as usual
+  - Keep the best case using a comparator:
+        (Casefile a, Casefile b) => 
+            a.Executions.Count <= b.Executions.Count ? a : b
+  - At end, re-run best seed once and surface as final failure
+ 
 ### Must have's for 0.0.4
 * Vault interface finished, implementation stable
 
 ### Major
+
 * Implement: checkr.CloseResolvedColdCases(...)
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)

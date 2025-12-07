@@ -1,0 +1,35 @@
+ ------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:47:1
+ Original failing run:    8 executions
+ Seed:                    1169776765
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 71
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 5
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 31
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 15
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 56
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 94
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 36
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 66
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
+ Passed Specs
+ - No Overdraft: 7x
+ ------------------------------------------------------------
