@@ -28,28 +28,42 @@ public static class CheckrOfTRun
         Func<CheckrConfig, CheckrConfig> configure)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
+        var finalCaseFile = CaseFile.Empty();
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var runner = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions);
             var caseFile = runner.Run();
+
             if (caseFile.HasVerdict())
             {
-                if (!string.IsNullOrWhiteSpace(config.FileAs))
-                {
-                    var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+                if (config.DeliberationPolicy != null)
+                    finalCaseFile = config.DeliberationPolicy(finalCaseFile.HasVerdict() ? finalCaseFile : caseFile, caseFile);
+                else
+                    ReportCaseFile(executionsPerRun, config, caseFile);
 
-                    Signal.From<string>(a => Pulse.Trace(a))
-                        .SetArtery(config.Custodian.Recorder(filenameCf))
-                        .Pulse(TheClerk.Transcribes(caseFile));
-
-                    Vault.From(config).AddSeed(runner.Seed,
-                        executionsPerRun.NumberOfExecutions,
-                        caseFile.Verdict!.GetFailure());
-                }
-                throw new FalsifiableException(caseFile);
             }
         }
+        if (finalCaseFile.HasVerdict())
+            ReportCaseFile(executionsPerRun, config, finalCaseFile);
         return CaseFile.Empty();
+    }
+
+    [StackTraceHidden]
+    private static void ReportCaseFile(ExecutionCount executionsPerRun, CheckrRunnerConfig config, CaseFile caseFile)
+    {
+        if (!string.IsNullOrWhiteSpace(config.FileAs))
+        {
+            var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+
+            Signal.From<string>(a => Pulse.Trace(a))
+                .SetArtery(config.Custodian.Recorder(filenameCf))
+                .Pulse(TheClerk.Transcribes(caseFile));
+
+            Vault.From(config).AddSeed(caseFile.Verdict!.Seed,
+                executionsPerRun.NumberOfExecutions,
+                caseFile.Verdict!.GetFailure());
+        }
+        throw new FalsifiableException(caseFile);
     }
 
     /// <summary>

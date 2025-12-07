@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Protocol;
@@ -19,6 +20,7 @@ public record CheckrConfig
             {
                 Seed = null,
                 ShrinkMode = ShrinkMode.Default,
+                DeliberationPolicy = null,
                 FileAs = string.Empty,
                 Custodian = Custodian.Default,
                 Investigations = [],
@@ -31,6 +33,8 @@ public record CheckrConfig
     /// Use when you want deterministic behaviour for debugging or CI.
     /// </summary>
     public required int? Seed { get; init; }
+
+    public required Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
 
     /// <summary>
     /// Controls how shrinking behaves for this run.  

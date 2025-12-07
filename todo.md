@@ -10,6 +10,8 @@
         (Casefile a, Casefile b) => 
             a.Executions.Count <= b.Executions.Count ? a : b
   - At end, re-run best seed once and surface as final failure
+  This is looking good, maybe add:
+  a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
  
 ### Must have's for 0.0.4
 * Vault interface finished, implementation stable

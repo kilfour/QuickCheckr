@@ -1,0 +1,17 @@
+ ------------------------------------------------------------
+ Test:                    RunTest
+ Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\BruteForceShrinking.cs:47:1
+ Original failing run:    2 executions
+ Seed:                    1110738672
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 2
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 1
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
+ Passed Specs
+ - No Overdraft: 1x
+ ------------------------------------------------------------
