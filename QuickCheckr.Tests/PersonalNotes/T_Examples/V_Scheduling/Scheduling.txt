@@ -1,0 +1,35 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                PersonalNotes\T_Examples\V_Scheduling\Scheduling.cs:29:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    511619818
+ ------------------------------------------------------------
+  Executed:
+   - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Monday: [  ], Tuesday: [  ], Wednesday: [  ], Thursday: [  ], Friday: [ { Start: 12, End: 15 } ] } }
+   - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Monday: [  ], Tuesday: [  ], Wednesday: [  ], Thursday: [  ], Friday: [ { Start: 11, End: 14 } ] } }
+   - Trace: Booking One = {
+    Start: 27.December(2025),
+    End: 2.January(2026),
+    Schedule: {
+        Monday: [ { Start: 11, End: 13 } ],
+        Tuesday: [ { Start: 12, End: 13 } ],
+        Wednesday: [ { Start: 11, End: 15 } ],
+        Thursday: [ { Start: 10, End: 15 } ],
+        Friday: [ { Start: 12, End: 15 } ]
+    }
+}
+   - Trace: Booking Two = {
+    Start: 25.December(2025),
+    End: 31.December(2025),
+    Schedule: {
+        Monday: [ { Start: 8, End: 10 } ],
+        Tuesday: [ { Start: 9, End: 10 } ],
+        Wednesday: [ { Start: 9, End: 10 } ],
+        Thursday: [ { Start: 15, End: 17 } ],
+        Friday: [ { Start: 11, End: 14 } ]
+    }
+}
+ ===========================================
+  !! Spec Failed: Bookings do not overlap
+ ===========================================
