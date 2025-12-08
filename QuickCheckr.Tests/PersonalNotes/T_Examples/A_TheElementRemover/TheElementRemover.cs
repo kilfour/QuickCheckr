@@ -2,6 +2,7 @@ using QuickCheckr;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -24,11 +25,23 @@ The generated report shows the input, the attempted deletion, a trace of the ori
 [DocCodeFile("TheElementRemover.txt", "text")]
 public class TheElementRemover : BaseTest
 {
+    private static CheckrConfig Configure(CheckrConfig config)
+        => config with
+        {
+            Seed = 438724296,
+            // FileAs = "MyQuickCheckrTest",
+            // Custodian = new Custodian
+            // {
+            //     Recorder = fn => Write.Here(fn),
+            //     Retriever = fn => Read.VaultStrings(fn),
+            // }
+        };
+
     [Fact]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 438724296 }));
+            GetCheckr().Run(Configure));
         WriteAsserts(article);
         WriteReport<TheElementRemover>(article);
         Verify(article);
