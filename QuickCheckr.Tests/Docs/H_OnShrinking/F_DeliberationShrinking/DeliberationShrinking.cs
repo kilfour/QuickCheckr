@@ -6,7 +6,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.PersonalNotes.A_Shrinking.F_BruteForceShrinking;
+namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
 public class DeliberationShrinking : BaseTest
@@ -46,8 +46,7 @@ public class DeliberationShrinking : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(), Configure));
         WriteAsserts(article, false);
-        WriteReport<DeliberationShrinking>(article, false);
-        ExplainMe<DeliberationShrinking>(false);
+        WriteReport<DeliberationShrinking>(article, true);
         Verify(article);
     }
 

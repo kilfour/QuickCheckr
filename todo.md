@@ -3,6 +3,7 @@
 ### Doing
 * Doc configuration
   * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
+* Add an explanation to QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking
 * Multi-start run mode to automatically search for the simplest failing case
   - Re-run the Checkr with fresh seeds N times
   - Shrink each failing run as usual
