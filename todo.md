@@ -1,9 +1,9 @@
 ## Current Version: 0.0.3
 
 ### Doing
-* Doc RunningTheRunner : Only config overloads left
 * Doc configuration
-  * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
+  * Started see the 'TheEvidenceVault'
+  * DOC investigations
 * Add an explanation to QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking
 * Finish Deliberation Shrinking
   This is looking good, maybe add:
@@ -20,13 +20,11 @@
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
   * Consolidation: Lots of info and tests in notes
-
 * look into different collection shrinking
   * limitations
   * known issues
   * workarounds
 * Start working on the reference
-* DOC investigations
 * Generalize Towards(Zero) reducer
 * More reducers
 
