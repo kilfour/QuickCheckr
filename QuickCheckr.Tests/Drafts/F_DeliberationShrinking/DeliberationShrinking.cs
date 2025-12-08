@@ -6,7 +6,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+namespace QuickCheckr.Tests.Drafts.F_DeliberationShrinking;
 
 [DocFile]
 public class DeliberationShrinking : BaseTest

@@ -11,4 +11,3 @@
         - [Removing Irrelevant Items](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/A_RemovingIrrelevantItems.md)
         - [Removing Irrelevant Collection](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/B_RemovingIrrelevantCollection.md)
         - [Irrelevant Element But List Length Is Not](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/C_IrrelevantElementButListLengthIsNot.md)
-    - [Deliberation Shrinking](H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md)
