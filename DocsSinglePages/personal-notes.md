@@ -8,36 +8,48 @@ During this process no further executions are performed and no new random values
 
 QuickCheckr then reports the minimal failing case, 
 together with the number of executions, relevant actions and inputs that were required to find it.  
-#### Collections
-##### Removing Irrelevant Items
-When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
-Instead, it removes items one by one, replaying the run each time to test whether the removed element was relevant for the failure.
-
-This means that if only some elements in a list contribute to the failing condition, QuickCheckr will aggressively trim the rest away. The result is a minimal list containing only the values that still trigger the failure, even if the original list was large or noisy.
-
-Consider a test that forbids the value `7`:  
+#### Enums
 ```csharp
-    from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
-    from trace in Checkr.Trace("List Input", () => listInput)
+    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
+    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
+    from spec in Checkr.Spec("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
     select Case.Closed;
 ```
-Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:19:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    1833095082
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1732064051
  ------------------------------------------------------------
   Executed:
-   - Input: List Input = [ 7 ]
-   - Trace: List Input = [ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]
- ===========================================
-  !! Spec Failed: List does not contain 7
- ===========================================
+   - Input: Input Two = Monday
+ ========================================
+  !! Spec Failed: Should not be Monday
+ ========================================
 ```
+```csharp
+    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
+    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
+    from spec in Checkr.Spec("Should not be Two", () => inputTwo != SoundCheck.Two)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTest_Custom
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1205305161
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input Two = Two
+ =====================================
+  !! Spec Failed: Should not be Two
+ =====================================
+```
+#### Collections
 ##### When Relevant Item Is Default
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
@@ -81,40 +93,7 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
   !! Spec Failed: List contains only 0
  ========================================
 ```
-##### Irrelevant Element But List Length Is Not
-When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
-and leaves irrelevant details untouched. 
-
-In cases like this example where the predicate depends solely on the length of the list,
-the individual element values play no role.  
-QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
-removing elements, and converging toward the smallest list that still violates the condition.
-
-This yields minimal, focused shrinking artifacts:
-the report shows only the structural signal that mattered (here: the list being *too long*),
-without introducing noise from element-level changes that could not affect the outcome anyway.  
-```csharp
-    from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-    from trace in Checkr.Trace("Original List", () => list)
-    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    1393576429
- ------------------------------------------------------------
-  Executed:
-   - Input: List = [ _, _, _ ]
-   - Trace: Original List = [ 12, 45, 56, 18, 31 ]
- ===============================
-  !! Spec Failed: Length <= 2
- ===============================
-```
-##### Relevant Multiple Eelements
+##### Relevant Multiple Elements
 ```csharp
     from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
     from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
@@ -126,7 +105,7 @@ without introducing noise from element-level changes that could not affect the o
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\D_RelevantMultipleEelements.cs:19:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\Z_Compendium\B_Collections\TheExamples\D_RelevantMultipleElements.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855

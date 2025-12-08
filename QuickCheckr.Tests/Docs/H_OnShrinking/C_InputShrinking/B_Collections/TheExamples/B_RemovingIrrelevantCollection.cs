@@ -5,7 +5,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests;
+namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking.B_Collections.TheExamples;
 
 [DocFile]
 [DocContent(

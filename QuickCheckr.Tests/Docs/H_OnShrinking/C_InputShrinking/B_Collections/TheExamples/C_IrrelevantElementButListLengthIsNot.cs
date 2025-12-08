@@ -4,7 +4,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.B_Collections.TheExamples;
+namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking.B_Collections.TheExamples;
 
 [DocFile]
 [DocContent(

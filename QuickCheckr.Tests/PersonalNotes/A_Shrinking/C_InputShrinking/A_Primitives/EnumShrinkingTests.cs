@@ -5,7 +5,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking.A_Primitives;
+namespace QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.A_Primitives;
 
 [DocFile]
 public class Enums : BaseTest

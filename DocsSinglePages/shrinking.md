@@ -1,11 +1,4 @@
 # On Shrinking
-Whenever QuickCheckr comes accross a failure during a run, 
-it tries to shrink the failing case to find a minimal failing case.
-
-During this process no further executions are performed and no new random values are generated.
-
-QuickCheckr then reports the minimal failing case, 
-together with the number of executions, relevant actions and inputs that were required to find it.  
 ## Philosophy
 
 QuickCheckr keeps shrinking simple and predictable.  
@@ -109,48 +102,87 @@ Result:
   !! Spec Failed: Should not be 42
  ====================================
 ```
-### Enums
+### Collections
+#### Removing Irrelevant Items
+When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
+Instead, it removes items one by one, replaying the run each time to test whether the removed element was relevant for the failure.
+
+This means that if only some elements in a list contribute to the failing condition, QuickCheckr will aggressively trim the rest away. The result is a minimal list containing only the values that still trigger the failure, even if the original list was large or noisy.
+
+Consider a test that forbids the value `7`:  
 ```csharp
-    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
-    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
-    from spec in Checkr.Spec("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
+    from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
+    from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
+    from trace in Checkr.Trace("List Input", () => listInput)
+    select Case.Closed;
+```
+Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    1833095082
+ ------------------------------------------------------------
+  Executed:
+   - Input: List Input = [ 7 ]
+   - Trace: List Input = [ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]
+ ===========================================
+  !! Spec Failed: List does not contain 7
+ ===========================================
+```
+#### Removing Irrelevant Collection
+Ofcourse a collection itself is just an input like another, so if it, as a whole,
+is irrelevant for the failure, QuickCheckr will remove it.  
+```csharp
+    from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
+    from spec in Checkr.Spec("Always fails", () => false)
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:19:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:22:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1732064051
+ Seed:                    2014608033
  ------------------------------------------------------------
-  Executed:
-   - Input: Input Two = Monday
- ========================================
-  !! Spec Failed: Should not be Monday
- ========================================
+  Executed
+ ================================
+  !! Spec Failed: Always fails
+ ================================
 ```
+#### Irrelevant Element But List Length Is Not
+When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
+and leaves irrelevant details untouched. 
+
+In cases like this example where the predicate depends solely on the length of the list,
+the individual element values play no role.  
+QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
+removing elements, and converging toward the smallest list that still violates the condition.
+
+This yields minimal, focused shrinking artifacts:
+the report shows only the structural signal that mattered (here: the list being *too long*),
+without introducing noise from element-level changes that could not affect the outcome anyway.  
 ```csharp
-    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
-    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
-    from spec in Checkr.Spec("Should not be Two", () => inputTwo != SoundCheck.Two)
+    from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
+    from trace in Checkr.Trace("Original List", () => list)
+    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
- Test:                    RunTest_Custom
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1205305161
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    1393576429
  ------------------------------------------------------------
   Executed:
-   - Input: Input Two = Two
- =====================================
-  !! Spec Failed: Should not be Two
- =====================================
+   - Input: List = [ _, _, _ ]
+   - Trace: Original List = [ 12, 45, 56, 18, 31 ]
+ ===============================
+  !! Spec Failed: Length <= 2
+ ===============================
 ```
-### Compendium
-Here you'll find a collection of examples of input shrinking.  
-These can be used as a starting point for your own tests.
-  

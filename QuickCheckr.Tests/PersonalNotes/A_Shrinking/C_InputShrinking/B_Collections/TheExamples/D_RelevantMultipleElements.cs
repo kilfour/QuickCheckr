@@ -8,17 +8,17 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.B_Collections.TheExamples;
 
 [DocFile]
-public class D_RelevantMultipleEelements : BaseTest
+public class D_RelevantMultipleElements : BaseTest
 {
     [Fact]
-    [DocExample(typeof(D_RelevantMultipleEelements), nameof(GetCheckr))]
-    [DocCodeFile("D_RelevantMultipleEelements.txt", "text")]
+    [DocExample(typeof(D_RelevantMultipleElements), nameof(GetCheckr))]
+    [DocCodeFile("D_RelevantMultipleElements.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { Seed = 500957855 }));
         WriteAsserts(article);
-        WriteReport<D_RelevantMultipleEelements>(article);
+        WriteReport<D_RelevantMultipleElements>(article, false);
         Verify(article);
     }
 
