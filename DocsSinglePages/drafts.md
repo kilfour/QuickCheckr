@@ -38,7 +38,7 @@ which allows for controlling specific aspects of the Checkr run. We'll get into 
 ## Configuration
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
-### The Evidence Vault
+### Filing Evidence
 QuickCheckr can be configured to persist the results of a failed test run.  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
@@ -57,8 +57,10 @@ In addition a sub folder is created containing the evidence vault files:
 ```
 
 - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is an append only log of all evidence vault actions.  
-#### Reviewing the Cold Cases
+- `evidence-log.ql` is an append only log of all evidence vault actions.
+
+This *evidence* can later be used to potentially solve *Cold Cases*.  
+### The Evidence Vault
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
 ```csharp

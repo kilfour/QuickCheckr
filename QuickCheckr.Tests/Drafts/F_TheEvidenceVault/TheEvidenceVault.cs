@@ -38,27 +38,6 @@ public class TheEvidenceVault : BaseTest
     [CodeSnippet]
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
-    private static string DefaultFileName()
-        => @".quickcheckr\MyQuickCheckrTest\report.qr";
-
-
-    [Fact]
-    [DocContent("QuickCheckr can be configured to persist the results of a failed test run.")]
-    [DocExample(typeof(TheEvidenceVault), nameof(Configure))]
-    [DocContent("Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:")]
-    [DocExample(typeof(TheEvidenceVault), nameof(DefaultFileName))]
-    public void ReportLocation()
-    {
-        var collector = new List<string>();
-        TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(cfg => Configure(AddCustodian(cfg, collector))));
-        Assert.Equal(3, collector.Count);
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(collector[0]));
-    }
-
-    [CodeSnippet]
-    [CodeRemove("@\"")]
-    [CodeRemove("\";")]
     private static string DefaultEvidenceFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence.qv";
 
@@ -83,40 +62,11 @@ public class TheEvidenceVault : BaseTest
             return Install.Null;
         };
 
-    [Fact]
-    [DocContent("In addition a sub folder is created containing the evidence vault files:")]
-    [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceFileName))]
-    [DocExample(typeof(TheEvidenceVault), nameof(DefaultEvidenceLogFileName))]
-    [DocContent(
-@"
-- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is an append only log of all evidence vault actions.")]
-    public void EvidenceLocation()
-    {
-        var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
-        TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(1862095796, cfg =>
-                Configure(AddCustodian(
-                    cfg,
-                    collector,
-                    SpyArteries(evidence, log)))));
-        Assert.Equal(3, collector.Count);
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(collector[1]));
-        Assert.Single(evidence.Values);
-        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(collector[2]));
-        Assert.Single(log.Values);
-        Assert.Equal($"Added Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
-    }
-
     [CodeSnippet]
     private static void RunColdCasesReview(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
         checkr.ReviewColdCases(Configure);
 
     [Fact]
-    [DocHeader("Reviewing the Cold Cases")]
     [DocContent(
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
