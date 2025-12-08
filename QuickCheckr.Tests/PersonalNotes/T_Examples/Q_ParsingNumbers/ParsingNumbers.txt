@@ -1,11 +1,11 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:20:1
+ Location:                PersonalNotes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    406406480
  ------------------------------------------------------------
-  Executed (1): Golden Result, SUT Result
+  Executed: Golden Result, SUT Result
    - Input: Expression = "2^-2^2"
    - Trace: Original = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
    - Trace: Compare = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926

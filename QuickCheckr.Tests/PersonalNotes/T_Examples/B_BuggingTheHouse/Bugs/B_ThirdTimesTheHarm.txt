@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
+ Location:                PersonalNotes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
  Original failing run:    36 executions
  Minimal failing case:    3 executions (after 33 shrinks)
  Seed:                    766917706

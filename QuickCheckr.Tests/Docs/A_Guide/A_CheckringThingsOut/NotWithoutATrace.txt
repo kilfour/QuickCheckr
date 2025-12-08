@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:159:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:158:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533

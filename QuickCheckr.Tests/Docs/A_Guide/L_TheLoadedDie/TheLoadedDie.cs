@@ -5,7 +5,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.E_Examples.L_TheLoadedDie;
+namespace QuickCheckr.Tests.Docs.A_Guide.L_TheLoadedDie;
 
 [DocFile]
 public class TheLoadedDie : BaseTest

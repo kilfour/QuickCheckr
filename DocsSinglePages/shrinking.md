@@ -62,7 +62,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:27:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
@@ -90,7 +90,7 @@ Result:
 ```text
 ------------------------------------------------------------
  Test:                    Example_Two
- Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:65:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:78:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    231122398
@@ -120,7 +120,7 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1833095082
@@ -143,7 +143,7 @@ is irrelevant for the failure, QuickCheckr will remove it.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:22:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:22:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
@@ -174,7 +174,7 @@ without introducing noise from element-level changes that could not affect the o
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1393576429

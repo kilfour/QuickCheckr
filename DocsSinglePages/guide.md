@@ -12,7 +12,9 @@ This is a living document, we start small, with a short introduction and a real-
 - [ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
 - [Bolting Horses][BoltingHorses]
-  - A real-world example of hunting down a subtle invariant bug.  
+  - A real-world example of hunting down a subtle invariant bug.
+- [TheLoadedDie]
+  -  Using QuickCheckr to verify properties that should hold for the entire run.  
 
 [CheckringThingsOut]: #checkr-ing-things-out
 
@@ -21,6 +23,8 @@ This is a living document, we start small, with a short introduction and a real-
 [ChoosingTheNextMove]: #choosing-the-next-move
 
 [BoltingHorses]: #bolting-horses
+
+[TheLoadedDie]: #the-loaded-die
 ## Checkr-ing Things Out
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking specs, and collecting diagnostics.
@@ -45,7 +49,7 @@ The test fails and QuickCheckr produces the following report:
 ```text
 ------------------------------------------------------------
  Test:                    SpecAlwaysFalse
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:42:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:41:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
@@ -89,7 +93,7 @@ Now the test fails consistently:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:80:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:79:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
@@ -113,7 +117,7 @@ The following happens:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:122:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:121:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
@@ -142,7 +146,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:159:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:158:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
@@ -170,7 +174,7 @@ And here's the report:
 ```text
 ------------------------------------------------------------
  Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:198:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:197:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
@@ -233,7 +237,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    RunBugHouseCheckr
- Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:62:1
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:65:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642
@@ -243,7 +247,11 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1
  ===========================================================================
-  !! Exception Thrown: ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 28
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 56
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
  ===========================================================================
  Passed Specs
  - Returns true: 2x
@@ -352,7 +360,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:47:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:66:1
  Original failing run:    8 executions
  Seed:                    1169776765
  ------------------------------------------------------------
@@ -594,3 +602,54 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```
 The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+## The Loaded Die
+While not strictly speaking a property-test, as there is no shrinking involved,
+this kind of test is nevertheless very useful.  
+So much so that QuickCheckr so much so that QuickCheckr provides a dedicated tool for it. 
+
+We're testing a simple implementation of a die:
+  
+```csharp
+public class DieSix
+{
+    public int Roll() => new Random().Next(1, 6);
+}
+```
+And we want to ensure that it rolls the numbers 1-6.  For which use the following Checkr:  
+```csharp
+    from die in Trackr.Stashed(() => new DieSix())
+    from observer in Trackr.Stashed(() => new HashSet<int>())
+    from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
+    from assay in Trackr.Assay("Rolls",
+        ("Contains 1", () => observer.Contains(1)),
+        ("Contains 2", () => observer.Contains(2)),
+        ("Contains 3", () => observer.Contains(3)),
+        ("Contains 4", () => observer.Contains(4)),
+        ("Contains 5", () => observer.Contains(5)),
+        ("Contains 6", () => observer.Contains(6)))
+    select Case.Closed;
+```
+`Trackr.Assay` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
+rather than the outcome of any single execution.
+In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *assay* is evaluated only after the final execution has completed.
+This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
+
+**Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Docs\A_Guide\L_TheLoadedDie\TheLoadedDie.cs:48:1
+ Original failing run:    100 executions
+ Seed:                    930735070
+ ------------------------------------------------------------
+  Executed: Roll (100 Times)
+ ================================================
+  !!  The Assayer Disagrees: Rolls: Contains 6
+ ================================================
+```
+Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
+A common mistake, and the assayer pointed it out in above report.
+
+*Sidenote:* When one uses `Trackr.Assay` there is no shrinking whatsoever, as there is no *minimal* fail case, by definition.  
+Assays evaluate state accumulated across all executions, so removing any execution and or inputs,
+changes the final state therefore shrinking is not applicable.  

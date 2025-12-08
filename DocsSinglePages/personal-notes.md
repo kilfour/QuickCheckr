@@ -18,7 +18,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1732064051
@@ -38,7 +38,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Custom
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1205305161
@@ -60,7 +60,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A1_WhenRelevantItemIsDefault.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A1_WhenRelevantItemIsDefault.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    820833320
@@ -81,7 +81,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Negated
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A1_WhenRelevantItemIsDefault.cs:57:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\A1_WhenRelevantItemIsDefault.cs:57:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    816312044
@@ -105,7 +105,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\Z_Compendium\B_Collections\TheExamples\D_RelevantMultipleElements.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\D_RelevantMultipleElements.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855
@@ -125,7 +125,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\E_RelevantElementAndSize.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\E_RelevantElementAndSize.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1058309953
@@ -148,7 +148,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    146712596
@@ -172,7 +172,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G_MultipleCauses.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G_MultipleCauses.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1238961515
@@ -197,7 +197,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G1_MultipleCausesDefaultInSpec.cs:21:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G1_MultipleCausesDefaultInSpec.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1238961515
@@ -222,7 +222,7 @@ var check =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\T_ArrayShrinking.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\T_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1100967994
@@ -251,7 +251,7 @@ public class BaggyInters
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\A_RemovesIrrelevantProperties.cs:20:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\A_RemovesIrrelevantProperties.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    488581569
@@ -277,7 +277,7 @@ public class BaggyInters
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\B_NestedObjects.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\B_NestedObjects.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    803555194
@@ -303,7 +303,7 @@ public record Person(string Name, int Age);
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\C_Records.cs:20:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\C_Records.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1556090131
@@ -326,7 +326,7 @@ public record Person(string Name, int Age);
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:22:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1000847613
@@ -360,7 +360,7 @@ Check this with:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D1_IrrelevantObjectsNullIssues.cs:21:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D1_IrrelevantObjectsNullIssues.cs:25:1
  Original failing run:    1 execution
  Seed:                    346547347
  ------------------------------------------------------------
@@ -410,7 +410,7 @@ But, when `Irrelevant` is `null`, QuickCheckr can not shrink.
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_NotShrinkingNull
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:65:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:65:1
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
@@ -419,9 +419,9 @@ But, when `Irrelevant` is `null`, QuickCheckr can not shrink.
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
-   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 54
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 37
+   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
+   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 54
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
  ===========================================================================
 ```
 The current workaround to avoid the irrelevant input reporting involves helping the shrinker by rewriting your checkr.  
@@ -436,7 +436,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:93:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:93:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -446,9 +446,9 @@ The current workaround to avoid the irrelevant input reporting involves helping 
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
-   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass7_2.GetCheckr_Alternative() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 123
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 37
+   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
+   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass7_2.GetCheckr_Alternative() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 123
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
  ===========================================================================
 ```
 ##### Multiple Relevant Properties
@@ -463,7 +463,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\F_MultipleRelevantProperties.cs:20:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\F_MultipleRelevantProperties.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1889365782
@@ -488,7 +488,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\G_ShrinkingRecords.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\G_ShrinkingRecords.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1121486451
@@ -512,7 +512,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2122063655
@@ -537,7 +537,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2122063655
@@ -573,7 +573,7 @@ private static IEnumerable<int> TowardsZero(int input)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -625,9 +625,10 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\BruteForceShrinking.cs:47:1
- Original failing run:    2 executions
- Seed:                    1110738672
+ Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\DeliberationShrinking.cs:47:1
+ Original failing run:    4 executions
+ Minimal failing case:    2 executions (after 2 shrinks)
+ Seed:                    1200410417
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 2
@@ -638,7 +639,7 @@ private static CheckrConfig Configure(CheckrConfig config)
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 1x
+ - No Overdraft: 3x
  ------------------------------------------------------------
 ```
 Running this test with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
@@ -671,12 +672,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:27:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    575290049
+ Seed:                    419717338
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-2^2"
-   - Trace: Original = - 2 ^ 2 * 2 - 3 / 3 * 3 * 2
-   - Trace: Compare = Golden: -14 /= SUT: 2
+   - Input: Expression = "-1^2"
+   - Trace: Original = - 1 ^ 2 * 1
+   - Trace: Compare = Golden: -1 /= SUT: 1
  =========================
   !! Spec Failed: Match
  =========================
@@ -692,7 +693,7 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\B_BuildingBlocks\H_CheckrActCarefully\CheckrActCarefully.cs:18:1
+ Location:                PersonalNotes\B_BuildingBlocks\H_CheckrActCarefully\CheckrActCarefully.cs:18:1
  Original failing run:    1 execution
  Seed:                    412717959
  ------------------------------------------------------------
@@ -715,7 +716,7 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:19:1
+ Location:                PersonalNotes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:19:1
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
@@ -737,7 +738,7 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Multiple
- Location:                Notes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:53:1
+ Location:                PersonalNotes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:53:1
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
@@ -787,7 +788,7 @@ The generated report shows the input, the attempted deletion, a trace of the ori
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\A_TheElementRemover\TheElementRemover.cs:31:1
+ Location:                PersonalNotes\T_Examples\A_TheElementRemover\TheElementRemover.cs:31:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 7 shrinks)
  Seed:                    438724296
@@ -836,7 +837,7 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\A_DelayedDetonation.cs:43:1
+ Location:                PersonalNotes\T_Examples\B_BuggingTheHouse\Bugs\A_DelayedDetonation.cs:43:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1914853878
@@ -886,7 +887,7 @@ Run( a = 6 ) // count == 3 → fail
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
+ Location:                PersonalNotes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
  Original failing run:    36 executions
  Minimal failing case:    3 executions (after 33 shrinks)
  Seed:                    766917706
@@ -936,7 +937,7 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
+ Location:                PersonalNotes\T_Examples\B_BuggingTheHouse\Bugs\B_ThirdTimesTheHarm.cs:34:1
  Original failing run:    36 executions
  Minimal failing case:    3 executions (after 33 shrinks)
  Seed:                    766917706
@@ -1000,7 +1001,7 @@ RunInt(6)            // bug ends with "1221" and `a == 6` → fail
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\D_MultipleMethods.cs:34:1
+ Location:                PersonalNotes\T_Examples\B_BuggingTheHouse\Bugs\D_MultipleMethods.cs:34:1
  Original failing run:    59 executions
  Minimal failing case:    4 executions (after 58 shrinks)
  Seed:                    1292206393
@@ -1114,12 +1115,12 @@ public class Account
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:20:1
+ Location:                PersonalNotes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    406406480
  ------------------------------------------------------------
-  Executed (1): Golden Result, SUT Result
+  Executed: Golden Result, SUT Result
    - Input: Expression = "2^-2^2"
    - Trace: Original = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
    - Trace: Compare = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
@@ -1464,7 +1465,7 @@ public class Eventually
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Y_Async\ActingOutOfSync.cs:20:1
+ Location:                PersonalNotes\Y_Async\ActingOutOfSync.cs:20:1
  Original failing run:    1 execution
  Seed:                    367926403
  ------------------------------------------------------------
@@ -1554,7 +1555,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:32:1
+ Location:                PersonalNotes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:32:1
  Original failing run:    11 executions
  Minimal failing case:    4 executions (after 12 shrinks)
  Seed:                    1511313504

@@ -14,7 +14,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:27:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
@@ -42,7 +42,7 @@ Result:
 ```text
 ------------------------------------------------------------
  Test:                    Example_Two
- Location:                Notes\A_Shrinking\C_InputShrinking\InputShrinking.cs:65:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:78:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    231122398
