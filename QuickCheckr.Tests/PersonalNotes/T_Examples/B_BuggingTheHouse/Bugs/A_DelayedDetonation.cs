@@ -40,7 +40,7 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1914853878 }));
+            GetCheckr().Run(1914853878, 10.ExecutionsPerRun()));
         WriteReport<A_DelayedDetonation>(article);
         Verify(article);
     }

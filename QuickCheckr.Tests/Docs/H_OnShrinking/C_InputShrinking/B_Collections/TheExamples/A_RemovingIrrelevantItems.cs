@@ -23,7 +23,7 @@ public class A_RemovingIrrelevantItems : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1833095082 }));
+            GetCheckr().Run(1833095082));
         WriteAsserts(article);
         WriteReport<A_RemovingIrrelevantItems>(article);
         Verify(article);

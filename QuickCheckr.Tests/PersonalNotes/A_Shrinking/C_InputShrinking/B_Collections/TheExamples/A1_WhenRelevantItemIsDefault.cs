@@ -16,7 +16,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 820833320 }));
+            GetCheckr().Run(820833320));
         WriteAsserts(article);
         WriteReport<A1_WhenRelevantItemIsDefault>(article);
         Verify(article);
@@ -54,7 +54,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
     public void RunTest_Negated()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr_Negated().Run(a => a with { Seed = 816312044 }));
+            GetCheckr_Negated().Run(816312044));
         WriteAsserts(article);
         WriteReport(article, "A1_WhenRelevantItemIsDefault_Negated.txt");
         Verify_Negated(article);

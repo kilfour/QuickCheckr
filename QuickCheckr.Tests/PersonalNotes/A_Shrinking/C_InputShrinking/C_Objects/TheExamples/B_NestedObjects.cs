@@ -16,7 +16,7 @@ public class B_NestedObjects : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 803555194 }));
+            GetCheckr().Run(803555194));
         WriteAsserts(article);
         WriteReport<B_NestedObjects>(article);
         Verify(article);

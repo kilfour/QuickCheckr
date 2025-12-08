@@ -17,7 +17,7 @@ public class C_Records : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1556090131 }));
+            GetCheckr().Run(1556090131));
         WriteAsserts(article);
         WriteReport<C_Records>(article);
         Verify(article);

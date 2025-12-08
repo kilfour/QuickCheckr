@@ -24,7 +24,7 @@ public class ParsingNumbers : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), Configure));
+            GetCheckr().Run(150.Runs(), Configure));
         WriteAsserts(article, false);
         WriteReport<ParsingNumbers>(article, false);
         ExplainMe<ParsingNumbers>(false);

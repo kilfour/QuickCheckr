@@ -16,7 +16,7 @@ public class TrackrAssay : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1.Runs(), 20.ExecutionsPerRun(), a => a with { Seed = 293407282 }));
+            GetCheckr().Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TrackrAssay>(article);
         Verify(article);
@@ -50,7 +50,7 @@ public class TrackrAssay : BaseTest
     public void Multiple()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr_Multiple().Run(1.Runs(), 20.ExecutionsPerRun(), a => a with { Seed = 293407282 }));
+            GetCheckr_Multiple().Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport(article, "TrackrAssayMultiple.txt");
         VerifyMultiple(article);

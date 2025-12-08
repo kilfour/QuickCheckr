@@ -34,7 +34,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
     public void Example()
     {
         var article = TheJournalist.Exposes(() =>
-            Example_Check().Run(a => a with { Seed = 165641598 }));
+            Example_Check().Run(165641598));
         WriteAsserts(article);
         WriteReport(article, "InputShrinking.txt");
         Verify(article);
@@ -75,7 +75,7 @@ Result:
     public void Example_Two()
     {
         var article = TheJournalist.Exposes(() =>
-            Example_Two_Check().Run(a => a with { Seed = 231122398 }));
+            Example_Two_Check().Run(231122398));
         WriteAsserts(article);
         WriteReport(article, "InputShrinking_Two.txt");
         Verify_Two(article);

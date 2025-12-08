@@ -18,7 +18,6 @@ public record CheckrConfig
         return
             new CheckrConfig()
             {
-                Seed = null,
                 ShrinkMode = ShrinkMode.Default,
                 DeliberationPolicy = null,
                 FileAs = string.Empty,
@@ -27,12 +26,6 @@ public record CheckrConfig
                 Editor = new ManOfWealthAndTaste().ToInline<List<int>>()
             };
     }
-
-    /// <summary>
-    /// Optional fixed seed for reproducible runs.  
-    /// Use when you want deterministic behaviour for debugging or CI.
-    /// </summary>
-    public required int? Seed { get; init; }
 
     public required Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
 

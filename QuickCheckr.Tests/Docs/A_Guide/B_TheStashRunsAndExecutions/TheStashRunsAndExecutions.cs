@@ -58,11 +58,11 @@ because the test looses the state of the `BugHouse` between every run.")]
         select Case.Closed;
 
 
-    [CodeRemove(", a => a with { Seed = 1854571642 }")]
+    [CodeReplace("1854571642", "100.Runs()")]
     [CodeSnippet]
     private static void RunBugHouseCheckr()
     {
-        BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun(), a => a with { Seed = 1854571642 });
+        BugHouseCheckr.Run(1854571642, 10.ExecutionsPerRun());
     }
 
     [Fact]

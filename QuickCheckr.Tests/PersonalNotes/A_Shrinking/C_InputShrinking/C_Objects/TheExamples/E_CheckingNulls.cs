@@ -19,7 +19,7 @@ public class E_CheckingNulls : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 358877731 }));
+            GetCheckr().Run(358877731));
         WriteAsserts(article);
         WriteReport<E_CheckingNulls>(article, true);
         Verify(article);
@@ -62,7 +62,7 @@ public class E_CheckingNulls : BaseTest
     public void RunTest_NotShrinkingNull()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1269557792 }));
+            GetCheckr().Run(1269557792));
         WriteAsserts(article);
         WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt");
         Verify_NotShrinkingNull(article);
@@ -90,7 +90,7 @@ public class E_CheckingNulls : BaseTest
     public void RunTest_Alternative()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr_Alternative().Run(100.Runs(), a => a with { Seed = 1269557792 }));
+            GetCheckr_Alternative().Run(1269557792));
         WriteAsserts(article);
         WriteReport(article, "E_CheckingNulls_Alternative.txt");
         Verify_Alternative(article);

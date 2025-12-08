@@ -38,7 +38,7 @@ The report shows:
 ")]
     public void SpecAlwaysFalse()
     {
-        var article = TheJournalist.Exposes(() => SpecAlwaysFalse_Checkr().Run(a => a with { Seed = 1642083259 }));
+        var article = TheJournalist.Exposes(() => SpecAlwaysFalse_Checkr().Run(1642083259));
         Assert.Equal("Always true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
@@ -76,7 +76,7 @@ Not ideal, so let's up the run number, like so:")]
 this is because QuickCheckr judged the input to be relevant to the failure.")]
     public void AddingAnInput()
     {
-        var article = TheJournalist.Exposes(() => AddingAnInput_Checkr().Run(a => a with { Seed = 127648209 }));
+        var article = TheJournalist.Exposes(() => AddingAnInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnInput.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
@@ -91,11 +91,11 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     [Fact]
     [CodeRemove("Assert.Throws<FalsifiableException>(() => ")]
     [CodeReplace("SpecAlwaysFalse_Checkr()", "check")]
-    [CodeReplace(", a => a with { Seed = 127648209 }));", ");")]
+    [CodeRemove(");")]
     [CodeSnippet]
     public void FailureThrows()
     {
-        Assert.Throws<FalsifiableException>(() => SpecAlwaysFalse_Checkr().Run(200.Runs(), a => a with { Seed = 127648209 }));
+        Assert.Throws<FalsifiableException>(() => SpecAlwaysFalse_Checkr().Run(200.Runs()));
     }
 
     [CodeSnippet]
@@ -118,7 +118,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     public void AddingAnotherInput()
     {
         var article = TheJournalist.Exposes(() =>
-            AddingAnotherInput_Checkr().Run(a => a with { Seed = 127648209 }));
+            AddingAnotherInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnotherInput.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
@@ -155,7 +155,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     public void NotWithoutATrace()
     {
         var article = TheJournalist.Exposes(() =>
-            NotWithoutATrace_Checkr().Run(a => a with { Seed = 769641533 }));
+            NotWithoutATrace_Checkr().Run(769641533));
         WriteAsserts(article);
         WriteReport(article, "NotWithoutATrace.txt");
         Assert.Equal("Input /= 42", article.FailedSpec());
@@ -194,7 +194,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     public void TimeToAct()
     {
         var article = TheJournalist.Exposes(() =>
-            TimeToAct_Checkr().Run(a => a with { Seed = 1642083259 }));
+            TimeToAct_Checkr().Run(1642083259));
         WriteAsserts(article);
         WriteReport(article, "TimeToAct.txt");
         Assert.Equal("Sum /= 42", article.FailedSpec());

@@ -31,7 +31,7 @@ Run( a = 6 ) // count == 3 → fail
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(50.ExecutionsPerRun(), a => a with { Seed = 766917706 }));
+            GetCheckr().Run(766917706, 50.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<B_ThirdTimesTheHarm>(article);
         Verify(article);

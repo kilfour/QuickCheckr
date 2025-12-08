@@ -97,9 +97,9 @@ public class TheEvidenceVault : BaseTest
         var evidence = Collect.ValuesOf<string>();
         var log = Collect.ValuesOf<string>();
         TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(cfg =>
+            Checkr.Spec("Fails", () => false).Run(1862095796, cfg =>
                 Configure(AddCustodian(
-                    cfg with { Seed = 1862095796 },
+                    cfg,
                     collector,
                     SpyArteries(evidence, log)))));
         Assert.Equal(3, collector.Count);
@@ -133,7 +133,7 @@ This will create a report per seed in the evidence file and a log of all evidenc
 
         RunColdCasesReview(Checkr.Spec("Fails", () => false),
             cfg => Configure(AddCustodian(
-                    cfg with { Seed = 1862095796 },
+                    cfg,
                     collector,
                     SpyArteries(evidence, log),
                     ["1862095796,1,Fails"])));
@@ -157,7 +157,7 @@ This will create a report per seed in the evidence file and a log of all evidenc
 
         RunColdCasesReview(Checkr.Spec("Fails", () => false),
             cfg => Configure(AddCustodian(
-                    cfg with { Seed = 1862095796 },
+                    cfg,
                     collector,
                     SpyArteries(evidence, log, 1862095796, report),
                     ["1862095796,1,Fails"])));
@@ -186,7 +186,7 @@ This will create a report per seed in the evidence file and a log of all evidenc
 
         RunColdCasesReview(Checkr.Spec("Fails", () => true),
             cfg => Configure(AddCustodian(
-                    cfg with { Seed = 1862095796 },
+                    cfg,
                     collector,
                     SpyArteries(evidence, log, 1862095796, report),
                     ["1862095796,1,Fails"])));

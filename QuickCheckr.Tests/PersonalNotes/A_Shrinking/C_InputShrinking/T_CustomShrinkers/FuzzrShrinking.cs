@@ -16,7 +16,7 @@ public class FuzzrShrinking : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 2122063655 }));
+            GetCheckr().Run(2122063655));
         WriteAsserts(article);
         WriteReport<FuzzrShrinking>(article);
         Verify(article);

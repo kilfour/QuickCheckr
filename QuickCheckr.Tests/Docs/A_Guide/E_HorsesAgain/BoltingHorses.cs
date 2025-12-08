@@ -56,7 +56,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
     )]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(20.ExecutionsPerRun(), a => a with { Seed = 13918324 }));
+        var article = TheJournalist.Exposes(() => TheCheckr.Run(13918324, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<BoltingHorses>(article);
         Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());

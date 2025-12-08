@@ -17,7 +17,7 @@ public class ActingOutOfSync : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 367926403 }));
+            GetCheckr().Run(367926403));
         WriteAsserts(article);
         WriteReport<ActingOutOfSync>(article);
         Verify(article);

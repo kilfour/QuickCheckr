@@ -16,7 +16,7 @@ public class G_ShrinkingRecords : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), a => a with { Seed = 1121486451 }));
+            GetCheckr().Run(1121486451));
         WriteAsserts(article);
         WriteReport<G_ShrinkingRecords>(article);
         Verify(article);

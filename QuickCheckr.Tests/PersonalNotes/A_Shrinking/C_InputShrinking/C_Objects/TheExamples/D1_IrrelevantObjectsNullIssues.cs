@@ -22,7 +22,7 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 346547347 }));
+            GetCheckr().Run(346547347));
         WriteAsserts(article);
         WriteReport<D1_IrrelevantObjectsNullIssues>(article);
         Verify(article);

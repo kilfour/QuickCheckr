@@ -16,7 +16,7 @@ public class Enums : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1732064051 }));
+            GetCheckr().Run(1732064051));
         WriteAsserts(article);
         WriteReport(article, "Enums.txt");
         Verify(article);
@@ -52,7 +52,7 @@ public class Enums : BaseTest
     public void RunTest_Custom()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr_Custom().Run(a => a with { Seed = 1205305161 }));
+            GetCheckr_Custom().Run(1205305161));
         WriteAsserts(article);
         WriteReport(article, "EnumsCustom.txt");
         Verify_Custom(article);

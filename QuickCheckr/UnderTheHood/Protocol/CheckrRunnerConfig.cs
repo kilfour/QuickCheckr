@@ -10,7 +10,6 @@ public record CheckrRunnerConfig
 {
     public CheckrRunnerConfig(CheckrConfig config)
     {
-        Seed = config.Seed;
         ShrinkMode = config.ShrinkMode;
         DeliberationPolicy = config.DeliberationPolicy;
         Editor = config.Editor;
@@ -23,12 +22,12 @@ public record CheckrRunnerConfig
         Custodian = config.Custodian;
     }
 
-    public int? Seed { get; private set; }
+    public int? Seed { get; private set; } = null;
     public ShrinkMode ShrinkMode { get; init; }
     public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
     public ManOfWealthAndTaste Editor { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
     public string FileAs { get; init; }
     public Custodian Custodian { get; init; }
-    internal void SetSeed(int seed) => Seed = seed;
+    internal void SetSeed(int? seed) => Seed = seed;
 }

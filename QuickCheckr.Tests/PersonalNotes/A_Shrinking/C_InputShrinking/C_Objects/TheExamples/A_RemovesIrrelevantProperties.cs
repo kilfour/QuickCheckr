@@ -18,7 +18,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 488581569 }));
+            GetCheckr().Run(488581569));
         WriteAsserts(article);
         WriteReport<A_RemovesIrrelevantProperties>(article);
         Verify(article);

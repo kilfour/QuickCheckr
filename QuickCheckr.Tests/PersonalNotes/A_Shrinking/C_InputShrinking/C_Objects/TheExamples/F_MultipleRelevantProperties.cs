@@ -17,7 +17,7 @@ public class F_MultipleRelevantProperties : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10000.Runs(), 1.ExecutionsPerRun(), a => a with { Seed = 1889365782 }));
+            GetCheckr().Run(1889365782, 1.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<F_MultipleRelevantProperties>(article);
         Verify(article);

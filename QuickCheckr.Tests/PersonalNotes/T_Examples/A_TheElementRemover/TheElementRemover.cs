@@ -25,23 +25,11 @@ The generated report shows the input, the attempted deletion, a trace of the ori
 [DocCodeFile("TheElementRemover.txt", "text")]
 public class TheElementRemover : BaseTest
 {
-    private static CheckrConfig Configure(CheckrConfig config)
-        => config with
-        {
-            Seed = 438724296,
-            // FileAs = "MyQuickCheckrTest",
-            // Custodian = new Custodian
-            // {
-            //     Recorder = fn => Write.Here(fn),
-            //     Retriever = fn => Read.VaultStrings(fn),
-            // }
-        };
-
     [Fact]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(Configure));
+            GetCheckr().Run(438724296));
         WriteAsserts(article);
         WriteReport<TheElementRemover>(article);
         Verify(article);

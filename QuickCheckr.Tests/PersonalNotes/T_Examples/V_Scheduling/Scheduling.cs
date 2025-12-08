@@ -26,7 +26,7 @@ public class Scheduling : BaseTest
     [DocCodeFile("Scheduling.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(Configure));
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(511619818, Configure));
         WriteAsserts(article, false);
         WriteReport<Scheduling>(article, false);
         ExplainMe<Scheduling>(false);
@@ -50,7 +50,6 @@ public class Scheduling : BaseTest
     private static CheckrConfig Configure(CheckrConfig config)
         => config with
         {
-            Seed = 511619818,
             //Investigations = [Investigate.EvidenceFailures],
             Editor = new ManOfWealthAndTaste().ToUseNonLinearTime()
         };

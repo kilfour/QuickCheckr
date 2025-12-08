@@ -63,7 +63,7 @@ There is no guesswork.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1169776765, ShrinkMode = ShrinkMode.Inputs }));
+            GetCheckr().Run(1169776765, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.Inputs }));
         WriteAsserts(article);
         WriteReport<ChoosingTheNextMove>(article);
         Verify(article);
@@ -143,7 +143,7 @@ The branch chosen during the original failing run is *the* branch examined durin
     public void RunTest_Shrunk()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1169776765 }));
+            GetCheckr().Run(1169776765, 10.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport(article, "ChoosingTheNextMoveShrunk.txt", true);
         Verify_Shrunk(article);

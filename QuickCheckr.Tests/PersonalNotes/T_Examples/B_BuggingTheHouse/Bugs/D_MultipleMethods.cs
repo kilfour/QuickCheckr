@@ -31,7 +31,7 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 	public void RunTest()
 	{
 		var article = TheJournalist.Exposes(() =>
-			GetCheckr().Run(60.ExecutionsPerRun(), a => a with { Seed = 1292206393 }));
+			GetCheckr().Run(1292206393, 60.ExecutionsPerRun()));
 		WriteAsserts(article);
 		WriteReport<D_MultipleMethods>(article);
 		Verify(article);

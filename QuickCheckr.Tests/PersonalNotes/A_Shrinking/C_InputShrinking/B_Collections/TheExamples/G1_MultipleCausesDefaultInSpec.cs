@@ -18,7 +18,7 @@ public class G1_MultipleCausesDefaultInSpec : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1238961515 }));
+            GetCheckr().Run(1238961515));
         WriteAsserts(article);
         WriteReport<G1_MultipleCausesDefaultInSpec>(article);
         Verify(article);

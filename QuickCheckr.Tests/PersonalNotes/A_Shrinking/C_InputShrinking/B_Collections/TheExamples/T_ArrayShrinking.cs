@@ -16,7 +16,7 @@ public class T_ArrayShrinking : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1100967994 }));
+            GetCheckr().Run(1100967994));
         WriteAsserts(article);
         WriteReport<T_ArrayShrinking>(article);
         Verify(article);

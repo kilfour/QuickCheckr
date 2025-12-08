@@ -11,6 +11,15 @@ namespace QuickCheckr.Tests;
 [DocFile]
 public class TestTemplate : BaseTest
 {
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr()
+    {
+        return
+            from act in Checkr.Act("Act", () => { })
+            select Case.Closed;
+    }
+
     [Fact]
     [DocExample(typeof(TestTemplate), nameof(GetCheckr))]
     [DocCodeFile("TestTemplate.txt", "text")]
@@ -27,14 +36,5 @@ public class TestTemplate : BaseTest
     private static void Verify(Article article)
     {
 
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from act in Checkr.Act("Act", () => { })
-            select Case.Closed;
     }
 }

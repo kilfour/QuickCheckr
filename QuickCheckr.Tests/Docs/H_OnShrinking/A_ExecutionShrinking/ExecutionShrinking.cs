@@ -51,9 +51,8 @@ So after *Execution Shrinking*, the result is:
     private static void ExampleTest()
     {
         Example_Check().Run(
-            1.Runs(),
-            50.ExecutionsPerRun(),
-            a => a with { Seed = 669391953 });
+            669391953,
+            50.ExecutionsPerRun());
     }
 
     [CodeSnippet]

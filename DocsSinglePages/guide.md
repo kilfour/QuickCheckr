@@ -87,7 +87,7 @@ QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/b
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on average, once every hundred times.  
 Not ideal, so let's up the run number, like so:  
 ```csharp
-check.Run(200.Runs());
+check.Run(200.Runs())
 ```
 Now the test fails consistently:  
 ```text

@@ -16,7 +16,7 @@ public class E_RelevantElementAndSize : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1058309953 }));
+            GetCheckr().Run(1058309953));
         WriteAsserts(article);
         WriteReport<E_RelevantElementAndSize>(article);
         Verify(article);

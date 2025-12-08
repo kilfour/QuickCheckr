@@ -23,7 +23,7 @@ public class CreateReadMe : BaseTest
     public void Example()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.ExecutionsPerRun(), a => a with { Seed = 1141724745 }));
+            GetCheckr().Run(1141724745, 100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<CreateReadMe>(article);
         Verify(article);

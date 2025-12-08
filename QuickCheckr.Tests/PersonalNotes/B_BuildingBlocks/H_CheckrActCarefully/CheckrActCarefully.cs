@@ -15,7 +15,7 @@ public class CheckrActCarefully : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 412717959 }));
+            GetCheckr().Run(412717959));
         WriteAsserts(article);
         WriteReport<CheckrActCarefully>(article);
         Verify(article);

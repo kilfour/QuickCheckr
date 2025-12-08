@@ -25,9 +25,11 @@ public static class CheckrOfTRun
         this CheckrOf<Case> check,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure)
+        Func<CheckrConfig, CheckrConfig> configure,
+        int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
+        config.SetSeed(seed);
         var finalCaseFile = CaseFile.Empty();
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
@@ -124,6 +126,34 @@ public static class CheckrOfTRun
         RunCount runs,
         ExecutionCount executionsPerRun)
             => Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
+
+    [StackTraceHidden]
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        int seed,
+        ExecutionCount executionsPerRun)
+            => Run(check, 1.Runs(), executionsPerRun, _ => CheckrConfig.Default(), seed);
+
+    [StackTraceHidden]
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        int seed,
+        ExecutionCount executionsPerRun,
+        Func<CheckrConfig, CheckrConfig> configure)
+        => Run(check, 1.Runs(), executionsPerRun, configure, seed);
+
+    [StackTraceHidden]
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        int seed)
+            => Run(check, 1.Runs(), 1.ExecutionsPerRun(), _ => CheckrConfig.Default(), seed);
+
+    [StackTraceHidden]
+    public static CaseFile Run(
+        this CheckrOf<Case> check,
+        int seed,
+        Func<CheckrConfig, CheckrConfig> configure)
+        => Run(check, 1.Runs(), 1.ExecutionsPerRun(), configure, seed);
 
     /// <summary>
     /// Converts an integer into a <see cref="RunCount"/>.  

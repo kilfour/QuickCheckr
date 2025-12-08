@@ -64,7 +64,7 @@ changes the final state therefore shrinking is not applicable.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(30.ExecutionsPerRun(), a => a with { Seed = 930735070 }));
+            GetCheckr().Run(930735070, 30.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TheLoadedDie>(article);
         Verify(article);
@@ -125,7 +125,7 @@ the Checkr is considered proven and it concludes immediately, ... no more execut
     public void RunTest_Fixed()
     {
         var counter = new Cell<int>(0);
-        GetCheckr_Fixed(counter).Run(100.ExecutionsPerRun(), a => a with { Seed = 930735070 });
+        GetCheckr_Fixed(counter).Run(930735070, 100.ExecutionsPerRun());
         Assert.True(counter.Value < 30);
     }
 }

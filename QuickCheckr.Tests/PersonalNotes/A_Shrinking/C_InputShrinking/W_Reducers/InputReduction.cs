@@ -17,7 +17,7 @@ public class InputReduction : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 1681332589 }));
+            GetCheckr().Run(1681332589));
         WriteAsserts(article);
         WriteReport<InputReduction>(article);
         Verify(article);

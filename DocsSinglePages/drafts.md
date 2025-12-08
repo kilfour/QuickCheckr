@@ -6,6 +6,33 @@ A Checkr is just a LINQ expression that you evaluate by calling `Run()`.
 If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
 
 Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
+## Running a Checkr
+This is done by calling `Run` on the Checkr instance.  
+Several overloads are available:  
+- Run the Checkr once with a single execution.  
+```csharp
+checkr.Run();
+```
+- Run the Checkr multiple times, each consisting of a single execution.  
+```csharp
+checkr.Run(5.Runs());
+```
+- Run the Checkr once but performs multiple executions within that run.  
+```csharp
+checkr.Run(5.ExecutionsPerRun());
+```
+- Run the Checkr with the specified number of runs and executions per run.  
+```csharp
+checkr.Run(3.Runs(), 5.ExecutionsPerRun());
+```
+- Run the Checkr with the specified seed and the specified number of executions.  
+```csharp
+checkr.Run(424242, 5.ExecutionsPerRun());
+```
+- Run the Checkr with the specified seed and one execution.  
+```csharp
+checkr.Run(424242);
+```
 ## Configuration
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  

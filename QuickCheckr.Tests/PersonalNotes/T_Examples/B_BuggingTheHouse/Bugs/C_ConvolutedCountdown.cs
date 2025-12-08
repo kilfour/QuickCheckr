@@ -31,7 +31,7 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
 	public void RunTest()
 	{
 		var article = TheJournalist.Exposes(() =>
-			GetCheckr().Run(100.ExecutionsPerRun(), a => a with { Seed = 1141724745 }));
+			GetCheckr().Run(1141724745, 100.ExecutionsPerRun()));
 		WriteAsserts(article);
 		WriteReport<C_ConvolutedCountdown>(article);
 		Verify(article);

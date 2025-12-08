@@ -16,7 +16,7 @@ public class D_RelevantMultipleElements : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(a => a with { Seed = 500957855 }));
+            GetCheckr().Run(500957855));
         WriteAsserts(article);
         WriteReport<D_RelevantMultipleElements>(article, false);
         Verify(article);

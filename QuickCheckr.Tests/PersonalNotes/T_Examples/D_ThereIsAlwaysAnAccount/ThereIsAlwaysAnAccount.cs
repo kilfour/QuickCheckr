@@ -43,7 +43,7 @@ public class ThereIsAlwaysAnAccount : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139 }));
+            GetCheckr().Run(1863050139, 10.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<ThereIsAlwaysAnAccount>(article);
         Verify(article);
@@ -68,7 +68,7 @@ public class ThereIsAlwaysAnAccount : BaseTest
     public void FullRunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(10.ExecutionsPerRun(), a => a with { Seed = 1863050139, ShrinkMode = ShrinkMode.None }));
+            GetCheckr().Run(1863050139, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.None }));
         WriteAsserts(article);
         WriteReport(article, "ThereIsAlwaysAnAccountFullRun.txt");
         VerifyFullRun(article);

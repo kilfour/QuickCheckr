@@ -12,7 +12,7 @@ public class TrackrProvenWhen : BaseTest
     [DocExample(typeof(TrackrProvenWhen), nameof(GetCheckr))]
     public void RunTest()
     {
-        GetCheckr().Run(100.ExecutionsPerRun(), a => a with { Seed = null });
+        GetCheckr().Run(100.ExecutionsPerRun());
         Assert.Equal(3, executionCount);
     }
 
