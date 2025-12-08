@@ -66,7 +66,7 @@ Let's use `Trackr.ProvenWhen`:
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
     from proven in Trackr.ProvenWhen("All sides rolled",
-        () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6]))
+        () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
     from assay in Trackr.Assay("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
