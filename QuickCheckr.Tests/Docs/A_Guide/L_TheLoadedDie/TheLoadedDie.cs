@@ -2,6 +2,7 @@ using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
+using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
@@ -14,6 +15,24 @@ public class TheLoadedDie : BaseTest
     public class DieSix
     {
         public int Roll() => new Random().Next(1, 6);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr()
+    {
+        return
+            from die in Trackr.Stashed(() => new DieSix())
+            from observer in Trackr.Stashed(() => new HashSet<int>())
+            from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
+            from assay in Trackr.Assay("Rolls",
+                ("Contains 1", () => observer.Contains(1)),
+                ("Contains 2", () => observer.Contains(2)),
+                ("Contains 3", () => observer.Contains(3)),
+                ("Contains 4", () => observer.Contains(4)),
+                ("Contains 5", () => observer.Contains(5)),
+                ("Contains 6", () => observer.Contains(6)))
+            select Case.Closed;
     }
 
     [Fact]
@@ -45,7 +64,7 @@ changes the final state therefore shrinking is not applicable.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.ExecutionsPerRun(), a => a with { Seed = 930735070 }));
+            GetCheckr().Run(30.ExecutionsPerRun(), a => a with { Seed = 930735070 }));
         WriteAsserts(article);
         WriteReport<TheLoadedDie>(article);
         Verify(article);
@@ -58,18 +77,28 @@ changes the final state therefore shrinking is not applicable.")]
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(100, article.Execution(1).Read().Times);
+        Assert.Equal(30, article.Execution(1).Read().Times);
         Assert.Equal("Roll", article.Execution(1).Action(1).Read().Label);
+    }
+
+    [CodeExample]
+    public class DieSixFixed
+    {
+        public int Roll() => new Random().Next(1, 7);
     }
 
     [CodeSnippet]
     [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
+    [CodeRemove("from cnt in Trackr.Perform(() => ++cell.Value)")]
+    private static CheckrOf<Case> GetCheckr_Fixed(Cell<int> cell)
     {
         return
-            from die in Trackr.Stashed(() => new DieSix())
+            from die in Trackr.Stashed(() => new DieSixFixed())
+            from cnt in Trackr.Perform(() => ++cell.Value)
             from observer in Trackr.Stashed(() => new HashSet<int>())
             from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
+            from proven in Trackr.ProvenWhen("All sides rolled",
+                () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6]))
             from assay in Trackr.Assay("Rolls",
                 ("Contains 1", () => observer.Contains(1)),
                 ("Contains 2", () => observer.Contains(2)),
@@ -78,5 +107,25 @@ changes the final state therefore shrinking is not applicable.")]
                 ("Contains 5", () => observer.Contains(5)),
                 ("Contains 6", () => observer.Contains(6)))
             select Case.Closed;
+    }
+
+    [Fact]
+    [DocHeader("`Trackr.ProvenWhen`")]
+    [DocExample(typeof(DieSixFixed))]
+    [DocContent(
+@"Ok, we fixed the bug, so now our Checkr passes.
+But what if we get lucky and we satisfy the assay after the first six rolls ?
+Bit of a waste to continue running the Checkr, no ?  
+
+Let's use `Trackr.ProvenWhen`:")]
+    [DocExample(typeof(TheLoadedDie), nameof(GetCheckr_Fixed))]
+    [DocContent(
+@"Whenever the predicate passed into `Trackr.ProvenWhen` returns true,
+the Checkr is considered proven and it concludes immediately, ... no more executions.")]
+    public void RunTest_Fixed()
+    {
+        var counter = new Cell<int>(0);
+        GetCheckr_Fixed(counter).Run(100.ExecutionsPerRun(), a => a with { Seed = 930735070 });
+        Assert.True(counter.Value < 30);
     }
 }

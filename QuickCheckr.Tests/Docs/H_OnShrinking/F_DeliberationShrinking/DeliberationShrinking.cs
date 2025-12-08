@@ -46,7 +46,7 @@ public class DeliberationShrinking : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(), Configure));
         WriteAsserts(article, false);
-        WriteReport<DeliberationShrinking>(article, true);
+        WriteReport<DeliberationShrinking>(article, false);
         Verify(article);
     }
 

@@ -39,19 +39,20 @@ private static CheckrConfig Configure(CheckrConfig config)
 ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:47:1
- Original failing run:    2 executions
- Seed:                    1258846520
+ Original failing run:    5 executions
+ Minimal failing case:    2 executions (after 3 shrinks)
+ Seed:                    297494649
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 2
+   - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 1
+   - Input: Amount = 2
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 1x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 Running this test with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
