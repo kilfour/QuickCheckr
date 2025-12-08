@@ -1,6 +1,8 @@
 ## Current Version: 0.0.3
 
 ### Doing
+* Move seed out of config into checkr.run(...)
+* Doc RunningTheRunner
 * Doc configuration
   * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
 * Add an explanation to QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking
