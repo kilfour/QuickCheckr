@@ -57,7 +57,7 @@ In addition a sub folder is created containing the evidence vault files:
 ```
 
 - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is a append only log of all evidence vault actions.  
+- `evidence-log.ql` is an append only log of all evidence vault actions.  
 #### Reviewing the Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  

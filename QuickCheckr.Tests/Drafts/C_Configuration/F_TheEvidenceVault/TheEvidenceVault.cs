@@ -90,7 +90,7 @@ public class TheEvidenceVault : BaseTest
     [DocContent(
 @"
 - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is a append only log of all evidence vault actions.")]
+- `evidence-log.ql` is an append only log of all evidence vault actions.")]
     public void EvidenceLocation()
     {
         var collector = new List<string>();
