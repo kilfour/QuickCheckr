@@ -5,21 +5,17 @@
 * Doc configuration
   * Started see the 'TheEvidenceVault', turn 'ConfiguringTheRunner' into executable examples
 * Add an explanation to QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking
-* Multi-start run mode to automatically search for the simplest failing case
-  - Re-run the Checkr with fresh seeds N times
-  - Shrink each failing run as usual
-  - Keep the best case using a comparator:
-        (Casefile a, Casefile b) => 
-            a.Executions.Count <= b.Executions.Count ? a : b
-  - At end, re-run best seed once and surface as final failure
+* Finish Deliberation Shrinking
   This is looking good, maybe add:
-  a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
+  * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
+  * decouple the casefile from the predicate
  
 ### Must have's for 0.0.4
 * Vault interface finished, implementation stable
+* Deliberation Shrinking (mostly) Finished
 
 ### Major
-
+* The Guide never explicitly says “to replay this seed, call checkr.Run(seed)
 * Implement: checkr.CloseResolvedColdCases(...)
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
