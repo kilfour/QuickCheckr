@@ -87,9 +87,9 @@ changes the final state therefore shrinking is not applicable.")]
         public int Roll() => new Random().Next(1, 7);
     }
 
+    [CodeRemove("from cnt in Trackr.Perform(() => ++cell.Value)")]
     [CodeSnippet]
     [CodeRemove("return")]
-    [CodeRemove("from cnt in Trackr.Perform(() => ++cell.Value)")]
     private static CheckrOf<Case> GetCheckr_Fixed(Cell<int> cell)
     {
         return
