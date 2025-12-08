@@ -60,17 +60,6 @@ In addition a sub folder is created containing the evidence vault files:
 - `evidence-log.ql` is an append only log of all evidence vault actions.
 
 This *evidence* can later be used to potentially solve *Cold Cases*.  
-### The Evidence Vault
-Once an evidence vault exists the seeds therein contained can be reviewed.  
-This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
-```csharp
-checkr.ReviewColdCases(Configure);
-```
-It is advised to *Dry* out the configuration as is shown at the top of this chapter, in order to avoid code drift.  
-This will create a report per seed in the evidence file and a log of all evidence vault actions.
-  
-- For every failing seed the report will look like the by now familiar failure report.  
-- For every passing seed the report will only contain a list of passed specs.  
 ### Investigations
 These tests show the initial version of QuickCheckrs logging configuration.  
 ## Deliberation Shrinking
@@ -131,3 +120,14 @@ private static CheckrConfig Configure(CheckrConfig config)
  ------------------------------------------------------------
 ```
 Running this test with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
+## The Evidence Vault
+Once an evidence vault exists the seeds therein contained can be reviewed.  
+This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
+```csharp
+checkr.ReviewColdCases(Configure);
+```
+It is advised to *Dry* out the configuration as is shown at the top of this chapter, in order to avoid code drift.  
+This will create a report per seed in the evidence file and a log of all evidence vault actions.
+  
+- For every failing seed the report will look like the by now familiar failure report.  
+- For every passing seed the report will only contain a list of passed specs.  

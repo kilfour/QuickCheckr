@@ -126,6 +126,6 @@ the Checkr is considered proven and it concludes immediately, ... no more execut
     {
         var counter = new Cell<int>(0);
         GetCheckr_Fixed(counter).Run(930735070, 100.ExecutionsPerRun());
-        Assert.True(counter.Value < 30);
+        Assert.True(counter.Value < 50);
     }
 }

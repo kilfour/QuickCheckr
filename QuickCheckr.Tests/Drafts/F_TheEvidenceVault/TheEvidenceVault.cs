@@ -6,7 +6,7 @@ using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
 
-namespace QuickCheckr.Tests.Drafts.C_Configuration.F_TheEvidenceVault;
+namespace QuickCheckr.Tests.Drafts.F_TheEvidenceVault;
 
 [DocFile]
 public class TheEvidenceVault : BaseTest
