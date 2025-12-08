@@ -1,4 +1,0 @@
-  - [Test Framework Integration](A_TestFrameworkIntegration/TestFrameworkIntegration.md)
-  - [Configuration](C_Configuration/Configuration.md)
-    - [The Evidence Vault](C_Configuration/F_TheEvidenceVault/TheEvidenceVault.md)
-    - [Investigations](C_Configuration/H_Investigations/Investigations.md)

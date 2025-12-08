@@ -3,3 +3,8 @@
     - [The Stash, Runs and Executions](A_Guide/B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md)
     - [Choosing The Next Move](A_Guide/C_ChoosingTheNextMove/ChoosingTheNextMove.md)
     - [Bolting Horses](A_Guide/E_HorsesAgain/BoltingHorses.md)
+  - [On Shrinking](H_OnShrinking/OnShrinking.md)
+    - [Execution Shrinking](H_OnShrinking/A_ExecutionShrinking/ExecutionShrinking.md)
+    - [Input Shrinking](H_OnShrinking/C_InputShrinking/InputShrinking.md)
+      - [Enums](H_OnShrinking/C_InputShrinking/A_Primitives/Enums.md)
+      - [Compendium](H_OnShrinking/C_InputShrinking/Z_Compendium/Compendium.md)
