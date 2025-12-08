@@ -25,14 +25,16 @@ checkr.Run(5.ExecutionsPerRun());
 ```csharp
 checkr.Run(3.Runs(), 5.ExecutionsPerRun());
 ```
-- Run the Checkr with the specified seed and the specified number of executions.  
-```csharp
-checkr.Run(424242, 5.ExecutionsPerRun());
-```
 - Run the Checkr with the specified seed and one execution.  
 ```csharp
 checkr.Run(424242);
 ```
+- Run the Checkr with the specified seed and the specified number of executions.  
+```csharp
+checkr.Run(424242, 5.ExecutionsPerRun());
+```
+All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
+which allows for controlling specific aspects of the Checkr run. We'll get into that later.  
 ## Configuration
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  

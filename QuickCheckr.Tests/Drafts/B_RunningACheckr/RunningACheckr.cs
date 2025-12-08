@@ -90,6 +90,31 @@ public class RunningACheckr : BaseTest
     }
 
     [CodeSnippet]
+    private static void Do_SeedOnly(CheckrOf<Case> checkr)
+        => checkr.Run(424242);
+
+    [Fact]
+    [DocContent("- Run the Checkr with the specified seed and one execution.")]
+    [DocExample(typeof(RunningACheckr), nameof(Do_SeedOnly))]
+    public void SeedOnly()
+    {
+        var runCount = new Cell<int>(0);
+        var executionCount = new Cell<int>(0);
+        var checkr = GetCheckr(runCount, executionCount);
+        Do_SeedOnly(checkr);
+        Assert.Equal(1, runCount.Value);
+        Assert.Equal(1, executionCount.Value);
+    }
+
+    [Fact]
+    public void SeedOnlySet()
+    {
+        var article = TheJournalist.Exposes(
+            () => Checkr.Spec("Fails", () => false).Run(424242));
+        Assert.Equal(424242, article.Seed());
+    }
+
+    [CodeSnippet]
     private static void Do_Seed(CheckrOf<Case> checkr)
         => checkr.Run(424242, 5.ExecutionsPerRun());
 
@@ -114,28 +139,55 @@ public class RunningACheckr : BaseTest
         Assert.Equal(424242, article.Seed());
     }
 
-    [CodeSnippet]
-    private static void Do_SeedOnly(CheckrOf<Case> checkr)
-        => checkr.Run(424242);
-
     [Fact]
-    [DocContent("- Run the Checkr with the specified seed and one execution.")]
-    [DocExample(typeof(RunningACheckr), nameof(Do_SeedOnly))]
-    public void SeedOnly()
+    [DocContent(
+@"All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
+which allows for controlling specific aspects of the Checkr run. We'll get into that later.")]
+    public void WithConfigurations()
     {
+
         var runCount = new Cell<int>(0);
         var executionCount = new Cell<int>(0);
         var checkr = GetCheckr(runCount, executionCount);
-        Do_SeedOnly(checkr);
+
+        checkr.Run(a => a);
         Assert.Equal(1, runCount.Value);
         Assert.Equal(1, executionCount.Value);
-    }
 
-    [Fact]
-    public void SeedOnlySet()
-    {
+        runCount.Value = 0;
+        executionCount.Value = 0;
+        checkr.Run(5.Runs(), a => a);
+        Assert.Equal(5, runCount.Value);
+        Assert.Equal(1, executionCount.Value);
+
+        runCount.Value = 0;
+        executionCount.Value = 0;
+        checkr.Run(5.ExecutionsPerRun(), a => a);
+        Assert.Equal(1, runCount.Value);
+        Assert.Equal(5, executionCount.Value);
+
+        runCount.Value = 0;
+        executionCount.Value = 0;
+        checkr.Run(3.Runs(), 5.ExecutionsPerRun(), a => a);
+        Assert.Equal(3, runCount.Value);
+        Assert.Equal(5, executionCount.Value);
+
+        runCount.Value = 0;
+        executionCount.Value = 0;
+        checkr.Run(424242, a => a);
+        Assert.Equal(1, runCount.Value);
+        Assert.Equal(1, executionCount.Value);
         var article = TheJournalist.Exposes(
-            () => Checkr.Spec("Fails", () => false).Run(424242));
+            () => Checkr.Spec("Fails", () => false).Run(424242, a => a));
+        Assert.Equal(424242, article.Seed());
+
+        runCount.Value = 0;
+        executionCount.Value = 0;
+        checkr.Run(424242, 5.ExecutionsPerRun(), a => a);
+        Assert.Equal(1, runCount.Value);
+        Assert.Equal(5, executionCount.Value);
+        article = TheJournalist.Exposes(
+            () => Checkr.Spec("Fails", () => false).Run(424242, 5.ExecutionsPerRun(), a => a));
         Assert.Equal(424242, article.Seed());
     }
 }
