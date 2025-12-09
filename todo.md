@@ -20,7 +20,6 @@
 * More reducers
 
 ## Doc Work
-* Guide: D_Pools
 * Doc configuration
   * Started see the 'TheEvidenceVault'
   * Investigations
