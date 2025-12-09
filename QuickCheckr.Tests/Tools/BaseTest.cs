@@ -55,6 +55,6 @@ public abstract class BaseTest
     protected static void ExplainMe<T>(bool writeToDisk = false)
     {
         if (!writeToDisk) return;
-        Explain.OnlyThis<T>(typeof(T).Name + ".md");
+        Explain.OnlyThis<T>("temp-" + typeof(T).Name + ".md");
     }
 }

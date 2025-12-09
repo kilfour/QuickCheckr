@@ -5,7 +5,7 @@ using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.L_TheLoadedDie;
+namespace QuickCheckr.Tests.Drafts.T_Cookbook.L_TheLoadedDie;
 
 [DocFile]
 public class TheLoadedDie : BaseTest
@@ -65,7 +65,7 @@ changes the final state therefore shrinking is not applicable.")]
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(930735070, 30.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport<TheLoadedDie>(article);
+        WriteReport<TheLoadedDie>(article, false);
         Verify(article);
     }
 

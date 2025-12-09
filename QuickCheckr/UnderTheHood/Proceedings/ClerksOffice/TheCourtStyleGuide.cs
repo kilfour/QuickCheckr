@@ -47,7 +47,7 @@ public static class The
     private readonly static Flow<TraceDeposition> traceDeposition =
         from input in Pulse.Start<TraceDeposition>()
         from _ in newLine
-        from __ in Pulse.Trace($"   - Trace: {input.Label.Trim()} = {input.Value}")
+        from __ in Pulse.Trace($"   - Trace: {input.Label} = {input.Value}")
         select input;
 
     private readonly static Flow<InputDeposition> inputDeposition =
