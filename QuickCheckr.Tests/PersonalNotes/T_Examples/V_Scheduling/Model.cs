@@ -21,6 +21,9 @@ public class Booking
 
     private static bool SlotsOverlap(List<Timeslot> slotsOne, List<Timeslot> slotsTwo)
     {
+        // this is a hack for quickcheckr RemoveOneByOne deficiency
+        if (slotsOne == null || slotsTwo == null) return false;
+
         foreach (var slotOne in slotsOne)
             foreach (var slotTwo in slotsTwo)
                 if (slotOne.OverlapsWith(slotTwo))

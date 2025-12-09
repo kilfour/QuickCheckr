@@ -59,7 +59,9 @@ public class Scheduling : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from standIn in Trackr.StandIn<List<Timeslot>>([])
+            // standin possible fix for RemoveOneByOne deficiency
+            // See model : Booking.SlotsOverlap
+            // from standIn in Trackr.StandIn<List<Timeslot>>([])
             from bookingOne in Checkr.Input("Booking One", TheFuzzr.ValidBooking)
             from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
             from Spec in Checkr.Spec("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))

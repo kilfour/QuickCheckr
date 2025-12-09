@@ -25,7 +25,10 @@ public class EvidenceRecorder
     {
         if (IsReplay)
         {
-            if (!IsExceptionMismatch(exception)) currentFailed = true;
+            if (!IsExceptionMismatch(exception))
+                currentFailed = true;
+            // else
+            //     throw exception;
             return;
         }
         Exception = exception;
