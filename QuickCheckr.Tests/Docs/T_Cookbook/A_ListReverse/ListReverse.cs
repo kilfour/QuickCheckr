@@ -30,7 +30,23 @@ public class ListReverse : BaseTest
             => [.. HideTheAnswer(list.AsEnumerable()).Reverse()];
 
         private static IEnumerable<int> HideTheAnswer(IEnumerable<int> list)
-            => list.Where(a => a != 42);
+            => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
+    }
+
+    [Fact]
+    [DocContent("**The Fuzzr:**")]
+    [DocExample(typeof(ListReverse), nameof(ListFuzzr))]
+    [DocContent("**The Checkr:**")]
+    [DocExample(typeof(ListReverse), nameof(GetCheckr))]
+    [DocContent("**The Report:**")]
+    [DocCodeFile("ListReverse.txt", "text")]
+    public void RunTest()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(498116108, 1.ExecutionsPerRun()));
+        WriteAsserts(article, false);
+        WriteReport<ListReverse>(article, false);
+        Verify(article);
     }
 
     [CodeSnippet]
@@ -59,22 +75,6 @@ public class ListReverse : BaseTest
             select Case.Closed;
     }
 
-    [Fact]
-    [DocContent("**The Fuzzr:**")]
-    [DocExample(typeof(ListReverse), nameof(ListFuzzr))]
-    [DocContent("**The Checkr:**")]
-    [DocExample(typeof(ListReverse), nameof(GetCheckr))]
-    [DocContent("**The Report:**")]
-    [DocCodeFile("ListReverse.txt", "text")]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(498116108, 1.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<ListReverse>(article, false);
-        Verify(article);
-    }
-
     private static void Verify(Article article)
     {
         Assert.Equal("Input == Result", article.FailedSpec());
@@ -86,10 +86,10 @@ public class ListReverse : BaseTest
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ 42 ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Input ", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Result", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("[ 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal("[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(2).Read().Value);
     }
 }

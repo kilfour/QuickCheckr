@@ -26,6 +26,7 @@ public class Verifier(CheckrState State,
         }
         catch (Exception exception)
         {
+            // is this the only problem ?
             State.Docket.Record(new EvidenceFailure(exception));
             State.EvidenceRecorder.RecordFailure(exception);
         }

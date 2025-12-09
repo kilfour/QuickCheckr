@@ -17,7 +17,7 @@ public class TheReverser
     public static List<int> Reverses(List<int> list)
         => [.. HideTheAnswer(list.AsEnumerable()).Reverse()];
     private static IEnumerable<int> HideTheAnswer(IEnumerable<int> list)
-        => list.Where(a => a != 42);
+        => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
 }
 ```
 **The Fuzzr:**  
@@ -42,15 +42,15 @@ var listFuzzr =
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\T_Cookbook\A_ListReverse\ListReverse.cs:72:1
+ Location:                Docs\T_Cookbook\A_ListReverse\ListReverse.cs:46:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    498116108
  ------------------------------------------------------------
   Executed: Result
-   - Input: Input = [ 42 ]
+   - Input: Input = [ _, 42 ]
    - Trace: Input  = [ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]
-   - Trace: Result = [ 62, 13, 71, 81, 27, 62, 28, 85 ]
+   - Trace: Result = [ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]
  ===================================
   !! Spec Failed: Input == Result
  ===================================

@@ -1,0 +1,4 @@
+Object reference not set to an instance of an object.
+   at QuickCheckr.Tests.Notes.D_Issues.A_NullString.NullString.<>c__DisplayClass0_0.<GetCheckr>b__2() in C:\Code\QuickCheckr\QuickCheckr.Tests\Notes\D_Issues\A_NullString\NullString.cs:line 19
+   at QuickCheckr.Checkr.<>c__DisplayClass25_0.<InnerSpec>b__0(CheckrState state) in C:\Code\QuickCheckr\QuickCheckr\CheckrSpec.cs:line 31
+-------------------------------------

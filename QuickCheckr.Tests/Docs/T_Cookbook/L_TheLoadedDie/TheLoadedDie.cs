@@ -129,7 +129,7 @@ the Checkr is considered proven and it concludes immediately, ... no more execut
     public void RunTest_Fixed()
     {
         var counter = new Cell<int>(0);
-        GetCheckr_Fixed(counter).Run(930735070, 100.ExecutionsPerRun());
-        Assert.True(counter.Value < 50);
+        GetCheckr_Fixed(counter).Run(930735070, 200.ExecutionsPerRun());
+        Assert.True(counter.Value < 100);
     }
 }
