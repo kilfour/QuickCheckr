@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Cookbook;
+namespace QuickCheckr.Tests.Docs.T_Cookbook;
 
 [DocFile]
 [DocContent(

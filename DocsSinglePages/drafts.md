@@ -74,6 +74,3 @@ This will create a report per seed in the evidence file and a log of all evidenc
   
 - For every failing seed the report will look like the by now familiar failure report.  
 - For every passing seed the report will only contain a list of passed specs.  
-## Cook Book
-The QuickCheckr Cookbook is a collection of short, focused examples showing common patterns, 
-testing techniques, and pitfalls you can check using QuickCheckr.  

@@ -2,8 +2,8 @@
 using QuickCheckr.Tests.Docs;
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.H_OnShrinking;
+using QuickCheckr.Tests.Docs.T_Cookbook;
 using QuickCheckr.Tests.Drafts;
-using QuickCheckr.Tests.Drafts.T_Cookbook;
 using QuickCheckr.Tests.Notes;
 using QuickCheckr.Tests.PersonalNotes;
 using QuickPulse.Explains;
