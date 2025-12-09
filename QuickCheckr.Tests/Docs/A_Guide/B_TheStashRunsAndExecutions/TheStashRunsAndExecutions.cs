@@ -11,9 +11,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 [DocFile]
 [DocFileHeader("The Stash, Runs and Executions")]
 [DocContent(
-@"Told you I was going to get back to you on that one (executions).
-
-In the previous chapter we upped the run number in order to *fully explore the input space*.  
+@"In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:")]
 [DocExample(typeof(BugHouse))]
@@ -43,7 +41,7 @@ public class TheStashRunsAndExecutions : BaseTest
     [DocExample(typeof(TheStashRunsAndExecutions), nameof(FaultyBugHouseCheckr))]
     [DocContent(
 @"The test will always pass, even if we increase the amount of runs to infinity,
-because the test looses the state of the `BugHouse` between every run.")]
+because the test loses the state of the `BugHouse` between every run.")]
     public void ThisAlwaysPasses()
     {
         FaultyBugHouseCheckr.Run(10.Runs());

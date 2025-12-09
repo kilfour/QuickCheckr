@@ -1,12 +1,11 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickFuzzr;
 using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.A_Guide.L_TheLoadedDie;
+namespace QuickCheckr.Tests.Drafts.L_TheLoadedDie;
 
 [DocFile]
 public class TheLoadedDie : BaseTest
@@ -39,7 +38,7 @@ public class TheLoadedDie : BaseTest
     [DocContent(
 @"While not strictly speaking a property-test, as there is no shrinking involved,
 this kind of test is nevertheless very useful.  
-So much so that QuickCheckr so much so that QuickCheckr provides a dedicated tool for it. 
+So much so that QuickCheckr provides a dedicated tool for it. 
 
 We're testing a simple implementation of a die:
 ")]

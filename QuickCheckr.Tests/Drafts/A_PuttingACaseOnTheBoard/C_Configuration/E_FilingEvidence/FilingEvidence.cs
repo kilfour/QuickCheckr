@@ -3,7 +3,6 @@ using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
-using QuickPulse.Explains.Text;
 
 
 namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.C_Configuration.E_FilingEvidence;

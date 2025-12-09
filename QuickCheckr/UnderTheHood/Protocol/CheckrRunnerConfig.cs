@@ -1,7 +1,6 @@
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
-using QuickPulse.Arteries;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Protocol;

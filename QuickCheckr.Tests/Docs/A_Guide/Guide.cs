@@ -2,7 +2,7 @@ using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Docs.A_Guide.L_TheLoadedDie;
+using QuickCheckr.Tests.Drafts.L_TheLoadedDie;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide;

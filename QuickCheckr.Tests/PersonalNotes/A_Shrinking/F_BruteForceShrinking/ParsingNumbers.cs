@@ -6,7 +6,6 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 
 namespace QuickCheckr.Tests.PersonalNotes.A_Shrinking.F_BruteForceShrinking;

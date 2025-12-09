@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood;
-using QuickPulse.Show;
 
 namespace QuickCheckr;
 

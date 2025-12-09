@@ -1,4 +1,3 @@
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood.Protocol;
 

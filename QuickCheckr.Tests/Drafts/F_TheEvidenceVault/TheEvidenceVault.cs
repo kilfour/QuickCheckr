@@ -1,5 +1,4 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;

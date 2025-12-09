@@ -24,4 +24,4 @@ This is a living document, we start small, with a short introduction and a real-
 
 [BoltingHorses]: E_HorsesAgain/BoltingHorses.md
 
-[TheLoadedDie]: L_TheLoadedDie/TheLoadedDie.md
+[TheLoadedDie]: QuickCheckr/Tests/Drafts/L_TheLoadedDie/TheLoadedDie.md

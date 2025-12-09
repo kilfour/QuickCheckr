@@ -5,7 +5,6 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse;
-using QuickPulse.Arteries;
 
 namespace QuickCheckr;
 

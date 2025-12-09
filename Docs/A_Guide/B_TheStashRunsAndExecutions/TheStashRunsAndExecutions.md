@@ -1,6 +1,4 @@
 # The Stash, Runs and Executions
-Told you I was going to get back to you on that one (executions).
-
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:  
@@ -24,7 +22,7 @@ private static readonly CheckrOf<Case> FaultyBugHouseCheckr =
     select Case.Closed;
 ```
 The test will always pass, even if we increase the amount of runs to infinity,
-because the test looses the state of the `BugHouse` between every run.  
+because the test loses the state of the `BugHouse` between every run.  
 So here's what we do:
 1. We stash the `BugHouse` using `Trackr.Stashed` and instead of creating a new one in the `Act` we use the stashed one.
 2. We up the number of executions per run.  
