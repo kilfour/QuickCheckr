@@ -11,3 +11,5 @@
         - [Removing Irrelevant Collection](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/B_RemovingIrrelevantCollection.md)
         - [Irrelevant Element But List Length Is Not](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/C_IrrelevantElementButListLengthIsNot.md)
     - [Deliberation Shrinking](H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md)
+    - [Verifying List Reversal (Double-Reverse Law)](T_Cookbook/A_ListReverse/ListReverse.md)
+    - [Testing Aggregate Behaviour (Trackr.Assay)](T_Cookbook/L_TheLoadedDie/TheLoadedDie.md)

@@ -5,9 +5,10 @@ using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.T_Cookbook.L_TheLoadedDie;
+namespace QuickCheckr.Tests.Docs.T_Cookbook.L_TheLoadedDie;
 
 [DocFile]
+[DocFileHeader("Testing Aggregate Behaviour (Trackr.Assay)")]
 public class TheLoadedDie : BaseTest
 {
     [CodeExample]
@@ -36,7 +37,12 @@ public class TheLoadedDie : BaseTest
 
     [Fact]
     [DocContent(
-@"While not strictly speaking a property-test, as there is no shrinking involved,
+@"**Demonstrates:**
+- Accumulated-state testing
+- `Trackr.Assay`
+- `Trackr.ProvenWhen`
+
+While not strictly speaking a property-test, as there is no shrinking involved,
 this kind of test is nevertheless very useful.  
 So much so that QuickCheckr provides a dedicated tool for it. 
 
@@ -57,9 +63,8 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 @"Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the assayer pointed it out in above report.
 
-*Sidenote:* When one uses `Trackr.Assay` there is no shrinking whatsoever, as there is no *minimal* fail-case, by definition.  
-Assays evaluate state accumulated across all executions, so removing any execution and or inputs,
-changes the final state therefore shrinking is not applicable.")]
+*Sidenote:* `Trackr.Assay`never triggers shrinking, because there is no meaningful *minimal failing case*.
+Assays evaluate the final accumulated state, so removing any execution changes the outcome.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>

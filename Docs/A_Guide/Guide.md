@@ -12,9 +12,7 @@ This is a living document, we start small, with a short introduction and a real-
 - [ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
 - [Bolting Horses][BoltingHorses]
-  - A real-world example of hunting down a subtle invariant bug.
-- [TheLoadedDie]
-  -  Using QuickCheckr to verify properties that should hold for the entire run.  
+  - A real-world example of hunting down a subtle invariant bug.  
 
 [CheckringThingsOut]: A_CheckringThingsOut/CheckringThingsOut.md
 
@@ -23,5 +21,3 @@ This is a living document, we start small, with a short introduction and a real-
 [ChoosingTheNextMove]: C_ChoosingTheNextMove/ChoosingTheNextMove.md
 
 [BoltingHorses]: E_HorsesAgain/BoltingHorses.md
-
-[TheLoadedDie]: QuickCheckr/Tests/Drafts/T_Cookbook/L_TheLoadedDie/TheLoadedDie.md

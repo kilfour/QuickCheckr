@@ -12,9 +12,7 @@ This is a living document, we start small, with a short introduction and a real-
 - [ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
 - [Bolting Horses][BoltingHorses]
-  - A real-world example of hunting down a subtle invariant bug.
-- [TheLoadedDie]
-  -  Using QuickCheckr to verify properties that should hold for the entire run.  
+  - A real-world example of hunting down a subtle invariant bug.  
 
 [CheckringThingsOut]: #checkr-ing-things-out
 
@@ -23,8 +21,6 @@ This is a living document, we start small, with a short introduction and a real-
 [ChoosingTheNextMove]: #choosing-the-next-move
 
 [BoltingHorses]: #bolting-horses
-
-[TheLoadedDie]: #the-loaded-die
 ## Checkr-ing Things Out
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking specs, and collecting diagnostics.

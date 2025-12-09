@@ -29,6 +29,8 @@
   * limitations
   * known issues
   * workarounds
+* Cookbook
+  * statefull list, play on listremover, but with two methods, add & remove
 * Start working on the reference
 
 ## Refactoring and Testing Targets 

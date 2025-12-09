@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -5,12 +6,18 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.T_Cookbook.A_ListReverse;
+namespace QuickCheckr.Tests.Docs.T_Cookbook.A_ListReverse;
 
 [DocFile]
+[DocFileHeader("Verifying List Reversal (Double-Reverse Law)")]
 [DocContent(
-@"I guess this one is very much tradition in PBT world, and who am I to argue with tradition.  
-So here we go.
+@"**Demonstrates:**
+- Custom Fuzzrs
+- Relevant input shrinking
+- Double-application property
+
+
+I guess this one is very much tradition in PBT world, and who am I to argue with tradition, ... so here we go.
 
 **The (buggy) implementation:**")]
 [DocExample(typeof(TheReverser))]

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Drafts\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:66:1
+ Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    30 executions
  Seed:                    930735070
  ------------------------------------------------------------
