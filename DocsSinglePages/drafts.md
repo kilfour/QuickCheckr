@@ -110,11 +110,11 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\L_TheLoadedDie\TheLoadedDie.cs:48:1
- Original failing run:    100 executions
+ Location:                Drafts\L_TheLoadedDie\TheLoadedDie.cs:66:1
+ Original failing run:    30 executions
  Seed:                    930735070
  ------------------------------------------------------------
-  Executed: Roll (100 Times)
+  Executed: Roll (30 Times)
  ================================================
   !!  The Assayer Disagrees: Rolls: Contains 6
  ================================================

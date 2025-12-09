@@ -611,15 +611,15 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:27:1
+ Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    419717338
+ Seed:                    1611349290
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-1^2"
-   - Trace: Original = - 1 ^ 2 * 1
-   - Trace: Compare = Golden: -1 /= SUT: 1
+   - Input: Expression = "-2^2"
+   - Trace: Original = - 2 ^ (2 * 2 * 1 - 1 * 2 + 1 / 2 - 3 / 3 * 1) / 2 ^ 2
+   - Trace: Compare = Golden: -0,7071067811865476 /= SUT: NaN
  =========================
   !! Spec Failed: Match
  =========================

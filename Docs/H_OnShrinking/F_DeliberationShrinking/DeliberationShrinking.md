@@ -69,8 +69,9 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:110:1
- Original failing run:    2 executions
- Seed:                    679678924
+ Original failing run:    4 executions
+ Minimal failing case:    2 executions (after 2 shrinks)
+ Seed:                    2031448270
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 2
@@ -81,6 +82,6 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 1x
+ - No Overdraft: 3x
  ------------------------------------------------------------
 ```

@@ -48,8 +48,8 @@ Checkr.Spec("Always true", () => false);
 The test fails and QuickCheckr produces the following report:  
 ```text
 ------------------------------------------------------------
- Test:                    SpecAlwaysFalse
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:41:1
+ Test:                    Run_SpecAlwaysFalse
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:60:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
@@ -95,7 +95,7 @@ Now the test fails consistently:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:79:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:86:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
@@ -119,7 +119,7 @@ The following happens:
 ```text
 ------------------------------------------------------------
  Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:121:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:128:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
@@ -148,7 +148,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
 ```text
 ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:158:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:165:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
@@ -176,7 +176,7 @@ And here's the report:
 ```text
 ------------------------------------------------------------
  Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:197:1
+ Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
@@ -237,7 +237,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    RunBugHouseCheckr
- Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:65:1
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:63:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642
@@ -249,8 +249,8 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
  ===========================================================================
   !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
    at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 28
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 56
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
  ===========================================================================
  Passed Specs
@@ -590,7 +590,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:59:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:78:1
  Original failing run:    20 executions
  Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    13918324
