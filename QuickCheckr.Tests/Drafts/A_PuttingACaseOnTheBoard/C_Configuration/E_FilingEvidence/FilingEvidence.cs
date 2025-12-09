@@ -6,7 +6,7 @@ using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
 
-namespace QuickCheckr.Tests.Drafts.C_Configuration.E_FilingEvidence;
+namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.C_Configuration.E_FilingEvidence;
 
 [DocFile]
 public class FilingEvidence : BaseTest

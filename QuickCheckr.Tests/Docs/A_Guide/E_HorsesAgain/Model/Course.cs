@@ -19,7 +19,7 @@ public class Course(string name)
 
     public void AssignCoach(Coach coach)
     {
-        if (!coach.IsSuitableFor(this))
+        if (!coach.IsSuitableFor(this)) // this enforces the invariant
             throw new InvalidOperationException("Coach does not have the required skills");
         AssignedCoach = coach;
         coach.AssignCourse(this);

@@ -59,20 +59,20 @@ public class ActingOutOfSync : BaseTest
     public void FuncAsTaskIf()
     {
         var check =
-            from input in Checkr.Input("Input", Fuzzr.Int())
+            from input in Checkr.Input("Input", Fuzzr.Constant(42))
             from result in Checkr.ActIf("Eventually.AddOne", () => true, Eventually.AddOne(input))
             from spec in Checkr.Spec("Is not 42", () => result != 42)
             select Case.Closed;
-        check.Run(); // <= test passed == flag is set == Task completed
+        check.Run(); // <= test passed == Task completed
     }
 
     [Fact]
     public void FuncAsTaskCarefully()
     {
         var check =
-            from input in Checkr.Input("Input", Fuzzr.Constant(41))
+            from input in Checkr.Input("Input", Fuzzr.Constant(42))
             from result in Checkr.ActCarefully("Eventually.AddOne", Eventually.AddOne(input))
-            from spec in Checkr.Spec("Is not 42", () => result.Value == 42)
+            from spec in Checkr.Spec("Is not 42", () => result.Value != 42)
             select Case.Closed;
         check.Run(); // <= test passed == Task completed
     }

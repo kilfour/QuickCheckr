@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.A_TestFrameworkIntegration;
+namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.A_TestFrameworkIntegration;
 
 
 [DocFile]

@@ -1,4 +1,5 @@
-## Test Framework Integration
+## Putting a Case on the Board
+### Test Framework Integration
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
 A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
@@ -6,7 +7,7 @@ A Checkr is just a LINQ expression that you evaluate by calling `Run()`.
 If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
 
 Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
-## Running a Checkr
+### Running a Checkr
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
 - Run the Checkr once with a single execution.  
@@ -35,10 +36,7 @@ checkr.Run(424242, 5.ExecutionsPerRun());
 ```
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
 which allows for controlling specific aspects of the Checkr run. We'll get into that later.  
-## Configuration
-QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
-You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
-### Filing Evidence
+#### Filing Evidence
 QuickCheckr can be configured to persist the results of a failed test run.  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
@@ -60,8 +58,11 @@ In addition a sub folder is created containing the evidence vault files:
 - `evidence-log.ql` is an append only log of all evidence vault actions.
 
 This *evidence* can later be used to potentially solve *Cold Cases*.  
-### Investigations
+#### Investigations
 These tests show the initial version of QuickCheckrs logging configuration.  
+## Configuration
+QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
+You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
 ## The Evidence Vault
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  

@@ -6,7 +6,7 @@ using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.B_RunningACheckr;
+namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.B_RunningACheckr;
 
 [DocFile]
 [DocFileHeader("Running a Checkr")]

@@ -9,10 +9,24 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 
 [DocFile]
 [DocContent(
-@"For this example we are going the use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
+@"Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
+For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
 
-The bug we're hunting was actually found in the wild (although I simplified the code, in order to keep it short)
-and is demonstrative for a whole category: *Invariants drifting over time*.
+The only concept we haven't covered yet, and that we need here, is:
+
+**Pools**  
+These let QuickCheckr accumulate multiple objects across executions.  
+Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
+In this example, we'll keep all created coaches and courses in pools,
+and each operation will pick from those pools to mutate the system over time.
+
+We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
+
+
+The invariant we are checking is : 
+- *Any coach assigned a course must have the required skills to teach that course*.
+
+And here's the domain model:
 ")]
 [DocContent("**The Coach:**")]
 [DocExample(typeof(Coach))]
@@ -21,11 +35,15 @@ and is demonstrative for a whole category: *Invariants drifting over time*.
 public class BoltingHorses : BaseTest
 {
     [Fact]
+    [DocContent("Our Checkr is composed out of several parts:")]
     [DocContent(
-@"**The Checkr:**  
+@"
+
+**The Composed Checkr:**  
 This one is the *entry point* for the test.  
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
-It then creates a series of actions, randomly choosing one, using `Checkr.OneOfIf`, out of those in the list for which it's predicate is fulfilled.
+It then creates a series of actions, randomly choosing one, using `Checkr.OneOfIf`,
+out of those in the list for which it's predicate is fulfilled.  
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.")]
     [DocExample(typeof(BoltingHorses), nameof(TheCheckr))]
     [DocContent(
@@ -102,17 +120,17 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from trace in Checkr.Trace("Coach Name", () => name)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
-        from toPool in Trackr.Pool("Store Coach", coach)
+        from toPool in Trackr.Pool("Store Coach", coach) // store this coach in the pool
         select Case.Closed;
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCoachSkills =
-        from coach in Trackr.OneOfPool<Coach>("Coach to update")
+        from coach in Trackr.OneOfPool<Coach>("Coach to update") // pick a random coach from the pool
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from valid in Checkr.When(() => coach is not null,
             from trace in Checkr.Trace("Coach Name", () => coach.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
-                () => coach.UpdateSkills(skills))
+                () => coach.UpdateSkills(skills))                // update it
             from checkSkills in Checkr.Spec("Coach Skills Set",
                 () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
             select Case.Closed)
@@ -125,17 +143,17 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from trace in Checkr.Trace("Course Name", () => name)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Spec("Course Name Set", () => course.Name == name)
-        from toPool in Trackr.Pool("Store Course", course)
+        from toPool in Trackr.Pool("Store Course", course) // store this course in the pool
         select Case.Closed;
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCourseSkills =
-        from course in Trackr.OneOfPool<Course>("Course to update")
+        from course in Trackr.OneOfPool<Course>("Course to update") // pick a random course from the pool
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from courseNotNull in Checkr.When(() => course is not null,
             from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
-                () => course.UpdateRequiredSkills(skills))
+                () => course.UpdateRequiredSkills(skills))          // update it
             from checkSkills in Checkr.Spec("Course Required Skills Set",
                 () => course.RequiredSkills.Count == skills.Count() && course.RequiredSkills.All(skills.Contains))
             select Case.Closed)
@@ -143,9 +161,10 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignCoachToCourse =
-        from coach in Trackr.OneOfPool<Coach>("Coach to assign")
-        from course in Trackr.OneOfPool<Course>("Course to assign")
+        from coach in Trackr.OneOfPool<Coach>("Coach to assign")    // pick a random coach
+        from course in Trackr.OneOfPool<Course>("Course to assign") // pick a random course
         from valid in Checkr.When(() => coach != null && course != null && coach.IsSuitableFor(course),
+            // the .When predicate ensures the coach can be assigned
             from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
             from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
@@ -155,23 +174,24 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from coaches in Trackr.Pool<Coach>()
+        from coaches in Trackr.Pool<Coach>() // retrieve all coaches from the pool
         from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
-            () => coaches.All(
+            () => coaches.All( // check that all assigned coaches are suitable
                 coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))
         select Case.Closed;
 
     [CodeExample]
     public static readonly CheckrOf<Case> TheCheckr =
-        from coaches in Trackr.PoolFor<Coach>()
-        from courses in Trackr.PoolFor<Course>()
+        from coaches in Trackr.PoolFor<Coach>()        // create a pool of coaches
+        from courses in Trackr.PoolFor<Course>()       //  and a pool of courses
         from operations in Checkr.OneOfIf(
-            (() => coaches.Count() < 10, CreateCoach),
-            (() => coaches.Any(), UpdateCoachSkills),
-            (() => courses.Count() < 5, CreateCourse),
-            (() => courses.Any(), UpdateCourseSkills),
+            (() => coaches.Count() < 10, CreateCoach), // create up to 10 coaches
+            (() => coaches.Any(), UpdateCoachSkills),  // (maybe) update existing coaches
+            (() => courses.Count() < 5, CreateCourse), // create up to 5 courses
+            (() => courses.Any(), UpdateCourseSkills), // (maybe) update existing courses
+            // (maybe) assign a coach to a course
             (() => coaches.Any() && courses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
-        from invariant in AssignedCoachesMustBeSuitable
+        from invariant in AssignedCoachesMustBeSuitable // ensure the system invariant is met at all times
         select Case.Closed;
 }
