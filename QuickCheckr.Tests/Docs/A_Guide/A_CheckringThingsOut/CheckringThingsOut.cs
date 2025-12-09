@@ -27,18 +27,18 @@ So what happens if try to do the opposite?")]
     [DocCodeFile("SpecAlwaysFalse.txt", "text")]
     [DocContent(
 @"
-The report shows:
-* A run summary
-  * Test: Name of the test executing the Checkr.
-  * Location: Source code Location of the test executing the Checkr.
-  * Original failing run: Number of executions executed during the run. Let me get back to you on that one.
-  * Seed: Seed used to generate the failing run. You can use this to reproduce the failing run reliably.
+The report shows a run summary containing :
+* Test: Name of the test executing the Checkr.
+* Location: Source code Location of the test executing the Checkr.
+* Original failing run: Number of executions executed during the run. Let me get back to you on that one.
 * The minimal fail-case: In this toyest of toy examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
-")]
+* Seed: The seed used to generate the failing run.  
+  You can use this to reproduce the failing run reliably, by calling run with the seed passed in.")]
+    [DocExample(typeof(CheckringThingsOut), nameof(Run_SpecAlwaysFalse))]
     public void SpecAlwaysFalse()
     {
-        var article = TheJournalist.Exposes(() => SpecAlwaysFalse_Checkr().Run(1642083259));
+        var article = TheJournalist.Exposes(() => Run_SpecAlwaysFalse(SpecAlwaysFalse_Checkr()));
         Assert.Equal("Always true", article.FailedSpec());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
@@ -51,6 +51,13 @@ The report shows:
     private static CheckrOf<Case> SpecAlwaysFalse_Checkr()
     {
         return Checkr.Spec("Always true", () => false);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return ")]
+    private static void Run_SpecAlwaysFalse(CheckrOf<Case> checkr)
+    {
+        checkr.Run(1642083259);
     }
 
     [Fact]

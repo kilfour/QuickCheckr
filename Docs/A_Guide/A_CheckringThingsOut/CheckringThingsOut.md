@@ -32,15 +32,17 @@ The test fails and QuickCheckr produces the following report:
  ===============================
 ```
 
-The report shows:
-* A run summary
-  * Test: Name of the test executing the Checkr.
-  * Location: Source code Location of the test executing the Checkr.
-  * Original failing run: Number of executions executed during the run. Let me get back to you on that one.
-  * Seed: Seed used to generate the failing run. You can use this to reproduce the failing run reliably.
+The report shows a run summary containing :
+* Test: Name of the test executing the Checkr.
+* Location: Source code Location of the test executing the Checkr.
+* Original failing run: Number of executions executed during the run. Let me get back to you on that one.
 * The minimal fail-case: In this toyest of toy examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
-  
+* Seed: The seed used to generate the failing run.  
+  You can use this to reproduce the failing run reliably, by calling run with the seed passed in.  
+```csharp
+checkr.Run(1642083259);
+```
 ## Gathering Input
 Let's add an input to the Checkr, and change our spec:  
 ```csharp
