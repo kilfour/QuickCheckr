@@ -4,7 +4,6 @@
 * Doc configuration
   * Started see the 'TheEvidenceVault'
   * DOC investigations
-* Add an explanation to QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking
 * Finish Deliberation Shrinking
   This is looking good, maybe add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
