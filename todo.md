@@ -14,7 +14,6 @@
 * Deliberation Shrinking (mostly) Finished
 
 ### Major
-* The Guide never explicitly says “to replay this seed, call checkr.Run(seed)
 * Implement: checkr.CloseResolvedColdCases(...)
 * Create an artery derived from File.Log that deletes file if receiving empty collection as param to absorb.
 * DOC known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
