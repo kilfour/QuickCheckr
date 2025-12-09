@@ -46,7 +46,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the assayer pointed it out in above report.
 
-*Sidenote:* When one uses `Trackr.Assay` there is no shrinking whatsoever, as there is no *minimal* fail case, by definition.  
+*Sidenote:* When one uses `Trackr.Assay` there is no shrinking whatsoever, as there is no *minimal* fail-case, by definition.  
 Assays evaluate state accumulated across all executions, so removing any execution and or inputs,
 changes the final state therefore shrinking is not applicable.  
 ## `Trackr.ProvenWhen`

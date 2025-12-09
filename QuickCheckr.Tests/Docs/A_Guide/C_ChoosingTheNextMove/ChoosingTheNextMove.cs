@@ -147,7 +147,6 @@ The branch chosen during the original failing run is *the* branch examined durin
         WriteAsserts(article);
         WriteReport(article, "ChoosingTheNextMoveShrunk.txt", true);
         Verify_Shrunk(article);
-        ExplainMe<ChoosingTheNextMove>(true);
     }
 
     private static void Verify_Shrunk(Article article)

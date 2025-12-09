@@ -1246,7 +1246,7 @@ They function as **stable identifiers**.
 
 QuickCheckr uses each key for two distinct purposes:
 
-1. **Reporting:** The key appears in execution traces, minimal fail cases, and summaries.
+1. **Reporting:** The key appears in execution traces, minimal fail-cases, and summaries.
 2. **Book-keeping:** Internally, the engine uses the same key to label stored values, look up decisions, and coordinate shrinking.
 
 Because of this dual role, **each key may only be written once per relevant scope**.  

@@ -38,7 +38,7 @@ The report shows:
   * Location: Source code Location of the test executing the Checkr.
   * Original failing run: Number of executions executed during the run. Let me get back to you on that one.
   * Seed: Seed used to generate the failing run. You can use this to reproduce the failing run reliably.
-* The minimal fail case: In this toyest of toy examples it *only* specifies that an execution happened.
+* The minimal fail-case: In this toyest of toy examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
   
 ## Gathering Input
@@ -76,7 +76,7 @@ Now the test fails consistently:
   !! Spec Failed: Input /= 42
  ===============================
 ```
-As you can see the input is now included in the report *minimal fail case*,
+As you can see the input is now included in the report *minimal fail-case*,
 this is because QuickCheckr judged the input to be relevant to the failure.  
 So, if we add another input to the Checkr, one which does not influence the failure:  
 ```csharp

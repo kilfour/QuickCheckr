@@ -1,0 +1,20 @@
+ ------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:65:1
+ Original failing run:    3 executions
+ Seed:                    1920827676
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 8
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 1
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 5
+ ================================
+  !! Spec Failed: No Overdraft
+ ================================
+ Passed Specs
+ - No Overdraft: 2x
+ ------------------------------------------------------------
