@@ -64,7 +64,8 @@ And again, same pattern as the *Update Coach Skills Checkr*.")]
     [DocExample(typeof(BoltingHorses), nameof(UpdateCourseSkills))]
     [DocContent(
 @"**Assigned Coaches Must Be Suitable Checkr:**  
-And finally here's the system invariant. Any coach assigned a course must have the required skills to teach that course.")]
+And finally here's the system invariant.  
+*Any coach assigned a course must have the required skills to teach that course*.")]
     [DocExample(typeof(BoltingHorses), nameof(AssignedCoachesMustBeSuitable))]
     [DocContent("**The Report:**")]
     [DocCodeFile("BoltingHorses.txt", "text")]

@@ -136,7 +136,8 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     select Case.Closed;
 ```
 **Assigned Coaches Must Be Suitable Checkr:**  
-And finally here's the system invariant. Any coach assigned a course must have the required skills to teach that course.  
+And finally here's the system invariant.  
+*Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from coaches in Trackr.Pool<Coach>() // retrieve all coaches from the pool
