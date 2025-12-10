@@ -34,8 +34,7 @@ public class AStatefulList : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(254875886, 10.ExecutionsPerRun(),
-            cfg => cfg with { WithTraces = false }));
+            GetCheckr().Run(254875886, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<AStatefulList>(article, false);
         ExplainMe<AStatefulList>(false);
