@@ -3,13 +3,13 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
 public class EnumerableShrinkStrategy
 {
-    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        var clues = new RemoveOneByOneStrategy().Shrink(state, check, executionId, key, value, fullKey);
+        var clues = new RemoveOneByOneStrategy().Shrink(state, check, info);
         if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
 
         var keep = clues.First(a => a.Intent != ShrinkingIntent.Ignore);
-        clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, executionId, key, keep.Result, fullKey));
+        clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, info with { value = keep.Result }));
         return clues;
     }
 }

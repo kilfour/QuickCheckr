@@ -29,7 +29,7 @@ public class ShrinkStrategyPicker
             return new EnumShrinkStrategy().Shrink(state, check, info);
 
         if (typeof(IEnumerable).IsAssignableFrom(actualType))
-            return new EnumerableShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
+            return new EnumerableShrinkStrategy().Shrink(state, check, info);
 
         if (actualType.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
