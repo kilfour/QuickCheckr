@@ -53,18 +53,24 @@ public class EvidenceVault : Vault
             if (caseFile.HasVerdict())
             {
                 logSignal.Pulse($"Run failed for Seed: {entry.Seed}.{Environment.NewLine}");
+                if (!string.IsNullOrWhiteSpace(config.FileAs))
+                {
+                    Signal.From<string>(a => Pulse.Trace(a))
+                        .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
+                        .Pulse(TheClerk.Transcribes(caseFile));
+                }
             }
             else
             {
                 logSignal.Pulse($"Run passed for Seed: {entry.Seed}.{Environment.NewLine}");
                 if (closeResolved)
                     Remove(entry);
-            }
-            if (!string.IsNullOrWhiteSpace(config.FileAs))
-            {
-                Signal.From<string>(a => Pulse.Trace(a))
-                    .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
-                    .Pulse(TheClerk.Transcribes(caseFile));
+                else if (!string.IsNullOrWhiteSpace(config.FileAs))
+                {
+                    Signal.From<string>(a => Pulse.Trace(a))
+                        .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
+                        .Pulse(TheClerk.Transcribes(caseFile));
+                }
             }
         }
         Save();

@@ -9,7 +9,7 @@ public class Custodian
     public required Func<string, IArtery> Recorder { get; init; }
 
     public static Custodian Default
-        => new() { Retriever = GetVaultStrings, Recorder = a => FileLog.Write(a) };//new FileLogDeleteWhenEmpty(a) };
+        => new() { Retriever = GetVaultStrings, Recorder = a => FileLog.Write(a) };
 
     private static string[] GetVaultStrings(string path)
     {

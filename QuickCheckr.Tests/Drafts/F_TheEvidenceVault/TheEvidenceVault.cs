@@ -66,6 +66,7 @@ public class TheEvidenceVault : BaseTest
         checkr.ReviewColdCases(Configure);
 
     [Fact]
+    [DocHeader("Reviewing Cold Cases")]
     [DocContent(
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
@@ -146,5 +147,62 @@ This will create a report per seed in the evidence file and a log of all evidenc
         Assert.Equal(" - Fails: 1x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());
+    }
+
+    [Fact]
+    [DocHeader("Closing Cold Cases")]
+    [DocContent(
+@"The method mentioned above is usefull for regression testing, but sometimes,
+there is no need to keep the evidence around after the culprit is found.  
+In this case we use:")]
+    [DocExample(typeof(TheEvidenceVault), nameof(RunCloseResolvedColdCases))]
+    [DocContent(
+@"In case that the seeds stored in the vault still result in failures, the behaviour is exactly the same as `ReviewColdCases`.")]
+    public void ClosingColdCases()
+    {
+        var collector = new List<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
+
+        RunCloseResolvedColdCases(Checkr.Spec("Fails", () => false),
+            cfg => Configure(AddCustodian(
+                    cfg,
+                    collector,
+                    SpyArteries(evidence, log),
+                    ["1862095796,1,Fails"])));
+
+        Assert.Equal(3, collector.Count);
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence.qv"), Normalize(collector[0]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence-log.ql"), Normalize(collector[1]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/report_1862095796.qr"), Normalize(collector[2]));
+        Assert.Single(evidence.Values);
+        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
+    }
+
+    [CodeSnippet]
+    private static void RunCloseResolvedColdCases(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
+        checkr.CloseResolvedColdCases(Configure);
+
+    [Fact]
+    [DocContent(
+@"If however a run for a given seed no longer fails, the seed is removed from the evidence vault, and no report is generated for the passing run.")]
+    public void ClosingColdCasesNowPass()
+    {
+        var collector = new List<string>();
+        var evidence = Collect.ValuesOf<string>();
+        var log = Collect.ValuesOf<string>();
+
+        RunCloseResolvedColdCases(Checkr.Spec("Passes", () => true),
+            cfg => Configure(AddCustodian(
+                    cfg,
+                    collector,
+                    SpyArteries(evidence, log),
+                    ["1862095796,1,Fails"])));
+
+        Assert.Equal(2, collector.Count);
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence.qv"), Normalize(collector[0]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence-log.ql"), Normalize(collector[1]));
+        Assert.Empty(evidence.Values);
+        ExplainMe<TheEvidenceVault>(true);
     }
 }
