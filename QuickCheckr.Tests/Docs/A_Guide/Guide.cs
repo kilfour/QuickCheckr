@@ -2,7 +2,6 @@ using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Docs.T_Cookbook.L_TheLoadedDie;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide;
@@ -13,9 +12,11 @@ namespace QuickCheckr.Tests.Docs.A_Guide;
 [DocLink(typeof(ChoosingTheNextMove), "ChoosingTheNextMove")]
 [DocLink(typeof(BoltingHorses), "BoltingHorses")]
 [DocContent(
-@"
-Welcome to the QuickCheckr Guide.  
-This is a living document, we start small, with a short introduction and a real-world example.")]
+@"**Welcome to the QuickCheckr Guide.**  
+This document walks through the core ideas of QuickCheckr,
+from the basics of building a Checkr, to stateful testing, branching behaviour, pools, shrinking,
+leading up to a real-world scenario.  
+Each chapter builds on the previous one, introducing new concepts through executable examples.")]
 [DocHeader("Contents")]
 [DocContent(
 @"

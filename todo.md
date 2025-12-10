@@ -2,7 +2,6 @@
 
 ### Issues 
 * Trace problem: QuickCheckr.Tests.Notes.T_Examples.C_AStatefulList.AStatefulList
-* RemoveOneByOneStrategy : // check if this keeps the empty list
 
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
@@ -10,6 +9,10 @@
 * Add type to shrinking clue (maybe temp)
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
+* See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
+  * instead of null, try Fuzzr.One(type) maybe, this might throw though so ...
+    * quickfuzzr shrinking config strategy ? 
+      Shrinkr... == CheckrOf<Case>, just registers and returns `s => CheckrResult.CaseOnly(s);`
 
 ### 0.0.4
 * Doc Issues (and fix if possible) **<= Doing**  
@@ -38,7 +41,9 @@
   * known issues
   * workarounds
 * Cookbook
-  * statefull list, play on listremover, but with two methods, add & remove
+  * statefull list, play on listremover, but with two methods, add & remove 
+    * fix trace to promote to cookbook
+  * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 * Start working on the reference
 
 ## Refactoring and Testing Targets 

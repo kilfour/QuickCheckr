@@ -1,7 +1,9 @@
 # Guide
-
-Welcome to the QuickCheckr Guide.  
-This is a living document, we start small, with a short introduction and a real-world example.  
+**Welcome to the QuickCheckr Guide.**  
+This document walks through the core ideas of QuickCheckr,
+from the basics of building a Checkr, to stateful testing, branching behaviour, pools, shrinking,
+leading up to a real-world scenario.  
+Each chapter builds on the previous one, introducing new concepts through executable examples.  
 ## Contents
 
 - [Checkr-ing Things Out (a quick tour)][CheckringThingsOut]
