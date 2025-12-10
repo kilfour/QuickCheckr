@@ -12,9 +12,6 @@ public class EnumShrinkStrategy : IShrinkingStrategy
             : typeof(object);
 
         var enumVals = GetEnumValues(actualType);
-        // var originalFails = state.VerifyIf.RunFailed(key, value!);
-        // if (!originalFails)
-        //     return;
 
         foreach (var candidate in enumVals.Where(x => !Equals(x, info.value)))
         {

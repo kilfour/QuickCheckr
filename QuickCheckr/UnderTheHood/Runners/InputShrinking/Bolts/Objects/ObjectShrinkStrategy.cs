@@ -10,9 +10,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 public class ObjectShrinkStrategy : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-    {
-        return HandleProperties(state, check, info);
-    }
+        => HandleProperties(state, check, info);
 
     public record CantShrinkNull;
 
@@ -24,31 +22,6 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
-
-        // var verifier = new Verifier(state, check);
-        // if (verifier.RunFailed(executionId, key, null!))
-        // {
-        //     var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(executionId, fullKey, value);
-        //     state.Docket.Record(new InputShrinkingClueFound(clue));
-        //     return [clue];
-        // }
-
-        // if (value == null)
-        // {
-        //     var verifier = new Verifier(state, check);
-        //     if (verifier.RunFailed(executionId, key, state.GetSubstitute(typeof(T), null!)!))
-        //     {
-        //         var clue = InputShrinkingClue.Keep<ObjectShrinkStrategy>(executionId, fullKey, value);
-        //         state.Docket.Record(new InputShrinkingClueFound(clue));
-        //         return [clue];
-        //     }
-        //     else
-        //     {
-        //         var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(executionId, fullKey, value);
-        //         state.Docket.Record(new InputShrinkingClueFound(clue));
-        //         return [clue];
-        //     }
-        // }
 
         var properties = info.value!.GetType()
             .GetProperties(MyBinding.Flags)

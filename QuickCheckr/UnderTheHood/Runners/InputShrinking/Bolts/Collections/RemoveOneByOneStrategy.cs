@@ -12,13 +12,11 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
         int index = 0;
         int indexKey = -1;
         var shrinkCount = 0;
-        var elementType = typeof(object);
         while (index < theList.Count)
         {
             indexKey++;
             var ix = index;
             var before = theList[ix];
-            elementType = before == null ? typeof(object) : before.GetType()!;
             theList.RemoveAt(ix);
             // ------------------------------------------------------------------------------
             // -- HACKED IN AN ARRAY
@@ -27,7 +25,7 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
                 var valueType = info.value.GetType();
                 if (info.value.GetType().IsArray)
                 {
-                    elementType = valueType.GetElementType()!;
+                    var elementType = valueType.GetElementType()!;
                     var array = Array.CreateInstance(elementType, theList.Count);
                     for (var i = 0; i < theList.Count; i++)
                     {

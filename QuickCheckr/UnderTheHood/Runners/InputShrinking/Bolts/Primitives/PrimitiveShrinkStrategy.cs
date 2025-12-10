@@ -19,10 +19,6 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
             yield break;
 
         var primitiveVals = PrimitiveValues[primitiveKey];
-        // var originalFails = verifier.RunFailed(key, value!);
-        // if (!originalFails)
-        //     return;
-
         foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.value)))
         {
             if (verifier.RunPassed(info.executionId, info.key, candidate))
