@@ -15,12 +15,12 @@ public class ShrinkEachElementStrategy
         int executionId,
         string key,
         T value,
-        string fullKey, int incomingShrinkCount)
+        string fullKey)
     {
         var theList = CloneList.AsOriginalType(value!);
         var values = new List<string>();
         int index = 0;
-        var shrinkCount = incomingShrinkCount;
+        var shrinkCount = 0;
         while (index < theList.Count)
         {
             var ix = index;

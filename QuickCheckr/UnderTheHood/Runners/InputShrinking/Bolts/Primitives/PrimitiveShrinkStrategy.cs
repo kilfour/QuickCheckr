@@ -4,12 +4,16 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
 public class PrimitiveShrinkStrategy
 {
-    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public IEnumerable<InputShrinkingClue> Shrink(
+        CheckrState state,
+        CheckrOf<Case> check,
+        ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var actualType = typeof(T) == typeof(object) && value != null
-            ? value.GetType()
-            : typeof(T);
+        var actualType = info.value != null
+            ? info.value.GetType()
+            : typeof(object);
+        //var actualType = state.Memory.GetActualType(executionId,key);
         var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(actualType));
         if (primitiveKey == null)
             yield break;
@@ -19,17 +23,17 @@ public class PrimitiveShrinkStrategy
         // if (!originalFails)
         //     return;
 
-        foreach (var candidate in primitiveVals.Where(x => !Equals(x, value)))
+        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.value)))
         {
-            if (verifier.RunPassed(executionId, key, candidate))
+            if (verifier.RunPassed(info.executionId, info.key, candidate))
             {
-                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(executionId, fullKey, value, state.Editor.IntroduceThis(value));
+                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
                 yield break;
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(executionId, fullKey, value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.executionId, info.fullKey, info.value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         yield return ignoreClue;
     }

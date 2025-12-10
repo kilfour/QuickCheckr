@@ -46,6 +46,7 @@ public class ShortTermMemory
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
         => Current.StoreInput(key, factory);
+    public Type GetActualType(int executionId, string key) => memories[executionId].GetActualType(key);
 
     // --------------------------------------------------------------------------
     // Actions

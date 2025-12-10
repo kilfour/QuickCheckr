@@ -11,6 +11,7 @@ public class ShrinkStrategyPicker
 {
     public static IEnumerable<InputShrinkingClue> Input<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
     {
+        var info = new ShrinkingInfo(executionId, key, value, fullKey);
         var customShrinker = state.Memory.GetShrinker<T>(executionId, key);
         if (customShrinker != null)
             return new CustomShrinkStrategy<T>(customShrinker).Shrink(state, check, executionId, key, value, fullKey);
@@ -22,10 +23,10 @@ public class ShrinkStrategyPicker
 
         var primitiveKey = PrimitiveShrinkStrategy.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
         if (primitiveKey != null)
-            return new PrimitiveShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey).ToList();
+            return [.. new PrimitiveShrinkStrategy().Shrink(state, check, info)];
 
         if (actualType.IsEnum)
-            return new EnumShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);
+            return new EnumShrinkStrategy().Shrink(state, check, info);
 
         if (typeof(IEnumerable).IsAssignableFrom(actualType))
             return new EnumerableShrinkStrategy().Shrink(state, check, executionId, key, value, fullKey);

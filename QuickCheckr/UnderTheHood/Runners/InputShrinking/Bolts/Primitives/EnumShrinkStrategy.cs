@@ -4,29 +4,29 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
 public class EnumShrinkStrategy
 {
-    public IEnumerable<InputShrinkingClue> Shrink<T>(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var actualType = typeof(T) == typeof(object) && value != null
-            ? value.GetType()
-            : typeof(T);
+        var actualType = info.value != null
+            ? info.value.GetType()
+            : typeof(object);
 
         var enumVals = GetEnumValues(actualType);
         // var originalFails = state.VerifyIf.RunFailed(key, value!);
         // if (!originalFails)
         //     return;
 
-        foreach (var candidate in enumVals.Where(x => !Equals(x, value)))
+        foreach (var candidate in enumVals.Where(x => !Equals(x, info.value)))
         {
-            if (verifier.RunPassed(executionId, key, candidate))
+            if (verifier.RunPassed(info.executionId, info.key, candidate))
             {
-                var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(executionId, fullKey, value, state.Editor.IntroduceThis(value));
+                var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
                 yield break;
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(executionId, fullKey, value);
+        var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(info.executionId, info.fullKey, info.value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         yield return ignoreClue;
     }
