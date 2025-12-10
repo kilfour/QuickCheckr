@@ -1,11 +1,12 @@
 ## Short Term Work (Current Version: 0.0.3)
+* Refactor shrinking strategies, get actual type everywhere pass it down through ShrinkingInfo
 
 ### Issues 
 
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
   * Warn the user, suggest fix.
-* Add type to shrinking clue (maybe temp)
+* Add type to shrinking clue (maybe)
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
@@ -38,7 +39,7 @@
   * workarounds
 * Cookbook
   * statefull list, play on listremover, but with two methods, add & remove 
-    * fix trace to promote to cookbook
+    * fix trace to promote to cookbook (FIXED)
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 * Start working on the reference
 

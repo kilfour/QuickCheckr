@@ -70,9 +70,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 ```csharp
 checkr.ReviewColdCases(Configure);
 ```
-It is advised to *Dry* out the configuration as is shown at the top of this chapter, in order to avoid code drift.  
-This will create a report per seed in the evidence file and a log of all evidence vault actions.
-  
+This will create a report per seed in the evidence file and a log of all evidence vault actions.  
 - For every failing seed the report will look like the by now familiar failure report.  
 - For every passing seed the report will only contain a list of passed specs.  
 ### Closing Cold Cases
