@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr;
 
 [Flags]
 public enum ShrinkMode

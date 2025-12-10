@@ -36,7 +36,7 @@ public class AStatefulList : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(254875886, 10.ExecutionsPerRun(),
-            cfg => cfg with { ShrinkMode = UnderTheHood.Protocol.ShrinkMode.Default }));
+            cfg => cfg with { ShrinkMode = ShrinkMode.Default }));
         WriteAsserts(article, false);
         WriteReport<AStatefulList>(article, false);
         ExplainMe<AStatefulList>(false);
@@ -76,7 +76,7 @@ public class AStatefulList : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(254875886, 10.ExecutionsPerRun(),
-            cfg => cfg with { ShrinkMode = UnderTheHood.Protocol.ShrinkMode.Inputs }));
+            cfg => cfg with { ShrinkMode = ShrinkMode.Inputs }));
         WriteReport(article, "AStatefulListFullRun.txt", true);
     }
 }

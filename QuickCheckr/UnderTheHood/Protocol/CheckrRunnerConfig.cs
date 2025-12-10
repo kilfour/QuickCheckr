@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
