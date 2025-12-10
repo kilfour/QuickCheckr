@@ -4,22 +4,23 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
-public class CustomShrinkStrategy<T>(Func<T, IEnumerable<T>> shrinker)
+public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker)
 {
-    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, int executionId, string key, T value, string fullKey)
+    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var values = shrinker(value!);
-        foreach (var candidate in values.Where(x => !Equals(x, value)))
+        var values = shrinker(info.value!);
+        foreach (var candidate in values.Where(x => !Equals(x, info.value)))
         {
-            if (verifier.RunPassed(executionId, key, candidate!))
+            if (verifier.RunPassed(info.executionId, info.key, candidate!))
             {
-                var clue = InputShrinkingClue.Keep<CustomShrinkStrategy<T>>(executionId, fullKey, value, state.Editor.IntroduceThis(value));
+                var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
+                    info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return [clue];
             }
         }
-        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy<T>>(executionId, fullKey, value);
+        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.executionId, info.fullKey, info.value);
         state.Docket.Record(new InputShrinkingClueFound(ignore));
         return [ignore];
     }

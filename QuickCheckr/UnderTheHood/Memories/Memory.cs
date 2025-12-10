@@ -122,8 +122,8 @@ public class Memory
     // Shrinkers
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
         => ShortTermMemory.StoreShrinker(key, shrinker);
-    public Func<T, IEnumerable<T>> GetShrinker<T>(int executionId, string key)
-        => ShortTermMemory.GetShrinker<T>(executionId, key);
+    public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
+        => ShortTermMemory.GetShrinker(executionId, key);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

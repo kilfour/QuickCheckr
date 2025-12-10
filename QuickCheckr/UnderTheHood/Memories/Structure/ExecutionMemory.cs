@@ -63,8 +63,8 @@ public class ExecutionMemory
     private readonly MemoryBank shrinkers = new();
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
         => shrinkers.Store(key, () => shrinker);
-    public Func<T, IEnumerable<T>> GetShrinker<T>(string key)
-        => shrinkers.Get<Func<T, IEnumerable<T>>>(key)!;
+    public Func<object, IEnumerable<object>> GetShrinker(string key)
+        => shrinkers.Get<Func<object, IEnumerable<object>>>(key)!;
     // --------------------------------------------------------------------------
 
 

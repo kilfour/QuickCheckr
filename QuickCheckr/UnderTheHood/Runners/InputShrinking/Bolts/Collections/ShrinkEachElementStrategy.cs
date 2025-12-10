@@ -29,7 +29,8 @@ public class ShrinkEachElementStrategy
                 var swapper = new ListLens(elementType, ix);
                 using (state.Memory.NestedValue(info.executionId, swapper))
                 {
-                    var clues = ShrinkStrategyPicker.Input(state, check, info.executionId, info.key, before, $"{info.fullKey}.{GetMappedIndex(index)}");
+                    var childInfo = info with { value = before, fullKey = $"{info.fullKey}.{GetMappedIndex(index)}" };
+                    var clues = ShrinkStrategyPicker.Input(state, check, childInfo);
                     var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
                     shrinkCount += clues.Sum(a => a.Count);
                     if (removeForShrinking)
