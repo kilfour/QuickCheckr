@@ -8,11 +8,6 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Notes.T_Examples.C_AStatefulList;
 
 [DocFile]
-[DocHeader("Issue")]
-[DocContent(
-@"Traces get recorded on the first run, messes up with stashed values
-Changing it to record at the end would mean having to rerun when shrinking is done.
-That might make it hard to trace replaced values.")]
 public class AStatefulList : BaseTest
 {
     [CodeExample]

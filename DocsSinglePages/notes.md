@@ -1013,10 +1013,6 @@ RunInt(6)            // bug ends with "1221" and `a == 6` → fail
  ------------------------------------------------------------
 ```
 ### A Stateful List
-#### Issue
-Traces get recorded on the first run, messes up with stashed values
-Changing it to record at the end would mean having to rerun when shrinking is done.
-That might make it hard to trace replaced values.  
 **The Model:**  
 ```csharp
 public class ListWrap
