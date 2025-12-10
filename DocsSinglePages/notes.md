@@ -1055,69 +1055,18 @@ public class ListWrap
  ------------------------------------------------------------
   Executed: Add
    - Input: Item = 3
-   - Trace: Before = [ 1 ]
-   - Trace: After = [ 1, 3 ]
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Item = 3
-   - Trace: Before = [ 1, 3 ]
-   - Trace: After = [ 1, 3, 3 ]
- ------------------------------------------------------------
-  Executed: Remove
-   - Input: Item = 3
-   - Trace: Before = [ 1, 3, 3 ]
-   - Trace: After = [ 1, 3 ]
- ==============================================
-  !! Spec Failed: List Does Not Contain Item
- ==============================================
- Passed Specs
- - List Does Not Contain Item: 4x
- - List Contains Item: 4x
- ------------------------------------------------------------
-```
-**FullRun:**  
-```text
-------------------------------------------------------------
- Test:                    FullRun
- Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:78:1
- Original failing run:    9 executions
- Minimal failing case:    9 executions (after 6 shrinks)
- Seed:                    254875886
- ------------------------------------------------------------
-  Executed: Remove (2 Times)
    - Trace: Before = [ ]
-   - Trace: After = [ ]
- ------------------------------------------------------------
-  Executed: Add
-   - Trace: Before = [ ]
-   - Trace: After = [ 1 ]
- ------------------------------------------------------------
-  Executed: Add
-   - Trace: Before = [ 1 ]
-   - Trace: After = [ 1, 6 ]
- ------------------------------------------------------------
-  Executed: Remove
-   - Trace: Before = [ 1, 6 ]
-   - Trace: After = [ 1 ]
+   - Trace: After = [ 3 ]
  ------------------------------------------------------------
   Executed: Add
    - Input: Item = 3
-   - Trace: Before = [ 1 ]
-   - Trace: After = [ 1, 3 ]
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Item = 3
-   - Trace: Before = [ 1, 3 ]
-   - Trace: After = [ 1, 3, 3 ]
- ------------------------------------------------------------
-  Executed: Remove
-   - Trace: Before = [ 1, 3, 3 ]
-   - Trace: After = [ 1, 3, 3 ]
+   - Trace: Before = [ 3 ]
+   - Trace: After = [ 3, 3 ]
  ------------------------------------------------------------
   Executed: Remove
    - Input: Item = 3
-   - Trace: Before = [ 1, 3, 3 ]
-   - Trace: After = [ 1, 3 ]
+   - Trace: Before = [ 3, 3 ]
+   - Trace: After = [ 3 ]
  ==============================================
   !! Spec Failed: List Does Not Contain Item
  ==============================================
@@ -1391,6 +1340,7 @@ Possible solutions:
 ```csharp
     from one in Checkr.Trace("reused", () => "")
     from two in Checkr.Trace("reused", () => "")
+    from spec in Checkr.Spec("fails", () => false) // <= this one needs to run
     select Case.Closed;
 ```
   Throws:  

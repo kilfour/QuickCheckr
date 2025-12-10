@@ -1,7 +1,6 @@
 ## Short Term Work (Current Version: 0.0.3)
 
 ### Issues 
-* Trace problem: QuickCheckr.Tests.Notes.T_Examples.C_AStatefulList.AStatefulList
 
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)

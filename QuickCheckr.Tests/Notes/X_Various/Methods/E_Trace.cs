@@ -25,6 +25,7 @@ public class E_Trace
         return
             from one in Checkr.Trace("reused", () => "")
             from two in Checkr.Trace("reused", () => "")
+            from spec in Checkr.Spec("fails", () => false) // <= this one needs to run
             select Case.Closed;
     }
 

@@ -92,7 +92,7 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:146:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:145:1
  Original failing run:    8 executions
  Minimal failing case:    1 execution (after 7 shrinks)
  Seed:                    1169776765

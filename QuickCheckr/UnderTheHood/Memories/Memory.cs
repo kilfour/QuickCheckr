@@ -106,8 +106,13 @@ public class Memory
         => ShortTermMemory.HasAction(key);
     // --------------------------------------------------------------------------
     // Traces
+    public bool Tracing { get; set; } = false;
     public void StoreTrace(string key, Func<string> factory)
-        => ShortTermMemory.StoreTrace(traceGuard.Check(key), factory);
+    {
+        if (Tracing)
+            ShortTermMemory.StoreTrace(traceGuard.Check(key), factory);
+    }
+
     // --------------------------------------------------------------------------
     // Variables
     public T? StoreVariable<T>(string key, Func<T> factory)

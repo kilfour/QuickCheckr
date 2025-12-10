@@ -20,6 +20,7 @@ public record CheckrRunnerConfig
                     .SetArtery(a.Officer()))];
         FileAs = config.FileAs;
         Custodian = config.Custodian;
+        WithTraces = config.WithTraces;
     }
 
     public int? Seed { get; private set; } = null;
@@ -30,4 +31,5 @@ public record CheckrRunnerConfig
     public string FileAs { get; init; }
     public Custodian Custodian { get; init; }
     internal void SetSeed(int? seed) => Seed = seed;
+    public bool WithTraces { get; init; }
 }

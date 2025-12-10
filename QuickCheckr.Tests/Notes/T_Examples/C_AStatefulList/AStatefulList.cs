@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -36,7 +35,7 @@ public class AStatefulList : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(254875886, 10.ExecutionsPerRun(),
-            cfg => cfg with { ShrinkMode = ShrinkMode.Default }));
+            cfg => cfg with { WithTraces = false }));
         WriteAsserts(article, false);
         WriteReport<AStatefulList>(article, false);
         ExplainMe<AStatefulList>(false);
@@ -66,17 +65,40 @@ public class AStatefulList : BaseTest
 
     private static void Verify(Article article)
     {
-
-    }
-
-    [Fact]
-    [DocContent("**FullRun:**")]
-    [DocCodeFile("AStatefulListFullRun.txt", "text")]
-    public void FullRun()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(254875886, 10.ExecutionsPerRun(),
-            cfg => cfg with { ShrinkMode = ShrinkMode.Inputs }));
-        WriteReport(article, "AStatefulListFullRun.txt", true);
+        Assert.Equal("List Does Not Contain Item", article.FailedSpec());
+        Assert.Equal(3, article.Total().Executions());
+        Assert.Equal(3, article.Total().Actions());
+        Assert.Equal(3, article.Total().Inputs());
+        Assert.Equal(6, article.Total().Traces());
+        Assert.Equal(2, article.Total().PassedSpecs());
+        Assert.Equal(6, article.ShrinkCount);
+        Assert.Equal(6, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Item", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Before", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("After", article.Execution(1).Trace(2).Read().Label);
+        Assert.Equal("[ 3 ]", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(7, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Item", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Before", article.Execution(2).Trace(1).Read().Label);
+        Assert.Equal("[ 3 ]", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal("After", article.Execution(2).Trace(2).Read().Label);
+        Assert.Equal("[ 3, 3 ]", article.Execution(2).Trace(2).Read().Value);
+        Assert.Equal(9, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Remove", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Item", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Before", article.Execution(3).Trace(1).Read().Label);
+        Assert.Equal("[ 3, 3 ]", article.Execution(3).Trace(1).Read().Value);
+        Assert.Equal("After", article.Execution(3).Trace(2).Read().Label);
+        Assert.Equal("[ 3 ]", article.Execution(3).Trace(2).Read().Value);
+        Assert.Equal("List Does Not Contain Item", article.PassedSpec(1).Read().Label);
+        Assert.Equal(4, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("List Contains Item", article.PassedSpec(2).Read().Label);
+        Assert.Equal(4, article.PassedSpec(2).Read().TimesPassed);
     }
 }
