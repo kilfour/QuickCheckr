@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
-public class ShrinkEachElementStrategy
+public class ShrinkEachElementStrategy : IShrinkingStrategy
 {
     public Dictionary<int, int>? Mapper { get; set; }
 
@@ -30,7 +30,7 @@ public class ShrinkEachElementStrategy
                 using (state.Memory.NestedValue(info.executionId, swapper))
                 {
                     var childInfo = info with { value = before, fullKey = $"{info.fullKey}.{GetMappedIndex(index)}" };
-                    var clues = ShrinkStrategyPicker.Input(state, check, childInfo);
+                    var clues = new ShrinkStrategyPicker().Shrink(state, check, childInfo);
                     var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
                     shrinkCount += clues.Sum(a => a.Count);
                     if (removeForShrinking)

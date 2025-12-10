@@ -7,9 +7,9 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public class ShrinkStrategyPicker
+public class ShrinkStrategyPicker : IShrinkingStrategy
 {
-    public static IEnumerable<InputShrinkingClue> Input(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var customShrinker = state.Memory.GetShrinker(info.executionId, info.key);
         if (customShrinker != null)

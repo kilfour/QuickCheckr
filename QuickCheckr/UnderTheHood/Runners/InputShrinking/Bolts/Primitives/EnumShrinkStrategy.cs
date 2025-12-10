@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
-public class EnumShrinkStrategy
+public class EnumShrinkStrategy : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {

@@ -7,7 +7,7 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 
-public class ObjectShrinkStrategy
+public class ObjectShrinkStrategy : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
@@ -107,7 +107,7 @@ public class ObjectShrinkStrategy
         using (state.Memory.NestedValue(info.executionId, swapper))
         {
             var childInfo = info with { value = propertyValue, fullKey = $"{info.fullKey}.{propertyInfo.Name}" };
-            foreach (var clue in ShrinkStrategyPicker.Input(state, check, childInfo))
+            foreach (var clue in new ShrinkStrategyPicker().Shrink(state, check, childInfo))
                 yield return clue;
         }
     }

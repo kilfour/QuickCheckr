@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
-public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker)
+public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker) : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
