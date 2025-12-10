@@ -8,7 +8,7 @@
   Executed: Act Three
  ===========================================================================
   !! Exception Thrown: System.Exception: BOOM
-   at QuickCheckr.Tests.PersonalNotes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 60
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Notes\A_Shrinking\B_ActionShrinking\ActionShrinking.cs:line 60
    at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 14
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 37
  ===========================================================================

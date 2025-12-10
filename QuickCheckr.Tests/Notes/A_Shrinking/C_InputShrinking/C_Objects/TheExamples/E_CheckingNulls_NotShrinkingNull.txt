@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_NotShrinkingNull
+ Location:                PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:65:1
+ Original failing run:    1 execution
+ Seed:                    1269557792
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null, Irrelevant: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: null }
+ ===========================================================================
+  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in PersonalNotes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 54
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
+ ===========================================================================

@@ -45,5 +45,5 @@
 * Scour QuickAcid for any interesting tests left behind.
 * QuickPulse: FileLogArtery virtual Absorb
 * QuickPulse: add a 'log to file here' artery, spike it in quickcheckr first
-  * See QuickCheckr.Tests.PersonalNotes.T_Examples.A_TheElementRemover.TheElementRemover.cs
+  * See QuickCheckr.Tests.Notes.T_Examples.A_TheElementRemover.TheElementRemover.cs
 * QuickPulse.Explains: CodeReplace with empty string => ploef

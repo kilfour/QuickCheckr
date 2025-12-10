@@ -5,14 +5,12 @@ using QuickCheckr.Tests.Docs.H_OnShrinking;
 using QuickCheckr.Tests.Docs.T_Cookbook;
 using QuickCheckr.Tests.Drafts;
 using QuickCheckr.Tests.Notes;
-using QuickCheckr.Tests.PersonalNotes;
 using QuickPulse.Explains;
 
 
 Explain.These<Documentation>("Docs/");
 // Explain.These<Drafts>("Drafts/");
 // Explain.These<Notes>("Notes/");
-// Explain.These<PersonalNotes>("PersonalNotes/");
 
 Explain.OnlyThis<CreateReadMe>("README.md");
 
@@ -23,7 +21,6 @@ Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 
 Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
-Explain.This<PersonalNotes>("DocsSinglePages/personal-notes.md");
 
 
 
