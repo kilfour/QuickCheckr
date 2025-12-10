@@ -38,7 +38,6 @@ public class Investigations : BaseTest
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());
-        Assert.Equal("EvidenceFailure", reader.NextLine());
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());
         Assert.Equal("InputShrinkingClueFound", reader.NextLine());

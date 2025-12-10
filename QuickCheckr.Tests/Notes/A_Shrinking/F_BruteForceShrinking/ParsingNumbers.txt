@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                PersonalNotes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
+ Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1510104044
+ Seed:                    1740448974
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-1^2"
-   - Trace: Original = - 1 ^ 2 / 2 * 3 * 2 + 1 * 2 * 3
-   - Trace: Compare = Golden: 3 /= SUT: 9
+   - Input: Expression = "-3^2"
+   - Trace: Original = - 3 ^ (1 / 2 / 1 / 1) ^ - 3 * 1 * 2 ^ - 3 ^ 2 * - (1 / 1 * 1 / 1) - (3 / 2 - 2 - 3 * 2 / 1 * 1 + 1 * 3) ^ (1 * 3 * 2 / 1) ^ 1 * - 1 ^ 1 + - 3 ^ - 1 ^ 3 * - 1 + 2 ^ - 3 ^ 3 / - 2 * 2 ^ 2
+   - Trace: Compare = Golden: 1851,413411443432 /= SUT: -3357393,4010416814
  =========================
   !! Spec Failed: Match
  =========================

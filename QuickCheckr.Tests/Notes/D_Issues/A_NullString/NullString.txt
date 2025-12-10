@@ -2,10 +2,10 @@
  Test:                    RunTest
  Location:                Notes\D_Issues\A_NullString\NullString.cs:34:1
  Original failing run:    1 execution
- Seed:                    335657354
+ Seed:                    393010076
  ------------------------------------------------------------
   Executed:
-   - Input: Input = "pdwz"
+   - Input: Input = "aa"
  =========================
   !! Spec Failed: Fails
  =========================

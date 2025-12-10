@@ -8,6 +8,7 @@ public class RemoveOneByOneStrategy
     {
         var verifier = new Verifier(state, check);
         var theList = CloneList.AsOriginalType(value!);
+        var elementCount = theList.Count;
         int index = 0;
         int indexKey = -1;
         var shrinkCount = 0;
@@ -55,7 +56,8 @@ public class RemoveOneByOneStrategy
         // Type listType = typeof(List<>).MakeGenericType(elementType);
         // var newList = Activator.CreateInstance(listType)!;
         // if (verifier.RunPassed(executionId, key, state.GetSubstitute(listType, null!)!))
-        if (verifier.RunPassed(executionId, key, null!))
+        //if (verifier.RunPassed(executionId, key, null!))
+        if (elementCount != shrinkCount)
         {
             var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(executionId, fullKey, value, theList);
             finalClue.AddToCount(shrinkCount);

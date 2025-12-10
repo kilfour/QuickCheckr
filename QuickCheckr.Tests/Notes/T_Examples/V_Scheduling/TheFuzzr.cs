@@ -69,9 +69,14 @@ public class TheFuzzr
                 select new Timeslot { Start = start, End = end };
         var otherSlot = GetSlotForDay(booking, weekDay);
         return
-            from start in Fuzzr.Int(8, otherSlot.Start - 1)
-            from end in Fuzzr.Int(start + 1, otherSlot.Start)
-            select new Timeslot { Start = start, End = end };
+            from start1 in Fuzzr.Int(8, otherSlot.Start - 1)
+            from end1 in Fuzzr.Int(start1 + 1, otherSlot.Start)
+            from before in Fuzzr.One(() => new Timeslot { Start = start1, End = end1 })
+            from start2 in Fuzzr.Int(otherSlot.End, 17)
+            from end2 in Fuzzr.Int(start2 + 1, 18)
+            from after in Fuzzr.One(() => new Timeslot { Start = start1, End = end2 })
+            from slot in Fuzzr.OneOf(before, after)
+            select slot;
     }
 
     private static Timeslot GetSlotForDay(Booking booking, DayOfWeek day)

@@ -23,7 +23,9 @@ public record CheckrConfig
                 FileAs = string.Empty,
                 Custodian = Custodian.Default,
                 Investigations = [],
-                Editor = new ManOfWealthAndTaste().ToInline<List<int>>()
+                Editor = new ManOfWealthAndTaste()
+                    .ToUseNonLinearTime()
+                    .ToInline<List<int>>()
             };
     }
 
