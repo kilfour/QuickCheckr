@@ -19,8 +19,8 @@ public class FilingEvidence : BaseTest
     private static CheckrConfig AddCustodian(
         CheckrConfig cfg,
         List<string> collector,
-        Func<string, IArtery>? artery = null,
-        IEnumerable<string>? entries = null)
+        Func<string, IRecorder> recorder,
+        IEnumerable<string> entries)
         => cfg with
         {
             Custodian = new Custodian
@@ -28,7 +28,7 @@ public class FilingEvidence : BaseTest
                 Recorder = fn =>
                 {
                     collector.Add(fn);
-                    return artery == null ? Install.Null : artery(fn);
+                    return recorder(fn);
                 },
                 Retriever = fn => entries ?? [],
             }
@@ -50,7 +50,12 @@ public class FilingEvidence : BaseTest
     {
         var collector = new List<string>();
         TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(cfg => Configure(AddCustodian(cfg, collector))));
+            Checkr.Spec("Fails", () => false).Run(cfg =>
+                Configure(AddCustodian(
+                    cfg,
+                    collector,
+                    SpyArteries(new SpyRecorder(), new SpyRecorder(), 42, new SpyRecorder()),
+                    []))));
         Assert.Equal(3, collector.Count);
         Assert.Equal(Normalize(DefaultFileName()), Normalize(collector[0]));
     }
@@ -67,19 +72,19 @@ public class FilingEvidence : BaseTest
     private static string DefaultEvidenceLogFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql";
 
-    private static Func<string, IArtery> SpyArteries(
-        Collector<string> evidenceCollector,
-        Collector<string> logCollector,
-        int? seed = null,
-        StringSink? reportCollector = null) =>
+    private static Func<string, IRecorder> SpyArteries(
+        SpyRecorder evidenceCollector,
+        SpyRecorder logCollector,
+        int seed,
+        SpyRecorder reportCollector) =>
         fn =>
         {
             var normalized = Normalize(fn);
             if (normalized == Normalize(DefaultEvidenceFileName())) return evidenceCollector;
             if (normalized == Normalize(DefaultEvidenceLogFileName())) return logCollector;
             if (normalized == Normalize($".quickcheckr/MyQuickCheckrTest/vault/report_{seed}.qr"))
-                return reportCollector ?? Install.Null;
-            return Install.Null;
+                return reportCollector;
+            return reportCollector;
         };
 
     [Fact]
@@ -95,20 +100,21 @@ This *evidence* can later be used to potentially solve *Cold Cases*.")]
     public void EvidenceLocation()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
         TheJournalist.Exposes(() =>
             Checkr.Spec("Fails", () => false).Run(1862095796, cfg =>
                 Configure(AddCustodian(
                     cfg,
                     collector,
-                    SpyArteries(evidence, log)))));
+                    SpyArteries(evidence, log, 42, new SpyRecorder()),
+                    []))));
         Assert.Equal(3, collector.Count);
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(collector[1]));
         Assert.Single(evidence.Values);
         Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
         Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(collector[2]));
         Assert.Single(log.Values);
-        Assert.Equal($"Added Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
+        Assert.Equal($"Added Seed: 1862095796.", log.Values[0]);
     }
 }

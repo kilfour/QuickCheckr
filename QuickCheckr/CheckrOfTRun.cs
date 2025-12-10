@@ -56,9 +56,8 @@ public static class CheckrOfTRun
         {
             var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
 
-            Signal.From<string>(a => Pulse.Trace(a))
-                .SetArtery(config.Custodian.Recorder(filenameCf))
-                .Pulse(TheClerk.Transcribes(caseFile));
+            config.Custodian.Recorder(filenameCf)
+                .Append(TheClerk.Transcribes(caseFile));
 
             Vault.From(config).AddSeed(caseFile.Verdict!.Seed,
                 executionsPerRun.NumberOfExecutions,

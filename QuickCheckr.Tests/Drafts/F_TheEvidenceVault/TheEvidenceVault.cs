@@ -1,6 +1,5 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Protocol;
-using QuickPulse.Arteries;
 using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
@@ -19,7 +18,7 @@ public class TheEvidenceVault : BaseTest
     private static CheckrConfig AddCustodian(
         CheckrConfig cfg,
         List<string> collector,
-        Func<string, IArtery>? artery = null,
+        Func<string, IRecorder> recorder,
         IEnumerable<string>? entries = null)
         => cfg with
         {
@@ -28,7 +27,7 @@ public class TheEvidenceVault : BaseTest
                 Recorder = fn =>
                 {
                     collector.Add(fn);
-                    return artery == null ? Install.Null : artery(fn);
+                    return recorder(fn);
                 },
                 Retriever = fn => entries ?? [],
             }
@@ -46,19 +45,19 @@ public class TheEvidenceVault : BaseTest
     private static string DefaultEvidenceLogFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql";
 
-    private static Func<string, IArtery> SpyArteries(
-        Collector<string> evidenceCollector,
-        Collector<string> logCollector,
-        int? seed = null,
-        StringSink? reportCollector = null) =>
+    private static Func<string, IRecorder> SpyArteries(
+        SpyRecorder evidenceCollector,
+        SpyRecorder logCollector,
+        int? seed,
+        SpyRecorder reportCollector) =>
         fn =>
         {
             var normalized = Normalize(fn);
             if (normalized == Normalize(DefaultEvidenceFileName())) return evidenceCollector;
             if (normalized == Normalize(DefaultEvidenceLogFileName())) return logCollector;
             if (normalized == Normalize($".quickcheckr/MyQuickCheckrTest/vault/report_{seed}.qr"))
-                return reportCollector ?? Install.Null;
-            return Install.Null;
+                return reportCollector;
+            throw new Exception($"Unexpected artifact: {fn}");
         };
 
     [CodeSnippet]
@@ -78,14 +77,14 @@ This will create a report per seed in the evidence file and a log of all evidenc
     public void ReviewingColdCases()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
 
         RunColdCasesReview(Checkr.Spec("Fails", () => false),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
-                    SpyArteries(evidence, log),
+                    SpyArteries(evidence, log, 1862095796, new SpyRecorder()),
                     ["1862095796,1,Fails"])));
 
         Assert.Equal(3, collector.Count);
@@ -101,9 +100,9 @@ This will create a report per seed in the evidence file and a log of all evidenc
     public void ReviewingColdCases_SeedStillFails()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
-        var report = Text.Capture();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
+        var report = new SpyRecorder();
 
         RunColdCasesReview(Checkr.Spec("Fails", () => false),
             cfg => Configure(AddCustodian(
@@ -112,8 +111,8 @@ This will create a report per seed in the evidence file and a log of all evidenc
                     SpyArteries(evidence, log, 1862095796, report),
                     ["1862095796,1,Fails"])));
         Assert.Single(log.Values);
-        Assert.Equal($"Run failed for Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
-        var reader = LinesReader.FromText(report.Content());
+        Assert.Equal($"Run failed for Seed: 1862095796.", log.Values[0]);
+        var reader = LinesReader.FromText(report.Values[0]);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
         Assert.Equal(" Seed:                    1862095796", reader.NextLine());
@@ -130,9 +129,9 @@ This will create a report per seed in the evidence file and a log of all evidenc
     public void ReviewingColdCases_SeedPasses()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
-        var report = Text.Capture();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
+        var report = new SpyRecorder();
 
         RunColdCasesReview(Checkr.Spec("Fails", () => true),
             cfg => Configure(AddCustodian(
@@ -141,8 +140,8 @@ This will create a report per seed in the evidence file and a log of all evidenc
                     SpyArteries(evidence, log, 1862095796, report),
                     ["1862095796,1,Fails"])));
         Assert.Single(log.Values);
-        Assert.Equal($"Run passed for Seed: 1862095796.{Environment.NewLine}", log.Values[0]);
-        var reader = LinesReader.FromText(report.Content());
+        Assert.Equal($"Run passed for Seed: 1862095796.", log.Values[0]);
+        var reader = LinesReader.FromText(report.Values[0]);
         Assert.Equal(" Passed Specs", reader.NextLine());
         Assert.Equal(" - Fails: 1x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
@@ -161,14 +160,14 @@ In this case we use:")]
     public void ClosingColdCases()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
 
         RunCloseResolvedColdCases(Checkr.Spec("Fails", () => false),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
-                    SpyArteries(evidence, log),
+                    SpyArteries(evidence, log, 1862095796, new SpyRecorder()),
                     ["1862095796,1,Fails"])));
 
         Assert.Equal(3, collector.Count);
@@ -185,24 +184,29 @@ In this case we use:")]
 
     [Fact]
     [DocContent(
-@"If however a run for a given seed no longer fails, the seed is removed from the evidence vault, and no report is generated for the passing run.")]
+@"If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
+and no report is generated for the passing run.  
+Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.")]
     public void ClosingColdCasesNowPass()
     {
         var collector = new List<string>();
-        var evidence = Collect.ValuesOf<string>();
-        var log = Collect.ValuesOf<string>();
+        var evidence = new SpyRecorder();
+        var log = new SpyRecorder();
+        var report = new SpyRecorder();
 
         RunCloseResolvedColdCases(Checkr.Spec("Passes", () => true),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
-                    SpyArteries(evidence, log),
+                    SpyArteries(evidence, log, 1862095796, report),
                     ["1862095796,1,Fails"])));
 
-        Assert.Equal(2, collector.Count);
+        Assert.Equal(3, collector.Count);
         Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence.qv"), Normalize(collector[0]));
         Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/evidence-log.ql"), Normalize(collector[1]));
+        Assert.Equal(Normalize(".quickcheckr/MyQuickCheckrTest/vault/report_1862095796.qr"), Normalize(collector[2]));
         Assert.Empty(evidence.Values);
-        ExplainMe<TheEvidenceVault>(true);
+        Assert.True(evidence.Cleared);
+        Assert.True(report.Cleared);
     }
 }

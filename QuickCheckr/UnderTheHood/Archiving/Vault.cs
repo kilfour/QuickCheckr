@@ -20,18 +20,16 @@ public class EvidenceVault : Vault
     private readonly string logPath;
     private readonly HashSet<VaultEntry> entries;
 
-    private readonly Signal<string> evidenceSignal;
-    private readonly Signal<string> logSignal;
+    private readonly IRecorder evidenceRecorder;
+    private readonly IRecorder logRecorder;
 
     public EvidenceVault(CheckrRunnerConfig config)
     {
         path = GetVaultPath(config.FileAs, "evidence.qv");
         logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         entries = GetVaultEntries(config);
-        evidenceSignal = Signal.From<string>(a => Pulse.Trace(a))
-            .SetArtery(config.Custodian.Recorder(path));
-        logSignal = Signal.From<string>(a => Pulse.Trace(a))
-            .SetArtery(config.Custodian.Recorder(logPath));
+        evidenceRecorder = config.Custodian.Recorder(path);
+        logRecorder = config.Custodian.Recorder(logPath);
     }
     private HashSet<VaultEntry> GetVaultEntries(CheckrRunnerConfig config)
     {
@@ -52,24 +50,27 @@ public class EvidenceVault : Vault
             var caseFile = new CheckrRunner(check, config, entry.ExecutionsPerRun).Run();
             if (caseFile.HasVerdict())
             {
-                logSignal.Pulse($"Run failed for Seed: {entry.Seed}.{Environment.NewLine}");
+                logRecorder.Append($"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    Signal.From<string>(a => Pulse.Trace(a))
-                        .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
-                        .Pulse(TheClerk.Transcribes(caseFile));
+                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
+                        .Append(TheClerk.Transcribes(caseFile));
                 }
             }
             else
             {
-                logSignal.Pulse($"Run passed for Seed: {entry.Seed}.{Environment.NewLine}");
+                logRecorder.Append($"Run passed for Seed: {entry.Seed}.");
                 if (closeResolved)
+                {
                     Remove(entry);
+                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
+                        .Clear();
+                }
+
                 else if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    Signal.From<string>(a => Pulse.Trace(a))
-                        .SetArtery(config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr")))
-                        .Pulse(TheClerk.Transcribes(caseFile));
+                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
+                        .Append(TheClerk.Transcribes(caseFile));
                 }
             }
         }
@@ -85,7 +86,7 @@ public class EvidenceVault : Vault
     {
         if (entries.Add(vaultEntry))
         {
-            logSignal.Pulse($"Added Seed: {vaultEntry.Seed}.{Environment.NewLine}");
+            logRecorder.Append($"Added Seed: {vaultEntry.Seed}.");
         }
         Save();
     }
@@ -104,13 +105,17 @@ public class EvidenceVault : Vault
     {
         if (entries.Remove(vaultEntry))
         {
-            logSignal.Pulse($"Removed Seed: {vaultEntry.Seed}.{Environment.NewLine}");
-            Save();
+            logRecorder.Append($"Removed Seed: {vaultEntry.Seed}.");
         }
     }
 
     private void Save()
     {
-        evidenceSignal.Pulse(entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"));
+        foreach (var entry in entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"))
+        {
+            evidenceRecorder.Append(entry);
+        }
+        if (entries.Count == 0)
+            evidenceRecorder.Clear();
     }
 }
