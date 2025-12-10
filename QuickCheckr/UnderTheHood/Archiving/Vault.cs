@@ -20,8 +20,8 @@ public class EvidenceVault : Vault
     private readonly string logPath;
     private readonly HashSet<VaultEntry> entries;
 
-    private readonly IRecorder evidenceRecorder;
-    private readonly IRecorder logRecorder;
+    private readonly IEvidenceRecorder evidenceRecorder;
+    private readonly IEvidenceRecorder logRecorder;
 
     public EvidenceVault(CheckrRunnerConfig config)
     {

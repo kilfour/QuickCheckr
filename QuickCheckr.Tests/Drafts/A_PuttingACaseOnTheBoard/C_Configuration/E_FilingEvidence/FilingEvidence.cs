@@ -19,7 +19,7 @@ public class FilingEvidence : BaseTest
     private static CheckrConfig AddCustodian(
         CheckrConfig cfg,
         List<string> collector,
-        Func<string, IRecorder> recorder,
+        Func<string, IEvidenceRecorder> recorder,
         IEnumerable<string> entries)
         => cfg with
         {
@@ -72,7 +72,7 @@ public class FilingEvidence : BaseTest
     private static string DefaultEvidenceLogFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql";
 
-    private static Func<string, IRecorder> SpyArteries(
+    private static Func<string, IEvidenceRecorder> SpyArteries(
         SpyRecorder evidenceCollector,
         SpyRecorder logCollector,
         int seed,
