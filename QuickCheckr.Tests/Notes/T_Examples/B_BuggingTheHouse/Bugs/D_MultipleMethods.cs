@@ -66,7 +66,7 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 	{
 		return
 			from bughouse in Trackr.Stashed(() => new BugHouse())
-			from ops in Checkr.OneOf(
+			from operations in Checkr.OneOf(
 				// --
 				from i in Checkr.Input("Int", Fuzzr.Int())
 				from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))

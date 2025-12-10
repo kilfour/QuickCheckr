@@ -1,10 +1,14 @@
 ## Short Term Work (Current Version: 0.0.3)
 
+### Issues 
+* Trace problem: QuickCheckr.Tests.Notes.T_Examples.C_AStatefulList.AStatefulList
+
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
   * Warn the user, suggest fix.
 
 ### 0.0.4
+* Doc Issues (and fix if possible) **<= Doing**  
 * Vault interface finished, implementation stable
   * Implement: checkr.CloseResolvedColdCases(...)
   * Create an artery (or something else) derived from File.Log that deletes file if receiving empty collection as param to absorb.

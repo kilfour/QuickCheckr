@@ -12,7 +12,7 @@ public class ShortTermMemory
     public IReadOnlyList<int> Numbers => [.. memories.Keys];
 
     public int Reset()
-        => CurrentExecutionNumber = Numbers.FirstOrDefault();
+        => CurrentExecutionNumber = Numbers[0];
 
     public int StartNewExecution()
     {
