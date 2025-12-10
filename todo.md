@@ -2,6 +2,7 @@
 
 ### Issues 
 * Trace problem: QuickCheckr.Tests.Notes.T_Examples.C_AStatefulList.AStatefulList
+* RemoveOneByOneStrategy : // check if this keeps the empty list
 
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
@@ -9,7 +10,7 @@
 * Add type to shrinking clue (maybe temp)
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
-  
+
 ### 0.0.4
 * Doc Issues (and fix if possible) **<= Doing**  
 * Vault interface finished, implementation stable

@@ -53,11 +53,8 @@ public class RemoveOneByOneStrategy
             theList.Insert(ix, before);
             index++;
         }
-        // Type listType = typeof(List<>).MakeGenericType(elementType);
-        // var newList = Activator.CreateInstance(listType)!;
-        // if (verifier.RunPassed(executionId, key, state.GetSubstitute(listType, null!)!))
-        //if (verifier.RunPassed(executionId, key, null!))
-        if (elementCount != shrinkCount)
+
+        if (elementCount == 0 || elementCount != shrinkCount)
         {
             var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(executionId, fullKey, value, theList);
             finalClue.AddToCount(shrinkCount);

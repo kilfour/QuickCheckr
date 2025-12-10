@@ -209,6 +209,25 @@ together with the number of executions, relevant actions and inputs that were re
   !! Spec Failed: input.Count() > 2, () => !input.Contains(0)
  ===============================================================
 ```
+##### Empty List Is The Culprit
+```csharp
+    from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
+    from listNotEmpty in Checkr.Spec("List is not empty", () => list.Any())
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\H_EmptyListIsTheCulprit.cs:20:1
+ Original failing run:    1 execution
+ Seed:                    2077876521
+ ------------------------------------------------------------
+  Executed:
+   - Input: List = [  ]
+ =====================================
+  !! Spec Failed: List is not empty
+ =====================================
+```
 ##### Array Shrinking
 ```csharp
 var array = new[] { 42, 2, 3 };

@@ -20,7 +20,7 @@ public class TestTemplate : BaseTest
             GetCheckr().Run(100.Runs(), 1.ExecutionsPerRun()));
         WriteAsserts(article, true);
         WriteReport<TestTemplate>(article, true);
-        ExplainMe<TestTemplate>(true);
+        ExplainMe<TestTemplate>(false);
         Verify(article);
     }
 
