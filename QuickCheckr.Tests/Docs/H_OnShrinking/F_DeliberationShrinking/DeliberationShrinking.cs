@@ -122,17 +122,17 @@ Let's configure a *DeliberationPolicy*, looking for a fail-case with less execut
     }
 
     [Fact]
+    [DocHeader("An Eager Shrinker")]
     [DocContent(
 @"Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
 Currently the only identified cases where this happens is if more than one input triggers the same failure.")]
     [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedy))]
     [DocContent(
 @"Now when the list contains multiple elements `1`, we might get:")]
-    [DocCodeFile("DeliberationShrinkingMinimal.txt", "text")]
+    [DocCodeFile("DeliberationShrinkingGreedy.txt", "text")]
     [DocContent(
-@"It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (correct),
-but the element values are considered irrelevant (wrong).")]
-    [DocContent("For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:")]
+@"It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
+but the element values are considered irrelevant (*wrong*).")]
     public void RunTest_DeliberatedGreedy()
     {
         var article = TheJournalist.Exposes(() =>

@@ -273,6 +273,7 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  - No Overdraft: 5x
  ------------------------------------------------------------
 ```
+### An Eager Shrinker
 Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
 Currently the only identified cases where this happens is if more than one input triggers the same failure.  
 ```csharp
@@ -286,27 +287,21 @@ Currently the only identified cases where this happens is if more than one input
 Now when the list contains multiple elements `1`, we might get:  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:110:1
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    1825120884
+ Test:                    RunTest_DeliberatedGreedy
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:137:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    227109555
  ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 7
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 6
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
- - No Overdraft: 5x
- ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, _ ]
+   - Trace: List = [ 1, 2, 1 ]
+ ======================================
+  !! Spec Failed: Does not contain 1
+ ======================================
 ```
-It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (correct),
-but the element values are considered irrelevant (wrong).  
-For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
+It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
+but the element values are considered irrelevant (*wrong*).  
 For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
