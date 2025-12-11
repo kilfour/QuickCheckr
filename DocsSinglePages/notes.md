@@ -161,8 +161,9 @@ together with the number of executions, relevant actions and inputs that were re
  ========================================
 ```
 ##### Multiple Causes
+This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
 ```csharp
-    from substite in Trackr.StandIn(666)
+    // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
     from trace in Checkr.Trace("List", () => input)
     from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(1)",
@@ -185,8 +186,9 @@ together with the number of executions, relevant actions and inputs that were re
  ===============================================================
 ```
 ##### Multiple Causes Default In Spec
+This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
 ```csharp
-    from substite in Trackr.StandIn(666)
+    // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([0, 2, 0]))
     from trace in Checkr.Trace("List", () => input)
     from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(0)",
@@ -412,7 +414,7 @@ Note the shrinking of the `Irrelevant` property.
  Test:                    Example
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:22:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
  ------------------------------------------------------------
   Executed: The Answer
@@ -471,8 +473,9 @@ The current workaround to avoid the irrelevant input reporting involves helping 
  ===========================================================================
 ```
 ##### Multiple Relevant Properties
+This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
 ```csharp
-    from standIn in Trackr.StandIn(123)
+    // from standIn in Trackr.StandIn(123)
     from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
     from trace in Checkr.Trace("Original", () => obj)
     from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",

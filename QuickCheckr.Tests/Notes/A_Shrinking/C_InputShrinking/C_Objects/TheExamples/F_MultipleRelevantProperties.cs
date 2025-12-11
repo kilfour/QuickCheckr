@@ -11,7 +11,8 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExam
 [DocFile]
 public class F_MultipleRelevantProperties : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "Removed StandIn")]
+    [DocContent("This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.")]
     [DocExample(typeof(F_MultipleRelevantProperties), nameof(GetCheckr))]
     [DocCodeFile("F_MultipleRelevantProperties.txt", "text")]
     public void RunTest()
@@ -42,7 +43,7 @@ public class F_MultipleRelevantProperties : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from standIn in Trackr.StandIn(123)
+            // from standIn in Trackr.StandIn(123)
             from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
             from trace in Checkr.Trace("Original", () => obj)
             from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",

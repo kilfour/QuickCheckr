@@ -10,7 +10,8 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.The
 [DocFile]
 public class G_MultipleCauses : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "Removed StandIn")]
+    [DocContent("This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.")]
     [DocExample(typeof(G_MultipleCauses), nameof(GetCheckr))]
     [DocCodeFile("G_MultipleCauses.txt", "text")]
     public void RunTest()
@@ -40,7 +41,7 @@ public class G_MultipleCauses : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from substite in Trackr.StandIn(666)
+            // from substite in Trackr.StandIn(666)
             from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
             from trace in Checkr.Trace("List", () => input)
             from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(1)",

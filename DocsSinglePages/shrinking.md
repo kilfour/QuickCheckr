@@ -323,3 +323,30 @@ private static CheckrConfig Configure(CheckrConfig config)
   !! Spec Failed: Does not contain 1
  ======================================
 ```
+A similar thing can happen when shrinking objects, and the solution is exactly the same  
+```csharp
+    from obj in Checkr.Input("BaggyInters",
+        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+        from result in Fuzzr.One<BaggyInters>()
+        select result)
+    from trace in Checkr.Trace("Original", () => obj)
+    from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+        () => obj.IntOne != 1 && obj.IntThree != 1)
+    select Case.Closed;
+```
+**With Deliberation Policty:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyObjects
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1103336658
+ ------------------------------------------------------------
+  Executed:
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+ ========================================================
+  !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ========================================================
+```

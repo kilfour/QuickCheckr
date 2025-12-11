@@ -1,11 +1,11 @@
 ## Short Term Work (Current Version: 0.0.3)
 
 ### Issues 
+(null issues in object shrinking)
 
 ### Ideas
 * Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
   * Warn the user, suggest fix.
-* Add type to shrinking clue (maybe)
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
@@ -30,8 +30,6 @@
 * Doc configuration
   * Started see the 'TheEvidenceVault'
   * Investigations
-* Known issues, limitations (null issues in object shrinking, multiple same values => greedy shrinking)
-  * Consolidation: Lots of info and tests in notes
 * look into different collection shrinking
   * limitations
   * known issues

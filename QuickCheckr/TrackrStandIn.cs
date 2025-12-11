@@ -9,7 +9,7 @@ public static partial class Trackr
     /// Use when repeated or dependent values would otherwise cause greedy shrinking,
     /// allowing the shrinker to rewrite candidates to a stable neutral value instead of removing structure.
     /// </summary>
-    public static CheckrOf<Case> StandIn<T>(T value) =>
-        state => { state.RegisterSubstitute(value); return CheckrResult.CaseOnly(state); };
+    // public static CheckrOf<Case> StandIn<T>(T value) =>
+    //     state => { state.RegisterSubstitute(value); return CheckrResult.CaseOnly(state); };
 
 }
