@@ -65,9 +65,6 @@ public static partial class Checkr
     private static CheckrOf<T> TryCatch<T>(string key, Func<T> func) =>
         state =>
         {
-            if (ActionNeedsToBeSkipped(key, state))
-                return CheckrResult.Some(state, (T)state.GetSubstitute(typeof(T), default(T)!)!);
-            //return CheckrResult.Default<T>(state);
             state.Memory.StoreAction(key);
             try
             {
@@ -81,6 +78,4 @@ public static partial class Checkr
             }
         };
 
-    private static bool ActionNeedsToBeSkipped(string key, CheckrState state)
-        => state.EvidenceRecorder.IsReplay && !state.Memory.HasAction(key);
 }

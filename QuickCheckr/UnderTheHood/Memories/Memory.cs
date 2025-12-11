@@ -103,8 +103,7 @@ public class Memory
     // Actions
     public void StoreAction(string key)
         => ShortTermMemory.StoreAction(actGuard.Check(key));
-    public bool HasAction(string key)
-        => ShortTermMemory.HasAction(key);
+
     // --------------------------------------------------------------------------
     // Traces
     public bool Tracing { get; set; } = false;

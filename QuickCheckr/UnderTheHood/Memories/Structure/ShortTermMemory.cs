@@ -52,8 +52,6 @@ public class ShortTermMemory
     // Actions
     public void StoreAction(string key)
         => Current.StoreAction(key);
-    public bool HasAction(string key)
-        => Current.GetActions().Contains(key);
     // --------------------------------------------------------------------------
     // Traces
     public void StoreTrace(string key, Func<string> factory)

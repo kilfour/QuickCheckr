@@ -21,9 +21,7 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Actions
-    public void RemoveAction(string key) => actions.Remove(key);
     public void StoreAction(string key) => actions.Add(key);
-    public bool HasAction(string key) => actions.Contains(key);
     public IReadOnlyList<string> GetActions() => [.. actions.Order()];
     private readonly HashSet<string> actions = [];
     // --------------------------------------------------------------------------

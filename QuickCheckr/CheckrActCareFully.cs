@@ -40,8 +40,6 @@ public static partial class Checkr
     private static CheckrOf<T> TryCapture<T>(this string key, Func<T> func, Func<Exception, T> onError) =>
         state =>
         {
-            if (ActionNeedsToBeSkipped(key, state))
-                return CheckrResult.Default<T>(state);
             state.Memory.StoreAction(key);
             try
             {
