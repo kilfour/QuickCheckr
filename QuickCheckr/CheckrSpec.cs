@@ -26,7 +26,7 @@ public static partial class Checkr
             state.Memory.SpecGuard.Check(key);
             if (state.EvidenceRecorder.SpecNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
-            try
+            //try
             {
                 if (condition())
                     state.EvidenceRecorder.SpecPassed(key);
@@ -34,11 +34,11 @@ public static partial class Checkr
                     state.EvidenceRecorder.SpecFailed(key);
                 return CheckrResult.CaseOnly(state);
             }
-            catch (Exception exception)
-            {
-                state.Docket.Record(new EvidenceFailure(exception));
-                state.EvidenceRecorder.RecordFailure(exception);
-                return CheckrResult.CaseOnly(state);
-            }
+            // catch (Exception exception)
+            // {
+            //     state.Docket.Record(new EvidenceFailure(exception));
+            //     state.EvidenceRecorder.RecordFailure(exception);
+            //     return CheckrResult.CaseOnly(state);
+            // }
         };
 }

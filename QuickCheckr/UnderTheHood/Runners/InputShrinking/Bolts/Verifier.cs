@@ -12,7 +12,7 @@ public class Verifier(CheckrState State,
 
     public virtual bool RunFailed(int executionId, string key, object value)
     {
-        try
+        //try
         {
             State.StartReplay();
             using (State.Memory.ScopedSwap(executionId, key, value))
@@ -24,12 +24,12 @@ public class Verifier(CheckrState State,
                 }
             }
         }
-        catch (Exception exception)
-        {
-            // is this the only problem ?
-            State.Docket.Record(new EvidenceFailure(exception));
-            State.EvidenceRecorder.RecordFailure(exception);
-        }
+        // catch (Exception exception)
+        // {
+        //     // is this the only problem ?
+        //     State.Docket.Record(new EvidenceFailure(exception));
+        //     State.EvidenceRecorder.RecordFailure(exception);
+        // }
         return State.EvidenceRecorder.Failed();
     }
 }

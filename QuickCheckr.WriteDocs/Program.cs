@@ -4,6 +4,7 @@ using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.H_OnShrinking;
 using QuickCheckr.Tests.Docs.T_Cookbook;
 using QuickCheckr.Tests.Drafts;
+using QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard;
 using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 
@@ -22,5 +23,7 @@ Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
 
+
+Explain.This<PuttingACaseOnTheBoard>("temp-runner.md");
 
 

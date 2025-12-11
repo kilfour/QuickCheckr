@@ -1,5 +1,4 @@
 ## Short Term Work (Current Version: 0.0.3)
-* Refactor shrinking strategies, get actual type everywhere pass it down through ShrinkingInfo
 
 ### Issues 
 

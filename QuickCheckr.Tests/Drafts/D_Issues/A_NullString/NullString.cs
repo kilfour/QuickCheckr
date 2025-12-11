@@ -5,7 +5,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.D_Issues.A_NullString;
+namespace QuickCheckr.Tests.Drafts.D_Issues.A_NullString;
 
 [DocFile]
 public class NullString : BaseTest
