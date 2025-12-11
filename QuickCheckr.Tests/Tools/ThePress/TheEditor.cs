@@ -83,7 +83,7 @@ public class TheEditor
             $"Assert.Equal({article.Total().Traces()}, article.Total().Traces());")
         from warningCount in EmitIf(
             article.Total().Warnings() > 0,
-            $"Assert.Equal({article.Total().Traces()}, article.Total().Warnings());")
+            $"Assert.Equal({article.Total().Warnings()}, article.Total().Warnings());")
         from passedSpecCount in EmitIf(
             article.Total().PassedSpecs() > 0,
             $"Assert.Equal({article.Total().PassedSpecs()}, article.Total().PassedSpecs());")

@@ -14,13 +14,18 @@ public class E_CheckingNulls : BaseTest
     [DocHeader("Catching a Null Reference Exception")]
     [DocContent("Any exception thrown by the Checkr will be caught and considered a failure.")]
     [DocExample(typeof(E_CheckingNulls), nameof(GetCheckr))]
-    [DocContent("Note the shrinking of the `Irrelevant` property.")]
+    [DocContent(
+@"Note the shrinking of the `Irrelevant` property.  
+In addition, QuickCheckr reports a shrinking warning:  
+> Null value for type 'Life' at input 'The Universe.Everything'.  
+This tells you that the shrinker reached a `null` value that it cannot safely reduce any further.  
+")]
     [DocCodeFile("E_CheckingNulls.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(358877731));
-        WriteAsserts(article);
+        WriteAsserts(article, false);
         WriteReport<E_CheckingNulls>(article, false);
         Verify(article);
     }
@@ -31,6 +36,7 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
@@ -38,6 +44,8 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal("{ Everything: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ Everything: null, Irrelevant: { Answer: 78 } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Null value for type 'Life' at input 'The Universe.Everything'.", article.Execution(1).Warning(1).Read().Value);
+
     }
 
     [CodeSnippet]
@@ -57,14 +65,14 @@ public class E_CheckingNulls : BaseTest
     }
 
     [Fact]
-    [DocContent("But, when `Irrelevant` is `null`, QuickCheckr can not shrink.")]
+    [DocContent("But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shrink either property, and both limitations are reported as warnings:")]
     [DocCodeFile("E_CheckingNulls_NotShrinkingNull.txt", "text")]
     public void RunTest_NotShrinkingNull()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1269557792));
-        WriteAsserts(article);
-        WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt");
+        WriteAsserts(article, false);
+        WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt", false);
         Verify_NotShrinkingNull(article);
     }
 
@@ -74,6 +82,7 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(2, article.Total().Warnings());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
@@ -81,10 +90,12 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Null value for type 'Life' at input 'The Universe.Everything'.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal("Null value for type 'Life' at input 'The Universe.Irrelevant'.", article.Execution(1).Warning(2).Read().Value);
     }
 
     [Fact]
-    [DocContent("The current workaround to avoid the irrelevant input reporting involves helping the shrinker by rewriting your checkr.")]
+    [DocContent("The current workaround to avoid the irrelevant input being reported as relevant is to help the shrinker by rewriting your checkr.")]
     [DocExample(typeof(E_CheckingNulls), nameof(GetCheckr_Alternative))]
     [DocCodeFile("E_CheckingNulls_Alternative.txt", "text")]
     public void RunTest_Alternative()
@@ -92,7 +103,7 @@ public class E_CheckingNulls : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr_Alternative().Run(1269557792));
         WriteAsserts(article);
-        WriteReport(article, "E_CheckingNulls_Alternative.txt");
+        WriteReport(article, "E_CheckingNulls_Alternative.txt", false);
         Verify_Alternative(article);
     }
 
