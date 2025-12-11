@@ -479,6 +479,31 @@ The current workaround to avoid the irrelevant input being reported as relevant 
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
 ```
+Or, you can solve the issue using a `DeliberationPolicy` that limits the number of warnings:  
+```csharp
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTest_WithDeliberationPolicy
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:145:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1448910979
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 36 } }
+   - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
+ ===========================================================================
+  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 163
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
+ ===========================================================================
+```
+As you can see the warning is still there for `Universe.Everything` but this is a relevant input,
+so the warning can be ignored.  
+Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.  
 ##### Multiple Relevant Properties
 This test is skipped because Trackr.StandIn is removed.  
 ```csharp

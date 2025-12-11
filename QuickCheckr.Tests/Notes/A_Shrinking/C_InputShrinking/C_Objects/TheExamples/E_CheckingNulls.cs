@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -133,6 +134,30 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
             from trace in Checkr.Trace("The Universe", () => universe)
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
             select Case.Closed;
+    }
+
+    [Fact]
+    [DocContent("Or, you can solve the issue using a `DeliberationPolicy` that limits the number of warnings:")]
+    [DocExample(typeof(E_CheckingNulls), nameof(Configure))]
+    [DocCodeFile("E_CheckingNulls_Deliberated.txt", "text")]
+    [DocContent(
+@"As you can see the warning is still there for `Universe.Everything` but this is a relevant input,
+so the warning can be ignored.  
+Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.")]
+    public void RunTest_WithDeliberationPolicy()
+    {
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(50.Runs(), Configure));
+        WriteAsserts(article, false);
+        WriteReport(article, "E_CheckingNulls_Deliberated.txt", false);
+        Verify_Deliberated(article);
+    }
+
+    private static CheckrConfig Configure(CheckrConfig config)
+        => config with { DeliberationPolicy = DeliberationPolicy.MinimumWarnings };
+
+    private static void Verify_Deliberated(Article article)
+    {
+        Assert.Equal(1, article.Total().Warnings());
     }
 
     public class TheUniverse

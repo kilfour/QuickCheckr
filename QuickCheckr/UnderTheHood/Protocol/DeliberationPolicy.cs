@@ -12,4 +12,8 @@ public static class DeliberationPolicy
 
     public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumShrinkCount =
         (a, b) => a.Verdict!.ShrinkCount > b.Verdict!.ShrinkCount ? a : b;
+    public static readonly Func<CaseFile, CaseFile, CaseFile> MinimumWarnings =
+        (a, b) =>
+            a.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) <
+            b.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) ? a : b;
 }
