@@ -396,8 +396,7 @@ Running the Checkr without shrinking yields a report similar to this:
  - No Overdraft: 7x
  ------------------------------------------------------------
 ```
-This shows us something useful:  
-**QuickCheckr records the branch actually taken for each execution.**  
+This shows us that **QuickCheckr records the branch actually taken for each execution**.    
 There is no guesswork.  
 #### Shrinking Branching Behaviour
 And if we let the QuickCheckr shrinker do its work:  

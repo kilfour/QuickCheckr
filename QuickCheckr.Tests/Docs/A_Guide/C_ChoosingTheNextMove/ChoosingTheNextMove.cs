@@ -56,8 +56,7 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
     [DocContent("Running the Checkr without shrinking yields a report similar to this:")]
     [DocCodeFile("ChoosingTheNextMove.txt", "text")]
     [DocContent(
-@"This shows us something useful:  
-**QuickCheckr records the branch actually taken for each execution.**  
+@"This shows us that **QuickCheckr records the branch actually taken for each execution**.    
 There is no guesswork.")]
     public void RunTest()
     {
