@@ -12,7 +12,7 @@ public record ExecutionDeposition
 
     public List<TraceDeposition> TraceDepositions { get; } = [];
 
-    public List<ActionDeposition> WarningDepositions { get; } = [];
+    public List<WarningDeposition> WarningDepositions { get; } = [];
 
     public ExecutionDeposition(int executionId)
     {
@@ -27,6 +27,8 @@ public record ExecutionDeposition
             return false;
         if (!TraceDepositions.SequenceEqual(other.TraceDepositions))
             return false;
+        if (!WarningDepositions.SequenceEqual(other.WarningDepositions))
+            return false;
         Times++;
         return true;
     }
@@ -36,6 +38,7 @@ public record ExecutionDeposition
         if (ActionDepositions.Count > 0) return true;
         if (InputDepositions.Count > 0) return true;
         if (TraceDepositions.Count > 0) return true;
+        if (WarningDepositions.Count > 0) return true;
         return false;
     }
 
@@ -54,6 +57,12 @@ public record ExecutionDeposition
     public ExecutionDeposition AddTraceDeposition(TraceDeposition traceDeposition)
     {
         TraceDepositions.Add(traceDeposition);
+        return this;
+    }
+
+    public ExecutionDeposition AddWarningDeposition(WarningDeposition warningDeposition)
+    {
+        WarningDepositions.Add(warningDeposition);
         return this;
     }
 };
