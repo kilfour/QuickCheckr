@@ -10,12 +10,19 @@ public class TheEditor
     private static Flow<Flow> EmitIf(bool flag, string line)
         => Pulse.TraceIf(flag, () => $"        {line}");
 
+    private static readonly Flow<(int, int)> Warning =
+        from cursor in Pulse.Start<(int executionIndex, int warningIndex)>()
+        from article in Pulse.Draw<Article>()
+        let warningArticle = article.Execution(cursor.executionIndex).Warning(cursor.warningIndex).Read()
+        from value in Emit($"Assert.Equal(\"{warningArticle.Value}\", article.Execution({cursor.executionIndex}).Warning({cursor.warningIndex}).Read().Value);")
+        select cursor;
+
     private static readonly Flow<(int, int)> Trace =
         from cursor in Pulse.Start<(int executionIndex, int traceIndex)>()
         from article in Pulse.Draw<Article>()
-        let inputArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
-        from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
-        from inputValue in Emit($"Assert.Equal(\"{inputArticle.Value}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
+        let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
+        from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
+        from value in Emit($"Assert.Equal(\"{traceArticle.Value}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
         select cursor;
 
     private static readonly Flow<(int, int)> Input =
@@ -42,6 +49,7 @@ public class TheEditor
         from actions in Pulse.ToFlow(Action, Enumerable.Range(1, executionDeposition.ActionDepositions.Count).Select(a => (index, a)))
         from inputs in Pulse.ToFlow(Input, Enumerable.Range(1, executionDeposition.InputDepositions.Count).Select(a => (index, a)))
         from traces in Pulse.ToFlow(Trace, Enumerable.Range(1, executionDeposition.TraceDepositions.Count).Select(a => (index, a)))
+        from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select index;
 
     private static readonly Flow<int> PassedSpec =
@@ -73,6 +81,9 @@ public class TheEditor
         from traceCount in EmitIf(
             article.Total().Traces() > 0,
             $"Assert.Equal({article.Total().Traces()}, article.Total().Traces());")
+        from warningCount in EmitIf(
+            article.Total().Warnings() > 0,
+            $"Assert.Equal({article.Total().Traces()}, article.Total().Warnings());")
         from passedSpecCount in EmitIf(
             article.Total().PassedSpecs() > 0,
             $"Assert.Equal({article.Total().PassedSpecs()}, article.Total().PassedSpecs());")

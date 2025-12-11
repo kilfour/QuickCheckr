@@ -17,4 +17,8 @@ public class ExecutionArticle(ExecutionDeposition deposition)
     [StackTraceHidden]
     public TraceArticle Trace(int number)
         => new(deposition.TraceDepositions[number - 1]);
+
+    [StackTraceHidden]
+    public WarningArticle Warning(int number)
+        => new(deposition.WarningDepositions[number - 1]);
 }
