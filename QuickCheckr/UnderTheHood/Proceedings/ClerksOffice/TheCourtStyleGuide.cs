@@ -44,6 +44,12 @@ public static class The
     private readonly static Flow<Flow> line =
         space.Then(LineOf(60)).Then(newLine);
 
+    private readonly static Flow<WarningDeposition> warningDeposition =
+        from input in Pulse.Start<WarningDeposition>()
+        from _ in newLine
+        from __ in Pulse.Trace($"   - WARNING: {input.Value}")
+        select input;
+
     private readonly static Flow<TraceDeposition> traceDeposition =
         from input in Pulse.Start<TraceDeposition>()
         from _ in newLine
@@ -65,15 +71,16 @@ public static class The
     private readonly static Flow<ExecutionDeposition> executionDeposition =
         from input in Pulse.Start<ExecutionDeposition>()
         from nl in newLine
-        from __ in line
+        from _1 in line
         let colon = input.HasContent() ? ":" : ""
-        from ___ in Pulse.Trace($"  Executed{colon}")
-        from ____ in Pulse.Scoped<Decorum>(
+        from _2 in Pulse.Trace($"  Executed{colon}")
+        from _3 in Pulse.Scoped<Decorum>(
             a => a with { Intersperse = Valve.Install() },
             Pulse.ToFlow(actionDeposition, input.ActionDepositions))
-        from _____ in Pulse.TraceIf(input.Times > 1, () => $" ({input.Times} Times)")
-        from ______ in Pulse.ToFlow(inputDeposition, input.InputDepositions)
-        from _______ in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
+        from _4 in Pulse.TraceIf(input.Times > 1, () => $" ({input.Times} Times)")
+        from _5 in Pulse.ToFlow(inputDeposition, input.InputDepositions)
+        from _6 in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
+        from _7 in Pulse.ToFlow(warningDeposition, input.WarningDepositions)
         select input;
 
     private readonly static Flow<AssayerDeposition> assayerDeposition =
