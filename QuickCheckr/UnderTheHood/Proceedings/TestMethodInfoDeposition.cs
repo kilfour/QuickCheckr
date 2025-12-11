@@ -1,15 +1,3 @@
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public class TestMethodInfoDeposition
-{
-    public string MethodName { get; }
-    public string SourceFile { get; }
-    public int LineNumber { get; }
-
-    public TestMethodInfoDeposition(string methodName, string sourceFile, int lineNumber)
-    {
-        MethodName = methodName;
-        SourceFile = sourceFile;
-        LineNumber = lineNumber;
-    }
-};
+public record TestMethodInfoDeposition(string MethodName, string SourceFile, int LineNumber);

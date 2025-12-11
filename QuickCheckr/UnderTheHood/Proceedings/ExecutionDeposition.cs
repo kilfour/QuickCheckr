@@ -12,6 +12,8 @@ public record ExecutionDeposition
 
     public List<TraceDeposition> TraceDepositions { get; } = [];
 
+    public List<ActionDeposition> WarningDepositions { get; } = [];
+
     public ExecutionDeposition(int executionId)
     {
         ExecutionId = executionId;

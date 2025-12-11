@@ -1,7 +1,3 @@
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public record ActionDeposition
-{
-    public string Label { get; }
-    public ActionDeposition(string actionLabel) { Label = actionLabel; }
-}
+public record ActionDeposition(string Label);
