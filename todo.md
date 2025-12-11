@@ -1,17 +1,6 @@
 ## Short Term Work (Current Version: 0.0.3)
 
 ### Issues 
-(null issues in object shrinking)
-
-### Ideas
-* Try to identify wonky shrinking through EvidenceRecorder.RecordFailure(Exception exception)
-  * Warn the user, suggest fix.
-* QuickPulse.Show turn manofwealth and taste into composable config
-  => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
-* See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
-  * instead of null, try Fuzzr.One(type) maybe, this might throw though so ...
-    * quickfuzzr shrinking config strategy ? 
-      Shrinkr... == CheckrOf<Case>, just registers and returns `s => CheckrResult.CaseOnly(s);`
 
 ### 0.0.4
 * Doc Issues (and fix if possible) **<= Doing**  
@@ -39,6 +28,14 @@
     * fix trace to promote to cookbook (FIXED)
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 * Start working on the reference
+
+### Ideas
+* QuickPulse.Show turn manofwealth and taste into composable config
+  => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
+* See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
+  * instead of null, try Fuzzr.One(type) maybe, this might throw though so ...
+    * quickfuzzr shrinking config strategy ? 
+      Shrinkr... == CheckrOf<Case>, just registers and returns `s => CheckrResult.CaseOnly(s);`
 
 ## Refactoring and Testing Targets 
 * Nested InputShrinkingClue ? Refactoring Target
