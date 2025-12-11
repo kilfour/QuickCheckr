@@ -481,6 +481,8 @@ The current workaround to avoid the irrelevant input being reported as relevant 
 ```
 Or, you can solve the issue using a `DeliberationPolicy` that limits the number of warnings:  
 ```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumWarnings };
 ```
 ```text
 ------------------------------------------------------------

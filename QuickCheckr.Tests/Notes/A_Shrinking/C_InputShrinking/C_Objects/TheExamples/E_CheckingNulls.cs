@@ -152,6 +152,7 @@ Deliberation did succeed in removing the `Universe.Irrelevant` input from the re
         Verify_Deliberated(article);
     }
 
+    [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
         => config with { DeliberationPolicy = DeliberationPolicy.MinimumWarnings };
 

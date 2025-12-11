@@ -305,7 +305,12 @@ This means:
 
 And together, they let QuickCheckr explore both *pure input variation* and *multi-step behaviour*,
 which is exactly what makes the BugHouse example catchable:
-the failure only emerges when several executions act on the *same* object.  
+the failure only emerges when several executions act on the *same* object.
+
+**Note:**  
+The static factory classes follow the same scoping model:
+- Checkr.* combinators are execution-scoped: they run once per execution and do not persist state.
+- Trackr.* combinators are run-scoped: they hold state that persists across all executions within a run.  
 ### Choosing The Next Move
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
