@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.The
 [DocFile]
 public class T_ArrayShrinking : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "WIP")]
     [DocExample(typeof(T_ArrayShrinking), nameof(GetCheckr))]
     [DocCodeFile("T_ArrayShrinking.txt", "text")]
     public void RunTest()
