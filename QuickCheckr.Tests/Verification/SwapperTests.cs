@@ -19,7 +19,7 @@ public class SwapperTests
     }
 
     private int Get(Memory memory, int executionId, string key) =>
-        (int)memory.ShortTermMemory.GetMemory(executionId).GetInputs()[key]!;
+        (int)memory.ShortTermMemory.GetMemory(executionId).GetInputValues()[key]!;
 
     // [Fact]
     // public void ScopedSwap_list()

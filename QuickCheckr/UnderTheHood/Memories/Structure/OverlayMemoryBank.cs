@@ -4,8 +4,6 @@ namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class OverlayMemoryBank
 {
-    public record TypedValue(object? Value, Type Type);
-
     private readonly Dictionary<string, TypedValue> values = [];
     public IReadOnlyDictionary<string, TypedValue> Values => values;
     public T? Store<T>(string key, Func<T> factory)

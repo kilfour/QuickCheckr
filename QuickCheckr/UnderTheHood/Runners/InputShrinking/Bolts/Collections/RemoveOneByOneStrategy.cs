@@ -7,7 +7,7 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var theList = CloneList.AsOriginalType(info.value!);
+        var theList = CloneList.AsOriginalType(info.Value!);
         var elementCount = theList.Count;
         int index = 0;
         int indexKey = -1;
@@ -20,10 +20,10 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             theList.RemoveAt(ix);
             // ------------------------------------------------------------------------------
             // -- HACKED IN AN ARRAY
-            if (info.value != null)
+            if (info.Value != null)
             {
-                var valueType = info.value.GetType();
-                if (info.value.GetType().IsArray)
+                var valueType = info.Value.GetType();
+                if (info.Value.GetType().IsArray)
                 {
                     var elementType = valueType.GetElementType()!;
                     var array = Array.CreateInstance(elementType, theList.Count);
@@ -31,9 +31,9 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
                     {
                         array.SetValue(theList[i], i);
                     }
-                    if (verifier.RunFailed(info.executionId, info.key, array))
+                    if (verifier.RunFailed(info.ExecutionId, info.Key, array))
                     {
-                        var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.executionId, $"{info.fullKey}.{indexKey}", info.value, theList);
+                        var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.FullKey}.{indexKey}", info.Value, theList);
                         state.Docket.Record(new InputShrinkingClueFound(clue));
                         shrinkCount++;
                         continue;
@@ -41,9 +41,9 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
                 }
             }
             // ------------------------------------------------------------------------------
-            if (verifier.RunFailed(info.executionId, info.key, theList!))
+            if (verifier.RunFailed(info.ExecutionId, info.Key, theList!))
             {
-                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.executionId, $"{info.fullKey}.{indexKey}", info.value, theList);
+                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.FullKey}.{indexKey}", info.Value, theList);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 shrinkCount++;
                 continue;
@@ -54,14 +54,14 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
 
         if (elementCount == 0 || elementCount != shrinkCount)
         {
-            var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(info.executionId, info.fullKey, info.value, theList);
+            var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value, theList);
             finalClue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
         }
         else
         {
-            var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.executionId, info.fullKey, info.value);
+            var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
         }

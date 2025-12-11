@@ -10,8 +10,8 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
         ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var actualType = info.value != null
-            ? info.value.GetType()
+        var actualType = info.Value != null
+            ? info.Value.GetType()
             : typeof(object);
         //var actualType = state.Memory.GetActualType(executionId,key);
         var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(actualType));
@@ -19,17 +19,17 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
             yield break;
 
         var primitiveVals = PrimitiveValues[primitiveKey];
-        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.value)))
+        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
         {
-            if (verifier.RunPassed(info.executionId, info.key, candidate))
+            if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
-                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
+                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
                 yield break;
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.executionId, info.fullKey, info.value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         yield return ignoreClue;
     }

@@ -9,18 +9,18 @@ public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker) : 
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var values = shrinker(info.value!);
-        foreach (var candidate in values.Where(x => !Equals(x, info.value)))
+        var values = shrinker(info.Value!);
+        foreach (var candidate in values.Where(x => !Equals(x, info.Value)))
         {
-            if (verifier.RunPassed(info.executionId, info.key, candidate!))
+            if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
                 var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
-                    info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
+                    info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return [clue];
             }
         }
-        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.executionId, info.fullKey, info.value);
+        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignore));
         return [ignore];
     }

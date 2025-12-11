@@ -14,7 +14,7 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
         CheckrOf<Case> check,
         ShrinkingInfo info)
     {
-        var theList = CloneList.AsOriginalType(info.value!);
+        var theList = CloneList.AsOriginalType(info.Value!);
         var values = new List<string>();
         int index = 0;
         var shrinkCount = 0;
@@ -24,12 +24,12 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
             var before = theList[ix];
             var valueType = before!.GetType();
             var elementType = valueType;
-            using (state.Memory.ScopedSwap(info.executionId, info.key, theList))
+            using (state.Memory.ScopedSwap(info.ExecutionId, info.Key, theList))
             {
                 var swapper = new ListLens(elementType, ix);
-                using (state.Memory.NestedValue(info.executionId, swapper))
+                using (state.Memory.NestedValue(info.ExecutionId, swapper))
                 {
-                    var childInfo = info with { value = before, fullKey = $"{info.fullKey}.{GetMappedIndex(index)}" };
+                    var childInfo = info with { Value = before, FullKey = $"{info.FullKey}.{GetMappedIndex(index)}" };
                     var clues = new ShrinkStrategyPicker().Shrink(state, check, childInfo);
                     var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
                     shrinkCount += clues.Sum(a => a.Count);
@@ -48,7 +48,7 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
             }
         }
         var finalClue = InputShrinkingClue
-            .Replace<ShrinkEachElementStrategy>(info.executionId, info.fullKey, info.value, theList, $"[ {string.Join(", ", values)} ]");
+            .Replace<ShrinkEachElementStrategy>(info.ExecutionId, info.FullKey, info.Value, theList, $"[ {string.Join(", ", values)} ]");
         finalClue.AddToCount(shrinkCount);
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];

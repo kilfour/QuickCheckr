@@ -16,14 +16,14 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
 
     private static IEnumerable<InputShrinkingClue> HandleProperties(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        if (info.value == null)
+        if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
 
-        var properties = info.value!.GetType()
+        var properties = info.Value!.GetType()
             .GetProperties(MyBinding.Flags)
             .Where(p =>
                 p.CanRead &&
@@ -51,21 +51,21 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
                 }
                 else
                 {
-                    SetPropertyValue(property, info.value, state.GetSubstitute(property.PropertyType, property.GetValue(info.value)!)!);
+                    SetPropertyValue(property, info.Value, state.GetSubstitute(property.PropertyType, property.GetValue(info.Value)!)!);
                 }
             }
         }
 
         if (values.Count == 0)
         {
-            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.executionId, info.fullKey, info.value);
+            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
         else
         {
             var clue = InputShrinkingClue
-                .Keep<ObjectShrinkStrategy>(info.executionId, info.fullKey, info.value,
+                .Keep<ObjectShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value,
                     $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName}: {a.Value}"))} }}");
             clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
@@ -75,11 +75,11 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
 
     private static IEnumerable<InputShrinkingClue> HandleProperty(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info, PropertyInfo propertyInfo)
     {
-        var propertyValue = propertyInfo.GetValue(info.value);
+        var propertyValue = propertyInfo.GetValue(info.Value);
         var swapper = new ObjectLens(propertyInfo);
-        using (state.Memory.NestedValue(info.executionId, swapper))
+        using (state.Memory.NestedValue(info.ExecutionId, swapper))
         {
-            var childInfo = info with { value = propertyValue, fullKey = $"{info.fullKey}.{propertyInfo.Name}" };
+            var childInfo = info with { Value = propertyValue, FullKey = $"{info.FullKey}.{propertyInfo.Name}" };
             foreach (var clue in new ShrinkStrategyPicker().Shrink(state, check, childInfo))
                 yield return clue;
         }

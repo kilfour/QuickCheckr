@@ -9,7 +9,7 @@ public class EnumerableShrinkStrategy : IShrinkingStrategy
         if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
 
         var keep = clues.First(a => a.Intent != ShrinkingIntent.Ignore);
-        clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, info with { value = keep.Result }));
+        clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, info with { Value = keep.Result }));
         return clues;
     }
 }

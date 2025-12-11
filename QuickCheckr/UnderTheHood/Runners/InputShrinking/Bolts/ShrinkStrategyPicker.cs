@@ -11,12 +11,12 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        var customShrinker = state.Memory.GetShrinker(info.executionId, info.key);
+        var customShrinker = state.Memory.GetShrinker(info.ExecutionId, info.Key);
         if (customShrinker != null)
             return new CustomShrinkStrategy(customShrinker).Shrink(state, check, info);
 
-        var actualType = info.value != null
-            ? info.value.GetType()
+        var actualType = info.Value != null
+            ? info.Value.GetType()
             : typeof(object);
         var normalizedType = Nullable.GetUnderlyingType(actualType) ?? actualType;
 
@@ -33,7 +33,7 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
         if (actualType.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, info);
 
-        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.executionId, info.fullKey, info.value, state.Editor.IntroduceThis(info.value));
+        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
         return [clue];
     }

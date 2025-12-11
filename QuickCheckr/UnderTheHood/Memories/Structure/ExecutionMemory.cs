@@ -10,7 +10,8 @@ public class ExecutionMemory
     public T? StoreInput<T>(string key, Func<T> factory)
         => inputs.Store(key, factory);
     public Type GetActualType(string key) => inputs.GetActualType(key);
-    public IReadOnlyDictionary<string, object?> GetInputs() => inputs.Values.Select(a => (a.Key, a.Value.Value)).ToDictionary(a => a.Key, a => a.Value);
+    public IReadOnlyDictionary<string, object?> GetInputValues() => inputs.Values.Select(a => (a.Key, a.Value.Value)).ToDictionary(a => a.Key, a => a.Value);
+    public IReadOnlyDictionary<string, TypedValue> GetInputs() => inputs.Values;
     public IDisposable ScopedSwap(string key, object value)
         => inputs.ScopedSwap(key, value);
     public IDisposable NestedValue(MemoryLens swapper)

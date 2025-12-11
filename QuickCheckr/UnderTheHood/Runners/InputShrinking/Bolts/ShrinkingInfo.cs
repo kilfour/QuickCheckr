@@ -1,7 +1,8 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 public record ShrinkingInfo(
-        int executionId,
-        string key,
-        object? value,
-        string fullKey);
+        int ExecutionId,
+        string Key,
+        object? Value,
+        string FullKey,
+        Type? Type = null);
