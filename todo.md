@@ -3,9 +3,13 @@
 ### Issues 
 
 ### 0.0.4
-* Doc Issues (and fix if possible) **<= Doing**  
+* Ready (try it out on ResultR Open Source Project)
 
 ### 0.0.4+
+* look into different collection shrinking
+  * limitations
+  * known issues
+  * workarounds
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
@@ -14,28 +18,20 @@
 ### After that
 * Generalize Towards(Zero) reducer
 * More reducers
+* Port Concurrency Spike from QuickAcid
 
 ## Doc Work
 * Doc configuration
   * Started see the 'TheEvidenceVault'
   * Investigations
-* look into different collection shrinking
-  * limitations
-  * known issues
-  * workarounds
 * Cookbook
-  * statefull list, play on listremover, but with two methods, add & remove 
-    * fix trace to promote to cookbook (FIXED)
+  * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 * Start working on the reference
 
 ### Ideas
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
-* See if we can not do some QuickFuzzr magic under the hood to avoid some of the remaining issues
-  * instead of null, try Fuzzr.One(type) maybe, this might throw though so ...
-    * quickfuzzr shrinking config strategy ? 
-      Shrinkr... == CheckrOf<Case>, just registers and returns `s => CheckrResult.CaseOnly(s);`
 
 ## Refactoring and Testing Targets 
 * Nested InputShrinkingClue ? Refactoring Target
