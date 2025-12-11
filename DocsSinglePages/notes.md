@@ -715,7 +715,6 @@ private static CheckrConfig Configure(CheckrConfig config)
     from shouldNeverFail in Checkr.Spec("Should never fail, because of ProvenWhen", () => counter <= 3)
     select Case.Closed;
 ```
-## Issues
 ## Examples
 ### The Element Remover
 This test focuses on a simple faulty implementation:  
