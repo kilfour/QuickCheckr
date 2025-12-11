@@ -11,7 +11,7 @@ Every run starts with a clean slate:
 
 This guarantees that each run is **independent**, **repeatable**, and **reproducible** based on the seed.
 
-**But inside a run**, QuickCheckr may execute your script multiple times…
+**But inside a run**, QuickCheckr may execute your script multiple times.
 
 ### **2. Execution Scope**
 
