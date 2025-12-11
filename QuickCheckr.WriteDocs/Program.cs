@@ -15,7 +15,7 @@ Explain.These<Documentation>("Docs/");
 
 Explain.OnlyThis<CreateReadMe>("README.md");
 
-//Explain.This<Documentation>("DocsSinglePages/doc.md");
+Explain.This<Documentation>("DocsSinglePages/doc.md");
 Explain.This<Guide>("DocsSinglePages/guide.md");
 Explain.This<OnShrinking>("DocsSinglePages/shrinking.md");
 Explain.This<CookBook>("DocsSinglePages/cookbook.md");
@@ -24,6 +24,6 @@ Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
 
 
-Explain.This<PuttingACaseOnTheBoard>("temp-runner.md");
+//Explain.This<PuttingACaseOnTheBoard>("temp-runner.md");
 
 

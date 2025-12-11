@@ -153,7 +153,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1089001329
+ Seed:                    2078219973
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntOne: 1 }
