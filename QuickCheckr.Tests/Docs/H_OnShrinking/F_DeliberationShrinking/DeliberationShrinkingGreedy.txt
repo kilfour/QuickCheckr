@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedy
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:137:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    227109555
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, _ ]
+   - Trace: List = [ 1, 2, 1 ]
+ ======================================
+  !! Spec Failed: Does not contain 1
+ ======================================
