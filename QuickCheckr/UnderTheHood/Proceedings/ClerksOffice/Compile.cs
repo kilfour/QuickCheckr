@@ -49,6 +49,7 @@ public static class Compile
         GetActionDepositions(executionDeposition, shortTermMemory);
         GetInputDepositions(executionDeposition, shortTermMemory);
         GetTraceDepositions(executionDeposition, shortTermMemory);
+        GetWarningDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
     }
 
@@ -74,6 +75,14 @@ public static class Compile
         foreach (var (key, val) in shortTermMemory.GetTraces())
         {
             executionDeposition.AddTraceDeposition(new TraceDeposition(key, (string)val!));
+        }
+    }
+
+    private static void GetWarningDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+    {
+        foreach (var warning in shortTermMemory.GetWarnings())
+        {
+            executionDeposition.AddWarningDeposition(new WarningDeposition(warning));
         }
     }
 }

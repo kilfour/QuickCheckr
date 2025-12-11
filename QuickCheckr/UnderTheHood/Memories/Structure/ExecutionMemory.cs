@@ -82,5 +82,7 @@ public class ExecutionMemory
     private readonly MemoryBank warnings = new();
     public T? StoreWarning<T>(string key, Func<T> factory)
         => warnings.Store(key, factory);
+    public IReadOnlyList<string> GetWarnings()
+        => [.. warnings.Values.Values.Cast<string>()];
     // --------------------------------------------------------------------------
 }
