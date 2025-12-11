@@ -128,4 +128,9 @@ public class Memory
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    // Warnings
+    public T? StoreWarning<T>(string key, Func<T> factory)
+        => ShortTermMemory.StoreWarning(key, factory);
 }

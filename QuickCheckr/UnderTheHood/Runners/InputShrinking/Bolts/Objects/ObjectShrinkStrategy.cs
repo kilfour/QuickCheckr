@@ -20,6 +20,8 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         {
             var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
+            state.Memory.StoreWarning(info.FullKey,
+                () => "");
             // TURN HACK BELOW INTO WARNINGS IN ShortTermMemory
             // state.Memory.Tracing = true;
             // state.Memory.StoreTrace($"Can't shrink null value at {info.FullKey}",

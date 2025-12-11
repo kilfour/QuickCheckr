@@ -75,4 +75,12 @@ public class ExecutionMemory
     public Func<T, IEnumerable<T>> GetReducer<T>(string key)
         => reducers.Get<Func<T, IEnumerable<T>>>(key)!;
     // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
+    // Warnings
+    private readonly MemoryBank warnings = new();
+    public T? StoreWarning<T>(string key, Func<T> factory)
+        => warnings.Store(key, factory);
+    // --------------------------------------------------------------------------
 }
