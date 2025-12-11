@@ -143,7 +143,7 @@ The branch chosen during the original failing run is *the* branch examined durin
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1169776765, 10.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport(article, "ChoosingTheNextMoveShrunk.txt", true);
+        WriteReport(article, "ChoosingTheNextMoveShrunk.txt", false);
         Verify_Shrunk(article);
     }
 

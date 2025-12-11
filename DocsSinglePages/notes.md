@@ -49,6 +49,27 @@ together with the number of executions, relevant actions and inputs that were re
   !! Spec Failed: Should not be Two
  =====================================
 ```
+##### Null String
+**The Checkr:**  
+```csharp
+    from input in Checkr.Input("Input", Fuzzr.String())
+    from spec in Checkr.Spec("Fails", () => input.Length > 0 && false)
+    select Case.Closed;
+```
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\A_NullString\NullString.cs:31:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    393010076
+ ------------------------------------------------------------
+  Executed
+ =========================
+  !! Spec Failed: Fails
+ =========================
+```
 #### Collections
 ##### When Relevant Item Is Default
 ```csharp
