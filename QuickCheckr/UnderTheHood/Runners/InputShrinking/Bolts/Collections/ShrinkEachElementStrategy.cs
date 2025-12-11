@@ -36,7 +36,7 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
                     if (removeForShrinking)
                     {
                         values.Add("_");
-                        theList[ix] = state.GetSubstitute(elementType, before);
+                        theList[ix] = before;
                     }
                     else
                     {

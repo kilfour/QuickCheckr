@@ -38,11 +38,4 @@ public class CheckrState(
                 == Memory.ShortTermMemory.Numbers[Memory.ShortTermMemory.Numbers.Count - 1];
         return Memory.ShortTermMemory.CurrentExecutionNumber == desiredNumberOfExecutions;
     }
-
-    private readonly Dictionary<Type, object> substitutes = new();
-    public void RegisterSubstitute<T>(T value)
-        => substitutes[typeof(T)] = value!;
-
-    public object? GetSubstitute(Type type, object original)
-        => substitutes.TryGetValue(type, out object? value) ? value : original;
 }

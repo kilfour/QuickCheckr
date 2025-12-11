@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExam
 public class F_MultipleRelevantProperties : BaseTest
 {
     [Fact(Skip = "Removed StandIn")]
-    [DocContent("This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.")]
+    [DocContent("This test is skipped because Trackr.StandIn is removed.")]
     [DocExample(typeof(F_MultipleRelevantProperties), nameof(GetCheckr))]
     [DocCodeFile("F_MultipleRelevantProperties.txt", "text")]
     public void RunTest()

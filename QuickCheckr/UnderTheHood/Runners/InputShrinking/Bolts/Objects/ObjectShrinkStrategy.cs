@@ -51,7 +51,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
                 }
                 else
                 {
-                    SetPropertyValue(property, info.Value, state.GetSubstitute(property.PropertyType, property.GetValue(info.Value)!)!);
+                    SetPropertyValue(property, info.Value, property.GetValue(info.Value)!);
                 }
             }
         }

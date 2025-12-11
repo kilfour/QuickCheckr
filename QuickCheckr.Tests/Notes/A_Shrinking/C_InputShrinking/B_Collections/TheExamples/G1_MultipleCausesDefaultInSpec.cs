@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.The
 public class G1_MultipleCausesDefaultInSpec : BaseTest
 {
     [Fact(Skip = "Removed StandIn")]
-    [DocContent("This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.")]
+    [DocContent("This test is skipped because Trackr.StandIn is removed.")]
     [DocExample(typeof(G1_MultipleCausesDefaultInSpec), nameof(GetCheckr))]
     [DocContent(
 @"")]

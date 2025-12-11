@@ -161,7 +161,7 @@ together with the number of executions, relevant actions and inputs that were re
  ========================================
 ```
 ##### Multiple Causes
-This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
+This test is skipped because Trackr.StandIn is removed.  
 ```csharp
     // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
@@ -186,7 +186,7 @@ This test is skipped because Trackr.StandIn is removed. Might come back. Hope No
  ===============================================================
 ```
 ##### Multiple Causes Default In Spec
-This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
+This test is skipped because Trackr.StandIn is removed.  
 ```csharp
     // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([0, 2, 0]))
@@ -473,7 +473,7 @@ The current workaround to avoid the irrelevant input reporting involves helping 
  ===========================================================================
 ```
 ##### Multiple Relevant Properties
-This test is skipped because Trackr.StandIn is removed. Might come back. Hope Not.  
+This test is skipped because Trackr.StandIn is removed.  
 ```csharp
     // from standIn in Trackr.StandIn(123)
     from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
