@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -190,5 +191,41 @@ but the element values are considered irrelevant (*wrong*).")]
     private static void Verify_DeliberatedGreedyFixed(Article article)
     {
         Assert.NotEqual("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
+    }
+
+    [Fact]
+    [DocContent("A similar thing can happen when shrinking objects, and the solution is exactly the same")]
+    [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedyObjects))]
+    [DocContent("**With Deliberation Policty:**")]
+    [DocCodeFile("DeliberationShrinkingGreedyObjects.txt", "text")]
+    public void RunTest_DeliberatedGreedyObjects()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckrGreedyObjects().Run(20.Runs(), 1.ExecutionsPerRun(), ConfigureShrinkCount));
+        WriteAsserts(article, false);
+        WriteReport(article, "DeliberationShrinkingGreedyObjects.txt", true);
+        Verify_DeliberatedGreedyObjects(article);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckrGreedyObjects()
+    {
+        return
+            from obj in Checkr.Input("BaggyInters",
+                from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+                from result in Fuzzr.One<BaggyInters>()
+                select result)
+            from trace in Checkr.Trace("Original", () => obj)
+            from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+                () => obj.IntOne != 1 && obj.IntThree != 1)
+            select Case.Closed;
+    }
+
+    private static void Verify_DeliberatedGreedyObjects(Article article)
+    {
+        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
     }
 }

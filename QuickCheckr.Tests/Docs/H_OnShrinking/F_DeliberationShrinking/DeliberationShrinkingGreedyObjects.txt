@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyObjects
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    430496190
+ ------------------------------------------------------------
+  Executed:
+   - Input: BaggyInters = { IntOne: 1 }
+   - Trace: Original = { IntOne: 1, IntTwo: 4, IntThree: 3 }
+ ========================================================
+  !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ========================================================

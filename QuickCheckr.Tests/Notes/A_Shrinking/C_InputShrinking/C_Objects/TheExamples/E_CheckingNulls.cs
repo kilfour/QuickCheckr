@@ -21,7 +21,7 @@ public class E_CheckingNulls : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(358877731));
         WriteAsserts(article);
-        WriteReport<E_CheckingNulls>(article, true);
+        WriteReport<E_CheckingNulls>(article, false);
         Verify(article);
     }
 
@@ -31,7 +31,7 @@ public class E_CheckingNulls : BaseTest
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);

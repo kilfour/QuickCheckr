@@ -59,6 +59,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         if (values.Count == 0)
         {
             var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
+            clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }

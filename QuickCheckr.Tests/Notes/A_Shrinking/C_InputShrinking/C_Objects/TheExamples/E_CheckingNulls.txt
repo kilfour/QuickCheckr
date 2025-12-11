@@ -2,7 +2,7 @@
  Test:                    Example
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:22:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
  ------------------------------------------------------------
   Executed: The Answer
