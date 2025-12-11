@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr;
 
-public static partial class Trackr
+public static partial class Checkr
 {
     /// <summary>
     /// Captures the value produced by a function without adding an action to the report.  

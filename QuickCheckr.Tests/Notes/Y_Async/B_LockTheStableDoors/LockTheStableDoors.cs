@@ -125,8 +125,8 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
         from coach in Trackr.OneOfPool<CoachBy>("Coach to assign")
         from course in Trackr.OneOfPool<CourseBy>("Course to assign")
-        from coaches in Trackr.Capture(service.GetCoachesAsync())
-        from courses in Trackr.Capture(service.GetCoursesAsync())
+        from coaches in Checkr.Capture(service.GetCoachesAsync())
+        from courses in Checkr.Capture(service.GetCoursesAsync())
         let dbCoach = coaches.Single(a => a.Name == coach.Name)
         let dbCourse = courses.Single(a => a.Name == course.Name)
         from valid in Checkr.When(() => coach != null && course != null && dbCoach.IsSuitableFor(dbCourse),
@@ -139,7 +139,7 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
-        from coaches in Trackr.Capture(service.GetCoachesAsync())
+        from coaches in Checkr.Capture(service.GetCoachesAsync())
         from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
             () => coaches.All(
@@ -154,7 +154,7 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
         from coaches in Trackr.PoolFor<CoachBy>()
         from courses in Trackr.PoolFor<CourseBy>()
-        from dbCourses in Trackr.Capture(service.GetCoursesAsync())
+        from dbCourses in Checkr.Capture(service.GetCoursesAsync())
         from operations in Checkr.OneOfIf(
             (() => coaches.Count() < 10, CreateCoach),
             (() => coaches.Any(), UpdateCoachSkills),

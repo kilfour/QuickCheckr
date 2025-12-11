@@ -98,7 +98,7 @@ either the final state satisfies all assays or it doesn't.")]
     {
         return
             from die in Trackr.Stashed(() => new DieSixFixed())
-            from cnt in Trackr.Perform(() => ++cell.Value)
+            from cnt in Checkr.Perform(() => ++cell.Value)
             from observer in Trackr.Stashed(() => new HashSet<int>())
             from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
             from proven in Trackr.ProvenWhen("All sides rolled",

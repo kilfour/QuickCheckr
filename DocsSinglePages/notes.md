@@ -456,7 +456,7 @@ The current workaround to avoid the irrelevant input being reported as relevant 
 ```csharp
     from everything in Checkr.Input("Everything", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.One<Life>().NullableRef(), a => a with { FuzzrShrinker = 10 })
-    from universe in Trackr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
+    from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
     from trace in Checkr.Trace("The Universe", () => universe)
     from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
     select Case.Closed;
@@ -1462,7 +1462,7 @@ private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
     from coaches in Trackr.PoolFor<CoachBy>()
     from courses in Trackr.PoolFor<CourseBy>()
-    from dbCourses in Trackr.Capture(service.GetCoursesAsync())
+    from dbCourses in Checkr.Capture(service.GetCoursesAsync())
     from operations in Checkr.OneOfIf(
         (() => coaches.Count() < 10, CreateCoach),
         (() => coaches.Any(), UpdateCoachSkills),
@@ -1524,7 +1524,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
-    from coaches in Trackr.Capture(service.GetCoachesAsync())
+    from coaches in Checkr.Capture(service.GetCoachesAsync())
     from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
         () => coaches.Any(coach => coach.AssignedCourses.Any()),
         () => coaches.All(

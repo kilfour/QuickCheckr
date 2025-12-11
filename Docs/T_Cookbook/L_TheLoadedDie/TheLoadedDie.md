@@ -67,6 +67,7 @@ Bit of a waste to continue running the Checkr, no ?
 Let's use `Trackr.ProvenWhen`:  
 ```csharp
     from die in Trackr.Stashed(() => new DieSixFixed())
+    from cnt in Checkr.Perform(() => ++cell.Value)
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
     from proven in Trackr.ProvenWhen("All sides rolled",

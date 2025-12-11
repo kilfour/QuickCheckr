@@ -16,7 +16,7 @@ public class RunningACheckr : BaseTest
     private static CheckrOf<Case> GetCheckr(Cell<int> runCount, Cell<int> executionCount) =>
         from cntRuns in Trackr.Stashed(() => { runCount.Value++; return 0; })
         from clearExecutions in Trackr.Stashed(() => { executionCount.Value = 0; return "Execution"; })
-        from cntExecutions in Trackr.Perform(() => executionCount.Value++)
+        from cntExecutions in Checkr.Perform(() => executionCount.Value++)
         from _ in Checkr.Spec("Always true", () => true)
         select Case.Closed;
 

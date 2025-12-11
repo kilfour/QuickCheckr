@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr;
 
-public static partial class Trackr
+public static partial class Checkr
 {
     /// <summary>
     /// Performs a side-effecting operation without recording it as an action.  
