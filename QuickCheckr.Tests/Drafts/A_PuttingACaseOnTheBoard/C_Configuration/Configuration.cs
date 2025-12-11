@@ -1,7 +1,7 @@
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.C_Configuration;
+namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.C_Configuration;
 
 [DocFile]
 [DocContent(

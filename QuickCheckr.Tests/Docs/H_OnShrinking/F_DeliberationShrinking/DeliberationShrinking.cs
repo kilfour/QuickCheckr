@@ -137,7 +137,7 @@ but the element values are considered irrelevant (wrong).")]
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckrGreedy().Run(227109555, 1.ExecutionsPerRun()));
-        WriteAsserts(article, true);
+        WriteAsserts(article, false);
         WriteReport(article, "DeliberationShrinkingGreedy.txt", false);
         Verify_DeliberatedGreedy(article);
     }

@@ -36,6 +36,9 @@ checkr.Run(424242, 5.ExecutionsPerRun());
 ```
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
 which allows for controlling specific aspects of the Checkr run. We'll get into that later.  
+### Configuration
+QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
+You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
 #### Filing Evidence
 QuickCheckr can be configured to persist the results of a failed test run.  
 ```csharp
@@ -60,9 +63,6 @@ In addition a sub folder is created containing the evidence vault files:
 This *evidence* can later be used to potentially solve *Cold Cases*.  
 #### Investigations
 These tests show the initial version of QuickCheckrs logging configuration.  
-## Configuration
-QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
-You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
 ### Null String
 **The Checkr:**  
 ```csharp
