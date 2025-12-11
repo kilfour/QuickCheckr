@@ -10,11 +10,7 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
         ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var actualType = info.Value != null
-            ? info.Value.GetType()
-            : typeof(object);
-        //var actualType = state.Memory.GetActualType(executionId,key);
-        var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(actualType));
+        var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(info.Type));
         if (primitiveKey == null)
             yield break;
 

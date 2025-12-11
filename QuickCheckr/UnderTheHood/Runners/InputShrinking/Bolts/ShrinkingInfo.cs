@@ -5,4 +5,4 @@ public record ShrinkingInfo(
         string Key,
         object? Value,
         string FullKey,
-        Type? Type = null);
+        Type Type);

@@ -16,14 +16,14 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
 
     private static IEnumerable<InputShrinkingClue> HandleProperties(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        if (info.Value == null)
+        if (info.Value == null) // FIXME
         {
             var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
 
-        var properties = info.Value!.GetType()
+        var properties = info.Type
             .GetProperties(MyBinding.Flags)
             .Where(p =>
                 p.CanRead &&
@@ -79,7 +79,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         var swapper = new ObjectLens(propertyInfo);
         using (state.Memory.NestedValue(info.ExecutionId, swapper))
         {
-            var childInfo = info with { Value = propertyValue, FullKey = $"{info.FullKey}.{propertyInfo.Name}" };
+            var childInfo = info with { Value = propertyValue, FullKey = $"{info.FullKey}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
             foreach (var clue in new ShrinkStrategyPicker().Shrink(state, check, childInfo))
                 yield return clue;
         }

@@ -7,11 +7,7 @@ public class EnumShrinkStrategy : IShrinkingStrategy
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var actualType = info.Value != null
-            ? info.Value.GetType()
-            : typeof(object);
-
-        var enumVals = GetEnumValues(actualType);
+        var enumVals = GetEnumValues(info.Type);
 
         foreach (var candidate in enumVals.Where(x => !Equals(x, info.Value)))
         {
