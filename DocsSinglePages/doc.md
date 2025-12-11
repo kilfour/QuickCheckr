@@ -925,8 +925,8 @@ It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 
 but the element values are considered irrelevant (*wrong*).  
 For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
 ```csharp
-private static CheckrConfig Configure(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
+private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
 ```
 **Report:**  
 ```text

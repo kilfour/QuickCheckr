@@ -172,7 +172,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     [Fact]
     [DocContent("For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:")]
-    [DocExample(typeof(DeliberationShrinking), nameof(Configure))]
+    [DocExample(typeof(DeliberationShrinking), nameof(ConfigureShrinkCount))]
     [DocContent("**Report:**")]
     [DocCodeFile("DeliberationShrinkingGreedyFixed.txt", "text")]
     public void RunTest_DeliberatedGreedyFixed()
