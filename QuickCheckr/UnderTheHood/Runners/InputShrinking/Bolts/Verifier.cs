@@ -12,24 +12,15 @@ public class Verifier(CheckrState State,
 
     public virtual bool RunFailed(int executionId, string key, object value)
     {
-        //try
+        State.StartReplay();
+        using (State.Memory.ScopedSwap(executionId, key, value))
         {
-            State.StartReplay();
-            using (State.Memory.ScopedSwap(executionId, key, value))
+            foreach (var id in State.Memory.Numbers)
             {
-                foreach (var id in State.Memory.Numbers)
-                {
-                    State.Memory.GotoExecution(id);
-                    Check(State);
-                }
+                State.Memory.GotoExecution(id);
+                Check(State);
             }
         }
-        // catch (Exception exception)
-        // {
-        //     // is this the only problem ?
-        //     State.Docket.Record(new EvidenceFailure(exception));
-        //     State.EvidenceRecorder.RecordFailure(exception);
-        // }
         return State.EvidenceRecorder.Failed();
     }
 }
