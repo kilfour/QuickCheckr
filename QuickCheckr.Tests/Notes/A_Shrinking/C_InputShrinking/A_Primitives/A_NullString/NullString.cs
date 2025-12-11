@@ -25,16 +25,10 @@ public class NullString : BaseTest
     [DocExample(typeof(NullString), nameof(GetCheckr))]
     [DocContent("**The Report:**")]
     [DocCodeFile("NullString.txt", "text")]
-    [DocContent("We expect 'Input' to be irrelevant because of `&& false` in the spec, but:  ")]
-    [DocContent("\n**Investigate.EvidenceFailures:**")]
-    [DocCodeFile("evidence-failures.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 1.ExecutionsPerRun(), cfg => cfg with
-            {
-                // Investigations = [new(() => Write.Here("evidence-failures.txt"), Procedure.EvidenceFailures)],
-            }));
+            GetCheckr().Run(393010076, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<NullString>(article, false);
         ExplainMe<NullString>(false);
@@ -43,6 +37,9 @@ public class NullString : BaseTest
 
     private static void Verify(Article article)
     {
-        // WIP
+        Assert.Equal("Fails", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 }

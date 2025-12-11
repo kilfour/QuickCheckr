@@ -63,6 +63,27 @@ These tests show the initial version of QuickCheckrs logging configuration.
 ## Configuration
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
+### Null String
+**The Checkr:**  
+```csharp
+    from input in Checkr.Input("Input", Fuzzr.String())
+    from spec in Checkr.Spec("Fails", () => input.Length > 0 && false)
+    select Case.Closed;
+```
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\A_NullString\NullString.cs:31:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    393010076
+ ------------------------------------------------------------
+  Executed
+ =========================
+  !! Spec Failed: Fails
+ =========================
+```
 ## The Evidence Vault
 ### Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  

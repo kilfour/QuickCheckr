@@ -27,12 +27,20 @@ public class EvidenceRecorder
         {
             if (!IsExceptionMismatch(exception))
                 currentFailed = true;
-            // else
-            //     throw exception;
             return;
         }
         Exception = exception;
         runFailed = true;
+    }
+
+    public void SpecCrashed(Exception exception)
+    {
+        if (IsReplay)
+        {
+            currentFailed = true;
+            return;
+        }
+        throw exception;
     }
 
     private bool IsExceptionMismatch(Exception actual)

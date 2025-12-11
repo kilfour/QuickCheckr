@@ -1,11 +1,11 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\D_Issues\A_NullString\NullString.cs:34:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\A_NullString\NullString.cs:31:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    393010076
  ------------------------------------------------------------
-  Executed:
-   - Input: Input = "aa"
+  Executed
  =========================
   !! Spec Failed: Fails
  =========================
