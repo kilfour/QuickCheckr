@@ -3,7 +3,7 @@
 ### Issues 
 
 ### 0.0.4
-* Ready (try it out on ResultR Open Source Project)
+* Ready (try it out on ResultR Open Source Project: DONE)
 
 ### 0.0.4+
 * look into different collection shrinking
