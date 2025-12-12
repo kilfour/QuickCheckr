@@ -1,4 +1,5 @@
 ## Short Term Work (Current Version: 0.0.3)
+* Port Concurrency Spike from QuickAcid : Doing, not needed immediatly, just a spike for now
 
 ### Issues 
 
@@ -18,7 +19,6 @@
 ### After that
 * Generalize Towards(Zero) reducer
 * More reducers
-* Port Concurrency Spike from QuickAcid
 
 ## Doc Work
 * CaseSummary
