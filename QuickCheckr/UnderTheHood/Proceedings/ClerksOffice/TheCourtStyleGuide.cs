@@ -141,15 +141,22 @@ public static class The
 
     private readonly static Flow<IEnumerable<PassedSpecDeposition>> passedSpecDepositions =
         from input in Pulse.Start<IEnumerable<PassedSpecDeposition>>()
-        from _ in Pulse.Trace($" Passed Specs")
+        from _ in Pulse.Trace(" Passed Specs")
         from __ in Pulse.ToFlow(a => Pulse.Trace($"{Environment.NewLine} - {a.Label}: {a.TimesPassed}x"), input)
         from ___ in Pulse.When(input.Any(), newLine.Then(space).Then(LineOf(60)))
+        select input;
+
+    public readonly static Flow<CaseSummary> Summary =
+        from input in Pulse.Start<CaseSummary>()
+        let runs = $" {input.NumberOfRuns} {Pluralize(input.NumberOfRuns, "Run")}{Environment.NewLine}"
+        from _ in Pulse.Trace(runs)
         select input;
 
     public readonly static Flow<CaseFile> CourtStyleGuide =
         from input in Pulse.Start<CaseFile>()
         from _ in Pulse.Prime(() => new Decorum())
         from verdict in Pulse.ToFlowIf(input.Verdict != null, verdict, () => input.Verdict)
+        from summary in Pulse.OnType(Summary, () => input)
         let needsBreak = input.Verdict != null && input.PassedSpecDepositions.Count > 0
         from nl in Pulse.TraceIf(needsBreak, () => Environment.NewLine)
         from __ in Pulse.ToFlowIf(

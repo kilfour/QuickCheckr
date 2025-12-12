@@ -29,22 +29,26 @@ public static class CheckrOfTRun
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         config.SetSeed(seed);
         var finalCaseFile = CaseFile.Empty();
+        var caseFiles = new List<CaseFile>();
+
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var runner = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions);
             var caseFile = runner.Run();
-
+            caseFiles.Add(caseFile);
             if (caseFile.HasVerdict())
             {
                 if (config.DeliberationPolicy != null)
-                    finalCaseFile = config.DeliberationPolicy(finalCaseFile.HasVerdict() ? finalCaseFile : caseFile, caseFile);
+                    finalCaseFile = config.DeliberationPolicy(finalCaseFile.HasVerdict()
+                        ? finalCaseFile : caseFile, caseFile);
                 else
                     ReportCaseFile(executionsPerRun, config, caseFile);
-
             }
         }
         if (finalCaseFile.HasVerdict())
             ReportCaseFile(executionsPerRun, config, finalCaseFile);
+        else
+            ReportCaseFileSummary(config, caseFiles);
         return CaseFile.Empty();
     }
 
@@ -63,6 +67,17 @@ public static class CheckrOfTRun
                 caseFile.Verdict!.GetFailure());
         }
         throw new FalsifiableException(caseFile);
+    }
+
+    private static void ReportCaseFileSummary(CheckrRunnerConfig config, List<CaseFile> caseFiles)
+    {
+        if (!string.IsNullOrWhiteSpace(config.FileAs))
+        {
+            var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+            var summary = CaseSummary.FromCaseFiles(caseFiles.Count, caseFiles);
+            config.Custodian.Recorder(filenameCf)
+                .Append(TheClerk.Transcribes(summary));
+        }
     }
 
     /// <summary>

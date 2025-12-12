@@ -2,7 +2,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseFile
 {
-    private CaseFile(Verdict verdict) { Verdict = verdict; }
+    protected CaseFile(Verdict verdict) { Verdict = verdict; }
 
     public static CaseFile Empty()
     {
@@ -16,7 +16,7 @@ public class CaseFile
         return new CaseFile(verdict);
     }
 
-    public List<PassedSpecDeposition> PassedSpecDepositions { get; } = [];
+    public List<PassedSpecDeposition> PassedSpecDepositions { get; init; } = [];
     public CaseFile AddPassedSpecDeposition(PassedSpecDeposition passedSpecDeposition)
     {
         PassedSpecDepositions.Add(passedSpecDeposition);

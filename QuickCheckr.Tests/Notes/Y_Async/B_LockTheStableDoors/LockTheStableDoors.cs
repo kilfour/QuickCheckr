@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -127,8 +128,8 @@ public class LockTheStableDoors : BaseTest
         from course in Trackr.OneOfPool<CourseBy>("Course to assign")
         from coaches in Checkr.Capture(service.GetCoachesAsync())
         from courses in Checkr.Capture(service.GetCoursesAsync())
-        let dbCoach = coaches.Single(a => a.Name == coach.Name)
-        let dbCourse = courses.Single(a => a.Name == course.Name)
+        from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
+        from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
         from valid in Checkr.When(() => coach != null && course != null && dbCoach.IsSuitableFor(dbCourse),
             from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
             from traceCourse in Checkr.Trace("Course Name", () => course.Name)
