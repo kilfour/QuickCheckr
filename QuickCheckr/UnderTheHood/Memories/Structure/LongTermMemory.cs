@@ -66,5 +66,11 @@ public class LongTermMemory
         pool[id] = value;
         return value;
     }
+
+    public void ClearPool<T>()
+    {
+        var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
+        pool?.Clear();
+    }
     // --------------------------------------------------------------------------
 }

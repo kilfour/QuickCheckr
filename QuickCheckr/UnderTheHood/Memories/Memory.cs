@@ -86,6 +86,8 @@ public class Memory
         => LongTermMemory.GetFromPool<T>(id);
     public T StoreInPool<T>(int id, T value)
         => LongTermMemory.StoreInPool(id, value);
+    public void ClearPool<T>()
+        => LongTermMemory.ClearPool<T>();
     // --------------------------------------------------------------------------
 
 

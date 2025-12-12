@@ -43,4 +43,10 @@ public static partial class Trackr
             return CheckrResult.Some(state, state.Memory.GetFromPool<T>(id))!;
         };
 
+    public static CheckrOf<Case> ClearPool<T>() =>
+        state =>
+        {
+            state.Memory.ClearPool<T>();
+            return CheckrResult.Default<Case>(state);
+        };
 }

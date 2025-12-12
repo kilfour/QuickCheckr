@@ -24,6 +24,28 @@ public class Spike
         TheJournalist.Exposes(() => checkr.Run(200.Runs(), 11.ExecutionsPerRun(), a => a with { FileAs = "Spike" }));
     }
 
+    [Fact(Skip = "just wondering")]
+    public void InBatches()
+    {
+        const int batchSize = 3;
+        var checkr =
+            from needlers in Trackr.PoolFor<TaskNeedler<int>>()
+            from trace in Checkr.Trace("Batch", () => needlers.Count())
+            from ops in Checkr.OneOfIf(
+                (() => needlers.Count() < batchSize,
+                    from input in Checkr.Input("Input", Fuzzr.Int())
+                    from needler in Checkr.Act("start", () => new TaskNeedler<int>().Start(ct => Eventually.AddOne(input)))
+                    from stored in Trackr.Pool("needler", needler)
+                    select Case.Closed),
+                (() => needlers.Count() == batchSize,
+                    from results in Checkr.Act("wait", () => needlers.Select(a => a.Await()).ToArray())
+                    from no42 in Checkr.Spec("Is not 42", () => results.All(a => a != 42))
+                    from clearPool in Trackr.ClearPool<TaskNeedler<int>>()
+                    select Case.Closed))
+            select Case.Closed;
+        TheJournalist.Exposes(() => checkr.Run(20.Runs(), 10.ExecutionsPerRun(), a => a with { FileAs = "BatchSpike" }));
+    }
+
     public class Eventually
     {
         public static async Task<int> AddOne(int input)
