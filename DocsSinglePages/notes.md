@@ -513,11 +513,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2110284612
+ Seed:                    230176705
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 5 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 25 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -693,12 +693,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1997087611
+ Seed:                    1851334184
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-3^2"
-   - Trace: Original = - 3 ^ 2 / 2 / 1 + 1 - 1 / 3 / 1 * 2
-   - Trace: Compare = Golden: -4,166666666666667 /= SUT: 4,833333333333333
+   - Input: Expression = "-1^2"
+   - Trace: Original = - 1 ^ 2 / 2 / 1 - 3 / 3 * 1 * 1 - 3 * 2 - 1
+   - Trace: Compare = Golden: -8,5 /= SUT: -7,5
  =========================
   !! Spec Failed: Match
  =========================
@@ -731,7 +731,7 @@ private static CheckrConfig Configure(CheckrConfig config)
     from observer in Trackr.Stashed(() => new HashSet<int>())
     // using quickfuzzr below, but really it's a SUT
     from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from assay in Trackr.ExpectAtEnd("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
+    from assay in Trackr.Verify("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
     select Case.Closed;
 ```
 ```text
@@ -749,7 +749,7 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```csharp
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from assay in Trackr.ExpectAtEnd("Rolls",
+    from assay in Trackr.Verify("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),
@@ -1424,8 +1424,8 @@ Possible solutions:
 ### Assay
 - `Trackr.Assay`:  
 ```csharp
-    from one in Trackr.ExpectAtEnd("reused", () => true)
-    from two in Trackr.ExpectAtEnd("reused", () => true)
+    from one in Trackr.Verify("reused", () => true)
+    from two in Trackr.Verify("reused", () => true)
     select Case.Closed;
 ```
   Throws:  

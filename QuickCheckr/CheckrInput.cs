@@ -3,8 +3,6 @@ using QuickFuzzr;
 
 namespace QuickCheckr;
 
-
-
 public static partial class Checkr
 {
     public record InputCfg<T>(

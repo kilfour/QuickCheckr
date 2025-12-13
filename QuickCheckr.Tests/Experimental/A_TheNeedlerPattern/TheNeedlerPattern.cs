@@ -37,7 +37,7 @@ public class TheNeedlerPattern : BaseTest
             from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
             from needler in Checkr.Act("start", () => new Needler<int>().Start(ct => Eventually.AddOne(input)))
             from stored in Trackr.Pool("needler", needler)
-            from no7 in Trackr.Analyze("Is not 7", () => needlers.All(a => a.Await() != 7))
+            from no7 in Trackr.Expect("Is not 7", () => needlers.All(a => a.Await() != 7))
             select Case.Closed;
     }
 

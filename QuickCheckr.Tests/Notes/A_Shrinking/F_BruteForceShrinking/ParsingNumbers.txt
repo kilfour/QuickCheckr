@@ -3,12 +3,12 @@
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1997087611
+ Seed:                    1851334184
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-3^2"
-   - Trace: Original = - 3 ^ 2 / 2 / 1 + 1 - 1 / 3 / 1 * 2
-   - Trace: Compare = Golden: -4,166666666666667 /= SUT: 4,833333333333333
+   - Input: Expression = "-1^2"
+   - Trace: Original = - 1 ^ 2 / 2 / 1 - 3 / 3 * 1 * 1 - 3 * 2 - 1
+   - Trace: Compare = Golden: -8,5 /= SUT: -7,5
  =========================
   !! Spec Failed: Match
  =========================

@@ -23,8 +23,8 @@ public class J_Assay
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.ExpectAtEnd("reused", () => true)
-            from two in Trackr.ExpectAtEnd("reused", () => true)
+            from one in Trackr.Verify("reused", () => true)
+            from two in Trackr.Verify("reused", () => true)
             select Case.Closed;
     }
 

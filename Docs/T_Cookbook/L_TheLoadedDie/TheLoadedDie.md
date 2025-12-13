@@ -21,7 +21,7 @@ And we want to ensure that it rolls the numbers 1-6.  For which use the followin
     from die in Trackr.Stashed(() => new DieSix())
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from assay in Trackr.ExpectAtEnd("Rolls",
+    from assay in Trackr.Verify("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),
@@ -41,7 +41,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    2023094572
+ Seed:                    982555922
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  ================================================
@@ -72,7 +72,7 @@ Let's use `Trackr.ProvenWhen`:
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
     from proven in Trackr.StopWhenProven("All sides rolled",
         () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-    from assay in Trackr.ExpectAtEnd("Rolls",
+    from assay in Trackr.Verify("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),

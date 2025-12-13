@@ -16,7 +16,7 @@ public class Eventually
     from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
     from needler in Checkr.Act("start", () => new Needler<int>().Start(ct => Eventually.AddOne(input)))
     from stored in Trackr.Pool("needler", needler)
-    from no7 in Trackr.Analyze("Is not 7", () => needlers.All(a => a.Await() != 7))
+    from no7 in Trackr.Expect("Is not 7", () => needlers.All(a => a.Await() != 7))
     select Case.Closed;
 ```
 ### The Report:
@@ -83,7 +83,7 @@ public sealed class Ledger
             (20, Fuzzr.Int(1, 10))
         ))
     from add in Checkr.Act("Add", () => ledger.Add(entry))
-    from analyze in Trackr.Analyze(
+    from analyze in Trackr.Expect(
             "Checked total greater or equal than all entries", () =>
                 ledger.Entries.All(a => ledger.TotalChecked() >= a))
     select Case.Closed;

@@ -1086,20 +1086,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    10 executions
- Minimal failing case:    2 executions (after 8 shrinks)
- Seed:                    1240277583
+ Original failing run:    4 executions
+ Minimal failing case:    2 executions (after 2 shrinks)
+ Seed:                    1146673883
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 2
+   - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 1
+   - Input: Amount = 2
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 9x
+ - No Overdraft: 3x
  ------------------------------------------------------------
 ```
 #### An Eager Shrinker
@@ -1143,11 +1143,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    956523366
+ Seed:                    210121535
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 3, 2, 1 ]
+   - Trace: List = [ 3, 0, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================
@@ -1170,11 +1170,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    142081865
+ Seed:                    257261661
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 3, IntTwo: 1, IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================
@@ -1259,7 +1259,7 @@ And we want to ensure that it rolls the numbers 1-6.  For which use the followin
     from die in Trackr.Stashed(() => new DieSix())
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from assay in Trackr.ExpectAtEnd("Rolls",
+    from assay in Trackr.Verify("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),
@@ -1279,7 +1279,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    2023094572
+ Seed:                    982555922
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  ================================================
@@ -1310,7 +1310,7 @@ Let's use `Trackr.ProvenWhen`:
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
     from proven in Trackr.StopWhenProven("All sides rolled",
         () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-    from assay in Trackr.ExpectAtEnd("Rolls",
+    from assay in Trackr.Verify("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),

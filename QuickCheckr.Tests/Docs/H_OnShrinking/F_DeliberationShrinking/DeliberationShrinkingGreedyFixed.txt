@@ -3,11 +3,11 @@
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    956523366
+ Seed:                    210121535
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 3, 2, 1 ]
+   - Trace: List = [ 3, 0, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================

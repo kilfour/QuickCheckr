@@ -5,7 +5,7 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
-    public static CheckrOf<Case> Analyze(this string key, Func<bool> condition)
+    public static CheckrOf<Case> Expect(this string key, Func<bool> condition)
         => state => state.IsThisTheRunsLastExecution() ? InnerSpec(key, condition)(state) : CheckrResult.CaseOnly(state);
 
     private static CheckrOf<Case> InnerSpec(string key, Func<bool> condition) =>

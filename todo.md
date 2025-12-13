@@ -4,7 +4,8 @@
 * finish renaming, do a solution wide search to catch doc drift
   * Spec to Expect
   * SpecIf to ExpectWhen
-  * Assay to ExpectAtEnd
+  * Assay to Verify
+  * Analize to Expect
   * ProvenWhen to StopWhenProven
 * Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 
