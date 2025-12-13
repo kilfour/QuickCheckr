@@ -40,7 +40,7 @@ public class TheLoadedDie : BaseTest
 @"**Demonstrates:**
 - Accumulated-state testing
 - `Trackr.Verify`
-- `Trackr.ProvenWhen`
+- `Trackr.StopWhenProven`
 
 While not strictly speaking a property-test, as there is no shrinking involved,
 this kind of test is nevertheless very useful.  
@@ -114,17 +114,17 @@ either the final state satisfies all assays or it doesn't.")]
     }
 
     [Fact]
-    [DocHeader("`Trackr.ProvenWhen`")]
+    [DocHeader("`Trackr.StopWhenProven`")]
     [DocExample(typeof(DieSixFixed))]
     [DocContent(
 @"Ok, we fixed the bug, so now our Checkr passes.
 But what if we get lucky and we satisfy the assay after the first six rolls ?
 Bit of a waste to continue running the Checkr, no ?  
 
-Let's use `Trackr.ProvenWhen`:")]
+Let's use `Trackr.StopWhenProven`:")]
     [DocExample(typeof(TheLoadedDie), nameof(GetCheckr_Fixed))]
     [DocContent(
-@"Whenever the predicate passed into `Trackr.ProvenWhen` returns true,
+@"Whenever the predicate passed into `Trackr.StopWhenProven` returns true,
 the Checkr is considered proven and it concludes immediately, ... no more executions.")]
     public void RunTest_Fixed()
     {

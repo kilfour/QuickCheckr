@@ -513,11 +513,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    467592503
+ Seed:                    1747283452
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 80 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 67 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -693,12 +693,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    150007359
+ Seed:                    173373542
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-3^2"
-   - Trace: Original = - 3 ^ 2 / 2 / 1 / 2 - 1 / 3 * 2 / 1
-   - Trace: Compare = Golden: -2,9166666666666665 /= SUT: 1,5833333333333335
+   - Input: Expression = "-2^2"
+   - Trace: Original = - (2 * 2 * 2) ^ 2 ^ - 2 * 2 * - 3 ^ 3 ^ 2
+   - Trace: Compare = Golden: 66205,45656575545 /= SUT: NaN
  =========================
   !! Spec Failed: Match
  =========================
@@ -768,11 +768,11 @@ private static CheckrConfig Configure(CheckrConfig config)
   !!  The Verifier Disagrees: Rolls: Contains 3, Contains 4
  =============================================================
 ```
-### Trackr Proven When
+### Trackr Stop When Proven
 ```csharp
     from counter in Checkr.Act("hack for asserting execution count", () => ++executionCount)
     from spec in Trackr.StopWhenProven("Counter equals 3", () => counter == 3)
-    from shouldNeverFail in Checkr.Expect("Should never fail, because of ProvenWhen", () => counter <= 3)
+    from shouldNeverFail in Checkr.Expect("Should never fail, because of StopWhenProven", () => counter <= 3)
     select Case.Closed;
 ```
 ## Examples
@@ -1436,8 +1436,8 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 Possible solutions:
 - Ensure each 'Checkr.Spec' uses a unique key.
 ```
-### Proven When
-- `Trackr.ProvenWhen`:  
+### Stop When Proven
+- `Trackr.StopWhenProven`:  
 ```csharp
     from one in Trackr.StopWhenProven("reused", () => false)
     from two in Trackr.StopWhenProven("reused", () => false)

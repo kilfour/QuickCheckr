@@ -5,13 +5,13 @@ namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 
 
 [DocFile]
-public class K_ProvenWhen
+public class K_StopWhenProven
 {
     [Fact]
-    [DocContent("- `Trackr.ProvenWhen`:")]
-    [DocExample(typeof(K_ProvenWhen), nameof(GetCheckr))]
+    [DocContent("- `Trackr.StopWhenProven`:")]
+    [DocExample(typeof(K_StopWhenProven), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(K_ProvenWhen), nameof(GetMessage), "text")]
+    [DocExample(typeof(K_StopWhenProven), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());

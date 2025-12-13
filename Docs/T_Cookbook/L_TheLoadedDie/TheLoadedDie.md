@@ -2,7 +2,7 @@
 **Demonstrates:**
 - Accumulated-state testing
 - `Trackr.Verify`
-- `Trackr.ProvenWhen`
+- `Trackr.StopWhenProven`
 
 While not strictly speaking a property-test, as there is no shrinking involved,
 this kind of test is nevertheless very useful.  
@@ -41,7 +41,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    1607119814
+ Seed:                    756350681
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================
@@ -53,7 +53,7 @@ A common mistake, and the assayer pointed it out in above report.
 
 *Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all assays or it doesn't.  
-## `Trackr.ProvenWhen`
+## `Trackr.StopWhenProven`
 ```csharp
 public class DieSixFixed
 {
@@ -64,7 +64,7 @@ Ok, we fixed the bug, so now our Checkr passes.
 But what if we get lucky and we satisfy the assay after the first six rolls ?
 Bit of a waste to continue running the Checkr, no ?  
 
-Let's use `Trackr.ProvenWhen`:  
+Let's use `Trackr.StopWhenProven`:  
 ```csharp
     from die in Trackr.Stashed(() => new DieSixFixed())
     from cnt in Checkr.Perform(() => ++cell.Value)
@@ -81,5 +81,5 @@ Let's use `Trackr.ProvenWhen`:
         ("Contains 6", () => observer.Contains(6)))
     select Case.Closed;
 ```
-Whenever the predicate passed into `Trackr.ProvenWhen` returns true,
+Whenever the predicate passed into `Trackr.StopWhenProven` returns true,
 the Checkr is considered proven and it concludes immediately, ... no more executions.  
