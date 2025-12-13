@@ -1,13 +1,13 @@
 ## Current Version: 0.0.4
 
 ### Issues 
+* Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 
 ### On the Table, a.k.a. Doing 
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
 ### 0.0.5
-* Fix Reporting when ShrinkMode does not include InputShrinking
 * Dive into Reducers a bit more
 
 ### 0.0.5+

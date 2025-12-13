@@ -39,11 +39,11 @@ public class A_ShrinkMode : BaseTest
     [DocContent("**`ShrinkMode.None`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureNone))]
     [DocContent("No shrinking. QuickCheckr reports the original failing run.")]
-    //[DocCodeFile("A_ShrinkModeNone.txt", "text")]
+    [DocCodeFile("A_ShrinkModeNone.txt", "text")]
     public void RunTestNone()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureNone));
+            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureNone));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeNone.txt", false);
         VerifyNone(article);
@@ -52,15 +52,37 @@ public class A_ShrinkMode : BaseTest
     private static void VerifyNone(Article article)
     {
         Assert.Equal("Total should not be 42", article.FailedSpec());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(4, article.Total().Executions());
+        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(8, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedSpecs());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(1).Read().Times);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal(11, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
+        Assert.Equal(5, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal(17, article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(2).Input(2).Read().Label);
+        Assert.Equal(5, article.Execution(2).Input(2).Read().Value);
+        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal(2, article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(3).Input(2).Read().Label);
+        Assert.Equal(8, article.Execution(3).Input(2).Read().Value);
+        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
+        Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
+        Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
         Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
     }
 
     [CodeExample]
@@ -71,11 +93,11 @@ public class A_ShrinkMode : BaseTest
     [DocContent("\n**`ShrinkMode.Executions`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureExecutions))]
     [DocContent("Trims away irrelevant executions.")]
-    //[DocCodeFile("A_ShrinkModeExecutions.txt", "text")]
+    [DocCodeFile("A_ShrinkModeExecutions.txt", "text")]
     public void RunTestExecutions()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureExecutions));
+            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureExecutions));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeExecutions.txt", false);
         VerifyExecutions(article);
@@ -84,15 +106,38 @@ public class A_ShrinkMode : BaseTest
     private static void VerifyExecutions(Article article)
     {
         Assert.Equal("Total should not be 42", article.FailedSpec());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(4, article.Total().Executions());
+        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(8, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedSpecs());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(1).Read().Times);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal(11, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
+        Assert.Equal(5, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal(17, article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(2).Input(2).Read().Label);
+        Assert.Equal(5, article.Execution(2).Input(2).Read().Value);
+        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal(2, article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(3).Input(2).Read().Label);
+        Assert.Equal(8, article.Execution(3).Input(2).Read().Value);
+        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
+        Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
+        Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
         Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
+
     }
 
     [CodeExample]
@@ -103,11 +148,11 @@ public class A_ShrinkMode : BaseTest
     [DocContent("\n**`ShrinkMode.Inputs`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureInputs))]
     [DocContent("Trims inputs to find a minimal failing case.")]
-    //[DocCodeFile("A_ShrinkModeInputs.txt", "text")]
+    [DocCodeFile("A_ShrinkModeInputs.txt", "text")]
     public void RunTestInputs()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureInputs));
+            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureInputs));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeInputs.txt", false);
         VerifyInputs(article);
@@ -116,21 +161,30 @@ public class A_ShrinkMode : BaseTest
     private static void VerifyInputs(Article article)
     {
         Assert.Equal("Total should not be 42", article.FailedSpec());
-        Assert.Equal(2, article.Total().Executions());
-        Assert.Equal(2, article.Total().Actions());
-        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(4, article.Total().Executions());
+        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(4, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedSpecs());
-        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("19", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("11", article.Execution(1).Input(1).Read().Value);
         Assert.Equal(2, article.Execution(2).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("23", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("17", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal("2", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
+        Assert.Equal("12", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
+
     }
 
     [CodeExample]
@@ -141,6 +195,7 @@ public class A_ShrinkMode : BaseTest
     [DocContent("\n**`ShrinkMode.Reduction`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureReduction))]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
+    [DocContent("**Note:** This is an experimental feature, and will be expanded in the near future. As of now reporting with only this mode active is not supported.")]
     //[DocCodeFile("A_ShrinkModeReduction.txt", "text")]
     public void RunTestReduction()
     {

@@ -8,4 +8,5 @@ public record Dossier(
     int ExecutionCount,
     int ShrinkCount,
     int Seed,
-    IReadOnlyDictionary<string, int> PassedSpecs);
+    IReadOnlyDictionary<string, int> PassedSpecs,
+    bool UseMemoryForInputReporting);

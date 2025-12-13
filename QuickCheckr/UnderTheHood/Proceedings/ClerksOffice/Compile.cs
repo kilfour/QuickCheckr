@@ -16,14 +16,14 @@ public static class Compile
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
-        var caseFile = FromMemoryAndVerdict(memory, verdict);
+        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting);
         AddPassedSpecs(dossier.PassedSpecs, caseFile);
         return caseFile;
     }
 
-    private static CaseFile FromMemoryAndVerdict(Memory memory, Verdict verdict)
+    private static CaseFile FromMemoryAndVerdict(Memory memory, Verdict verdict, bool useMemoryForInputReporting)
     {
-        AddExecutionDepositions(memory, verdict);
+        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting);
         var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
     }
@@ -34,20 +34,20 @@ public static class Compile
             caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
     }
 
-    private static void AddExecutionDepositions(Memory memory, Verdict verdict)
+    private static void AddExecutionDepositions(Memory memory, Verdict verdict, bool useMemoryForInputReporting)
     {
         foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
-            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId));
+            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting));
         }
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
-        ExecutionMemory shortTermMemory, int executionNumber)
+        ExecutionMemory shortTermMemory, int executionNumber, bool useMemoryForInputReporting)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
-        GetInputDepositions(executionDeposition, shortTermMemory);
+        GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting);
         GetTraceDepositions(executionDeposition, shortTermMemory);
         GetWarningDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
@@ -62,8 +62,18 @@ public static class Compile
     }
 
     private static void GetInputDepositions(
-        ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+        ExecutionDeposition executionDeposition,
+        ExecutionMemory shortTermMemory,
+        bool useMemoryForInputReporting)
     {
+        if (useMemoryForInputReporting)
+        {
+            foreach (var (key, val) in shortTermMemory.GetInputValues())
+            {
+                executionDeposition.AddInputDeposition(new InputDeposition(key, val!));
+            }
+            return;
+        }
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
             executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!));

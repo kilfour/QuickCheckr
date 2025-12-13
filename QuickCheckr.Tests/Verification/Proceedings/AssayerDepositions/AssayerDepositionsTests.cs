@@ -18,7 +18,8 @@ public class AssayerDepositionsTests : DepositionTest
                 ExecutionCount: 4,
                 ShrinkCount: 0,
                 Seed: 12345678,
-                PassedSpecs: new Dictionary<string, int>()
+                PassedSpecs: new Dictionary<string, int>(),
+                UseMemoryForInputReporting: false
             )));
 
         var reader = Transcribe(caseFile);
