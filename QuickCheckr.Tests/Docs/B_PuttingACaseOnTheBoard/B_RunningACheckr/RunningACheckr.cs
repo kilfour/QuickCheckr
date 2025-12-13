@@ -4,7 +4,7 @@ using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.B_RunningACheckr;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 
 [DocFile]
 [DocFileHeader("Running a Checkr")]

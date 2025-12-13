@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard;
 
 [DocFile]
 [DocFileHeader("Putting a Case on the Board")]

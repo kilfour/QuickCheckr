@@ -1,0 +1,18 @@
+ ------------------------------------------------------------
+ Test:                    RunTestInputs
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:122:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 2 shrinks)
+ Seed:                    1609315627
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Input = 19
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Input = 23
+ ==========================================
+  !! Spec Failed: Total should not be 42
+ ==========================================
+ Passed Specs
+ - Total should not be 42: 1x
+ ------------------------------------------------------------

@@ -623,6 +623,126 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```
 The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+## Putting a Case on the Board
+### Test Framework Integration
+QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
+
+A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
+
+If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
+
+Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
+### Running a Checkr
+This is done by calling `Run` on the Checkr instance.  
+Several overloads are available:  
+- Run the Checkr once with a single execution.  
+```csharp
+checkr.Run();
+```
+- Run the Checkr multiple times, each consisting of a single execution.  
+```csharp
+checkr.Run(5.Runs());
+```
+- Run the Checkr once but performs multiple executions within that run.  
+```csharp
+checkr.Run(5.ExecutionsPerRun());
+```
+- Run the Checkr with the specified number of runs and executions per run.  
+```csharp
+checkr.Run(3.Runs(), 5.ExecutionsPerRun());
+```
+- Run the Checkr with the specified seed and one execution.  
+```csharp
+checkr.Run(424242);
+```
+- Run the Checkr with the specified seed and the specified number of executions.  
+```csharp
+checkr.Run(424242, 5.ExecutionsPerRun());
+```
+All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
+which allows for controlling specific aspects of the Checkr run. We'll get into that later.  
+### Configuration
+QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
+You typically start from `CheckrConfig.Default()` and then tweak the parts you care about  
+**Default Configuration:**  
+```csharp
+{
+    ShrinkMode = ShrinkMode.Default,
+    DeliberationPolicy = null,
+    FileAs = string.Empty,
+    Custodian = Custodian.Default,
+    Investigations = [],
+    Editor =
+        new ManOfWealthAndTaste()
+            .ToUseNonLinearTime()
+            .ToInline<List<int>>(),
+    WithTraces = true
+}
+```
+#### ShrinkMode
+Controls which shrinking strategies are active.
+
+The following Checkr will be used to generate the reports throughout this chapter:  
+```csharp
+    from summer in Trackr.Stashed(() => new Summer())
+    from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
+    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
+    from add in Checkr.Act("Add", () => summer.Add(input))
+    from spec in Checkr.Spec("Total should not be 42",
+        () => summer.Total != 42)
+    select Case.Closed;
+```
+**`ShrinkMode.None`**  
+```csharp
+private static CheckrConfig ConfigureNone(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.None };
+```
+No shrinking. QuickCheckr reports the original failing run.  
+**`ShrinkMode.Executions`**  
+```csharp
+private static CheckrConfig ConfigureExecutions(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Executions };
+```
+Trims away irrelevant executions.  
+**`ShrinkMode.Inputs`**  
+```csharp
+private static CheckrConfig ConfigureInputs(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Inputs };
+```
+Trims inputs to find a minimal failing case.  
+**`ShrinkMode.Reduction`**  
+```csharp
+private static CheckrConfig ConfigureReduction(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Reduction };
+```
+Applies configured reducers for fine-grained shrinking.  
+**`ShrinkMode.Default`**  
+
+The default settings includes all possible ShrinkModes.  
+#### Filing Evidence
+QuickCheckr can be configured to persist the results of a failed test run.  
+```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { FileAs = "MyQuickCheckrTest" };
+```
+Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:  
+```csharp
+.quickcheckr\MyQuickCheckrTest\report.qr
+```
+In addition a sub folder is created containing the evidence vault files:  
+```csharp
+.quickcheckr\MyQuickCheckrTest\vault\evidence.qv
+```
+```csharp
+.quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql
+```
+
+- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
+- `evidence-log.ql` is an append only log of all evidence vault actions.
+
+This *evidence* can later be used to potentially solve *Cold Cases*.  
+#### Investigations
+These tests show the initial version of QuickCheckrs logging configuration.  
 ## On Shrinking
 ### Philosophy
 

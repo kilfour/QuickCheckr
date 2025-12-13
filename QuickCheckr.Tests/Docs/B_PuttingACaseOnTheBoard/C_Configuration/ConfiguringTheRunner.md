@@ -3,7 +3,6 @@ QuickCheckr runs are configured through an immutable `CheckrConfig` record. You 
 ```csharp
 check.Run(10.Runs(), 5.ExecutionsPerRun(), cfg => cfg with
 {
-    Seed = 123456,
     ShrinkMode = ShrinkMode.Default,
     Investigations = Investigate.All,
     FileAs = "LockTheStableDoors",
@@ -13,14 +12,6 @@ check.Run(10.Runs(), 5.ExecutionsPerRun(), cfg => cfg with
 
 Each property controls a different aspect of how the engine behaves:
 
-**`Seed`:**
-
-An optional fixed seed for reproducible runs.
-
-* `null` (default) => a new random seed is chosen for each run.
-* Any `int` => the full run (including shrinking) becomes deterministic.
-
-Use this when you want to reproduce a particular failure locally or on CI.
 
 **`Investigations`:**
 

@@ -4,7 +4,7 @@ using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.H_OnShrinking;
 using QuickCheckr.Tests.Docs.T_Cookbook;
 using QuickCheckr.Tests.Drafts;
-using QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard;
 using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 

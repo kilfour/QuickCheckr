@@ -1,0 +1,178 @@
+using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Protocol;
+using QuickFuzzr;
+using QuickPulse.Bolts;
+using QuickPulse.Explains;
+using QuickPulse.Show.Bolts;
+
+
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_ShrinkMode;
+
+[DocFile]
+[DocFileHeader("ShrinkMode")]
+[DocContent(
+@"Controls which shrinking strategies are active.
+
+The following Checkr will be used to generate the reports throughout this chapter:")]
+[DocExample(typeof(A_ShrinkMode), nameof(GetCheckr))]
+public class A_ShrinkMode : BaseTest
+{
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr()
+    {
+        return
+            from summer in Trackr.Stashed(() => new Summer())
+            from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
+            from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
+            from add in Checkr.Act("Add", () => summer.Add(input))
+            from spec in Checkr.Spec("Total should not be 42",
+                () => summer.Total != 42)
+            select Case.Closed;
+    }
+
+    [CodeExample]
+    private static CheckrConfig ConfigureNone(CheckrConfig config)
+        => config with { ShrinkMode = ShrinkMode.None };
+
+    [Fact]
+    [DocContent("**`ShrinkMode.None`**")]
+    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureNone))]
+    [DocContent("No shrinking. QuickCheckr reports the original failing run.")]
+    //[DocCodeFile("A_ShrinkModeNone.txt", "text")]
+    public void RunTestNone()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureNone));
+        WriteAsserts(article, false);
+        WriteReport(article, "A_ShrinkModeNone.txt", false);
+        VerifyNone(article);
+    }
+
+    private static void VerifyNone(Article article)
+    {
+        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
+        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+    }
+
+    [CodeExample]
+    private static CheckrConfig ConfigureExecutions(CheckrConfig config)
+        => config with { ShrinkMode = ShrinkMode.Executions };
+
+    [Fact]
+    [DocContent("**`ShrinkMode.Executions`**")]
+    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureExecutions))]
+    [DocContent("Trims away irrelevant executions.")]
+    //[DocCodeFile("A_ShrinkModeExecutions.txt", "text")]
+    public void RunTestExecutions()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureExecutions));
+        WriteAsserts(article, false);
+        WriteReport(article, "A_ShrinkModeExecutions.txt", false);
+        VerifyExecutions(article);
+    }
+
+    private static void VerifyExecutions(Article article)
+    {
+        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
+        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+    }
+
+    [CodeExample]
+    private static CheckrConfig ConfigureInputs(CheckrConfig config)
+        => config with { ShrinkMode = ShrinkMode.Inputs };
+
+    [Fact]
+    [DocContent("**`ShrinkMode.Inputs`**")]
+    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureInputs))]
+    [DocContent("Trims inputs to find a minimal failing case.")]
+    //[DocCodeFile("A_ShrinkModeInputs.txt", "text")]
+    public void RunTestInputs()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureInputs));
+        WriteAsserts(article, false);
+        WriteReport(article, "A_ShrinkModeInputs.txt", false);
+        VerifyInputs(article);
+    }
+
+    private static void VerifyInputs(Article article)
+    {
+        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal(2, article.Total().Executions());
+        Assert.Equal(2, article.Total().Actions());
+        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("19", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("23", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
+        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+    }
+
+    [CodeExample]
+    private static CheckrConfig ConfigureReduction(CheckrConfig config)
+        => config with { ShrinkMode = ShrinkMode.Reduction };
+
+    [Fact]
+    [DocContent("**`ShrinkMode.Reduction`**")]
+    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureReduction))]
+    [DocContent("Applies configured reducers for fine-grained shrinking.")]
+    //[DocCodeFile("A_ShrinkModeReduction.txt", "text")]
+    public void RunTestReduction()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureReduction));
+        WriteAsserts(article, true);
+        WriteReport(article, "A_ShrinkModeReduction.txt", true);
+        VerifyReduction(article);
+    }
+
+    private static void VerifyReduction(Article article)
+    {
+
+    }
+
+    [Fact]
+    [DocContent(
+@"**`ShrinkMode.Default`**  
+
+The default settings includes all possible ShrinkModes.")]
+    public void DefaultSetting()
+    {
+        Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Executions));
+        Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Inputs));
+        Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Reduction));
+    }
+
+    public class Summer
+    {
+        public int Total { get; private set; } = 0;
+        public void Add(int value) => Total += value;
+    }
+}

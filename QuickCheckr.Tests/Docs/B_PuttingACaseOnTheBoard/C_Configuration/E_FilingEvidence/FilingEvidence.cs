@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.A_PuttingACaseOnTheBoard.C_Configuration.E_FilingEvidence;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_FilingEvidence;
 
 [DocFile]
 public class FilingEvidence : BaseTest
