@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Experimental\B_OverFlowing\OverFlowing.cs:23:1
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1990927690
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Entry = 1138084379
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Entry = 1930233829
+ ===================================================================
+  !! Spec Failed: Checked total greater or equal than all entries
+ ===================================================================
