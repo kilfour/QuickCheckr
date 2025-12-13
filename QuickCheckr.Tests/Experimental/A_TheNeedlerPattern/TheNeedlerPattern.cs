@@ -37,7 +37,7 @@ public class TheNeedlerPattern : BaseTest
             from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
             from needler in Checkr.Act("start", () => new Needler<int>().Start(ct => Eventually.AddOne(input)))
             from stored in Trackr.Pool("needler", needler)
-            from no42 in Trackr.Analyze("Is not 7", () => needlers.All(a => a.Await() != 7))
+            from no7 in Trackr.Analyze("Is not 7", () => needlers.All(a => a.Await() != 7))
             select Case.Closed;
     }
 
@@ -68,7 +68,7 @@ public class TheNeedlerPattern : BaseTest
     public sealed class Needler<T>
     {
         public Task<T>? task;
-        private readonly CancellationTokenSource cancellationTokenSourcee = new();
+        private readonly CancellationTokenSource cancellationTokenSource = new();
 
         public bool IsRunning => task is { IsCompleted: false };
         public Exception? Exception => task?.Exception?.InnerException;
@@ -76,14 +76,14 @@ public class TheNeedlerPattern : BaseTest
         public Needler<T> Start(Func<CancellationToken, Task<T>> action)
         {
             if (IsRunning) return this;
-            task = Task.Run(async () => await action(cancellationTokenSourcee.Token));
+            task = Task.Run(async () => await action(cancellationTokenSource.Token));
             return this;
         }
 
         public async Task StopAsync()
         {
             if (task == null) return;
-            cancellationTokenSourcee.Cancel();
+            cancellationTokenSource.Cancel();
             try { await task; } finally { task = null; }
         }
 

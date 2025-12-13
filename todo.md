@@ -3,7 +3,6 @@
 ### Issues 
 
 ### On the Table, a.k.a. Doing 
-* Observable Async Spike
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
@@ -60,6 +59,4 @@ catch (Exception exception)
 ```
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
-* QuickPulse: add a 'log to file here' artery, spike it in quickcheckr first
-  * See QuickCheckr.Tests.Notes.T_Examples.A_TheElementRemover.TheElementRemover.cs
-* QuickPulse.Explains: CodeReplace with empty string => ploef
+
