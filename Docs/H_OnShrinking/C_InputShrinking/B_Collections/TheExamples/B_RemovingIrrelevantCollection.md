@@ -3,7 +3,7 @@ Ofcourse a collection itself is just an input like another, so if it, as a whole
 is irrelevant for the failure, QuickCheckr will remove it.  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Spec("Always fails", () => false)
+    from spec in Checkr.Expect("Always fails", () => false)
     select Case.Closed;
 ```
 ```text

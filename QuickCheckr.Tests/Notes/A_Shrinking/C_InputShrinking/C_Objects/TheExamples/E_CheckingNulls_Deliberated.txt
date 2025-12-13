@@ -1,17 +1,17 @@
  ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:145:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1448910979
+ Seed:                    2110284612
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 36 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 5 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 163
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================

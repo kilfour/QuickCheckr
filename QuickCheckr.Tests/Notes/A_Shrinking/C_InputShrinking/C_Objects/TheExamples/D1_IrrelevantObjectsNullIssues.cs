@@ -58,7 +58,7 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
             from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
             from traceTurtle in Checkr.Trace("Turtle", () => turtle)
             from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
-            from endsOnTurtle in Checkr.SpecIf("Turtle Ends on 'TurtlesAllTheWay'",
+            from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
                 () => turtle.Down?.Down != null,
                 () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
             select Case.Closed;

@@ -47,7 +47,7 @@ public class G1_MultipleCausesDefaultInSpec : BaseTest
             // from substite in Trackr.StandIn(666)
             from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([0, 2, 0]))
             from trace in Checkr.Trace("List", () => input)
-            from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(0)",
+            from spec in Checkr.ExpectWhen("input.Count() > 2, () => !input.Contains(0)",
                 () => input.Count() > 2, () => !input.Contains(0))
             select Case.Closed;
     }

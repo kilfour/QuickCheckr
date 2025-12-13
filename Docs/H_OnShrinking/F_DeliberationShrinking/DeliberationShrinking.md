@@ -31,14 +31,14 @@ We can verify this with the following Checkr:
         Checkr.Act("Deposit", () => account.Deposit(amount)),
         Checkr.Act("Withdraw", () => account.WithDraw(amount))
     )
-    from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
     select Case.Closed;
 ```
 Now if we run this we might get something like this:  
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:65:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:66:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
@@ -68,21 +68,21 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:110:1
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    1825120884
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1240277583
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 7
+   - Input: Amount = 2
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 6
+   - Input: Amount = 1
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 5x
+ - No Overdraft: 9x
  ------------------------------------------------------------
 ```
 ## An Eager Shrinker
@@ -91,7 +91,7 @@ Currently the only identified cases where this happens is if more than one input
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.SpecIf("Does not contain 1",
+    from spec in Checkr.ExpectWhen("Does not contain 1",
         () => input.Count() > 2,
         () => !input.Contains(1))
     select Case.Closed;
@@ -100,7 +100,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:137:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:140:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -123,14 +123,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:180:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1246511372
+ Seed:                    956523366
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 4, 1, 3 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 3, 2, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================
@@ -142,7 +142,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
         from result in Fuzzr.One<BaggyInters>()
         select result)
     from trace in Checkr.Trace("Original", () => obj)
-    from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+    from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```
@@ -153,11 +153,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2078219973
+ Seed:                    142081865
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 2 }
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 3, IntTwo: 1, IntThree: 1 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================

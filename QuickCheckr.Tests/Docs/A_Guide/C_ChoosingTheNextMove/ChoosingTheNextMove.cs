@@ -174,7 +174,7 @@ The branch chosen during the original failing run is *the* branch examined durin
                 Checkr.Act("Deposit", () => account.Deposit(amount)),
                 Checkr.Act("Withdraw", () => account.WithDraw(amount))
             )
-            from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+            from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
             select Case.Closed;
     }
 }

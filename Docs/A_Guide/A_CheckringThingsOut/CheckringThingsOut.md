@@ -9,14 +9,14 @@ public class MinimalCheckr
 {
     [Fact]
     public void RunTest()
-        => Checkr.Spec("Always true", () => true).Run();
+        => Checkr.Expect("Always true", () => true).Run();
 }
 ```
 Congratulations! You've just checked something out. The test passes and now we know that `true` is always `true`.
 
 So what happens if try to do the opposite?  
 ```csharp
-Checkr.Spec("Always true", () => false);
+Checkr.Expect("Always true", () => false);
 ```
 The test fails and QuickCheckr produces the following report:  
 ```text
@@ -48,7 +48,7 @@ Let's add an input to the Checkr, and change our spec:
 ```csharp
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 
@@ -85,7 +85,7 @@ So, if we add another input to the Checkr, one which does not influence the fail
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 The following happens:  
@@ -113,7 +113,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
     select Case.Closed;
 ```
@@ -141,7 +141,7 @@ var check =
     from two in Checkr.Input("Two", Fuzzr.Int())
     from three in Checkr.Input("Three", Fuzzr.Int())
     from sum in Checkr.Act("One plus Three", () => one + three)
-    from spec in Checkr.Spec("Sum /= 42", () => sum != 42)
+    from spec in Checkr.Expect("Sum /= 42", () => sum != 42)
     select Case.Closed;
 ```
 Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.  

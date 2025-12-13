@@ -89,7 +89,7 @@ private static readonly CheckrOf<Case> CreateCoach =
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
     from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
-    from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
+    from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
     from toPool in Trackr.Pool("Store Coach", coach) // Store this coach in the pool.
     select Case.Closed;
 ```
@@ -103,7 +103,7 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => coach.UpdateSkills(skills))                // Update it.
-        from checkSkills in Checkr.Spec("Coach Skills Set",
+        from checkSkills in Checkr.Expect("Coach Skills Set",
             () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
         select Case.Closed)
     select Case.Closed;
@@ -116,7 +116,7 @@ private static readonly CheckrOf<Case> CreateCourse =
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
     from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", () => new Course(name))
-    from checkName in Checkr.Spec("Course Name Set", () => course.Name == name)
+    from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
     from toPool in Trackr.Pool("Store Course", course) // Store this course in the pool.
     select Case.Closed;
 ```
@@ -130,7 +130,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             () => course.UpdateRequiredSkills(skills))          // Update it.
-        from checkSkills in Checkr.Spec("Course Required Skills Set",
+        from checkSkills in Checkr.Expect("Course Required Skills Set",
             () => course.RequiredSkills.Count == skills.Count() && course.RequiredSkills.All(skills.Contains))
         select Case.Closed)
     select Case.Closed;
@@ -141,7 +141,7 @@ And finally here's the system invariant.
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from coaches in Trackr.Pool<Coach>() // Retrieve all coaches from the pool.
-    from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
+    from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
         () => coaches.Any(coach => coach.AssignedCourses.Any()),
         () => coaches.All( // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))

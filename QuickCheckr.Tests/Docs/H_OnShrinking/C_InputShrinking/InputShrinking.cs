@@ -18,7 +18,7 @@ public class InputShrinking : BaseTest
     {
         return
             from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-            from spec in Checkr.Spec("Always Fails", () => false)
+            from spec in Checkr.Expect("Always Fails", () => false)
             select Case.Closed;
     }
 
@@ -57,7 +57,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
             from two in Checkr.Input("Input Two", Fuzzr.Int())
             from three in Checkr.Input("Input Three", Fuzzr.Int())
             from result in Checkr.Act("Result", () => one + three)
-            from spec in Checkr.Spec("Should not be 42", () => result != 42)
+            from spec in Checkr.Expect("Should not be 42", () => result != 42)
             select Case.Closed;
     }
 

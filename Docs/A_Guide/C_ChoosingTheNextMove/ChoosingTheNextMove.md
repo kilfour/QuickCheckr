@@ -29,7 +29,7 @@ The bug is trivial, but that's fine: we're here to demonstrate *behavioural bran
         Checkr.Act("Deposit", () => account.Deposit(amount)),
         Checkr.Act("Withdraw", () => account.WithDraw(amount))
     )
-    from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
     select Case.Closed;
 ```
 Every execution through this Checkr does the same things:
@@ -50,7 +50,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:66:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:64:1
  Original failing run:    8 executions
  Seed:                    1169776765
  ------------------------------------------------------------

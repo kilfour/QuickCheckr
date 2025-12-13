@@ -9,7 +9,7 @@ public static partial class Trackr
     /// Marks a named condition as proven when it first evaluates to true and stops the current run early.  
     /// Use for properties that require only one successful observation instead of completing all remaining executions.
     /// </summary>
-    public static CheckrOf<Case> ProvenWhen(string key, Func<bool> condition) =>
+    public static CheckrOf<Case> StopWhenProven(string key, Func<bool> condition) =>
         state =>
         {
             state.Memory.SpecGuard.Check(key);

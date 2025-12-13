@@ -40,7 +40,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
     {
         return
             from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
-            from spec in Checkr.Spec("IntOne /= 42", () => obj.IntOne != 42)
+            from spec in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
             select Case.Closed;
     }
 

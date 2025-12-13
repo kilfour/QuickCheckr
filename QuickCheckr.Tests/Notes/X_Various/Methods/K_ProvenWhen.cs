@@ -23,8 +23,8 @@ public class K_ProvenWhen
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.ProvenWhen("reused", () => false)
-            from two in Trackr.ProvenWhen("reused", () => false)
+            from one in Trackr.StopWhenProven("reused", () => false)
+            from two in Trackr.StopWhenProven("reused", () => false)
             select Case.Closed;
     }
 

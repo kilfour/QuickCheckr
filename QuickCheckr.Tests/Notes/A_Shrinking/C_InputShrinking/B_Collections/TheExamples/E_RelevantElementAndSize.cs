@@ -39,7 +39,7 @@ public class E_RelevantElementAndSize : BaseTest
     {
         return
             from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<int>>([666, 42]))
-            from spec in Checkr.SpecIf("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
+            from spec in Checkr.ExpectWhen("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
             select Case.Closed;
     }
 }

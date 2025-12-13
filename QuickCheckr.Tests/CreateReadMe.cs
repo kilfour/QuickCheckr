@@ -55,7 +55,7 @@ public class CreateReadMe : BaseTest
         from bughouse in Trackr.Stashed(() => new BugHouse())
         from number in Checkr.Input("number", Fuzzr.Int())
         from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(number))
-        from spec in Checkr.Spec("Returns true", () => output)
+        from spec in Checkr.Expect("Returns true", () => output)
         select Case.Closed;
     }
 

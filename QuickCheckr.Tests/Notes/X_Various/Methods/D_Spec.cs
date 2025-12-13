@@ -23,8 +23,8 @@ public class D_Spec
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.Spec("reused", () => true)
-            from two in Checkr.Spec("reused", () => true)
+            from one in Checkr.Expect("reused", () => true)
+            from two in Checkr.Expect("reused", () => true)
             select Case.Closed;
     }
 

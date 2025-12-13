@@ -39,8 +39,8 @@ public class CheckrActCarefully : BaseTest
     {
         return
             from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
-            from throws in Checkr.Spec("Throws", () => result.Threw)
-            from throwsExact in Checkr.Spec("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
+            from throws in Checkr.Expect("Throws", () => result.Threw)
+            from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
             select Case.Closed;
     }
 }

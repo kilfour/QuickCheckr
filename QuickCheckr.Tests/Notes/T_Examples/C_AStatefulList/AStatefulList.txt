@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:38:1
+ Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:32:1
  Original failing run:    9 executions
  Minimal failing case:    3 executions (after 6 shrinks)
  Seed:                    254875886

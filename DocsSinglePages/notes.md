@@ -12,7 +12,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
     from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
-    from spec in Checkr.Spec("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
+    from spec in Checkr.Expect("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
     select Case.Closed;
 ```
 ```text
@@ -32,7 +32,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
     from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
-    from spec in Checkr.Spec("Should not be Two", () => inputTwo != SoundCheck.Two)
+    from spec in Checkr.Expect("Should not be Two", () => inputTwo != SoundCheck.Two)
     select Case.Closed;
 ```
 ```text
@@ -53,7 +53,7 @@ together with the number of executions, relevant actions and inputs that were re
 **The Checkr:**  
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.String())
-    from spec in Checkr.Spec("Fails", () => input.Length > 0 && false)
+    from spec in Checkr.Expect("Fails", () => input.Length > 0 && false)
     select Case.Closed;
 ```
 **The Report:**  
@@ -74,7 +74,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### When Relevant Item Is Default
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
-    from spec in Checkr.Spec("List does not contain 0", () => !listInput.Contains(0))
+    from spec in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -95,7 +95,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
-    from spec in Checkr.Spec("List contains only 0", () => listInput.All(a => a == 0))
+    from spec in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -117,7 +117,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### Relevant Multiple Elements
 ```csharp
     from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
-    from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
+    from spec in Checkr.ExpectWhen("spec", () => input.Count() > 2, () =>
         !(input.ToList()[0] == 1
         && input.ToList()[1] == 2
         && input.ToList()[2] == 3))
@@ -140,7 +140,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### Relevant Element And Size
 ```csharp
     from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<int>>([666, 42]))
-    from spec in Checkr.SpecIf("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
+    from spec in Checkr.ExpectWhen("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
     select Case.Closed;
 ```
 ```text
@@ -161,7 +161,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.SpecIf("List[0][0] is not 42",
+    from spec in Checkr.ExpectWhen("List[0][0] is not 42",
         () => input.Any() && input.First().Any(),
         () => input.First().First() != 42)
     select Case.Closed;
@@ -187,7 +187,7 @@ This test is skipped because Trackr.StandIn is removed.
     // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(1)",
+    from spec in Checkr.ExpectWhen("input.Count() > 2, () => !input.Contains(1)",
         () => input.Count() > 2, () => !input.Contains(1))
     select Case.Closed;
 ```
@@ -212,7 +212,7 @@ This test is skipped because Trackr.StandIn is removed.
     // from substite in Trackr.StandIn(666)
     from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([0, 2, 0]))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.SpecIf("input.Count() > 2, () => !input.Contains(0)",
+    from spec in Checkr.ExpectWhen("input.Count() > 2, () => !input.Contains(0)",
         () => input.Count() > 2, () => !input.Contains(0))
     select Case.Closed;
 ```
@@ -235,13 +235,13 @@ This test is skipped because Trackr.StandIn is removed.
 ##### Empty List Is The Culprit
 ```csharp
     from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
-    from listNotEmpty in Checkr.Spec("List is not empty", () => list.Any())
+    from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\H_EmptyListIsTheCulprit.cs:20:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\H_EmptyListIsTheCulprit.cs:19:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------
@@ -256,7 +256,7 @@ This test is skipped because Trackr.StandIn is removed.
 var array = new[] { 42, 2, 3 };
 var check =
     from input in Checkr.Input("int[]", Fuzzr.Constant(array))
-    from spec in Checkr.SpecIf("int[0] is not 42",
+    from spec in Checkr.ExpectWhen("int[0] is not 42",
         () => input.Length != 0,
         () => input.First() != 42)
     select Case.Closed;
@@ -287,7 +287,7 @@ public class BaggyInters
 ```
 ```csharp
     from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
-    from spec in Checkr.Spec("IntOne /= 42", () => obj.IntOne != 42)
+    from spec in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
     select Case.Closed;
 ```
 ```text
@@ -311,7 +311,7 @@ public class BaggyInters
         from __ in Configr.Primitive(Fuzzr.Int())
         from thing in Fuzzr.One<TheUniverse>()
         select thing)
-    from spec in Checkr.SpecIf("It's not 42",
+    from spec in Checkr.ExpectWhen("It's not 42",
         () => input.Everything != null,
         () => input.Everything!.Answer != 42)
     select Case.Closed;
@@ -339,7 +339,7 @@ public record Person(string Name, int Age);
         from name in Fuzzr.String()
         from age in Fuzzr.Int()
         select new Person(name, age))
-    from isNotUnderage in Checkr.Spec("Is not underage", () => person.Age >= 18)
+    from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
     select Case.Closed;
 ```
 ```text
@@ -362,7 +362,7 @@ public record Person(string Name, int Age);
     from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
     from tracePerson in Checkr.Trace("Person", () => person)
     from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
-    from isEighteen in Checkr.Spec("Not aged 18", () => person.Age != 18)
+    from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
     select Case.Closed;
 ```
 ```text
@@ -370,7 +370,7 @@ public record Person(string Name, int Age);
  Test:                    Example
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:20:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
+ Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1000847613
  ------------------------------------------------------------
   Executed:
@@ -394,7 +394,7 @@ Check this with:
     from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
     from traceTurtle in Checkr.Trace("Turtle", () => turtle)
     from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
-    from endsOnTurtle in Checkr.SpecIf("Turtle Ends on 'TurtlesAllTheWay'",
+    from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
         () => turtle.Down?.Down != null,
         () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
     select Case.Closed;
@@ -411,6 +411,8 @@ Check this with:
    - Input: Other Turtle = { Down: { Down: null } }
    - Trace: Turtle = { Down: { Down: { Down: null } } }
    - Trace: Other Turtle = { Down: { Down: null } }
+   - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
+   - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.
  =====================================================
   !! Spec Failed: Turtle Ends on 'TurtlesAllTheWay'
  =====================================================
@@ -437,7 +439,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:22:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:28:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
@@ -448,8 +450,8 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 131
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 54
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
 ```
@@ -457,7 +459,7 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_NotShrinkingNull
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:68:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:74:1
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
@@ -468,8 +470,8 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
    - WARNING: Null value for type 'Life' at input 'The Universe.Irrelevant'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 134
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 57
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
 ```
@@ -485,7 +487,7 @@ The current workaround to avoid the irrelevant input being reported as relevant 
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:96:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:105:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -495,8 +497,8 @@ The current workaround to avoid the irrelevant input being reported as relevant 
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 134
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass7_2.GetCheckr_Alternative() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 126
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass7_2.GetCheckr_Alternative() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 135
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
 ```
@@ -508,18 +510,18 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:145:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1448910979
+ Seed:                    2110284612
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 36 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 5 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 163
+   at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
@@ -533,7 +535,7 @@ This test is skipped because Trackr.StandIn is removed.
     // from standIn in Trackr.StandIn(123)
     from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
     from trace in Checkr.Trace("Original", () => obj)
-    from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+    from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```
@@ -559,7 +561,7 @@ This test is skipped because Trackr.StandIn is removed.
         from personRecord in Fuzzr.One<PersonRecord>()
         select personRecord)
     from tracePerson in Checkr.Trace("Person", () => person)
-    from isEighteen in Checkr.Spec("Not aged 18", () => person.Age != 18)
+    from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
     select Case.Closed;
 ```
 ```text
@@ -583,7 +585,7 @@ This test is skipped because Trackr.StandIn is removed.
     from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { Shrinker = b => [0, 1] })
     from traceOne in Checkr.Trace("Original One", () => one)
     from traceTwo in Checkr.Trace("Original Two", () => two)
-    from spec in Checkr.Spec("One should not be 42", () => one != 42)
+    from spec in Checkr.Expect("One should not be 42", () => one != 42)
     select Case.Closed;
 ```
 ```text
@@ -608,7 +610,7 @@ This test is skipped because Trackr.StandIn is removed.
     from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
     from traceOne in Checkr.Trace("Original One", () => one)
     from traceTwo in Checkr.Trace("Original Two", () => two)
-    from spec in Checkr.Spec("One should not be 42", () => one != 42)
+    from spec in Checkr.Expect("One should not be 42", () => one != 42)
     select Case.Closed;
 ```
 ```text
@@ -630,7 +632,7 @@ This test is skipped because Trackr.StandIn is removed.
 #### Input Reduction
 ```csharp
     from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-    from spec in Checkr.Spec("Int should be smaller than 42", () => i < 42)
+    from spec in Checkr.Expect("Int should be smaller than 42", () => i < 42)
     from trace in Checkr.Trace("Int", () => i)
     select Case.Closed;
 ```
@@ -670,7 +672,7 @@ private static IEnumerable<int> TowardsZero(int input)
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
-    from match in Checkr.SpecIf("Match",
+    from match in Checkr.ExpectWhen("Match",
         () => !double.IsNaN(goldenResult),
         () => goldenResult == result)
     select Case.Closed;
@@ -691,12 +693,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1740448974
+ Seed:                    1997087611
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
    - Input: Expression = "-3^2"
-   - Trace: Original = - 3 ^ (1 / 2 / 1 / 1) ^ - 3 * 1 * 2 ^ - 3 ^ 2 * - (1 / 1 * 1 / 1) - (3 / 2 - 2 - 3 * 2 / 1 * 1 + 1 * 3) ^ (1 * 3 * 2 / 1) ^ 1 * - 1 ^ 1 + - 3 ^ - 1 ^ 3 * - 1 + 2 ^ - 3 ^ 3 / - 2 * 2 ^ 2
-   - Trace: Compare = Golden: 1851,413411443432 /= SUT: -3357393,4010416814
+   - Trace: Original = - 3 ^ 2 / 2 / 1 + 1 - 1 / 3 / 1 * 2
+   - Trace: Compare = Golden: -4,166666666666667 /= SUT: 4,833333333333333
  =========================
   !! Spec Failed: Match
  =========================
@@ -705,8 +707,8 @@ private static CheckrConfig Configure(CheckrConfig config)
 ### Checkr Act Carefully
 ```csharp
     from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
-    from throws in Checkr.Spec("Throws", () => result.Threw)
-    from throwsExact in Checkr.Spec("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
+    from throws in Checkr.Expect("Throws", () => result.Threw)
+    from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
     select Case.Closed;
 ```
 ```text
@@ -727,9 +729,9 @@ private static CheckrConfig Configure(CheckrConfig config)
 ### Trackr Assay
 ```csharp
     from observer in Trackr.Stashed(() => new HashSet<int>())
-        // using quickfuzzr below, but really it's a SUT
+    // using quickfuzzr below, but really it's a SUT
     from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from assay in Trackr.Assay("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
+    from assay in Trackr.ExpectAtEnd("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
     select Case.Closed;
 ```
 ```text
@@ -747,7 +749,7 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```csharp
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from assay in Trackr.Assay("Rolls",
+    from assay in Trackr.ExpectAtEnd("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),
@@ -769,8 +771,8 @@ private static CheckrConfig Configure(CheckrConfig config)
 ### Trackr Proven When
 ```csharp
     from counter in Checkr.Act("hack for asserting execution count", () => ++executionCount)
-    from spec in Trackr.ProvenWhen("Counter equals 3", () => counter == 3)
-    from shouldNeverFail in Checkr.Spec("Should never fail, because of ProvenWhen", () => counter <= 3)
+    from spec in Trackr.StopWhenProven("Counter equals 3", () => counter == 3)
+    from shouldNeverFail in Checkr.Expect("Should never fail, because of ProvenWhen", () => counter <= 3)
     select Case.Closed;
 ```
 ## Examples
@@ -794,7 +796,7 @@ the test captures the minimal failing case where the list contains multiple copi
     from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
     from output in Checkr.Act("Delete from List",
         () => ElementRemover.Remove([.. list], element))
-    from listDoesNotContainElement in Checkr.Spec(
+    from listDoesNotContainElement in Checkr.Expect(
         "List Does Not Contain Element",
         () => !output.Contains(element))
     from traceList in Checkr.Trace("List Before Shrinking", () => list)
@@ -840,7 +842,7 @@ Demonstrates a simple stateful failure triggered by run count.
     from a in Checkr.Input("a", Fuzzr.Int())
     from bughouse in Trackr.Stashed(() => new BugHouse())
     from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-    from spec in Checkr.Spec("Returns true", () => output)
+    from spec in Checkr.Expect("Returns true", () => output)
     select Case.Closed;
 ```
 ##### Minimal Fail Case:
@@ -890,7 +892,7 @@ A straightforward counter-based failure condition.
     from a in Checkr.Input("a", Fuzzr.Int())
     from bughouse in Trackr.Stashed(() => new BugHouse())
     from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-    from spec in Checkr.Spec("Returns true", () => output)
+    from spec in Checkr.Expect("Returns true", () => output)
     select Case.Closed;
 ```
 ##### Minimal Fail Case:
@@ -939,7 +941,7 @@ requiring a particular input dance to trigger the failure.
 from a in Checkr.Input("a", Fuzzr.Int())
 from bughouse in Trackr.Stashed(() => new BugHouse())
 from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-from spec in Checkr.Spec("Returns true", () => output)
+from spec in Checkr.Expect("Returns true", () => output)
 select Case.Closed;
 ```
 ##### Minimal Fail Case:
@@ -997,12 +999,12 @@ Demonstrates multi-method state interaction.
 		// --
 		from i in Checkr.Input("Int", Fuzzr.Int())
 		from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
-		from spec in Checkr.Spec("RunInt s true", () => output)
+		from spec in Checkr.Expect("RunInt s true", () => output)
 		select Case.Closed,
 		// --
 		from str in Checkr.Input("String", Fuzzr.String())
 		from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
-		from spec in Checkr.Spec("RunString s true", () => output)
+		from spec in Checkr.Expect("RunString s true", () => output)
 		select Case.Closed)
 		//--
 	select Case.Closed;
@@ -1057,11 +1059,11 @@ public class ListWrap
     from traceBefore in Checkr.Trace("Before", () => listWrap.List)
     from operations in Checkr.OneOf(
         from add in Checkr.Act("Add", () => listWrap.Add(item))
-        from listContainsItem in Checkr.Spec("List Contains Item",
+        from listContainsItem in Checkr.Expect("List Contains Item",
             () => listWrap.List.Contains(item))
         select Case.Closed,
         from remove in Checkr.Act("Remove", () => listWrap.Remove(item))
-        from listDoesNotContainItem in Checkr.Spec("List Does Not Contain Item",
+        from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
             () => !listWrap.List.Contains(item))
         select Case.Closed)
     from traceAfter in Checkr.Trace("After", () => listWrap.List)
@@ -1071,7 +1073,7 @@ public class ListWrap
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:38:1
+ Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:32:1
  Original failing run:    9 executions
  Minimal failing case:    3 executions (after 6 shrinks)
  Seed:                    254875886
@@ -1105,7 +1107,7 @@ public class ListWrap
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
-    from match in Checkr.SpecIf("Match",
+    from match in Checkr.ExpectWhen("Match",
         () => !double.IsNaN(goldenResult),
         () => goldenResult == result)
     select Case.Closed;
@@ -1279,14 +1281,14 @@ public class TheFuzzr
 ```csharp
     from bookingOne in Checkr.Input("Booking One", TheFuzzr.ValidBooking)
     from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
-    from Spec in Checkr.Spec("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
+    from Spec in Checkr.Expect("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
     select Case.Closed;
 ```
 #### The Report:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\V_Scheduling\Scheduling.cs:27:1
+ Location:                Notes\T_Examples\V_Scheduling\Scheduling.cs:25:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    511619818
@@ -1346,8 +1348,8 @@ Possible solutions:
 ### Spec
 - `Checkr.Spec`:  
 ```csharp
-    from one in Checkr.Spec("reused", () => true)
-    from two in Checkr.Spec("reused", () => true)
+    from one in Checkr.Expect("reused", () => true)
+    from two in Checkr.Expect("reused", () => true)
     select Case.Closed;
 ```
   Throws:  
@@ -1363,7 +1365,7 @@ Possible solutions:
 ```csharp
     from one in Checkr.Trace("reused", () => "")
     from two in Checkr.Trace("reused", () => "")
-    from spec in Checkr.Spec("fails", () => false) // <= this one needs to run
+    from spec in Checkr.Expect("fails", () => false) // <= this one needs to run
     select Case.Closed;
 ```
   Throws:  
@@ -1422,8 +1424,8 @@ Possible solutions:
 ### Assay
 - `Trackr.Assay`:  
 ```csharp
-    from one in Trackr.Assay("reused", () => true)
-    from two in Trackr.Assay("reused", () => true)
+    from one in Trackr.ExpectAtEnd("reused", () => true)
+    from two in Trackr.ExpectAtEnd("reused", () => true)
     select Case.Closed;
 ```
   Throws:  
@@ -1437,8 +1439,8 @@ Possible solutions:
 ### Proven When
 - `Trackr.ProvenWhen`:  
 ```csharp
-    from one in Trackr.ProvenWhen("reused", () => false)
-    from two in Trackr.ProvenWhen("reused", () => false)
+    from one in Trackr.StopWhenProven("reused", () => false)
+    from two in Trackr.StopWhenProven("reused", () => false)
     select Case.Closed;
 ```
   Throws:  
@@ -1462,7 +1464,7 @@ public class Eventually
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int())
     from result in Checkr.Act("Eventually.AddOne", Eventually.AddOne(input))
-    from spec in Checkr.Spec("Is not 42", () => result != 42)
+    from spec in Checkr.Expect("Is not 42", () => result != 42)
     select Case.Closed;
 ```
 ```text
@@ -1548,7 +1550,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
     from coaches in Checkr.Capture(service.GetCoachesAsync())
-    from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
+    from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
         () => coaches.Any(coach => coach.AssignedCourses.Any()),
         () => coaches.All(
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))

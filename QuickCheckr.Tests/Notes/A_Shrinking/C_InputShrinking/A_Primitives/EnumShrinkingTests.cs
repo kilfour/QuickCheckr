@@ -40,7 +40,7 @@ public class Enums : BaseTest
         return
             from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
             from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
-            from spec in Checkr.Spec("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
+            from spec in Checkr.Expect("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
             select Case.Closed;
     }
 
@@ -76,7 +76,7 @@ public class Enums : BaseTest
         return
             from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
             from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
-            from spec in Checkr.Spec("Should not be Two", () => inputTwo != SoundCheck.Two)
+            from spec in Checkr.Expect("Should not be Two", () => inputTwo != SoundCheck.Two)
             select Case.Closed;
     }
 }

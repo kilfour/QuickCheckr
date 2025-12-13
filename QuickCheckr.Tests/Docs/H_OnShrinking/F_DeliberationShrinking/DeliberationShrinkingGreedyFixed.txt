@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:180:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1246511372
+ Seed:                    956523366
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 4, 1, 3 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 3, 2, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================

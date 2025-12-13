@@ -70,12 +70,12 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 				// --
 				from i in Checkr.Input("Int", Fuzzr.Int())
 				from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
-				from spec in Checkr.Spec("RunInt returns true", () => output)
+				from spec in Checkr.Expect("RunInt returns true", () => output)
 				select Case.Closed,
 				// --
 				from str in Checkr.Input("String", Fuzzr.String())
 				from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
-				from spec in Checkr.Spec("RunString returns true", () => output)
+				from spec in Checkr.Expect("RunString returns true", () => output)
 				select Case.Closed)
 				//--
 			select Case.Closed;

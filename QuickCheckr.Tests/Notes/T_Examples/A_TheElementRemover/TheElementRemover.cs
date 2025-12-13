@@ -77,7 +77,7 @@ public class TheElementRemover : BaseTest
             from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
             from output in Checkr.Act("Delete from List",
                 () => ElementRemover.Remove([.. list], element))
-            from listDoesNotContainElement in Checkr.Spec(
+            from listDoesNotContainElement in Checkr.Expect(
                 "List Does Not Contain Element",
                 () => !output.Contains(element))
             from traceList in Checkr.Trace("List Before Shrinking", () => list)

@@ -51,7 +51,7 @@ public class DeliberationShrinking : BaseTest
                 Checkr.Act("Deposit", () => account.Deposit(amount)),
                 Checkr.Act("Withdraw", () => account.WithDraw(amount))
             )
-            from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+            from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
             select Case.Closed;
     }
 
@@ -150,7 +150,7 @@ but the element values are considered irrelevant (*wrong*).")]
         return
             from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
             from trace in Checkr.Trace("List", () => input)
-            from spec in Checkr.SpecIf("Does not contain 1",
+            from spec in Checkr.ExpectWhen("Does not contain 1",
                 () => input.Count() > 2,
                 () => !input.Contains(1))
             select Case.Closed;
@@ -217,7 +217,7 @@ but the element values are considered irrelevant (*wrong*).")]
                 from result in Fuzzr.One<BaggyInters>()
                 select result)
             from trace in Checkr.Trace("Original", () => obj)
-            from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+            from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
                 () => obj.IntOne != 1 && obj.IntThree != 1)
             select Case.Closed;
     }

@@ -9,6 +9,8 @@
    - Input: Other Turtle = { Down: { Down: null } }
    - Trace: Turtle = { Down: { Down: { Down: null } } }
    - Trace: Other Turtle = { Down: { Down: null } }
+   - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
+   - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.
  =====================================================
   !! Spec Failed: Turtle Ends on 'TurtlesAllTheWay'
  =====================================================

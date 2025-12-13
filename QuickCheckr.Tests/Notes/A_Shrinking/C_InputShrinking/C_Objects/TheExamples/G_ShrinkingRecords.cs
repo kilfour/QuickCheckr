@@ -46,7 +46,7 @@ public class G_ShrinkingRecords : BaseTest
                 from personRecord in Fuzzr.One<PersonRecord>()
                 select personRecord)
             from tracePerson in Checkr.Trace("Person", () => person)
-            from isEighteen in Checkr.Spec("Not aged 18", () => person.Age != 18)
+            from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
             select Case.Closed;
     }
 

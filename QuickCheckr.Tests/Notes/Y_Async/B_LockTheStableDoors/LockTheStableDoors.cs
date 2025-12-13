@@ -140,7 +140,7 @@ public class LockTheStableDoors : BaseTest
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
         from coaches in Checkr.Capture(service.GetCoachesAsync())
-        from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
+        from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
             () => coaches.All(
                 coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))

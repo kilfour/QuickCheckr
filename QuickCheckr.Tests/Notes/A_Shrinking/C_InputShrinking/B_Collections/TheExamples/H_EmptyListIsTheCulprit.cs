@@ -29,7 +29,7 @@ public class H_EmptyListIsTheCulprit : BaseTest
     {
         return
             from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
-            from listNotEmpty in Checkr.Spec("List is not empty", () => list.Any())
+            from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
             select Case.Closed;
     }
 

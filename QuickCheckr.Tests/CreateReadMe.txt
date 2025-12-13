@@ -13,7 +13,7 @@
   !! Exception Thrown: System.Exception: Here's Johnny
    at QuickCheckr.Tests.CreateReadMe.BugHouse.Run(Int32 number) in CreateReadMe.cs:line 69
    at QuickCheckr.Tests.CreateReadMe.<>c__DisplayClass2_0.GetCheckr() in CreateReadMe.cs:line 57
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
  Passed Specs
  - Returns true: 84x

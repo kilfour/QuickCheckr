@@ -18,7 +18,7 @@ If we want to test it and write a Checkr like so:
 private static readonly CheckrOf<Case> FaultyBugHouseCheckr =
     from input in Checkr.Input("Int", Fuzzr.Int())
     from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => new BugHouse().DelayedDetonation(input))
-    from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+    from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
     select Case.Closed;
 ```
 The test will always pass, even if we increase the amount of runs to infinity,
@@ -35,7 +35,7 @@ private static readonly CheckrOf<Case> BugHouseCheckr =
     from bugHouse in Trackr.Stashed(() => new BugHouse())
     from input in Checkr.Input("Int", Fuzzr.Int())
     from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => bugHouse.DelayedDetonation(input))
-    from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+    from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
     select Case.Closed;
 ```
 **Running It:**  
@@ -60,7 +60,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
  Passed Specs
  - Returns true: 2x

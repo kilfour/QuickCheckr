@@ -49,7 +49,7 @@ public class FilingEvidence : BaseTest
     {
         var collector = new List<string>();
         TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(cfg =>
+            Checkr.Expect("Fails", () => false).Run(cfg =>
                 Configure(AddCustodian(
                     cfg,
                     collector,
@@ -102,7 +102,7 @@ This *evidence* can later be used to potentially solve *Cold Cases*.")]
         var evidence = new SpyRecorder();
         var log = new SpyRecorder();
         TheJournalist.Exposes(() =>
-            Checkr.Spec("Fails", () => false).Run(1862095796, cfg =>
+            Checkr.Expect("Fails", () => false).Run(1862095796, cfg =>
                 Configure(AddCustodian(
                     cfg,
                     collector,

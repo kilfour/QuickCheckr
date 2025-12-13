@@ -17,7 +17,7 @@ public class RunningACheckr : BaseTest
         from cntRuns in Trackr.Stashed(() => { runCount.Value++; return 0; })
         from clearExecutions in Trackr.Stashed(() => { executionCount.Value = 0; return "Execution"; })
         from cntExecutions in Checkr.Perform(() => executionCount.Value++)
-        from _ in Checkr.Spec("Always true", () => true)
+        from _ in Checkr.Expect("Always true", () => true)
         select Case.Closed;
 
     [CodeSnippet]
@@ -108,7 +108,7 @@ public class RunningACheckr : BaseTest
     public void SeedOnlySet()
     {
         var article = TheJournalist.Exposes(
-            () => Checkr.Spec("Fails", () => false).Run(424242));
+            () => Checkr.Expect("Fails", () => false).Run(424242));
         Assert.Equal(424242, article.Seed());
     }
 
@@ -133,7 +133,7 @@ public class RunningACheckr : BaseTest
     public void SeedSet()
     {
         var article = TheJournalist.Exposes(
-            () => Checkr.Spec("Fails", () => false).Run(424242, 5.ExecutionsPerRun()));
+            () => Checkr.Expect("Fails", () => false).Run(424242, 5.ExecutionsPerRun()));
         Assert.Equal(424242, article.Seed());
     }
 
@@ -176,7 +176,7 @@ which allows for controlling specific aspects of the Checkr run. We'll get into 
         Assert.Equal(1, runCount.Value);
         Assert.Equal(1, executionCount.Value);
         var article = TheJournalist.Exposes(
-            () => Checkr.Spec("Fails", () => false).Run(424242, a => a));
+            () => Checkr.Expect("Fails", () => false).Run(424242, a => a));
         Assert.Equal(424242, article.Seed());
 
         runCount.Value = 0;
@@ -185,7 +185,7 @@ which allows for controlling specific aspects of the Checkr run. We'll get into 
         Assert.Equal(1, runCount.Value);
         Assert.Equal(5, executionCount.Value);
         article = TheJournalist.Exposes(
-            () => Checkr.Spec("Fails", () => false).Run(424242, 5.ExecutionsPerRun(), a => a));
+            () => Checkr.Expect("Fails", () => false).Run(424242, 5.ExecutionsPerRun(), a => a));
         Assert.Equal(424242, article.Seed());
     }
 }

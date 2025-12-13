@@ -8,7 +8,7 @@ public static partial class Trackr
     /// Evaluates a named condition only on the final execution of a run.  
     /// Use when an assertion depends on the cumulative state built up across all executions.
     /// </summary>
-    public static CheckrOf<Case> Assay(string key, Func<bool> condition) =>
+    public static CheckrOf<Case> ExpectAtEnd(string key, Func<bool> condition) =>
         state =>
         {
             state.Memory.SpecGuard.Check(key);
@@ -30,7 +30,7 @@ public static partial class Trackr
     /// Evaluates a set of labelled conditions only on the final execution of a run.  
     /// Use when you want to report multiple related assertions under a single named assay.
     /// </summary>
-    public static CheckrOf<Case> Assay(string key, params (string label, Func<bool> condition)[] conditions) =>
+    public static CheckrOf<Case> ExpectAtEnd(string key, params (string label, Func<bool> condition)[] conditions) =>
         state =>
         {
             if (!state.IsThisTheRunsLastExecution())

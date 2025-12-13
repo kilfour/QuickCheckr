@@ -46,7 +46,7 @@ public class F_MultipleRelevantProperties : BaseTest
             // from standIn in Trackr.StandIn(123)
             from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
             from trace in Checkr.Trace("Original", () => obj)
-            from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+            from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
                 () => obj.IntOne != 1 && obj.IntThree != 1)
             select Case.Closed;
     }

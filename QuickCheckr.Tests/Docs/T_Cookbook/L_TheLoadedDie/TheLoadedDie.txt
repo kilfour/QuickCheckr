@@ -1,10 +1,10 @@
  ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
- Original failing run:    30 executions
- Seed:                    930735070
+ Original failing run:    100 executions
+ Seed:                    2023094572
  ------------------------------------------------------------
-  Executed: Roll (30 Times)
+  Executed: Roll (100 Times)
  ================================================
   !!  The Assayer Disagrees: Rolls: Contains 6
  ================================================

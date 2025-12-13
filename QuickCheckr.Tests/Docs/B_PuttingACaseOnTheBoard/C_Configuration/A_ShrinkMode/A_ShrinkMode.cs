@@ -26,7 +26,7 @@ public class A_ShrinkMode : BaseTest
             from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
             from add in Checkr.Act("Add", () => summer.Add(input))
-            from spec in Checkr.Spec("Total should not be 42",
+            from spec in Checkr.Expect("Total should not be 42",
                 () => summer.Total != 42)
             select Case.Closed;
     }

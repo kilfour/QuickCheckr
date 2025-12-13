@@ -43,7 +43,7 @@ public class C_Records : BaseTest
                 from name in Fuzzr.String()
                 from age in Fuzzr.Int()
                 select new Person(name, age))
-            from isNotUnderage in Checkr.Spec("Is not underage", () => person.Age >= 18)
+            from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
             select Case.Closed;
     }
 

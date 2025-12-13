@@ -42,7 +42,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
     {
         return
             from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
-            from spec in Checkr.Spec("List does not contain 0", () => !listInput.Contains(0))
+            from spec in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
             from trace in Checkr.Trace("List Input", () => listInput)
             select Case.Closed;
     }
@@ -80,7 +80,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
     {
         return
             from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
-            from spec in Checkr.Spec("List contains only 0", () => listInput.All(a => a == 0))
+            from spec in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
             from trace in Checkr.Trace("List Input", () => listInput)
             select Case.Closed;
     }

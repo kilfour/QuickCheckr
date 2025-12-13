@@ -7,5 +7,5 @@ public class MinimalCheckr
 {
     [Fact]
     public void RunTest()
-        => Checkr.Spec("Always true", () => true).Run();
+        => Checkr.Expect("Always true", () => true).Run();
 }

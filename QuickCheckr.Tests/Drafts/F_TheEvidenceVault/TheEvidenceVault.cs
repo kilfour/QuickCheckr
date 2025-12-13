@@ -77,7 +77,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         var evidence = new SpyRecorder();
         var log = new SpyRecorder();
 
-        RunColdCasesReview(Checkr.Spec("Fails", () => false),
+        RunColdCasesReview(Checkr.Expect("Fails", () => false),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
@@ -101,7 +101,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         var log = new SpyRecorder();
         var report = new SpyRecorder();
 
-        RunColdCasesReview(Checkr.Spec("Fails", () => false),
+        RunColdCasesReview(Checkr.Expect("Fails", () => false),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
@@ -130,7 +130,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         var log = new SpyRecorder();
         var report = new SpyRecorder();
 
-        RunColdCasesReview(Checkr.Spec("Fails", () => true),
+        RunColdCasesReview(Checkr.Expect("Fails", () => true),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
@@ -160,7 +160,7 @@ In this case we use:")]
         var evidence = new SpyRecorder();
         var log = new SpyRecorder();
 
-        RunCloseResolvedColdCases(Checkr.Spec("Fails", () => false),
+        RunCloseResolvedColdCases(Checkr.Expect("Fails", () => false),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,
@@ -191,7 +191,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
         var log = new SpyRecorder();
         var report = new SpyRecorder();
 
-        RunCloseResolvedColdCases(Checkr.Spec("Passes", () => true),
+        RunCloseResolvedColdCases(Checkr.Expect("Passes", () => true),
             cfg => Configure(AddCustodian(
                     cfg,
                     collector,

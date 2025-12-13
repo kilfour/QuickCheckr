@@ -39,7 +39,7 @@ public class D_RelevantMultipleElements : BaseTest
     {
         return
             from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
-            from spec in Checkr.SpecIf("spec", () => input.Count() > 2, () =>
+            from spec in Checkr.ExpectWhen("spec", () => input.Count() > 2, () =>
                 !(input.ToList()[0] == 1
                 && input.ToList()[1] == 2
                 && input.ToList()[2] == 3))

@@ -4,7 +4,7 @@ QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal fail
 The following simple example has one input but always fails.  
 ```csharp
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Always Fails", () => false)
+    from spec in Checkr.Expect("Always Fails", () => false)
     select Case.Closed;
 ```
 Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
@@ -30,7 +30,7 @@ Another example, slightly trickier.
     from two in Checkr.Input("Input Two", Fuzzr.Int())
     from three in Checkr.Input("Input Three", Fuzzr.Int())
     from result in Checkr.Act("Result", () => one + three)
-    from spec in Checkr.Spec("Should not be 42", () => result != 42)
+    from spec in Checkr.Expect("Should not be 42", () => result != 42)
     select Case.Closed;
 ```
 As you can see from the test definition, two inputs are involved in a possible failure.

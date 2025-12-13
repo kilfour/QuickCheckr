@@ -49,7 +49,7 @@ public class Scheduling : BaseTest
         return
             from bookingOne in Checkr.Input("Booking One", TheFuzzr.ValidBooking)
             from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
-            from Spec in Checkr.Spec("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
+            from Spec in Checkr.Expect("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
             select Case.Closed;
     }
 

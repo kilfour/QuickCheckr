@@ -3,11 +3,11 @@
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2078219973
+ Seed:                    142081865
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 2 }
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 3, IntTwo: 1, IntThree: 1 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================

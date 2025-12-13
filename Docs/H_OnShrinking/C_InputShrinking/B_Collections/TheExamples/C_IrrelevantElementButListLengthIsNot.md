@@ -13,7 +13,7 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
     from trace in Checkr.Trace("Original List", () => list)
-    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
+    from spec in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
     select Case.Closed;
 ```
 ```text

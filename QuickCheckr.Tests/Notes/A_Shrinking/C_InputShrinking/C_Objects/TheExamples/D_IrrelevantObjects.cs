@@ -48,7 +48,7 @@ public class D_IrrelevantObjects : BaseTest
             from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
             from tracePerson in Checkr.Trace("Person", () => person)
             from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
-            from isEighteen in Checkr.Spec("Not aged 18", () => person.Age != 18)
+            from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
             select Case.Closed;
     }
 

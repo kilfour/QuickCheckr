@@ -34,14 +34,14 @@ public class MinimalCheckr
 {
     [Fact]
     public void RunTest()
-        => Checkr.Spec("Always true", () => true).Run();
+        => Checkr.Expect("Always true", () => true).Run();
 }
 ```
 Congratulations! You've just checked something out. The test passes and now we know that `true` is always `true`.
 
 So what happens if try to do the opposite?  
 ```csharp
-Checkr.Spec("Always true", () => false);
+Checkr.Expect("Always true", () => false);
 ```
 The test fails and QuickCheckr produces the following report:  
 ```text
@@ -73,7 +73,7 @@ Let's add an input to the Checkr, and change our spec:
 ```csharp
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 
@@ -110,7 +110,7 @@ So, if we add another input to the Checkr, one which does not influence the fail
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 The following happens:  
@@ -138,7 +138,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Input /= 42", () => input != 42)
+    from spec in Checkr.Expect("Input /= 42", () => input != 42)
     from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
     select Case.Closed;
 ```
@@ -166,7 +166,7 @@ var check =
     from two in Checkr.Input("Two", Fuzzr.Int())
     from three in Checkr.Input("Three", Fuzzr.Int())
     from sum in Checkr.Act("One plus Three", () => one + three)
-    from spec in Checkr.Spec("Sum /= 42", () => sum != 42)
+    from spec in Checkr.Expect("Sum /= 42", () => sum != 42)
     select Case.Closed;
 ```
 Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.  
@@ -207,7 +207,7 @@ If we want to test it and write a Checkr like so:
 private static readonly CheckrOf<Case> FaultyBugHouseCheckr =
     from input in Checkr.Input("Int", Fuzzr.Int())
     from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => new BugHouse().DelayedDetonation(input))
-    from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+    from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
     select Case.Closed;
 ```
 The test will always pass, even if we increase the amount of runs to infinity,
@@ -224,7 +224,7 @@ private static readonly CheckrOf<Case> BugHouseCheckr =
     from bugHouse in Trackr.Stashed(() => new BugHouse())
     from input in Checkr.Input("Int", Fuzzr.Int())
     from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => bugHouse.DelayedDetonation(input))
-    from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+    from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
     select Case.Closed;
 ```
 **Running It:**  
@@ -249,7 +249,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 74
+   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
  Passed Specs
  - Returns true: 2x
@@ -341,7 +341,7 @@ The bug is trivial, but that's fine: we're here to demonstrate *behavioural bran
         Checkr.Act("Deposit", () => account.Deposit(amount)),
         Checkr.Act("Withdraw", () => account.WithDraw(amount))
     )
-    from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
     select Case.Closed;
 ```
 Every execution through this Checkr does the same things:
@@ -362,7 +362,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:66:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:64:1
  Original failing run:    8 executions
  Seed:                    1169776765
  ------------------------------------------------------------
@@ -529,7 +529,7 @@ private static readonly CheckrOf<Case> CreateCoach =
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
     from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
-    from checkName in Checkr.Spec("Coach Name is set", () => coach.Name == name)
+    from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
     from toPool in Trackr.Pool("Store Coach", coach) // Store this coach in the pool.
     select Case.Closed;
 ```
@@ -543,7 +543,7 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => coach.UpdateSkills(skills))                // Update it.
-        from checkSkills in Checkr.Spec("Coach Skills Set",
+        from checkSkills in Checkr.Expect("Coach Skills Set",
             () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
         select Case.Closed)
     select Case.Closed;
@@ -556,7 +556,7 @@ private static readonly CheckrOf<Case> CreateCourse =
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
     from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", () => new Course(name))
-    from checkName in Checkr.Spec("Course Name Set", () => course.Name == name)
+    from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
     from toPool in Trackr.Pool("Store Course", course) // Store this course in the pool.
     select Case.Closed;
 ```
@@ -570,7 +570,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             () => course.UpdateRequiredSkills(skills))          // Update it.
-        from checkSkills in Checkr.Spec("Course Required Skills Set",
+        from checkSkills in Checkr.Expect("Course Required Skills Set",
             () => course.RequiredSkills.Count == skills.Count() && course.RequiredSkills.All(skills.Contains))
         select Case.Closed)
     select Case.Closed;
@@ -581,7 +581,7 @@ And finally here's the system invariant.
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from coaches in Trackr.Pool<Coach>() // Retrieve all coaches from the pool.
-    from assignedCheck in Checkr.SpecIf("Assigned Coaches Must Be Suitable",
+    from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
         () => coaches.Any(coach => coach.AssignedCourses.Any()),
         () => coaches.All( // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))
@@ -688,7 +688,7 @@ The following Checkr will be used to generate the reports throughout this chapte
     from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
     from add in Checkr.Act("Add", () => summer.Add(input))
-    from spec in Checkr.Spec("Total should not be 42",
+    from spec in Checkr.Expect("Total should not be 42",
         () => summer.Total != 42)
     select Case.Closed;
 ```
@@ -844,7 +844,7 @@ This is the first step in QuickCheckr shrinking.
 The following simple example fails on the third execution.  
 ```csharp
     from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from spec in Checkr.Spec("Counter does not equal 3", () => counter != 3)
+    from spec in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
 
@@ -881,7 +881,7 @@ QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal fail
 The following simple example has one input but always fails.  
 ```csharp
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Spec("Always Fails", () => false)
+    from spec in Checkr.Expect("Always Fails", () => false)
     select Case.Closed;
 ```
 Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
@@ -907,7 +907,7 @@ Another example, slightly trickier.
     from two in Checkr.Input("Input Two", Fuzzr.Int())
     from three in Checkr.Input("Input Three", Fuzzr.Int())
     from result in Checkr.Act("Result", () => one + three)
-    from spec in Checkr.Spec("Should not be 42", () => result != 42)
+    from spec in Checkr.Expect("Should not be 42", () => result != 42)
     select Case.Closed;
 ```
 As you can see from the test definition, two inputs are involved in a possible failure.
@@ -941,7 +941,7 @@ This means that if only some elements in a list contribute to the failing condit
 Consider a test that forbids the value `7`:  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Spec("List does not contain 7", () => !listInput.Contains(7))
+    from spec in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -966,7 +966,7 @@ Ofcourse a collection itself is just an input like another, so if it, as a whole
 is irrelevant for the failure, QuickCheckr will remove it.  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Spec("Always fails", () => false)
+    from spec in Checkr.Expect("Always fails", () => false)
     select Case.Closed;
 ```
 ```text
@@ -997,7 +997,7 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
     from trace in Checkr.Trace("Original List", () => list)
-    from spec in Checkr.Spec("Length <= 2", () => list.Count() <= 2)
+    from spec in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
     select Case.Closed;
 ```
 ```text
@@ -1048,14 +1048,14 @@ We can verify this with the following Checkr:
         Checkr.Act("Deposit", () => account.Deposit(amount)),
         Checkr.Act("Withdraw", () => account.WithDraw(amount))
     )
-    from noOverdraft in Checkr.Spec("No Overdraft", () => account.Balance >= 0)
+    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
     select Case.Closed;
 ```
 Now if we run this we might get something like this:  
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:65:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:66:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
@@ -1085,21 +1085,21 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:110:1
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    1825120884
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1240277583
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 7
+   - Input: Amount = 2
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 6
+   - Input: Amount = 1
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 5x
+ - No Overdraft: 9x
  ------------------------------------------------------------
 ```
 #### An Eager Shrinker
@@ -1108,7 +1108,7 @@ Currently the only identified cases where this happens is if more than one input
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.SpecIf("Does not contain 1",
+    from spec in Checkr.ExpectWhen("Does not contain 1",
         () => input.Count() > 2,
         () => !input.Contains(1))
     select Case.Closed;
@@ -1117,7 +1117,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:137:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:140:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -1140,14 +1140,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:180:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1246511372
+ Seed:                    956523366
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 4, 1, 3 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 3, 2, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================
@@ -1159,7 +1159,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
         from result in Fuzzr.One<BaggyInters>()
         select result)
     from trace in Checkr.Trace("Original", () => obj)
-    from spec in Checkr.Spec("obj.IntOne == 1 || obj.IntThree == 1",
+    from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```
@@ -1170,11 +1170,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2078219973
+ Seed:                    142081865
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 2 }
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 3, IntTwo: 1, IntThree: 1 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================
@@ -1215,7 +1215,7 @@ var listFuzzr =
         () => TheReverser.Reverses(TheReverser.Reverses(input)))
     from trace in Checkr.Trace("Input ", () => input)
     from traceResult in Checkr.Trace("Result", () => result)
-    from spec in Checkr.Spec(
+    from spec in Checkr.Expect(
         "Input == Result", () => input.SequenceEqual(result))
     select Case.Closed;
 ```
@@ -1259,7 +1259,7 @@ And we want to ensure that it rolls the numbers 1-6.  For which use the followin
     from die in Trackr.Stashed(() => new DieSix())
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from assay in Trackr.Assay("Rolls",
+    from assay in Trackr.ExpectAtEnd("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),
@@ -1278,10 +1278,10 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
- Original failing run:    30 executions
- Seed:                    930735070
+ Original failing run:    100 executions
+ Seed:                    2023094572
  ------------------------------------------------------------
-  Executed: Roll (30 Times)
+  Executed: Roll (100 Times)
  ================================================
   !!  The Assayer Disagrees: Rolls: Contains 6
  ================================================
@@ -1308,9 +1308,9 @@ Let's use `Trackr.ProvenWhen`:
     from cnt in Checkr.Perform(() => ++cell.Value)
     from observer in Trackr.Stashed(() => new HashSet<int>())
     from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from proven in Trackr.ProvenWhen("All sides rolled",
+    from proven in Trackr.StopWhenProven("All sides rolled",
         () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-    from assay in Trackr.Assay("Rolls",
+    from assay in Trackr.ExpectAtEnd("Rolls",
         ("Contains 1", () => observer.Contains(1)),
         ("Contains 2", () => observer.Contains(2)),
         ("Contains 3", () => observer.Contains(3)),

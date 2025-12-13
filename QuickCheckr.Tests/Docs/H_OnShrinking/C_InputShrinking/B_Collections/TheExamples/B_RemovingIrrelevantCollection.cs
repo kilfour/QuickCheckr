@@ -39,7 +39,7 @@ public class B_RemovingIrrelevantCollection : BaseTest
     {
         return
             from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-            from spec in Checkr.Spec("Always fails", () => false)
+            from spec in Checkr.Expect("Always fails", () => false)
             select Case.Closed;
     }
 }

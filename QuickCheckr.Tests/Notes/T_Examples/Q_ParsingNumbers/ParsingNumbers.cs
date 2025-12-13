@@ -51,7 +51,7 @@ public class ParsingNumbers : BaseTest
             from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
             from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
             from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
-            from match in Checkr.SpecIf("Match",
+            from match in Checkr.ExpectWhen("Match",
                 () => !double.IsNaN(goldenResult),
                 () => goldenResult == result)
             select Case.Closed;

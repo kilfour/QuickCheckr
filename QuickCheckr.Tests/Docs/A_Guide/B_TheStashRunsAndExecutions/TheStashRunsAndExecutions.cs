@@ -33,7 +33,7 @@ public class TheStashRunsAndExecutions : BaseTest
     private static readonly CheckrOf<Case> FaultyBugHouseCheckr =
         from input in Checkr.Input("Int", Fuzzr.Int())
         from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => new BugHouse().DelayedDetonation(input))
-        from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+        from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
         select Case.Closed;
 
     [Fact]
@@ -52,7 +52,7 @@ because the test loses the state of the `BugHouse` between every run.")]
         from bugHouse in Trackr.Stashed(() => new BugHouse())
         from input in Checkr.Input("Int", Fuzzr.Int())
         from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => bugHouse.DelayedDetonation(input))
-        from checkResult in Checkr.Spec("Returns true", () => callBugHouse)
+        from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
         select Case.Closed;
 
 
