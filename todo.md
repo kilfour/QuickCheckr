@@ -1,6 +1,11 @@
 ## Current Version: 0.0.4
 
 ### Issues 
+* finish renaming, do a solution wide search to catch doc drift
+  * Spec to Expect
+  * SpecIf to ExpectWhen
+  * Assay to ExpectAtEnd
+  * ProvenWhen to StopWhenProven
 * Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 
 ### On the Table, a.k.a. Doing 
