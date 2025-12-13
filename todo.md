@@ -6,7 +6,7 @@
   * SpecIf to ExpectWhen
   * Assay to Verify (done)
   * Analize to Expect
-  * ProvenWhen to StopWhenProven
+  * ProvenWhen to StopWhenProven (done)
 * Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 
 ### On the Table, a.k.a. Doing 
