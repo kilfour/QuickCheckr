@@ -17,24 +17,27 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
 ```
 No shrinking. QuickCheckr reports the original failing run.  
+
 **`ShrinkMode.Executions`**  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Executions };
 ```
 Trims away irrelevant executions.  
+
 **`ShrinkMode.Inputs`**  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
 ```
 Trims inputs to find a minimal failing case.  
+
 **`ShrinkMode.Reduction`**  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
 ```
 Applies configured reducers for fine-grained shrinking.  
-**`ShrinkMode.Default`**  
+\n**`ShrinkMode.Default`**  
 
 The default settings includes all possible ShrinkModes.  

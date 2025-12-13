@@ -70,7 +70,7 @@ public class A_ShrinkMode : BaseTest
         => config with { ShrinkMode = ShrinkMode.Executions };
 
     [Fact]
-    [DocContent("**`ShrinkMode.Executions`**")]
+    [DocContent("\n**`ShrinkMode.Executions`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureExecutions))]
     [DocContent("Trims away irrelevant executions.")]
     //[DocCodeFile("A_ShrinkModeExecutions.txt", "text")]
@@ -102,7 +102,7 @@ public class A_ShrinkMode : BaseTest
         => config with { ShrinkMode = ShrinkMode.Inputs };
 
     [Fact]
-    [DocContent("**`ShrinkMode.Inputs`**")]
+    [DocContent("\n**`ShrinkMode.Inputs`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureInputs))]
     [DocContent("Trims inputs to find a minimal failing case.")]
     //[DocCodeFile("A_ShrinkModeInputs.txt", "text")]
@@ -140,7 +140,7 @@ public class A_ShrinkMode : BaseTest
         => config with { ShrinkMode = ShrinkMode.Reduction };
 
     [Fact]
-    [DocContent("**`ShrinkMode.Reduction`**")]
+    [DocContent("\n**`ShrinkMode.Reduction`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureReduction))]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
     //[DocCodeFile("A_ShrinkModeReduction.txt", "text")]
@@ -160,7 +160,7 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent(
-@"**`ShrinkMode.Default`**  
+@"\n**`ShrinkMode.Default`**  
 
 The default settings includes all possible ShrinkModes.")]
     public void DefaultSetting()
