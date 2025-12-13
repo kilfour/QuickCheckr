@@ -21,7 +21,7 @@
 * Stabilize Investigations
 * Generalize Towards(Zero) reducer
 * More reducers
-* async & concurrency
+* async & concurrency (spike cooking in Experimental)
 
 ## Doc Work
 * CaseSummary
