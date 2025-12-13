@@ -31,10 +31,16 @@ public class Memory
         return ShortTermMemory.Reset();
     }
 
-    public IReadOnlyList<int> Numbers => ShortTermMemory.Numbers;
-    public int Count() => ShortTermMemory.Count();
-    public IEnumerable<(int ExecutionId, ExecutionMemory)> Entries() => ShortTermMemory.Entries();
-    public void Remove(int executionNumber) => ShortTermMemory.Remove(executionNumber);
+    public IReadOnlyList<int> Numbers
+        => ShortTermMemory.Numbers;
+    public int Count()
+        => ShortTermMemory.Count();
+    public IEnumerable<(int ExecutionId, ExecutionMemory)> Entries()
+        => ShortTermMemory.Entries();
+    public void Remove(int executionNumber)
+        => ShortTermMemory.Remove(executionNumber);
+    public IDisposable ScopedExecutionRemoval(int executionNumber)
+        => ShortTermMemory.ScopedExecutionRemoval(executionNumber);
     public IDisposable ScopedSwap(int executionId, string key, object value)
         => ShortTermMemory.ScopedSwap(executionId, key, value);
     public IDisposable NestedValue(int executionId, MemoryLens swapper)

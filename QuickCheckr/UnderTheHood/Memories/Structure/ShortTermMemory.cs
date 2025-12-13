@@ -4,15 +4,23 @@ namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class ShortTermMemory
 {
-    private readonly Dictionary<int, ExecutionMemory> memories = [];
+    private Dictionary<int, ExecutionMemory> memories = [];
     private ExecutionMemory Current => memories[CurrentExecutionNumber];
     public int CurrentExecutionNumber { get; private set; } = 0;
     public int Count() => memories.Count;
 
-    public IReadOnlyList<int> Numbers => [.. memories.Keys];
+    public IReadOnlyList<int> Numbers => [.. memories.Keys.Where(a => a != skipExecutionNumber)];
 
     public int Reset()
         => CurrentExecutionNumber = Numbers[0];
+
+    private int skipExecutionNumber = -1;
+
+    public IDisposable ScopedExecutionRemoval(int executionNumber)
+    {
+        skipExecutionNumber = executionNumber;
+        return new DisposableAction(() => skipExecutionNumber = -1);
+    }
 
     public int StartNewExecution()
     {

@@ -4,8 +4,6 @@
 
 ### On the Table, a.k.a. Doing 
 * Observable Async Spike
-* Trackr.Analyze : useful for the needler pattern
-  * Similar to assay, runs only at end of run, but **does** trigger shrinking
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
@@ -41,6 +39,7 @@
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 
 ## Refactoring and Testing Targets 
+* Duplication in the various different Specs is building up
 * Nested InputShrinkingClue ? Refactoring Target
 * QuickCheckr.Tests.Verification.SwapperTests: 
   * Main tests prove that this works, but it might help to to test this in isolation

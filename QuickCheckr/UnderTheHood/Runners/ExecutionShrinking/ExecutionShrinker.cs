@@ -26,12 +26,14 @@ public class ExecutionShrinker(
 
     private void ExecuteRun(int current)
     {
-        var executionId = State.StartReplay();
-        while (executionId > 0)
+        using (State.Memory.ScopedExecutionRemoval(current))
         {
-            if (executionId != current)
+            var executionId = State.StartReplay();
+            while (executionId > 0)
+            {
                 Check(State);
-            executionId = State.Memory.NextExecution();
+                executionId = State.Memory.NextExecution();
+            }
         }
     }
 }

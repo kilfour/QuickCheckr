@@ -55,5 +55,4 @@ public static partial class Trackr
             }
             return CheckrResult.CaseOnly(state);
         };
-
 }
