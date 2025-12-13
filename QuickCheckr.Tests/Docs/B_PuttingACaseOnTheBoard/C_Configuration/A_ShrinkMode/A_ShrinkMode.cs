@@ -148,8 +148,8 @@ public class A_ShrinkMode : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureReduction));
-        WriteAsserts(article, true);
-        WriteReport(article, "A_ShrinkModeReduction.txt", true);
+        WriteAsserts(article, false);
+        WriteReport(article, "A_ShrinkModeReduction.txt", false);
         VerifyReduction(article);
     }
 

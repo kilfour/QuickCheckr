@@ -68,7 +68,7 @@ either the final state satisfies all assays or it doesn't.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(930735070, 30.ExecutionsPerRun()));
+            GetCheckr().Run(100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TheLoadedDie>(article, false);
         Verify(article);
@@ -81,7 +81,7 @@ either the final state satisfies all assays or it doesn't.")]
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(30, article.Execution(1).Read().Times);
+        Assert.Equal(100, article.Execution(1).Read().Times);
         Assert.Equal("Roll", article.Execution(1).Action(1).Read().Label);
     }
 
@@ -129,7 +129,7 @@ the Checkr is considered proven and it concludes immediately, ... no more execut
     public void RunTest_Fixed()
     {
         var counter = new Cell<int>(0);
-        GetCheckr_Fixed(counter).Run(930735070, 200.ExecutionsPerRun());
+        GetCheckr_Fixed(counter).Run(100.ExecutionsPerRun());
         Assert.True(counter.Value < 100);
     }
 }

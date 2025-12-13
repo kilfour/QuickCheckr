@@ -1,12 +1,11 @@
-## Short Term Work (Current Version: 0.0.3)
+## Short Term Work (Current Version: 0.0.4)
 * Port Concurrency Spike from QuickAcid : Doing, not needed immediatly, just a spike for now
 
 ### Issues 
 
-### 0.0.4
-* Ready (try it out on ResultR Open Source Project: DONE)
+### 0.0.5
 
-### 0.0.4+
+### 0.0.5+
 * look into different collection shrinking
   * limitations
   * known issues
