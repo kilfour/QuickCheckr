@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood.Docketing;
-
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 public class Verifier(CheckrState State,

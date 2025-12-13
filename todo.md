@@ -1,9 +1,17 @@
-## Short Term Work (Current Version: 0.0.4)
-* Port Concurrency Spike from QuickAcid : Doing, not needed immediatly, just a spike for now
+## Current Version: 0.0.4
 
 ### Issues 
 
+### On the Table, a.k.a. Doing 
+* Observable Async Spike
+* Trackr.Analyze : useful for the needler pattern
+  * Similar to assay, runs only at end of run, but **does** trigger shrinking
+* Build HorsesForCourses.Api for testing example
+  * Initial Version Ready (auth is hardcoded admin for now)
+
 ### 0.0.5
+* Fix Reporting when ShrinkMode does not include InputShrinking
+* Dive into Reducers a bit more
 
 ### 0.0.5+
 * look into different collection shrinking
@@ -14,10 +22,9 @@
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
 * Stabilize Investigations
-
-### After that
 * Generalize Towards(Zero) reducer
 * More reducers
+* async & concurrency
 
 ## Doc Work
 * CaseSummary

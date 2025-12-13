@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:17:1
+ Original failing run:    11 executions
+ Minimal failing case:    2 executions (after 9 shrinks)
+ Seed:                    1878701932
+ ------------------------------------------------------------
+  Executed: start
+   - Input: Input = 6
+ ------------------------------------------------------------
+  Executed: wait
+ ============================
+  !! Spec Failed: Is not 7
+ ============================

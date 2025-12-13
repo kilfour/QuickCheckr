@@ -3,9 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
-using QuickPulse.Bolts;
 using QuickPulse.Explains;
-using QuickPulse.Show.Bolts;
 
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_ShrinkMode;
