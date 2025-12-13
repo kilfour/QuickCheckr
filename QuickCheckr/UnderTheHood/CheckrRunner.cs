@@ -28,7 +28,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
 
-        if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingAssay))
+        if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerify))
             return CompileTheCaseFile(originalRunExecutionCount, shrinkCount, true);
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
@@ -49,12 +49,12 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
     private CaseFile CompileTheCaseFile(
         int originalRunExecutionCount,
         int shrinkCount,
-        bool forAssayer = false)
+        bool forVerifier = false)
     {
         var dossier =
             new Dossier(
-                AssayerSpec: forAssayer ? State.EvidenceRecorder.FailingAssay : null,
-                FailingSpec: forAssayer ? null : State.EvidenceRecorder.FailingSpec,
+                VerifyingSpec: forVerifier ? State.EvidenceRecorder.FailingVerify : null,
+                FailingSpec: forVerifier ? null : State.EvidenceRecorder.FailingSpec,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
                 ExecutionCount: State.Memory.Count(),

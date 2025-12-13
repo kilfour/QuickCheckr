@@ -513,11 +513,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    230176705
+ Seed:                    467592503
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 25 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 80 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -693,12 +693,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1851334184
+ Seed:                    150007359
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-1^2"
-   - Trace: Original = - 1 ^ 2 / 2 / 1 - 3 / 3 * 1 * 1 - 3 * 2 - 1
-   - Trace: Compare = Golden: -8,5 /= SUT: -7,5
+   - Input: Expression = "-3^2"
+   - Trace: Original = - 3 ^ 2 / 2 / 1 / 2 - 1 / 3 * 2 / 1
+   - Trace: Compare = Golden: -2,9166666666666665 /= SUT: 1,5833333333333335
  =========================
   !! Spec Failed: Match
  =========================
@@ -726,7 +726,7 @@ private static CheckrConfig Configure(CheckrConfig config)
  - Throws: 1x
  ------------------------------------------------------------
 ```
-### Trackr Assay
+### Trackr Verify
 ```csharp
     from observer in Trackr.Stashed(() => new HashSet<int>())
     // using quickfuzzr below, but really it's a SUT
@@ -737,14 +737,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:19:1
+ Location:                Notes\B_BuildingBlocks\S_TrackrVerify\TrackrVerify.cs:19:1
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
   Executed: Roll (20 Times)
- =========================================
-  !!  The Assayer Disagrees: Contains 3
- =========================================
+ ==========================================
+  !!  The Verifier Disagrees: Contains 3
+ ==========================================
 ```
 ```csharp
     from observer in Trackr.Stashed(() => new HashSet<int>())
@@ -759,14 +759,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Multiple
- Location:                Notes\B_BuildingBlocks\S_TrackrAssay\TrackrAssay.cs:53:1
+ Location:                Notes\B_BuildingBlocks\S_TrackrVerify\TrackrVerify.cs:53:1
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
   Executed: Roll (20 Times)
- ============================================================
-  !!  The Assayer Disagrees: Rolls: Contains 3, Contains 4
- ============================================================
+ =============================================================
+  !!  The Verifier Disagrees: Rolls: Contains 3, Contains 4
+ =============================================================
 ```
 ### Trackr Proven When
 ```csharp
@@ -1421,8 +1421,8 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 Possible solutions:
 - Ensure each 'Trackr.PoolFor' uses a unique key.
 ```
-### Assay
-- `Trackr.Assay`:  
+### Verify
+- `Trackr.Verify`:  
 ```csharp
     from one in Trackr.Verify("reused", () => true)
     from two in Trackr.Verify("reused", () => true)

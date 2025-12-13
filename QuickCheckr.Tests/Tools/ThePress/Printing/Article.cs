@@ -10,9 +10,9 @@ public class Article(CaseFile caseFile)
     public CaseFile CaseFile { get; } = caseFile;
     public bool VerdictReached() => caseFile.HasVerdict();
 
-    public string AssayerDisagrees()
+    public string VerifyFailed()
     {
-        if (caseFile.Verdict!.FailureDeposition is AssayerDeposition assayerDeposition)
+        if (caseFile.Verdict!.FailureDeposition is VerifyingDeposition assayerDeposition)
         {
             return assayerDeposition.FailedSpec;
         }

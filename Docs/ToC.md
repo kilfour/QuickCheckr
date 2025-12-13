@@ -20,4 +20,4 @@
     - [Deliberation Shrinking](H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md)
   - [Cook Book](T_Cookbook/CookBook.md)
     - [Verifying List Reversal (Double-Reverse Law)](T_Cookbook/A_ListReverse/ListReverse.md)
-    - [Testing Aggregate Behaviour (Trackr.Assay)](T_Cookbook/L_TheLoadedDie/TheLoadedDie.md)
+    - [Testing Aggregate Behaviour (Trackr.Verify)](T_Cookbook/L_TheLoadedDie/TheLoadedDie.md)

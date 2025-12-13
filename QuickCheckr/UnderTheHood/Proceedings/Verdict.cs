@@ -30,7 +30,7 @@ public class Verdict
             return new ExceptionDeposition(dossier.Exception);
         if (dossier.FailingSpec is not null)
             return new FailedSpecDeposition(dossier.FailingSpec);
-        return new AssayerDeposition(dossier.AssayerSpec!);
+        return new VerifyingDeposition(dossier.VerifyingSpec!);
     }
 
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];

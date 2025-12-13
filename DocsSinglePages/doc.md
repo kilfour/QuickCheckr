@@ -1086,20 +1086,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    4 executions
- Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1146673883
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    840063070
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Input: Amount = 9
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Input: Amount = 8
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 3x
+ - No Overdraft: 2x
  ------------------------------------------------------------
 ```
 #### An Eager Shrinker
@@ -1143,11 +1143,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    210121535
+ Seed:                    460229240
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 3, 0, 1 ]
+   - Trace: List = [ 0, 0, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================
@@ -1170,11 +1170,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    257261661
+ Seed:                    868339093
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+   - Input: BaggyInters = { IntOne: 1 }
+   - Trace: Original = { IntOne: 1, IntTwo: 1, IntThree: 2 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================
@@ -1236,10 +1236,10 @@ var listFuzzr =
   !! Spec Failed: Input == Result
  ===================================
 ```
-### Testing Aggregate Behaviour (Trackr.Assay)
+### Testing Aggregate Behaviour (Trackr.Verify)
 **Demonstrates:**
 - Accumulated-state testing
-- `Trackr.Assay`
+- `Trackr.Verify`
 - `Trackr.ProvenWhen`
 
 While not strictly speaking a property-test, as there is no shrinking involved,
@@ -1268,7 +1268,7 @@ And we want to ensure that it rolls the numbers 1-6.  For which use the followin
         ("Contains 6", () => observer.Contains(6)))
     select Case.Closed;
 ```
-`Trackr.Assay` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
+`Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
 rather than the outcome of any single execution.
 In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *assay* is evaluated only after the final execution has completed.
 This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
@@ -1279,17 +1279,17 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    982555922
+ Seed:                    1607119814
  ------------------------------------------------------------
   Executed: Roll (100 Times)
- ================================================
-  !!  The Assayer Disagrees: Rolls: Contains 6
- ================================================
+ =================================================
+  !!  The Verifier Disagrees: Rolls: Contains 6
+ =================================================
 ```
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the assayer pointed it out in above report.
 
-*Sidenote:* `Trackr.Assay`never triggers shrinking, because there is no meaningful *minimal failing case*,
+*Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all assays or it doesn't.  
 #### `Trackr.ProvenWhen`
 ```csharp

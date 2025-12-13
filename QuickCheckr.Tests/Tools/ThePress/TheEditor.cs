@@ -67,8 +67,8 @@ public class TheEditor
             article.FailedSpec() is not null,
             $"Assert.Equal(\"{article.FailedSpec()}\", article.FailedSpec());")
         from failedAssat in EmitIf(
-            article.AssayerDisagrees() is not null,
-            $"Assert.Equal(\"{article.AssayerDisagrees()}\", article.AssayerDisagrees());")
+            article.VerifyFailed() is not null,
+            $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")
         from executionCount in EmitIf(
             article.Total().Executions() > 0,
             $"Assert.Equal({article.Total().Executions()}, article.Total().Executions());")

@@ -5,13 +5,13 @@ namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 
 
 [DocFile]
-public class J_Assay
+public class J_Verify
 {
     [Fact]
-    [DocContent("- `Trackr.Assay`:")]
-    [DocExample(typeof(J_Assay), nameof(GetCheckr))]
+    [DocContent("- `Trackr.Verify`:")]
+    [DocExample(typeof(J_Verify), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(J_Assay), nameof(GetMessage), "text")]
+    [DocExample(typeof(J_Verify), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());

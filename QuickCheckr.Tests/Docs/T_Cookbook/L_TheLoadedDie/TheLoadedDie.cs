@@ -8,7 +8,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.T_Cookbook.L_TheLoadedDie;
 
 [DocFile]
-[DocFileHeader("Testing Aggregate Behaviour (Trackr.Assay)")]
+[DocFileHeader("Testing Aggregate Behaviour (Trackr.Verify)")]
 public class TheLoadedDie : BaseTest
 {
     [CodeExample]
@@ -39,7 +39,7 @@ public class TheLoadedDie : BaseTest
     [DocContent(
 @"**Demonstrates:**
 - Accumulated-state testing
-- `Trackr.Assay`
+- `Trackr.Verify`
 - `Trackr.ProvenWhen`
 
 While not strictly speaking a property-test, as there is no shrinking involved,
@@ -52,7 +52,7 @@ We're testing a simple implementation of a die:
     [DocContent("And we want to ensure that it rolls the numbers 1-6.  For which use the following Checkr:")]
     [DocExample(typeof(TheLoadedDie), nameof(GetCheckr))]
     [DocContent(
-@"`Trackr.Assay` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
+@"`Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
 rather than the outcome of any single execution.
 In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *assay* is evaluated only after the final execution has completed.
 This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
@@ -63,7 +63,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 @"Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the assayer pointed it out in above report.
 
-*Sidenote:* `Trackr.Assay`never triggers shrinking, because there is no meaningful *minimal failing case*,
+*Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all assays or it doesn't.")]
     public void RunTest()
     {
@@ -76,7 +76,7 @@ either the final state satisfies all assays or it doesn't.")]
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Rolls: Contains 6", article.AssayerDisagrees());
+        Assert.Equal("Rolls: Contains 6", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(0, article.ShrinkCount);

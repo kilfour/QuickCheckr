@@ -5,26 +5,26 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.B_BuildingBlocks.S_TrackrAssay;
+namespace QuickCheckr.Tests.Notes.B_BuildingBlocks.S_TrackrVerify;
 
 [DocFile]
-public class TrackrAssay : BaseTest
+public class TrackrVerify : BaseTest
 {
     [Fact]
-    [DocExample(typeof(TrackrAssay), nameof(GetCheckr))]
-    [DocCodeFile("TrackrAssay.txt", "text")]
+    [DocExample(typeof(TrackrVerify), nameof(GetCheckr))]
+    [DocCodeFile("TrackrVerify.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport<TrackrAssay>(article);
+        WriteReport<TrackrVerify>(article);
         Verify(article);
     }
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Contains 3", article.AssayerDisagrees());
+        Assert.Equal("Contains 3", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
@@ -45,20 +45,20 @@ public class TrackrAssay : BaseTest
     }
 
     [Fact]
-    [DocExample(typeof(TrackrAssay), nameof(GetCheckr_Multiple))]
-    [DocCodeFile("TrackrAssayMultiple.txt", "text")]
+    [DocExample(typeof(TrackrVerify), nameof(GetCheckr_Multiple))]
+    [DocCodeFile("TrackrVerifyMultiple.txt", "text")]
     public void Multiple()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr_Multiple().Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport(article, "TrackrAssayMultiple.txt");
+        WriteReport(article, "TrackrVerifyMultiple.txt");
         VerifyMultiple(article);
     }
 
     private static void VerifyMultiple(Article article)
     {
-        Assert.Equal("Rolls: Contains 3, Contains 4", article.AssayerDisagrees());
+        Assert.Equal("Rolls: Contains 3, Contains 4", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

@@ -65,14 +65,14 @@ public class EvidenceRecorder
         runFailed = true;
     }
 
-    public string FailingAssay { get; private set; } = string.Empty;
+    public string FailingVerify { get; private set; } = string.Empty;
     public void AsssayFailed(string key)
     {
         if (IsReplay)
         {
             throw new InvalidOperationException("Can't shrink on assay failure.");
         }
-        FailingAssay = key;
+        FailingVerify = key;
         runFailed = true;
     }
 

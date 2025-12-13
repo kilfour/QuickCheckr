@@ -1,7 +1,7 @@
-# Testing Aggregate Behaviour (Trackr.Assay)
+# Testing Aggregate Behaviour (Trackr.Verify)
 **Demonstrates:**
 - Accumulated-state testing
-- `Trackr.Assay`
+- `Trackr.Verify`
 - `Trackr.ProvenWhen`
 
 While not strictly speaking a property-test, as there is no shrinking involved,
@@ -30,7 +30,7 @@ And we want to ensure that it rolls the numbers 1-6.  For which use the followin
         ("Contains 6", () => observer.Contains(6)))
     select Case.Closed;
 ```
-`Trackr.Assay` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
+`Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
 rather than the outcome of any single execution.
 In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *assay* is evaluated only after the final execution has completed.
 This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
@@ -41,17 +41,17 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    982555922
+ Seed:                    1607119814
  ------------------------------------------------------------
   Executed: Roll (100 Times)
- ================================================
-  !!  The Assayer Disagrees: Rolls: Contains 6
- ================================================
+ =================================================
+  !!  The Verifier Disagrees: Rolls: Contains 6
+ =================================================
 ```
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the assayer pointed it out in above report.
 
-*Sidenote:* `Trackr.Assay`never triggers shrinking, because there is no meaningful *minimal failing case*,
+*Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all assays or it doesn't.  
 ## `Trackr.ProvenWhen`
 ```csharp

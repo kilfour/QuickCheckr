@@ -69,20 +69,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    4 executions
- Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1146673883
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    840063070
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Input: Amount = 9
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Input: Amount = 8
  ================================
   !! Spec Failed: No Overdraft
  ================================
  Passed Specs
- - No Overdraft: 3x
+ - No Overdraft: 2x
  ------------------------------------------------------------
 ```
 ## An Eager Shrinker
@@ -126,11 +126,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    210121535
+ Seed:                    460229240
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 3, 0, 1 ]
+   - Trace: List = [ 0, 0, 1 ]
  ======================================
   !! Spec Failed: Does not contain 1
  ======================================
@@ -153,11 +153,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    257261661
+ Seed:                    868339093
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+   - Input: BaggyInters = { IntOne: 1 }
+   - Trace: Original = { IntOne: 1, IntTwo: 1, IntThree: 2 }
  ========================================================
   !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
  ========================================================

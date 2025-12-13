@@ -3,9 +3,9 @@ using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 
-public class AssayerDepositionsTests : DepositionTest
+public class VerifyingDepositionsTests : DepositionTest
 {
-    public AssayerDepositionsTests() { IgnoreVerdictHeader = false; IgnoreFailingSpec = false; }
+    public VerifyingDepositionsTests() { IgnoreVerdictHeader = false; IgnoreFailingSpec = false; }
 
     [Fact]
     public void One()
@@ -13,7 +13,7 @@ public class AssayerDepositionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(new Dossier(
                 FailingSpec: null,
                 Exception: null,
-                AssayerSpec: "Some Invariant",
+                VerifyingSpec: "Some Invariant",
                 OriginalRunExecutionCount: 10,
                 ExecutionCount: 4,
                 ShrinkCount: 0,
@@ -26,9 +26,9 @@ public class AssayerDepositionsTests : DepositionTest
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());
         Assert.Equal(" Seed:                    12345678", reader.NextLine());
-        Assert.Equal(" =============================================", reader.NextLine());
-        Assert.Equal("  !!  The Assayer Disagrees: Some Invariant", reader.NextLine());
-        Assert.Equal(" =============================================", reader.NextLine());
+        Assert.Equal(" ==============================================", reader.NextLine());
+        Assert.Equal("  !!  The Verifier Disagrees: Some Invariant", reader.NextLine());
+        Assert.Equal(" ==============================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }
 }
