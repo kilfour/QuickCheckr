@@ -90,9 +90,9 @@ public class AStatefulList : BaseTest
         Assert.Equal("[ 3, 3 ]", article.Execution(3).Trace(1).Read().Value);
         Assert.Equal("After", article.Execution(3).Trace(2).Read().Label);
         Assert.Equal("[ 3 ]", article.Execution(3).Trace(2).Read().Value);
-        Assert.Equal("List Does Not Contain Item", article.PassedSpec(1).Read().Label);
-        Assert.Equal(4, article.PassedSpec(1).Read().TimesPassed);
-        Assert.Equal("List Contains Item", article.PassedSpec(2).Read().Label);
-        Assert.Equal(4, article.PassedSpec(2).Read().TimesPassed);
+        Assert.Equal("List Does Not Contain Item", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal("List Contains Item", article.PassedExpectation(2).Read().Label);
+        Assert.Equal(4, article.PassedExpectation(2).Read().TimesPassed);
     }
 }

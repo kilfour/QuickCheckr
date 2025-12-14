@@ -70,7 +70,7 @@ public class EvidenceRecorder
     {
         if (IsReplay)
         {
-            throw new InvalidOperationException("Can't shrink on assay failure.");
+            throw new InvalidOperationException("Can't shrink on verification failure.");
         }
         FailingVerify = key;
         runFailed = true;

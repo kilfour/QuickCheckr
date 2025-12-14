@@ -25,7 +25,7 @@ public class TheLoadedDie : BaseTest
             from die in Trackr.Stashed(() => new DieSix())
             from observer in Trackr.Stashed(() => new HashSet<int>())
             from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-            from assay in Trackr.Verify("Rolls",
+            from verify in Trackr.Verify("Rolls",
                 ("Contains 1", () => observer.Contains(1)),
                 ("Contains 2", () => observer.Contains(2)),
                 ("Contains 3", () => observer.Contains(3)),
@@ -54,17 +54,17 @@ We're testing a simple implementation of a die:
     [DocContent(
 @"`Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
 rather than the outcome of any single execution.
-In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *assay* is evaluated only after the final execution has completed.
+In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *verify* is evaluated only after the final execution has completed.
 This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
 
 **Report:**")]
     [DocCodeFile("TheLoadedDie.txt", "text")]
     [DocContent(
 @"Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
-A common mistake, and the assayer pointed it out in above report.
+A common mistake, and the verifier pointed it out in above report.
 
 *Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
-either the final state satisfies all assays or it doesn't.")]
+either the final state satisfies all verifications or it doesn't.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
@@ -103,7 +103,7 @@ either the final state satisfies all assays or it doesn't.")]
             from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
             from proven in Trackr.StopWhenProven("All sides rolled",
                 () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-            from assay in Trackr.Verify("Rolls",
+            from verify in Trackr.Verify("Rolls",
                 ("Contains 1", () => observer.Contains(1)),
                 ("Contains 2", () => observer.Contains(2)),
                 ("Contains 3", () => observer.Contains(3)),
@@ -118,7 +118,7 @@ either the final state satisfies all assays or it doesn't.")]
     [DocExample(typeof(DieSixFixed))]
     [DocContent(
 @"Ok, we fixed the bug, so now our Checkr passes.
-But what if we get lucky and we satisfy the assay after the first six rolls ?
+But what if we get lucky and we satisfy the verify after the first six rolls ?
 Bit of a waste to continue running the Checkr, no ?  
 
 Let's use `Trackr.StopWhenProven`:")]

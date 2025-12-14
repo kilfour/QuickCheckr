@@ -114,7 +114,7 @@ highlighting that the behaviour was stable until exactly the offending execution
         Assert.Equal("BugHouse.DelayedDetonation", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Int", article.Execution(2).Input(1).Read().Label);
         Assert.Equal("1", article.Execution(2).Input(1).Read().Value);
-        Assert.Equal("Returns true", article.PassedSpec(1).Read().Label);
-        Assert.Equal(2, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Returns true", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
     }
 }

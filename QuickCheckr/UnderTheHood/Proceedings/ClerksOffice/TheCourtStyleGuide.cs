@@ -83,7 +83,7 @@ public static class The
         from _7 in Pulse.ToFlow(warningDeposition, input.WarningDepositions)
         select input;
 
-    private readonly static Flow<VerifyingDeposition> assayerDeposition =
+    private readonly static Flow<VerifyingDeposition> verifyingDeposition =
         from input in Pulse.Start<VerifyingDeposition>()
         let text = $"  !!  The Verifier Disagrees: {input.FailedExpectation}"
         let length = text.Length + 2
@@ -113,7 +113,7 @@ public static class The
             Pulse.FirstOf(
                 (() => input is FailedExpectationDeposition, () => Pulse.ToFlow(failedExpectationDeposition, (FailedExpectationDeposition)input)),
                 (() => input is ExceptionDeposition, () => Pulse.ToFlow(exceptionDeposition, (ExceptionDeposition)input)),
-                (() => input is VerifyingDeposition, () => Pulse.ToFlow(assayerDeposition, (VerifyingDeposition)input))));
+                (() => input is VerifyingDeposition, () => Pulse.ToFlow(verifyingDeposition, (VerifyingDeposition)input))));
 
     private readonly static Flow<TestMethodInfoDeposition?> testMethodInfoDeposition =
         from input in Pulse.Start<TestMethodInfoDeposition>()

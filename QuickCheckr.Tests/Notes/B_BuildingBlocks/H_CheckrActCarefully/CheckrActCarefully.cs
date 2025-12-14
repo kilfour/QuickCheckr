@@ -29,8 +29,8 @@ public class CheckrActCarefully : BaseTest
         Assert.Equal(1, article.Total().PassedSpecs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Act", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Throws", article.PassedSpec(1).Read().Label);
-        Assert.Equal(1, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Throws", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeSnippet]

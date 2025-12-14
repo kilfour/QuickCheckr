@@ -81,8 +81,8 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
         Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeExample]
@@ -135,8 +135,8 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
         Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
 
     }
 
@@ -182,8 +182,8 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
         Assert.Equal("12", article.Execution(4).Input(1).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedSpec(1).Read().Label);
-        Assert.Equal(3, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
 
     }
 

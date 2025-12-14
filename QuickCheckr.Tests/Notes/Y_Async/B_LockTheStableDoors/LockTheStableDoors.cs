@@ -64,8 +64,8 @@ public class LockTheStableDoors : BaseTest
         Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Course Name", article.Execution(4).Trace(1).Read().Label);
         Assert.Equal("Course-2", article.Execution(4).Trace(1).Read().Value);
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.PassedSpec(1).Read().Label);
-        Assert.Equal(5, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("Assigned Coaches Must Be Suitable", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     private static readonly string[] SkillPool =

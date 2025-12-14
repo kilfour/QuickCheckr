@@ -107,8 +107,8 @@ There is no guesswork.")]
         Assert.Equal("Withdraw", article.Execution(8).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(8).Input(1).Read().Label);
         Assert.Equal("66", article.Execution(8).Input(1).Read().Value);
-        Assert.Equal("No Overdraft", article.PassedSpec(1).Read().Label);
-        Assert.Equal(7, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("No Overdraft", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(7, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [Fact]
@@ -159,8 +159,8 @@ The branch chosen during the original failing run is *the* branch examined durin
         Assert.Equal("Withdraw", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("66", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("No Overdraft", article.PassedSpec(1).Read().Label);
-        Assert.Equal(7, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("No Overdraft", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(7, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeSnippet]

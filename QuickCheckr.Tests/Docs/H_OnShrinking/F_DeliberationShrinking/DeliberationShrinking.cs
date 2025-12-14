@@ -89,8 +89,8 @@ public class DeliberationShrinking : BaseTest
         Assert.Equal("Withdraw", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(3).Input(1).Read().Label);
         Assert.Equal("5", article.Execution(3).Input(1).Read().Value);
-        Assert.Equal("No Overdraft", article.PassedSpec(1).Read().Label);
-        Assert.Equal(2, article.PassedSpec(1).Read().TimesPassed);
+        Assert.Equal("No Overdraft", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeExample]

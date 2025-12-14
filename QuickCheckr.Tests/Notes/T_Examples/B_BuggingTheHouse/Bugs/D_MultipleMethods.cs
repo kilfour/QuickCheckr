@@ -54,10 +54,10 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 		Assert.Equal("BugHouse.RunInt", article.Execution(3).Action(1).Read().Label);
 		Assert.Equal("Int", article.Execution(3).Input(1).Read().Label);
 		Assert.Equal("6", article.Execution(3).Input(1).Read().Value);
-		Assert.Equal("RunString returns true", article.PassedSpec(1).Read().Label);
-		Assert.Equal(34, article.PassedSpec(1).Read().TimesPassed);
-		Assert.Equal("RunInt returns true", article.PassedSpec(2).Read().Label);
-		Assert.Equal(24, article.PassedSpec(2).Read().TimesPassed);
+		Assert.Equal("RunString returns true", article.PassedExpectation(1).Read().Label);
+		Assert.Equal(34, article.PassedExpectation(1).Read().TimesPassed);
+		Assert.Equal("RunInt returns true", article.PassedExpectation(2).Read().Label);
+		Assert.Equal(24, article.PassedExpectation(2).Read().TimesPassed);
 	}
 
 	[CodeSnippet]

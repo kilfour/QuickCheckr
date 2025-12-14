@@ -55,7 +55,7 @@ public class TheEditor
     private static readonly Flow<int> PassedSpec =
         from index in Pulse.Start<int>()
         from article in Pulse.Draw<Article>()
-        let passedSpecDeposition = article.PassedSpec(index).Read()
+        let passedSpecDeposition = article.PassedExpectation(index).Read()
         from label in Emit($"Assert.Equal(\"{passedSpecDeposition.Label}\", article.PassedSpec({index}).Read().Label);")
         from times in Emit($"Assert.Equal({passedSpecDeposition.TimesPassed}, article.PassedSpec({index}).Read().TimesPassed);")
         select index;

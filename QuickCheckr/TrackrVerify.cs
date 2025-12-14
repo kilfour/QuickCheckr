@@ -28,7 +28,7 @@ public static partial class Trackr
 
     /// <summary>
     /// Evaluates a set of labelled conditions only on the final execution of a run.  
-    /// Use when you want to report multiple related assertions under a single named assay.
+    /// Use when you want to report multiple related assertions under a single named verification.
     /// </summary>
     public static CheckrOf<Case> Verify(string key, params (string label, Func<bool> condition)[] conditions) =>
         state =>
