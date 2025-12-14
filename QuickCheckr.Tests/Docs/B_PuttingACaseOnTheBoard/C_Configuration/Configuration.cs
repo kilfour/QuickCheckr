@@ -1,6 +1,5 @@
 using QuickCheckr.Protocol;
 using QuickPulse.Explains;
-using QuickPulse.Show.Bolts;
 
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;

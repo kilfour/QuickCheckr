@@ -1,6 +1,5 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 

@@ -1,7 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
