@@ -1,5 +1,6 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Protocol;
+using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr;
 

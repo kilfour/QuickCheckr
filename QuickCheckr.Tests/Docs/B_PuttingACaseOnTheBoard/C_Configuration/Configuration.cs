@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Protocol;
+using QuickCheckr.Protocol;
 using QuickPulse.Explains;
 using QuickPulse.Show.Bolts;
 

@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr.Protocol;
 
 public static class DeliberationPolicy
 {

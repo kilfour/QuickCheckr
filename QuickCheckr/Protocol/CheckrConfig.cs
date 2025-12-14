@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Show.Bolts;
 
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr.Protocol;
 
 /// <summary>
 /// Defines the configuration applied when running a Checkr.  

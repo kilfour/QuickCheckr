@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;

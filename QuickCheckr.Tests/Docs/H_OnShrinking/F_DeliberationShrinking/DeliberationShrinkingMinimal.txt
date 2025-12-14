@@ -2,13 +2,13 @@
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
  Original failing run:    2 executions
- Seed:                    24559414
+ Seed:                    1896685194
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Input: Amount = 2
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Input: Amount = 1
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================

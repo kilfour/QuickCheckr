@@ -1,6 +1,13 @@
 ## Current Version: 0.0.4
-* Trackr.ExpectEventually
-
+* Doc Configuration
+  * [ x ] FileAs  
+  * [   ] Custodian
+  * [   ] WithTraces => ReportMode {Traces | Warnings| none}
+  * [ x ] ShrinkMode
+  * [   ] DeliberationPolicy
+  * [   ] Investigations
+  * [   ] Editor
+  
 ### Issues 
 * did we catch em all, => Renamed:
   * Spec to Expect
@@ -32,9 +39,7 @@
 
 ## Doc Work
 * CaseSummary
-* Configuration
-  * Started see the 'TheEvidenceVault'
-  * Investigations
+
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation

@@ -1,10 +1,10 @@
+using QuickCheckr;
 using QuickCheckr.UnderTheHood.Docketing;
-using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse;
 using QuickPulse.Arteries;
 using QuickPulse.Show.Bolts;
 
-namespace QuickCheckr;
+namespace QuickCheckr.Protocol;
 /// <summary>
 /// Predefined investigation modes that enable additional diagnostic output during a run.  
 /// Use these to gain insight into events, failures, or shrinking behaviour while debugging a Checkr.

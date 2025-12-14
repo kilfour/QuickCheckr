@@ -1,4 +1,4 @@
-namespace QuickCheckr;
+namespace QuickCheckr.Protocol;
 
 [Flags]
 public enum ShrinkMode

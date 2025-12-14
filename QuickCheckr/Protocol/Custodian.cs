@@ -1,8 +1,9 @@
 using System.Runtime.CompilerServices;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Arteries;
 using QuickPulse.Instruments;
 
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr.Protocol;
 
 public class Custodian
 {

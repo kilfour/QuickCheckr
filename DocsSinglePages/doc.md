@@ -249,7 +249,8 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
-   at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
+   at QuickCheckr.Checkr.<>c__DisplayClass8_1`1.TryCatch() in CheckrAct.cs:line 69
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 14
  ===========================================================================
  Passed Expectations
  - Returns true: 2x
@@ -362,7 +363,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:64:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:65:1
  Original failing run:    8 executions
  Seed:                    1169776765
  ------------------------------------------------------------
@@ -403,7 +404,7 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:144:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:145:1
  Original failing run:    8 executions
  Minimal failing case:    1 execution (after 7 shrinks)
  Seed:                    1169776765
@@ -679,6 +680,28 @@ You typically start from `CheckrConfig.Default()` and then tweak the parts you c
     WithTraces = true
 }
 ```
+#### Filing Evidence
+QuickCheckr can be configured to persist the results of a failed test run.  
+```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { FileAs = "MyQuickCheckrTest" };
+```
+Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:  
+```csharp
+.quickcheckr\MyQuickCheckrTest\report.qr
+```
+In addition a sub folder is created containing the evidence vault files:  
+```csharp
+.quickcheckr\MyQuickCheckrTest\vault\evidence.qv
+```
+```csharp
+.quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql
+```
+
+- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
+- `evidence-log.ql` is an append only log of all evidence vault actions.
+
+This *evidence* can later be used to potentially solve *Cold Cases*.  
 #### ShrinkMode
 Controls which shrinking strategies are active.
 
@@ -698,7 +721,7 @@ No shrinking. QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:43:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:43:1
  Original failing run:    3 executions
  Seed:                    1044984793
  ------------------------------------------------------------
@@ -730,7 +753,7 @@ Trims away irrelevant executions.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:88:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:88:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1044984793
@@ -755,7 +778,7 @@ Trims inputs to find a minimal failing case.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:123:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:123:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
@@ -795,7 +818,7 @@ The default settings includes all possible ShrinkModes.
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:181:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:181:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1044984793
@@ -809,28 +832,6 @@ The default settings includes all possible ShrinkModes.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-#### Filing Evidence
-QuickCheckr can be configured to persist the results of a failed test run.  
-```csharp
-private static CheckrConfig Configure(CheckrConfig config)
-    => config with { FileAs = "MyQuickCheckrTest" };
-```
-Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:  
-```csharp
-.quickcheckr\MyQuickCheckrTest\report.qr
-```
-In addition a sub folder is created containing the evidence vault files:  
-```csharp
-.quickcheckr\MyQuickCheckrTest\vault\evidence.qv
-```
-```csharp
-.quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql
-```
-
-- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is an append only log of all evidence vault actions.
-
-This *evidence* can later be used to potentially solve *Cold Cases*.  
 #### Investigations
 These tests show the initial version of QuickCheckrs logging configuration.  
 ## On Shrinking
@@ -1089,13 +1090,13 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
  Original failing run:    2 executions
- Seed:                    24559414
+ Seed:                    1896685194
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Input: Amount = 2
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Input: Amount = 1
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
@@ -1144,11 +1145,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1291119307
+ Seed:                    179289742
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ 1, _, _ ]
-   - Trace: List = [ 1, 0, 3 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 2, 0, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1171,11 +1172,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1480133597
+ Seed:                    1982391487
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 3, IntThree: 2 }
+   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 3 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================
@@ -1280,7 +1281,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    80807098
+ Seed:                    662419152
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

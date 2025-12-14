@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr.UnderTheHood;
 
 public interface IEvidenceRecorder
 {

@@ -1,10 +1,11 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.UnderTheHood.Protocol;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_FilingEvidence;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_FilingEvidence;
 
 [DocFile]
 public class FilingEvidence : BaseTest

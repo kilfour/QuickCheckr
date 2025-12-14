@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Protocol;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Arteries;
 
 

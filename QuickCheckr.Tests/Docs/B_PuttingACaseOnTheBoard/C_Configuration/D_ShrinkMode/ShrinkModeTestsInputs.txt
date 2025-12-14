@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:123:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:123:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793

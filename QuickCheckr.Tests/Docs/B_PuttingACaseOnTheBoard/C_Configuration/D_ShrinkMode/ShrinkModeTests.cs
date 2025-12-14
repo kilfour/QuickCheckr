@@ -1,12 +1,12 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_ShrinkMode;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.D_ShrinkMode;
 
 [DocFile]
 [DocFileHeader("ShrinkMode")]
@@ -14,8 +14,8 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_Shri
 @"Controls which shrinking strategies are active.
 
 The following Checkr will be used to generate the reports throughout this chapter:")]
-[DocExample(typeof(A_ShrinkMode), nameof(GetCheckr))]
-public class A_ShrinkMode : BaseTest
+[DocExample(typeof(ShrinkModeTests), nameof(GetCheckr))]
+public class ShrinkModeTests : BaseTest
 {
     [CodeSnippet]
     [CodeRemove("return")]
@@ -34,15 +34,15 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent("**`ShrinkMode.None`**")]
-    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureNone))]
+    [DocExample(typeof(ShrinkModeTests), nameof(ConfigureNone))]
     [DocContent("No shrinking. QuickCheckr reports the original failing run.")]
-    [DocCodeFile("A_ShrinkModeNone.txt", "text")]
+    [DocCodeFile("ShrinkModeTestsNone.txt", "text")]
     public void RunTestNone()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureNone));
         WriteAsserts(article, false);
-        WriteReport(article, "A_ShrinkModeNone.txt", false);
+        WriteReport(article, "ShrinkModeTestsNone.txt", false);
         VerifyNone(article);
     }
 
@@ -79,15 +79,15 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent("\n**`ShrinkMode.Executions`**")]
-    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureExecutions))]
+    [DocExample(typeof(ShrinkModeTests), nameof(ConfigureExecutions))]
     [DocContent("Trims away irrelevant executions.")]
-    [DocCodeFile("A_ShrinkModeExecutions.txt", "text")]
+    [DocCodeFile("ShrinkModeTestsExecutions.txt", "text")]
     public void RunTestExecutions()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureExecutions));
         WriteAsserts(article, false);
-        WriteReport(article, "A_ShrinkModeExecutions.txt", false);
+        WriteReport(article, "ShrinkModeTestsExecutions.txt", false);
         VerifyExecutions(article);
     }
 
@@ -114,15 +114,15 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent("\n**`ShrinkMode.Inputs`**")]
-    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureInputs))]
+    [DocExample(typeof(ShrinkModeTests), nameof(ConfigureInputs))]
     [DocContent("Trims inputs to find a minimal failing case.")]
-    [DocCodeFile("A_ShrinkModeInputs.txt", "text")]
+    [DocCodeFile("ShrinkModeTestsInputs.txt", "text")]
     public void RunTestInputs()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureInputs));
         WriteAsserts(article, false);
-        WriteReport(article, "A_ShrinkModeInputs.txt", false);
+        WriteReport(article, "ShrinkModeTestsInputs.txt", false);
         VerifyInputs(article);
     }
 
@@ -149,17 +149,17 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent("\n**`ShrinkMode.Reduction`**")]
-    [DocExample(typeof(A_ShrinkMode), nameof(ConfigureReduction))]
+    [DocExample(typeof(ShrinkModeTests), nameof(ConfigureReduction))]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
     [DocExperimental]
     [DocContent("**Note:** As of now reporting with only this mode active is not fully supported.")]
-    //[DocCodeFile("A_ShrinkModeReduction.txt", "text")]
+    //[DocCodeFile("ShrinkModeTestsReduction.txt", "text")]
     public void RunTestReduction()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureReduction));
         WriteAsserts(article, false);
-        WriteReport(article, "A_ShrinkModeReduction.txt", false);
+        WriteReport(article, "ShrinkModeTestsReduction.txt", false);
         VerifyReduction(article);
     }
 
@@ -170,7 +170,7 @@ public class A_ShrinkMode : BaseTest
 
     [Fact]
     [DocContent("\n**`ShrinkMode.Default`**  \nThe default settings includes all possible ShrinkModes.")]
-    [DocCodeFile("A_ShrinkModeDefault.txt", "text")]
+    [DocCodeFile("ShrinkModeTestsDefault.txt", "text")]
     public void DefaultSetting()
     {
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Executions));
@@ -180,7 +180,7 @@ public class A_ShrinkMode : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1044984793, 3.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport(article, "A_ShrinkModeDefault.txt", false);
+        WriteReport(article, "ShrinkModeTestsDefault.txt", false);
         VerifyDefault(article);
     }
 

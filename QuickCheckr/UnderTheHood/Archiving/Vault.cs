@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Archiving;

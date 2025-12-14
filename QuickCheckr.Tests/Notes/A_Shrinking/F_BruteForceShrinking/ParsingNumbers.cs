@@ -1,10 +1,10 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
 using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Protocol;
 using QuickPulse.Explains;
 
 

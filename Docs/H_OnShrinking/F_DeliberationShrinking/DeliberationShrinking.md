@@ -70,13 +70,13 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
  Original failing run:    2 executions
- Seed:                    24559414
+ Seed:                    1896685194
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Input: Amount = 2
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Input: Amount = 1
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
@@ -125,11 +125,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1291119307
+ Seed:                    179289742
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ 1, _, _ ]
-   - Trace: List = [ 1, 0, 3 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 2, 0, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -152,11 +152,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1480133597
+ Seed:                    1982391487
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 3, IntThree: 2 }
+   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 3 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

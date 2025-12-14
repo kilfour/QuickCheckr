@@ -1,10 +1,11 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 using QuickPulse.Show.Bolts;
 
-namespace QuickCheckr.UnderTheHood.Protocol;
+namespace QuickCheckr.UnderTheHood;
 
 public record CheckrRunnerConfig
 {

@@ -22,8 +22,8 @@ public class Eventually
 ### The Report:
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:25:1
+ Test:                    RunTest
+ Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:35:1
  Original failing run:    10 executions
  Minimal failing case:    1 execution (after 9 shrinks)
  Seed:                    307579878
