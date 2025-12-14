@@ -723,6 +723,7 @@ You can also supply your own implementation:
 public class InMemoryCustodian
 {
     public Dictionary<string, InMemoryRecorder> Data = [];
+    public List<string> StartingEvidence = [];
     public Custodian Build() =>
         new()
         {
@@ -732,17 +733,16 @@ public class InMemoryCustodian
                     Data[fn] = new InMemoryRecorder();
                 return Data[fn];
             },
-            Retriever = fn =>
-                Data.TryGetValue(fn, out InMemoryRecorder? value)
-                    ? value.Values : []
+            Retriever = fn => StartingEvidence
         };
 }
 
 public class InMemoryRecorder : IEvidenceRecorder
 {
-    public List<string> Values { get; } = [];
+    public bool Cleared;
+    public List<string> Values = [];
     public void Append(string evidence) => Values.Add(evidence);
-    public void Clear() => Values.Clear();
+    public void Clear() { Cleared = true; Values.Clear(); }
 }
 ```
 This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem  
@@ -878,6 +878,27 @@ The default settings includes all possible ShrinkModes.
 ```
 #### Investigations
 These tests show the initial version of QuickCheckrs logging configuration.  
+### The Evidence Vault
+#### Reviewing Cold Cases
+Once an evidence vault exists the seeds therein contained can be reviewed.  
+This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
+```csharp
+checkr.ReviewColdCases(Configure);
+```
+This will create a report per seed in the evidence file and a log of all evidence vault actions.  
+- For every failing seed the report will look like the by now familiar failure report.  
+- For every passing seed the report will only contain a list of passed specs.  
+#### Closing Cold Cases
+The method mentioned above is usefull for regression testing, but sometimes,
+    there is no need to keep the evidence around after the culprit is found.  
+    In this case we use:  
+```csharp
+checkr.CloseResolvedColdCases(Configure);
+```
+In case that the seeds stored in the vault still result in failures, the behaviour is exactly the same as `ReviewColdCases`.  
+If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
+    and no report is generated for the passing run.  
+    Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 ## On Shrinking
 ### Philosophy
 

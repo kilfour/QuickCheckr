@@ -22,6 +22,7 @@ You can also supply your own implementation:
 public class InMemoryCustodian
 {
     public Dictionary<string, InMemoryRecorder> Data = [];
+    public List<string> StartingEvidence = [];
     public Custodian Build() =>
         new()
         {
@@ -31,17 +32,16 @@ public class InMemoryCustodian
                     Data[fn] = new InMemoryRecorder();
                 return Data[fn];
             },
-            Retriever = fn =>
-                Data.TryGetValue(fn, out InMemoryRecorder? value)
-                    ? value.Values : []
+            Retriever = fn => StartingEvidence
         };
 }
 
 public class InMemoryRecorder : IEvidenceRecorder
 {
-    public List<string> Values { get; } = [];
+    public bool Cleared;
+    public List<string> Values = [];
     public void Append(string evidence) => Values.Add(evidence);
-    public void Clear() => Values.Clear();
+    public void Clear() { Cleared = true; Values.Clear(); }
 }
 ```
 This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem  

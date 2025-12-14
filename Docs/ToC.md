@@ -11,6 +11,7 @@
       - [The Custodian](B_PuttingACaseOnTheBoard/C_Configuration/B_TheCustodian/TheCustodian.md)
       - [ShrinkMode](B_PuttingACaseOnTheBoard/C_Configuration/D_ShrinkMode/ShrinkModeTests.md)
       - [Investigations](B_PuttingACaseOnTheBoard/C_Configuration/H_Investigations/Investigations.md)
+    - [The Evidence Vault](B_PuttingACaseOnTheBoard/D_TheEvidenceVault/TheEvidenceVault.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)
     - [Execution Shrinking](H_OnShrinking/A_ExecutionShrinking/ExecutionShrinking.md)
     - [Input Shrinking](H_OnShrinking/C_InputShrinking/InputShrinking.md)
