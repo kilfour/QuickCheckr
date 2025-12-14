@@ -1,4 +1,4 @@
-## Current Version: 0.0.4
+## Current Version: 0.0.5
 
 ### Doc current focus
 * Doc Configuration
@@ -11,19 +11,19 @@
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
-### 0.0.5
+### 0.0.6
+* look into different collection shrinking
+  * limitations
+  * known issues
+  * workarounds
 
-### 0.0.5+
+### 0.0.6+
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
 * add a ReportMode to config maybe ? disabling traces and/or warnings
   * [   ] ReportMode {Traces | Warnings | None}
 * Editor: configure QuickPulse.Show 
-* look into different collection shrinking
-  * limitations
-  * known issues
-  * workarounds
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
