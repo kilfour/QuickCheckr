@@ -17,7 +17,7 @@ public static partial class Trackr
             bool passed = condition();
             if (!passed)
             {
-                state.EvidenceRecorder.AsssayFailed(key);
+                state.EvidenceRecorder.VerificationFailed(key);
             }
             else
             {
@@ -47,7 +47,7 @@ public static partial class Trackr
             }
             if (!passed)
             {
-                state.EvidenceRecorder.AsssayFailed(key + ": " + string.Join(", ", strings));
+                state.EvidenceRecorder.VerificationFailed(key + ": " + string.Join(", ", strings));
             }
             else
             {

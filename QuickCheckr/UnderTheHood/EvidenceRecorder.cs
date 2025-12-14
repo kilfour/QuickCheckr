@@ -66,7 +66,7 @@ public class EvidenceRecorder
     }
 
     public string FailingVerify { get; private set; } = string.Empty;
-    public void AsssayFailed(string key)
+    public void VerificationFailed(string key)
     {
         if (IsReplay)
         {
