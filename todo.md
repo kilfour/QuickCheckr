@@ -52,18 +52,6 @@
     Kind of not needed maybe, but tests are there in comment, ... if there's a need.
     Might help with mem stuff in future.
 * Loose the lazy IEnumerable in shrinking (yield)
-* Unify :
-```csharp
-try
-{
-    return CheckrResult.Some(state, /* Something Something */);
-}
-catch (Exception exception)
-{
-    state.Docket.Record(new EvidenceFailure(exception));
-    return CheckrResult.Default<T>(state);
-}
-```
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
 

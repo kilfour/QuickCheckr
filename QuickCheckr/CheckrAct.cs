@@ -1,5 +1,5 @@
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Docketing;
+using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr;
 
@@ -66,16 +66,9 @@ public static partial class Checkr
         state =>
         {
             state.Memory.StoreAction(key);
-            try
-            {
-                return CheckrResult.Some(state, func());
-            }
-            catch (Exception exception)
-            {
-                state.Docket.Record(new EvidenceFailure(exception));
-                state.EvidenceRecorder.RecordFailure(exception);
-                return CheckrResult.Default<T>(state);
-            }
+            return TheCatcher.InTheCheckr(state,
+                () => CheckrResult.Some(state, func()),
+                ex => state.EvidenceRecorder.RecordFailure(ex));
         };
 
 }

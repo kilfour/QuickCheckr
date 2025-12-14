@@ -14,20 +14,9 @@ public static partial class Trackr
             state.Memory.ExpectGuard.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
-            try
-            {
-                if (condition())
-                    state.EvidenceRecorder.ExpectationPassed(key);
-                else
-                    state.EvidenceRecorder.ExpectationFailed(key);
-                return CheckrResult.CaseOnly(state);
-            }
-            catch (Exception exception)
-            {
-                state.Docket.Record(new EvidenceFailure(exception));
-                state.EvidenceRecorder.ExpectationCrashed(exception);
-                return CheckrResult.CaseOnly(state);
-            }
+            return TheCatcher.InTheCheckr(state,
+                () => Evaluate.Expect(key, condition, state),
+                (ex) => state.EvidenceRecorder.ExpectationCrashed(ex));
         };
 }
 
