@@ -47,10 +47,6 @@
 ## Refactoring and Testing Targets 
 * Duplication in the various different Specs is building up
 * Nested InputShrinkingClue ? Refactoring Target
-* QuickCheckr.Tests.Verification.SwapperTests: 
-  * Main tests prove that this works, but it might help to to test this in isolation
-    Kind of not needed maybe, but tests are there in comment, ... if there's a need.
-    Might help with mem stuff in future.
 * Loose the lazy IEnumerable in shrinking (yield)
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
