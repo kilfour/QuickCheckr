@@ -25,7 +25,7 @@ public class CreateReadMe : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1141724745, 100.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport<CreateReadMe>(article);
+        WriteReport<CreateReadMe>(article, false);
         Verify(article);
     }
 
@@ -55,7 +55,7 @@ public class CreateReadMe : BaseTest
         from bughouse in Trackr.Stashed(() => new BugHouse())
         from number in Checkr.Input("number", Fuzzr.Int())
         from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(number))
-        from spec in Checkr.Expect("Returns true", () => output)
+        from expect in Checkr.Expect("Returns true", () => output)
         select Case.Closed;
     }
 

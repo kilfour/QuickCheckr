@@ -26,7 +26,7 @@ public class BugHouse
 from bughouse in Trackr.Stashed(() => new BugHouse())
 from number in Checkr.Input("number", Fuzzr.Int())
 from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(number))
-from spec in Checkr.Expect("Returns true", () => output)
+from expect in Checkr.Expect("Returns true", () => output)
 select Case.Closed;
 ```
 **Reports:**  
