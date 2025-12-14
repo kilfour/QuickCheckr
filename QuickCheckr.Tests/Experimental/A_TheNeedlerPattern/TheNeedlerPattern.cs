@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -9,6 +10,16 @@ namespace QuickCheckr.Tests.Experimental.A_TheNeedlerPattern;
 [DocFile]
 public class TheNeedlerPattern : BaseTest
 {
+    [CodeExample]
+    public class Eventually
+    {
+        public static async Task<int> AddOne(int input)
+        {
+            await Task.Delay(10);
+            return input + 1;
+        }
+    }
+
     [Fact]
     [DocHeader("The SUT:")]
     [DocExample(typeof(Eventually))]
@@ -40,29 +51,6 @@ public class TheNeedlerPattern : BaseTest
             select Case.Closed;
     }
 
-    private static void Verify(Article article)
-    {
-        Assert.Equal("Is not 7", article.FailedExpectation());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(9, article.ShrinkCount);
-        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("start", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
-    }
-
-    [CodeExample]
-    public class Eventually
-    {
-        public static async Task<int> AddOne(int input)
-        {
-            await Task.Delay(10);
-            return input + 1;
-        }
-    }
-
     [CodeExample]
     public sealed class Needler<T>
     {
@@ -91,6 +79,78 @@ public class TheNeedlerPattern : BaseTest
             return task!.GetAwaiter().GetResult();
         }
     }
-}
 
+    private static void Verify(Article article)
+    {
+        Assert.Equal("Is not 7", article.FailedExpectation());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(9, article.ShrinkCount);
+        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("start", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
+    }
+
+    [Fact]
+    [DocHeader("The SUT:")]
+    [DocExample(typeof(Eventually))]
+    [DocHeader("The Checkr:")]
+    [DocExample(typeof(TheNeedlerPattern), nameof(GetCheckrBuiltIn))]
+    [DocHeader("The Report:")]
+    [DocCodeFile("TheNeedlerPatternBuiltIn.txt", "text")]
+    public void RunTestBuiltIn()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(307579878, 10.ExecutionsPerRun()));
+        WriteAsserts(article, false);
+        WriteReport(article, "TheNeedlerPatternBuiltIn.txt", false);
+        VerifyBuiltIn(article);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckrBuiltIn()
+    {
+        return
+            from tasks in Taskr.PoolFor<int>()
+            from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
+            from task in Taskr.Start("start", ct => Eventually.AddOne(input))
+            from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
+            select Case.Closed;
+    }
+
+    private static void VerifyBuiltIn(Article article)
+    {
+        Assert.Equal("Is not 7", article.FailedExpectation());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(9, article.ShrinkCount);
+        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("start", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
+    }
+}
+public static class Taskr
+{
+    private static readonly CancellationTokenSource cancellationTokenSource = new();
+
+    public static CheckrOf<IEnumerable<Task<T>>> PoolFor<T>() =>
+        state => CheckrResult.Some(state, state.Memory.CreatePool<Task<T>>());
+
+    public static CheckrOf<Task<T>> Start<T>(string key, Func<CancellationToken, Task<T>> action) =>
+        state =>
+        {
+            state.Memory.StoreAction(key);
+            var task = Task.Run(async () => await action(cancellationTokenSource.Token));
+            var id = state.Memory.StoreVariable(key, () => Fuzzr.Int(0, int.MaxValue).Unique("Quick-Checkr-Pool-Id")(state.FuzzrState).Value);
+            state.Memory.StoreInPool(id, task);
+            return TheCatcher.InTheCheckr(state,
+                () => CheckrResult.Some(state, task),
+                ex => state.EvidenceRecorder.RecordFailure(ex));
+        };
+}
 

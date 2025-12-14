@@ -108,6 +108,7 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
+
 **`ShrinkMode.Default`**  
 The default settings includes all possible ShrinkModes.  
 ```text

@@ -60,6 +60,40 @@ public sealed class Needler<T>
     }
 }
 ```
+### The SUT:
+```csharp
+public class Eventually
+{
+    public static async Task<int> AddOne(int input)
+    {
+        await Task.Delay(10);
+        return input + 1;
+    }
+}
+```
+### The Checkr:
+```csharp
+    from tasks in Taskr.PoolFor<int>()
+    from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
+    from task in Taskr.Start("start", ct => Eventually.AddOne(input))
+    from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
+    select Case.Closed;
+```
+### The Report:
+```text
+------------------------------------------------------------
+ Test:                    RunTestBuiltIn
+ Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:106:1
+ Original failing run:    10 executions
+ Minimal failing case:    1 execution (after 9 shrinks)
+ Seed:                    307579878
+ ------------------------------------------------------------
+  Executed: start
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Is not 7
+ ===================================
+```
 ## Over Flowing
 ### The SUT:
 ```csharp
