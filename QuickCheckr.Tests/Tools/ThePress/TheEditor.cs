@@ -86,7 +86,7 @@ public class TheEditor
             $"Assert.Equal({article.Total().Warnings()}, article.Total().Warnings());")
         from passedExpectationCount in EmitIf(
             article.Total().PassedExpectations() > 0,
-            $"Assert.Equal({article.Total().PassedExpectations()}, article.Total().PassedExpects());")
+            $"Assert.Equal({article.Total().PassedExpectations()}, article.Total().PassedExpectations());")
         from shrinkCount in Emit(
             $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))

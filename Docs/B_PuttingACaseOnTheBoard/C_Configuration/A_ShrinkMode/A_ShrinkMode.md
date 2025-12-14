@@ -3,12 +3,9 @@ Controls which shrinking strategies are active.
 
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
-    from summer in Trackr.Stashed(() => new Summer())
-    from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
+    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
-    from add in Checkr.Act("Add", () => summer.Add(input))
-    from expect in Checkr.Expect("Total should not be 42",
-        () => summer.Total != 42)
+    from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
 **`ShrinkMode.None`**  
@@ -20,30 +17,26 @@ No shrinking. QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:46:1
- Original failing run:    4 executions
- Seed:                    1510302884
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:43:1
+ Original failing run:    3 executions
+ Seed:                    1044984793
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 11
+  Executed:
+   - Input: counter = 1
+   - Input: Irrelevant = 13
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
    - Input: Irrelevant = 5
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 17
-   - Input: Irrelevant = 5
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 2
+  Executed:
+   - Input: counter = 3
    - Input: Irrelevant = 8
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 12
-   - Input: Irrelevant = 21
- =================================================
-  !! Expectation Failed: Total should not be 42
- =================================================
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
  Passed Expectations
- - Total should not be 42: 3x
+ - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
 
@@ -56,30 +49,19 @@ Trims away irrelevant executions.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:100:1
- Original failing run:    4 executions
- Seed:                    1510302884
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:88:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1044984793
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 11
-   - Input: Irrelevant = 5
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 17
-   - Input: Irrelevant = 5
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 2
+  Executed:
+   - Input: counter = 3
    - Input: Irrelevant = 8
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 12
-   - Input: Irrelevant = 21
- =================================================
-  !! Expectation Failed: Total should not be 42
- =================================================
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
  Passed Expectations
- - Total should not be 42: 3x
+ - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
 
@@ -92,27 +74,20 @@ Trims inputs to find a minimal failing case.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:155:1
- Original failing run:    4 executions
- Minimal failing case:    4 executions (after 4 shrinks)
- Seed:                    1510302884
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:123:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 5 shrinks)
+ Seed:                    1044984793
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 11
+  Executed (2 Times)
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 17
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 2
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Input = 12
- =================================================
-  !! Expectation Failed: Total should not be 42
- =================================================
+  Executed:
+   - Input: counter = 3
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
  Passed Expectations
- - Total should not be 42: 3x
+ - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
 
@@ -122,7 +97,17 @@ private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
 ```
 Applies configured reducers for fine-grained shrinking.  
-**Note:** This is an experimental feature, and will be expanded in the near future. As of now reporting with only this mode active is not supported.  
+
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+**Note:** As of now reporting with only this mode active is not fully supported.  
 \n**`ShrinkMode.Default`**  
 
 The default settings includes all possible ShrinkModes.  

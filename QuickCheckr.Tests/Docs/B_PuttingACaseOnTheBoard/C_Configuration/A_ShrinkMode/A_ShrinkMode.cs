@@ -22,12 +22,9 @@ public class A_ShrinkMode : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from summer in Trackr.Stashed(() => new Summer())
-            from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
+            from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
-            from add in Checkr.Act("Add", () => summer.Add(input))
-            from expect in Checkr.Expect("Total should not be 42",
-                () => summer.Total != 42)
+            from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
             select Case.Closed;
     }
 
@@ -43,7 +40,7 @@ public class A_ShrinkMode : BaseTest
     public void RunTestNone()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureNone));
+            GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureNone));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeNone.txt", false);
         VerifyNone(article);
@@ -51,38 +48,29 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyNone(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedExpectation());
-        Assert.Equal(4, article.Total().Executions());
-        Assert.Equal(4, article.Total().Actions());
-        Assert.Equal(8, article.Total().Inputs());
+        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal(3, article.Total().Executions());
+        Assert.Equal(6, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal(11, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal(1, article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal(5, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal(13, article.Execution(1).Input(2).Read().Value);
         Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal(17, article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("counter", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal(2, article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(2).Input(2).Read().Label);
         Assert.Equal(5, article.Execution(2).Input(2).Read().Value);
         Assert.Equal(3, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal(2, article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("counter", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal(3, article.Execution(3).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(3).Input(2).Read().Label);
         Assert.Equal(8, article.Execution(3).Input(2).Read().Value);
-        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
-        Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
-        Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
-        Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
+
     }
 
     [CodeExample]
@@ -97,7 +85,7 @@ public class A_ShrinkMode : BaseTest
     public void RunTestExecutions()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureExecutions));
+            GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureExecutions));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeExecutions.txt", false);
         VerifyExecutions(article);
@@ -105,38 +93,18 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyExecutions(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedExpectation());
-        Assert.Equal(4, article.Total().Executions());
-        Assert.Equal(4, article.Total().Actions());
-        Assert.Equal(8, article.Total().Inputs());
+        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(0, article.ShrinkCount);
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal(11, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(3, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal(3, article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal(5, article.Execution(1).Input(2).Read().Value);
-        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal(17, article.Execution(2).Input(1).Read().Value);
-        Assert.Equal("Irrelevant", article.Execution(2).Input(2).Read().Label);
-        Assert.Equal(5, article.Execution(2).Input(2).Read().Value);
-        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal(2, article.Execution(3).Input(1).Read().Value);
-        Assert.Equal("Irrelevant", article.Execution(3).Input(2).Read().Label);
-        Assert.Equal(8, article.Execution(3).Input(2).Read().Value);
-        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
-        Assert.Equal(12, article.Execution(4).Input(1).Read().Value);
-        Assert.Equal("Irrelevant", article.Execution(4).Input(2).Read().Label);
-        Assert.Equal(21, article.Execution(4).Input(2).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(8, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
 
     }
 
@@ -152,7 +120,7 @@ public class A_ShrinkMode : BaseTest
     public void RunTestInputs()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1510302884, 5.ExecutionsPerRun(), ConfigureInputs));
+            GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureInputs));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeInputs.txt", false);
         VerifyInputs(article);
@@ -160,30 +128,18 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyInputs(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedExpectation());
-        Assert.Equal(4, article.Total().Executions());
-        Assert.Equal(4, article.Total().Actions());
-        Assert.Equal(4, article.Total().Inputs());
+        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal(2, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(4, article.ShrinkCount);
+        Assert.Equal(5, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("11", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("17", article.Execution(2).Input(1).Read().Value);
-        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal("2", article.Execution(3).Input(1).Read().Value);
-        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(4).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(4).Input(1).Read().Label);
-        Assert.Equal("12", article.Execution(4).Input(1).Read().Value);
-        Assert.Equal("Total should not be 42", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal(3, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("counter", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
 
     }
 
@@ -195,12 +151,13 @@ public class A_ShrinkMode : BaseTest
     [DocContent("\n**`ShrinkMode.Reduction`**")]
     [DocExample(typeof(A_ShrinkMode), nameof(ConfigureReduction))]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
-    [DocContent("**Note:** This is an experimental feature, and will be expanded in the near future. As of now reporting with only this mode active is not supported.")]
+    [DocExperimental]
+    [DocContent("**Note:** As of now reporting with only this mode active is not fully supported.")]
     //[DocCodeFile("A_ShrinkModeReduction.txt", "text")]
     public void RunTestReduction()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1609315627, 2.ExecutionsPerRun(), ConfigureReduction));
+            GetCheckr().Run(1044984793, 3.ExecutionsPerRun(), ConfigureReduction));
         WriteAsserts(article, false);
         WriteReport(article, "A_ShrinkModeReduction.txt", false);
         VerifyReduction(article);
@@ -221,11 +178,5 @@ The default settings includes all possible ShrinkModes.")]
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Executions));
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Inputs));
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Reduction));
-    }
-
-    public class Summer
-    {
-        public int Total { get; private set; } = 0;
-        public void Add(int value) => Total += value;
     }
 }
