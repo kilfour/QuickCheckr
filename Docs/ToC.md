@@ -8,6 +8,7 @@
     - [Running a Checkr](B_PuttingACaseOnTheBoard/B_RunningACheckr/RunningACheckr.md)
     - [Configuration](B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md)
       - [Filing Evidence](B_PuttingACaseOnTheBoard/C_Configuration/A_FilingEvidence/FilingEvidence.md)
+      - [The Custodian](B_PuttingACaseOnTheBoard/C_Configuration/B_TheCustodian/TheCustodian.md)
       - [ShrinkMode](B_PuttingACaseOnTheBoard/C_Configuration/D_ShrinkMode/ShrinkModeTests.md)
       - [Investigations](B_PuttingACaseOnTheBoard/C_Configuration/H_Investigations/Investigations.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)

@@ -8,7 +8,9 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 [DocFile]
 [DocContent(
 @"QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
-You typically start from `CheckrConfig.Default()` and then tweak the parts you care about")]
+You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
+
+All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 public class Configuration
 {
     [CodeSnippet]
@@ -26,8 +28,7 @@ public class Configuration
             Editor =
                 new ManOfWealthAndTaste()
                     .ToUseNonLinearTime()
-                    .ToInline<List<int>>(),
-            WithTraces = true
+                    .ToInline<List<int>>()
         };
     }
 
@@ -41,10 +42,9 @@ public class Configuration
         Assert.Equal(expected.ShrinkMode, actual.ShrinkMode);
         Assert.Equal(expected.DeliberationPolicy, actual.DeliberationPolicy);
         Assert.Equal(expected.FileAs, actual.FileAs);
-        // var recorder = Assert.IsType<Custodian.FileRecorder>(actual.Custodian.Recorder("test"));
-
-        // Assert.Equal(expected.Investigations, actual.Investigations);
-        // Assert.Equal(expected.Editor, actual.Editor);
-        // Assert.Equal(expected.WithTraces, actual.WithTraces);
+        // Assert below touches the file system
+        // Assert.IsType<Custodian.FileRecorder>(actual.Custodian.Recorder("test"));
+        Assert.Equal(expected.Investigations, actual.Investigations);
+        // more ?
     }
 }

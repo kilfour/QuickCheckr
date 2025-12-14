@@ -1,8 +1,7 @@
 ## Current Version: 0.0.4
 * Doc Configuration
   * [ x ] FileAs  
-  * [   ] Custodian
-  * [   ] WithTraces => ReportMode {Traces | Warnings| none}
+  * [ x ] Custodian
   * [ x ] ShrinkMode
   * [   ] DeliberationPolicy
   * [   ] Investigations
@@ -23,6 +22,8 @@
 
 ### 0.0.5
 * Dive into Reducers a bit more
+* add a ReportMode to config maybe ? disabling traces and/or warnings
+  * [   ] ReportMode {Traces | Warnings | None}
 
 ### 0.0.5+
 * look into different collection shrinking

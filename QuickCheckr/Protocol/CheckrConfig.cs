@@ -25,8 +25,7 @@ public record CheckrConfig
                 Investigations = [],
                 Editor = new ManOfWealthAndTaste()
                     .ToUseNonLinearTime()
-                    .ToInline<List<int>>(),
-                WithTraces = true
+                    .ToInline<List<int>>()
             };
     }
 
@@ -57,6 +56,4 @@ public record CheckrConfig
     /// Use to adjust formatting, verbosity, or custom display rules for traced or reported data.
     /// </summary>
     public required ManOfWealthAndTaste Editor { get; init; }
-
-    public required bool WithTraces { get; init; }
 }
