@@ -1,17 +1,17 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
 [DocFile]
-public class J_Verify
+public class TrackrStashed
 {
     [Fact]
-    [DocContent("- `Trackr.Verify`:")]
-    [DocExample(typeof(J_Verify), nameof(GetCheckr))]
+    [DocContent("- `Trackr.Stashed`:")]
+    [DocExample(typeof(TrackrStashed), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(J_Verify), nameof(GetMessage), "text")]
+    [DocExample(typeof(TrackrStashed), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -23,8 +23,8 @@ public class J_Verify
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.Verify("reused", () => true)
-            from two in Trackr.Verify("reused", () => true)
+            from one in Trackr.Stashed(() => 42)
+            from two in Trackr.Stashed(() => 666)
             select Case.Closed;
     }
 
@@ -32,12 +32,15 @@ public class J_Verify
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'reused' is written more than once in a single 'Checkr.Expect' execution.
+@"Key 'System.Int32' is written more than once to the same memory location.
 
-QuickCheckr treats keys as stable identifiers. 
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-Possible solutions:
-- Ensure each 'Checkr.Expect' uses a unique key.
+The following Checkrs write to the this bank using the same key:
+
+- 'Trackr.Stashed'
 ";
+
 }

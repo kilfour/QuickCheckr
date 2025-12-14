@@ -1,17 +1,18 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
 [DocFile]
-public class F_OneOf
+public class CheckrInput
 {
     [Fact]
-    [DocContent("- `Checkr.OneOf`:")]
-    [DocExample(typeof(F_OneOf), nameof(GetCheckr))]
+    [DocContent("- `Checkr.Input`:")]
+    [DocExample(typeof(CheckrInput), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(F_OneOf), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrInput), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -23,22 +24,23 @@ public class F_OneOf
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.OneOf(Checkr.Act("One", () => { }))
-            from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
+            from one in Checkr.Input("reused", Fuzzr.Int())
+            from two in Checkr.Input("reused", Fuzzr.Int())
             select Case.Closed;
     }
-
 
     [CodeSnippet]
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'OneOf|Default|QuickCheckr|Key' is written more than once in a single 'Checkr.OneOf' execution.
+@"Key 'reused' is written more than once to the same memory location.
 
-QuickCheckr treats keys as stable identifiers. 
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-Possible solutions:
-- Ensure each 'Checkr.OneOf' uses a unique key.
+The following Checkrs write to the this bank using the same key:
+
+- 'Checkr.Input'
 ";
 }

@@ -1,16 +1,17 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
+using QuickPulse.Show;
 
-namespace QuickCheckr.Tests.Notes.X_Various.Methods;
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
 [DocFile]
-public class C_ActCarefully
+public class CheckrActCarefully
 {
     [Fact]
     [DocContent("- `Checkr.ActCarefully`:")]
-    [DocExample(typeof(C_ActCarefully), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrActCarefully), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(C_ActCarefully), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrActCarefully), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -31,12 +32,15 @@ public class C_ActCarefully
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'reused' is written more than once in a single 'Checkr.Act' execution.
+@"Key 'reused' is written more than once to the same memory location.
 
-QuickCheckr treats keys as stable identifiers. 
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-Possible solutions:
-- Ensure each 'Checkr.Act' uses a unique key.
+The following Checkrs write to the this bank using the same key:
+
+- 'Checkr.Act'
+- 'Checkr.ActCarefully'
 ";
 }

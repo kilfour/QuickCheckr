@@ -1,17 +1,17 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.X_Various.Methods;
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
 
 [DocFile]
-public class E_Trace
+public class CheckrTrace
 {
     [Fact]
     [DocContent("- `Checkr.Trace`:")]
-    [DocExample(typeof(E_Trace), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrTrace), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(E_Trace), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrTrace), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -33,12 +33,14 @@ public class E_Trace
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'reused' is written more than once in a single 'Checkr.Trace' execution.
+@"Key 'reused' is written more than once to the same memory location.
 
-QuickCheckr treats keys as stable identifiers. 
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-Possible solutions:
-- Ensure each 'Checkr.Trace' uses a unique key.
+The following Checkrs write to the this bank using the same key:
+
+- 'Checkr.Trace'
 ";
 }

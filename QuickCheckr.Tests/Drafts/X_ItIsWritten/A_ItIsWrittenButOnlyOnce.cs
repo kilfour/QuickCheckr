@@ -1,7 +1,7 @@
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.X_Various;
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten;
 
 [DocFile]
 [DocFileHeader("It Is Written, ... But Only Once")]

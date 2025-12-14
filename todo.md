@@ -12,7 +12,6 @@
   * Initial Version Ready (auth is hardcoded admin for now)
 
 ### 0.0.5
-* Fix Exception to use right combinator in message when keys are reused
 
 ### 0.0.5+
 * Dive into Reducers a bit more

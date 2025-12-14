@@ -2,19 +2,21 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class DuplicateKeyWriteException(string key, string operation, string scope)
-    : QuickCheckrException(BuildMessage(key, operation, scope))
+public class DuplicateKeyWriteException(string key, IEnumerable<string> checkrs)
+    : QuickCheckrException(BuildMessage(key, checkrs))
 {
-    private static string BuildMessage(string key, string operation, string scope) =>
-    $@"Key '{key}' is written more than once in a single '{operation}' {scope}.
+    private static string BuildMessage(string key, IEnumerable<string> checkrs)
+    {
+        var checkrList = string.Join(Environment.NewLine, checkrs.Select(a => $"- '{a}'"));
+        return @$"Key '{key}' is written more than once to the same memory location.
 
-QuickCheckr treats keys as stable identifiers. 
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-Possible solutions:
-- Ensure each '{operation}' uses a unique key.
+The following Checkrs write to the this bank using the same key:
+
+{checkrList}
 ";
+    }
 }
-// - If you need the same value in multiple places, call Checkr.Input once and pass the value around instead of reading it again under the same key.
-// - When using helper methods that declare Checkr steps, let the caller provide a key (or key prefix) so each call site gets a distinct label.
-// - If two steps really represent the same concept, merge them into a single Checkr step instead of duplicating it under the same key.
