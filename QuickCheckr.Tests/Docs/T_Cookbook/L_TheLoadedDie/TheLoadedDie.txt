@@ -2,7 +2,7 @@
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    439557549
+ Seed:                    80807098
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

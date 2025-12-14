@@ -5,13 +5,13 @@ namespace QuickCheckr.Tests.Notes.X_Various.Methods;
 
 
 [DocFile]
-public class D_Spec
+public class D_Expect
 {
     [Fact]
-    [DocContent("- `Checkr.Spec`:")]
-    [DocExample(typeof(D_Spec), nameof(GetCheckr))]
+    [DocContent("- `Checkr.Expect`:")]
+    [DocExample(typeof(D_Expect), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(D_Spec), nameof(GetMessage), "text")]
+    [DocExample(typeof(D_Expect), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());

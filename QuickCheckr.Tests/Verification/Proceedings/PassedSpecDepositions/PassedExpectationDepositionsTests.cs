@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.ExecutionDepositions;
 
-public class PassedSpecDepositionsTests : DepositionTest
+public class PassedExpectationDepositionsTests : DepositionTest
 {
     protected override bool IgnoreVerdictHeader { get; init; } = false;
 

@@ -61,7 +61,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
                 select one)
             from trace in Checkr.Trace("The Universe", () => universe)
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
-                // No Spec == does not throw, implicitely
+                // No Expect == does not throw, implicitely
             select Case.Closed;
     }
 

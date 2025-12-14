@@ -1,9 +1,8 @@
  ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    10 executions
- Minimal failing case:    2 executions (after 8 shrinks)
- Seed:                    1795752479
+ Original failing run:    2 executions
+ Seed:                    24559414
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 3
@@ -14,5 +13,5 @@
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 9x
+ - No Overdraft: 1x
  ------------------------------------------------------------

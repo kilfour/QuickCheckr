@@ -295,7 +295,7 @@ Executions share:
 Meanwhile, the following *are fresh each execution*:
 
 * Every `Checkr.Input` value.
-* Every `Checkr.Act`, `Checkr.Spec`, and `Checkr.Trace` is evaluated anew.
+* Every `Checkr.Act`, `Checkr.Expect`, and `Checkr.Trace` is evaluated anew.
 * The shrinking engine can re-run isolated executions to evaluate relevance.
 
 This means:
@@ -1086,9 +1086,8 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    10 executions
- Minimal failing case:    2 executions (after 8 shrinks)
- Seed:                    1795752479
+ Original failing run:    2 executions
+ Seed:                    24559414
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 3
@@ -1099,7 +1098,7 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 9x
+ - No Overdraft: 1x
  ------------------------------------------------------------
 ```
 #### An Eager Shrinker
@@ -1143,11 +1142,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    161480390
+ Seed:                    1291119307
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ 1, _, _ ]
-   - Trace: List = [ 1, 3, 0 ]
+   - Trace: List = [ 1, 0, 3 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1170,11 +1169,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    860526479
+ Seed:                    1480133597
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+   - Input: BaggyInters = { IntOne: 1 }
+   - Trace: Original = { IntOne: 1, IntTwo: 3, IntThree: 2 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================
@@ -1279,7 +1278,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    439557549
+ Seed:                    80807098
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

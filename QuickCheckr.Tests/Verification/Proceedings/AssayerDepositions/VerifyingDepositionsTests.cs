@@ -5,7 +5,7 @@ namespace QuickCheckr.Tests.Verification.Proceedings;
 
 public class VerifyingDepositionsTests : DepositionTest
 {
-    public VerifyingDepositionsTests() { IgnoreVerdictHeader = false; IgnoreFailingSpec = false; }
+    public VerifyingDepositionsTests() { IgnoreVerdictHeader = false; IgnoreFailingExpectation = false; }
 
     [Fact]
     public void One()

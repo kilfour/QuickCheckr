@@ -40,7 +40,7 @@ public class T_ArrayShrinking : BaseTest
         var array = new[] { 42, 2, 3 };
         var check =
             from input in Checkr.Input("int[]", Fuzzr.Constant(array))
-            from spec in Checkr.ExpectWhen("int[0] is not 42",
+            from expect in Checkr.ExpectWhen("int[0] is not 42",
                 () => input.Length != 0,
                 () => input.First() != 42)
             select Case.Closed;

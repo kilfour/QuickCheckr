@@ -42,7 +42,7 @@ public class InputReduction : BaseTest
     {
         return
             from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
-            from spec in Checkr.Expect("Int should be smaller than 42", () => i < 42)
+            from expect in Checkr.Expect("Int should be smaller than 42", () => i < 42)
             from trace in Checkr.Trace("Int", () => i)
             select Case.Closed;
     }

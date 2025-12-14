@@ -4,7 +4,7 @@ namespace QuickCheckr.Tests.Verification.Proceedings;
 
 public class FailedExpectationDepositionsTests : DepositionTest
 {
-    public FailedExpectationDepositionsTests() { IgnoreFailingSpec = false; }
+    public FailedExpectationDepositionsTests() { IgnoreFailingExpectation = false; }
 
     [Fact]
     public void One()

@@ -52,20 +52,20 @@ public class TheEditor
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select index;
 
-    private static readonly Flow<int> PassedSpec =
+    private static readonly Flow<int> PassedExpectation =
         from index in Pulse.Start<int>()
         from article in Pulse.Draw<Article>()
-        let passedSpecDeposition = article.PassedExpectation(index).Read()
-        from label in Emit($"Assert.Equal(\"{passedSpecDeposition.Label}\", article.PassedSpec({index}).Read().Label);")
-        from times in Emit($"Assert.Equal({passedSpecDeposition.TimesPassed}, article.PassedSpec({index}).Read().TimesPassed);")
+        let passedExpectationDeposition = article.PassedExpectation(index).Read()
+        from label in Emit($"Assert.Equal(\"{passedExpectationDeposition.Label}\", article.PassedExpectation({index}).Read().Label);")
+        from times in Emit($"Assert.Equal({passedExpectationDeposition.TimesPassed}, article.PassedExpectation({index}).Read().TimesPassed);")
         select index;
 
     public readonly static Flow<Article> ProofReads =
         from article in Pulse.Start<Article>()
         from prime in Pulse.Prime(() => article)
-        from failedSpec in EmitIf(
+        from failedExpectation in EmitIf(
             article.FailedExpectation() is not null,
-            $"Assert.Equal(\"{article.FailedExpectation()}\", article.FailedSpec());")
+            $"Assert.Equal(\"{article.FailedExpectation()}\", article.FailedExpectation());")
         from failedAssat in EmitIf(
             article.VerifyFailed() is not null,
             $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")
@@ -84,12 +84,12 @@ public class TheEditor
         from warningCount in EmitIf(
             article.Total().Warnings() > 0,
             $"Assert.Equal({article.Total().Warnings()}, article.Total().Warnings());")
-        from passedSpecCount in EmitIf(
+        from passedExpectationCount in EmitIf(
             article.Total().PassedExpectations() > 0,
-            $"Assert.Equal({article.Total().PassedExpectations()}, article.Total().PassedSpecs());")
+            $"Assert.Equal({article.Total().PassedExpectations()}, article.Total().PassedExpects());")
         from shrinkCount in Emit(
             $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
-        from passedSpecs in Pulse.ToFlow(PassedSpec, Enumerable.Range(1, article.Total().PassedExpectations()))
+        from passedExpectations in Pulse.ToFlow(PassedExpectation, Enumerable.Range(1, article.Total().PassedExpectations()))
         select article;
 }

@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Notes.T_Examples.A_TheElementRemover;
 [DocExample(typeof(ElementRemover))]
 [DocContent("`ElementRemover` only removes the *first* occurrence of a value in a list.")]
 [DocContent(
-@"Using one input, one action, and one specification,
+@"Using one input, one action, and one expectation,
 the test captures the minimal failing case where the list contains multiple copies of the target element.")]
 [DocExample(typeof(TheElementRemover), nameof(GetCheckr))]
 [DocContent(

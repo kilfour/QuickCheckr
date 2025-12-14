@@ -60,7 +60,7 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
 		from a in Checkr.Input("a", Fuzzr.Int())
 		from bughouse in Trackr.Stashed(() => new BugHouse())
 		from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-		from spec in Checkr.Expect("Returns true", () => output)
+		from expect in Checkr.Expect("Returns true", () => output)
 		select Case.Closed;
 	}
 

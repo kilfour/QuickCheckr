@@ -42,7 +42,7 @@ public class B_NestedObjects : BaseTest
                 from __ in Configr.Primitive(Fuzzr.Int())
                 from thing in Fuzzr.One<TheUniverse>()
                 select thing)
-            from spec in Checkr.ExpectWhen("It's not 42",
+            from expect in Checkr.ExpectWhen("It's not 42",
                 () => input.Everything != null,
                 () => input.Everything!.Answer != 42)
             select Case.Closed;

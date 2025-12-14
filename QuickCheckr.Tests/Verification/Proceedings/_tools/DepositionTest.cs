@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Verification.Proceedings;
 public abstract class DepositionTest
 {
     protected virtual bool IgnoreVerdictHeader { get; init; } = true;
-    protected virtual bool IgnoreFailingSpec { get; init; } = true;
+    protected virtual bool IgnoreFailingExpectation { get; init; } = true;
     protected Dossier Dossier { get; } =
         new Dossier(
                 FailingExpectation: "Some Invariant",
@@ -35,7 +35,7 @@ public abstract class DepositionTest
     [StackTraceHidden]
     protected void EndOfContent(LinesReader reader)
     {
-        if (IgnoreFailingSpec)
+        if (IgnoreFailingExpectation)
             reader.Skip(3);
         Assert.True(reader.EndOfContent());
     }
