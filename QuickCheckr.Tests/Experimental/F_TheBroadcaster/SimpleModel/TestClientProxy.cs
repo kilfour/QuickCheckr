@@ -10,7 +10,7 @@ public class TestClientProxy : IClientProxy
     public virtual void SendNotificationAsynchronously(Notification notification)
     {
         ReceivedNotifications.Add(notification);
-        Thread.Sleep(100);
+        Thread.Sleep(50);
     }
 
     public void Fault()

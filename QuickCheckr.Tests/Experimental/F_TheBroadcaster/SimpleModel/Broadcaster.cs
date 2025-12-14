@@ -1,16 +1,11 @@
 namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel;
 
-public class Broadcaster
+public class Broadcaster(IClientProxyFactory clientProxyFactory)
 {
+    public bool Broadcasting { get; private set; }
     private readonly object theDoor = new();
-    private List<IClientProxy> clients;
-    private readonly IClientProxyFactory clientProxyFactory;
-
-    public Broadcaster(IClientProxyFactory clientProxyFactory)
-    {
-        this.clientProxyFactory = clientProxyFactory;
-        clients = [];
-    }
+    private List<IClientProxy> clients = [];
+    private readonly IClientProxyFactory clientProxyFactory = clientProxyFactory;
 
     public virtual void Register()
     {
@@ -18,6 +13,10 @@ public class Broadcaster
         client.Faulted += Client_Faulted!;
         AddClientToRegisteredClients(client);
     }
+
+
+    public bool HasClient(IClientProxy client)
+        => clients.Contains(client);
 
     private void AddClientToRegisteredClients(IClientProxy client)
     {
@@ -32,6 +31,7 @@ public class Broadcaster
 
     public virtual void Broadcast(Notification notification)
     {
+        Broadcasting = true;
         foreach (var client in clients)
         {
             client.SendNotificationAsynchronously(notification);

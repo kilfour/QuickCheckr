@@ -2,14 +2,14 @@ namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel;
 
 public class TestClientProxyFactory : IClientProxyFactory
 {
-    private readonly List<TestClientProxy> _clients = new();
-
-    public IReadOnlyList<TestClientProxy> CreatedClients => _clients;
+    private readonly List<TestClientProxy> clients = [];
+    public IReadOnlyList<TestClientProxy> CreatedClients => clients;
+    public TestClientProxy LastClient => clients[^1];
 
     public IClientProxy CreateClientProxyForCurrentContext(string s)
     {
         var client = new TestClientProxy();
-        _clients.Add(client);
+        clients.Add(client);
         return client;
     }
 }
