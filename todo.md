@@ -45,7 +45,6 @@
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 
 ## Refactoring and Testing Targets 
-* Duplication in the various different Specs is building up
 * Nested InputShrinkingClue ? Refactoring Target
 * Loose the lazy IEnumerable in shrinking (yield)
 ## Other
