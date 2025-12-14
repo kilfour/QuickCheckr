@@ -789,9 +789,25 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
-\n**`ShrinkMode.Default`**  
-
+**`ShrinkMode.Default`**  
 The default settings includes all possible ShrinkModes.  
+```text
+------------------------------------------------------------
+ Test:                    DefaultSetting
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:181:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1044984793
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 3
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
 #### Filing Evidence
 QuickCheckr can be configured to persist the results of a failed test run.  
 ```csharp

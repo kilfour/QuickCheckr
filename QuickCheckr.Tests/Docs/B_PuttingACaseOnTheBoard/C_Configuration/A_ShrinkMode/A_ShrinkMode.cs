@@ -169,14 +169,33 @@ public class A_ShrinkMode : BaseTest
     }
 
     [Fact]
-    [DocContent(
-@"\n**`ShrinkMode.Default`**  
-
-The default settings includes all possible ShrinkModes.")]
+    [DocContent("**`ShrinkMode.Default`**  \nThe default settings includes all possible ShrinkModes.")]
+    [DocCodeFile("A_ShrinkModeDefault.txt", "text")]
     public void DefaultSetting()
     {
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Executions));
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Inputs));
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Reduction));
+
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1044984793, 3.ExecutionsPerRun()));
+        WriteAsserts(article, false);
+        WriteReport(article, "A_ShrinkModeDefault.txt", false);
+        VerifyDefault(article);
+    }
+
+    private static void VerifyDefault(Article article)
+    {
+        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal(3, article.ShrinkCount);
+        Assert.Equal(3, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
+
     }
 }

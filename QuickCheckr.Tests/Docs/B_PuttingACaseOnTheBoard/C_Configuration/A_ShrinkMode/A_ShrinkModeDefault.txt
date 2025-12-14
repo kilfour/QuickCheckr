@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    DefaultSetting
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\A_ShrinkMode\A_ShrinkMode.cs:181:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1044984793
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 3
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
