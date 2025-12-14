@@ -7,7 +7,6 @@
   * Assay to Verify 
   * Analize to Expect
   * ProvenWhen to StopWhenProven 
-* Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 * Fix Exception to use right combinator in message
 
 ### On the Table, a.k.a. Doing 
