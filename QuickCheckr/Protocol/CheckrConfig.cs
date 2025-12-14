@@ -22,10 +22,7 @@ public record CheckrConfig
                 DeliberationPolicy = null,
                 FileAs = string.Empty,
                 Custodian = Custodian.Default,
-                Investigations = [],
-                Editor = new ManOfWealthAndTaste()
-                    .ToUseNonLinearTime()
-                    .ToInline<List<int>>()
+                Investigations = []
             };
     }
 
@@ -50,10 +47,4 @@ public record CheckrConfig
     /// Use to surface additional diagnostics such as shrinking clues or exception traces.
     /// </summary>
     public required Investigation[] Investigations { get; init; }
-
-    /// <summary>
-    /// Configures how values are rendered in diagnostic output via QuickPulse.Show.  
-    /// Use to adjust formatting, verbosity, or custom display rules for traced or reported data.
-    /// </summary>
-    public required ManOfWealthAndTaste Editor { get; init; }
 }

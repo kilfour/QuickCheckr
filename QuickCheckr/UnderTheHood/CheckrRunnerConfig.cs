@@ -13,12 +13,14 @@ public record CheckrRunnerConfig
     {
         ShrinkMode = config.ShrinkMode;
         DeliberationPolicy = config.DeliberationPolicy;
-        Editor = config.Editor;
         Signals = [.. config.Investigations.Select(a =>
             Signal.From(
-                Pulse.Prime(() => config.Editor)
+                Pulse.Prime(
+                    () => new ManOfWealthAndTaste()
+                        .ToUseNonLinearTime()
+                        .ToInline<List<int>>())
                     .Then(a.Procedure))
-                    .SetArtery(a.Officer()))];
+                .SetArtery(a.Officer()))];
         FileAs = config.FileAs;
         Custodian = config.Custodian;
     }
@@ -26,7 +28,6 @@ public record CheckrRunnerConfig
     public int? Seed { get; private set; } = null;
     public ShrinkMode ShrinkMode { get; init; }
     public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
-    public ManOfWealthAndTaste Editor { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
     public string FileAs { get; init; }
     public Custodian Custodian { get; init; }

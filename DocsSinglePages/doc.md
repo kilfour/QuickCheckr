@@ -675,10 +675,6 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
     FileAs = string.Empty,
     Custodian = Custodian.Default,
     Investigations = [],
-    Editor =
-        new ManOfWealthAndTaste()
-            .ToUseNonLinearTime()
-            .ToInline<List<int>>()
 }
 ```
 #### Filing Evidence

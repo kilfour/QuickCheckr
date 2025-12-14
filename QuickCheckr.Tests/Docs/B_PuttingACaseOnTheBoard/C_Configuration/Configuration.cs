@@ -25,10 +25,6 @@ public class Configuration
             FileAs = string.Empty,
             Custodian = Custodian.Default,
             Investigations = [],
-            Editor =
-                new ManOfWealthAndTaste()
-                    .ToUseNonLinearTime()
-                    .ToInline<List<int>>()
         };
     }
 
