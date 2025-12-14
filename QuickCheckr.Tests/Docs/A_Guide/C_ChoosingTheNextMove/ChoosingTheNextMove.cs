@@ -73,7 +73,7 @@ There is no guesswork.")]
         Assert.Equal(8, article.Total().Executions());
         Assert.Equal(8, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Deposit", article.Execution(1).Action(1).Read().Label);
@@ -153,7 +153,7 @@ The branch chosen during the original failing run is *the* branch examined durin
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(7, article.ShrinkCount);
         Assert.Equal(8, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Withdraw", article.Execution(1).Action(1).Read().Label);

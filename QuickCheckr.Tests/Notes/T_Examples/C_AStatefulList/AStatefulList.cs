@@ -64,7 +64,7 @@ public class AStatefulList : BaseTest
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(3, article.Total().Inputs());
         Assert.Equal(6, article.Total().Traces());
-        Assert.Equal(2, article.Total().PassedSpecs());
+        Assert.Equal(2, article.Total().PassedExpectations());
         Assert.Equal(6, article.ShrinkCount);
         Assert.Equal(6, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);

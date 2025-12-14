@@ -91,7 +91,7 @@ Currently the only identified cases where this happens is if more than one input
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.ExpectWhen("Does not contain 1",
+    from expect in Checkr.ExpectWhen("Does not contain 1",
         () => input.Count() > 2,
         () => !input.Contains(1))
     select Case.Closed;
@@ -142,7 +142,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
         from result in Fuzzr.One<BaggyInters>()
         select result)
     from trace in Checkr.Trace("Original", () => obj)
-    from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```

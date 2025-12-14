@@ -26,7 +26,7 @@ public class A_ShrinkMode : BaseTest
             from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
             from add in Checkr.Act("Add", () => summer.Add(input))
-            from spec in Checkr.Expect("Total should not be 42",
+            from expect in Checkr.Expect("Total should not be 42",
                 () => summer.Total != 42)
             select Case.Closed;
     }
@@ -55,7 +55,7 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
@@ -109,7 +109,7 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
@@ -164,7 +164,7 @@ public class A_ShrinkMode : BaseTest
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(4, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);

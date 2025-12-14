@@ -62,7 +62,7 @@ The report shows a run summary containing :
 
     [Fact]
     [DocHeader("Gathering Input")]
-    [DocContent("Let's add an input to the Checkr, and change our spec:")]
+    [DocContent("Let's add an input to the Checkr, and change our expectation:")]
     [DocExample(typeof(CheckringThingsOut), nameof(AddingAnInput_Checkr))]
     [DocContent(
 @"
@@ -111,7 +111,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     {
         var check =
             from input in Checkr.Input("Input", Fuzzr.Int())
-            from spec in Checkr.Expect("Input /= 42", () => input != 42)
+            from expect in Checkr.Expect("Input /= 42", () => input != 42)
             select Case.Closed;
         return check;
     }
@@ -144,7 +144,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
         var check =
             from input in Checkr.Input("Input", Fuzzr.Int())
             from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-            from spec in Checkr.Expect("Input /= 42", () => input != 42)
+            from expect in Checkr.Expect("Input /= 42", () => input != 42)
             select Case.Closed;
         return check;
     }
@@ -184,7 +184,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
         var check =
             from input in Checkr.Input("Input", Fuzzr.Int())
             from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-            from spec in Checkr.Expect("Input /= 42", () => input != 42)
+            from expect in Checkr.Expect("Input /= 42", () => input != 42)
             from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
             select Case.Closed;
         return check;
@@ -226,7 +226,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             from two in Checkr.Input("Two", Fuzzr.Int())
             from three in Checkr.Input("Three", Fuzzr.Int())
             from sum in Checkr.Act("One plus Three", () => one + three)
-            from spec in Checkr.Expect("Sum /= 42", () => sum != 42)
+            from expect in Checkr.Expect("Sum /= 42", () => sum != 42)
             select Case.Closed;
         return check;
     }

@@ -3,7 +3,7 @@ This is the first step in QuickCheckr shrinking.
 The following simple example fails on the third execution.  
 ```csharp
     from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from spec in Checkr.Expect("Counter does not equal 3", () => counter != 3)
+    from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
 

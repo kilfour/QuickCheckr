@@ -76,7 +76,7 @@ Because the BugHouse instance is stashed, its internal count persisted across ex
 The shrinking process confirms that all three executions are required:
 removing either of the first two would prevent the internal state from reaching the dangerous value.  
 
-Finally, the report closes by listing which specs passed during the original run,
+Finally, the report closes by listing which expectations passed during the original run,
 highlighting that the behaviour was stable until exactly the offending execution.  
 ## Recap
 QuickCheckr operates across *two distinct scopes*, and understanding them is essential when testing stateful systems:

@@ -50,7 +50,7 @@ public class Investigations : BaseTest
         var check =
             from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
             from trace in Checkr.Trace("Original List", () => list)
-            from spec in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
+            from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
             select Case.Closed;
         var collector = Collect.ValuesOf<string>();
         var article = TheJournalist.Exposes(() => check.Run(1393576429,

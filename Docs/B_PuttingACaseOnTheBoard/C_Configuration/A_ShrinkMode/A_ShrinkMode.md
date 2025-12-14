@@ -7,7 +7,7 @@ The following Checkr will be used to generate the reports throughout this chapte
     from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
     from add in Checkr.Act("Add", () => summer.Add(input))
-    from spec in Checkr.Expect("Total should not be 42",
+    from expect in Checkr.Expect("Total should not be 42",
         () => summer.Total != 42)
     select Case.Closed;
 ```

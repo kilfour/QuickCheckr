@@ -49,7 +49,7 @@ public class A_RemovingIrrelevantItems : BaseTest
     {
         return
             from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-            from spec in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
+            from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
             from trace in Checkr.Trace("List Input", () => listInput)
             select Case.Closed;
     }

@@ -43,7 +43,7 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 		Assert.Equal(3, article.Total().Executions());
 		Assert.Equal(3, article.Total().Actions());
 		Assert.Equal(1, article.Total().Inputs());
-		Assert.Equal(2, article.Total().PassedSpecs());
+		Assert.Equal(2, article.Total().PassedExpectations());
 		Assert.Equal(58, article.ShrinkCount);
 		Assert.Equal(56, article.Execution(1).Read().ExecutionId);
 		Assert.Equal("BugHouse.RunInt", article.Execution(1).Action(1).Read().Label);

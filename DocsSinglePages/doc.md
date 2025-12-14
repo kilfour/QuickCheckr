@@ -69,11 +69,11 @@ The report shows a run summary containing :
 checkr.Run(1642083259);
 ```
 #### Gathering Input
-Let's add an input to the Checkr, and change our spec:  
+Let's add an input to the Checkr, and change our expectation:  
 ```csharp
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
-    from spec in Checkr.Expect("Input /= 42", () => input != 42)
+    from expect in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 
@@ -110,7 +110,7 @@ So, if we add another input to the Checkr, one which does not influence the fail
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Expect("Input /= 42", () => input != 42)
+    from expect in Checkr.Expect("Input /= 42", () => input != 42)
     select Case.Closed;
 ```
 The following happens:  
@@ -138,7 +138,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
 var check =
     from input in Checkr.Input("Input", Fuzzr.Int())
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Expect("Input /= 42", () => input != 42)
+    from expect in Checkr.Expect("Input /= 42", () => input != 42)
     from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
     select Case.Closed;
 ```
@@ -166,7 +166,7 @@ var check =
     from two in Checkr.Input("Two", Fuzzr.Int())
     from three in Checkr.Input("Three", Fuzzr.Int())
     from sum in Checkr.Act("One plus Three", () => one + three)
-    from spec in Checkr.Expect("Sum /= 42", () => sum != 42)
+    from expect in Checkr.Expect("Sum /= 42", () => sum != 42)
     select Case.Closed;
 ```
 Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.  
@@ -265,7 +265,7 @@ Because the BugHouse instance is stashed, its internal count persisted across ex
 The shrinking process confirms that all three executions are required:
 removing either of the first two would prevent the internal state from reaching the dangerous value.  
 
-Finally, the report closes by listing which specs passed during the original run,
+Finally, the report closes by listing which expectations passed during the original run,
 highlighting that the behaviour was stable until exactly the offending execution.  
 #### Recap
 QuickCheckr operates across *two distinct scopes*, and understanding them is essential when testing stateful systems:
@@ -688,7 +688,7 @@ The following Checkr will be used to generate the reports throughout this chapte
     from input in Checkr.Input("Input", Fuzzr.Int(1, 25))
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
     from add in Checkr.Act("Add", () => summer.Add(input))
-    from spec in Checkr.Expect("Total should not be 42",
+    from expect in Checkr.Expect("Total should not be 42",
         () => summer.Total != 42)
     select Case.Closed;
 ```
@@ -844,7 +844,7 @@ This is the first step in QuickCheckr shrinking.
 The following simple example fails on the third execution.  
 ```csharp
     from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from spec in Checkr.Expect("Counter does not equal 3", () => counter != 3)
+    from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
 
@@ -881,7 +881,7 @@ QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal fail
 The following simple example has one input but always fails.  
 ```csharp
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from spec in Checkr.Expect("Always Fails", () => false)
+    from expect in Checkr.Expect("Always Fails", () => false)
     select Case.Closed;
 ```
 Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
@@ -907,7 +907,7 @@ Another example, slightly trickier.
     from two in Checkr.Input("Input Two", Fuzzr.Int())
     from three in Checkr.Input("Input Three", Fuzzr.Int())
     from result in Checkr.Act("Result", () => one + three)
-    from spec in Checkr.Expect("Should not be 42", () => result != 42)
+    from expect in Checkr.Expect("Should not be 42", () => result != 42)
     select Case.Closed;
 ```
 As you can see from the test definition, two inputs are involved in a possible failure.
@@ -941,7 +941,7 @@ This means that if only some elements in a list contribute to the failing condit
 Consider a test that forbids the value `7`:  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
+    from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -966,7 +966,7 @@ Ofcourse a collection itself is just an input like another, so if it, as a whole
 is irrelevant for the failure, QuickCheckr will remove it.  
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from spec in Checkr.Expect("Always fails", () => false)
+    from expect in Checkr.Expect("Always fails", () => false)
     select Case.Closed;
 ```
 ```text
@@ -997,7 +997,7 @@ without introducing noise from element-level changes that could not affect the o
 ```csharp
     from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
     from trace in Checkr.Trace("Original List", () => list)
-    from spec in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
+    from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
     select Case.Closed;
 ```
 ```text
@@ -1108,7 +1108,7 @@ Currently the only identified cases where this happens is if more than one input
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.ExpectWhen("Does not contain 1",
+    from expect in Checkr.ExpectWhen("Does not contain 1",
         () => input.Count() > 2,
         () => !input.Contains(1))
     select Case.Closed;
@@ -1159,7 +1159,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
         from result in Fuzzr.One<BaggyInters>()
         select result)
     from trace in Checkr.Trace("Original", () => obj)
-    from spec in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```
@@ -1215,7 +1215,7 @@ var listFuzzr =
         () => TheReverser.Reverses(TheReverser.Reverses(input)))
     from trace in Checkr.Trace("Input ", () => input)
     from traceResult in Checkr.Trace("Result", () => result)
-    from spec in Checkr.Expect(
+    from expect in Checkr.Expect(
         "Input == Result", () => input.SequenceEqual(result))
     select Case.Closed;
 ```

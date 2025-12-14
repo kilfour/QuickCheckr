@@ -26,7 +26,7 @@ public class CheckrActCarefully : BaseTest
         Assert.Equal("Throws InvalidOperationException", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Total().PassedSpecs());
+        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Act", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Throws", article.PassedExpectation(1).Read().Label);

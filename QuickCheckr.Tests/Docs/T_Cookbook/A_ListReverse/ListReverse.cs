@@ -70,7 +70,7 @@ public class ListReverse : BaseTest
                 () => TheReverser.Reverses(TheReverser.Reverses(input)))
             from trace in Checkr.Trace("Input ", () => input)
             from traceResult in Checkr.Trace("Result", () => result)
-            from spec in Checkr.Expect(
+            from expect in Checkr.Expect(
                 "Input == Result", () => input.SequenceEqual(result))
             select Case.Closed;
     }
