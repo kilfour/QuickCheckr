@@ -33,7 +33,7 @@ public class EvidenceRecorder
         runFailed = true;
     }
 
-    public void ExpectationCrashed(Exception exception) // TODO check if this is needed
+    public void ExpectationCrashed(Exception exception) // This is needed, see NullString Test
     {
         if (IsReplay)
         {
