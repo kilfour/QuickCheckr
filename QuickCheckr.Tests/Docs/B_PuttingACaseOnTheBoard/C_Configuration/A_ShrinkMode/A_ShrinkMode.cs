@@ -169,7 +169,7 @@ public class A_ShrinkMode : BaseTest
     }
 
     [Fact]
-    [DocContent("**`ShrinkMode.Default`**  \nThe default settings includes all possible ShrinkModes.")]
+    [DocContent("\n**`ShrinkMode.Default`**  \nThe default settings includes all possible ShrinkModes.")]
     [DocCodeFile("A_ShrinkModeDefault.txt", "text")]
     public void DefaultSetting()
     {
