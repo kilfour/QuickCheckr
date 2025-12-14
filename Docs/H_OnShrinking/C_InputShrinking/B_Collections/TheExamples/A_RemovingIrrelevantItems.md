@@ -23,7 +23,7 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
   Executed:
    - Input: List Input = [ 7 ]
    - Trace: List Input = [ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]
- ===========================================
-  !! Spec Failed: List does not contain 7
- ===========================================
+ ==================================================
+  !! Expectation Failed: List does not contain 7
+ ==================================================
 ```

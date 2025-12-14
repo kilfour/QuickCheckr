@@ -78,8 +78,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
         var article = TheJournalist.Exposes(() => TheCheckr.Run(13918324, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<BoltingHorses>(article);
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedSpec());
+        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedExpectation());
+        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedExpectation());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

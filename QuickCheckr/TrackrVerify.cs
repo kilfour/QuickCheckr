@@ -11,7 +11,7 @@ public static partial class Trackr
     public static CheckrOf<Case> Verify(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.SpecGuard.Check(key);
+            state.Memory.ExpectGuard.Check(key);
             if (!state.IsThisTheRunsLastExecution())
                 return CheckrResult.CaseOnly(state);
             bool passed = condition();
@@ -21,7 +21,7 @@ public static partial class Trackr
             }
             else
             {
-                state.EvidenceRecorder.SpecPassed(key);
+                state.EvidenceRecorder.ExpectationPassed(key);
             }
             return CheckrResult.CaseOnly(state);
         };
@@ -51,7 +51,7 @@ public static partial class Trackr
             }
             else
             {
-                state.EvidenceRecorder.SpecPassed(key);
+                state.EvidenceRecorder.ExpectationPassed(key);
             }
             return CheckrResult.CaseOnly(state);
         };

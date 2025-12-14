@@ -42,7 +42,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Always Fails", article.FailedSpec());
+        Assert.Equal("Always Fails", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
@@ -83,7 +83,7 @@ Result:
 
     private static void Verify_Two(Article article)
     {
-        Assert.Equal("Should not be 42", article.FailedSpec());
+        Assert.Equal("Should not be 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

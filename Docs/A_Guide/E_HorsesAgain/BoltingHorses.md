@@ -169,10 +169,10 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-3
- =====================================================
-  !! Spec Failed: Assigned Coaches Must Be Suitable
- =====================================================
- Passed Specs
+ ============================================================
+  !! Expectation Failed: Assigned Coaches Must Be Suitable
+ ============================================================
+ Passed Expectations
  - Course Name Set: 4x
  - Coach Name is set: 9x
  - Coach Skills Set: 2x

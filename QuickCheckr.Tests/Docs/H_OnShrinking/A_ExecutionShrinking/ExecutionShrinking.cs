@@ -36,7 +36,7 @@ So after *Execution Shrinking*, the result is:
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Counter does not equal 3", article.FailedSpec());
+        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedSpecs());

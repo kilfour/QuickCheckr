@@ -62,7 +62,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
- Passed Specs
+ Passed Expectations
  - Returns true: 2x
  ------------------------------------------------------------
 ```

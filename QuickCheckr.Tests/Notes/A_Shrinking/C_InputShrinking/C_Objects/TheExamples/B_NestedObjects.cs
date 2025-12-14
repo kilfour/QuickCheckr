@@ -24,7 +24,7 @@ public class B_NestedObjects : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("It's not 42", article.FailedSpec());
+        Assert.Equal("It's not 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

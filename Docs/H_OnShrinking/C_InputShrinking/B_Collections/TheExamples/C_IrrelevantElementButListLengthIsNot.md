@@ -27,7 +27,7 @@ without introducing noise from element-level changes that could not affect the o
   Executed:
    - Input: List = [ _, _, _ ]
    - Trace: Original List = [ 12, 45, 56, 18, 31 ]
- ===============================
-  !! Spec Failed: Length <= 2
- ===============================
+ ======================================
+  !! Expectation Failed: Length <= 2
+ ======================================
 ```

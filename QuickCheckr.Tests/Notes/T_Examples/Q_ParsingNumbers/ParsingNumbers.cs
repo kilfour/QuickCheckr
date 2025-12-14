@@ -24,7 +24,7 @@ public class ParsingNumbers : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Match", article.FailedSpec());
+        Assert.Equal("Match", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

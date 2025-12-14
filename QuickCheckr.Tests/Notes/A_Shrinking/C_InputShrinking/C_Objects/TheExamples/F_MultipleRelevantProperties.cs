@@ -26,7 +26,7 @@ public class F_MultipleRelevantProperties : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedSpec());
+        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

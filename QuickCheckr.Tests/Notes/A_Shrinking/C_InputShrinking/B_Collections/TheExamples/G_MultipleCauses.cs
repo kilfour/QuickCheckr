@@ -25,7 +25,7 @@ public class G_MultipleCauses : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("input.Count() > 2, () => !input.Contains(1)", article.FailedSpec());
+        Assert.Equal("input.Count() > 2, () => !input.Contains(1)", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

@@ -26,7 +26,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("IntOne /= 42", article.FailedSpec());
+        Assert.Equal("IntOne /= 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

@@ -18,9 +18,9 @@
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-2
- =====================================================
-  !! Spec Failed: Assigned Coaches Must Be Suitable
- =====================================================
- Passed Specs
+ ============================================================
+  !! Expectation Failed: Assigned Coaches Must Be Suitable
+ ============================================================
+ Passed Expectations
  - Assigned Coaches Must Be Suitable: 5x
  ------------------------------------------------------------

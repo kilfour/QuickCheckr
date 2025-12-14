@@ -16,10 +16,10 @@ public class CaseFile
         return new CaseFile(verdict);
     }
 
-    public List<PassedSpecDeposition> PassedSpecDepositions { get; init; } = [];
-    public CaseFile AddPassedSpecDeposition(PassedSpecDeposition passedSpecDeposition)
+    public List<PassedExpectationDeposition> PassedExpectationDepositions { get; init; } = [];
+    public CaseFile AddPassedExpectationDeposition(PassedExpectationDeposition passedExpectationDepositions)
     {
-        PassedSpecDepositions.Add(passedSpecDeposition);
+        PassedExpectationDepositions.Add(passedExpectationDepositions);
         return this;
     }
 }

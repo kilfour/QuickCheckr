@@ -14,16 +14,16 @@ public class Article(CaseFile caseFile)
     {
         if (caseFile.Verdict!.FailureDeposition is VerifyingDeposition assayerDeposition)
         {
-            return assayerDeposition.FailedSpec;
+            return assayerDeposition.FailedExpectation;
         }
         return null!;
     }
 
-    public string FailedSpec()
+    public string FailedExpectation()
     {
-        if (caseFile.Verdict!.FailureDeposition is FailedSpecDeposition failedSpecDeposition)
+        if (caseFile.Verdict!.FailureDeposition is FailedExpectationDeposition failedSpecDeposition)
         {
-            return failedSpecDeposition.FailedSpec;
+            return failedSpecDeposition.FailedExpectation;
         }
         return null!;
     }
@@ -43,7 +43,7 @@ public class Article(CaseFile caseFile)
 
     [StackTraceHidden]
     public PassedSpecArticle PassedSpec(int number)
-        => new(caseFile.PassedSpecDepositions[number - 1]);
+        => new(caseFile.PassedExpectationDepositions[number - 1]);
 
     public WordCount Total() => new(caseFile);
     public int Seed() => caseFile.Verdict!.Seed;

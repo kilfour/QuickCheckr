@@ -9,6 +9,6 @@
    - Input: List = [ 5, 5 ]
    - Input: Item to Remove = 5
    - Trace: List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
- =================================================
-  !! Spec Failed: List Does Not Contain Element
- =================================================
+ ========================================================
+  !! Expectation Failed: List Does Not Contain Element
+ ========================================================

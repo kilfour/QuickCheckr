@@ -115,9 +115,9 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Equal(" Seed:                    1862095796", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed", reader.NextLine());
-        Assert.Equal(" =========================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Fails", reader.NextLine());
-        Assert.Equal(" =========================", reader.NextLine());
+        Assert.Equal(" ================================", reader.NextLine());
+        Assert.Equal("  !! Expectation Failed: Fails", reader.NextLine());
+        Assert.Equal(" ================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }
 
@@ -139,7 +139,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Single(log.Values);
         Assert.Equal($"Run passed for Seed: 1862095796.", log.Values[0]);
         var reader = LinesReader.FromText(report.Values[0]);
-        Assert.Equal(" Passed Specs", reader.NextLine());
+        Assert.Equal(" Passed Expectations", reader.NextLine());
         Assert.Equal(" - Fails: 1x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());

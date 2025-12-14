@@ -11,6 +11,6 @@
    - Trace: Other Turtle = { Down: { Down: null } }
    - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
    - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.
- =====================================================
-  !! Spec Failed: Turtle Ends on 'TurtlesAllTheWay'
- =====================================================
+ ============================================================
+  !! Expectation Failed: Turtle Ends on 'TurtlesAllTheWay'
+ ============================================================

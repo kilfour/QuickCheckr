@@ -6,10 +6,10 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class Compile
 {
-    public static CaseFile PassedSpecs(IReadOnlyDictionary<string, int> passedSpecs)
+    public static CaseFile PassedExpectations(IReadOnlyDictionary<string, int> passedExpectations)
     {
         var caseFile = CaseFile.Empty();
-        AddPassedSpecs(passedSpecs, caseFile);
+        AddPassedExpectations(passedExpectations, caseFile);
         return caseFile;
     }
 
@@ -17,7 +17,7 @@ public static class Compile
     {
         var verdict = Verdict.FromDossier(dossier);
         var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting);
-        AddPassedSpecs(dossier.PassedSpecs, caseFile);
+        AddPassedExpectations(dossier.PassedExpectations, caseFile);
         return caseFile;
     }
 
@@ -28,10 +28,10 @@ public static class Compile
         return caseFile;
     }
 
-    private static void AddPassedSpecs(IReadOnlyDictionary<string, int> passedSpecs, CaseFile caseFile)
+    private static void AddPassedExpectations(IReadOnlyDictionary<string, int> passedExpectations, CaseFile caseFile)
     {
-        foreach (var passedSpec in passedSpecs)
-            caseFile.AddPassedSpecDeposition(new PassedSpecDeposition(passedSpec.Key, passedSpec.Value));
+        foreach (var passedExpectation in passedExpectations)
+            caseFile.AddPassedExpectationDeposition(new PassedExpectationDeposition(passedExpectation.Key, passedExpectation.Value));
     }
 
     private static void AddExecutionDepositions(Memory memory, Verdict verdict, bool useMemoryForInputReporting)

@@ -85,16 +85,16 @@ public static class The
 
     private readonly static Flow<VerifyingDeposition> assayerDeposition =
         from input in Pulse.Start<VerifyingDeposition>()
-        let text = $"  !!  The Verifier Disagrees: {input.FailedSpec}"
+        let text = $"  !!  The Verifier Disagrees: {input.FailedExpectation}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
         from _2 in Pulse.Trace(text).Then(newLine)
         from _3 in DoubleLineOf(length)
         select input;
 
-    private readonly static Flow<FailedSpecDeposition> failedSpecDeposition =
-        from input in Pulse.Start<FailedSpecDeposition>()
-        let text = $"  !! Spec Failed: {input.FailedSpec.Trim()}"
+    private readonly static Flow<FailedExpectationDeposition> failedExpectationDeposition =
+        from input in Pulse.Start<FailedExpectationDeposition>()
+        let text = $"  !! Expectation Failed: {input.FailedExpectation.Trim()}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
         from _2 in Pulse.Trace(text).Then(newLine)
@@ -111,7 +111,7 @@ public static class The
     private readonly static Flow<FailureDeposition> failureDeposition =
         Pulse.Start<FailureDeposition>(input =>
             Pulse.FirstOf(
-                (() => input is FailedSpecDeposition, () => Pulse.ToFlow(failedSpecDeposition, (FailedSpecDeposition)input)),
+                (() => input is FailedExpectationDeposition, () => Pulse.ToFlow(failedExpectationDeposition, (FailedExpectationDeposition)input)),
                 (() => input is ExceptionDeposition, () => Pulse.ToFlow(exceptionDeposition, (ExceptionDeposition)input)),
                 (() => input is VerifyingDeposition, () => Pulse.ToFlow(assayerDeposition, (VerifyingDeposition)input))));
 
@@ -139,9 +139,9 @@ public static class The
         from _5 in Pulse.ToFlow(failureDeposition, verdict.FailureDeposition)
         select verdict;
 
-    private readonly static Flow<IEnumerable<PassedSpecDeposition>> passedSpecDepositions =
-        from input in Pulse.Start<IEnumerable<PassedSpecDeposition>>()
-        from _ in Pulse.Trace(" Passed Specs")
+    private readonly static Flow<IEnumerable<PassedExpectationDeposition>> passedExpectationDepositions =
+        from input in Pulse.Start<IEnumerable<PassedExpectationDeposition>>()
+        from _ in Pulse.Trace(" Passed Expectations")
         from __ in Pulse.ToFlow(a => Pulse.Trace($"{Environment.NewLine} - {a.Label}: {a.TimesPassed}x"), input)
         from ___ in Pulse.When(input.Any(), newLine.Then(space).Then(LineOf(60)))
         select input;
@@ -157,11 +157,11 @@ public static class The
         from _ in Pulse.Prime(() => new Decorum())
         from verdict in Pulse.ToFlowIf(input.Verdict != null, verdict, () => input.Verdict)
         from summary in Pulse.OnType(Summary, () => input)
-        let needsBreak = input.Verdict != null && input.PassedSpecDepositions.Count > 0
+        let needsBreak = input.Verdict != null && input.PassedExpectationDepositions.Count > 0
         from nl in Pulse.TraceIf(needsBreak, () => Environment.NewLine)
         from __ in Pulse.ToFlowIf(
-            input.PassedSpecDepositions.Count > 0,
-            passedSpecDepositions,
-            () => input.PassedSpecDepositions)
+            input.PassedExpectationDepositions.Count > 0,
+            passedExpectationDepositions,
+            () => input.PassedExpectationDepositions)
         select input;
 }

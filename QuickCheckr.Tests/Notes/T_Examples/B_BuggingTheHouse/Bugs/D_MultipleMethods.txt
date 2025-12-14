@@ -11,10 +11,10 @@
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
    - Input: Int = 6
- =======================================
-  !! Spec Failed: RunInt returns true
- =======================================
- Passed Specs
+ ==============================================
+  !! Expectation Failed: RunInt returns true
+ ==============================================
+ Passed Expectations
  - RunString returns true: 34x
  - RunInt returns true: 24x
  ------------------------------------------------------------

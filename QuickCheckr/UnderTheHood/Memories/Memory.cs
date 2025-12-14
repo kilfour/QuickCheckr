@@ -49,7 +49,7 @@ public class Memory
     // Guards
     private DuplicateKeyWriteGuardForInputs inputGuard = new();
     private DuplicateKeyWriteGuardForActs actGuard = new();
-    public DuplicateKeyWriteGuardForSpecs SpecGuard { get; private set; } = new();
+    public DuplicateKeyWriteGuardForExpectations ExpectGuard { get; private set; } = new();
     private DuplicateKeyWriteGuardForTraces traceGuard = new();
     private DuplicateKeyWriteGuardForVariables variableGuard = new();
     private DuplicateKeyWriteGuardForStashed stashedGuard = new();
@@ -58,7 +58,7 @@ public class Memory
     {
         inputGuard = new();
         actGuard = new();
-        SpecGuard = new();
+        ExpectGuard = new();
         traceGuard = new();
         variableGuard = new();
         stashedGuard = new();

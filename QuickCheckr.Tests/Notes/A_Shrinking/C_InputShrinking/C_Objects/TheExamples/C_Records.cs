@@ -25,7 +25,7 @@ public class C_Records : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Is not underage", article.FailedSpec());
+        Assert.Equal("Is not underage", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);

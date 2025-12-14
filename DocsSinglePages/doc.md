@@ -25,9 +25,9 @@ Each chapter builds on the previous one, introducing new concepts through execut
 [BoltingHorses]: #bolting-horses
 ### Checkr-ing Things Out
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
-Each run goes through the script from top to bottom: generating inputs, performing actions, checking specs, and collecting diagnostics.
+Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.  
-#### First Specification
+#### First Expectation
 Let's start by having a look at the simplest possible Checkr:  
 ```csharp
 public class MinimalCheckr
@@ -46,15 +46,15 @@ Checkr.Expect("Always true", () => false);
 The test fails and QuickCheckr produces the following report:  
 ```text
 ------------------------------------------------------------
- Test:                    Run_SpecAlwaysFalse
+ Test:                    Run_ExpectAlwaysFalse
  Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:60:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed
- ===============================
-  !! Spec Failed: Always true
- ===============================
+ ======================================
+  !! Expectation Failed: Always true
+ ======================================
 ```
 
 The report shows a run summary containing :
@@ -99,9 +99,9 @@ Now the test fails consistently:
  ------------------------------------------------------------
   Executed:
    - Input: Input = 42
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 As you can see the input is now included in the report *minimal fail-case*,
 this is because QuickCheckr judged the input to be relevant to the failure.  
@@ -124,9 +124,9 @@ The following happens:
  ------------------------------------------------------------
   Executed:
    - Input: Input = 42
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 That's basically the same thing as before, because QuickCheckr does not report irrelevant inputs.  
 #### Not Without a Trace
@@ -154,9 +154,9 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
   Executed:
    - Input: Input = 42
    - Trace: Irrelevant Input = 47
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 #### Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
@@ -182,9 +182,9 @@ And here's the report:
   Executed: One plus Three
    - Input: One = 24
    - Input: Three = 18
- =============================
-  !! Spec Failed: Sum /= 42
- =============================
+ ====================================
+  !! Expectation Failed: Sum /= 42
+ ====================================
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 ### The Stash, Runs and Executions
@@ -251,7 +251,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
- Passed Specs
+ Passed Expectations
  - Returns true: 2x
  ------------------------------------------------------------
 ```
@@ -389,10 +389,10 @@ Running the Checkr without shrinking yields a report similar to this:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 66
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 7x
  ------------------------------------------------------------
 ```
@@ -410,10 +410,10 @@ And if we let the QuickCheckr shrinker do its work:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 66
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 7x
  ------------------------------------------------------------
 ```
@@ -609,10 +609,10 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-3
- =====================================================
-  !! Spec Failed: Assigned Coaches Must Be Suitable
- =====================================================
- Passed Specs
+ ============================================================
+  !! Expectation Failed: Assigned Coaches Must Be Suitable
+ ============================================================
+ Passed Expectations
  - Course Name Set: 4x
  - Coach Name is set: 9x
  - Coach Skills Set: 2x
@@ -720,10 +720,10 @@ No shrinking. QuickCheckr reports the original failing run.
   Executed: Add
    - Input: Input = 12
    - Input: Irrelevant = 21
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```
@@ -756,10 +756,10 @@ Trims away irrelevant executions.
   Executed: Add
    - Input: Input = 12
    - Input: Irrelevant = 21
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```
@@ -789,10 +789,10 @@ Trims inputs to find a minimal failing case.
  ------------------------------------------------------------
   Executed: Add
    - Input: Input = 12
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```
@@ -868,10 +868,10 @@ So after *Execution Shrinking*, the result is:
  ------------------------------------------------------------
   Executed:
    - Input: counter = 3
- ============================================
-  !! Spec Failed: Counter does not equal 3
- ============================================
- Passed Specs
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
@@ -897,9 +897,9 @@ So, in the previous example, after *Input Shrinking*, the result is:
  Seed:                    165641598
  ------------------------------------------------------------
   Executed
- ================================
-  !! Spec Failed: Always Fails
- ================================
+ =======================================
+  !! Expectation Failed: Always Fails
+ =======================================
 ```
 Another example, slightly trickier.  
 ```csharp
@@ -927,9 +927,9 @@ Result:
   Executed: Result
    - Input: Input One = 12
    - Input: Input Three = 30
- ====================================
-  !! Spec Failed: Should not be 42
- ====================================
+ ===========================================
+  !! Expectation Failed: Should not be 42
+ ===========================================
 ```
 #### Collections
 ##### Removing Irrelevant Items
@@ -957,9 +957,9 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
   Executed:
    - Input: List Input = [ 7 ]
    - Trace: List Input = [ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]
- ===========================================
-  !! Spec Failed: List does not contain 7
- ===========================================
+ ==================================================
+  !! Expectation Failed: List does not contain 7
+ ==================================================
 ```
 ##### Removing Irrelevant Collection
 Ofcourse a collection itself is just an input like another, so if it, as a whole,
@@ -978,9 +978,9 @@ is irrelevant for the failure, QuickCheckr will remove it.
  Seed:                    2014608033
  ------------------------------------------------------------
   Executed
- ================================
-  !! Spec Failed: Always fails
- ================================
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
 ```
 ##### Irrelevant Element But List Length Is Not
 When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
@@ -1011,9 +1011,9 @@ without introducing noise from element-level changes that could not affect the o
   Executed:
    - Input: List = [ _, _, _ ]
    - Trace: Original List = [ 12, 45, 56, 18, 31 ]
- ===============================
-  !! Spec Failed: Length <= 2
- ===============================
+ ======================================
+  !! Expectation Failed: Length <= 2
+ ======================================
 ```
 ### Deliberation Shrinking
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
@@ -1067,10 +1067,10 @@ Now if we run this we might get something like this:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 5
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 2x
  ------------------------------------------------------------
 ```
@@ -1086,20 +1086,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    5 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    1996139942
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1795752479
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 2
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
- - No Overdraft: 4x
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
+ - No Overdraft: 9x
  ------------------------------------------------------------
 ```
 #### An Eager Shrinker
@@ -1125,9 +1125,9 @@ Now when the list contains multiple elements `1`, we might get:
   Executed:
    - Input: Input = [ _, _, _ ]
    - Trace: List = [ 1, 2, 1 ]
- ======================================
-  !! Spec Failed: Does not contain 1
- ======================================
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
 ```
 It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).  
@@ -1143,14 +1143,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    714667059
+ Seed:                    161480390
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 2, 1, 0 ]
- ======================================
-  !! Spec Failed: Does not contain 1
- ======================================
+   - Input: Input = [ 1, _, _ ]
+   - Trace: List = [ 1, 3, 0 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
 ```
 A similar thing can happen when shrinking objects, and the solution is exactly the same  
 ```csharp
@@ -1170,14 +1170,14 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1200465269
+ Seed:                    860526479
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 3, IntThree: 4 }
- ========================================================
-  !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
- ========================================================
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+ ===============================================================
+  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ===============================================================
 ```
 ## Cook Book
 The QuickCheckr Cookbook is a collection of examples showing common patterns, 
@@ -1232,9 +1232,9 @@ var listFuzzr =
    - Input: Input = [ _, 42 ]
    - Trace: Input  = [ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]
    - Trace: Result = [ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]
- ===================================
-  !! Spec Failed: Input == Result
- ===================================
+ ==========================================
+  !! Expectation Failed: Input == Result
+ ==========================================
 ```
 ### Testing Aggregate Behaviour (Trackr.Verify)
 **Demonstrates:**
@@ -1279,7 +1279,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    756350681
+ Seed:                    439557549
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

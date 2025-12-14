@@ -19,9 +19,9 @@
   Executed: Add
    - Input: Input = 12
    - Input: Irrelevant = 21
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------

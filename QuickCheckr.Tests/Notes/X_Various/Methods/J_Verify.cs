@@ -32,12 +32,12 @@ public class J_Verify
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'reused' is written more than once in a single 'Checkr.Spec' execution.
+@"Key 'reused' is written more than once in a single 'Checkr.Expect' execution.
 
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
 Possible solutions:
-- Ensure each 'Checkr.Spec' uses a unique key.
+- Ensure each 'Checkr.Expect' uses a unique key.
 ";
 }

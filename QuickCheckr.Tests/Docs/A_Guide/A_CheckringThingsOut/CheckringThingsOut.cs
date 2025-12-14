@@ -10,21 +10,21 @@ namespace QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 [DocFileHeader("Checkr-ing Things Out")]
 [DocContent(
 @"A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
-Each run goes through the script from top to bottom: generating inputs, performing actions, checking specs, and collecting diagnostics.
+Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.")]
 public class CheckringThingsOut : BaseTest
 {
     [Fact]
-    [DocHeader("First Specification")]
+    [DocHeader("First Expectation")]
     [DocContent("Let's start by having a look at the simplest possible Checkr:")]
     [DocExample(typeof(MinimalCheckr))]
     [DocContent(
 @"Congratulations! You've just checked something out. The test passes and now we know that `true` is always `true`.
 
 So what happens if try to do the opposite?")]
-    [DocExample(typeof(CheckringThingsOut), nameof(SpecAlwaysFalse_Checkr))]
+    [DocExample(typeof(CheckringThingsOut), nameof(ExpectAlwaysFalse_Checkr))]
     [DocContent("The test fails and QuickCheckr produces the following report:")]
-    [DocCodeFile("SpecAlwaysFalse.txt", "text")]
+    [DocCodeFile("ExpectAlwaysFalse.txt", "text")]
     [DocContent(
 @"
 The report shows a run summary containing :
@@ -35,27 +35,27 @@ The report shows a run summary containing :
 * Failure details: Why the run failed in the first place.
 * Seed: The seed used to generate the failing run.  
   You can use this to reproduce the failing run reliably, by calling run with the seed passed in.")]
-    [DocExample(typeof(CheckringThingsOut), nameof(Run_SpecAlwaysFalse))]
-    public void SpecAlwaysFalse()
+    [DocExample(typeof(CheckringThingsOut), nameof(Run_ExpectAlwaysFalse))]
+    public void ExpectAlwaysFalse()
     {
-        var article = TheJournalist.Exposes(() => Run_SpecAlwaysFalse(SpecAlwaysFalse_Checkr()));
-        Assert.Equal("Always true", article.FailedSpec());
+        var article = TheJournalist.Exposes(() => Run_ExpectAlwaysFalse(ExpectAlwaysFalse_Checkr()));
+        Assert.Equal("Always true", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
-        WriteReport(article, "SpecAlwaysFalse.txt");
+        WriteReport(article, "ExpectAlwaysFalse.txt");
     }
 
     [CodeSnippet]
     [CodeRemove("return ")]
-    private static CheckrOf<Case> SpecAlwaysFalse_Checkr()
+    private static CheckrOf<Case> ExpectAlwaysFalse_Checkr()
     {
         return Checkr.Expect("Always true", () => false);
     }
 
     [CodeSnippet]
     [CodeRemove("return ")]
-    private static void Run_SpecAlwaysFalse(CheckrOf<Case> checkr)
+    private static void Run_ExpectAlwaysFalse(CheckrOf<Case> checkr)
     {
         checkr.Run(1642083259);
     }
@@ -86,7 +86,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
         var article = TheJournalist.Exposes(() => AddingAnInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnInput.txt");
-        Assert.Equal("Input /= 42", article.FailedSpec());
+        Assert.Equal("Input /= 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(0, article.ShrinkCount);
@@ -97,12 +97,12 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
 
     [Fact]
     [CodeRemove("Assert.Throws<FalsifiableException>(() => ")]
-    [CodeReplace("SpecAlwaysFalse_Checkr()", "check")]
+    [CodeReplace("ExpectAlwaysFalse_Checkr()", "check")]
     [CodeRemove(");")]
     [CodeSnippet]
     public void FailureThrows()
     {
-        Assert.Throws<FalsifiableException>(() => SpecAlwaysFalse_Checkr().Run(200.Runs()));
+        Assert.Throws<FalsifiableException>(() => ExpectAlwaysFalse_Checkr().Run(200.Runs()));
     }
 
     [CodeSnippet]
@@ -128,7 +128,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
             AddingAnotherInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnotherInput.txt");
-        Assert.Equal("Input /= 42", article.FailedSpec());
+        Assert.Equal("Input /= 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);
@@ -165,7 +165,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             NotWithoutATrace_Checkr().Run(769641533));
         WriteAsserts(article);
         WriteReport(article, "NotWithoutATrace.txt");
-        Assert.Equal("Input /= 42", article.FailedSpec());
+        Assert.Equal("Input /= 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
@@ -204,7 +204,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             TimeToAct_Checkr().Run(1642083259));
         WriteAsserts(article);
         WriteReport(article, "TimeToAct.txt");
-        Assert.Equal("Sum /= 42", article.FailedSpec());
+        Assert.Equal("Sum /= 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

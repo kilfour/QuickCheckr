@@ -25,9 +25,9 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - Input: Input Two = Monday
- ========================================
-  !! Spec Failed: Should not be Monday
- ========================================
+ ===============================================
+  !! Expectation Failed: Should not be Monday
+ ===============================================
 ```
 ```csharp
     from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
@@ -45,9 +45,9 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - Input: Input Two = Two
- =====================================
-  !! Spec Failed: Should not be Two
- =====================================
+ ============================================
+  !! Expectation Failed: Should not be Two
+ ============================================
 ```
 ##### Null String
 **The Checkr:**  
@@ -66,9 +66,9 @@ together with the number of executions, relevant actions and inputs that were re
  Seed:                    393010076
  ------------------------------------------------------------
   Executed
- =========================
-  !! Spec Failed: Fails
- =========================
+ ================================
+  !! Expectation Failed: Fails
+ ================================
 ```
 #### Collections
 ##### When Relevant Item Is Default
@@ -89,9 +89,9 @@ together with the number of executions, relevant actions and inputs that were re
   Executed:
    - Input: List Input = [ 0 ]
    - Trace: List Input = [ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]
- ===========================================
-  !! Spec Failed: List does not contain 0
- ===========================================
+ ==================================================
+  !! Expectation Failed: List does not contain 0
+ ==================================================
 ```
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
@@ -110,9 +110,9 @@ together with the number of executions, relevant actions and inputs that were re
   Executed:
    - Input: List Input = [ 51 ]
    - Trace: List Input = [ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]
- ========================================
-  !! Spec Failed: List contains only 0
- ========================================
+ ===============================================
+  !! Expectation Failed: List contains only 0
+ ===============================================
 ```
 ##### Relevant Multiple Elements
 ```csharp
@@ -133,9 +133,9 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - Input: input = [ 1, 2, 3 ]
- ========================
-  !! Spec Failed: spec
- ========================
+ ===============================
+  !! Expectation Failed: spec
+ ===============================
 ```
 ##### Relevant Element And Size
 ```csharp
@@ -153,9 +153,9 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - Input: List = [ _, 42 ]
- ============================================
-  !! Spec Failed: Second element is not 42
- ============================================
+ ===================================================
+  !! Expectation Failed: Second element is not 42
+ ===================================================
 ```
 ##### Nested Collections
 ```csharp
@@ -177,9 +177,9 @@ together with the number of executions, relevant actions and inputs that were re
   Executed:
    - Input: List = [ [ 42 ] ]
    - Trace: List = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
- ========================================
-  !! Spec Failed: List[0][0] is not 42
- ========================================
+ ===============================================
+  !! Expectation Failed: List[0][0] is not 42
+ ===============================================
 ```
 ##### Multiple Causes
 This test is skipped because Trackr.StandIn is removed.  
@@ -247,9 +247,9 @@ This test is skipped because Trackr.StandIn is removed.
  ------------------------------------------------------------
   Executed:
    - Input: List = [  ]
- =====================================
-  !! Spec Failed: List is not empty
- =====================================
+ ============================================
+  !! Expectation Failed: List is not empty
+ ============================================
 ```
 ##### Array Shrinking
 ```csharp
@@ -300,9 +300,9 @@ public class BaggyInters
  ------------------------------------------------------------
   Executed:
    - Input: Object = { IntOne: 42 }
- ================================
-  !! Spec Failed: IntOne /= 42
- ================================
+ =======================================
+  !! Expectation Failed: IntOne /= 42
+ =======================================
 ```
 ##### Nested Objects
 ```csharp
@@ -326,9 +326,9 @@ public class BaggyInters
  ------------------------------------------------------------
   Executed:
    - Input: Universe = { Everything: { Answer: 42 } }
- ===============================
-  !! Spec Failed: It's not 42
- ===============================
+ ======================================
+  !! Expectation Failed: It's not 42
+ ======================================
 ```
 ##### Records
 ```csharp
@@ -352,9 +352,9 @@ public record Person(string Name, int Age);
  ------------------------------------------------------------
   Executed:
    - Input: Person = { Age: 4 }
- ===================================
-  !! Spec Failed: Is not underage
- ===================================
+ ==========================================
+  !! Expectation Failed: Is not underage
+ ==========================================
 ```
 ##### Irrelevant Objects
 ```csharp
@@ -377,9 +377,9 @@ public record Person(string Name, int Age);
    - Input: Person = { Age: 18 }
    - Trace: Person = { Name: "voddj", Age: 18 }
    - Trace: Other Person = { Name: "hdpjy", Age: 85 }
- ===============================
-  !! Spec Failed: Not aged 18
- ===============================
+ ======================================
+  !! Expectation Failed: Not aged 18
+ ======================================
 ```
 ##### Irrelevant Objects Null Issues
 Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.
@@ -413,9 +413,9 @@ Check this with:
    - Trace: Other Turtle = { Down: { Down: null } }
    - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
    - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.
- =====================================================
-  !! Spec Failed: Turtle Ends on 'TurtlesAllTheWay'
- =====================================================
+ ============================================================
+  !! Expectation Failed: Turtle Ends on 'TurtlesAllTheWay'
+ ============================================================
 ```
 ##### Checking Nulls
 ###### Catching a Null Reference Exception
@@ -513,11 +513,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1747283452
+ Seed:                    90587887
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 67 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 86 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -575,9 +575,9 @@ This test is skipped because Trackr.StandIn is removed.
   Executed:
    - Input: Person = { Age: 18 }
    - Trace: Person = { Name: "xnh", Age: 18 }
- ===============================
-  !! Spec Failed: Not aged 18
- ===============================
+ ======================================
+  !! Expectation Failed: Not aged 18
+ ======================================
 ```
 #### Custom Shrinkers
 ```csharp
@@ -600,9 +600,9 @@ This test is skipped because Trackr.StandIn is removed.
    - Input: One = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90
- ========================================
-  !! Spec Failed: One should not be 42
- ========================================
+ ===============================================
+  !! Expectation Failed: One should not be 42
+ ===============================================
 ```
 #### Fuzzr Shrinking
 ```csharp
@@ -625,9 +625,9 @@ This test is skipped because Trackr.StandIn is removed.
    - Input: One = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90
- ========================================
-  !! Spec Failed: One should not be 42
- ========================================
+ ===============================================
+  !! Expectation Failed: One should not be 42
+ ===============================================
 ```
 #### Input Reduction
 ```csharp
@@ -660,9 +660,9 @@ private static IEnumerable<int> TowardsZero(int input)
   Executed:
    - Input: Int = 42
    - Trace: Int = 79
- =================================================
-  !! Spec Failed: Int should be smaller than 42
- =================================================
+ ========================================================
+  !! Expectation Failed: Int should be smaller than 42
+ ========================================================
 ```
 ### Parsing Numbers
 #### The Checkr:
@@ -693,15 +693,15 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    173373542
+ Seed:                    1686948589
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-2^2"
-   - Trace: Original = - (2 * 2 * 2) ^ 2 ^ - 2 * 2 * - 3 ^ 3 ^ 2
-   - Trace: Compare = Golden: 66205,45656575545 /= SUT: NaN
- =========================
-  !! Spec Failed: Match
- =========================
+   - Input: Expression = "-1^2"
+   - Trace: Original = - 1 ^ 2 / 1 * 3
+   - Trace: Compare = Golden: -3 /= SUT: 3
+ ================================
+  !! Expectation Failed: Match
+ ================================
 ```
 ## Building Blocks
 ### Checkr Act Carefully
@@ -719,10 +719,10 @@ private static CheckrConfig Configure(CheckrConfig config)
  Seed:                    412717959
  ------------------------------------------------------------
   Executed: Act
- ====================================================
-  !! Spec Failed: Throws InvalidOperationException
- ====================================================
- Passed Specs
+ ===========================================================
+  !! Expectation Failed: Throws InvalidOperationException
+ ===========================================================
+ Passed Expectations
  - Throws: 1x
  ------------------------------------------------------------
 ```
@@ -818,9 +818,9 @@ The generated report shows the input, the attempted deletion, a trace of the ori
    - Input: List = [ 5, 5 ]
    - Input: Item to Remove = 5
    - Trace: List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
- =================================================
-  !! Spec Failed: List Does Not Contain Element
- =================================================
+ ========================================================
+  !! Expectation Failed: List Does Not Contain Element
+ ========================================================
 ```
 ### Bugging The House
 This is a set of intentionally fragile programs, each with its own peculiar way of failing.  
@@ -867,10 +867,10 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
  ------------------------------------------------------------
   Executed: BugHouse.Run
    - Input: a = 1
- ================================
-  !! Spec Failed: Returns true
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: Returns true
+ =======================================
+ Passed Expectations
  - Returns true: 2x
  ------------------------------------------------------------
 ```
@@ -915,10 +915,10 @@ Run( a = 6 ) // count == 3 → fail
  ------------------------------------------------------------
   Executed: BugHouse.Run (3 Times)
    - Input: a = 6
- ================================
-  !! Spec Failed: Returns true
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: Returns true
+ =======================================
+ Passed Expectations
  - Returns true: 35x
  ------------------------------------------------------------
 ```
@@ -965,10 +965,10 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
  ------------------------------------------------------------
   Executed: BugHouse.Run (3 Times)
    - Input: a = 6
- ================================
-  !! Spec Failed: Returns true
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: Returns true
+ =======================================
+ Passed Expectations
  - Returns true: 35x
  ------------------------------------------------------------
 ```
@@ -1033,10 +1033,10 @@ RunInt(6)            // bug ends with "1221" and `a == 6` → fail
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
    - Input: Int = 6
- =======================================
-  !! Spec Failed: RunInt returns true
- =======================================
- Passed Specs
+ ==============================================
+  !! Expectation Failed: RunInt returns true
+ ==============================================
+ Passed Expectations
  - RunString returns true: 34x
  - RunInt returns true: 24x
  ------------------------------------------------------------
@@ -1092,10 +1092,10 @@ public class ListWrap
    - Input: Item = 3
    - Trace: Before = [ 3, 3 ]
    - Trace: After = [ 3 ]
- ==============================================
-  !! Spec Failed: List Does Not Contain Item
- ==============================================
- Passed Specs
+ =====================================================
+  !! Expectation Failed: List Does Not Contain Item
+ =====================================================
+ Passed Expectations
  - List Does Not Contain Item: 4x
  - List Contains Item: 4x
  ------------------------------------------------------------
@@ -1124,9 +1124,9 @@ public class ListWrap
    - Input: Expression = "2^-2^2"
    - Trace: Original = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
    - Trace: Compare = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
- =========================
-  !! Spec Failed: Match
- =========================
+ ================================
+  !! Expectation Failed: Match
+ ================================
 ```
 ### Scheduling
 #### The Model:
@@ -1296,9 +1296,9 @@ public class TheFuzzr
   Executed:
    - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
    - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
- ===========================================
-  !! Spec Failed: Bookings do not overlap
- ===========================================
+ ==================================================
+  !! Expectation Failed: Bookings do not overlap
+ ==================================================
 ```
 ## It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
@@ -1354,11 +1354,11 @@ Possible solutions:
 ```
   Throws:  
 ```text
-Key 'reused' is written more than once in a single 'Checkr.Spec' execution.
+Key 'reused' is written more than once in a single 'Checkr.Expect' execution.
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 Possible solutions:
-- Ensure each 'Checkr.Spec' uses a unique key.
+- Ensure each 'Checkr.Expect' uses a unique key.
 ```
 ### Trace
 - `Checkr.Trace`:  
@@ -1430,11 +1430,11 @@ Possible solutions:
 ```
   Throws:  
 ```text
-Key 'reused' is written more than once in a single 'Checkr.Spec' execution.
+Key 'reused' is written more than once in a single 'Checkr.Expect' execution.
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 Possible solutions:
-- Ensure each 'Checkr.Spec' uses a unique key.
+- Ensure each 'Checkr.Expect' uses a unique key.
 ```
 ### Stop When Proven
 - `Trackr.StopWhenProven`:  
@@ -1445,11 +1445,11 @@ Possible solutions:
 ```
   Throws:  
 ```text
-Key 'reused' is written more than once in a single 'Checkr.Spec' execution.
+Key 'reused' is written more than once in a single 'Checkr.Expect' execution.
 QuickCheckr treats keys as stable identifiers. 
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 Possible solutions:
-- Ensure each 'Checkr.Spec' uses a unique key.
+- Ensure each 'Checkr.Expect' uses a unique key.
 ```
 ## Acting Out Of Sync
 ```csharp
@@ -1476,9 +1476,9 @@ public class Eventually
  ------------------------------------------------------------
   Executed: Eventually.AddOne
    - Input: Input = 41
- =============================
-  !! Spec Failed: Is not 42
- =============================
+ ====================================
+  !! Expectation Failed: Is not 42
+ ====================================
 ```
 ### Lock The Stable Doors
 **The Checkr:**  
@@ -1578,10 +1578,10 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-2
- =====================================================
-  !! Spec Failed: Assigned Coaches Must Be Suitable
- =====================================================
- Passed Specs
+ ============================================================
+  !! Expectation Failed: Assigned Coaches Must Be Suitable
+ ============================================================
+ Passed Expectations
  - Assigned Coaches Must Be Suitable: 5x
  ------------------------------------------------------------
 ```

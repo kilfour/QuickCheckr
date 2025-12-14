@@ -26,9 +26,9 @@ public class DuplicateKeyWriteGuardForActs : DuplicateKeyWriteGuard
     public DuplicateKeyWriteGuardForActs() : base("Checkr.Act", "execution") { }
 }
 
-public class DuplicateKeyWriteGuardForSpecs : DuplicateKeyWriteGuard
+public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
 {
-    public DuplicateKeyWriteGuardForSpecs() : base("Checkr.Spec", "execution") { }
+    public DuplicateKeyWriteGuardForExpectations() : base("Checkr.Expect", "execution") { }
 }
 
 public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard

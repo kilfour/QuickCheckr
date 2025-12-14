@@ -11,14 +11,14 @@ public class VerifyingDepositionsTests : DepositionTest
     public void One()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(new Dossier(
-                FailingSpec: null,
+                FailingExpectation: null,
                 Exception: null,
-                VerifyingSpec: "Some Invariant",
+                Verification: "Some Invariant",
                 OriginalRunExecutionCount: 10,
                 ExecutionCount: 4,
                 ShrinkCount: 0,
                 Seed: 12345678,
-                PassedSpecs: new Dictionary<string, int>(),
+                PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false
             )));
 

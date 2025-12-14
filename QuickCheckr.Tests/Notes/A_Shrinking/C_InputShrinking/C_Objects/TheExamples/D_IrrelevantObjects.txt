@@ -9,6 +9,6 @@
    - Input: Person = { Age: 18 }
    - Trace: Person = { Name: "voddj", Age: 18 }
    - Trace: Other Person = { Name: "hdpjy", Age: 85 }
- ===============================
-  !! Spec Failed: Not aged 18
- ===============================
+ ======================================
+  !! Expectation Failed: Not aged 18
+ ======================================

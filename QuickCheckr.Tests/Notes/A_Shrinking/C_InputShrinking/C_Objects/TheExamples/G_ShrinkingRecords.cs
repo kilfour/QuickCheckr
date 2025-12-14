@@ -24,7 +24,7 @@ public class G_ShrinkingRecords : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Not aged 18", article.FailedSpec());
+        Assert.Equal("Not aged 18", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

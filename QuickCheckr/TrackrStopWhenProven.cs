@@ -12,14 +12,14 @@ public static partial class Trackr
     public static CheckrOf<Case> StopWhenProven(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.SpecGuard.Check(key);
-            if (state.EvidenceRecorder.SpecNeedsToBeSkipped(key))
+            state.Memory.ExpectGuard.Check(key);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             try
             {
                 if (condition())
                 {
-                    state.EvidenceRecorder.SpecPassed(key);
+                    state.EvidenceRecorder.ExpectationPassed(key);
                     state.StopRun(); // <= TODO: Everything except this line is duplication from CheckrSpec 
                 }                    //    And the fact there's no SpecFailed(key)
                 return CheckrResult.CaseOnly(state);

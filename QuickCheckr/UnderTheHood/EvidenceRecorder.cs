@@ -17,8 +17,8 @@ public class EvidenceRecorder
         return runFailed;
     }
 
-    public bool SpecNeedsToBeSkipped(string key)
-        => IsReplay && FailingSpec != key;
+    public bool ExpectationNeedsToBeSkipped(string key)
+        => IsReplay && FailingExpectation != key;
 
     public Exception? Exception { get; private set; } = null;
     public void RecordFailure(Exception exception)
@@ -33,7 +33,7 @@ public class EvidenceRecorder
         runFailed = true;
     }
 
-    public void SpecCrashed(Exception exception)
+    public void ExpectationCrashed(Exception exception) // TODO check if this is needed
     {
         if (IsReplay)
         {
@@ -53,15 +53,15 @@ public class EvidenceRecorder
             || (actual.InnerException?.GetType() != e.InnerException?.GetType());
     }
 
-    public string FailingSpec { get; private set; } = string.Empty;
-    public void SpecFailed(string key)
+    public string FailingExpectation { get; private set; } = string.Empty;
+    public void ExpectationFailed(string key)
     {
         if (IsReplay)
         {
-            if (FailingSpec == key) currentFailed = true;
+            if (FailingExpectation == key) currentFailed = true;
             return;
         }
-        FailingSpec = key;
+        FailingExpectation = key;
         runFailed = true;
     }
 
@@ -76,12 +76,12 @@ public class EvidenceRecorder
         runFailed = true;
     }
 
-    private readonly Dictionary<string, int> passedSpecs = [];
-    public IReadOnlyDictionary<string, int> PassedSpecs => passedSpecs;
-    public void SpecPassed(string key)
+    private readonly Dictionary<string, int> passedExpectations = [];
+    public IReadOnlyDictionary<string, int> PassedExpectations => passedExpectations;
+    public void ExpectationPassed(string key)
     {
         if (IsReplay) return;
-        if (passedSpecs.TryGetValue(key, out int value)) passedSpecs[key] = ++value;
-        else passedSpecs.Add(key, 1);
+        if (passedExpectations.TryGetValue(key, out int value)) passedExpectations[key] = ++value;
+        else passedExpectations.Add(key, 1);
     }
 }

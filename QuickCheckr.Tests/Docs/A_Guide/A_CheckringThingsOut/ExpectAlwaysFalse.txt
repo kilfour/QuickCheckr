@@ -1,10 +1,10 @@
  ------------------------------------------------------------
- Test:                    Run_SpecAlwaysFalse
+ Test:                    Run_ExpectAlwaysFalse
  Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:60:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed
- ===============================
-  !! Spec Failed: Always true
- ===============================
+ ======================================
+  !! Expectation Failed: Always true
+ ======================================

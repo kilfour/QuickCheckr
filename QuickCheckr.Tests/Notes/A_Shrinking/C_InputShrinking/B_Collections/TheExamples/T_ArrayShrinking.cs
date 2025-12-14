@@ -24,7 +24,7 @@ public class T_ArrayShrinking : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("int[0] is not 42", article.FailedSpec());
+        Assert.Equal("int[0] is not 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.ShrinkCount);

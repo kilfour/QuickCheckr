@@ -28,9 +28,9 @@ public class Verdict
     {
         if (dossier.Exception is not null)
             return new ExceptionDeposition(dossier.Exception);
-        if (dossier.FailingSpec is not null)
-            return new FailedSpecDeposition(dossier.FailingSpec);
-        return new VerifyingDeposition(dossier.VerifyingSpec!);
+        if (dossier.FailingExpectation is not null)
+            return new FailedExpectationDeposition(dossier.FailingExpectation);
+        return new VerifyingDeposition(dossier.Verification!);
     }
 
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];

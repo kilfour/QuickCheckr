@@ -59,7 +59,7 @@ public class AStatefulList : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List Does Not Contain Item", article.FailedSpec());
+        Assert.Equal("List Does Not Contain Item", article.FailedExpectation());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(3, article.Total().Inputs());

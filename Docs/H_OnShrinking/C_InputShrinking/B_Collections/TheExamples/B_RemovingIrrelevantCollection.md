@@ -15,7 +15,7 @@ is irrelevant for the failure, QuickCheckr will remove it.
  Seed:                    2014608033
  ------------------------------------------------------------
   Executed
- ================================
-  !! Spec Failed: Always fails
- ================================
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
 ```

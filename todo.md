@@ -8,6 +8,8 @@
   * Analize to Expect
   * ProvenWhen to StopWhenProven (done)
 * Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
+* Fix Exception to use right combinator in message
+* EvidenceRecorder.ExpectationCrashed needed ?
 
 ### On the Table, a.k.a. Doing 
 * Build HorsesForCourses.Api for testing example

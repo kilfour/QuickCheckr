@@ -43,7 +43,7 @@ public class TheNeedlerPattern : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Is not 7", article.FailedSpec());
+        Assert.Equal("Is not 7", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

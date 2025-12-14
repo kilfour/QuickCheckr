@@ -27,10 +27,10 @@ So after *Execution Shrinking*, the result is:
  ------------------------------------------------------------
   Executed:
    - Input: counter = 3
- ============================================
-  !! Spec Failed: Counter does not equal 3
- ============================================
- Passed Specs
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```

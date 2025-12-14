@@ -1,12 +1,12 @@
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public record Dossier(
-    string? FailingSpec,
+    string? FailingExpectation,
     Exception? Exception,
-    string? VerifyingSpec,
+    string? Verification,
     int OriginalRunExecutionCount,
     int ExecutionCount,
     int ShrinkCount,
     int Seed,
-    IReadOnlyDictionary<string, int> PassedSpecs,
+    IReadOnlyDictionary<string, int> PassedExpectations,
     bool UseMemoryForInputReporting);

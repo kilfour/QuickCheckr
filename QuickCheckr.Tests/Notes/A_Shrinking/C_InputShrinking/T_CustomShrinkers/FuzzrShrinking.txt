@@ -9,6 +9,6 @@
    - Input: One = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90
- ========================================
-  !! Spec Failed: One should not be 42
- ========================================
+ ===============================================
+  !! Expectation Failed: One should not be 42
+ ===============================================

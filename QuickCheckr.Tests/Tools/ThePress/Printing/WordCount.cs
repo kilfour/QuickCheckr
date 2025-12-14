@@ -10,5 +10,5 @@ public class WordCount(CaseFile caseFile)
     public int Inputs() => depositions.Sum(a => a.InputDepositions.Count);
     public int Traces() => depositions.Sum(a => a.TraceDepositions.Count);
     public int Warnings() => depositions.Sum(a => a.WarningDepositions.Count);
-    public int PassedSpecs() => caseFile.PassedSpecDepositions.Count;
+    public int PassedSpecs() => caseFile.PassedExpectationDepositions.Count;
 }

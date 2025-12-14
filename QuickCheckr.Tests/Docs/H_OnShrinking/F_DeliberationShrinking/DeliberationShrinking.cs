@@ -71,7 +71,7 @@ public class DeliberationShrinking : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedSpec());
+        Assert.Equal("No Overdraft", article.FailedExpectation());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(3, article.Total().Inputs());
@@ -116,7 +116,7 @@ Let's configure a *DeliberationPolicy*, looking for a fail-case with less execut
 
     private static void Verify_Deliberated(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedSpec());
+        Assert.Equal("No Overdraft", article.FailedExpectation());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
@@ -158,7 +158,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     private static void Verify_DeliberatedGreedy(Article article)
     {
-        Assert.Equal("Does not contain 1", article.FailedSpec());
+        Assert.Equal("Does not contain 1", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
@@ -224,7 +224,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     private static void Verify_DeliberatedGreedyObjects(Article article)
     {
-        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedSpec());
+        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
     }

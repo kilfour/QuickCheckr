@@ -7,10 +7,10 @@ public class CaseSummary(int numberOfRuns) : CaseFile(null!)
     public static CaseSummary FromCaseFiles(int numberOfRuns, IEnumerable<CaseFile> caseFiles)
         => new(numberOfRuns)
         {
-            PassedSpecDepositions = [..
+            PassedExpectationDepositions = [..
                 caseFiles
-                    .SelectMany(cf => cf.PassedSpecDepositions)
+                    .SelectMany(cf => cf.PassedExpectationDepositions)
                     .GroupBy(ps => ps.Label)
-                    .Select(g => new PassedSpecDeposition(g.Key, g.Sum(ps => ps.TimesPassed)))]
+                    .Select(g => new PassedExpectationDeposition(g.Key, g.Sum(ps => ps.TimesPassed)))]
         };
 }

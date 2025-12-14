@@ -20,9 +20,9 @@ So, in the previous example, after *Input Shrinking*, the result is:
  Seed:                    165641598
  ------------------------------------------------------------
   Executed
- ================================
-  !! Spec Failed: Always Fails
- ================================
+ =======================================
+  !! Expectation Failed: Always Fails
+ =======================================
 ```
 Another example, slightly trickier.  
 ```csharp
@@ -50,7 +50,7 @@ Result:
   Executed: Result
    - Input: Input One = 12
    - Input: Input Three = 30
- ====================================
-  !! Spec Failed: Should not be 42
- ====================================
+ ===========================================
+  !! Expectation Failed: Should not be 42
+ ===========================================
 ```

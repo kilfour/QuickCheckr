@@ -39,7 +39,7 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 
 	private static void Verify(Article article)
 	{
-		Assert.Equal("RunInt returns true", article.FailedSpec());
+		Assert.Equal("RunInt returns true", article.FailedExpectation());
 		Assert.Equal(3, article.Total().Executions());
 		Assert.Equal(3, article.Total().Actions());
 		Assert.Equal(1, article.Total().Inputs());

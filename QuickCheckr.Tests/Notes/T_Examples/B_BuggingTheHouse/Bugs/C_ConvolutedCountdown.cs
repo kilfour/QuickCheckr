@@ -39,7 +39,7 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
 
 	private static void Verify(Article article)
 	{
-		Assert.Equal("Returns true", article.FailedSpec());
+		Assert.Equal("Returns true", article.FailedExpectation());
 		Assert.Equal(2, article.Total().Executions());
 		Assert.Equal(2, article.Total().Actions());
 		Assert.Equal(1, article.Total().Inputs());

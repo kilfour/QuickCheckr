@@ -64,8 +64,8 @@ public class TheEditor
         from article in Pulse.Start<Article>()
         from prime in Pulse.Prime(() => article)
         from failedSpec in EmitIf(
-            article.FailedSpec() is not null,
-            $"Assert.Equal(\"{article.FailedSpec()}\", article.FailedSpec());")
+            article.FailedExpectation() is not null,
+            $"Assert.Equal(\"{article.FailedExpectation()}\", article.FailedSpec());")
         from failedAssat in EmitIf(
             article.VerifyFailed() is not null,
             $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")

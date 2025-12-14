@@ -23,21 +23,21 @@ public static partial class Checkr
     private static CheckrOf<Case> InnerExpect(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.SpecGuard.Check(key);
-            if (state.EvidenceRecorder.SpecNeedsToBeSkipped(key))
+            state.Memory.ExpectGuard.Check(key);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             try
             {
                 if (condition())
-                    state.EvidenceRecorder.SpecPassed(key);
+                    state.EvidenceRecorder.ExpectationPassed(key);
                 else
-                    state.EvidenceRecorder.SpecFailed(key);
+                    state.EvidenceRecorder.ExpectationFailed(key);
                 return CheckrResult.CaseOnly(state);
             }
             catch (Exception exception)
             {
                 state.Docket.Record(new EvidenceFailure(exception));
-                state.EvidenceRecorder.SpecCrashed(exception);
+                state.EvidenceRecorder.ExpectationCrashed(exception);
                 return CheckrResult.CaseOnly(state);
             }
         };

@@ -39,10 +39,10 @@ No shrinking. QuickCheckr reports the original failing run.
   Executed: Add
    - Input: Input = 12
    - Input: Irrelevant = 21
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```
@@ -75,10 +75,10 @@ Trims away irrelevant executions.
   Executed: Add
    - Input: Input = 12
    - Input: Irrelevant = 21
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```
@@ -108,10 +108,10 @@ Trims inputs to find a minimal failing case.
  ------------------------------------------------------------
   Executed: Add
    - Input: Input = 12
- ==========================================
-  !! Spec Failed: Total should not be 42
- ==========================================
- Passed Specs
+ =================================================
+  !! Expectation Failed: Total should not be 42
+ =================================================
+ Passed Expectations
  - Total should not be 42: 3x
  ------------------------------------------------------------
 ```

@@ -48,7 +48,7 @@ select Case.Closed;
    at QuickCheckr.Tests.CreateReadMe.<>c__DisplayClass2_0.GetCheckr() in CreateReadMe.cs:line 57
    at QuickCheckr.Checkr.<>c__DisplayClass8_0`1.TryCatch(CheckrState state) in CheckrAct.cs:line 71
  ===========================================================================
- Passed Specs
+ Passed Expectations
  - Returns true: 84x
  ------------------------------------------------------------
 ```

@@ -50,10 +50,10 @@ Now if we run this we might get something like this:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 5
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 2x
  ------------------------------------------------------------
 ```
@@ -69,20 +69,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    5 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    1996139942
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1795752479
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 2
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
- - No Overdraft: 4x
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
+ - No Overdraft: 9x
  ------------------------------------------------------------
 ```
 ## An Eager Shrinker
@@ -108,9 +108,9 @@ Now when the list contains multiple elements `1`, we might get:
   Executed:
    - Input: Input = [ _, _, _ ]
    - Trace: List = [ 1, 2, 1 ]
- ======================================
-  !! Spec Failed: Does not contain 1
- ======================================
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
 ```
 It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).  
@@ -126,14 +126,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    714667059
+ Seed:                    161480390
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 2, 1, 0 ]
- ======================================
-  !! Spec Failed: Does not contain 1
- ======================================
+   - Input: Input = [ 1, _, _ ]
+   - Trace: List = [ 1, 3, 0 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
 ```
 A similar thing can happen when shrinking objects, and the solution is exactly the same  
 ```csharp
@@ -153,12 +153,12 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1200465269
+ Seed:                    860526479
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 3, IntThree: 4 }
- ========================================================
-  !! Spec Failed: obj.IntOne == 1 || obj.IntThree == 1
- ========================================================
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 3, IntThree: 1 }
+ ===============================================================
+  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ===============================================================
 ```

@@ -69,7 +69,7 @@ There is no guesswork.")]
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedSpec());
+        Assert.Equal("No Overdraft", article.FailedExpectation());
         Assert.Equal(8, article.Total().Executions());
         Assert.Equal(8, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
@@ -149,7 +149,7 @@ The branch chosen during the original failing run is *the* branch examined durin
 
     private static void Verify_Shrunk(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedSpec());
+        Assert.Equal("No Overdraft", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

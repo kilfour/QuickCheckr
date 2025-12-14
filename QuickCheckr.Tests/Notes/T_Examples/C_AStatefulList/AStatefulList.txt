@@ -19,10 +19,10 @@
    - Input: Item = 3
    - Trace: Before = [ 3, 3 ]
    - Trace: After = [ 3 ]
- ==============================================
-  !! Spec Failed: List Does Not Contain Item
- ==============================================
- Passed Specs
+ =====================================================
+  !! Expectation Failed: List Does Not Contain Item
+ =====================================================
+ Passed Expectations
  - List Does Not Contain Item: 4x
  - List Contains Item: 4x
  ------------------------------------------------------------

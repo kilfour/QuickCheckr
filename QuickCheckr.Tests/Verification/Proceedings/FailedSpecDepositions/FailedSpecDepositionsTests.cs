@@ -2,9 +2,9 @@ using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 
-public class FailedSpecDepositionsTests : DepositionTest
+public class FailedExpectationDepositionsTests : DepositionTest
 {
-    public FailedSpecDepositionsTests() { IgnoreFailingSpec = false; }
+    public FailedExpectationDepositionsTests() { IgnoreFailingSpec = false; }
 
     [Fact]
     public void One()
@@ -12,9 +12,9 @@ public class FailedSpecDepositionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier));
 
         var reader = Transcribe(caseFile);
-        Assert.Equal(" ==================================", reader.NextLine());
-        Assert.Equal("  !! Spec Failed: Some Invariant", reader.NextLine());
-        Assert.Equal(" ==================================", reader.NextLine());
+        Assert.Equal(" =========================================", reader.NextLine());
+        Assert.Equal("  !! Expectation Failed: Some Invariant", reader.NextLine());
+        Assert.Equal(" =========================================", reader.NextLine());
         EndOfContent(reader);
     }
 }

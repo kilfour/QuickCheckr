@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public record VerifyingDeposition(string FailedSpec) : FailureDeposition
+public record VerifyingDeposition(string FailedExpectation) : FailureDeposition
 {
-    public override string GetFailureDescription() => FailedSpec;
+    public override string GetFailureDescription() => FailedExpectation;
 };

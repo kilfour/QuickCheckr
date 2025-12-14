@@ -20,7 +20,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
             return HandleFailure();
-        return Compile.PassedSpecs(State.EvidenceRecorder.PassedSpecs);
+        return Compile.PassedExpectations(State.EvidenceRecorder.PassedExpectations);
     }
 
     private CaseFile HandleFailure()
@@ -53,14 +53,14 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
     {
         var dossier =
             new Dossier(
-                VerifyingSpec: forVerifier ? State.EvidenceRecorder.FailingVerify : null,
-                FailingSpec: forVerifier ? null : State.EvidenceRecorder.FailingSpec,
+                Verification: forVerifier ? State.EvidenceRecorder.FailingVerify : null,
+                FailingExpectation: forVerifier ? null : State.EvidenceRecorder.FailingExpectation,
                 Exception: State.EvidenceRecorder.Exception,
                 OriginalRunExecutionCount: originalRunExecutionCount,
                 ExecutionCount: State.Memory.Count(),
                 ShrinkCount: shrinkCount,
                 Seed: State.FuzzrState.Seed,
-                PassedSpecs: State.EvidenceRecorder.PassedSpecs,
+                PassedExpectations: State.EvidenceRecorder.PassedExpectations,
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs)
             );
         return Compile.TheCaseFile(dossier, State.Memory);

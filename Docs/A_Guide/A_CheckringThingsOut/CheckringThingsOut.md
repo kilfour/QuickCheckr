@@ -1,8 +1,8 @@
 # Checkr-ing Things Out
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
-Each run goes through the script from top to bottom: generating inputs, performing actions, checking specs, and collecting diagnostics.
+Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.  
-## First Specification
+## First Expectation
 Let's start by having a look at the simplest possible Checkr:  
 ```csharp
 public class MinimalCheckr
@@ -21,15 +21,15 @@ Checkr.Expect("Always true", () => false);
 The test fails and QuickCheckr produces the following report:  
 ```text
 ------------------------------------------------------------
- Test:                    Run_SpecAlwaysFalse
+ Test:                    Run_ExpectAlwaysFalse
  Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:60:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed
- ===============================
-  !! Spec Failed: Always true
- ===============================
+ ======================================
+  !! Expectation Failed: Always true
+ ======================================
 ```
 
 The report shows a run summary containing :
@@ -74,9 +74,9 @@ Now the test fails consistently:
  ------------------------------------------------------------
   Executed:
    - Input: Input = 42
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 As you can see the input is now included in the report *minimal fail-case*,
 this is because QuickCheckr judged the input to be relevant to the failure.  
@@ -99,9 +99,9 @@ The following happens:
  ------------------------------------------------------------
   Executed:
    - Input: Input = 42
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 That's basically the same thing as before, because QuickCheckr does not report irrelevant inputs.  
 ## Not Without a Trace
@@ -129,9 +129,9 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
   Executed:
    - Input: Input = 42
    - Trace: Irrelevant Input = 47
- ===============================
-  !! Spec Failed: Input /= 42
- ===============================
+ ======================================
+  !! Expectation Failed: Input /= 42
+ ======================================
 ```
 ## Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
@@ -157,8 +157,8 @@ And here's the report:
   Executed: One plus Three
    - Input: One = 24
    - Input: Three = 18
- =============================
-  !! Spec Failed: Sum /= 42
- =============================
+ ====================================
+  !! Expectation Failed: Sum /= 42
+ ====================================
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  

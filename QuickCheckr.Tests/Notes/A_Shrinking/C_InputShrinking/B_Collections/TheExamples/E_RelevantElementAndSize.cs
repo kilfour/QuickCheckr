@@ -24,7 +24,7 @@ public class E_RelevantElementAndSize : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Second element is not 42", article.FailedSpec());
+        Assert.Equal("Second element is not 42", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);

@@ -77,10 +77,10 @@ Running the Checkr without shrinking yields a report similar to this:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 66
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 7x
  ------------------------------------------------------------
 ```
@@ -98,10 +98,10 @@ And if we let the QuickCheckr shrinker do its work:
  ------------------------------------------------------------
   Executed: Withdraw
    - Input: Amount = 66
- ================================
-  !! Spec Failed: No Overdraft
- ================================
- Passed Specs
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
  - No Overdraft: 7x
  ------------------------------------------------------------
 ```

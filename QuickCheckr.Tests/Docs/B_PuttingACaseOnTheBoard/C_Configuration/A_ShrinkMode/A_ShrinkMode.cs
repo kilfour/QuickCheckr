@@ -51,7 +51,7 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyNone(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal("Total should not be 42", article.FailedExpectation());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
@@ -105,7 +105,7 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyExecutions(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal("Total should not be 42", article.FailedExpectation());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(8, article.Total().Inputs());
@@ -160,7 +160,7 @@ public class A_ShrinkMode : BaseTest
 
     private static void VerifyInputs(Article article)
     {
-        Assert.Equal("Total should not be 42", article.FailedSpec());
+        Assert.Equal("Total should not be 42", article.FailedExpectation());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(4, article.Total().Inputs());

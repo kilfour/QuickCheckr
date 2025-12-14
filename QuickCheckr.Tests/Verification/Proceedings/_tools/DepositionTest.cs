@@ -11,14 +11,14 @@ public abstract class DepositionTest
     protected virtual bool IgnoreFailingSpec { get; init; } = true;
     protected Dossier Dossier { get; } =
         new Dossier(
-                FailingSpec: "Some Invariant",
+                FailingExpectation: "Some Invariant",
                 Exception: null,
-                VerifyingSpec: null,
+                Verification: null,
                 OriginalRunExecutionCount: 10,
                 ExecutionCount: 4,
                 ShrinkCount: 1,
                 Seed: 12345678,
-                PassedSpecs: new Dictionary<string, int>(),
+                PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false
             );
 

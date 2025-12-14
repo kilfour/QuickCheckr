@@ -77,7 +77,7 @@ public class ListReverse : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Input == Result", article.FailedSpec());
+        Assert.Equal("Input == Result", article.FailedExpectation());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
