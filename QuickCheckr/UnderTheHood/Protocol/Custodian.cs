@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using QuickPulse.Arteries;
 using QuickPulse.Instruments;
 
@@ -5,7 +6,7 @@ namespace QuickCheckr.UnderTheHood.Protocol;
 
 public class Custodian
 {
-    public class FileRecorder(string filename) : FileLogArtery(filename), IEvidenceRecorder
+    public class FileRecorder(string filename, bool relativeToSolution = true) : FileLogArtery(filename, relativeToSolution), IEvidenceRecorder
     {
         public void Append(string evidence) => Absorb(evidence);
         public void Clear() => File.Delete(FilePath);
@@ -30,6 +31,23 @@ public class Custodian
     {
         var solutionPath = Path.Combine(SolutionLocator.FindSolutionRoot()!, path);
         return File.Exists(solutionPath) ? File.ReadAllLines(solutionPath) : [];
+    }
+
+    public static Custodian Local([CallerFilePath] string callerPath = "")
+        => new()
+        {
+            Retriever = a => GetLocalVaultStrings(Path.Combine(Path.GetDirectoryName(callerPath)!, a)),
+            Recorder = a =>
+            {
+                var recorder = new FileRecorder(Path.Combine(Path.GetDirectoryName(callerPath)!, a), false);
+                recorder.ClearFile();
+                return recorder;
+            }
+        };
+
+    private static string[] GetLocalVaultStrings(string path)
+    {
+        return File.Exists(path) ? File.ReadAllLines(path) : [];
     }
 }
 
