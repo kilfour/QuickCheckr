@@ -83,7 +83,7 @@ public sealed class Ledger
             (20, Fuzzr.Int(1, 10))
         ))
     from add in Checkr.Act("Add", () => ledger.Add(entry))
-    from analyze in Trackr.Expect(
+    from expect in Trackr.Expect(
             "Checked total greater or equal than all entries", () =>
                 ledger.Entries.All(a => ledger.TotalChecked() >= a))
     select Case.Closed;

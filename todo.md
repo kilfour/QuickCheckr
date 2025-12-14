@@ -1,12 +1,12 @@
 ## Current Version: 0.0.4
 
 ### Issues 
-* finish renaming, do a solution wide search to catch doc drift
+* did we catch em all, => Renamed:
   * Spec to Expect
   * SpecIf to ExpectWhen
-  * Assay to Verify (done)
+  * Assay to Verify 
   * Analize to Expect
-  * ProvenWhen to StopWhenProven (done)
+  * ProvenWhen to StopWhenProven 
 * Fix Doc Configuration ShrinkMode: better checkr for execution shrinking report
 * Fix Exception to use right combinator in message
 * EvidenceRecorder.ExpectationCrashed needed ?
