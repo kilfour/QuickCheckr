@@ -134,6 +134,7 @@ public class TheNeedlerPattern : BaseTest
         Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
     }
 }
+
 public static class Taskr
 {
     private static readonly CancellationTokenSource cancellationTokenSource = new();
