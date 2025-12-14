@@ -1,5 +1,4 @@
 ## Current Version: 0.0.5
-* move trackr to QuickCheckr.Experimental, add broadcaster example
 
 ### Doc current focus
 * Doc Configuration

@@ -1,4 +1,3 @@
-using QuickCheckr.Experimentr;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;

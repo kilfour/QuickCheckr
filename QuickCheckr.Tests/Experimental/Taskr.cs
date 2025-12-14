@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickCheckr.Experimentr;
+namespace QuickCheckr.Tests.Experimental;
 
 public static class Taskr
 {

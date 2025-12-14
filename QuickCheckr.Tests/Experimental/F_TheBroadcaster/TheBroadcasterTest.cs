@@ -1,4 +1,3 @@
-using QuickCheckr.Experimentr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel;
 using QuickCheckr.Tests.Tools;
