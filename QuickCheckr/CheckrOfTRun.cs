@@ -49,7 +49,7 @@ public static class CheckrOfTRun
             ReportCaseFile(executionsPerRun, config, finalCaseFile);
         else
             ReportCaseFileSummary(config, caseFiles);
-        return CaseFile.Empty();
+        return CaseSummary.FromCaseFiles(caseFiles.Count, caseFiles); ;
     }
 
     [StackTraceHidden]
