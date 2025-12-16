@@ -11,7 +11,6 @@ namespace QuickCheckr.Tests.Notes.Y_Async.B_LockTheStableDoors;
 public class LockTheStableDoors : BaseTest
 {
     [Fact]
-
     [DocContent("**The Checkr:**")]
     [DocExample(typeof(LockTheStableDoors), nameof(TheCheckr))]
     [DocContent("**Create Coach Checkr:**")]
@@ -89,13 +88,12 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCoachSkills =
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
-        from coach in Trackr.OneOfPool<CoachBy>("Coach to update")
+        from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from valid in Checkr.When(() => coach is not null,
-            from trace in Checkr.Trace("Coach Name", () => coach.Name)
-            from updateSkills in Checkr.Act("Update Coach Skills",
-                () => service.UpdateCoachSkillsAsync(coach.Name, skills))
-            select Case.Closed)
+        from trace in Checkr.Trace("Coach Name", () => coach.Name)
+        from updateSkills in Checkr.Act("Update Coach Skills",
+            () => service.UpdateCoachSkillsAsync(coach.Name, skills))
+        select Case.Closed)
         select Case.Closed;
 
     [CodeExample]
@@ -111,9 +109,8 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCourseSkills =
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
-        from course in Trackr.OneOfPool<CourseBy>("Course to update")
-        from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from courseNotNull in Checkr.When(() => course is not null,
+        from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
+            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
                 service.UpdateCourseSkillsAsync(course.Name, skills))
@@ -123,16 +120,16 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> AssignCoachToCourse =
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
-        from coach in Trackr.OneOfPool<CoachBy>("Coach to assign")
-        from course in Trackr.OneOfPool<CourseBy>("Course to assign")
-        from coaches in Checkr.Capture(service.GetCoachesAsync())
-        from courses in Checkr.Capture(service.GetCoursesAsync())
-        from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
-        from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
-        from valid in Checkr.When(() => coach != null && course != null && dbCoach.IsSuitableFor(dbCourse),
-            from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
-            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
-            from assign in Checkr.Act("Assign Coach to Course", service.AssignCoachToCourseAsync(coach.Name, course.Name))
+        from pool in Trackr.OneOfPool<CoachBy, CourseBy>("Coach to assign", (coach, course) =>
+            from coaches in Checkr.Capture(service.GetCoachesAsync())
+            from courses in Checkr.Capture(service.GetCoursesAsync())
+            from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
+            from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
+            from valid in Checkr.When(() => dbCoach.IsSuitableFor(dbCourse),
+                from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
+                from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+                from assign in Checkr.Act("Assign Coach to Course", service.AssignCoachToCourseAsync(coach.Name, course.Name))
+                select Case.Closed)
             select Case.Closed)
         select Case.Closed;
 

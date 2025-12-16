@@ -45,7 +45,7 @@ public class LongTermMemory
         return pool.Keys;
     }
 
-    public T? GetFromPool<T>(int id)
+    public (bool, T?) GetFromPool<T>(int id)
     {
         var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
         if (pool is null)
@@ -55,9 +55,9 @@ public class LongTermMemory
         }
         if (!pool.TryGetValue(id, out T? value))
         {
-            return default;
+            return (false, default);
         }
-        return pool[id];
+        return (true, pool[id]);
     }
 
     public T StoreInPool<T>(int id, T value)

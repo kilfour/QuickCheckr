@@ -126,16 +126,17 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCoachSkills =
-        from coach in Trackr.OneOfPool<Coach>("Coach to update") // Pick a random coach from the pool.
-        from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from valid in Checkr.When(() => coach is not null,
+        // Pick a random coach from the pool.
+        Trackr.OneOfPool<Coach>("Coach to update", coach =>
+            from skills in Checkr.Input("Coach Skills",
+                Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from trace in Checkr.Trace("Coach Name", () => coach.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.UpdateSkills(skills))                // Update it.
             from checkSkills in Checkr.Expect("Coach Skills Set",
-                () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
-            select Case.Closed)
-        select Case.Closed;
+                () => coach.Skills.Count
+                   == skills.Count() && coach.Skills.All(skills.Contains))
+            select Case.Closed);
 
     [CodeExample]
     private static readonly CheckrOf<Case> CreateCourse =
@@ -149,29 +150,29 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCourseSkills =
-        from course in Trackr.OneOfPool<Course>("Course to update") // Pick a random course from the pool.
-        from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from courseNotNull in Checkr.When(() => course is not null,
+        // Pick a random course from the pool.
+        Trackr.OneOfPool<Course>("Course to update", course =>
+            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.UpdateRequiredSkills(skills))          // Update it.
             from checkSkills in Checkr.Expect("Course Required Skills Set",
-                () => course.RequiredSkills.Count == skills.Count() && course.RequiredSkills.All(skills.Contains))
-            select Case.Closed)
-        select Case.Closed;
+                () => course.RequiredSkills.Count
+                   == skills.Count() && course.RequiredSkills.All(skills.Contains))
+            select Case.Closed);
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignCoachToCourse =
-        from coach in Trackr.OneOfPool<Coach>("Coach to assign")    // Pick a random coach.
-        from course in Trackr.OneOfPool<Course>("Course to assign") // Pick a random course.
-        from valid in Checkr.When(() => coach != null && course != null && coach.IsSuitableFor(course),
-            // The .When predicate ensures the coach can be assigned.
-            from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
-            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
-            from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
-            from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
-            select Case.Closed)
-        select Case.Closed;
+        // Pick a random coach and course.
+        Trackr.OneOfPool<Coach, Course>("Assign Coach to Course", (coach, course) =>
+            from valid in Checkr.When(() => coach.IsSuitableFor(course),
+                // The .When predicate ensures the coach can be assigned.
+                from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
+                from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+                from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
+                from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
+                select Case.Closed)
+            select Case.Closed);
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
