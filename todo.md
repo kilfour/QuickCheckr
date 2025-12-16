@@ -1,4 +1,8 @@
 ## Current Version: 0.0.5
+* Error Message if pool does not exist (same for stashed)
+* Document OneOfIf behaviour during shrinking, try to find holes in the logic (seems to work, but I worry)
+* Nested OneOf/OneOfIf
+* Maybe retrieve line number of failed Expectation (perf ?)
 
 ### Doc current focus
 * Doc Configuration
@@ -16,6 +20,7 @@
   * limitations
   * known issues
   * workarounds
+* update xml summaries
 
 ### 0.0.6+
 * Dive into Reducers a bit more
