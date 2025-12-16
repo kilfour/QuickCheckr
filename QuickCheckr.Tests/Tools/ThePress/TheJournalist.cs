@@ -21,6 +21,19 @@ public static class TheJournalist
         return Unearths(ex.CaseFile);
     }
 
+    [StackTraceHidden]
+    public static Article Investigates(Func<CaseFile> run)
+    {
+        try
+        {
+            return Unearths(run());
+        }
+        catch (FalsifiableException ex)
+        {
+            return Unearths(ex.CaseFile);
+        }
+    }
+
     public static void Transcribes(Article article) =>
         Signal.From(TheEditor.ProofReads)
             .SetArtery(FileLog.Write())
