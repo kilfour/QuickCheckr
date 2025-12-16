@@ -3,6 +3,7 @@
 * Document OneOfIf behaviour during shrinking, try to find holes in the logic (seems to work)
 * Nested OneOf/OneOfIf
 * Maybe retrieve line number of failed Expectation (perf ?)
+* Consistency If => When
 
 ### Doc current focus
 * Doc Configuration

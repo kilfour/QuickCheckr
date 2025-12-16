@@ -31,6 +31,25 @@ public static partial class Checkr
     public static CheckrOf<T> OneOfIf<T>(params (Func<bool> condition, CheckrOf<T> script)[] scripts)
         => OneOfIfInternal(scripts);
 
+    public static CheckrOf<T> OneOfIf<T>(params CheckrOf<(Func<bool> condition, CheckrOf<T> script)>[] scriptsC)
+    {
+        var key = $"OneOf|Default|QuickCheckr|Key";
+        return state =>
+            {
+                var scripts = scriptsC.Select(a => a(state).Value).ToArray();
+                var validScriptIndexes =
+                    scripts.Select((a, ix) => (ix, a.condition))
+                        .Where(a => a.condition())
+                        .Select(a => a.ix);
+                var index = state.Memory.StoreVariable(key,
+                    () => Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value);
+                var script = scripts[index];
+                if (script.condition())
+                    return scripts[index].script(state);
+                return CheckrResult.Default<T>(state);
+            };
+    }
+
     private static CheckrOf<T> OneOfIfInternal<T>(
          (Func<bool> condition, CheckrOf<T> script)[] scripts)
     {

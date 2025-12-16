@@ -1364,13 +1364,12 @@ private static readonly CheckrOf<Case> CreateCoach =
 ```csharp
 private static readonly CheckrOf<Case> UpdateCoachSkills =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
-    from coach in Trackr.OneOfPool<CoachBy>("Coach to update")
+    from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
     from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-    from valid in Checkr.When(() => coach is not null,
-        from trace in Checkr.Trace("Coach Name", () => coach.Name)
-        from updateSkills in Checkr.Act("Update Coach Skills",
-            () => service.UpdateCoachSkillsAsync(coach.Name, skills))
-        select Case.Closed)
+    from trace in Checkr.Trace("Coach Name", () => coach.Name)
+    from updateSkills in Checkr.Act("Update Coach Skills",
+        () => service.UpdateCoachSkillsAsync(coach.Name, skills))
+    select Case.Closed)
     select Case.Closed;
 ```
 **Create Course Checkr:**  
@@ -1388,9 +1387,8 @@ private static readonly CheckrOf<Case> CreateCourse =
 ```csharp
 private static readonly CheckrOf<Case> UpdateCourseSkills =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
-    from course in Trackr.OneOfPool<CourseBy>("Course to update")
-    from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-    from courseNotNull in Checkr.When(() => course is not null,
+    from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
+        from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             service.UpdateCourseSkillsAsync(course.Name, skills))

@@ -86,8 +86,12 @@ public class Memory
     }
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
+    public Dictionary<int, T> GetPoolDictionary<T>()
+        => LongTermMemory.GetPoolDictionary<T>();
     public IEnumerable<int> GetPoolIds<T>()
         => LongTermMemory.GetPoolIds<T>();
+    public IEnumerable<int> GetPoolIds<T>(Func<T, bool> predicate)
+        => LongTermMemory.GetPoolIds(predicate);
     public (bool, T?) GetFromPool<T>(int id)
         => LongTermMemory.GetFromPool<T>(id);
     public T StoreInPool<T>(int id, T value)

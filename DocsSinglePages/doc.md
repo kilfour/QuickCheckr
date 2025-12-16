@@ -510,15 +510,15 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>()         // Create a pool of coaches.
-    from courses in Trackr.PoolFor<Course>()        // Create a pool of courses.
+    from coaches in Trackr.PoolFor<Coach>()          // Create a pool of coaches.
+    from courses in Trackr.PoolFor<Course>()         // Create a pool of courses.
     from operations in Checkr.OneOfIf(
-        (() => coaches.Count() < 10, CreateCoach),  // Create up to 10 coaches.
-        (() => coaches.Any(), UpdateCoachSkills),   // Maybe update existing coaches.
-        (() => courses.Count() < 5, CreateCourse),  // Create up to 5 courses.
-        (() => courses.Any(), UpdateCourseSkills),  // Maybe update existing courses.
-        // Maybe assign a coach to a course.
-        (() => coaches.Any() && courses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+        (() => coaches.Count() < 10, CreateCoach),   // Create up to 10 coaches.
+        (() => coaches.Any(), UpdateCoachSkills),    // Maybe update existing coaches.
+        (() => courses.Count() < 5, CreateCourse),   // Create up to 5 courses.
+        (() => courses.Any(), UpdateCourseSkills),   // Maybe update existing courses.
+        (() => Pools.HasAtleastOne(coaches, courses, // Maybe assign coach if possible.
+            (coach, course) => coach.IsSuitableFor(course)), AssignCoachToCourse))
     from invariant in AssignedCoachesMustBeSuitable // Ensure the system invariant is met at all times.
     select Case.Closed;
 ```
@@ -538,16 +538,17 @@ private static readonly CheckrOf<Case> CreateCoach =
 Now we retrieve a random coach from the pool and update its skills, verifying that the property `Skills` is set correctly.  
 ```csharp
 private static readonly CheckrOf<Case> UpdateCoachSkills =
-    from coach in Trackr.OneOfPool<Coach>("Coach to update") // Pick a random coach from the pool.
-    from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-    from valid in Checkr.When(() => coach is not null,
+    // Pick a random coach from the pool.
+    Trackr.OneOfPool<Coach>("Coach to update", coach =>
+        from skills in Checkr.Input("Coach Skills",
+            Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => coach.UpdateSkills(skills))                // Update it.
         from checkSkills in Checkr.Expect("Coach Skills Set",
-            () => coach.Skills.Count == skills.Count() && coach.Skills.All(skills.Contains))
-        select Case.Closed)
-    select Case.Closed;
+            () => coach.Skills.Count
+               == skills.Count() && coach.Skills.All(skills.Contains))
+        select Case.Closed);
 ```
 **Create Course Checkr:**  
 Same pattern as the *Create Coach Checkr*.  
@@ -565,16 +566,16 @@ private static readonly CheckrOf<Case> CreateCourse =
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
 private static readonly CheckrOf<Case> UpdateCourseSkills =
-    from course in Trackr.OneOfPool<Course>("Course to update") // Pick a random course from the pool.
-    from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-    from courseNotNull in Checkr.When(() => course is not null,
+    // Pick a random course from the pool.
+    Trackr.OneOfPool<Course>("Course to update", course =>
+        from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             () => course.UpdateRequiredSkills(skills))          // Update it.
         from checkSkills in Checkr.Expect("Course Required Skills Set",
-            () => course.RequiredSkills.Count == skills.Count() && course.RequiredSkills.All(skills.Contains))
-        select Case.Closed)
-    select Case.Closed;
+            () => course.RequiredSkills.Count
+               == skills.Count() && course.RequiredSkills.All(skills.Contains))
+        select Case.Closed);
 ```
 **Assigned Coaches Must Be Suitable Checkr:**  
 And finally here's the system invariant.  
@@ -593,32 +594,32 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ------------------------------------------------------------
  Test:                    Example
  Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:78:1
- Original failing run:    20 executions
- Minimal failing case:    4 executions (after 21 shrinks)
- Seed:                    13918324
+ Original failing run:    15 executions
+ Minimal failing case:    4 executions (after 18 shrinks)
+ Seed:                    1073869613
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-5
+   - Trace: Coach Name = Coach-3
  ------------------------------------------------------------
   Executed: Create Course
-   - Trace: Course Name = Course-3
+   - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-5
-   - Trace: Course Name = Course-3
+   - Trace: Coach Name = Coach-3
+   - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
-   - Trace: Course Name = Course-3
+   - Trace: Course Name = Course-1
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
- - Course Name Set: 4x
- - Coach Name is set: 9x
- - Coach Skills Set: 2x
- - Coach is assigned: 4x
- - Assigned Coaches Must Be Suitable: 9x
+ - Coach Name is set: 5x
+ - Course Name Set: 1x
+ - Coach is assigned: 3x
+ - Assigned Coaches Must Be Suitable: 4x
+ - Coach Skills Set: 1x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```

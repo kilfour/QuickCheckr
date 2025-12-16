@@ -1,31 +1,31 @@
  ------------------------------------------------------------
  Test:                    Example
  Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:78:1
- Original failing run:    20 executions
- Minimal failing case:    4 executions (after 21 shrinks)
- Seed:                    13918324
+ Original failing run:    15 executions
+ Minimal failing case:    4 executions (after 18 shrinks)
+ Seed:                    1073869613
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-5
+   - Trace: Coach Name = Coach-3
  ------------------------------------------------------------
   Executed: Create Course
-   - Trace: Course Name = Course-3
+   - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-5
-   - Trace: Course Name = Course-3
+   - Trace: Coach Name = Coach-3
+   - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
-   - Trace: Course Name = Course-3
+   - Trace: Course Name = Course-1
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
- - Course Name Set: 4x
- - Coach Name is set: 9x
- - Coach Skills Set: 2x
- - Coach is assigned: 4x
- - Assigned Coaches Must Be Suitable: 9x
+ - Coach Name is set: 5x
+ - Course Name Set: 1x
+ - Coach is assigned: 3x
+ - Assigned Coaches Must Be Suitable: 4x
+ - Coach Skills Set: 1x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------

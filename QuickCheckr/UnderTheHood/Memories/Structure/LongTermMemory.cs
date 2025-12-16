@@ -23,6 +23,9 @@ public class LongTermMemory
     public IEnumerable<T> GetPool<T>()
         => pools.Get<Dictionary<int, T>>(typeof(T).FullName!).Values;
 
+    public Dictionary<int, T> GetPoolDictionary<T>()
+        => pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
+
     public IEnumerable<T> CreatePool<T>()
     {
         var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
@@ -43,6 +46,17 @@ public class LongTermMemory
             pools.Store(typeof(T).FullName!, () => pool);
         }
         return pool.Keys;
+    }
+
+    public IEnumerable<int> GetPoolIds<T>(Func<T, bool> predicate)
+    {
+        var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
+        if (pool is null)
+        {
+            pool = [];
+            pools.Store(typeof(T).FullName!, () => pool);
+        }
+        return pool.Where(a => predicate(a.Value)).Select(a => a.Key);
     }
 
     public (bool, T?) GetFromPool<T>(int id)
