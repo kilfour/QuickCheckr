@@ -44,7 +44,8 @@ public static partial class Checkr
                 var index = state.Memory.StoreVariable(key,
                     () => Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value);
                 var script = scripts[index];
-                if (state.EvidenceRecorder.IsReplay || script.condition())
+                // if (state.EvidenceRecorder.IsReplay || script.condition())
+                if (script.condition())
                     return scripts[index].script(state);
                 return CheckrResult.Default<T>(state);
             };
