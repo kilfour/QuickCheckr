@@ -69,16 +69,25 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>()          // Create a pool of coaches.
-    from courses in Trackr.PoolFor<Course>()         // Create a pool of courses.
+    // Create a pool of coaches.
+    from coaches in Trackr.PoolForr<Coach>()
+        // Create a pool of courses.          
+    from courses in Trackr.PoolForr<Course>()
     from operations in Checkr.OneOfIf(
-        (() => coaches.Count() < 10, CreateCoach),   // Create up to 10 coaches.
-        (() => coaches.Any(), UpdateCoachSkills),    // Maybe update existing coaches.
-        (() => courses.Count() < 5, CreateCourse),   // Create up to 5 courses.
-        (() => courses.Any(), UpdateCourseSkills),   // Maybe update existing courses.
-        (() => Pools.HasAtleastOne(coaches, courses, // Maybe assign coach if possible.
-            (coach, course) => coach.IsSuitableFor(course)), AssignCoachToCourse))
-    from invariant in AssignedCoachesMustBeSuitable // Ensure the system invariant is met at all times.
+        // Create up to 10 coaches.
+        coaches.When(a => a.Count() < 10, CreateCoach),
+        // Maybe update existing coaches.
+        coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
+        // Create up to 5 courses.
+        courses.When(a => a.Count() < 5, CreateCourse),
+        // Maybe update existing courses.
+        courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+        // Maybe assign coach if possible.
+        // Pick a random coach and course, if there exists a combination for which the predicate holds.
+        Pool.These(coaches, courses).When("Assign Coach to Course",
+            (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+        // Ensure the system invariant is met at all times.
+    from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```
 **Create Coach Checkr:**  
@@ -96,9 +105,9 @@ private static readonly CheckrOf<Case> CreateCoach =
 **Update Coach Skills Checkr:**  
 Now we retrieve a random coach from the pool and update its skills, verifying that the property `Skills` is set correctly.  
 ```csharp
-private static readonly CheckrOf<Case> UpdateCoachSkills =
+private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
     // Pick a random coach from the pool.
-    Trackr.OneOfPool<Coach>("Coach to update", coach =>
+    coach =>
         from skills in Checkr.Input("Coach Skills",
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
@@ -107,7 +116,7 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
         from checkSkills in Checkr.Expect("Coach Skills Set",
             () => coach.Skills.Count
                == skills.Count() && coach.Skills.All(skills.Contains))
-        select Case.Closed);
+        select Case.Closed;
 ```
 **Create Course Checkr:**  
 Same pattern as the *Create Coach Checkr*.  
@@ -124,9 +133,9 @@ private static readonly CheckrOf<Case> CreateCourse =
 **Update Course Skills Checkr:**  
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
-private static readonly CheckrOf<Case> UpdateCourseSkills =
+private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
     // Pick a random course from the pool.
-    Trackr.OneOfPool<Course>("Course to update", course =>
+    course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
@@ -134,7 +143,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
         from checkSkills in Checkr.Expect("Course Required Skills Set",
             () => course.RequiredSkills.Count
                == skills.Count() && course.RequiredSkills.All(skills.Contains))
-        select Case.Closed);
+        select Case.Closed;
 ```
 **Assigned Coaches Must Be Suitable Checkr:**  
 And finally here's the system invariant.  

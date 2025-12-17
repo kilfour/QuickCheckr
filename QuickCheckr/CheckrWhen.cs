@@ -8,6 +8,6 @@ public static partial class Checkr
     /// Executes the given Checkr step only when the predicate evaluates to true.  
     /// Use to conditionally include parts of a script without affecting the surrounding case when skipped.
     /// </summary>
-    public static CheckrOf<Case> When(Func<bool> predicate, CheckrOf<Case> checkr) =>
-        state => predicate() ? checkr(state) : CheckrResult.CaseOnly(state);
+    public static CheckrOf<T> When<T>(Func<bool> predicate, CheckrOf<T> checkr) =>
+        state => predicate() ? checkr(state) : CheckrResult.Default<T>(state);
 }
