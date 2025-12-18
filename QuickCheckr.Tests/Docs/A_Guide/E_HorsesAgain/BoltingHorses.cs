@@ -140,7 +140,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from trace in Checkr.Trace("Coach Name", () => name)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-        from toPool in Trackr.Pool("Store Coach", coach) // Store this coach in the pool.
+        from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
         select Case.Closed;
 
     [CodeExample]
@@ -163,7 +163,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from trace in Checkr.Trace("Course Name", () => name)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-        from toPool in Trackr.Pool("Store Course", course) // Store this course in the pool.
+        from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
         select Case.Closed;
 
     [CodeExample]

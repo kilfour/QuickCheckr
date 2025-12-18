@@ -18,11 +18,11 @@
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-1
- ============================================================
-  !! Expectation Failed: Assigned Coaches Must Be Suitable
- ============================================================
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
  Passed Expectations
- - Assigned Coaches Must Be Suitable: 14x
+ - Assigned Coach Must Be Suitable: 14x
  - Coach Name is set: 5x
  - Course Name Set: 1x
  - Coach is assigned: 3x

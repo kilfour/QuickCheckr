@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster;
 [DocFile]
 public partial class TheBroadcasterTest : BaseTest
 {
-    [Fact(Skip = "wip")]
+    [Fact(Skip = "takes too long")]
     [DocHeader("The Checkr:")]
     [DocExample(typeof(TheBroadcasterTest), nameof(GetCheckr))]
     [DocHeader("The Report:")]
@@ -20,7 +20,7 @@ public partial class TheBroadcasterTest : BaseTest
             GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(),
                 a => a with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions }));
         WriteAsserts(article, false);
-        WriteReport<TheBroadcasterTest>(article, true);
+        WriteReport<TheBroadcasterTest>(article, false);
     }
 
     [CodeSnippet]
@@ -36,7 +36,7 @@ public partial class TheBroadcasterTest : BaseTest
                 // 1) Register
                 clients.When(a => a.Count() < 10,
                     from register in Checkr.Act("Register", broadcaster.Register)
-                    from client in Trackr.Pool("Client", factory.LastClient)
+                    from client in Trackr.ToPool("Client", factory.LastClient)
                     from clientAdded in Checkr.Expect("Client is added to collection",
                         () => broadcaster.HasClient(client))
                     select Case.Closed),

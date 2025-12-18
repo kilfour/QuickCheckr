@@ -45,7 +45,7 @@ public class ThePoolInvestigation : BaseTest
                     from id in Checkr.Act("Add Person", () => storage.AddPerson(name))
                     from reloaded in Checkr.Capture(() => storage.GetById(id))
                     from checkName in Checkr.Expect("Check Name", () => reloaded.Name == name)
-                    from pool in Trackr.Pool("Add Person", new PersonInfo(id, name))
+                    from pool in Trackr.ToPool("Add Person", new PersonInfo(id, name))
                     from traceId in Checkr.Trace("Id", () => id)
                     select Case.Closed)//,
                 // (() => people.Any(),
