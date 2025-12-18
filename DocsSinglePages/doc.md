@@ -451,6 +451,11 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 In this example, we'll keep all created coaches and courses in pools,
 and each operation will pick from those pools to mutate the system over time.
 
+Pools are not exposed as raw sequences on purpose.
+Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
+Instead, pool operations (When, These, ForThese, ToPool) encapsulate "is this state valid?" so shrinking can replay safely.
+
+*Let's go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
 
@@ -505,7 +510,7 @@ Our Checkr is composed out of several parts:
 **The Composed Checkr:**  
 This one is the *entry point* for the test.  
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
-It then creates a series of actions, randomly choosing one, using `Checkr.OneOfIf`,
+It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
@@ -514,7 +519,7 @@ public static readonly CheckrOf<Case> TheCheckr =
     from coaches in Trackr.PoolFor<Coach>()
     // Create a pool of courses.          
     from courses in Trackr.PoolFor<Course>()
-    from operations in Checkr.OneOfIf(
+    from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
         coaches.When(a => a.Count() < 10, CreateCoach),
         // Maybe update existing coaches. Pick a random coach from the pool.
@@ -590,18 +595,17 @@ And finally here's the system invariant.
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from pool in Trackr.Pool<Coach>() // Retrieve the coaches pool.
-    from assignedCheck in pool.ForEachWhen(coach => coach.AssignedCourses.Any(),
-        coaches => Checkr.Expect("Assigned Coach Must Be Suitable",
-        () => coaches.All( // Check that all assigned coaches are suitable.
-            coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))))
+    from coaches in Trackr.Pool<Coach>() // Retrieve the coaches pool.
+    from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
+        coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
+        coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
     select Case.Closed;
 ```
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:78:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:83:1
  Original failing run:    15 executions
  Minimal failing case:    4 executions (after 18 shrinks)
  Seed:                    1073869613

@@ -80,24 +80,24 @@ Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 The following Checkrs write to the this bank using the same key:
 - 'Checkr.OneOf'
-- 'Checkr.OneOfIf'
+- 'Checkr.OneOfWhen'
 ```
-### Checkr One Of If
-- `Checkr.OneOfIf`:  
+### Checkr One Of When
+- `Checkr.OneOfWhen`:  
 ```csharp
-    from one in Checkr.OneOfIf((() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfIf((() => true, Checkr.Act("Two", () => { })))
+    from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
+    from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
     select Case.Closed;
 ```
   Throws:  
 ```text
-Key 'OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
+Key 'OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 The following Checkrs write to the this bank using the same key:
 - 'Checkr.OneOf'
-- 'Checkr.OneOfIf'
+- 'Checkr.OneOfWhen'
 ```
 ### Checkr Trace
 - `Checkr.Trace`:  

@@ -136,7 +136,7 @@ return
     from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
     from tasks in Taskr.PoolFor()
     from clients in Trackr.PoolFor<TestClientProxy>()
-    from _ in Checkr.OneOfIf(
+    from _ in Checkr.OneOfWhen(
         // 1) Register
         clients.When(a => a.Count() < 10,
             from register in Checkr.Act("Register", broadcaster.Register)
@@ -203,7 +203,7 @@ return
 ```csharp
     from storage in Trackr.Stashed(() => new Storage())
     from people in Trackr.PoolFor<PersonInfo>()
-    from ops in Checkr.OneOfIf(
+    from ops in Checkr.OneOfWhen(
         people.When(a => a.Count() < 50,
             from name in Checkr.Input("Name", Fuzzr.String(2))
             from trace in Checkr.Trace("Name", () => name)
