@@ -20,7 +20,7 @@ public static class Taskr
             var task = Task.Run(async () => await action(cancellationTokenSource.Token));
             var id = state.Memory.StoreVariable(key, () => Fuzzr.Int(0, int.MaxValue).Unique("Quick-Checkr-Pool-Id")(state.FuzzrState).Value);
             state.Memory.StoreInPool(id, task);
-            return TheCatcher.InTheCheckr(state,
+            return TheCatcher.InTheCheckr(state, key,
                 () => CheckrResult.Some(state, task),
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };
@@ -32,7 +32,7 @@ public static class Taskr
             var task = Task.Run(async () => await action(cancellationTokenSource.Token));
             var id = state.Memory.StoreVariable(key, () => Fuzzr.Int(0, int.MaxValue).Unique("Quick-Checkr-Pool-Id")(state.FuzzrState).Value);
             state.Memory.StoreInPool(id, task);
-            return TheCatcher.InTheCheckr(state,
+            return TheCatcher.InTheCheckr(state, key,
                 () => CheckrResult.Some(state, task),
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };

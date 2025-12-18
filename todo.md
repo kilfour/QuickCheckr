@@ -5,6 +5,7 @@
 * Maybe retrieve line number of failed Expectation (perf ?)
 * Consistency If => When
 * ActCarefully now has None result. (also for act) ?
+* Rename Pool.When
 
 ### Doc current focus
 * Doc Configuration
@@ -54,35 +55,3 @@
 * Loose the lazy IEnumerable in shrinking (yield)
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
-
-
-
-
-Pools are not exposed as raw sequences in the guide examples on purpose.
-Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ForThese, ToPool) encapsulate “is this state valid?” so shrinking can replay safely.
-
-public readonly struct ActResult<T>
-{
-    private readonly bool isNone;
-    private readonly T? value;
-
-    public bool IsNone => isNone;
-    public bool HasValue => !isNone;
-
-    public T Value => !isNone ? value! : throw new ActionResultIsNone();
-
-    public static implicit operator T(ActResult<T> r) => r.Value;
-}
-
-
-public static explicit operator T(ActResult<T> r) => r.Value;
-
-    But rename the exception to something that encodes intent:
-
-ActionValueUnavailable or ActionWasNotExecuted
-(IsNone reads like “Option.None”, which invites people to assume monadic semantics.)
-
-In that catch, consider a single docket breadcrumb(even if only under an Investigation flag) :
-
-It’ll help you later when reading shrunk traces: “why didn’t this spec fire?”

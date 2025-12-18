@@ -37,7 +37,7 @@ public class DelayedResult
 }
 
 
-public class ActionResultIsNone : Exception;
+public class ActionWasNotExecuted : Exception;
 
 public sealed class DelayedResult<T> : DelayedResult
 {
@@ -47,23 +47,21 @@ public sealed class DelayedResult<T> : DelayedResult
         get
         {
             if (isNone)
-                throw new ActionResultIsNone();
+                throw new ActionWasNotExecuted();
             return value;
         }
     }
 
     public DelayedResult(T value) : base()
-    {
-        this.value = value;
-    }
+        => this.value = value;
 
     public DelayedResult(Exception exception) : base(exception) { }
 
     private readonly bool isNone = false;
     private DelayedResult() { isNone = true; }
 
-    public static DelayedResult<T> None()
-    {
-        return new DelayedResult<T> { };
-    }
+    public static DelayedResult<T> None() => new() { };
+
+    // public static implicit operator T(DelayedResult<T> r) => r.Value!;
+    // public static explicit operator T(DelayedResult<T> r) => r.Value;
 }

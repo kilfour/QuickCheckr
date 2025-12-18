@@ -22,10 +22,16 @@ public class Pool<T>(IEnumerable<T> pool)
         Func<T, CheckrOf<Case>> checkr)
         => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
 
-    public CheckrOf<Case> ForEachWhen(
+    public CheckrOf<Case> ExpectForEach(
+        string key,
+        Func<T, bool> condition)
+            => Checkr.Expect(key, () => pool.All(a => condition(a)));
+
+    public CheckrOf<Case> ExpectForEachWhen(
+        string key,
         Func<T, bool> predicate,
-        Func<IEnumerable<T>, CheckrOf<Case>> checkr)
-            => checkr(pool.Where(a => predicate(a)));
+        Func<T, bool> condition)
+        => Checkr.Expect(key, () => pool.Where(a => predicate(a)).All(a => condition(a)));
 }
 
 public class Pool<T1, T2>(IEnumerable<T1> pool1, IEnumerable<T2> pool2)

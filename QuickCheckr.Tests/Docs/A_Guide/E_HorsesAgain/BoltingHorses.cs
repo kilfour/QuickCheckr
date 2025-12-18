@@ -20,6 +20,11 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 In this example, we'll keep all created coaches and courses in pools,
 and each operation will pick from those pools to mutate the system over time.
 
+Pools are not exposed as raw sequences on purpose.
+Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
+Instead, pool operations (When, These, ForThese, ToPool) encapsulate ""is this state valid?"" so shrinking can replay safely.
+
+*Let's go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
 
@@ -190,11 +195,10 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from pool in Trackr.Pool<Coach>() // Retrieve the coaches pool.
-        from assignedCheck in pool.ForEachWhen(coach => coach.AssignedCourses.Any(),
-            coaches => Checkr.Expect("Assigned Coach Must Be Suitable",
-            () => coaches.All( // Check that all assigned coaches are suitable.
-                coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))))
+        from coaches in Trackr.Pool<Coach>() // Retrieve the coaches pool.
+        from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
+            coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
+            coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;
 
     [CodeExample]

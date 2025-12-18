@@ -8,7 +8,7 @@ public static partial class Checkr
         state =>
         {
             state.Memory.StoreAction(key);
-            return TheCatcher.InTheCheckr(state,
+            return TheCatcher.InTheCheckr(state, key,
                 () => CheckrResult.Some(state, func()),
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };

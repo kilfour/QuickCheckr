@@ -14,3 +14,4 @@ public record struct ActionRemoved(int ExecutionId, string Key) : IFiling;
 public record struct InputShrinkingClueFound(InputShrinkingClue Clue) : IFiling;
 public record struct InputReduced(int ExecutionId, string Key) : IFiling;
 public record struct EvidenceFailure(Exception Exception) : IFiling;
+public record struct SpecCaughtActionWasNotExecuted(string ExpectKey) : IFiling;

@@ -33,7 +33,7 @@ public class Issues : BaseTest
             select Case.Closed;
     }
 
-    public class Thing();
+    public class Thing() { public int Foo; };
 
     private static void Verify(Article article)
     {
