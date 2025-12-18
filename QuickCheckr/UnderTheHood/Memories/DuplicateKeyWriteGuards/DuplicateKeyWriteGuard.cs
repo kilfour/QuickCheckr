@@ -39,7 +39,7 @@ public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
 
 public class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard
 {
-    public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfIf"]) { }
+    public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfWhen"]) { }
 }
 
 public class DuplicateKeyWriteGuardForStashed : DuplicateKeyWriteGuard

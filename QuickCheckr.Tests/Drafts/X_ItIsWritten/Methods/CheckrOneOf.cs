@@ -42,6 +42,6 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank using the same key:
 
 - 'Checkr.OneOf'
-- 'Checkr.OneOfIf'
+- 'Checkr.OneOfWhen'
 ";
 }

@@ -31,7 +31,7 @@ public partial class TheBroadcasterTest : BaseTest
             from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
             from tasks in Taskr.PoolFor()
             from clients in Trackr.PoolFor<TestClientProxy>()
-            from _ in Checkr.OneOfIf(
+            from _ in Checkr.OneOfWhen(
 
                 // 1) Register
                 clients.When(a => a.Count() < 10,

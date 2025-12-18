@@ -152,7 +152,7 @@ public class LockTheStableDoors : BaseTest
         from coaches in Trackr.PoolFor<CoachBy>()
         from courses in Trackr.PoolFor<CourseBy>()
         from dbCourses in Checkr.Capture(service.GetCoursesAsync())
-        from operations in Checkr.OneOfIf(
+        from operations in Checkr.OneOfWhen(
             coaches.When(a => a.Count() < 10, CreateCoach),
             coaches.When(a => a.Any(), UpdateCoachSkills),
             courses.When(a => a.Count() < 5, CreateCourse),

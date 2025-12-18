@@ -38,7 +38,7 @@ public class ThePoolInvestigation : BaseTest
         return
             from storage in Trackr.Stashed(() => new Storage())
             from people in Trackr.PoolFor<PersonInfo>()
-            from ops in Checkr.OneOfIf(
+            from ops in Checkr.OneOfWhen(
                 people.When(a => a.Count() < 50,
                     from name in Checkr.Input("Name", Fuzzr.String(2))
                     from trace in Checkr.Trace("Name", () => name)

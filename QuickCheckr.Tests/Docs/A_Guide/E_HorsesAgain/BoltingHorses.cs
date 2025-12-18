@@ -47,7 +47,7 @@ public class BoltingHorses : BaseTest
 **The Composed Checkr:**  
 This one is the *entry point* for the test.  
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
-It then creates a series of actions, randomly choosing one, using `Checkr.OneOfIf`,
+It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.")]
     [DocExample(typeof(BoltingHorses), nameof(TheCheckr))]
@@ -207,7 +207,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from coaches in Trackr.PoolFor<Coach>()
         // Create a pool of courses.          
         from courses in Trackr.PoolFor<Course>()
-        from operations in Checkr.OneOfIf(
+        from operations in Checkr.OneOfWhen(
             // Create up to 10 coaches.
             coaches.When(a => a.Count() < 10, CreateCoach),
             // Maybe update existing coaches. Pick a random coach from the pool.
