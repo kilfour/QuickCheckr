@@ -1,8 +1,17 @@
 ## Current Version: 0.0.5
-* Nested OneOf/OneOfIf
 * ActCarefully now has None result. (also for act) ?
-* Rename Pool.When maybe ?
-* Document OneOfIf behaviour during shrinking, try to find holes in the logic (seems to work)
+  * [ x ] When
+  * [   ] ActWhen
+  * [   ] ActCarefullyWhen
+  * [   ] OneOfWhen
+* Revise Pool method naming
+* keyed overload for PoolFor
+
+### Tests to Add
+* Nested OneOf/OneOfIf
+* CaseSummary DepositionTests
+* What happens if a muppet puts an Input inside of a When
+  Porbably just works, better to make sure.
 
 ### Doc current focus
 * Doc Configuration
@@ -11,18 +20,18 @@
   * [ x ] ShrinkMode
   * [   ] DeliberationPolicy
   * [   ] Investigations
-  
+* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
-### 0.0.6
+## 0.0.6
 * look into different collection shrinking
   * limitations
   * known issues
   * workarounds
 * update xml summaries
 
-### 0.0.6+
+## 0.0.6+
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
@@ -35,21 +44,22 @@
 * Stabilize Investigations
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
-## Doc Work
+## Future Doc Work
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 * Start working on the reference
 
-### Ideas
+## Ideas
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
 
-## Refactoring and Testing Targets 
-* CaseSummary DepositionTests
+## Refactoring Targets 
 * GetFromPool (bool, T?) => Result
 * Nested InputShrinkingClue ? Refactoring Target
 * Loose the lazy IEnumerable in shrinking (yield)
+* unify ConditionalResult and DelayedResult
+
 ## Other
 * Scour QuickAcid for any interesting tests left behind.

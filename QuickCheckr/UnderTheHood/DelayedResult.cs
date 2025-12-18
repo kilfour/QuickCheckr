@@ -36,10 +36,7 @@ public class DelayedResult
     }
 }
 
-
-public class ActionWasNotExecuted : Exception;
-
-public sealed class DelayedResult<T> : DelayedResult
+public class DelayedResult<T> : DelayedResult
 {
     private readonly T? value;
     public T? Value
@@ -47,7 +44,7 @@ public sealed class DelayedResult<T> : DelayedResult
         get
         {
             if (isNone)
-                throw new ActionWasNotExecuted();
+                throw new CheckrWasNotExecuted();
             return value;
         }
     }

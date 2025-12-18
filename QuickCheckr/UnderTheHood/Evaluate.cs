@@ -39,7 +39,7 @@ public static class TheCatcher
         {
             return func();
         }
-        catch (ActionWasNotExecuted)
+        catch (CheckrWasNotExecuted)
         {
             state.Docket.Record(new SpecCaughtActionWasNotExecuted(key));
             return CheckrResult.Default<T>(state);
