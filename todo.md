@@ -11,7 +11,7 @@
 * Nested OneOf/OneOfIf
 * CaseSummary DepositionTests
 * What happens if a muppet puts an Input inside of a When
-  Porbably just works, better to make sure.
+  Probably just works, better to make sure.
 
 ### Doc current focus
 * Doc Configuration
@@ -20,7 +20,7 @@
   * [ x ] ShrinkMode
   * [   ] DeliberationPolicy
   * [   ] Investigations
-* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor
+* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
@@ -36,7 +36,7 @@
   * Generalize Towards(Zero) reducer
   * More reducers
 * add a ReportMode to config maybe ? disabling traces and/or warnings
-  * [   ] ReportMode {Traces | Warnings | None}
+  * ReportMode { Traces | Warnings | None }
 * Editor: configure QuickPulse.Show 
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
@@ -57,7 +57,7 @@
 
 ## Refactoring Targets 
 * GetFromPool (bool, T?) => Result
-* Nested InputShrinkingClue ? Refactoring Target
+* Nested InputShrinkingClue ?
 * Loose the lazy IEnumerable in shrinking (yield)
 * unify ConditionalResult and DelayedResult
 
