@@ -9,7 +9,9 @@ public static partial class Trackr
     /// Selects a value at random from a pool, or returns a default value (typically null) when the pool is empty.  
     /// Use when modelling behaviour that may or may not have stored items available during the run.
     /// </summary>
-    public static CheckrOf<Case> OneOfPool<T>(string key, Func<T, CheckrOf<Case>> checkr) =>
+    public static CheckrOf<Case> OneOfPool<T>(
+        string key,
+        Func<T, CheckrOf<Case>> checkr) =>
         state =>
         {
             var id = state.Memory.StoreVariable(key,
@@ -19,7 +21,10 @@ public static partial class Trackr
             return CheckrResult.CaseOnly(state);
         };
 
-    public static CheckrOf<Case> OneOfPool<T>(string key, Func<T, bool> predicate, Func<T, CheckrOf<Case>> checkr) =>
+    public static CheckrOf<Case> OneOfPool<T>(
+        string key,
+        Func<T, bool> predicate,
+        Func<T, CheckrOf<Case>> checkr) =>
         state =>
         {
             var id = state.Memory.StoreVariable(key,
@@ -29,7 +34,9 @@ public static partial class Trackr
             return CheckrResult.CaseOnly(state);
         };
 
-    public static CheckrOf<Case> OneOfPool<T1, T2>(string key, Func<T1, T2, CheckrOf<Case>> checkr) =>
+    public static CheckrOf<Case> OneOfPool<T1, T2>(
+        string key,
+        Func<T1, T2, CheckrOf<Case>> checkr) =>
         state =>
         {
             var id1 = state.Memory.StoreVariable($"{key}-1",
@@ -44,7 +51,10 @@ public static partial class Trackr
             return CheckrResult.CaseOnly(state);
         };
 
-    public static CheckrOf<Case> OneOfPool<T1, T2>(string key, Func<T1, T2, bool> predicate, Func<T1, T2, CheckrOf<Case>> checkr) =>
+    public static CheckrOf<Case> OneOfPool<T1, T2>(
+        string key,
+        Func<T1, T2, bool> predicate,
+        Func<T1, T2, CheckrOf<Case>> checkr) =>
         state =>
         {
             var pool1 = state.Memory.GetPoolDictionary<T1>();

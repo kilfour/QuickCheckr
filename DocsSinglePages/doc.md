@@ -591,7 +591,7 @@ And finally here's the system invariant.
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from pool in Trackr.Pool<Coach>() // Retrieve the coaches pool.
-    from assignedCheck in pool.ForThese(coach => coach.AssignedCourses.Any(),
+    from assignedCheck in pool.ForEachWhen(coach => coach.AssignedCourses.Any(),
         coaches => Checkr.Expect("Assigned Coach Must Be Suitable",
         () => coaches.All( // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))))

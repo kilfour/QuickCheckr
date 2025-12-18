@@ -22,7 +22,7 @@ public class Pool<T>(IEnumerable<T> pool)
         Func<T, CheckrOf<Case>> checkr)
         => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
 
-    public CheckrOf<Case> ForThese(
+    public CheckrOf<Case> ForEachWhen(
         Func<T, bool> predicate,
         Func<IEnumerable<T>, CheckrOf<Case>> checkr)
             => checkr(pool.Where(a => predicate(a)));
