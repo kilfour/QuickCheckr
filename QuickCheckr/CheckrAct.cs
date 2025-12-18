@@ -31,43 +31,4 @@ public static partial class Checkr
     /// </summary>
     public static CheckrOf<Case> Act(string key, Task action)
         => TryCatch(key, () => { action.GetAwaiter().GetResult(); return Case.Closed; });
-
-    /// <summary>
-    /// Adds a named action step that only executes when a condition holds, capturing its result for later specs and traces.
-    /// Use when a synchronous operation is optional but should be reported whenever it runs.
-    /// </summary>
-    public static CheckrOf<T> ActIf<T>(this string key, Func<bool> predicate, Func<T> func)
-        => state => predicate() ? Act(key, func)(state) : CheckrResult.Default<T>(state);
-
-    /// <summary>
-    /// Adds a named asynchronous action step that only executes when a condition holds, capturing its result for later specs and traces.
-    /// Use when an async operation is optional but should still appear as a proper step whenever it runs.
-    /// </summary>
-    public static CheckrOf<T> ActIf<T>(this string key, Func<bool> predicate, Task<T> func)
-        => state => predicate() ? Act(key, func)(state) : CheckrResult.Default<T>(state);
-
-    /// <summary>
-    /// Adds a named action step that only executes when a condition holds, for side-effect-only operations.
-    /// Use when the operation is optional and you simply want the case to continue unchanged when it is skipped.
-    /// </summary>
-    public static CheckrOf<Case> ActIf(this string key, Func<bool> predicate, Action func)
-        => state => predicate() ? Act(key, func)(state) : CheckrResult.CaseOnly(state);
-
-    /// <summary>
-    /// Adds a named asynchronous action step that only executes when a condition holds, for side-effect-only operations.
-    /// Use when an async operation is optional and the case should continue unchanged when it is skipped.
-    /// </summary>
-    public static CheckrOf<Case> ActIf(this string key, Func<bool> predicate, Task func)
-        => state => predicate() ? Act(key, func)(state) : CheckrResult.CaseOnly(state);
-
-
-    private static CheckrOf<T> TryCatch<T>(string key, Func<T> func) =>
-        state =>
-        {
-            state.Memory.StoreAction(key);
-            return TheCatcher.InTheCheckr(state,
-                () => CheckrResult.Some(state, func()),
-                ex => state.EvidenceRecorder.RecordFailure(ex));
-        };
-
 }

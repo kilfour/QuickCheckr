@@ -60,7 +60,7 @@ public class ActingOutOfSync : BaseTest
     {
         var check =
             from input in Checkr.Input("Input", Fuzzr.Constant(42))
-            from result in Checkr.ActIf("Eventually.AddOne", () => true, Eventually.AddOne(input))
+            from result in Checkr.ActWhen("Eventually.AddOne", () => true, Eventually.AddOne(input))
             from expect in Checkr.Expect("Is not 42", () => result != 42)
             select Case.Closed;
         check.Run(); // <= test passed == Task completed
@@ -93,7 +93,7 @@ public class ActingOutOfSync : BaseTest
     {
         var check =
             from eventualAction in Trackr.Stashed(() => new EventualAction())
-            from act in Checkr.ActIf("The Void", () => true, eventualAction.TheVoid())
+            from act in Checkr.ActWhen("The Void", () => true, eventualAction.TheVoid())
             from expect in Checkr.Expect("Flagged", () => eventualAction.Flag)
             select Case.Closed;
         check.Run(); // <= test passed == flag is set == Task completed

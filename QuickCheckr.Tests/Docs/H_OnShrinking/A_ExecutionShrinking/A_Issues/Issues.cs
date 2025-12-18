@@ -28,7 +28,7 @@ public class Issues : BaseTest
     {
         return
             from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-            from thing in Checkr.ActIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+            from thing in Checkr.ActWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
             from notNull in Checkr.Expect("Not Null", () => thing != null)
             select Case.Closed;
     }
@@ -70,7 +70,7 @@ public class Issues : BaseTest
     {
         return
             from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-            from thing in Checkr.ActCarefullyIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+            from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
             from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
             select Case.Closed;
     }

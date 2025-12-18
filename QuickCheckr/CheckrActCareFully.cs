@@ -31,9 +31,6 @@ public static partial class Checkr
             () => new DelayedResult<T>(func()),
             ex => new DelayedResult<T>(ex));
 
-    public static CheckrOf<DelayedResult<T>> ActCarefullyIf<T>(string key, Func<bool> predicate, Func<T> func)
-        => state => predicate() ? ActCarefully(key, func)(state) : CheckrResult.Some(state, DelayedResult<T>.None());
-
     /// <summary>
     /// Executes a named asynchronous function while capturing either its result or any thrown exception.  
     /// Use when an awaited computation may succeed or fail and you want to record both paths for later specs.
@@ -42,19 +39,4 @@ public static partial class Checkr
         => key.TryCapture(
             () => new DelayedResult<T>(func.GetAwaiter().GetResult()),
             ex => new DelayedResult<T>(ex));
-
-
-    private static CheckrOf<T> TryCapture<T>(this string key, Func<T> func, Func<Exception, T> onError) =>
-        state =>
-        {
-            state.Memory.StoreAction(key);
-            try
-            {
-                return CheckrResult.Some(state, func());
-            }
-            catch (Exception ex)
-            {
-                return CheckrResult.Some(state, onError(ex));
-            }
-        };
 }
