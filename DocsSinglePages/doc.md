@@ -517,7 +517,7 @@ Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant
 public static readonly CheckrOf<Case> TheCheckr =
     // Create a pool of coaches.
     from coaches in Trackr.PoolFor<Coach>()
-    // Create a pool of courses.          
+        // Create a pool of courses.          
     from courses in Trackr.PoolFor<Course>()
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
@@ -526,14 +526,14 @@ public static readonly CheckrOf<Case> TheCheckr =
         coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
         // Create up to 5 courses.
         courses.When(a => a.Count() < 5, CreateCourse),
-        // Maybe update existing courses.
+        // Maybe update existing courses. Pick a random course from the pool.
         courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
         // Maybe assign coach if possible.
         // Pick a random coach and course, if there exists a combination for which the predicate holds.
         Pool.These(coaches, courses).When("Assign Coach to Course",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
-    from invariant in AssignedCoachesMustBeSuitable
+    from invariant in AssignedCoachesMustBeSuitable(coaches)
     select Case.Closed;
 ```
 **Create Coach Checkr:**  
@@ -557,7 +557,7 @@ private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
-            () => coach.UpdateSkills(skills))
+            () => coach.UpdateSkills(skills)) // Update the Coach.
         from checkSkills in Checkr.Expect("Coach Skills Set",
             () => coach.Skills.Count
                == skills.Count() && coach.Skills.All(skills.Contains))
@@ -579,12 +579,11 @@ private static readonly CheckrOf<Case> CreateCourse =
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
 private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
-    // Pick a random course from the pool.
     course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from traceCourse in Checkr.Trace("Course Name", () => course.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
-            () => course.UpdateRequiredSkills(skills))          // Update it.
+            () => course.UpdateRequiredSkills(skills)) // Update the Course.
         from checkSkills in Checkr.Expect("Course Required Skills Set",
             () => course.RequiredSkills.Count
                == skills.Count() && course.RequiredSkills.All(skills.Contains))
@@ -594,8 +593,7 @@ private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
 And finally here's the system invariant.  
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
-private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from coaches in Trackr.Pool<Coach>() // Retrieve the coaches pool.
+private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches) =>
     from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
         coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
         coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))

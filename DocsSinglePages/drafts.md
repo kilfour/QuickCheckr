@@ -1,3 +1,21 @@
+## Everything Means Less Than Null
+### Trackr Pool
+- `Trackr.Pool`:  
+```csharp
+    from one in Checkr.Act("reused", () => { })
+    from two in Checkr.Act("reused", () => { })
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank using the same key:
+- 'Checkr.Act'
+- 'Checkr.ActCarefully'
+```
 ## It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
 are not just pretty captions in a report.
@@ -13,6 +31,23 @@ Because of this dual role, **each key may only be written once per relevant scop
 
 If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
   
+### Checkr Act
+- `Checkr.Act`:  
+```csharp
+    from one in Checkr.Act("reused", () => { })
+    from two in Checkr.Act("reused", () => { })
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank using the same key:
+- 'Checkr.Act'
+- 'Checkr.ActCarefully'
+```
 ### Checkr Act Carefully
 - `Checkr.ActCarefully`:  
 ```csharp
