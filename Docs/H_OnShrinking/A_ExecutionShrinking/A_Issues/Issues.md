@@ -22,10 +22,11 @@
  - Not Null: 1x
  ------------------------------------------------------------
 ```
+## Workaround
 ```csharp
     from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from thing in Checkr.ActIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-    from notNull in Checkr.Expect("Not Null", () => thing != null)
+    from thing in Checkr.ActCarefullyIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
     select Case.Closed;
 ```
 ```text

@@ -140,7 +140,7 @@ return
         // 1) Register
         clients.When(a => a.Count() < 10,
             from register in Checkr.Act("Register", broadcaster.Register)
-            from client in Trackr.Pool("Client", factory.LastClient)
+            from client in Trackr.ToPool("Client", factory.LastClient)
             from clientAdded in Checkr.Expect("Client is added to collection",
                 () => broadcaster.HasClient(client))
             select Case.Closed),
@@ -165,11 +165,10 @@ return
 ```
 ------------------------------------------------------------
  Test:                    AllInOne
- Location:                Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:22:1
- Original failing run:    5 executions
- Seed:                    648063481
- ------------------------------------------------------------
-  Executed
+ Location:                Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:20:1
+ Original failing run:    7 executions
+ Minimal failing case:    4 executions (after 3 shrinks)
+ Seed:                    1866784148
  ------------------------------------------------------------
   Executed: start
  ------------------------------------------------------------
@@ -180,23 +179,24 @@ return
   !! Exception Thrown: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
    at System.Collections.Generic.List`1.Enumerator.MoveNext()
    at QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel.Broadcaster.Broadcast(Notification notification) in Experimental\F_TheBroadcaster\SimpleModel\Broadcaster.cs:line 35
-   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c__DisplayClass1_1.GetCheckr() in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 56
+   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c__DisplayClass1_1.GetCheckr() in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 54
    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
 --- End of stack trace from previous location ---
    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
    at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
 --- End of stack trace from previous location ---
-   at QuickCheckr.Experimentr.Taskr.<>c__DisplayClass3_0.<Start>d.MoveNext() in Experimentr\Taskr.cs:line 20
+   at QuickCheckr.Tests.Experimental.Taskr.<>c__DisplayClass3_0.<Start>d.MoveNext() in Experimental\Taskr.cs:line 20
 --- End of stack trace from previous location ---
-   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c.GetCheckr(Task a) in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 63
+   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c.GetCheckr(Task a) in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 60
    at System.Collections.Generic.List`1.ForEach(Action`1 action)
-   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c__DisplayClass1_1.GetCheckr() in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 63
+   at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c__DisplayClass1_1.GetCheckr() in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 60
    at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 26
    at QuickCheckr.Checkr.<>c__DisplayClass8_1`1.TryCatch() in CheckrAct.cs:line 69
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 14
  ===========================================================================
  Passed Expectations
- - Client is added to collection: 2x
+ - Client is added to collection: 4x
+ - Faulty client is removed: 1x
  ------------------------------------------------------------
 ```
 ## The Pool Investigation
@@ -210,7 +210,7 @@ return
             from id in Checkr.Act("Add Person", () => storage.AddPerson(name))
             from reloaded in Checkr.Capture(() => storage.GetById(id))
             from checkName in Checkr.Expect("Check Name", () => reloaded.Name == name)
-            from pool in Trackr.Pool("Add Person", new PersonInfo(id, name))
+            from pool in Trackr.ToPool("Add Person", new PersonInfo(id, name))
             from traceId in Checkr.Trace("Id", () => id)
             select Case.Closed)//,
         // (() => people.Any(),

@@ -52,7 +52,8 @@ public class Issues : BaseTest
     }
 
     [Fact]
-    [DocExample(typeof(Issues), nameof(GetCheckr))]
+    [DocHeader("Workaround")]
+    [DocExample(typeof(Issues), nameof(GetCheckrFixed))]
     [DocCodeFile("IssuesFixed.txt", "text")]
     public void RunTestFixed()
     {

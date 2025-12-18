@@ -99,7 +99,7 @@ private static readonly CheckrOf<Case> CreateCoach =
     from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
     from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-    from toPool in Trackr.Pool("Store Coach", coach) // Store this coach in the pool.
+    from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
     select Case.Closed;
 ```
 **Update Coach Skills Checkr:**  
@@ -126,7 +126,7 @@ private static readonly CheckrOf<Case> CreateCourse =
     from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", () => new Course(name))
     from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-    from toPool in Trackr.Pool("Store Course", course) // Store this course in the pool.
+    from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
     select Case.Closed;
 ```
 **Update Course Skills Checkr:**  
@@ -178,11 +178,11 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
    - Trace: Course Name = Course-1
- ============================================================
-  !! Expectation Failed: Assigned Coaches Must Be Suitable
- ============================================================
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
  Passed Expectations
- - Assigned Coaches Must Be Suitable: 14x
+ - Assigned Coach Must Be Suitable: 14x
  - Coach Name is set: 5x
  - Course Name Set: 1x
  - Coach is assigned: 3x

@@ -1359,7 +1359,7 @@ private static readonly CheckrOf<Case> CreateCoach =
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
     from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", service.CreateCoachAsync(name))
-    from toPool in Trackr.Pool("Store Coach", new CoachBy(name))
+    from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
     select Case.Closed;
 ```
 **Update Coach Skills Checkr:**  
@@ -1382,7 +1382,7 @@ private static readonly CheckrOf<Case> CreateCourse =
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
     from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", service.CreateCourseAsync(name))
-    from toPool in Trackr.Pool("Store Course", new CourseBy(name))
+    from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
     select Case.Closed;
 ```
 **Update Course Skills Checkr:**  
