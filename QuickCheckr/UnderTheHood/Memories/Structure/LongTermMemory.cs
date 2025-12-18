@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class LongTermMemory
@@ -21,7 +23,13 @@ public class LongTermMemory
     // Pool
     private MemoryBank pools = new();
     public IEnumerable<T> GetPool<T>()
-        => pools.Get<Dictionary<int, T>>(typeof(T).FullName!).Values;
+    {
+        var key = typeof(T).FullName!;
+        var pool =
+            pools.Get<Dictionary<int, T>>(key)
+            ?? throw new PoolDoesNotExistException(key);
+        return pool.Values;
+    }
 
     public Dictionary<int, T> GetPoolDictionary<T>()
         => pools.Get<Dictionary<int, T>>(typeof(T).FullName!);

@@ -1,11 +1,8 @@
 ## Current Version: 0.0.5
-* Error Message if pool does not exist (same for stashed)
-* Document OneOfIf behaviour during shrinking, try to find holes in the logic (seems to work)
 * Nested OneOf/OneOfIf
-* Maybe retrieve line number of failed Expectation (perf ?)
-* Consistency If => When
 * ActCarefully now has None result. (also for act) ?
-* Rename Pool.When
+* Rename Pool.When maybe ?
+* Document OneOfIf behaviour during shrinking, try to find holes in the logic (seems to work)
 
 ### Doc current focus
 * Doc Configuration
@@ -47,6 +44,7 @@
 ### Ideas
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
+* Maybe retrieve line number of failed Expectation (perf ?)
 
 ## Refactoring and Testing Targets 
 * CaseSummary DepositionTests

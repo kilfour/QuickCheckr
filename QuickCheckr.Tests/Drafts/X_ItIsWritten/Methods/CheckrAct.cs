@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Templates;
+namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
 
 [DocFile]
