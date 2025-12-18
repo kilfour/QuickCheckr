@@ -22,10 +22,10 @@
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
+ - Assigned Coaches Must Be Suitable: 14x
  - Coach Name is set: 5x
  - Course Name Set: 1x
  - Coach is assigned: 3x
- - Assigned Coaches Must Be Suitable: 4x
  - Coach Skills Set: 1x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------

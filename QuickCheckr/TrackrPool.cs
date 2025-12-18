@@ -16,8 +16,8 @@ public static partial class Trackr
     /// Retrieves the existing pool for values of the given type.  
     /// Use to observe or draw from objects accumulated earlier in the run.
     /// </summary>
-    public static CheckrOf<IEnumerable<T>> Pool<T>() =>
-        state => CheckrResult.Some(state, state.Memory.GetPool<T>());
+    public static CheckrOf<Pool<T>> Pool<T>() =>
+        state => CheckrResult.Some(state, new Pool<T>(state.Memory.GetPool<T>()));
 
     /// <summary>
     /// Adds a value to a pool under a generated identifier and returns the stored value.  
@@ -95,14 +95,6 @@ public static partial class Trackr
         };
 }
 
-public static class Pools
-{
-    public static bool HasAtleastOne<T1, T2>(IEnumerable<T1> pool1, IEnumerable<T2> pool2, Func<T1, T2, bool> predicate) =>
-        pool1.SelectMany(
-            t1 => pool2.Select(t2 => predicate(t1, t2)))
-            .All(a => a);
-}
-
 public static class Pool
 {
     public static Pool<T1, T2> These<T1, T2>(Pool<T1> pool1, Pool<T2> pool2)
@@ -123,6 +115,11 @@ public class Pool<T>(IEnumerable<T> pool)
         string key,
         Func<T, CheckrOf<Case>> checkr)
         => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
+
+    public CheckrOf<Case> ForThese(
+        Func<T, bool> predicate,
+        Func<IEnumerable<T>, CheckrOf<Case>> checkr)
+            => checkr(pool.Where(a => predicate(a)));
 }
 
 public class Pool<T1, T2>(IEnumerable<T1> pool1, IEnumerable<T2> pool2)

@@ -78,13 +78,13 @@ A coach was assigned while suitable, then a course's required skills changed, in
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1073869613, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);
-        ExplainMe<BoltingHorses>(true);
+        ExplainMe<BoltingHorses>(false);
         Verify(article);
     }
 
     private static void Verify(Tools.ThePress.Printing.Article article)
     {
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedExpectation());
+        Assert.Equal("Assigned Coach Must Be Suitable", article.FailedExpectation());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
@@ -111,14 +111,14 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Course Name", article.Execution(4).Trace(1).Read().Label);
         Assert.Equal("Course-1", article.Execution(4).Trace(1).Read().Value);
-        Assert.Equal("Coach Name is set", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
-        Assert.Equal("Course Name Set", article.PassedExpectation(2).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(2).Read().TimesPassed);
-        Assert.Equal("Coach is assigned", article.PassedExpectation(3).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(3).Read().TimesPassed);
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.PassedExpectation(4).Read().Label);
-        Assert.Equal(4, article.PassedExpectation(4).Read().TimesPassed);
+        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(14, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal("Coach Name is set", article.PassedExpectation(2).Read().Label);
+        Assert.Equal(5, article.PassedExpectation(2).Read().TimesPassed);
+        Assert.Equal("Course Name Set", article.PassedExpectation(3).Read().Label);
+        Assert.Equal(1, article.PassedExpectation(3).Read().TimesPassed);
+        Assert.Equal("Coach is assigned", article.PassedExpectation(4).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(4).Read().TimesPassed);
         Assert.Equal("Coach Skills Set", article.PassedExpectation(5).Read().Label);
         Assert.Equal(1, article.PassedExpectation(5).Read().TimesPassed);
         Assert.Equal("Course Required Skills Set", article.PassedExpectation(6).Read().Label);
@@ -190,11 +190,11 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from coaches in Trackr.Pool<Coach>() // Retrieve all coaches from the pool.
-        from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
-            () => coaches.Any(coach => coach.AssignedCourses.Any()),
+        from pool in Trackr.Pool<Coach>() // Retrieve the coaches pool.
+        from assignedCheck in pool.ForThese(coach => coach.AssignedCourses.Any(),
+            coaches => Checkr.Expect("Assigned Coach Must Be Suitable",
             () => coaches.All( // Check that all assigned coaches are suitable.
-                coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))
+                coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))))
         select Case.Closed;
 
     [CodeExample]
