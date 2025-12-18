@@ -36,17 +36,34 @@ public class DelayedResult
     }
 }
 
+
+public class ActionResultIsNone : Exception;
+
 public sealed class DelayedResult<T> : DelayedResult
 {
-    public T? Value { get; }
+    private readonly T? value;
+    public T? Value
+    {
+        get
+        {
+            if (isNone)
+                throw new ActionResultIsNone();
+            return value;
+        }
+    }
 
     public DelayedResult(T value) : base()
     {
-        Value = value;
+        this.value = value;
     }
 
-    public DelayedResult(Exception exception) : base(exception)
+    public DelayedResult(Exception exception) : base(exception) { }
+
+    private readonly bool isNone = false;
+    private DelayedResult() { isNone = true; }
+
+    public static DelayedResult<T> None()
     {
-        Value = default;
+        return new DelayedResult<T> { };
     }
 }

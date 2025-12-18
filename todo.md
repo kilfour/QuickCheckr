@@ -4,6 +4,7 @@
 * Nested OneOf/OneOfIf
 * Maybe retrieve line number of failed Expectation (perf ?)
 * Consistency If => When
+* ActCarefully None result everywhere (also for act) ?
 
 ### Doc current focus
 * Doc Configuration

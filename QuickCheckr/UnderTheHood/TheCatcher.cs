@@ -13,6 +13,10 @@ public static class TheCatcher
         {
             return func();
         }
+        catch (ActionResultIsNone)
+        {
+            return CheckrResult.Default<T>(state);
+        }
         catch (Exception exception)
         {
             state.Docket.Record(new EvidenceFailure(exception));

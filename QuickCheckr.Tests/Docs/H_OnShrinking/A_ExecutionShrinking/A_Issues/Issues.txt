@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\H_OnShrinking\A_ExecutionShrinking\A_Issues\Issues.cs:19:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    625676917
+ ------------------------------------------------------------
+  Executed: Act
+   - Input: Counter = 2
+ ===================================
+  !! Expectation Failed: Not Null
+ ===================================
+ Passed Expectations
+ - Not Null: 1x
+ ------------------------------------------------------------
