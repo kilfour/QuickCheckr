@@ -1341,11 +1341,13 @@ private static readonly CheckrOf<Case> TheCheckr =
     from courses in Trackr.PoolFor<CourseBy>()
     from dbCourses in Checkr.Capture(service.GetCoursesAsync())
     from operations in Checkr.OneOfIf(
-        (() => coaches.Count() < 10, CreateCoach),
-        (() => coaches.Any(), UpdateCoachSkills),
-        (() => courses.Count() < 5, CreateCourse),
-        (() => courses.Any(), UpdateCourseSkills),
-        (() => coaches.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+        coaches.When(a => a.Count() < 10, CreateCoach),
+        coaches.When(a => a.Any(), UpdateCoachSkills),
+        courses.When(a => a.Count() < 5, CreateCourse),
+        courses.When(a => a.Any(), UpdateCourseSkills),
+        courses.When(a => a.Any(), UpdateCourseSkills),
+        coaches.When(a => a.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+        // (() => coaches.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```
@@ -1365,11 +1367,11 @@ private static readonly CheckrOf<Case> CreateCoach =
 private static readonly CheckrOf<Case> UpdateCoachSkills =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
-    from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-    from trace in Checkr.Trace("Coach Name", () => coach.Name)
-    from updateSkills in Checkr.Act("Update Coach Skills",
-        () => service.UpdateCoachSkillsAsync(coach.Name, skills))
-    select Case.Closed)
+        from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
+        from trace in Checkr.Trace("Coach Name", () => coach.Name)
+        from updateSkills in Checkr.Act("Update Coach Skills",
+            () => service.UpdateCoachSkillsAsync(coach.Name, skills))
+        select Case.Closed)
     select Case.Closed;
 ```
 **Create Course Checkr:**  
@@ -1410,9 +1412,9 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:32:1
- Original failing run:    11 executions
- Minimal failing case:    4 executions (after 12 shrinks)
+ Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 16 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
@@ -1432,6 +1434,6 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
- - Assigned Coaches Must Be Suitable: 5x
+ - Assigned Coaches Must Be Suitable: 7x
  ------------------------------------------------------------
 ```

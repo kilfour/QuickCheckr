@@ -511,13 +511,13 @@ Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
     // Create a pool of coaches.
-    from coaches in Trackr.PoolForr<Coach>()
-        // Create a pool of courses.          
-    from courses in Trackr.PoolForr<Course>()
+    from coaches in Trackr.PoolFor<Coach>()
+    // Create a pool of courses.          
+    from courses in Trackr.PoolFor<Course>()
     from operations in Checkr.OneOfIf(
         // Create up to 10 coaches.
         coaches.When(a => a.Count() < 10, CreateCoach),
-        // Maybe update existing coaches.
+        // Maybe update existing coaches. Pick a random coach from the pool.
         coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
         // Create up to 5 courses.
         courses.When(a => a.Count() < 5, CreateCourse),
@@ -547,13 +547,12 @@ private static readonly CheckrOf<Case> CreateCoach =
 Now we retrieve a random coach from the pool and update its skills, verifying that the property `Skills` is set correctly.  
 ```csharp
 private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
-    // Pick a random coach from the pool.
     coach =>
         from skills in Checkr.Input("Coach Skills",
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from trace in Checkr.Trace("Coach Name", () => coach.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
-            () => coach.UpdateSkills(skills))                // Update it.
+            () => coach.UpdateSkills(skills))
         from checkSkills in Checkr.Expect("Coach Skills Set",
             () => coach.Skills.Count
                == skills.Count() && coach.Skills.All(skills.Contains))
@@ -591,11 +590,11 @@ And finally here's the system invariant.
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from coaches in Trackr.Pool<Coach>() // Retrieve all coaches from the pool.
-    from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
-        () => coaches.Any(coach => coach.AssignedCourses.Any()),
+    from pool in Trackr.Pool<Coach>() // Retrieve the coaches pool.
+    from assignedCheck in pool.ForThese(coach => coach.AssignedCourses.Any(),
+        coaches => Checkr.Expect("Assigned Coach Must Be Suitable",
         () => coaches.All( // Check that all assigned coaches are suitable.
-            coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course))))
+            coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))))
     select Case.Closed;
 ```
 **The Report:**  
@@ -624,10 +623,10 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
+ - Assigned Coaches Must Be Suitable: 14x
  - Coach Name is set: 5x
  - Course Name Set: 1x
  - Coach is assigned: 3x
- - Assigned Coaches Must Be Suitable: 4x
  - Coach Skills Set: 1x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
@@ -951,6 +950,53 @@ So after *Execution Shrinking*, the result is:
  ===================================================
  Passed Expectations
  - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
+#### Issues
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.ActIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+    from notNull in Checkr.Expect("Not Null", () => thing != null)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\H_OnShrinking\A_ExecutionShrinking\A_Issues\Issues.cs:19:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    625676917
+ ------------------------------------------------------------
+  Executed: Act
+   - Input: Counter = 2
+ ===================================
+  !! Expectation Failed: Not Null
+ ===================================
+ Passed Expectations
+ - Not Null: 1x
+ ------------------------------------------------------------
+```
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.ActIf("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+    from notNull in Checkr.Expect("Not Null", () => thing != null)
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTestFixed
+ Location:                Docs\H_OnShrinking\A_ExecutionShrinking\A_Issues\Issues.cs:60:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    625676917
+ ------------------------------------------------------------
+  Executed: Act
+   - Input: Counter = 3
+ ===================================
+  !! Expectation Failed: Not Null
+ ===================================
+ Passed Expectations
+ - Not Null: 1x
  ------------------------------------------------------------
 ```
 ### Input Shrinking
