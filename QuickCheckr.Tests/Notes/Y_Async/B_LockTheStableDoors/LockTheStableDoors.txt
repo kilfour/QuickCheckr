@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:32:1
- Original failing run:    11 executions
- Minimal failing case:    4 executions (after 12 shrinks)
+ Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 16 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
@@ -22,5 +22,5 @@
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
- - Assigned Coaches Must Be Suitable: 5x
+ - Assigned Coaches Must Be Suitable: 7x
  ------------------------------------------------------------

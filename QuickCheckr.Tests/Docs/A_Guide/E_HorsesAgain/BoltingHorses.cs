@@ -200,9 +200,9 @@ A coach was assigned while suitable, then a course's required skills changed, in
     [CodeExample]
     public static readonly CheckrOf<Case> TheCheckr =
         // Create a pool of coaches.
-        from coaches in Trackr.PoolForr<Coach>()
+        from coaches in Trackr.PoolFor<Coach>()
         // Create a pool of courses.          
-        from courses in Trackr.PoolForr<Course>()
+        from courses in Trackr.PoolFor<Course>()
         from operations in Checkr.OneOfIf(
             // Create up to 10 coaches.
             coaches.When(a => a.Count() < 10, CreateCoach),

@@ -9,10 +9,7 @@ public static partial class Trackr
     /// Creates a new pool for values of the given type and returns it.  
     /// Use when you want to start collecting objects across executions within a run.
     /// </summary>
-    public static CheckrOf<IEnumerable<T>> PoolFor<T>() =>
-        state => CheckrResult.Some(state, state.Memory.CreatePool<T>());
-
-    public static CheckrOf<Pool<T>> PoolForr<T>() =>
+    public static CheckrOf<Pool<T>> PoolFor<T>() =>
         state => CheckrResult.Some(state, new Pool<T>(state.Memory.CreatePool<T>()));
 
     /// <summary>
@@ -108,19 +105,6 @@ public static class Pools
 
 public static class Pool
 {
-    public static (Func<bool>, CheckrOf<Case>) When<T>(
-        string key,
-        IEnumerable<T> pool,
-        Func<IEnumerable<T>, bool> predicate,
-        Func<T, CheckrOf<Case>> checkr)
-        => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
-
-    public static (Func<bool>, CheckrOf<Case>) WhenAny<T>(
-        string key,
-        IEnumerable<T> pool,
-        Func<T, CheckrOf<Case>> checkr)
-        => When(key, pool, a => a.Any(), checkr);
-
     public static Pool<T1, T2> These<T1, T2>(Pool<T1> pool1, Pool<T2> pool2)
         => new(pool1.Values, pool2.Values);
 }
