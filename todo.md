@@ -1,5 +1,5 @@
 ## Current Version: 0.0.5
-* ActCarefully now has None result. (also for act) ?
+* Conditional Execution (try to reuse when CheckrOf)
   * [ x ] When
   * [   ] ActWhen
   * [   ] ActCarefullyWhen
