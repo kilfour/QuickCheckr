@@ -23,7 +23,7 @@ public class Configuration
             DeliberationPolicy = null,
             FileAs = string.Empty,
             Custodian = Custodian.Default,
-            Investigations = [],
+            InternalAffairs = [],
         };
     }
 
@@ -39,7 +39,7 @@ public class Configuration
         Assert.Equal(expected.FileAs, actual.FileAs);
         // Assert below touches the file system
         // Assert.IsType<Custodian.FileRecorder>(actual.Custodian.Recorder("test"));
-        Assert.Equal(expected.Investigations, actual.Investigations);
+        Assert.Equal(expected.InternalAffairs, actual.InternalAffairs);
         // more ?
     }
 }

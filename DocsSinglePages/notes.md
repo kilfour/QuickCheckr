@@ -385,7 +385,7 @@ public record Person(string Name, int Age);
 Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.
 
 Check this with: 
-* `Investigations = [Investigate.NullIssues]`  
+* `InternalAffairs = [InternalAffairs.NullIssues]`  
 ```csharp
     from turtle in Checkr.Input("Turtle",
         from depth in Configr<Turtle>.Depth(1, 3)

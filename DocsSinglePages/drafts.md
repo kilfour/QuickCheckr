@@ -15,35 +15,40 @@ Instead, pool operations (When, These, ToPool, ...) encapsulate "is this state v
 ### Creating a Pool
 Pools are created for *a specific type* using:  
 ```csharp
-Trackr.PoolFor<string>();
+Trackr.PoolFor<Contact>();
+```
+```csharp
+public record Contact(string Name)
+{
+    public string Name { get; set; } = Name;
+}
 ```
 ### Storing things in the Pool
 ```csharp
-from pool in Trackr.PoolFor<string>()
+from pool in Trackr.PoolFor<Contact>()
 from name in Checkr.Input("Name", Fuzzr.String())
-from storeName in Trackr.ToPool("Name", name)
+from storeName in Trackr.ToPool("Name", new Contact(name))
 select Case.Closed;
 ```
 ### Using random elements from a Pool
 ```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from names in Trackr.PoolFor<string>()
+    from contactBook in Trackr.Stashed(() => new Rolodex())
+    from names in Trackr.PoolFor<Contact>()
     from name in Checkr.Input("Name", NameFuzzr)
     from operations in Checkr.OneOfWhen(
         names.When(a => a.Count() < 10,
             from add in Checkr.Act("Add", () => contactBook.Add(name))
-            from storeName in Trackr.ToPool("Name", name)
+            from trace in Checkr.Trace("Name", () => name)
+            from storeName in Trackr.ToPool("Name", new Contact(name))
             select Case.Closed),
-        names.When(a => a.Any(), "Name to remove", nameToRemove =>
-                Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
-            pool => pool.Remove()),
         names.When(a => a.Any(),
             from newName in Checkr.Input("New Name", NameFuzzr)
-            from pool in Trackr.OneOfPool<string>("Name to update",
-                nameToUpdate =>
-                    from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
-                    select Case.Closed,
-                pool => pool.Update(newName))
+            from pool in Trackr.OneOfPool<Contact>("Contact to update",
+                contact =>
+                    from trace in Checkr.Trace("Old Name", () => contact.Name)
+                    from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                    from updatePool in Checkr.Perform(() => contact.Name = newName)
+                    select Case.Closed)
             select Case.Closed))
     from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;

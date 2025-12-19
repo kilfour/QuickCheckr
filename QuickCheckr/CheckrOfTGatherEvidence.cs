@@ -10,45 +10,43 @@ public static class CheckrOfTGatherEvidence
 {
     public static void GatherEvidence(
         this CheckrOf<Case> checkr,
+        InvestigationCount investigationCount,
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
-        var entries = GetVaultEntries(config);
+        var vault = Vault.From(config);
+        var vaultCaseFiles = vault.Check(checkr, config, false);
         var caseFiles = new List<CaseFile>();
-
-        foreach (var entry in entries)
+        for (int i = 0; i < investigationCount.NumberOfInvestigations; i++)
         {
-            var vaultConfig = config with { Seed = entry.Seed };
-            var caseFile = new CheckrRunner(checkr, config, entry.ExecutionsPerRun).Run();
-            if (caseFile.HasVerdict())
+            for (int j = 0; j < runs.NumberOfRuns; j++)
             {
-                caseFiles.Add(caseFile);
-            }
-        }
-
-        for (int i = 0; i < runs.NumberOfRuns; i++)
-        {
-            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
-            var caseFile = runner.Run();
-            if (caseFile.HasVerdict())
-            {
-                caseFiles.Add(caseFile);
+                var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
+                var caseFile = runner.Run();
+                if (caseFile.HasVerdict())
+                {
+                    caseFiles.Add(caseFile);
+                }
             }
         }
         var caseFilesToReport = new List<CaseFile>();
         foreach (var caseFile in caseFiles)
         {
+            if (vaultCaseFiles.Any(a => a.IsSimilar(caseFile)))
+                continue;
             if (caseFilesToReport.Any(a => a.IsSimilar(caseFile)))
                 continue;
             caseFilesToReport.Add(caseFile);
         }
-        var vault = Vault.From(config);
+
         var logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         var logRecorder = config.Custodian.Recorder(logPath);
         foreach (var caseFile in caseFilesToReport)
         {
+            // ---------------------------------------------------------------------------------------------
+            // BEHOLD THE DUPLICATION ... from Vault.cs
             logRecorder.Append($"Run failed for Seed: {caseFile.Verdict!.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
@@ -56,38 +54,17 @@ public static class CheckrOfTGatherEvidence
                     .Append(TheClerk.Transcribes(caseFile));
             }
             vault.AddSeed(caseFile.Verdict!.Seed, caseFile.Verdict!.OriginalRunExecutionCount, caseFile.Verdict!.GetFailure());
+            // ---------------------------------------------------------------------------------------------
         }
-
-
-
-        // if (finalCaseFile.HasVerdict())
-        //     ReportCaseFile(executionsPerRun, config, finalCaseFile);
-        // else
-        //     ReportCaseFileSummary(config, caseFiles);
-        // return CaseSummary.FromCaseFiles(caseFiles);
     }
+
+    public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);
+
+    public record InvestigationCount(int NumberOfInvestigations);
 
     // ---------------------------------------------------------------------------------------------
     // BEHOLD THE DUPLICATION ... from Vault.cs
-    private static HashSet<VaultEntry> GetVaultEntries(CheckrRunnerConfig config)
-    {
-        return config.Custodian.Retriever(GetVaultPath(config.FileAs, "evidence.qv"))
-            .Select(ParseVaultEntry)
-            .Where(entry => entry != null)
-            .ToHashSet()!;
-    }
-
     private static string GetVaultPath(string fileAs, string filename)
         => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
-
-    private static VaultEntry ParseVaultEntry(string line)
-    {
-        var parts = line.Split(',');
-        return parts.Length == 3 &&
-            int.TryParse(parts[0], out var seed) &&
-            int.TryParse(parts[1], out var executions)
-            ? new VaultEntry(seed, executions, parts[2])
-            : null!;
-    }
     // ---------------------------------------------------------------------------------------------
 }

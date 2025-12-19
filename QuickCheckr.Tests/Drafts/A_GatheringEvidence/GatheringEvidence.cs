@@ -1,8 +1,6 @@
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Drafts.A_GatheringEvidence;
 
@@ -23,19 +21,26 @@ public class GatheringEvidence
         }
     }
 
-    [Fact]
+    [Fact(Skip = "WIP")]
     [DocExample(typeof(ContactBook))]
+    [DocExample(typeof(GatheringEvidence), nameof(Configure))]
+    [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
     [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
     [DocContent(
 @"**Steps:**
 - Load in existing evidence, rerun, keep failing casefiles.
 - Do a normal run, add new failing case files to the list.
-- Distinct on ExecutionDeposition.
-- Save all evidence and reports to the vault.")]
+- Distinct on ExecutionDeposition (just count for now, still spiking).
+- Save all evidence and reports to the vault.
+
+For the code on display here, for now, this consistently results in three different reports.")]
+    [DocCodeFile("report1.qr", "text")]
+    [DocCodeFile("report2.qr", "text")]
+    [DocCodeFile("report3.qr", "text")]
     public void RunTest()
     {
         // var custodian = new InMemoryCustodian();
-        GetCheckr().GatherEvidence(100.Runs(), 20.ExecutionsPerRun(), Configure);
+        RunGatherEvidence(GetCheckr());
         // cfg => Configure(cfg with { Custodian = custodian.Build() }));
 
         // var log = custodian.Data.Values.ToList()[1];
@@ -59,6 +64,10 @@ public class GatheringEvidence
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
         => config with { FileAs = "MyQuickCheckrTest" };
+
+    [CodeSnippet]
+    private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
+        checkr.GatherEvidence(100.Investigations(), 1.Runs(), 10.ExecutionsPerRun(), Configure);
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")

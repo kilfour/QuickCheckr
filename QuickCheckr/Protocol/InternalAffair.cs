@@ -4,4 +4,4 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.Protocol;
 
-public record Investigation(Func<IArtery> Officer, Flow<IFiling> Procedure);
+public record InternalAffair(Func<IArtery> Officer, Flow<IFiling> Procedure);

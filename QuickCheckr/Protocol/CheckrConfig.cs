@@ -21,7 +21,7 @@ public record CheckrConfig
                 DeliberationPolicy = null,
                 FileAs = string.Empty,
                 Custodian = Custodian.Default,
-                Investigations = []
+                InternalAffairs = []
             };
     }
 
@@ -42,8 +42,8 @@ public record CheckrConfig
     public required Custodian Custodian { get; init; }
 
     /// <summary>
-    /// The set of enabled investigation modes.  
+    /// The set of enabled InternalAffair modes.  
     /// Use to surface additional diagnostics such as shrinking clues or exception traces.
     /// </summary>
-    public required Investigation[] Investigations { get; init; }
+    public required InternalAffair[] InternalAffairs { get; init; }
 }

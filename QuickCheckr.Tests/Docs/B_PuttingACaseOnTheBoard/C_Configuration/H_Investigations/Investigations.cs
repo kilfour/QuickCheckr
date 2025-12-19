@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_Inve
 
 // [DocFile]
 [DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]
-public class Investigations : BaseTest
+public class InternalAffairs : BaseTest
 {
     [Fact(Skip = "Pick a different example")]
     public void CheckEventProcedure()
@@ -21,7 +21,7 @@ public class Investigations : BaseTest
         var collector = Collect.ValuesOf<string>();
         var article = TheJournalist.Exposes(() =>
             BoltingHorses.TheCheckr.Run(1416432348, 20.ExecutionsPerRun(),
-                a => a with { Investigations = [new(() => collector, Procedure.Events)] }));
+                a => a with { InternalAffairs = [new(() => collector, Procedure.Events)] }));
         var reader = LinesReader.FromStringList([.. collector.Values]);
         Assert.Equal("ExecutionRemoved", reader.NextLine());
         Assert.Equal("ExecutionRemoved", reader.NextLine());
@@ -55,7 +55,7 @@ public class Investigations : BaseTest
             select Case.Closed;
         var collector = Collect.ValuesOf<string>();
         var article = TheJournalist.Exposes(() => check.Run(1393576429,
-            a => a with { Investigations = [new(() => collector, Procedure.InputShrinking)] }));
+            a => a with { InternalAffairs = [new(() => collector, Procedure.InputShrinking)] }));
         var reader = LinesReader.FromStringList([.. collector.Values.SelectMany(a => a.Split(Environment.NewLine))]);
         Assert.Equal("{", reader.NextLine());
         Assert.Equal("    ExecutionId: 1,", reader.NextLine());

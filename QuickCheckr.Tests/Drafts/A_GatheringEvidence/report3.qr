@@ -1,0 +1,20 @@
+ ------------------------------------------------------------
+ Original failing run:    10 executions
+ Minimal failing case:    4 executions (after 10 shrinks)
+ Seed:                    441368127
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "Paul Starr"
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "Paul Starr"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 9x
+ ------------------------------------------------------------

@@ -13,7 +13,7 @@ public record CheckrRunnerConfig
     {
         ShrinkMode = config.ShrinkMode;
         DeliberationPolicy = config.DeliberationPolicy;
-        Signals = [.. config.Investigations.Select(a =>
+        Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
                 Pulse.Prime(
                     () => new ManOfWealthAndTaste()

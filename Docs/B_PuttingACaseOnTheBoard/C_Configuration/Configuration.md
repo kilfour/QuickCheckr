@@ -11,6 +11,6 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
     DeliberationPolicy = null,
     FileAs = string.Empty,
     Custodian = Custodian.Default,
-    Investigations = [],
+    InternalAffairs = [],
 }
 ```

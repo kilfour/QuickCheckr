@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
@@ -5,7 +6,7 @@ namespace QuickCheckr.UnderTheHood.Archiving;
 
 public class Vault
 {
-    public virtual void Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved) { }
+    public virtual IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved) => [];
     public virtual bool Replay() { return false; }
     public virtual void AddSeed(int seed, int numberOfExecutions, string failure) { }
 
@@ -30,6 +31,7 @@ public class EvidenceVault : Vault
         evidenceRecorder = config.Custodian.Recorder(path);
         logRecorder = config.Custodian.Recorder(logPath);
     }
+
     private HashSet<VaultEntry> GetVaultEntries(CheckrRunnerConfig config)
     {
         return config.Custodian.Retriever(path)
@@ -41,13 +43,15 @@ public class EvidenceVault : Vault
     private static string GetVaultPath(string fileAs, string filename)
         => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
 
-    public override void Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
+    public override IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
     {
+        var caseFiles = new List<CaseFile>();
         foreach (var entry in entries)
         {
             var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun).Run();
             if (caseFile.HasVerdict())
             {
+                caseFiles.Add(caseFile);
                 logRecorder.Append($"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
@@ -73,6 +77,7 @@ public class EvidenceVault : Vault
             }
         }
         Save();
+        return caseFiles;
     }
 
     public override void AddSeed(int seed, int numberOfExecutions, string failure)

@@ -6,50 +6,50 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.Protocol;
 /// <summary>
-/// Predefined investigation modes that enable additional diagnostic output during a run.  
+/// Predefined InternalAffairs modes that enable additional diagnostic output during a run.  
 /// Use these to gain insight into events, failures, or shrinking behaviour while debugging a Checkr.
 /// </summary>
-public static class Investigate
+public static class InternalAffairs
 {
     /// <summary>
     /// Records internal events emitted during execution.  
     /// Use when you want a high-level view of what the engine is doing.
     /// </summary>
-    public static readonly Investigation Events =
+    public static readonly InternalAffair Events =
         new(() => FileLog.Write(), Procedure.Events);
 
     /// <summary>
     /// Records detailed information whenever an exception is recorded.  
     /// Use to investigate what exceptions are being thrown during a run.
     /// </summary>
-    public static readonly Investigation EvidenceFailures =
+    public static readonly InternalAffair EvidenceFailures =
         new(() => FileLog.Write(), Procedure.EvidenceFailures);
 
     /// <summary>
     /// Records clues produced during input shrinking.  
     /// Use when debugging why a particular minimal case was chosen.
     /// </summary>
-    public static readonly Investigation InputShrinking =
+    public static readonly InternalAffair InputShrinking =
         new(() => FileLog.Write(), Procedure.InputShrinking);
 
     /// <summary>
     /// Highlights cases where null values interfere with shrinking.  
     /// Use to identify problematic null structures that prevent full minimisation.
     /// </summary>
-    public static readonly Investigation NullIssues =
+    public static readonly InternalAffair NullIssues =
         new(() => FileLog.Write(), Procedure.NullIssues);
 
     /// <summary>
-    /// A convenience collection of commonly useful investigations.  
+    /// A convenience collection of commonly useful InternalAffairs.  
     /// Use to quickly enable broad diagnostics during development.
     /// </summary>
-    public static readonly Investigation[] All =
+    public static readonly InternalAffair[] All =
         [Events, EvidenceFailures, NullIssues, InputShrinking];
 }
 
 /// <summary>
-/// Diagnostic procedures that define how investigation data is collected and traced.  
-/// These flows determine what information is emitted when an investigation is enabled.
+/// Diagnostic procedures that define how InternalAffair data is collected and traced.  
+/// These flows determine what information is emitted when an InternalAffair is enabled.
 /// </summary>
 public static class Procedure
 {

@@ -1,14 +1,11 @@
 ## Current Version: 0.0.5
-* gather evidence
-  * New Scope : `Investigations` one above `Runs`
-  * Rename old `Investigations` to `InternalAffairs`
-* Add an introduction to pools before Bolting Horses
-  This is turning into a growing experimental testcase
 
-### Tests Current Focus
+* review (refine ?) evidence gathering 
 
 ### Doc Current Focus
+* Add an introduction to pools to the guide, before Bolting Horses 
 
+### Tests Current Focus
 
 ## 0.0.6
 * look into different collection shrinking

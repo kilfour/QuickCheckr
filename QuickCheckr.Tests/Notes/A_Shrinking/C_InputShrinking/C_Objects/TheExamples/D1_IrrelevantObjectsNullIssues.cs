@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExam
 @"Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.
 
 Check this with: 
-* `Investigations = [Investigate.NullIssues]`")]
+* `InternalAffairs = [InternalAffairs.NullIssues]`")]
 public class D1_IrrelevantObjectsNullIssues : BaseTest
 {
     [Fact]

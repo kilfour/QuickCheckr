@@ -1,19 +1,20 @@
  ------------------------------------------------------------
  Test:                    UsingIt
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:69:1
+ Location:                Drafts\D_InPoolsWeTrust\InPoolsWeTrust.cs:81:1
  Original failing run:    6 executions
- Minimal failing case:    4 executions (after 6 shrinks)
- Seed:                    1385305720
+ Minimal failing case:    3 executions (after 5 shrinks)
+ Seed:                    523518063
  ------------------------------------------------------------
   Executed: Add
- ------------------------------------------------------------
-  Executed: Update
-   - Input: New Name = "George McCartney"
+   - Trace: Name = Paul Harrison
  ------------------------------------------------------------
   Executed: Add
+   - Input: Name = "Paul McCartney"
+   - Trace: Name = Paul McCartney
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "George McCartney"
+   - Input: New Name = "Paul McCartney"
+   - Trace: Old Name = Paul Harrison
  ========================================
   !! Expectation Failed: Count matches
  ========================================
