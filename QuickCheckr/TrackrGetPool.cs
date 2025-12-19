@@ -11,7 +11,4 @@ public static partial class Trackr
     /// </summary>
     public static CheckrOf<Pool<T>> GetPool<T>() =>
         state => CheckrResult.Some(state, new Pool<T>(state.Memory.GetPool<T>()));
-
-    public static CheckrOf<Pool<T>> GetPool<T>(string key) =>
-        state => CheckrResult.Some(state, new Pool<T>(state.Memory.GetPool<T>(key)));
 }

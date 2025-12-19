@@ -35,32 +35,4 @@ public class TrackrGetPool
 
 Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
 ";
-
-    [Fact]
-    [DocExample(typeof(TrackrGetPool), nameof(GetCheckrKeyed))]
-    [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrGetPool), nameof(GetMessageKeyed), "text")]
-    public void RunTestKeyed()
-    {
-        var ex = Assert.Throws<PoolDoesNotExistException>(() => GetCheckrKeyed().Run());
-        Assert.Equal(GetMessageKeyed(), ex.Message);
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckrKeyed()
-    {
-        return
-            from one in Trackr.GetPool<int>("integers")
-            select Case.Closed;
-    }
-
-    [CodeSnippet]
-    [CodeRemove("@\"")]
-    [CodeRemove("\";")]
-    private static string GetMessageKeyed() =>
-@"A retrieval attempt was made for a 'Pool' of 'integers', but none was found.
-
-Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
-";
 }

@@ -80,14 +80,9 @@ public class Memory
     // --------------------------------------------------------------------------
     // Pool
     public IEnumerable<T> CreatePool<T>()
-    {
-        poolGuard.Check(typeof(T).FullName!);
-        return LongTermMemory.CreatePool<T>();
-    }
+        => LongTermMemory.CreatePool<T>(poolGuard.Check(typeof(T).FullName!));
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
-    public IEnumerable<T> GetPool<T>(string key)
-            => LongTermMemory.GetPool<T>(key);
     public Dictionary<int, T> GetPoolDictionary<T>()
         => LongTermMemory.GetPoolDictionary<T>();
     public IEnumerable<int> GetPoolIds<T>()

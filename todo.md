@@ -1,5 +1,5 @@
 ## Current Version: 0.0.5
-* keyed overload for PoolFor
+
 
 ### Tests to Add
 * Nested OneOf/OneOfIf
@@ -26,6 +26,7 @@
 * update xml summaries
 
 ## 0.0.6+
+* keyed overload for PoolFor, GetPool, ...
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
