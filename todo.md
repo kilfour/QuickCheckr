@@ -1,13 +1,13 @@
 ## Current Version: 0.0.5
 * review (refine ?) evidence gathering 
-* CaseFile Similar
-  * Failure equal
-  * Execution count equal
-  * All Executions equal
-    Execution is equal when
-    * times executed is the same
-    * Action label is the same
-    * input labels are the same  
+  * CaseFile Similar (Configurable ?)
+    * Failure equal
+    * Execution count equal
+    * All Executions equal
+      Execution is equal when
+      * times executed is the same
+      * Action label is the same
+      * input labels are the same  
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 

@@ -6,7 +6,7 @@ A *run* is a full pass through your Checkr script.
 Every run starts with a clean slate:
 
 * All `Trackr.Stashed` values are reset.
-* Pools (`Trackr.Pool`, explained later) start empty.
+* Pools (explained later) start empty.
 * Counters, uniqueness constraints, and any internal memories tied to a run are cleared.
 
 This guarantees that each run is **independent**, **repeatable**, and **reproducible** based on the seed.
