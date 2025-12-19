@@ -2,6 +2,7 @@ using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
+using QuickCheckr.Tests.Drafts.D_InPoolsWeTrust;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide;
@@ -25,7 +26,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
   -  How to add inputs, actions, and traces.
 - [The Stash, Runs and executions][TheStashRunsAndExecutions]
   -  An example and an explanation of how QuickCheckr handles stateful testing.
-- [Choosing the Next Move]
+- [Choosing the Next Move][ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.")]

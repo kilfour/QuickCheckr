@@ -12,21 +12,8 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 @"Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
 
-The only concept we haven't covered yet, and that we need here, is:
-
-**Pools**  
-These let QuickCheckr accumulate multiple objects across executions.  
-Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
-In this example, we'll keep all created coaches and courses in pools,
-and each operation will pick from those pools to mutate the system over time.
-
-Pools are not exposed as raw sequences on purpose.
-Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ToPool, ...) encapsulate ""is this state valid?"" so shrinking can replay safely.
-
 *So, here we go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
-
 
 The invariant we are checking is : 
 - *Any coach assigned a course must have the required skills to teach that course*.
@@ -83,7 +70,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1073869613, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);
-        ExplainMe<BoltingHorses>(false);
         Verify(article);
     }
 

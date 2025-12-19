@@ -24,8 +24,7 @@ public class ThePoolInvestigation : BaseTest
         var article = TheJournalist.Investigates(() =>
             GetCheckr().Run(1851717714, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.Default }));
         WriteAsserts(article, false);
-        WriteReport<ThePoolInvestigation>(article, true);
-        ExplainMe<ThePoolInvestigation>(false);
+        WriteReport<ThePoolInvestigation>(article, false);
         Verify(article);
     }
 

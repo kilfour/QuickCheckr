@@ -26,7 +26,6 @@ public class ParsingNumbers : BaseTest
             GetCheckr().Run(200.Runs(), Configure));
         WriteAsserts(article, false);
         WriteReport<ParsingNumbers>(article, false);
-        ExplainMe<ParsingNumbers>(false);
         Verify(article);
     }
 

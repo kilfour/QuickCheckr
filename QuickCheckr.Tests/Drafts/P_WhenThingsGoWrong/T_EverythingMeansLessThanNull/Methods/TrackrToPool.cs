@@ -3,14 +3,13 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.T_EverythingMeansLessThanNull.Methods;
 
-
 [DocFile]
-public class TrackrGetPool
+public class TrackrToPool
 {
     [Fact]
-    [DocExample(typeof(TrackrGetPool), nameof(GetCheckr))]
+    [DocExample(typeof(TrackrToPool), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrGetPool), nameof(GetMessage), "text")]
+    [DocExample(typeof(TrackrToPool), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<PoolDoesNotExistException>(() => GetCheckr().Run());
@@ -22,7 +21,7 @@ public class TrackrGetPool
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.GetPool<int>()
+            from one in Trackr.ToPool("answer", 42)
             select Case.Closed;
     }
 
@@ -30,7 +29,7 @@ public class TrackrGetPool
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"A retrieval attempt was made for a 'Pool' of 'System.Int32', but none was found.
+@"A storage attempt was made for a 'Pool' of 'System.Int32' using key 'answer', but no such pool was found.
 
 Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
 ";

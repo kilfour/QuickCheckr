@@ -37,6 +37,7 @@ public class FilingEvidence : BaseTest
         Assert.Equal(3, custodian.Data.Count);
         Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
     }
+
     [Fact]
     [DocContent("In case a test passes, a *summary report* is provided.")]
     [DocCodeFile("FilingEvidenceRunPassed.txt", "text")]

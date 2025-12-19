@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Drafts\A_GatheringEvidence\GatheringEvidence.cs:29:1
+ Original failing run:    10 executions
+ Minimal failing case:    2 executions (after 8 shrinks)
+ Seed:                    1833124408
+ ------------------------------------------------------------
+  Executed: Add (2 Times)
+   - Input: Name = "George McCartney"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 9x
+ ------------------------------------------------------------

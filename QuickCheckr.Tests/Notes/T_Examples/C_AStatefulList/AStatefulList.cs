@@ -32,7 +32,6 @@ public class AStatefulList : BaseTest
             GetCheckr().Run(254875886, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<AStatefulList>(article, false);
-        ExplainMe<AStatefulList>(false);
         Verify(article);
     }
 

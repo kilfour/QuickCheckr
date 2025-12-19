@@ -1,12 +1,12 @@
 ## Current Version: 0.0.5
-
-### Tests to Add
-* CaseSummary DepositionTests
-
-### Doc current focus
+* gather evidence
 * Add an introduction to pools before Bolting Horses
-* Build HorsesForCourses.Api for testing example
-  * Initial Version Ready (auth is hardcoded admin for now)
+  This is turning into a growing experimental testcase
+
+### Tests Current Focus
+
+### Doc Current Focus
+
 
 ## 0.0.6
 * look into different collection shrinking
@@ -36,6 +36,8 @@
   * [ x ] ShrinkMode
   * [ X ] DeliberationPolicy
   * [   ] Investigations
+* Build HorsesForCourses.Api for testing example
+  * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation

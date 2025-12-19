@@ -1,0 +1,22 @@
+ ------------------------------------------------------------
+ Test:                    UsingIt
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:69:1
+ Original failing run:    6 executions
+ Minimal failing case:    4 executions (after 6 shrinks)
+ Seed:                    1385305720
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "George McCartney"
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "George McCartney"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 5x
+ ------------------------------------------------------------

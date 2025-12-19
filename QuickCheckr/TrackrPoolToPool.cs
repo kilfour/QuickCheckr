@@ -14,6 +14,6 @@ public static partial class Trackr
         {
             var id = state.Memory.StoreVariable(key,
                 () => Fuzzr.Int(0, int.MaxValue).Unique("Quick-Checkr-Pool-Id")(state.FuzzrState).Value);
-            return CheckrResult.Some(state, state.Memory.StoreInPool(id, value));
+            return CheckrResult.Some(state, state.Memory.StoreInPool(id, key, value));
         };
 }

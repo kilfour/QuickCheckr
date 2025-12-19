@@ -20,7 +20,7 @@ public class F_MultipleRelevantProperties : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1889365782, 1.ExecutionsPerRun()));
         WriteAsserts(article);
-        WriteReport<F_MultipleRelevantProperties>(article, true);
+        WriteReport<F_MultipleRelevantProperties>(article, false);
         Verify(article);
     }
 

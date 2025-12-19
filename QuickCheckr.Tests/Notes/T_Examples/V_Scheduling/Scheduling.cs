@@ -25,7 +25,6 @@ public class Scheduling : BaseTest
         var article = TheJournalist.Exposes(() => GetCheckr().Run(511619818));
         WriteAsserts(article, false);
         WriteReport<Scheduling>(article, false);
-        ExplainMe<Scheduling>(false);
         Verify(article);
     }
 

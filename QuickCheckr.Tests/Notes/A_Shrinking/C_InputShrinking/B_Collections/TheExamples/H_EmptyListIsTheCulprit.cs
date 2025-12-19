@@ -19,7 +19,6 @@ public class H_EmptyListIsTheCulprit : BaseTest
             GetCheckr().Run(2077876521, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<H_EmptyListIsTheCulprit>(article, false);
-        ExplainMe<H_EmptyListIsTheCulprit>(false);
         Verify(article);
     }
 

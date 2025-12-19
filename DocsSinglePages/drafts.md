@@ -1,3 +1,53 @@
+## In Pools We Trust
+
+**Pools**  
+
+These let QuickCheckr accumulate multiple objects across executions.  
+Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
+
+Pools are not exposed as raw sequences on purpose.
+Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
+Instead, pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+
+- [In Pools We Trust] <= for guide intro
+  - An overview of pools and their usage.
+  
+### Creating a Pool
+Pools are created for *a specific type* using:  
+```csharp
+Trackr.PoolFor<string>();
+```
+### Storing things in the Pool
+```csharp
+from pool in Trackr.PoolFor<string>()
+from name in Checkr.Input("Name", Fuzzr.String())
+from storeName in Trackr.ToPool("Name", name)
+select Case.Closed;
+```
+### Using random elements from a Pool
+```csharp
+    from contactBook in Trackr.Stashed(() => new ContactBook())
+    from names in Trackr.PoolFor<string>()
+    from name in Checkr.Input("Name", NameFuzzr)
+    from operations in Checkr.OneOfWhen(
+        names.When(a => a.Count() < 10,
+            from add in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        names.When(a => a.Any(), "Name to remove", nameToRemove =>
+                Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
+            pool => pool.Remove()),
+        names.When(a => a.Any(),
+            from newName in Checkr.Input("New Name", NameFuzzr)
+            from pool in Trackr.OneOfPool<string>("Name to update",
+                nameToUpdate =>
+                    from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
+                    select Case.Closed,
+                pool => pool.Update(newName))
+            select Case.Closed))
+    from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+    select Case.Closed;
+```
 ## Conditional Execution
 ### Checkr Act Carefully When
 ```csharp
@@ -36,6 +86,16 @@
   Throws:  
 ```text
 A retrieval attempt was made for a 'Pool' of 'System.Int32', but none was found.
+Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
+```
+#### Trackr To Pool
+```csharp
+    from one in Trackr.ToPool("answer", 42)
+    select Case.Closed;
+```
+  Throws:  
+```text
+A storage attempt was made for a 'Pool' of 'System.Int32' using key 'answer', but no such pool was found.
 Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
 ```
 ### It Is Written, ... But Only Once
