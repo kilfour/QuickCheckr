@@ -1,4 +1,5 @@
-## Current Version: 0.0.5
+## Current Version: 0.0.5  
+* Review Configuration entry
 * review (refine ?) evidence gathering 
   * CaseFile Similar (Configurable ?)
     * Failure equal
@@ -7,7 +8,7 @@
       Execution is equal when
       * times executed is the same
       * Action label is the same
-      * input labels are the same  
+      * input labels are the same
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 
@@ -41,7 +42,7 @@
   * [ x ] Custodian
   * [ x ] ShrinkMode
   * [ X ] DeliberationPolicy
-  * [   ] Investigations
+  * [   ] InternalAffairs
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
