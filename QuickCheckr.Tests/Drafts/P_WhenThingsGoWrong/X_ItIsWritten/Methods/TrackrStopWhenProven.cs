@@ -1,16 +1,16 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten.Methods;
 
 
 [DocFile]
-public class TrackrVerify
+public class TrackrStopWhenProven
 {
     [Fact]
-    [DocExample(typeof(TrackrVerify), nameof(GetCheckr))]
+    [DocExample(typeof(TrackrStopWhenProven), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrVerify), nameof(GetMessage), "text")]
+    [DocExample(typeof(TrackrStopWhenProven), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -22,8 +22,8 @@ public class TrackrVerify
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.Verify("reused", () => true)
-            from two in Trackr.Verify("reused", () => true)
+            from one in Trackr.StopWhenProven("reused", () => false)
+            from two in Trackr.StopWhenProven("reused", () => false)
             select Case.Closed;
     }
 

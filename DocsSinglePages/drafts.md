@@ -26,8 +26,9 @@
     from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
     select Case.Closed;
 ```
-## Everything Means Less Than Null
-### Trackr Get Pool
+## When Things Go Wrong
+### Everything Means Less Than Null
+#### Trackr Get Pool
 ```csharp
     from one in Trackr.GetPool<int>()
     select Case.Closed;
@@ -37,7 +38,7 @@
 A retrieval attempt was made for a 'Pool' of 'System.Int32', but none was found.
 Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
 ```
-## It Is Written, ... But Only Once
+### It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
 are not just pretty captions in a report.
 
@@ -52,7 +53,7 @@ Because of this dual role, **each key may only be written once per relevant scop
 
 If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
   
-### Checkr Act
+#### Checkr Act
 ```csharp
     from one in Checkr.Act("reused", () => { })
     from two in Checkr.Act("reused", () => { })
@@ -68,7 +69,7 @@ The following Checkrs write to the this bank:
 - 'Checkr.Act'
 - 'Checkr.ActCarefully'
 ```
-### Checkr Act Carefully
+#### Checkr Act Carefully
 ```csharp
     from one in Checkr.ActCarefully("reused", () => { })
     from two in Checkr.ActCarefully("reused", () => { })
@@ -84,7 +85,7 @@ The following Checkrs write to the this bank:
 - 'Checkr.Act'
 - 'Checkr.ActCarefully'
 ```
-### Checkr Expect
+#### Checkr Expect
 ```csharp
     from one in Checkr.Expect("reused", () => true)
     from two in Checkr.Expect("reused", () => true)
@@ -102,7 +103,7 @@ The following Checkrs write to the this bank:
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'
 ```
-### Checkr Input
+#### Checkr Input
 ```csharp
     from one in Checkr.Input("reused", Fuzzr.Int())
     from two in Checkr.Input("reused", Fuzzr.Int())
@@ -117,7 +118,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 - 'Checkr.Input'
 ```
-### Checkr One Of
+#### Checkr One Of
 ```csharp
     from one in Checkr.OneOf(Checkr.Act("One", () => { }))
     from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
@@ -148,7 +149,7 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
 ```
-### Checkr One Of When
+#### Checkr One Of When
 ```csharp
     from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
     from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
@@ -179,7 +180,7 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
 ```
-### Checkr Trace
+#### Checkr Trace
 ```csharp
     from one in Checkr.Trace("reused", () => "")
     from two in Checkr.Trace("reused", () => "")
@@ -194,8 +195,44 @@ Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 The following Checkrs write to the this bank:
 - 'Checkr.Trace'
+- 'Checkr.TraceWhen'
 ```
-### Trackr Pool For
+#### Checkr Trace When
+```csharp
+    from one in Checkr.TraceWhen("reused", () => true, () => "")
+    from two in Checkr.TraceWhen("reused", () => true, () => "")
+    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank:
+- 'Checkr.Trace'
+- 'Checkr.TraceWhen'
+```
+#### Trackr Expect
+```csharp
+    from one in Trackr.Expect("reused", () => true)
+    from two in Trackr.Expect("reused", () => true)
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank:
+- 'Checkr.Expect'
+- 'Trackr.Expect'
+- 'Trackr.Verify'
+- 'Trackr.StopWhenProven'
+```
+#### Trackr Pool For
 ```csharp
     from one in Trackr.PoolFor<int>()
     from two in Trackr.PoolFor<int>()
@@ -210,7 +247,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 - 'Trackr.PoolFor'
 ```
-### Trackr Stashed
+#### Trackr Stashed
 ```csharp
     from one in Trackr.Stashed(() => 42)
     from two in Trackr.Stashed(() => 666)
@@ -239,7 +276,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 - 'Trackr.Stashed'
 ```
-### Trackr Stop When Proven
+#### Trackr Stop When Proven
 ```csharp
     from one in Trackr.StopWhenProven("reused", () => false)
     from two in Trackr.StopWhenProven("reused", () => false)
@@ -257,7 +294,7 @@ The following Checkrs write to the this bank:
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'
 ```
-### Trackr Verify
+#### Trackr Verify
 ```csharp
     from one in Trackr.Verify("reused", () => true)
     from two in Trackr.Verify("reused", () => true)

@@ -1,16 +1,16 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten.Methods;
 
 
 [DocFile]
-public class TrackrPoolFor
+public class CheckrTraceWhen
 {
     [Fact]
-    [DocExample(typeof(TrackrPoolFor), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrTraceWhen), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrPoolFor), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrTraceWhen), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -22,8 +22,9 @@ public class TrackrPoolFor
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.PoolFor<int>()
-            from two in Trackr.PoolFor<int>()
+            from one in Checkr.TraceWhen("reused", () => true, () => "")
+            from two in Checkr.TraceWhen("reused", () => true, () => "")
+            from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
             select Case.Closed;
     }
 
@@ -31,7 +32,7 @@ public class TrackrPoolFor
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'System.Int32' is written more than once to the same memory location.
+@"Key 'reused' is written more than once to the same memory location.
 
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
@@ -39,6 +40,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 
 The following Checkrs write to the this bank:
 
-- 'Trackr.PoolFor'
+- 'Checkr.Trace'
+- 'Checkr.TraceWhen'
 ";
 }

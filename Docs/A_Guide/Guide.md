@@ -11,7 +11,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
   -  How to add inputs, actions, and traces.
 - [The Stash, Runs and executions][TheStashRunsAndExecutions]
   -  An example and an explanation of how QuickCheckr handles stateful testing.
-- [ChoosingTheNextMove]
+- [Choosing the Next Move]
   -  A brief introduction to behavioural branching.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.  

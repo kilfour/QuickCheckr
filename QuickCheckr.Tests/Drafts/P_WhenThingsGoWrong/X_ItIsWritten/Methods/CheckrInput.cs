@@ -1,16 +1,17 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten.Methods;
 
 [DocFile]
-public class CheckrTrace
+public class CheckrInput
 {
     [Fact]
-    [DocExample(typeof(CheckrTrace), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrInput), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(CheckrTrace), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrInput), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -22,9 +23,8 @@ public class CheckrTrace
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.Trace("reused", () => "")
-            from two in Checkr.Trace("reused", () => "")
-            from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+            from one in Checkr.Input("reused", Fuzzr.Int())
+            from two in Checkr.Input("reused", Fuzzr.Int())
             select Case.Closed;
     }
 
@@ -40,6 +40,6 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 
 The following Checkrs write to the this bank:
 
-- 'Checkr.Trace'
+- 'Checkr.Input'
 ";
 }

@@ -34,7 +34,7 @@ public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
 
 public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
 {
-    public DuplicateKeyWriteGuardForTraces() : base(["Checkr.Trace"]) { }
+    public DuplicateKeyWriteGuardForTraces() : base(["Checkr.Trace", "Checkr.TraceWhen"]) { }
 }
 
 public class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard

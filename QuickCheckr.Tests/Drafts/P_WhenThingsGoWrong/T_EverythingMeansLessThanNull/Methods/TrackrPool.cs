@@ -1,8 +1,7 @@
-using QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_EverythingMeansLessThanNull.Methods;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.T_EverythingMeansLessThanNull.Methods;
 
 
 [DocFile]

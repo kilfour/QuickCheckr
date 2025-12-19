@@ -1,24 +1,10 @@
 ## Current Version: 0.0.5
 
-* It is written only once, keyed overloads for 
-  * tracewhen (also add conditional execution)
-  * Trackr.Expect
-
 ### Tests to Add
-* Nested OneOf/OneOfIf
 * CaseSummary DepositionTests
-* What happens if a muppet puts an Input inside of a When
-  Probably just works, better to make sure.
 
 ### Doc current focus
 * Add an introduction to pools before Bolting Horses
-* Doc Configuration
-  * [ x ] FileAs : add CaseSummary info
-  * [ x ] Custodian
-  * [ x ] ShrinkMode
-  * [ X ] DeliberationPolicy
-  * [   ] Investigations
-
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
@@ -44,6 +30,12 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
+* Doc Configuration
+  * [ x ] FileAs : add CaseSummary info
+  * [ x ] Custodian
+  * [ x ] ShrinkMode
+  * [ X ] DeliberationPolicy
+  * [   ] Investigations
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
@@ -58,7 +50,7 @@
 * GetFromPool (bool, T?) => Result
 * Nested InputShrinkingClue ?
 * Loose the lazy IEnumerable in shrinking (yield)
-* unify ConditionalResult and DelayedResult
+* unify ConditionalResult and DelayedResult maybe
 
 ## Other
 * Scour QuickAcid for any interesting tests left behind.

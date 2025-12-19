@@ -1,16 +1,15 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten.Methods;
 
 [DocFile]
-public class TrackrStashed
+public class CheckrOneOfWhen
 {
     [Fact]
-    [DocExample(typeof(TrackrStashed), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrStashed), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -22,16 +21,17 @@ public class TrackrStashed
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.Stashed(() => 42)
-            from two in Trackr.Stashed(() => 666)
+            from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
+            from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
             select Case.Closed;
     }
+
 
     [CodeSnippet]
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'System.Int32' is written more than once to the same memory location.
+@"Key 'OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same memory location.
 
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
@@ -39,13 +39,14 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 
 The following Checkrs write to the this bank:
 
-- 'Trackr.Stashed'
+- 'Checkr.OneOf'
+- 'Checkr.OneOfWhen'
 ";
 
     [Fact]
-    [DocExample(typeof(TrackrStashed), nameof(GetCheckrKeyed))]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetCheckrKeyed))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(TrackrStashed), nameof(GetMessageKeyed), "text")]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetMessageKeyed), "text")]
     public void RunTestKeyed()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckrKeyed().Run());
@@ -57,10 +58,11 @@ The following Checkrs write to the this bank:
     private static CheckrOf<Case> GetCheckrKeyed()
     {
         return
-            from one in Trackr.Stashed("reused", () => 42)
-            from two in Trackr.Stashed("reused", () => 666)
+            from one in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("One", () => { })))
+            from two in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("Two", () => { })))
             select Case.Closed;
     }
+
 
     [CodeSnippet]
     [CodeRemove("@\"")]
@@ -74,7 +76,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 
 The following Checkrs write to the this bank:
 
-- 'Trackr.Stashed'
+- 'Checkr.OneOf'
+- 'Checkr.OneOfWhen'
 ";
-
 }

@@ -1,7 +1,7 @@
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten;
 
 [DocFile]
 [DocFileHeader("It Is Written, ... But Only Once")]
@@ -20,4 +20,4 @@ Because of this dual role, **each key may only be written once per relevant scop
 
 If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
 ")]
-public class A_ItIsWrittenButOnlyOnce;
+public class ItIsWrittenButOnlyOnce;

@@ -1,16 +1,16 @@
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
+namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.X_ItIsWritten.Methods;
 
 
 [DocFile]
-public class CheckrExpect
+public class CheckrAct
 {
     [Fact]
-    [DocExample(typeof(CheckrExpect), nameof(GetCheckr))]
+    [DocExample(typeof(CheckrAct), nameof(GetCheckr))]
     [DocContent("  Throws:")]
-    [DocExample(typeof(CheckrExpect), nameof(GetMessage), "text")]
+    [DocExample(typeof(CheckrAct), nameof(GetMessage), "text")]
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
@@ -22,8 +22,8 @@ public class CheckrExpect
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.Expect("reused", () => true)
-            from two in Checkr.Expect("reused", () => true)
+            from one in Checkr.Act("reused", () => { })
+            from two in Checkr.Act("reused", () => { })
             select Case.Closed;
     }
 
@@ -39,9 +39,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 
 The following Checkrs write to the this bank:
 
-- 'Checkr.Expect'
-- 'Trackr.Expect'
-- 'Trackr.Verify'
-- 'Trackr.StopWhenProven'
+- 'Checkr.Act'
+- 'Checkr.ActCarefully'
 ";
 }
