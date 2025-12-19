@@ -7,7 +7,6 @@ namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 public class CheckrOneOfWhen
 {
     [Fact]
-    [DocContent("- `Checkr.OneOfWhen`:")]
     [DocExample(typeof(CheckrOneOfWhen), nameof(GetCheckr))]
     [DocContent("  Throws:")]
     [DocExample(typeof(CheckrOneOfWhen), nameof(GetMessage), "text")]
@@ -38,7 +37,44 @@ QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
+
+- 'Checkr.OneOf'
+- 'Checkr.OneOfWhen'
+";
+
+    [Fact]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetCheckrKeyed))]
+    [DocContent("  Throws:")]
+    [DocExample(typeof(CheckrOneOfWhen), nameof(GetMessageKeyed), "text")]
+    public void RunTestKeyed()
+    {
+        var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckrKeyed().Run());
+        Assert.Equal(GetMessageKeyed(), ex.Message);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckrKeyed()
+    {
+        return
+            from one in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("One", () => { })))
+            from two in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("Two", () => { })))
+            select Case.Closed;
+    }
+
+
+    [CodeSnippet]
+    [CodeRemove("@\"")]
+    [CodeRemove("\";")]
+    private static string GetMessageKeyed() =>
+@"Key 'reused' is written more than once to the same memory location.
+
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+
+The following Checkrs write to the this bank:
 
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'

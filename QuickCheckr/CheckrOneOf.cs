@@ -10,17 +10,14 @@ public static partial class Checkr
     /// Use when modelling behaviour where multiple alternative actions may occur, each with equal probability.
     /// </summary>
     public static CheckrOf<Case> OneOf(params CheckrOf<Case>[] scripts)
-        => OneOfInternal(scripts);
+        => OneOf("OneOf|Default|QuickCheckr|Key", scripts);
 
-    private static CheckrOf<T> OneOfInternal<T>(
-        CheckrOf<T>[] scripts)
-    {
-        var key = $"OneOf|Default|QuickCheckr|Key";
-        return state =>
-            {
-                var index = state.Memory.StoreVariable(key,
-                    () => Fuzzr.Int(0, scripts.Length)(state.FuzzrState).Value);
-                return scripts[index](state);
-            };
-    }
+
+    public static CheckrOf<Case> OneOf(string key, params CheckrOf<Case>[] scripts) =>
+        state =>
+        {
+            var index = state.Memory.StoreVariable(key,
+                () => Fuzzr.Int(0, scripts.Length)(state.FuzzrState).Value);
+            return scripts[index](state);
+        };
 }

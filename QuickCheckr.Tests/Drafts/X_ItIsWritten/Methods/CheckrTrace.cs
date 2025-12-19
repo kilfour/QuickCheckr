@@ -8,7 +8,6 @@ namespace QuickCheckr.Tests.Drafts.X_ItIsWritten.Methods;
 public class CheckrTrace
 {
     [Fact]
-    [DocContent("- `Checkr.Trace`:")]
     [DocExample(typeof(CheckrTrace), nameof(GetCheckr))]
     [DocContent("  Throws:")]
     [DocExample(typeof(CheckrTrace), nameof(GetMessage), "text")]
@@ -39,7 +38,7 @@ QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 
 - 'Checkr.Trace'
 ";

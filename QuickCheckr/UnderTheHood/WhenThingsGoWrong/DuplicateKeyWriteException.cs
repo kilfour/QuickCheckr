@@ -14,7 +14,7 @@ QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
 
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 
 {checkrList}
 ";

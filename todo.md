@@ -1,5 +1,8 @@
 ## Current Version: 0.0.5
 
+* It is written only once, keyed overloads for 
+  * tracewhen (also add conditional execution)
+  * Trackr.Expect
 
 ### Tests to Add
 * Nested OneOf/OneOfIf
@@ -8,13 +11,14 @@
   Probably just works, better to make sure.
 
 ### Doc current focus
+* Add an introduction to pools before Bolting Horses
 * Doc Configuration
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian
   * [ x ] ShrinkMode
-  * [   ] DeliberationPolicy
+  * [ X ] DeliberationPolicy
   * [   ] Investigations
-* It is written only once, keyed overloads for onof, oneofif and stashed
+
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 

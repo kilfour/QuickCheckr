@@ -53,7 +53,6 @@ Because of this dual role, **each key may only be written once per relevant scop
 If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
   
 ### Checkr Act
-- `Checkr.Act`:  
 ```csharp
     from one in Checkr.Act("reused", () => { })
     from two in Checkr.Act("reused", () => { })
@@ -65,12 +64,11 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Act'
 - 'Checkr.ActCarefully'
 ```
 ### Checkr Act Carefully
-- `Checkr.ActCarefully`:  
 ```csharp
     from one in Checkr.ActCarefully("reused", () => { })
     from two in Checkr.ActCarefully("reused", () => { })
@@ -82,12 +80,11 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Act'
 - 'Checkr.ActCarefully'
 ```
 ### Checkr Expect
-- `Checkr.Expect`:  
 ```csharp
     from one in Checkr.Expect("reused", () => true)
     from two in Checkr.Expect("reused", () => true)
@@ -99,14 +96,13 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Expect'
 - 'Trackr.Expect'
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'
 ```
 ### Checkr Input
-- `Checkr.Input`:  
 ```csharp
     from one in Checkr.Input("reused", Fuzzr.Int())
     from two in Checkr.Input("reused", Fuzzr.Int())
@@ -118,11 +114,10 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Input'
 ```
 ### Checkr One Of
-- `Checkr.OneOf`:  
 ```csharp
     from one in Checkr.OneOf(Checkr.Act("One", () => { }))
     from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
@@ -134,12 +129,26 @@ Key 'OneOf|Default|QuickCheckr|Key' is written more than once to the same memory
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
+- 'Checkr.OneOf'
+- 'Checkr.OneOfWhen'
+```
+```csharp
+    from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
+    from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank:
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
 ```
 ### Checkr One Of When
-- `Checkr.OneOfWhen`:  
 ```csharp
     from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
     from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
@@ -151,12 +160,26 @@ Key 'OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same me
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
+- 'Checkr.OneOf'
+- 'Checkr.OneOfWhen'
+```
+```csharp
+    from one in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("One", () => { })))
+    from two in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("Two", () => { })))
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank:
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
 ```
 ### Checkr Trace
-- `Checkr.Trace`:  
 ```csharp
     from one in Checkr.Trace("reused", () => "")
     from two in Checkr.Trace("reused", () => "")
@@ -169,11 +192,10 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Trace'
 ```
 ### Trackr Pool For
-- `Trackr.PoolFor`:  
 ```csharp
     from one in Trackr.PoolFor<int>()
     from two in Trackr.PoolFor<int>()
@@ -185,11 +207,10 @@ Key 'System.Int32' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Trackr.PoolFor'
 ```
 ### Trackr Stashed
-- `Trackr.Stashed`:  
 ```csharp
     from one in Trackr.Stashed(() => 42)
     from two in Trackr.Stashed(() => 666)
@@ -201,11 +222,24 @@ Key 'System.Int32' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
+- 'Trackr.Stashed'
+```
+```csharp
+    from one in Trackr.Stashed("reused", () => 42)
+    from two in Trackr.Stashed("reused", () => 666)
+    select Case.Closed;
+```
+  Throws:  
+```text
+Key 'reused' is written more than once to the same memory location.
+QuickCheckr treats keys as stable identifiers.
+Keys must be unique per memory bank.
+Reusing a key for multiple write operations makes reports and shrinking ambiguous.
+The following Checkrs write to the this bank:
 - 'Trackr.Stashed'
 ```
 ### Trackr Stop When Proven
-- `Trackr.StopWhenProven`:  
 ```csharp
     from one in Trackr.StopWhenProven("reused", () => false)
     from two in Trackr.StopWhenProven("reused", () => false)
@@ -217,14 +251,13 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Expect'
 - 'Trackr.Expect'
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'
 ```
 ### Trackr Verify
-- `Trackr.Verify`:  
 ```csharp
     from one in Trackr.Verify("reused", () => true)
     from two in Trackr.Verify("reused", () => true)
@@ -236,7 +269,7 @@ Key 'reused' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
+The following Checkrs write to the this bank:
 - 'Checkr.Expect'
 - 'Trackr.Expect'
 - 'Trackr.Verify'
