@@ -25,7 +25,7 @@ public class Collections
                 ]))
             //from act in Checkr.When(() => input.Any(), Checkr.Act("act", () => input.Any(a => a.One == 42)))
             from act in Checkr.ActWhen("act", () => input.Any(), () => input.Any(a => a.One == 42))
-            from spec in Checkr.Expect("spec", () => !act)
+            from spec in Checkr.Expect("spec", () => !act.Value)
             select Case.Closed;
         var article = TheJournalist.Exposes(() => check.Run());
 

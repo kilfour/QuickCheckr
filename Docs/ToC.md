@@ -14,7 +14,6 @@
     - [The Evidence Vault](B_PuttingACaseOnTheBoard/D_TheEvidenceVault/TheEvidenceVault.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)
     - [Execution Shrinking](H_OnShrinking/A_ExecutionShrinking/ExecutionShrinking.md)
-      - [Issues](H_OnShrinking/A_ExecutionShrinking/A_Issues/Issues.md)
     - [Input Shrinking](H_OnShrinking/C_InputShrinking/InputShrinking.md)
       - [Collections](H_OnShrinking/C_InputShrinking/B_Collections/Collections.md)
         - [Removing Irrelevant Items](H_OnShrinking/C_InputShrinking/B_Collections/TheExamples/A_RemovingIrrelevantItems.md)

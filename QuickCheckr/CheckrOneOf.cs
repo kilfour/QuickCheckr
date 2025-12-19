@@ -9,7 +9,7 @@ public static partial class Checkr
     /// Chooses one of the provided Checkr scripts at random and executes it as the next step.  
     /// Use when modelling behaviour where multiple alternative actions may occur, each with equal probability.
     /// </summary>
-    public static CheckrOf<T> OneOf<T>(params CheckrOf<T>[] scripts)
+    public static CheckrOf<Case> OneOf(params CheckrOf<Case>[] scripts)
         => OneOfInternal(scripts);
 
     private static CheckrOf<T> OneOfInternal<T>(

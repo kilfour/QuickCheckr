@@ -61,7 +61,7 @@ public class ActingOutOfSync : BaseTest
         var check =
             from input in Checkr.Input("Input", Fuzzr.Constant(42))
             from result in Checkr.ActWhen("Eventually.AddOne", () => true, Eventually.AddOne(input))
-            from expect in Checkr.Expect("Is not 42", () => result != 42)
+            from expect in Checkr.Expect("Is not 42", () => result.Value != 42)
             select Case.Closed;
         check.Run(); // <= test passed == Task completed
     }

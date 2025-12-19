@@ -9,7 +9,5 @@ public static partial class Checkr
     /// Use to conditionally include parts of a script without affecting the surrounding case when skipped.
     /// </summary>
     public static CheckrOf<ConditionalResult<T>> When<T>(Func<bool> predicate, CheckrOf<T> checkr) =>
-        state => predicate()
-            ? CheckrResult.Some(state, new ConditionalResult<T>(checkr(state).Value))
-            : CheckrResult.Some(state, ConditionalResult<T>.NotExecuted());
+        state => ConditionalResult<T>.AsCheckrResult(state, predicate, checkr(state).Value);
 }

@@ -1,3 +1,31 @@
+## Conditional Execution
+### Checkr Act Carefully When
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+    select Case.Closed;
+```
+### Checkr Act When
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.ActWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+    select Case.Closed;
+```
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.ActWhen("Act", () => counter != 2, Task.FromResult(counter == 3 ? null : new Thing()))
+    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+    select Case.Closed;
+```
+### Checkr When
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+    from thing in Checkr.When(() => counter != 2, Checkr.Act("Act", () => counter == 3 ? null : new Thing()))
+    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+    select Case.Closed;
+```
 ## Everything Means Less Than Null
 ### Trackr Pool
 - `Trackr.Pool`:  

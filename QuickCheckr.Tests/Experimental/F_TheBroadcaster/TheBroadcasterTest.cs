@@ -56,8 +56,9 @@ public partial class TheBroadcasterTest : BaseTest
 
                 // 4) Stop broadcast
                 (() => broadcaster.Broadcasting,
-                    Checkr.Act("stop",
-                        () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))))
+                    from stop in Checkr.Act("stop",
+                        () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
+                    select Case.Closed))
             select Case.Closed;
     }
 }

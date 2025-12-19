@@ -15,5 +15,12 @@ public class ConditionalResult<T>
     }
     private ConditionalResult() { notExecuted = true; }
     public ConditionalResult(T? value) => this.value = value;
-    public static ConditionalResult<T> NotExecuted() => new() { };
+    private static ConditionalResult<T> NotExecuted() => new() { };
+
+    public static CheckrResult<ConditionalResult<T>> AsCheckrResult(
+        CheckrState state,
+        Func<bool> predicate,
+        T? value) => predicate()
+            ? CheckrResult.Some(state, new ConditionalResult<T>(value))
+            : CheckrResult.Some(state, ConditionalResult<T>.NotExecuted());
 }

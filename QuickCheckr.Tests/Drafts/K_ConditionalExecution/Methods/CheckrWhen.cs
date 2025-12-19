@@ -12,7 +12,6 @@ public class CheckrWhen : BaseTest
 {
     [Fact]
     [DocExample(typeof(CheckrWhen), nameof(GetCheckr))]
-    [DocCodeFile("CheckrWhen.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>

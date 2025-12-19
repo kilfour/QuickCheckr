@@ -1,9 +1,4 @@
 ## Current Version: 0.0.5
-* Conditional Execution (try to reuse when CheckrOf)
-  * [ x ] When
-  * [   ] ActWhen
-  * [   ] ActCarefullyWhen
-  * [   ] OneOfWhen
 * Revise Pool method naming
 * keyed overload for PoolFor
 
