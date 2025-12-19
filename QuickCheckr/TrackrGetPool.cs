@@ -9,6 +9,6 @@ public static partial class Trackr
     /// Retrieves the existing pool for values of the given type.  
     /// Use to observe or draw from objects accumulated earlier in the run.
     /// </summary>
-    public static CheckrOf<Pool<T>> Pool<T>() =>
+    public static CheckrOf<Pool<T>> GetPool<T>() =>
         state => CheckrResult.Some(state, new Pool<T>(state.Memory.GetPool<T>()));
 }

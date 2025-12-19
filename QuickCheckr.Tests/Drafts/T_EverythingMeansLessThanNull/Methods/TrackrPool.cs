@@ -24,7 +24,7 @@ public class TrackrPool
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Trackr.Pool<int>()
+            from one in Trackr.GetPool<int>()
             select Case.Closed;
     }
 
