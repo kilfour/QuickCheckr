@@ -49,7 +49,7 @@ public static class CheckrOfTRun
             ReportCaseFile(executionsPerRun, config, finalCaseFile);
         else
             ReportCaseFileSummary(config, caseFiles);
-        return CaseSummary.FromCaseFiles(caseFiles.Count, caseFiles); ;
+        return CaseSummary.FromCaseFiles(caseFiles); ;
     }
 
     [StackTraceHidden]
@@ -74,7 +74,7 @@ public static class CheckrOfTRun
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
             var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-            var summary = CaseSummary.FromCaseFiles(caseFiles.Count, caseFiles);
+            var summary = CaseSummary.FromCaseFiles(caseFiles);
             config.Custodian.Recorder(filenameCf)
                 .Append(TheClerk.Transcribes(summary));
         }

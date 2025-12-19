@@ -4,8 +4,8 @@ public class CaseSummary(int numberOfRuns) : CaseFile(null!)
 {
     public int NumberOfRuns { get; } = numberOfRuns;
 
-    public static CaseSummary FromCaseFiles(int numberOfRuns, IEnumerable<CaseFile> caseFiles)
-        => new(numberOfRuns)
+    public static CaseSummary FromCaseFiles(IEnumerable<CaseFile> caseFiles)
+        => new(caseFiles.Count())
         {
             PassedExpectationDepositions = [..
                 caseFiles
