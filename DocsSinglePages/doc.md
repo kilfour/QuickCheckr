@@ -689,14 +689,21 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
 }
 ```
 #### Filing Evidence
-QuickCheckr can be configured to persist the results of a failed test run.  
+QuickCheckr can be configured to persist the results of a test run.  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
     => config with { FileAs = "MyQuickCheckrTest" };
 ```
-Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:  
+Above configuration will write the resulting report of a run to a `report.qr` file in a folder relative to the solution root:  
 ```csharp
 .quickcheckr\MyQuickCheckrTest\report.qr
+```
+In case a test passes, a *summary report* is provided.  
+```text
+2 Runs
+ Passed Expectations
+ - Always Passes: 10x
+ ------------------------------------------------------------
 ```
 In addition a sub folder is created containing the evidence vault files:  
 ```csharp

@@ -12,7 +12,7 @@ public class Article(CaseFile caseFile)
 
     public string VerifyFailed()
     {
-        if (caseFile.Verdict!.FailureDeposition is VerifyingDeposition verifyingDeposition)
+        if (caseFile.Verdict?.FailureDeposition is VerifyingDeposition verifyingDeposition)
         {
             return verifyingDeposition.FailedExpectation;
         }
@@ -21,7 +21,7 @@ public class Article(CaseFile caseFile)
 
     public string FailedExpectation()
     {
-        if (caseFile.Verdict!.FailureDeposition is FailedExpectationDeposition failedExpectationDeposition)
+        if (caseFile.Verdict?.FailureDeposition is FailedExpectationDeposition failedExpectationDeposition)
         {
             return failedExpectationDeposition.FailedExpectation;
         }
@@ -30,7 +30,7 @@ public class Article(CaseFile caseFile)
 
     public Exception Exception()
     {
-        if (caseFile.Verdict!.FailureDeposition is ExceptionDeposition exceptionDeposition)
+        if (caseFile.Verdict?.FailureDeposition is ExceptionDeposition exceptionDeposition)
         {
             return exceptionDeposition.Exception;
         }
@@ -39,13 +39,15 @@ public class Article(CaseFile caseFile)
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)
-        => new(caseFile.Verdict!.ExecutionDepositions[number - 1]);
+        => new(caseFile.Verdict?.ExecutionDepositions[number - 1]!);
 
     [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)
         => new(caseFile.PassedExpectationDepositions[number - 1]);
 
     public WordCount Total() => new(caseFile);
-    public int Seed() => caseFile.Verdict!.Seed;
-    public int ShrinkCount => caseFile.Verdict!.ShrinkCount;
+    public int Seed() => (int)caseFile.Verdict?.Seed!;
+    public int ShrinkCount =>
+        caseFile.Verdict is null
+            ? 0 : caseFile.Verdict!.ShrinkCount;
 }

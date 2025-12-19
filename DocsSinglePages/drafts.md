@@ -27,22 +27,15 @@
     select Case.Closed;
 ```
 ## Everything Means Less Than Null
-### Trackr Pool
-- `Trackr.Pool`:  
+### Trackr Get Pool
 ```csharp
-    from one in Checkr.Act("reused", () => { })
-    from two in Checkr.Act("reused", () => { })
+    from one in Trackr.GetPool<int>()
     select Case.Closed;
 ```
   Throws:  
 ```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank using the same key:
-- 'Checkr.Act'
-- 'Checkr.ActCarefully'
+A retrieval attempt was made for a 'Pool' of 'System.Int32', but none was found.
+Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
 ```
 ## It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,

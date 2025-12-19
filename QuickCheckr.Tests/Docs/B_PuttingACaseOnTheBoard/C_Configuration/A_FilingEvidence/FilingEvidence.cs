@@ -2,6 +2,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
 
 
@@ -23,9 +24,9 @@ public class FilingEvidence : BaseTest
         => @".quickcheckr\MyQuickCheckrTest\report.qr";
 
     [Fact]
-    [DocContent("QuickCheckr can be configured to persist the results of a failed test run.")]
+    [DocContent("QuickCheckr can be configured to persist the results of a test run.")]
     [DocExample(typeof(FilingEvidence), nameof(Configure))]
-    [DocContent("Above configuration will write the resulting report of a failing run to a `report.qr` file in a folder relative to the solution root:")]
+    [DocContent("Above configuration will write the resulting report of a run to a `report.qr` file in a folder relative to the solution root:")]
     [DocExample(typeof(FilingEvidence), nameof(DefaultFileName))]
     public void ReportLocation()
     {
@@ -35,6 +36,29 @@ public class FilingEvidence : BaseTest
                 Configure(cfg with { Custodian = custodian.Build() })));
         Assert.Equal(3, custodian.Data.Count);
         Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
+    }
+    [Fact]
+    [DocContent("In case a test passes, a *summary report* is provided.")]
+    [DocCodeFile("FilingEvidenceRunPassed.txt", "text")]
+    public void RunPassedReport()
+    {
+        var custodian = new InMemoryCustodian();
+        var article = TheJournalist.Unearths(
+            Checkr.Expect("Always Passes", () => true).Run(2.Runs(), 5.ExecutionsPerRun(), cfg =>
+                Configure(cfg with { Custodian = custodian.Build() })));
+        WriteAsserts(article, false);
+        WriteReport(article, "FilingEvidenceRunPassed.txt", false);
+        Assert.Single(custodian.Data);
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
+        VerifyPassedReport(article);
+    }
+
+    private static void VerifyPassedReport(Article article)
+    {
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal("Always Passes", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(10, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeSnippet]

@@ -9,12 +9,12 @@
 
 ### Doc current focus
 * Doc Configuration
-  * [   ] FileAs : add CaseSummary info
+  * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian
   * [ x ] ShrinkMode
   * [   ] DeliberationPolicy
   * [   ] Investigations
-* It is written only once, keyed overloads for onof, oneofif, stashed and poolfor
+* It is written only once, keyed overloads for onof, oneofif and stashed
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 
