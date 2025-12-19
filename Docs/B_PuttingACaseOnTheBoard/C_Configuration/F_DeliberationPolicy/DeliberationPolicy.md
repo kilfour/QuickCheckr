@@ -1,7 +1,6 @@
-# Deliberation Shrinking
+# Deliberation Policy
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
-Deliberation Shrinking allows us to instruct the Shrinker to explore the input further in a directed fasion.  
-It is an opt-in feature, activated through the Configuration object.
+Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
 
 Consider the following model:  
 ```csharp
@@ -38,7 +37,7 @@ Now if we run this we might get something like this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:66:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:67:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
@@ -59,18 +58,18 @@ Now if we run this we might get something like this:
 ```
 As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
 
-Let's configure a *DeliberationPolicy*, looking for a fail-case with less executions:  
+Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
+    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
 ```
 Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:113:1
  Original failing run:    2 executions
- Seed:                    1896685194
+ Seed:                    1362685676
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 2
@@ -99,7 +98,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:140:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:142:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -116,20 +115,20 @@ but the element values are considered irrelevant (*wrong*).
 For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
 ```csharp
 private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
+    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
 ```
 **Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:183:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    179289742
+ Seed:                    1048923184
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 2, 0, 1 ]
+   - Trace: List = [ 3, 2, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -145,18 +144,18 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
         () => obj.IntOne != 1 && obj.IntThree != 1)
     select Case.Closed;
 ```
-**With Deliberation Policty:**  
+**With DeliberationPolicy:**  
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:206:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1982391487
+ Seed:                    1631955690
  ------------------------------------------------------------
   Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 3 }
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 2, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

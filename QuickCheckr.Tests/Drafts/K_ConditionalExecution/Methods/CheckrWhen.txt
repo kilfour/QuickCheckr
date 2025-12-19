@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Drafts\K_ConditionalExecution\Methods\CheckrWhen.cs:18:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    625676917
+ ------------------------------------------------------------
+  Executed: Act
+   - Input: Counter = 3
+ ===================================
+  !! Expectation Failed: Not Null
+ ===================================
+ Passed Expectations
+ - Not Null: 1x
+ ------------------------------------------------------------

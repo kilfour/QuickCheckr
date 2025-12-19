@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
@@ -7,18 +8,17 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 
 [DocFile]
 [DocContent(
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
-Deliberation Shrinking allows us to instruct the Shrinker to explore the input further in a directed fasion.  
-It is an opt-in feature, activated through the Configuration object.
+Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
 
 Consider the following model:")]
 [DocExample(typeof(Account))]
 [DocContent("It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.")]
-public class DeliberationShrinking : BaseTest
+public class DeliberationPolicy : BaseTest
 {
     [CodeExample]
     public class Account
@@ -57,15 +57,15 @@ public class DeliberationShrinking : BaseTest
 
     [Fact]
     [DocContent("We can verify this with the following Checkr:")]
-    [DocExample(typeof(DeliberationShrinking), nameof(GetCheckr))]
+    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckr))]
     [DocContent("Now if we run this we might get something like this:")]
-    [DocCodeFile("DeliberationShrinking.txt", "text")]
+    [DocCodeFile("DeliberationPolicy.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1920827676, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<DeliberationShrinking>(article, false);
+        WriteReport<DeliberationPolicy>(article, false);
         Verify(article);
     }
 
@@ -95,22 +95,23 @@ public class DeliberationShrinking : BaseTest
 
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
-        => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
+        => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
+
 
     [Fact]
     [DocContent(
 @"As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
 
-Let's configure a *DeliberationPolicy*, looking for a fail-case with less executions:")]
-    [DocExample(typeof(DeliberationShrinking), nameof(Configure))]
+Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:")]
+    [DocExample(typeof(DeliberationPolicy), nameof(Configure))]
     [DocContent("Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.")]
-    [DocCodeFile("DeliberationShrinkingMinimal.txt", "text")]
+    [DocCodeFile("DeliberationPolicyMinimal.txt", "text")]
     public void RunTest_Deliberated()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(), Configure));
         WriteAsserts(article, false);
-        WriteReport(article, "DeliberationShrinkingMinimal.txt", false);
+        WriteReport(article, "DeliberationPolicyMinimal.txt", false);
         Verify_Deliberated(article);
     }
 
@@ -127,10 +128,10 @@ Let's configure a *DeliberationPolicy*, looking for a fail-case with less execut
     [DocContent(
 @"Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
 Currently the only identified cases where this happens is if more than one input triggers the same failure.")]
-    [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedy))]
+    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckrGreedy))]
     [DocContent(
 @"Now when the list contains multiple elements `1`, we might get:")]
-    [DocCodeFile("DeliberationShrinkingGreedy.txt", "text")]
+    [DocCodeFile("DeliberationPolicyGreedy.txt", "text")]
     [DocContent(
 @"It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).")]
@@ -139,7 +140,7 @@ but the element values are considered irrelevant (*wrong*).")]
         var article = TheJournalist.Exposes(() =>
             GetCheckrGreedy().Run(227109555, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport(article, "DeliberationShrinkingGreedy.txt", false);
+        WriteReport(article, "DeliberationPolicyGreedy.txt", false);
         Verify_DeliberatedGreedy(article);
     }
 
@@ -172,21 +173,21 @@ but the element values are considered irrelevant (*wrong*).")]
 
     [Fact]
     [DocContent("For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:")]
-    [DocExample(typeof(DeliberationShrinking), nameof(ConfigureShrinkCount))]
+    [DocExample(typeof(DeliberationPolicy), nameof(ConfigureShrinkCount))]
     [DocContent("**Report:**")]
-    [DocCodeFile("DeliberationShrinkingGreedyFixed.txt", "text")]
+    [DocCodeFile("DeliberationPolicyGreedyFixed.txt", "text")]
     public void RunTest_DeliberatedGreedyFixed()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckrGreedy().Run(20.Runs(), 1.ExecutionsPerRun(), ConfigureShrinkCount));
         WriteAsserts(article, false);
-        WriteReport(article, "DeliberationShrinkingGreedyFixed.txt", false);
+        WriteReport(article, "DeliberationPolicyGreedyFixed.txt", false);
         Verify_DeliberatedGreedyFixed(article);
     }
 
     [CodeExample]
     private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-        => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
+        => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
 
     private static void Verify_DeliberatedGreedyFixed(Article article)
     {
@@ -195,15 +196,15 @@ but the element values are considered irrelevant (*wrong*).")]
 
     [Fact]
     [DocContent("A similar thing can happen when shrinking objects, and the solution is exactly the same")]
-    [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedyObjects))]
-    [DocContent("**With Deliberation Policty:**")]
-    [DocCodeFile("DeliberationShrinkingGreedyObjects.txt", "text")]
+    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckrGreedyObjects))]
+    [DocContent("**With DeliberationPolicy:**")]
+    [DocCodeFile("DeliberationPolicyGreedyObjects.txt", "text")]
     public void RunTest_DeliberatedGreedyObjects()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckrGreedyObjects().Run(20.Runs(), 1.ExecutionsPerRun(), ConfigureShrinkCount));
         WriteAsserts(article, false);
-        WriteReport(article, "DeliberationShrinkingGreedyObjects.txt", false);
+        WriteReport(article, "DeliberationPolicyGreedyObjects.txt", false);
         Verify_DeliberatedGreedyObjects(article);
     }
 

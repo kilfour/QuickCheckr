@@ -11,7 +11,7 @@ using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_Investigations;
 
-[DocFile]
+// [DocFile]
 [DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]
 public class Investigations : BaseTest
 {

@@ -74,7 +74,7 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>() // Create a pool of coaches.
+    from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
     from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
@@ -94,7 +94,7 @@ public static readonly CheckrOf<Case> TheCheckr =
     select Case.Closed;
 ```
 **Create Coach Checkr:**  
-In this one we create a coach with a random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
+In this one we create a coach with a *semi* random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCoach =
     from name in Checkr.Input("Coach Name",

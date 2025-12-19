@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:113:1
  Original failing run:    2 executions
- Seed:                    1896685194
+ Seed:                    1362685676
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 2

@@ -249,8 +249,8 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
    at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
-   at QuickCheckr.Checkr.<>c__DisplayClass8_1`1.TryCatch() in CheckrAct.cs:line 69
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 14
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
  ===========================================================================
  Passed Expectations
  - Returns true: 2x
@@ -515,7 +515,7 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>() // Create a pool of coaches.
+    from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
     from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
@@ -535,7 +535,7 @@ public static readonly CheckrOf<Case> TheCheckr =
     select Case.Closed;
 ```
 **Create Coach Checkr:**  
-In this one we create a coach with a random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
+In this one we create a coach with a *semi* random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCoach =
     from name in Checkr.Input("Coach Name",
@@ -676,6 +676,7 @@ QuickCheckr runs are configured through an immutable `CheckrConfig` record.
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
 
 All configuration options live in the `QuickCheckr.Protocol` namespace.  
+
 **Default Configuration:**  
 ```csharp
 {
@@ -892,8 +893,168 @@ The default settings includes all possible ShrinkModes.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-#### Investigations
-These tests show the initial version of QuickCheckrs logging configuration.  
+#### Deliberation Policy
+Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
+Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
+
+Consider the following model:  
+```csharp
+public class Account
+{
+    public int Balance { get; private set; } = 0;
+    public void Deposit(int amount)
+    {
+        Balance += amount;
+        ApplyFee();
+    }
+    public void WithDraw(int amount)
+    {
+        if (amount > Balance) return;
+        Balance -= amount;
+        ApplyFee();
+    }
+    private void ApplyFee() => Balance -= 1;
+}
+```
+It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.  
+We can verify this with the following Checkr:  
+```csharp
+    from account in Trackr.Stashed(() => new Account())
+    from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
+    from operations in Checkr.OneOf(
+        Checkr.Act("Deposit", () => account.Deposit(amount)),
+        Checkr.Act("Withdraw", () => account.WithDraw(amount))
+    )
+    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
+    select Case.Closed;
+```
+Now if we run this we might get something like this:  
+```text
+------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:67:1
+ Original failing run:    3 executions
+ Seed:                    1920827676
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 8
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 1
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 5
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
+ - No Overdraft: 2x
+ ------------------------------------------------------------
+```
+As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
+
+Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:  
+```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
+```
+Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_Deliberated
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:113:1
+ Original failing run:    2 executions
+ Seed:                    1362685676
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 2
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 1
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
+ - No Overdraft: 1x
+ ------------------------------------------------------------
+```
+##### An Eager Shrinker
+Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
+Currently the only identified cases where this happens is if more than one input triggers the same failure.  
+```csharp
+    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
+    from trace in Checkr.Trace("List", () => input)
+    from expect in Checkr.ExpectWhen("Does not contain 1",
+        () => input.Count() > 2,
+        () => !input.Contains(1))
+    select Case.Closed;
+```
+Now when the list contains multiple elements `1`, we might get:  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedy
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:142:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    227109555
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, _ ]
+   - Trace: List = [ 1, 2, 1 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
+```
+It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
+but the element values are considered irrelevant (*wrong*).  
+For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
+```csharp
+private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
+    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
+```
+**Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyFixed
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:183:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1048923184
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List = [ 3, 2, 1 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
+```
+A similar thing can happen when shrinking objects, and the solution is exactly the same  
+```csharp
+    from obj in Checkr.Input("BaggyInters",
+        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+        from result in Fuzzr.One<BaggyInters>()
+        select result)
+    from trace in Checkr.Trace("Original", () => obj)
+    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+        () => obj.IntOne != 1 && obj.IntThree != 1)
+    select Case.Closed;
+```
+**With DeliberationPolicy:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyObjects
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:206:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1631955690
+ ------------------------------------------------------------
+  Executed:
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original = { IntOne: 4, IntTwo: 2, IntThree: 1 }
+ ===============================================================
+  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ===============================================================
+```
 ### The Evidence Vault
 #### Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
@@ -1099,169 +1260,6 @@ without introducing noise from element-level changes that could not affect the o
   !! Expectation Failed: Length <= 2
  ======================================
 ```
-### Deliberation Shrinking
-Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
-Deliberation Shrinking allows us to instruct the Shrinker to explore the input further in a directed fasion.  
-It is an opt-in feature, activated through the Configuration object.
-
-Consider the following model:  
-```csharp
-public class Account
-{
-    public int Balance { get; private set; } = 0;
-    public void Deposit(int amount)
-    {
-        Balance += amount;
-        ApplyFee();
-    }
-    public void WithDraw(int amount)
-    {
-        if (amount > Balance) return;
-        Balance -= amount;
-        ApplyFee();
-    }
-    private void ApplyFee() => Balance -= 1;
-}
-```
-It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.  
-We can verify this with the following Checkr:  
-```csharp
-    from account in Trackr.Stashed(() => new Account())
-    from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
-    from operations in Checkr.OneOf(
-        Checkr.Act("Deposit", () => account.Deposit(amount)),
-        Checkr.Act("Withdraw", () => account.WithDraw(amount))
-    )
-    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
-    select Case.Closed;
-```
-Now if we run this we might get something like this:  
-```text
-------------------------------------------------------------
- Test:                    RunTest
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:66:1
- Original failing run:    3 executions
- Seed:                    1920827676
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 8
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 1
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 5
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 2x
- ------------------------------------------------------------
-```
-As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
-
-Let's configure a *DeliberationPolicy*, looking for a fail-case with less executions:  
-```csharp
-private static CheckrConfig Configure(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
-```
-Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
-```text
-------------------------------------------------------------
- Test:                    RunTest_Deliberated
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:111:1
- Original failing run:    2 executions
- Seed:                    1896685194
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 2
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 1
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 1x
- ------------------------------------------------------------
-```
-#### An Eager Shrinker
-Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.  
-```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-    from trace in Checkr.Trace("List", () => input)
-    from expect in Checkr.ExpectWhen("Does not contain 1",
-        () => input.Count() > 2,
-        () => !input.Contains(1))
-    select Case.Closed;
-```
-Now when the list contains multiple elements `1`, we might get:  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:140:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    227109555
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, _ ]
-   - Trace: List = [ 1, 2, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
-but the element values are considered irrelevant (*wrong*).  
-For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
-```csharp
-private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
-```
-**Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:181:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    179289742
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 2, 0, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-A similar thing can happen when shrinking objects, and the solution is exactly the same  
-```csharp
-    from obj in Checkr.Input("BaggyInters",
-        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-        from result in Fuzzr.One<BaggyInters>()
-        select result)
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
-```
-**With Deliberation Policty:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:204:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1982391487
- ------------------------------------------------------------
-  Executed:
-   - Input: BaggyInters = { IntOne: 1 }
-   - Trace: Original = { IntOne: 1, IntTwo: 2, IntThree: 3 }
- ===============================================================
-  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
- ===============================================================
-```
 ## Cook Book
 The QuickCheckr Cookbook is a collection of examples showing common patterns, 
 testing techniques, and pitfalls you can check using QuickCheckr.  
@@ -1362,7 +1360,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    662419152
+ Seed:                    1839279314
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================
