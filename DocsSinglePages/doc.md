@@ -453,9 +453,9 @@ and each operation will pick from those pools to mutate the system over time.
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ForThese, ToPool) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
 
-*Let's go:*  
+*So, here we go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
 
@@ -515,10 +515,8 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    // Create a pool of coaches.
-    from coaches in Trackr.PoolFor<Coach>()
-        // Create a pool of courses.          
-    from courses in Trackr.PoolFor<Course>()
+    from coaches in Trackr.PoolFor<Coach>() // Create a pool of coaches.
+    from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
         coaches.When(a => a.Count() < 10, CreateCoach),

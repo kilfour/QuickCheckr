@@ -28,7 +28,7 @@ public class Configuration
     }
 
     [Fact]
-    [DocContent("**Default Configuration:**")]
+    [DocContent("\n**Default Configuration:**")]
     [DocExample(typeof(Configuration), nameof(DefaultSettings))]
     public void DefaultConfig()
     {
