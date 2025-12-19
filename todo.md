@@ -1,5 +1,4 @@
 ## Current Version: 0.0.5
-* Revise Pool method naming
 * keyed overload for PoolFor
 
 ### Tests to Add
