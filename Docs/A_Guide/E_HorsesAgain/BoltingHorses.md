@@ -73,6 +73,8 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe update existing courses. Pick a random course from the pool.
         courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
         // Maybe assign coach if possible.
+        // - Pool.These combines two pools into one. 
+        //   This allows us to define a predicate that depends on the relation between multiple entities.
         // Pick a random coach and course, if there exists a combination for which the predicate holds.
         Pool.These(coaches, courses).When("Assign Coach to Course",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))

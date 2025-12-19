@@ -1,5 +1,4 @@
 ## Current Version: 0.0.5
-
 * review (refine ?) evidence gathering 
 
 ### Doc Current Focus

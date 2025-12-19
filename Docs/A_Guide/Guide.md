@@ -13,6 +13,8 @@ Each chapter builds on the previous one, introducing new concepts through execut
   -  An example and an explanation of how QuickCheckr handles stateful testing.
 - [Choosing the Next Move][ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
+- [In Pools We Trust][InPoolsWeTrust]
+  - An overview of pools and their usage.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.  
 
@@ -21,5 +23,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
 [TheStashRunsAndExecutions]: B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md
 
 [ChoosingTheNextMove]: C_ChoosingTheNextMove/ChoosingTheNextMove.md
+
+[InPoolsWeTrust]: D_InPoolsWeTrust/InPoolsWeTrust.md
 
 [BoltingHorses]: E_HorsesAgain/BoltingHorses.md

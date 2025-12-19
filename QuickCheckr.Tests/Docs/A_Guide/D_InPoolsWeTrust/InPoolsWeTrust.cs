@@ -3,25 +3,21 @@ using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
+using QuickFuzzr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.D_InPoolsWeTrust;
+namespace QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 
 
 [DocFile]
 [DocContent(
 @"
-**Pools**  
-
-These let QuickCheckr accumulate multiple objects across executions.  
+**Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
 Instead, pool operations (When, These, ToPool, ...) encapsulate ""is this state valid?"" so shrinking can replay safely.
-
-- [In Pools We Trust] <= for guide intro
-  - An overview of pools and their usage.
 ")]
 public class InPoolsWeTrust : BaseTest
 {
@@ -48,6 +44,7 @@ public class InPoolsWeTrust : BaseTest
     [DocHeader("Creating a Pool")]
     [DocContent("Pools are created for *a specific type* using:")]
     [DocExample(typeof(InPoolsWeTrust), nameof(CreatePool))]
+    [DocContent("So this is a Pool for the following type:")]
     [DocExample(typeof(Contact))]
     public void CreatingAPool()
     {
@@ -60,7 +57,7 @@ public class InPoolsWeTrust : BaseTest
         Trackr.PoolFor<Contact>();
 
     [Fact]
-    [DocHeader("Storing things in the Pool")]
+    [DocHeader("Storing elements in the Pool")]
     [DocExample(typeof(InPoolsWeTrust), nameof(Store))]
     public void Storing()
     {
@@ -71,13 +68,31 @@ public class InPoolsWeTrust : BaseTest
     private static CheckrOf<Case> Store() =>
         from pool in Trackr.PoolFor<Contact>()
         from name in Checkr.Input("Name", Fuzzr.String())
-        from storeName in Trackr.ToPool("Name", new Contact(name))
+        from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
         select Case.Closed;
 
     [Fact]
     [DocHeader("Using random elements from a Pool")]
-    [DocExample(typeof(InPoolsWeTrust), nameof(GetCheckr))]
+    [DocExample(typeof(InPoolsWeTrust), nameof(UseRandom))]
     public void UsingIt()
+    {
+        Assert.Throws<OneOfEmptyOptionsException>(() => UseRandom().Run());
+    }
+
+    [CodeSnippet]
+    private static CheckrOf<Case> UseRandom() =>
+        Trackr.OneOfPool<Contact>("A Random Contact",
+            contact => Checkr.Trace("Contact Name", () => contact.Name));
+
+    [Fact]
+    [DocHeader("Bringing it all back home")]
+    [DocHeader("The Model", 1)]
+    [DocExample(typeof(Rolodex))]
+    [DocHeader("The Checkr", 1)]
+    [DocExample(typeof(InPoolsWeTrust), nameof(GetCheckr))]
+    [DocHeader("The Report", 1)]
+    [DocCodeFile("InPoolsWeTrust.txt", "text")]
+    public void AllTogetherNow()
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(523518063, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
@@ -96,20 +111,27 @@ public class InPoolsWeTrust : BaseTest
     {
         return
             from contactBook in Trackr.Stashed(() => new Rolodex())
+                // Create a Pool.
             from names in Trackr.PoolFor<Contact>()
             from name in Checkr.Input("Name", NameFuzzr)
+                // Pick one of two operations.
             from operations in Checkr.OneOfWhen(
+                // 1. Add a (Contact-) name to the Rolodex
                 names.When(a => a.Count() < 10,
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                     from trace in Checkr.Trace("Name", () => name)
+                        // Store the Contact in the Pool.
                     from storeName in Trackr.ToPool("Name", new Contact(name))
                     select Case.Closed),
-                names.When(a => a.Any(),
+                // 2. Update a (Contact-) name in the Rolodex
+                names.When(a => a.Any(), // <= Can not pick from an empty selections.
                     from newName in Checkr.Input("New Name", NameFuzzr)
+                    // Pick a random Contact to update 
                     from pool in Trackr.OneOfPool<Contact>("Contact to update",
                         contact =>
                             from trace in Checkr.Trace("Old Name", () => contact.Name)
                             from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                                // Update the contact in the pool, keeping model and test data in sync.
                             from updatePool in Checkr.Perform(() => contact.Name = newName)
                             select Case.Closed)
                     select Case.Closed))

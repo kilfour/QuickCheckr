@@ -2,6 +2,7 @@
     - [Checkr-ing Things Out](A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
     - [The Stash, Runs and Executions](A_Guide/B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md)
     - [Choosing The Next Move](A_Guide/C_ChoosingTheNextMove/ChoosingTheNextMove.md)
+    - [In Pools We Trust](A_Guide/D_InPoolsWeTrust/InPoolsWeTrust.md)
     - [Bolting Horses](A_Guide/E_HorsesAgain/BoltingHorses.md)
   - [Putting a Case on the Board](B_PuttingACaseOnTheBoard/PuttingACaseOnTheBoard.md)
     - [Test Framework Integration](B_PuttingACaseOnTheBoard/A_TestFrameworkIntegration/TestFrameworkIntegration.md)

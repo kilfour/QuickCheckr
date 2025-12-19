@@ -1,8 +1,8 @@
 using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
+using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Drafts.D_InPoolsWeTrust;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide;
@@ -11,6 +11,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide;
 [DocLink(typeof(CheckringThingsOut), "CheckringThingsOut")]
 [DocLink(typeof(TheStashRunsAndExecutions), "TheStashRunsAndExecutions")]
 [DocLink(typeof(ChoosingTheNextMove), "ChoosingTheNextMove")]
+[DocLink(typeof(InPoolsWeTrust), "InPoolsWeTrust")]
 [DocLink(typeof(BoltingHorses), "BoltingHorses")]
 [DocContent(
 @"**Welcome to the QuickCheckr Guide.**  
@@ -28,6 +29,8 @@ Each chapter builds on the previous one, introducing new concepts through execut
   -  An example and an explanation of how QuickCheckr handles stateful testing.
 - [Choosing the Next Move][ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
+- [In Pools We Trust][InPoolsWeTrust]
+  - An overview of pools and their usage.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.")]
 public class Guide { }
