@@ -1,5 +1,7 @@
 ## Current Version: 0.0.5
 * gather evidence
+  * New Scope : `Investigations` one above `Runs`
+  * Rename old `Investigations` to `InternalAffairs`
 * Add an introduction to pools before Bolting Horses
   This is turning into a growing experimental testcase
 

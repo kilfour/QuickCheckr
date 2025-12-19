@@ -25,11 +25,10 @@ public record CheckrRunnerConfig
         Custodian = config.Custodian;
     }
 
-    public int? Seed { get; private set; } = null;
+    public int? Seed { get; set; } = null;
     public ShrinkMode ShrinkMode { get; init; }
     public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
     public string FileAs { get; init; }
     public Custodian Custodian { get; init; }
-    internal void SetSeed(int? seed) => Seed = seed;
 }

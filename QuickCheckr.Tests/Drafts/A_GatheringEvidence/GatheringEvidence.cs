@@ -1,14 +1,15 @@
-using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Drafts.A_GatheringEvidence;
 
 
-public class GatheringEvidence : BaseTest
+public class GatheringEvidence
 {
-    [QuickPulse.Explains.CodeExample]
+    [CodeExample]
     public class ContactBook
     {
         private readonly HashSet<string> contacts = [];
@@ -23,14 +24,41 @@ public class GatheringEvidence : BaseTest
     }
 
     [Fact]
+    [DocExample(typeof(ContactBook))]
     [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
+    [DocContent(
+@"**Steps:**
+- Load in existing evidence, rerun, keep failing casefiles.
+- Do a normal run, add new failing case files to the list.
+- Distinct on ExecutionDeposition.
+- Save all evidence and reports to the vault.")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(100.Runs(), 20.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<GatheringEvidence>(article, true);
-        // Verify(article);
+        // var custodian = new InMemoryCustodian();
+        GetCheckr().GatherEvidence(100.Runs(), 20.ExecutionsPerRun(), Configure);
+        // cfg => Configure(cfg with { Custodian = custodian.Build() }));
+
+        // var log = custodian.Data.Values.ToList()[1];
+        // var report = custodian.Data.Values.ToList()[2];
+
+        // Assert.Single(log.Values);
+        // Assert.Equal("Run failed for Seed: 1862095796.", log.Values[0]);
+
+        // var reader = LinesReader.FromText(report.Values[0]);
+        // Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        // Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
+        // Assert.Equal(" Seed:                    1862095796", reader.NextLine());
+        // Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        // Assert.Equal("  Executed", reader.NextLine());
+        // Assert.Equal(" ================================", reader.NextLine());
+        // Assert.Equal("  !! Expectation Failed: Fails", reader.NextLine());
+        // Assert.Equal(" ================================", reader.NextLine());
+        // Assert.True(reader.EndOfContent());
     }
+
+    [CodeExample]
+    private static CheckrConfig Configure(CheckrConfig config)
+        => config with { FileAs = "MyQuickCheckrTest" };
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")

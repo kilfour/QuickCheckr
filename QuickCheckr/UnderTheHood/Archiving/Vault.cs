@@ -45,8 +45,7 @@ public class EvidenceVault : Vault
     {
         foreach (var entry in entries)
         {
-            config.SetSeed(entry.Seed);
-            var caseFile = new CheckrRunner(check, config, entry.ExecutionsPerRun).Run();
+            var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun).Run();
             if (caseFile.HasVerdict())
             {
                 logRecorder.Append($"Run failed for Seed: {entry.Seed}.");

@@ -1,3 +1,4 @@
+
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseFile
@@ -21,5 +22,12 @@ public class CaseFile
     {
         PassedExpectationDepositions.Add(passedExpectationDepositions);
         return this;
+    }
+
+    public bool IsSimilar(CaseFile caseFile)
+    {
+        if (Verdict!.ExecutionCount != caseFile.Verdict!.ExecutionCount)
+            return false;
+        return true;
     }
 }

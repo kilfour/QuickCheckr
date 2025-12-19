@@ -20,20 +20,19 @@ public static class CheckrOfTRun
     /// </summary>
     [StackTraceHidden]
     public static CaseFile Run(
-        this CheckrOf<Case> check,
+        this CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
         int? seed = null)
     {
-        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
-        config.SetSeed(seed);
+        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
         var finalCaseFile = CaseFile.Empty();
         var caseFiles = new List<CaseFile>();
 
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var runner = new CheckrRunner(check, config, executionsPerRun.NumberOfExecutions);
+            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
             var caseFile = runner.Run();
             caseFiles.Add(caseFile);
             if (caseFile.HasVerdict())
@@ -49,7 +48,7 @@ public static class CheckrOfTRun
             ReportCaseFile(executionsPerRun, config, finalCaseFile);
         else
             ReportCaseFileSummary(config, caseFiles);
-        return CaseSummary.FromCaseFiles(caseFiles); ;
+        return CaseSummary.FromCaseFiles(caseFiles);
     }
 
     [StackTraceHidden]
