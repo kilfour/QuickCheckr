@@ -4,7 +4,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.A_GatheringEvidence;
 
-
+[DocFile]
 public class GatheringEvidence
 {
     [CodeExample]

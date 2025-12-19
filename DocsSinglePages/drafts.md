@@ -1,3 +1,112 @@
+## Gathering Evidence
+```csharp
+public class ContactBook
+{
+    private readonly HashSet<string> contacts = [];
+    public IReadOnlyCollection<string> Contacts => contacts;
+    public void Add(string name) => contacts.Add(name);
+    public void Remove(string name) => contacts.Remove(name);
+    public void Update(string name, string newName)
+    {
+        Remove(name);
+        Add(newName);
+    }
+}
+```
+```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { FileAs = "MyQuickCheckrTest" };
+```
+```csharp
+checkr.GatherEvidence(100.Investigations(), 1.Runs(), 10.ExecutionsPerRun(), Configure);
+```
+```csharp
+    from contactBook in Trackr.Stashed(() => new ContactBook())
+    from names in Trackr.PoolFor<string>()
+    from name in Checkr.Input("Name", NameFuzzr)
+    from operations in Checkr.OneOfWhen(
+        names.When(a => a.Count() < 10,
+            from add in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        names.When(a => a.Any(), "Name to remove", nameToRemove =>
+                Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
+            pool => pool.Remove()),
+        names.When(a => a.Any(),
+            from newName in Checkr.Input("New Name", NameFuzzr)
+            from pool in Trackr.OneOfPool<string>("Name to update",
+                nameToUpdate =>
+                    from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
+                    select Case.Closed,
+                pool => pool.Update(newName))
+            select Case.Closed))
+    from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+    select Case.Closed;
+```
+**Steps:**
+- Load in existing evidence, rerun, keep failing casefiles.
+- Do a normal run, add new failing case files to the list.
+- Distinct on ExecutionDeposition (just count for now, still spiking).
+- Save all evidence and reports to the vault.
+
+For the code on display here, for now, this consistently results in three different reports.  
+```text
+------------------------------------------------------------
+ Original failing run:    20 executions
+ Minimal failing case:    2 executions (after 18 shrinks)
+ Seed:                    83696956
+ ------------------------------------------------------------
+  Executed: Add (2 Times)
+   - Input: Name = "Paul Starr"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 19x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    16 executions
+ Minimal failing case:    3 executions (after 15 shrinks)
+ Seed:                    207117738
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "John Harrison"
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "John Harrison"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 15x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    10 executions
+ Minimal failing case:    4 executions (after 10 shrinks)
+ Seed:                    441368127
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "Paul Starr"
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "Paul Starr"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 9x
+ ------------------------------------------------------------
+```
 ## In Pools We Trust
 
 **Pools**  
