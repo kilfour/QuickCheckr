@@ -1,4 +1,11 @@
 ## Gathering Evidence
+### The Steps
+
+- Load in existing evidence from the vault, rerun, keep failing casefiles.
+- Do a specified number of Investigations, add new failing case files to the list.
+- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
+- Save all evidence and reports to the vault.  
+### The Sut
 ```csharp
 public class ContactBook
 {
@@ -12,13 +19,7 @@ public class ContactBook
     }
 }
 ```
-```csharp
-private static CheckrConfig Configure(CheckrConfig config)
-    => config with { FileAs = "GatheringEvidence" };
-```
-```csharp
-checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
-```
+### The Checkr
 ```csharp
     from contactBook in Trackr.Stashed(() => new ContactBook())
     from names in Trackr.PoolFor<string>()
@@ -40,12 +41,11 @@ checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Conf
         elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
-**Steps:**
-- Load in existing evidence from the vault, rerun, keep failing casefiles.
-- Do a specified number of Investigations, add new failing case files to the list.
-- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
-- Save all evidence and reports to the vault.
-
+### Running Investigations
+```csharp
+checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
+    cfg => cfg with { FileAs = "GatheringEvidence" });
+```
 For the code on display here, this consistently results in five different reports.  
 ```text
 ------------------------------------------------------------
@@ -145,6 +145,7 @@ For the code on display here, this consistently results in five different report
  - Count matches: 8x
  ------------------------------------------------------------
 ```
+**Casefiles are considered *similar* when:**  
 - *Failure Description* is not equal.  
 - *Execution Count* is not equal.  
 - Any **Execution** differs, like so:  
@@ -154,7 +155,8 @@ For the code on display here, this consistently results in five different report
   - Any *Input label* is not equal.  
 
 Per default order of Executions does not matter for *similarity*.  
-An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order does matter.  
+
+An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.  
 ## Conditional Execution
 ### Checkr Act Carefully When
 ```csharp

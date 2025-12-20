@@ -25,18 +25,20 @@ public class GatheringEvidence : BaseTest
     }
 
     [Fact(Skip = "Explicit: Touches the File System.")]
-    [DocExample(typeof(ContactBook))]
-    [DocExample(typeof(GatheringEvidence), nameof(Configure))]
-    [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
-    [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
+    [DocHeader("The Steps")]
     [DocContent(
-@"**Steps:**
+@"
 - Load in existing evidence from the vault, rerun, keep failing casefiles.
 - Do a specified number of Investigations, add new failing case files to the list.
 - A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
-- Save all evidence and reports to the vault.
-
-For the code on display here, this consistently results in five different reports.")]
+- Save all evidence and reports to the vault.")]
+    [DocHeader("The Sut")]
+    [DocExample(typeof(ContactBook))]
+    [DocHeader("The Checkr")]
+    [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
+    [DocHeader("Running Investigations")]
+    [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
+    [DocContent("For the code on display here, this consistently results in five different reports.")]
     [DocCodeFile("report1.qr", "text")]
     [DocCodeFile("report2.qr", "text")]
     [DocCodeFile("report3.qr", "text")]
@@ -47,13 +49,10 @@ For the code on display here, this consistently results in five different report
         RunGatherEvidence(GetCheckr());
     }
 
-    [CodeExample]
-    private static CheckrConfig Configure(CheckrConfig config)
-        => config with { FileAs = "GatheringEvidence" };
-
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
+        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
+            cfg => cfg with { FileAs = "GatheringEvidence" });
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
@@ -87,6 +86,7 @@ For the code on display here, this consistently results in five different report
     }
 
     [Fact]
+    [DocContent("**Casefiles are considered *similar* when:**")]
     [DocContent("- *Failure Description* is not equal.")]
     public void CaseFileNotSimilar_FailureDescription()
     {
@@ -196,6 +196,23 @@ For the code on display here, this consistently results in five different report
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
     }
 
+
+
+    [Fact]
+    [DocContent("\nAn optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.")]
+    public void CaseFileNotSimilar_ExecutionOrderDoesMatter()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0)))
+            .AddExecutionDeposition(new ExecutionDeposition(2)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddInputDeposition(new InputDeposition("Label", 0))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
+    }
+
     [Fact]
     public void CaseFileSimilar_ExecutionOrderDoesNotMatterInputs()
     {
@@ -226,21 +243,6 @@ For the code on display here, this consistently results in five different report
             .AddExecutionDeposition(new ExecutionDeposition(3)));
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
-    }
-
-    [Fact]
-    [DocContent("An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order does matter.")]
-    public void CaseFileNotSimilar_ExecutionOrderDoesMatter()
-    {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
-            .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition("Label", 0)))
-            .AddExecutionDeposition(new ExecutionDeposition(2)));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
-            .AddExecutionDeposition(new ExecutionDeposition(1))
-            .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddInputDeposition(new InputDeposition("Label", 0))));
-        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
