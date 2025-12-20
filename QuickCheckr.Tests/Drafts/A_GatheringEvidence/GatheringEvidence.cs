@@ -67,19 +67,21 @@ public class GatheringEvidence : BaseTest
             from contactBook in Trackr.Stashed(() => new ContactBook())
             from names in Trackr.PoolFor<string>()
             from operations in Checkr.OneOfWhen(
+                // Add a Contact
                 names.When(a => a.Count() < 10,
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                     from storeName in Trackr.ToPool("Name", name)
                     select Case.Closed),
+                // Update a Contact
                 names.When(a => a.Any(),
                     from newName in Checkr.Input("New Name", NameFuzzr)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
-                            from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
-                            select Case.Closed,
+                            Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName)),
                         pool => pool.Update(newName))
                     select Case.Closed))
+                // Contrived Expectation, ... it's only a model.
             from count in names.Expect("Count matches",
                 elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
