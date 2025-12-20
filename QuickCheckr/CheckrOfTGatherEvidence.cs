@@ -3,6 +3,7 @@ using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.EvidenceGathering;
 
 namespace QuickCheckr;
 
@@ -34,9 +35,9 @@ public static class CheckrOfTGatherEvidence
         var caseFilesToReport = new List<CaseFile>();
         foreach (var caseFile in caseFiles)
         {
-            if (vaultCaseFiles.Any(a => a.IsSimilar(caseFile)))
+            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a)))
                 continue;
-            if (caseFilesToReport.Any(a => a.IsSimilar(caseFile)))
+            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a)))
                 continue;
             caseFilesToReport.Add(caseFile);
         }

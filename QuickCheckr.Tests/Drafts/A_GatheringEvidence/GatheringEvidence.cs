@@ -1,4 +1,7 @@
+using QuickCheckr.EvidenceGathering;
 using QuickCheckr.Protocol;
+using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -21,7 +24,7 @@ public class GatheringEvidence
         }
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     [DocExample(typeof(ContactBook))]
     [DocExample(typeof(GatheringEvidence), nameof(Configure))]
     [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
@@ -30,7 +33,7 @@ public class GatheringEvidence
 @"**Steps:**
 - Load in existing evidence, rerun, keep failing casefiles.
 - Do a normal run, add new failing case files to the list.
-- Distinct on ExecutionDeposition (just count for now, still spiking).
+- Distinct on ExecutionDeposition.
 - Save all evidence and reports to the vault.
 
 For the code on display here, for now, this consistently results in three different reports.")]
@@ -100,5 +103,94 @@ For the code on display here, for now, this consistently results in three differ
                     select Case.Closed))
             from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
+    }
+
+    [Fact]
+    [DocContent("- *Failure Description* is not equal.")]
+    public void CaseFileNotSimilar_FailureDescription()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(
+                Dossier.Empty with { FailingExpectation = "Some Failure" }));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(
+                Dossier.Empty with { FailingExpectation = "Other Failure" }));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("- *Execution Count* is not equal.")]
+    public void CaseFileNotSimilar_ExecutionCount()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(
+                Dossier.Empty with { ExecutionCount = 1 }));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(
+                Dossier.Empty with { ExecutionCount = 2 }));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("- Any **Execution** differs, like so:")]
+    [DocContent("  - *Times Executed* is not equal.")]
+    public void CaseFileNotSimilar_TimesExecuted()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("  - Number of *Actions Performed* is not equal.")]
+    public void CaseFileNotSimilar_NumberOfActions()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Something I Did"))
+                .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("  - Any *Action label* is not equal.")]
+    public void CaseFileNotSimilar_ActionLabels()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("  - Number of *Inputs* is not equal.")]
+    public void CaseFileNotSimilar_()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0))));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+    }
+
+    [Fact]
+    [DocContent("  - Any *Input label* is not equal.")]
+    public void CaseFileNotSimilar_InputLabels()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0))));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Other Label", 0))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
     }
 }
