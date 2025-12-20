@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster;
 [DocFile]
 public partial class TheBroadcasterTest : BaseTest
 {
-    [Fact(Skip = "takes too long")]
+    [Fact(Skip = "Explicit Experimental Example")]
     [DocHeader("The Checkr:")]
     [DocExample(typeof(TheBroadcasterTest), nameof(GetCheckr))]
     [DocHeader("The Report:")]

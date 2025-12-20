@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.The
 [DocFile]
 public class T_ArrayShrinking : BaseTest
 {
-    [Fact(Skip = "WIP")]
+    [Fact(Skip = "Parked, see: Look into collections from todo.md")]
     [DocExample(typeof(T_ArrayShrinking), nameof(GetCheckr))]
     [DocCodeFile("T_ArrayShrinking.txt", "text")]
     public void RunTest()

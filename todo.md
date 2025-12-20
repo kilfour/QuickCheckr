@@ -1,7 +1,6 @@
 ## Current Version: 0.0.5  
-* Failure needs to occur on the same execution Id during shrinking !!
+* Failure needs to occur on the same execution Id during shrinking !! Or maybe not :-(
 * review (refine ?) evidence gathering 
-* look at the skipped tests
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 

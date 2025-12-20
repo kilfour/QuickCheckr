@@ -45,9 +45,9 @@ For the code on display here, for now, this consistently results in three differ
     public void RunTest()
     {
         // var custodian = new InMemoryCustodian();
-        TheJournalist.Exposes(() =>
-            GetCheckr().Run(466724586, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
-        //RunGatherEvidence(GetCheckr());
+        // TheJournalist.Exposes(() =>
+        //     GetCheckr().Run(466724586, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.Default }));
+        RunGatherEvidence(GetCheckr());
         // cfg => Configure(cfg with { Custodian = custodian.Build() }));
 
         // var log = custodian.Data.Values.ToList()[1];
@@ -74,7 +74,7 @@ For the code on display here, for now, this consistently results in three differ
 
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(100.Investigations(), 1.Runs(), 10.ExecutionsPerRun(), Configure);
+        checkr.GatherEvidence(500.Investigations(), 2.Runs(), 10.ExecutionsPerRun(), Configure);
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
@@ -95,15 +95,14 @@ For the code on display here, for now, this consistently results in three differ
                     from trace in Checkr.Trace("Name", () => name)
                     from storeName in Trackr.ToPool("Name", name)
                     select Case.Closed),
-                names.When(a => a.Any(), "Name to remove", nameToRemove =>
-                        Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
-                    pool => pool.Remove()),
+                // names.When(a => a.Any(), "Name to remove", nameToRemove =>
+                //         Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
+                //     pool => pool.Remove()),
                 names.When(a => a.Any(),
                     from newName in Checkr.Input("New Name", NameFuzzr)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
                             from trace in Checkr.Trace("Name to update", () => nameToUpdate)
-                            from traceNew in Checkr.Trace("New Name", () => newName)
                             from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
                             select Case.Closed,
                         pool => pool.Update(newName))
@@ -269,6 +268,47 @@ For the code on display here, for now, this consistently results in three differ
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
                 .AddInputDeposition(new InputDeposition("Label", 0))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
+    }
+
+    [Fact]
+    public void CaseFileNotSimilar_ExecutionOrderDoesMatte_Doubly()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 1)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 2)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(3)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 3)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(4)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 4))));
+
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 1)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 2)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(3)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 3)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(4)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 4))));
+
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

@@ -1,9 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 
 namespace QuickCheckr.Tests.Notes.T_Examples.V_Scheduling;
@@ -50,13 +48,5 @@ public class Scheduling : BaseTest
             from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
             from expect in Checkr.Expect("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
             select Case.Closed;
-    }
-
-    [Fact(Skip = "Explicit")]
-    public void CheckFuzzr()
-    {
-        var bookingOne = TheFuzzr.ValidBooking.Generate();
-        var bookingTwo = TheFuzzr.NonOverlappingBooking(bookingOne).Generate();
-        (bookingOne, bookingTwo).PulseToLog();
     }
 }
