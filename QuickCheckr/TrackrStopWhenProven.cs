@@ -12,7 +12,7 @@ public static partial class Trackr
         state =>
         {
             state.Memory.ExpectGuard.Check(key);
-            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key, state.Memory.ShortTermMemory.CurrentExecutionNumber))
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"StopWhenProven: {key}",
                 () => EvaluateStopWhenProven(key, condition, state),

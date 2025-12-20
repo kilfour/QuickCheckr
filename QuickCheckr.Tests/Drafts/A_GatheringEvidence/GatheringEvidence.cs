@@ -26,7 +26,7 @@ public class GatheringEvidence : BaseTest
         }
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     [DocExample(typeof(ContactBook))]
     [DocExample(typeof(GatheringEvidence), nameof(Configure))]
     [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
@@ -46,7 +46,7 @@ For the code on display here, for now, this consistently results in three differ
     {
         // var custodian = new InMemoryCustodian();
         TheJournalist.Exposes(() =>
-            GetCheckr().Run(736990537, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
+            GetCheckr().Run(466724586, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
         //RunGatherEvidence(GetCheckr());
         // cfg => Configure(cfg with { Custodian = custodian.Build() }));
 
@@ -70,7 +70,7 @@ For the code on display here, for now, this consistently results in three differ
 
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
-        => config with { FileAs = "MyQuickCheckrTest" };
+        => config with { FileAs = "GatheringEvidence" };
 
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>

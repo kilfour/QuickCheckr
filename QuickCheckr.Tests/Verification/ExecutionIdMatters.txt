@@ -1,24 +1,20 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                Verification\ExecutionIdMatters.cs:21:1
+ Test:                    RunTest
+ Location:                Verification\ExecutionIdMatters.cs:27:1
  Original failing run:    4 executions
- Seed:                    2100617630
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    1573008676
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
-   - Input: Name = AAA
  ------------------------------------------------------------
   Executed: Update
    - Input: Counter = 2
-   - Input: Name = BBB
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Counter = 3
-   - Input: Name = AAA
+   - Input: Name = "BBB"
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 4
-   - Input: Name = BBB
+   - Input: Name = "BBB"
  ========================================
   !! Expectation Failed: Count matches
  ========================================

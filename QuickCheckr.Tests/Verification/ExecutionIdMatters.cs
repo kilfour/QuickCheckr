@@ -20,12 +20,21 @@ public class ExecutionIdMatters : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(4.ExecutionsPerRun(), cfg => cfg with { ShrinkMode = ShrinkMode.None }));
         // unshrunk: 4 executions, fails on "BBB"
+        Assert.Equal(4, article.Execution(4).Read().ExecutionId);
         Assert.Equal("BBB", article.Execution(4).Input(2).Read().Value);
 
         article = TheJournalist.Exposes(() =>
             GetCheckr().Run(4.ExecutionsPerRun()));
-        // shrunk: 2 executions, fails on "AAA" !!!
-        Assert.Equal("\"AAA\"", article.Execution(2).Input(2).Read().Value);
+        WriteReport<ExecutionIdMatters>(article, false);
+        // shrunk: 2 executions, fails on "AAA" !!! 
+        // Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        // Assert.Equal("\"BBB\"", article.Execution(2).Input(2).Read().Value);
+        // ---------------------------------------------------------------------
+        // NOT ANYMORE, now 3 executions, fails on "BBB" => CORRECT
+        Assert.Equal(4, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("\"BBB\"", article.Execution(3).Input(2).Read().Value);
+
+        WriteReport<ExecutionIdMatters>(article, false);
     }
 
     [CodeSnippet]

@@ -8,7 +8,7 @@ public static class Evaluate
         state =>
         {
             state.Memory.ExpectGuard.Check(key);
-            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key, state.Memory.ShortTermMemory.CurrentExecutionNumber))
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"Spec: {key}",
                 () => InnerExpect(key, condition, state),

@@ -19,7 +19,7 @@ public class ExecutionShrinker(
                 shrinkCount++;
                 State.Memory.Remove(id);
                 State.Docket.Record(new ExecutionRemoved(id));
-                //i--
+                // i--;
                 i++;
             }
         }

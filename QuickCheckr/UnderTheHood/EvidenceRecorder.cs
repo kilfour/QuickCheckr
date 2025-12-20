@@ -7,18 +7,20 @@ public class EvidenceRecorder
     {
         IsReplay = true;
         currentFailed = false;
+        failedOnWrongExecutionId = false;
     }
 
     private bool runFailed;
     private bool currentFailed;
+    private bool failedOnWrongExecutionId;
     public bool Failed()
     {
         if (IsReplay) return currentFailed;
         return runFailed;
     }
 
-    public bool ExpectationNeedsToBeSkipped(string key, int executionId)
-        => IsReplay && (FailingExpectation != key || failingExecutionId != executionId);
+    public bool ExpectationNeedsToBeSkipped(string key)
+        => IsReplay && (FailingExpectation != key);
 
     public Exception? Exception { get; private set; } = null;
     public void RecordFailure(Exception exception)
@@ -59,7 +61,11 @@ public class EvidenceRecorder
     {
         if (IsReplay)
         {
-            if (FailingExpectation == key && failingExecutionId == executionId) currentFailed = true;
+
+            if (FailingExpectation == key && failingExecutionId == executionId)
+                currentFailed = true;
+            else
+                failedOnWrongExecutionId = true;
             return;
         }
         FailingExpectation = key;
