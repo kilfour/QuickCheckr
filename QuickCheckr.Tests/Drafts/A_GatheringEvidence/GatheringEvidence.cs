@@ -88,7 +88,7 @@ public class GatheringEvidence : BaseTest
     }
 
     [Fact]
-    [DocContent("**Casefiles are considered *similar* when:**")]
+    [DocContent("**Casefiles are considered *not similar* when:**")]
     [DocContent("- *Failure Description* is not equal.")]
     public void CaseFileNotSimilar_FailureDescription()
     {
@@ -183,7 +183,7 @@ public class GatheringEvidence : BaseTest
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
     [Fact]
-    [DocContent("\nPer default order of Executions does not matter for *similarity*.")]
+    [DocContent("\nPer default order of Executions does not matter for similarity.")]
     public void CaseFileSimilar_ExecutionOrderDoesNotMatter()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
@@ -201,7 +201,7 @@ public class GatheringEvidence : BaseTest
 
 
     [Fact]
-    [DocContent("\nAn optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.")]
+    [DocContent("An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.")]
     public void CaseFileNotSimilar_ExecutionOrderDoesMatter()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)

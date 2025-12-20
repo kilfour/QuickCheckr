@@ -8,6 +8,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Experimental.B_OverFlowing;
 
 [DocFile]
+[DocContent("This looks like a redundant example. I think it started as a case for Trackr.Analyze. It isn't anymore, and does not look like a good one for that anyway.")]
 public class OverFlowing : BaseTest
 {
     [Fact]

@@ -137,7 +137,7 @@ public class InPoolsWeTrust : BaseTest
             select Case.Closed;
     }
 
-    private void Verify(Article article)
+    private static void Verify(Article article)
     {
         Assert.Equal("Count matches", article.FailedExpectation());
         Assert.Equal(3, article.Total().Executions());

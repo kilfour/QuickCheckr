@@ -147,7 +147,7 @@ For the code on display here, this consistently results in five different report
  - Count matches: 8x
  ------------------------------------------------------------
 ```
-**Casefiles are considered *similar* when:**  
+**Casefiles are considered *not similar* when:**  
 - *Failure Description* is not equal.  
 - *Execution Count* is not equal.  
 - Any **Execution** differs, like so:  
@@ -156,8 +156,7 @@ For the code on display here, this consistently results in five different report
   - Number of *Inputs* is not equal.  
   - Any *Input label* is not equal.  
 
-Per default order of Executions does not matter for *similarity*.  
-
+Per default order of Executions does not matter for similarity.  
 An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.  
 ## Conditional Execution
 ### Checkr Act Carefully When
