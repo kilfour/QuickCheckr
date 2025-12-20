@@ -11,7 +11,7 @@
   * [ x ] Custodian
   * [ x ] ShrinkMode
   * [ / ] Reportmode
-  * [ x ] DeliberationPolicy : Move elaborate examples to 'on shrinking'
+  * [ x ] DeliberationPolicy
   * [   ] InternalAffairs
 
 ### Tests Current Focus
