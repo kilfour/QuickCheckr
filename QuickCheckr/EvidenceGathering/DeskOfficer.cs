@@ -18,32 +18,6 @@ public class DeskOfficer
         else
             return UnOrdered.ExecutionDepositionsAreSimilar(verdict.ExecutionDepositions, other.ExecutionDepositions);
     }
-    private class Note
-    {
-        public List<string> Actions { get; } = [];
-        public List<string> Inputs { get; } = [];
-        public static List<Note> From(List<ExecutionDeposition> executionDepositions)
-        {
-            var notepad = new List<Note>();
-            foreach (var executionDeposition in executionDepositions)
-            {
-                for (int i = 0; i < executionDeposition.Times; i++)
-                {
-                    var note = new Note();
-                    foreach (var actionDeposition in executionDeposition.ActionDepositions)
-                    {
-                        note.Actions.Add(actionDeposition.Label);
-                    }
-                    foreach (var inputDeposition in executionDeposition.InputDepositions)
-                    {
-                        note.Inputs.Add(inputDeposition.Label);
-                    }
-                    notepad.Add(note);
-                }
-            }
-            return notepad;
-        }
-    }
 
     private class UnOrdered
     {
@@ -108,6 +82,33 @@ public class DeskOfficer
                     return [];
             }
             return [.. others];
+        }
+    }
+
+    private class Note
+    {
+        public List<string> Actions { get; } = [];
+        public List<string> Inputs { get; } = [];
+        public static List<Note> From(List<ExecutionDeposition> executionDepositions)
+        {
+            var notepad = new List<Note>();
+            foreach (var executionDeposition in executionDepositions)
+            {
+                for (int i = 0; i < executionDeposition.Times; i++)
+                {
+                    var note = new Note();
+                    foreach (var actionDeposition in executionDeposition.ActionDepositions)
+                    {
+                        note.Actions.Add(actionDeposition.Label);
+                    }
+                    foreach (var inputDeposition in executionDeposition.InputDepositions)
+                    {
+                        note.Inputs.Add(inputDeposition.Label);
+                    }
+                    notepad.Add(note);
+                }
+            }
+            return notepad;
         }
     }
 

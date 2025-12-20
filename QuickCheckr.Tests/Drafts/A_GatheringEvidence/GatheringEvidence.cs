@@ -210,7 +210,7 @@ For the code on display here, for now, this consistently results in three differ
     }
     [Fact]
     [DocContent("\nPer default order of Executions does not matter for *similarity*.")]
-    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatter()
+    public void CaseFileSimilar_ExecutionOrderDoesNotMatter()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
@@ -225,7 +225,7 @@ For the code on display here, for now, this consistently results in three differ
     }
 
     [Fact]
-    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatterInputs()
+    public void CaseFileSimilar_ExecutionOrderDoesNotMatterInputs()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
@@ -240,7 +240,7 @@ For the code on display here, for now, this consistently results in three differ
     }
 
     [Fact]
-    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatterCollapsed()
+    public void CaseFileSimilar_ExecutionOrderDoesNotMatterCollapsed()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
@@ -272,7 +272,7 @@ For the code on display here, for now, this consistently results in three differ
     }
 
     [Fact]
-    public void CaseFileNotSimilar_ExecutionOrderDoesMatte_Doubly()
+    public void CaseFileSimilar_ExecutionOrderDoesMatter_Doubly()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
@@ -307,6 +307,47 @@ For the code on display here, for now, this consistently results in three differ
             .AddExecutionDeposition(new ExecutionDeposition(4)
                 .AddActionDeposition(new ActionDeposition("Action Two"))
                 .AddInputDeposition(new InputDeposition("Input Two", 4))));
+
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
+    }
+
+    [Fact]
+    public void CaseFileSimilar_ExecutionOrderDoesMatter_Doubly_Collapsed()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 1)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 1)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(3)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 2)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(4)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 2))));
+
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 3)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 4)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(3)
+                .AddActionDeposition(new ActionDeposition("Action One"))
+                .AddInputDeposition(new InputDeposition("Input One", 5)))
+
+            .AddExecutionDeposition(new ExecutionDeposition(4)
+                .AddActionDeposition(new ActionDeposition("Action Two"))
+                .AddInputDeposition(new InputDeposition("Input Two", 6))));
 
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
