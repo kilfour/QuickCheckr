@@ -19,7 +19,8 @@ public class VerifyingDepositionsTests : DepositionTest
                 ShrinkCount: 0,
                 Seed: 12345678,
                 PassedExpectations: new Dictionary<string, int>(),
-                UseMemoryForInputReporting: false
+                UseMemoryForInputReporting: false,
+                ReportWarnings: true
             )));
 
         var reader = Transcribe(caseFile);

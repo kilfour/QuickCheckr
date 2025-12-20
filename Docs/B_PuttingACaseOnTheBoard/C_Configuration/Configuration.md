@@ -7,10 +7,11 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
 **Default Configuration:**  
 ```csharp
 {
-    ShrinkMode = ShrinkMode.Default,
-    DeliberationPolicy = null,
     FileAs = string.Empty,
     Custodian = Custodian.Default,
-    InternalAffairs = [],
+    ShrinkMode = ShrinkMode.Default,
+    ReportMode = ReportMode.Default,
+    DeliberationPolicy = null,
+    InternalAffairs = []
 }
 ```

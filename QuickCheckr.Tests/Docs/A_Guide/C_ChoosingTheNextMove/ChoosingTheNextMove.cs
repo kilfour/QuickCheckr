@@ -62,54 +62,42 @@ There is no guesswork.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1169776765, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.Inputs }));
-        WriteAsserts(article);
-        WriteReport<ChoosingTheNextMove>(article);
+            GetCheckr().Run(1509195528, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.Inputs }));
+        WriteAsserts(article, false);
+        WriteReport<ChoosingTheNextMove>(article, false);
         Verify(article);
     }
 
     private static void Verify(Article article)
     {
         Assert.Equal("No Overdraft", article.FailedExpectation());
-        Assert.Equal(8, article.Total().Executions());
-        Assert.Equal(8, article.Total().Actions());
-        Assert.Equal(8, article.Total().Inputs());
+        Assert.Equal(5, article.Total().Executions());
+        Assert.Equal(5, article.Total().Actions());
+        Assert.Equal(5, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Deposit", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("71", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("61", article.Execution(1).Input(1).Read().Value);
         Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Deposit", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Withdraw", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("5", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("13", article.Execution(2).Input(1).Read().Value);
         Assert.Equal(3, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Withdraw", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Deposit", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal("31", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("61", article.Execution(3).Input(1).Read().Value);
         Assert.Equal(4, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("Deposit", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Withdraw", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(4).Input(1).Read().Label);
-        Assert.Equal("15", article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("20", article.Execution(4).Input(1).Read().Value);
         Assert.Equal(5, article.Execution(5).Read().ExecutionId);
-        Assert.Equal("Deposit", article.Execution(5).Action(1).Read().Label);
+        Assert.Equal("Withdraw", article.Execution(5).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(5).Input(1).Read().Label);
-        Assert.Equal("56", article.Execution(5).Input(1).Read().Value);
-        Assert.Equal(6, article.Execution(6).Read().ExecutionId);
-        Assert.Equal("Withdraw", article.Execution(6).Action(1).Read().Label);
-        Assert.Equal("Amount", article.Execution(6).Input(1).Read().Label);
-        Assert.Equal("94", article.Execution(6).Input(1).Read().Value);
-        Assert.Equal(7, article.Execution(7).Read().ExecutionId);
-        Assert.Equal("Deposit", article.Execution(7).Action(1).Read().Label);
-        Assert.Equal("Amount", article.Execution(7).Input(1).Read().Label);
-        Assert.Equal("36", article.Execution(7).Input(1).Read().Value);
-        Assert.Equal(8, article.Execution(8).Read().ExecutionId);
-        Assert.Equal("Withdraw", article.Execution(8).Action(1).Read().Label);
-        Assert.Equal("Amount", article.Execution(8).Input(1).Read().Label);
-        Assert.Equal("66", article.Execution(8).Input(1).Read().Value);
+        Assert.Equal("98", article.Execution(5).Input(1).Read().Value);
         Assert.Equal("No Overdraft", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(7, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [Fact]
@@ -142,9 +130,9 @@ The branch chosen during the original failing run is *the* branch examined durin
     public void RunTest_Shrunk()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1169776765, 10.ExecutionsPerRun()));
-        WriteAsserts(article);
-        WriteReport(article, "ChoosingTheNextMoveShrunk.txt", true);
+            GetCheckr().Run(1509195528, 10.ExecutionsPerRun()));
+        WriteAsserts(article, false);
+        WriteReport(article, "ChoosingTheNextMoveShrunk.txt", false);
         Verify_Shrunk(article);
     }
 
@@ -155,13 +143,14 @@ The branch chosen during the original failing run is *the* branch examined durin
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(7, article.ShrinkCount);
-        Assert.Equal(8, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(4, article.ShrinkCount);
+        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Withdraw", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("66", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("98", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("No Overdraft", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(7, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
+
     }
 
     [CodeSnippet]

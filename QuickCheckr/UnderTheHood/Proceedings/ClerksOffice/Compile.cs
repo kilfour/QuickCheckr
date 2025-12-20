@@ -16,14 +16,18 @@ public static class Compile
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
-        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting);
+        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, dossier.ReportWarnings);
         AddPassedExpectations(dossier.PassedExpectations, caseFile);
         return caseFile;
     }
 
-    private static CaseFile FromMemoryAndVerdict(Memory memory, Verdict verdict, bool useMemoryForInputReporting)
+    private static CaseFile FromMemoryAndVerdict(
+        Memory memory,
+        Verdict verdict,
+        bool useMemoryForInputReporting,
+        bool reportWarnings)
     {
-        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting);
+        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, reportWarnings);
         var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
     }
@@ -34,22 +38,28 @@ public static class Compile
             caseFile.AddPassedExpectationDeposition(new PassedExpectationDeposition(passedExpectation.Key, passedExpectation.Value));
     }
 
-    private static void AddExecutionDepositions(Memory memory, Verdict verdict, bool useMemoryForInputReporting)
+    private static void AddExecutionDepositions(
+        Memory memory,
+        Verdict verdict,
+        bool useMemoryForInputReporting,
+        bool reportWarnings)
     {
         foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
-            verdict.AddExecutionDeposition(GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting));
+            verdict.AddExecutionDeposition(
+                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, reportWarnings));
         }
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
-        ExecutionMemory shortTermMemory, int executionNumber, bool useMemoryForInputReporting)
+        ExecutionMemory shortTermMemory, int executionNumber, bool useMemoryForInputReporting, bool reportWarnings)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
         GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting);
         GetTraceDepositions(executionDeposition, shortTermMemory);
-        GetWarningDepositions(executionDeposition, shortTermMemory);
+        if (reportWarnings)
+            GetWarningDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
     }
 

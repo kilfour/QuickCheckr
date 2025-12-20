@@ -51,37 +51,28 @@ Running the Checkr without shrinking yields a report similar to this:
 ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:65:1
- Original failing run:    8 executions
- Seed:                    1169776765
+ Original failing run:    5 executions
+ Seed:                    1509195528
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 71
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 5
+   - Input: Amount = 61
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 31
+   - Input: Amount = 13
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 15
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 56
+   - Input: Amount = 61
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 94
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 36
+   - Input: Amount = 20
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 66
+   - Input: Amount = 98
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 7x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 This shows us that **QuickCheckr records the branch actually taken for each execution**.    
@@ -91,18 +82,18 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:145:1
- Original failing run:    8 executions
- Minimal failing case:    1 execution (after 7 shrinks)
- Seed:                    1169776765
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:133:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1509195528
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 66
+   - Input: Amount = 98
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 7x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 The shrunk case shows:

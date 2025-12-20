@@ -19,7 +19,8 @@ public abstract class DepositionTest
                 ShrinkCount: 1,
                 Seed: 12345678,
                 PassedExpectations: new Dictionary<string, int>(),
-                UseMemoryForInputReporting: false
+                UseMemoryForInputReporting: false,
+                ReportWarnings: true
             );
 
     protected LinesReader Transcribe(CaseFile caseFile)

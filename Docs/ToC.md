@@ -11,6 +11,7 @@
       - [Filing Evidence](B_PuttingACaseOnTheBoard/C_Configuration/A_FilingEvidence/FilingEvidence.md)
       - [The Custodian](B_PuttingACaseOnTheBoard/C_Configuration/B_TheCustodian/TheCustodian.md)
       - [ShrinkMode](B_PuttingACaseOnTheBoard/C_Configuration/D_ShrinkMode/ShrinkModeTests.md)
+      - [ReportMode](B_PuttingACaseOnTheBoard/C_Configuration/E_ReportMode/ReportModeTests.md)
       - [Deliberation Policy](B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicy.md)
     - [The Evidence Vault](B_PuttingACaseOnTheBoard/D_TheEvidenceVault/TheEvidenceVault.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)

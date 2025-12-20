@@ -9,7 +9,8 @@ public record Dossier(
     int ShrinkCount,
     int Seed,
     IReadOnlyDictionary<string, int> PassedExpectations,
-    bool UseMemoryForInputReporting)
+    bool UseMemoryForInputReporting,
+    bool ReportWarnings)
 {
     public static Dossier Empty =>
         new(FailingExpectation: null,
@@ -20,5 +21,6 @@ public record Dossier(
             ShrinkCount: 0,
             Seed: 0,
             PassedExpectations: new Dictionary<string, int>(),
-            UseMemoryForInputReporting: false);
+            UseMemoryForInputReporting: false,
+            ReportWarnings: false);
 }

@@ -17,10 +17,11 @@ public record CheckrConfig
         return
             new CheckrConfig()
             {
-                ShrinkMode = ShrinkMode.Default,
-                DeliberationPolicy = null,
                 FileAs = string.Empty,
                 Custodian = Custodian.Default,
+                ShrinkMode = ShrinkMode.Default,
+                ReportMode = ReportMode.Default,
+                DeliberationPolicy = null,
                 InternalAffairs = []
             };
     }
@@ -32,6 +33,8 @@ public record CheckrConfig
     /// Use to opt out, into or customise shrinking strategies.
     /// </summary>
     public required ShrinkMode ShrinkMode { get; init; }
+
+    public required ReportMode ReportMode { get; init; }
 
     /// <summary>
     /// Label under which this run is filed.  

@@ -8,7 +8,6 @@ The following Checkr will be used to generate the reports throughout this chapte
     from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
-**`ShrinkMode.None`**  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
@@ -39,8 +38,6 @@ No shrinking. QuickCheckr reports the original failing run.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Executions`**  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Executions };
@@ -64,8 +61,6 @@ Trims away irrelevant executions.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Inputs`**  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
@@ -90,8 +85,6 @@ Trims inputs to find a minimal failing case.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Reduction`**  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
@@ -108,8 +101,6 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
-
-**`ShrinkMode.Default`**  
 The default settings includes all possible ShrinkModes.  
 ```text
 ------------------------------------------------------------

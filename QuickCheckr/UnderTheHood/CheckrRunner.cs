@@ -34,7 +34,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
 
-        new TraceRun(State, Check).Run();
+        if (config.ReportMode.HasFlag(ReportMode.Trace))
+            new TraceRun(State, Check).Run();
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += new InputShrinker(State, Check).Run();
@@ -60,7 +61,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 ShrinkCount: shrinkCount,
                 Seed: State.FuzzrState.Seed,
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
-                UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs)
+                UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
+                ReportWarnings: config.ReportMode.HasFlag(ReportMode.Warning)
             );
         return Compile.TheCaseFile(dossier, State.Memory);
     }

@@ -9,7 +9,7 @@ using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
 
 
-namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_Investigations;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_InternalAffairs;
 
 // [DocFile]
 [DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]

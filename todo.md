@@ -1,10 +1,12 @@
 ## Current Version: 0.0.5  
-* Failure needs to occur on the same execution Id during shrinking !! Or maybe not :-(
-* review (refine ?) evidence gathering 
+* review (refine ?) evidence gathering
+* add a ReportMode to config maybe ? disabling traces and/or warnings
+  * ReportMode { Traces | Warnings | None }
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 
 * Review Configuration entry
+* Move Deliberation Shrinking elaborate examples to on shrinking
 
 ### Tests Current Focus
 
@@ -20,8 +22,6 @@
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
-* add a ReportMode to config maybe ? disabling traces and/or warnings
-  * ReportMode { Traces | Warnings | None }
 * Editor: configure QuickPulse.Show 
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely

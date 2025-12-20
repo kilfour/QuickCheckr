@@ -21,14 +21,16 @@ public class Eventually
 ### The Report:
 ```text
 ------------------------------------------------------------
- Test:                    RunTestBuiltIn
- Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:107:1
+ Test:                    RunTest
+ Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:34:1
  Original failing run:    10 executions
- Minimal failing case:    1 execution (after 9 shrinks)
+ Minimal failing case:    2 executions (after 9 shrinks)
  Seed:                    307579878
  ------------------------------------------------------------
   Executed: start
    - Input: Input = 6
+ ------------------------------------------------------------
+  Executed: start
  ===================================
   !! Expectation Failed: Is not 7
  ===================================
@@ -120,7 +122,7 @@ public sealed class Ledger
  Seed:                    1990927690
  ------------------------------------------------------------
   Executed: Add
-   - Input: Entry = 1138084379
+   - Input: Entry = 1959373951
  ------------------------------------------------------------
   Executed: Add
    - Input: Entry = 1930233829
@@ -198,57 +200,5 @@ return
  Passed Expectations
  - Client is added to collection: 4x
  - Faulty client is removed: 1x
- ------------------------------------------------------------
-```
-## The Pool Investigation
-```csharp
-    from storage in Trackr.Stashed(() => new Storage())
-    from people in Trackr.PoolFor<PersonInfo>()
-    from ops in Checkr.OneOfWhen(
-        people.When(a => a.Count() < 50,
-            from name in Checkr.Input("Name", Fuzzr.String(2))
-            from trace in Checkr.Trace("Name", () => name)
-            from id in Checkr.Act("Add Person", () => storage.AddPerson(name))
-            from reloaded in Checkr.Capture(() => storage.GetById(id))
-            from checkName in Checkr.Expect("Check Name", () => reloaded.Name == name)
-            from pool in Trackr.ToPool("Add Person", new PersonInfo(id, name))
-            from traceId in Checkr.Trace("Id", () => id)
-            select Case.Closed)//,
-        // (() => people.Any(),
-        //     from personInfo in Trackr.OneOfPool<PersonInfo>("Person Update")
-        //     from name in Checkr.Input("Name", Fuzzr.String(1))
-        //     from update in Checkr.Act("Update Name", () => storage.UpdateName(personInfo.Id, name))
-        //     from reloaded in Checkr.Capture(() => storage.GetById(personInfo.Id))
-        //     from checkName in Checkr.Expect("Check Name Updated", () => reloaded.Name == name)
-        //     from traceId in Checkr.Trace("Id", () => personInfo.Id)
-        //     select Case.Closed)
-    )
-    from isUnique in Checkr.Expect("Name is Unique",
-        () => storage.People.GroupBy(a => a.Name).All(a => a.Count() == 1))
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Experimental\P_ThePoolInvestigation\ThePoolInvestigation.cs:26:1
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    1851717714
- ------------------------------------------------------------
-  Executed: Add Person
-   - Input: Name = "kc"
-   - Trace: Name = kc
-   - Trace: Id = 1
- ------------------------------------------------------------
-  Executed: Add Person
-   - Input: Name = "kc"
-   - Trace: Name = kc
-   - Trace: Id = 2
- =========================================
-  !! Expectation Failed: Name is Unique
- =========================================
- Passed Expectations
- - Check Name: 6x
- - Name is Unique: 5x
  ------------------------------------------------------------
 ```

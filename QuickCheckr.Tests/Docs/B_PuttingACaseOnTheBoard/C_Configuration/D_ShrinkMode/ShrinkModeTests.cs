@@ -33,7 +33,6 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.None };
 
     [Fact]
-    [DocContent("**`ShrinkMode.None`**")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureNone))]
     [DocContent("No shrinking. QuickCheckr reports the original failing run.")]
     [DocCodeFile("ShrinkModeTestsNone.txt", "text")]
@@ -78,7 +77,6 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Executions };
 
     [Fact]
-    [DocContent("\n**`ShrinkMode.Executions`**")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureExecutions))]
     [DocContent("Trims away irrelevant executions.")]
     [DocCodeFile("ShrinkModeTestsExecutions.txt", "text")]
@@ -113,7 +111,6 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Inputs };
 
     [Fact]
-    [DocContent("\n**`ShrinkMode.Inputs`**")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureInputs))]
     [DocContent("Trims inputs to find a minimal failing case.")]
     [DocCodeFile("ShrinkModeTestsInputs.txt", "text")]
@@ -148,7 +145,6 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Reduction };
 
     [Fact]
-    [DocContent("\n**`ShrinkMode.Reduction`**")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureReduction))]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
     [DocExperimental]
@@ -169,7 +165,7 @@ public class ShrinkModeTests : BaseTest
     }
 
     [Fact]
-    [DocContent("\n**`ShrinkMode.Default`**  \nThe default settings includes all possible ShrinkModes.")]
+    [DocContent("The default settings includes all possible ShrinkModes.")]
     [DocCodeFile("ShrinkModeTestsDefault.txt", "text")]
     public void DefaultSetting()
     {

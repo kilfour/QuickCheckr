@@ -15,7 +15,7 @@ public class EvidenceRecorder
     private bool failedOnWrongExecutionId;
     public bool Failed()
     {
-        if (IsReplay) return currentFailed /* && !failedOnWrongExecutionId */;
+        if (IsReplay) return currentFailed && !failedOnWrongExecutionId;
         return runFailed;
     }
 

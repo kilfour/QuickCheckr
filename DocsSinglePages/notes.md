@@ -181,57 +181,6 @@ together with the number of executions, relevant actions and inputs that were re
   !! Expectation Failed: List[0][0] is not 42
  ===============================================
 ```
-##### Multiple Causes
-This test is skipped because Trackr.StandIn is removed.  
-```csharp
-    // from substite in Trackr.StandIn(666)
-    from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([1, 2, 1]))
-    from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.ExpectWhen("input.Count() > 2, () => !input.Contains(1)",
-        () => input.Count() > 2, () => !input.Contains(1))
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G_MultipleCauses.cs:19:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1238961515
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 1, 2, 1 ]
- ===============================================================
-  !! Spec Failed: input.Count() > 2, () => !input.Contains(1)
- ===============================================================
-```
-##### Multiple Causes Default In Spec
-This test is skipped because Trackr.StandIn is removed.  
-```csharp
-    // from substite in Trackr.StandIn(666)
-    from input in Checkr.Input("Input", Fuzzr.Constant<IEnumerable<int>>([0, 2, 0]))
-    from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.ExpectWhen("input.Count() > 2, () => !input.Contains(0)",
-        () => input.Count() > 2, () => !input.Contains(0))
-    select Case.Closed;
-```
-  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\G1_MultipleCausesDefaultInSpec.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1238961515
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, 0 ]
-   - Trace: List = [ 0, 2, 0 ]
- ===============================================================
-  !! Spec Failed: input.Count() > 2, () => !input.Contains(0)
- ===============================================================
-```
 ##### Empty List Is The Culprit
 ```csharp
     from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
@@ -533,30 +482,6 @@ private static CheckrConfig Configure(CheckrConfig config)
 As you can see the warning is still there for `Universe.Everything` but this is a relevant input,
 so the warning can be ignored.  
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.  
-##### Multiple Relevant Properties
-This test is skipped because Trackr.StandIn is removed.  
-```csharp
-    // from standIn in Trackr.StandIn(123)
-    from obj in Checkr.Input("BaggyInters", Fuzzr.One<BaggyInters>())
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\F_MultipleRelevantProperties.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1889365782
- ------------------------------------------------------------
-  Executed:
-   - Trace: Original = { IntOne: 1, IntTwo: 69, IntThree: 1 }
- ===============================================================
-  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
- ===============================================================
-```
 ##### Shrinking Records
 ```csharp
     from person in Checkr.Input("Person",

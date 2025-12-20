@@ -46,8 +46,9 @@ For the code on display here, for now, this consistently results in three differ
     {
         // var custodian = new InMemoryCustodian();
         // TheJournalist.Exposes(() =>
-        //     GetCheckr().Run(466724586, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.Default }));
-        RunGatherEvidence(GetCheckr());
+        //     GetCheckr().Run(1940127617, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
+        GetCheckr().GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
+        //RunGatherEvidence(GetCheckr());
         // cfg => Configure(cfg with { Custodian = custodian.Build() }));
 
         // var log = custodian.Data.Values.ToList()[1];
@@ -74,7 +75,7 @@ For the code on display here, for now, this consistently results in three differ
 
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(500.Investigations(), 2.Runs(), 10.ExecutionsPerRun(), Configure);
+        checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Configure);
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
@@ -88,9 +89,9 @@ For the code on display here, for now, this consistently results in three differ
         return
             from contactBook in Trackr.Stashed(() => new ContactBook())
             from names in Trackr.PoolFor<string>()
-            from name in Checkr.Input("Name", NameFuzzr)
             from operations in Checkr.OneOfWhen(
                 names.When(a => a.Count() < 10,
+                    from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                     from trace in Checkr.Trace("Name", () => name)
                     from storeName in Trackr.ToPool("Name", name)
@@ -100,6 +101,7 @@ For the code on display here, for now, this consistently results in three differ
                 //     pool => pool.Remove()),
                 names.When(a => a.Any(),
                     from newName in Checkr.Input("New Name", NameFuzzr)
+                    from trace in Checkr.Trace("New Name", () => newName)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
                             from trace in Checkr.Trace("Name to update", () => nameToUpdate)

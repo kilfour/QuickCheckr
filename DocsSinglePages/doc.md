@@ -368,37 +368,28 @@ Running the Checkr without shrinking yields a report similar to this:
 ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:65:1
- Original failing run:    8 executions
- Seed:                    1169776765
+ Original failing run:    5 executions
+ Seed:                    1509195528
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 71
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 5
+   - Input: Amount = 61
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 31
+   - Input: Amount = 13
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 15
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 56
+   - Input: Amount = 61
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 94
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 36
+   - Input: Amount = 20
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 66
+   - Input: Amount = 98
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 7x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 This shows us that **QuickCheckr records the branch actually taken for each execution**.    
@@ -408,18 +399,18 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:145:1
- Original failing run:    8 executions
- Minimal failing case:    1 execution (after 7 shrinks)
- Seed:                    1169776765
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:133:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1509195528
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 66
+   - Input: Amount = 98
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 7x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 The shrunk case shows:
@@ -698,19 +689,19 @@ private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:83:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:70:1
  Original failing run:    15 executions
  Minimal failing case:    4 executions (after 18 shrinks)
  Seed:                    1073869613
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-3
+   - Trace: Coach Name = Coach-2
  ------------------------------------------------------------
   Executed: Create Course
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-3
+   - Trace: Coach Name = Coach-2
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Update Course Skills
@@ -777,11 +768,12 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
 **Default Configuration:**  
 ```csharp
 {
-    ShrinkMode = ShrinkMode.Default,
-    DeliberationPolicy = null,
     FileAs = string.Empty,
     Custodian = Custodian.Default,
-    InternalAffairs = [],
+    ShrinkMode = ShrinkMode.Default,
+    ReportMode = ReportMode.Default,
+    DeliberationPolicy = null,
+    InternalAffairs = []
 }
 ```
 #### Filing Evidence
@@ -870,7 +862,6 @@ The following Checkr will be used to generate the reports throughout this chapte
     from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
     select Case.Closed;
 ```
-**`ShrinkMode.None`**  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
@@ -901,8 +892,6 @@ No shrinking. QuickCheckr reports the original failing run.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Executions`**  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Executions };
@@ -926,8 +915,6 @@ Trims away irrelevant executions.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Inputs`**  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
@@ -952,8 +939,6 @@ Trims inputs to find a minimal failing case.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-
-**`ShrinkMode.Reduction`**  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
@@ -970,8 +955,6 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
-
-**`ShrinkMode.Default`**  
 The default settings includes all possible ShrinkModes.  
 ```text
 ------------------------------------------------------------
@@ -988,6 +971,109 @@ The default settings includes all possible ShrinkModes.
  ===================================================
  Passed Expectations
  - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
+#### ReportMode
+Controls which whether *Traces* and/or *Warnigns* show up in the report.
+
+The following Checkr will be used to generate the reports throughout this chapter:  
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
+    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
+    from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
+    from trace in Checkr.Trace("Irrelevant", () => irrelevant)
+    from expect in Checkr.Expect("Counter does not equal 2", () => counter != 2)
+    select Case.Closed;
+```
+```csharp
+private static CheckrConfig ConfigureNone(CheckrConfig config)
+    => config with { ReportMode = ReportMode.None };
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTestNone
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed:
+   - Input: Counter = 2
+   - Input: Null Thing = null
+ ===================================================
+  !! Expectation Failed: Counter does not equal 2
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 2: 1x
+ ------------------------------------------------------------
+```
+```csharp
+private static CheckrConfig ConfigureTrace(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Trace };
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTestTrace
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:80:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed:
+   - Input: Counter = 2
+   - Input: Null Thing = null
+   - Trace: Irrelevant = 73
+ ===================================================
+  !! Expectation Failed: Counter does not equal 2
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 2: 1x
+ ------------------------------------------------------------
+```
+
+**`ReportMode.Inputs`**  
+```csharp
+private static CheckrConfig ConfigureWarning(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Warning };
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTestWarning
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:116:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed:
+   - Input: Counter = 2
+   - Input: Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ ===================================================
+  !! Expectation Failed: Counter does not equal 2
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 2: 1x
+ ------------------------------------------------------------
+```
+The default settings includes all possible ReportModes.  
+```text
+------------------------------------------------------------
+ Test:                    DefaultSetting
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:149:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed:
+   - Input: Counter = 2
+   - Input: Null Thing = null
+   - Trace: Irrelevant = 73
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ ===================================================
+  !! Expectation Failed: Counter does not equal 2
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
 #### Deliberation Policy

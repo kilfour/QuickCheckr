@@ -149,19 +149,19 @@ private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:83:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:70:1
  Original failing run:    15 executions
  Minimal failing case:    4 executions (after 18 shrinks)
  Seed:                    1073869613
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-3
+   - Trace: Coach Name = Coach-2
  ------------------------------------------------------------
   Executed: Create Course
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-3
+   - Trace: Coach Name = Coach-2
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Update Course Skills

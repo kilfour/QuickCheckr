@@ -15,38 +15,44 @@ public class ContactBook
 ```
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
-    => config with { FileAs = "MyQuickCheckrTest" };
+    => config with { FileAs = "GatheringEvidence" };
 ```
 ```csharp
-checkr.GatherEvidence(100.Investigations(), 1.Runs(), 10.ExecutionsPerRun(), Configure);
+checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Configure);
 ```
 ```csharp
     from contactBook in Trackr.Stashed(() => new ContactBook())
     from names in Trackr.PoolFor<string>()
-    from name in Checkr.Input("Name", NameFuzzr)
     from operations in Checkr.OneOfWhen(
         names.When(a => a.Count() < 10,
+            from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
+            from trace in Checkr.Trace("Name", () => name)
             from storeName in Trackr.ToPool("Name", name)
             select Case.Closed),
-        names.When(a => a.Any(), "Name to remove", nameToRemove =>
-                Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
-            pool => pool.Remove()),
+        // names.When(a => a.Any(), "Name to remove", nameToRemove =>
+        //         Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
+        //     pool => pool.Remove()),
         names.When(a => a.Any(),
             from newName in Checkr.Input("New Name", NameFuzzr)
+            from trace in Checkr.Trace("New Name", () => newName)
             from pool in Trackr.OneOfPool<string>("Name to update",
                 nameToUpdate =>
+                    from trace in Checkr.Trace("Name to update", () => nameToUpdate)
                     from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
                     select Case.Closed,
                 pool => pool.Update(newName))
             select Case.Closed))
-    from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+    from tracePool in Checkr.Trace("Pool", () => names)
+    from traceBook in Checkr.Trace("Book", () => contactBook)
+    from count in names.Expect("Count matches",
+        elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 **Steps:**
-- Load in existing evidence, rerun, keep failing casefiles.
-- Do a normal run, add new failing case files to the list.
-- Distinct on ExecutionDeposition (just count for now, still spiking).
+- Load in existing evidence from the vault, rerun, keep failing casefiles.
+- Do a specified number of Investigations, add new failing case files to the list.
+- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
 - Save all evidence and reports to the vault.
 
 For the code on display here, for now, this consistently results in three different reports.  
@@ -107,6 +113,16 @@ For the code on display here, for now, this consistently results in three differ
  - Count matches: 9x
  ------------------------------------------------------------
 ```
+- *Failure Description* is not equal.  
+- *Execution Count* is not equal.  
+- Any **Execution** differs, like so:  
+  - Number of *Actions Performed* is not equal.  
+  - Any *Action label* is not equal.  
+  - Number of *Inputs* is not equal.  
+  - Any *Input label* is not equal.  
+
+Per default order of Executions does not matter for *similarity*.  
+An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order does matter.  
 ## Conditional Execution
 ### Checkr Act Carefully When
 ```csharp

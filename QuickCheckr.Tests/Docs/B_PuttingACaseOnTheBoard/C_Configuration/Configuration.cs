@@ -19,11 +19,12 @@ public class Configuration
     {
         return new CheckrConfig()
         {
-            ShrinkMode = ShrinkMode.Default,
-            DeliberationPolicy = null,
             FileAs = string.Empty,
             Custodian = Custodian.Default,
-            InternalAffairs = [],
+            ShrinkMode = ShrinkMode.Default,
+            ReportMode = ReportMode.Default,
+            DeliberationPolicy = null,
+            InternalAffairs = []
         };
     }
 
@@ -34,11 +35,14 @@ public class Configuration
     {
         var expected = DefaultSettings();
         var actual = CheckrConfig.Default();
-        Assert.Equal(expected.ShrinkMode, actual.ShrinkMode);
-        Assert.Equal(expected.DeliberationPolicy, actual.DeliberationPolicy);
         Assert.Equal(expected.FileAs, actual.FileAs);
         // Assert below touches the file system
         // Assert.IsType<Custodian.FileRecorder>(actual.Custodian.Recorder("test"));
+        Assert.Equal(expected.ShrinkMode, actual.ShrinkMode);
+        Assert.Equal(expected.ReportMode, actual.ReportMode);
+        Assert.Equal(expected.DeliberationPolicy, actual.DeliberationPolicy);
+
+
         Assert.Equal(expected.InternalAffairs, actual.InternalAffairs);
         // more ?
     }

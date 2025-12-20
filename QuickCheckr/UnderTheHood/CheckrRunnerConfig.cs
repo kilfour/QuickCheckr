@@ -11,7 +11,10 @@ public record CheckrRunnerConfig
 {
     public CheckrRunnerConfig(CheckrConfig config)
     {
+        FileAs = config.FileAs;
+        Custodian = config.Custodian;
         ShrinkMode = config.ShrinkMode;
+        ReportMode = config.ReportMode;
         DeliberationPolicy = config.DeliberationPolicy;
         Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
@@ -21,14 +24,14 @@ public record CheckrRunnerConfig
                         .ToInline<List<int>>())
                     .Then(a.Procedure))
                 .SetArtery(a.Officer()))];
-        FileAs = config.FileAs;
-        Custodian = config.Custodian;
+
     }
 
     public int? Seed { get; set; } = null;
-    public ShrinkMode ShrinkMode { get; init; }
-    public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
-    public Signal<IFiling>[] Signals { get; init; }
     public string FileAs { get; init; }
     public Custodian Custodian { get; init; }
+    public ShrinkMode ShrinkMode { get; init; }
+    public ReportMode ReportMode { get; init; }
+    public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
+    public Signal<IFiling>[] Signals { get; init; }
 }
