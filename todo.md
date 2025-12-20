@@ -1,12 +1,21 @@
 ## Current Version: 0.0.5  
-* review (refine ?) evidence gathering
+* QuickCheckr internal keys (for memory storage and counter/unique fuzzrs)
+  Centralize or better yet, if possible use records
+* review evidence gathering
+* play more pool
 
-### Doc Current Focus
+### Doc Current Focus 
 * Add an introduction to pools to the guide, before Bolting Horses 
 * Review Configuration entry
-* Move Deliberation Shrinking elaborate examples to on shrinking
+  * [ x ] FileAs : add CaseSummary info
+  * [ x ] Custodian
+  * [ x ] ShrinkMode
+  * [ / ] Reportmode
+  * [ / ] DeliberationPolicy : Move elaborate examples to 'on shrinking'
+  * [   ] InternalAffairs
 
 ### Tests Current Focus
+none
 
 ## 0.0.6
 * look into different collection shrinking
@@ -28,12 +37,7 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
-* Doc Configuration
-  * [ x ] FileAs : add CaseSummary info
-  * [ x ] Custodian
-  * [ x ] ShrinkMode
-  * [ X ] DeliberationPolicy
-  * [   ] InternalAffairs
+
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
@@ -45,18 +49,13 @@
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
-* Test QuickCheckr with QuickCheckr
-  Targets:
-  * DeskOfficer
   
 ## Refactoring Targets 
 * GetFromPool (bool, T?) => Result
-* Nested InputShrinkingClue ?
+* Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
 * Loose the lazy IEnumerable in shrinking (yield)
 * unify ConditionalResult and DelayedResult maybe
 * DeskOfficer seems a bit wastefull with all those lists
-* QuickCheckr internal keys (for memory storage and counter/unique fuzzrs) ii
-  Centralize or better yet, if possible use records
 
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
