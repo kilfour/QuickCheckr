@@ -1,18 +1,13 @@
  ------------------------------------------------------------
- Original failing run:    16 executions
- Minimal failing case:    3 executions (after 15 shrinks)
- Seed:                    207117738
+ Original failing run:    6 executions
+ Minimal failing case:    2 executions (after 4 shrinks)
+ Seed:                    1003550795
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "John Harrison"
- ------------------------------------------------------------
-  Executed: Add
- ------------------------------------------------------------
-  Executed: Update
-   - Input: New Name = "John Harrison"
+  Executed: Add (2 Times)
+   - Input: Name = "George McCartney"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 15x
+ - Count matches: 5x
  ------------------------------------------------------------

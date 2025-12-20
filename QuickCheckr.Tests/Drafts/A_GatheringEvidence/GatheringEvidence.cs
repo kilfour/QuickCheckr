@@ -1,7 +1,6 @@
 using QuickCheckr.EvidenceGathering;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
@@ -18,15 +17,14 @@ public class GatheringEvidence : BaseTest
         private readonly HashSet<string> contacts = [];
         public IReadOnlyCollection<string> Contacts => contacts;
         public void Add(string name) => contacts.Add(name);
-        public void Remove(string name) => contacts.Remove(name);
         public void Update(string name, string newName)
         {
-            Remove(name);
+            contacts.Remove(name);
             Add(newName);
         }
     }
 
-    [Fact]
+    [Fact(Skip = "Explicit: Touches the File System.")]
     [DocExample(typeof(ContactBook))]
     [DocExample(typeof(GatheringEvidence), nameof(Configure))]
     [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
@@ -38,35 +36,15 @@ public class GatheringEvidence : BaseTest
 - A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
 - Save all evidence and reports to the vault.
 
-For the code on display here, for now, this consistently results in three different reports.")]
+For the code on display here, this consistently results in five different reports.")]
     [DocCodeFile("report1.qr", "text")]
     [DocCodeFile("report2.qr", "text")]
     [DocCodeFile("report3.qr", "text")]
+    [DocCodeFile("report4.qr", "text")]
+    [DocCodeFile("report5.qr", "text")]
     public void RunTest()
     {
-        // var custodian = new InMemoryCustodian();
-        // TheJournalist.Exposes(() =>
-        //     GetCheckr().Run(1940127617, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
-        GetCheckr().GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
-        //RunGatherEvidence(GetCheckr());
-        // cfg => Configure(cfg with { Custodian = custodian.Build() }));
-
-        // var log = custodian.Data.Values.ToList()[1];
-        // var report = custodian.Data.Values.ToList()[2];
-
-        // Assert.Single(log.Values);
-        // Assert.Equal("Run failed for Seed: 1862095796.", log.Values[0]);
-
-        // var reader = LinesReader.FromText(report.Values[0]);
-        // Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        // Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
-        // Assert.Equal(" Seed:                    1862095796", reader.NextLine());
-        // Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        // Assert.Equal("  Executed", reader.NextLine());
-        // Assert.Equal(" ================================", reader.NextLine());
-        // Assert.Equal("  !! Expectation Failed: Fails", reader.NextLine());
-        // Assert.Equal(" ================================", reader.NextLine());
-        // Assert.True(reader.EndOfContent());
+        RunGatherEvidence(GetCheckr());
     }
 
     [CodeExample]
@@ -75,7 +53,7 @@ For the code on display here, for now, this consistently results in three differ
 
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Configure);
+        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
 
     private static readonly FuzzrOf<string> NameFuzzr =
         from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
@@ -93,24 +71,16 @@ For the code on display here, for now, this consistently results in three differ
                 names.When(a => a.Count() < 10,
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
-                    from trace in Checkr.Trace("Name", () => name)
                     from storeName in Trackr.ToPool("Name", name)
                     select Case.Closed),
-                // names.When(a => a.Any(), "Name to remove", nameToRemove =>
-                //         Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
-                //     pool => pool.Remove()),
                 names.When(a => a.Any(),
                     from newName in Checkr.Input("New Name", NameFuzzr)
-                    from trace in Checkr.Trace("New Name", () => newName)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
-                            from trace in Checkr.Trace("Name to update", () => nameToUpdate)
                             from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
                             select Case.Closed,
                         pool => pool.Update(newName))
                     select Case.Closed))
-            from tracePool in Checkr.Trace("Pool", () => names)
-            from traceBook in Checkr.Trace("Book", () => contactBook)
             from count in names.Expect("Count matches",
                 elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;

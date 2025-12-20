@@ -5,10 +5,9 @@ public class ContactBook
     private readonly HashSet<string> contacts = [];
     public IReadOnlyCollection<string> Contacts => contacts;
     public void Add(string name) => contacts.Add(name);
-    public void Remove(string name) => contacts.Remove(name);
     public void Update(string name, string newName)
     {
-        Remove(name);
+        contacts.Remove(name);
         Add(newName);
     }
 }
@@ -18,7 +17,7 @@ private static CheckrConfig Configure(CheckrConfig config)
     => config with { FileAs = "GatheringEvidence" };
 ```
 ```csharp
-checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Configure);
+checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(), Configure);
 ```
 ```csharp
     from contactBook in Trackr.Stashed(() => new ContactBook())
@@ -27,24 +26,16 @@ checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Conf
         names.When(a => a.Count() < 10,
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
-            from trace in Checkr.Trace("Name", () => name)
             from storeName in Trackr.ToPool("Name", name)
             select Case.Closed),
-        // names.When(a => a.Any(), "Name to remove", nameToRemove =>
-        //         Checkr.Act("Remove", () => contactBook.Remove(nameToRemove)),
-        //     pool => pool.Remove()),
         names.When(a => a.Any(),
             from newName in Checkr.Input("New Name", NameFuzzr)
-            from trace in Checkr.Trace("New Name", () => newName)
             from pool in Trackr.OneOfPool<string>("Name to update",
                 nameToUpdate =>
-                    from trace in Checkr.Trace("Name to update", () => nameToUpdate)
                     from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
                     select Case.Closed,
                 pool => pool.Update(newName))
             select Case.Closed))
-    from tracePool in Checkr.Trace("Pool", () => names)
-    from traceBook in Checkr.Trace("Book", () => contactBook)
     from count in names.Expect("Count matches",
         elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;
@@ -55,62 +46,103 @@ checkr.GatherEvidence(500.Investigations(), 1.Runs(), 3.ExecutionsPerRun(), Conf
 - A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
 - Save all evidence and reports to the vault.
 
-For the code on display here, for now, this consistently results in three different reports.  
+For the code on display here, this consistently results in five different reports.  
 ```text
 ------------------------------------------------------------
- Original failing run:    20 executions
- Minimal failing case:    2 executions (after 18 shrinks)
- Seed:                    83696956
+ Original failing run:    8 executions
+ Minimal failing case:    4 executions (after 6 shrinks)
+ Seed:                    526916359
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "Paul Harrison"
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "Paul Harrison"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 7x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    6 executions
+ Minimal failing case:    2 executions (after 4 shrinks)
+ Seed:                    1003550795
  ------------------------------------------------------------
   Executed: Add (2 Times)
-   - Input: Name = "Paul Starr"
+   - Input: Name = "George McCartney"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 19x
+ - Count matches: 5x
  ------------------------------------------------------------
 ```
 ```text
 ------------------------------------------------------------
- Original failing run:    16 executions
- Minimal failing case:    3 executions (after 15 shrinks)
- Seed:                    207117738
+ Original failing run:    8 executions
+ Minimal failing case:    5 executions (after 6 shrinks)
+ Seed:                    1097432183
  ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "John Harrison"
- ------------------------------------------------------------
-  Executed: Add
+  Executed: Add (2 Times)
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "John Harrison"
+ ------------------------------------------------------------
+  Executed: Update (2 Times)
+   - Input: New Name = "Ringo Lennon"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 15x
+ - Count matches: 7x
  ------------------------------------------------------------
 ```
 ```text
 ------------------------------------------------------------
- Original failing run:    10 executions
- Minimal failing case:    4 executions (after 10 shrinks)
- Seed:                    441368127
+ Original failing run:    7 executions
+ Minimal failing case:    3 executions (after 5 shrinks)
+ Seed:                    1567721313
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "John Starr"
  ------------------------------------------------------------
   Executed: Add
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul Starr"
- ------------------------------------------------------------
-  Executed: Add
- ------------------------------------------------------------
-  Executed: Update
-   - Input: New Name = "Paul Starr"
+   - Input: New Name = "John Starr"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 9x
+ - Count matches: 6x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    9 executions
+ Minimal failing case:    4 executions (after 7 shrinks)
+ Seed:                    2135365049
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "John McCartney"
+ ------------------------------------------------------------
+  Executed: Add
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: New Name = "John McCartney"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 8x
  ------------------------------------------------------------
 ```
 - *Failure Description* is not equal.  

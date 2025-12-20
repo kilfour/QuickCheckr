@@ -1,7 +1,5 @@
 ## Current Version: 0.0.5  
 * review (refine ?) evidence gathering
-* add a ReportMode to config maybe ? disabling traces and/or warnings
-  * ReportMode { Traces | Warnings | None }
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 

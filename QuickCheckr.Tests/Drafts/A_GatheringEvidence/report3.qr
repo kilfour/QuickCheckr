@@ -1,20 +1,17 @@
  ------------------------------------------------------------
- Original failing run:    10 executions
- Minimal failing case:    4 executions (after 10 shrinks)
- Seed:                    441368127
+ Original failing run:    8 executions
+ Minimal failing case:    5 executions (after 6 shrinks)
+ Seed:                    1097432183
  ------------------------------------------------------------
-  Executed: Add
- ------------------------------------------------------------
-  Executed: Update
-   - Input: New Name = "Paul Starr"
- ------------------------------------------------------------
-  Executed: Add
+  Executed: Add (2 Times)
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul Starr"
+ ------------------------------------------------------------
+  Executed: Update (2 Times)
+   - Input: New Name = "Ringo Lennon"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 9x
+ - Count matches: 7x
  ------------------------------------------------------------
