@@ -74,6 +74,7 @@ public class InPoolsWeTrust : BaseTest
     [Fact]
     [DocHeader("Using random elements from a Pool")]
     [DocExample(typeof(InPoolsWeTrust), nameof(UseRandom))]
+    [DocContent("**TODO: Show Pool.When**")]
     public void UsingIt()
     {
         Assert.Throws<OneOfEmptyOptionsException>(() => UseRandom().Run());
@@ -95,8 +96,8 @@ public class InPoolsWeTrust : BaseTest
     public void AllTogetherNow()
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(523518063, 10.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<InPoolsWeTrust>(article, false);
+        WriteAsserts(article, true);
+        WriteReport<InPoolsWeTrust>(article, true);
         Verify(article);
     }
 
@@ -125,16 +126,13 @@ public class InPoolsWeTrust : BaseTest
                     select Case.Closed),
                 // 2. Update a (Contact-) name in the Rolodex
                 names.When(a => a.Any(), // <= Can not pick from an empty selections.
-                    from newName in Checkr.Input("New Name", NameFuzzr)
-                    // Pick a random Contact to update 
-                    from pool in Trackr.OneOfPool<Contact>("Contact to update",
-                        contact =>
-                            from trace in Checkr.Trace("Old Name", () => contact.Name)
-                            from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
-                                // Update the contact in the pool, keeping model and test data in sync.
-                            from updatePool in Checkr.Perform(() => contact.Name = newName)
-                            select Case.Closed)
-                    select Case.Closed))
+                    "Contact to update", contact => // Pick a random Contact to update 
+                        from newName in Checkr.Input("New Name", NameFuzzr)
+                        from trace in Checkr.Trace("Old Name", () => contact.Name)
+                        from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                            // Update the contact in the pool, keeping model and test data in sync.
+                        from updatePool in Checkr.Perform(() => contact.Name = newName)
+                        select Case.Closed))
             from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
     }
@@ -148,22 +146,22 @@ public class InPoolsWeTrust : BaseTest
         Assert.Equal(3, article.Total().Traces());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(5, article.ShrinkCount);
-        Assert.Equal(3, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Name", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("Paul Harrison", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal(4, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("John Harrison", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(3, article.Execution(2).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Name", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("\"Paul McCartney\"", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("\"Paul Harrison\"", article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Name", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("Paul McCartney", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal("Paul Harrison", article.Execution(2).Trace(1).Read().Value);
         Assert.Equal(6, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Update", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("New Name", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal("\"Paul McCartney\"", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("\"Paul Harrison\"", article.Execution(3).Input(1).Read().Value);
         Assert.Equal("Old Name", article.Execution(3).Trace(1).Read().Label);
-        Assert.Equal("Paul Harrison", article.Execution(3).Trace(1).Read().Value);
+        Assert.Equal("John Harrison", article.Execution(3).Trace(1).Read().Value);
         Assert.Equal("Count matches", article.PassedExpectation(1).Read().Label);
         Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
     }

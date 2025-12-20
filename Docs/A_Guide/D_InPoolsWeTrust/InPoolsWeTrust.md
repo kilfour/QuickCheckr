@@ -31,6 +31,7 @@ select Case.Closed;
 Trackr.OneOfPool<Contact>("A Random Contact",
     contact => Checkr.Trace("Contact Name", () => contact.Name));
 ```
+**TODO: Show Pool.When**  
 ## Bringing it all back home
 ### The Model
 ```csharp
@@ -63,38 +64,35 @@ public class Rolodex
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
         names.When(a => a.Any(), // <= Can not pick from an empty selections.
-            from newName in Checkr.Input("New Name", NameFuzzr)
-            // Pick a random Contact to update 
-            from pool in Trackr.OneOfPool<Contact>("Contact to update",
-                contact =>
-                    from trace in Checkr.Trace("Old Name", () => contact.Name)
-                    from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
-                        // Update the contact in the pool, keeping model and test data in sync.
-                    from updatePool in Checkr.Perform(() => contact.Name = newName)
-                    select Case.Closed)
-            select Case.Closed))
+            "Contact to update", contact => // Pick a random Contact to update 
+                from newName in Checkr.Input("New Name", NameFuzzr)
+                from trace in Checkr.Trace("Old Name", () => contact.Name)
+                from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                    // Update the contact in the pool, keeping model and test data in sync.
+                from updatePool in Checkr.Perform(() => contact.Name = newName)
+                select Case.Closed))
     from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 ### The Report
 ```text
 ------------------------------------------------------------
- Test:                    UsingIt
- Location:                Drafts\D_InPoolsWeTrust\InPoolsWeTrust.cs:81:1
+ Test:                    AllTogetherNow
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:98:1
  Original failing run:    6 executions
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    523518063
  ------------------------------------------------------------
   Executed: Add
-   - Trace: Name = Paul Harrison
+   - Trace: Name = John Harrison
  ------------------------------------------------------------
   Executed: Add
-   - Input: Name = "Paul McCartney"
-   - Trace: Name = Paul McCartney
+   - Input: Name = "Paul Harrison"
+   - Trace: Name = Paul Harrison
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul McCartney"
-   - Trace: Old Name = Paul Harrison
+   - Input: New Name = "Paul Harrison"
+   - Trace: Old Name = John Harrison
  ========================================
   !! Expectation Failed: Count matches
  ========================================

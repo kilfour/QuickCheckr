@@ -83,80 +83,22 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  - No Overdraft: 1x
  ------------------------------------------------------------
 ```
-## An Eager Shrinker
-Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.  
-```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-    from trace in Checkr.Trace("List", () => input)
-    from expect in Checkr.ExpectWhen("Does not contain 1",
-        () => input.Count() > 2,
-        () => !input.Contains(1))
-    select Case.Closed;
-```
-Now when the list contains multiple elements `1`, we might get:  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:142:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    227109555
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, _ ]
-   - Trace: List = [ 1, 2, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
-but the element values are considered irrelevant (*wrong*).  
-For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
-```csharp
-private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
-```
-**Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:183:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1048923184
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 3, 2, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-A similar thing can happen when shrinking objects, and the solution is exactly the same  
-```csharp
-    from obj in Checkr.Input("BaggyInters",
-        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-        from result in Fuzzr.One<BaggyInters>()
-        select result)
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
-```
-**With DeliberationPolicy:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:206:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1631955690
- ------------------------------------------------------------
-  Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 4, IntTwo: 2, IntThree: 1 }
- ===============================================================
-  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
- ===============================================================
-```
+The following predefined policies are available
+- `DeliberationPolicy.MinimumExecutions`
+- `DeliberationPolicy.MinimumShrinkCount`
+- `DeliberationPolicy.MaximumShrinkCount`
+- `DeliberationPolicy.MinimumWarnings`
+
+See the documentation for *Deliberation Shrinking* for more examples and usage of these policies.
+
+It is also possible to define a custom policy, but this is an ...  
+
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  

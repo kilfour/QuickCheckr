@@ -106,6 +106,17 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     [DocExample(typeof(DeliberationPolicy), nameof(Configure))]
     [DocContent("Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.")]
     [DocCodeFile("DeliberationPolicyMinimal.txt", "text")]
+    [DocContent(
+@"The following predefined policies are available
+- `DeliberationPolicy.MinimumExecutions`
+- `DeliberationPolicy.MinimumShrinkCount`
+- `DeliberationPolicy.MaximumShrinkCount`
+- `DeliberationPolicy.MinimumWarnings`
+
+See the documentation for *Deliberation Shrinking* for more examples and usage of these policies.
+
+It is also possible to define a custom policy, but this is an ...")]
+    [DocExperimental]
     public void RunTest_Deliberated()
     {
         var article = TheJournalist.Exposes(() =>
@@ -123,110 +134,5 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
         Assert.Equal(2, article.Total().Inputs());
     }
 
-    [Fact]
-    [DocHeader("An Eager Shrinker")]
-    [DocContent(
-@"Under some rare circumstances, the opposite can also occur, and the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.")]
-    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckrGreedy))]
-    [DocContent(
-@"Now when the list contains multiple elements `1`, we might get:")]
-    [DocCodeFile("DeliberationPolicyGreedy.txt", "text")]
-    [DocContent(
-@"It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
-but the element values are considered irrelevant (*wrong*).")]
-    public void RunTest_DeliberatedGreedy()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckrGreedy().Run(227109555, 1.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport(article, "DeliberationPolicyGreedy.txt", false);
-        Verify_DeliberatedGreedy(article);
-    }
 
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckrGreedy()
-    {
-        return
-            from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-            from trace in Checkr.Trace("List", () => input)
-            from expect in Checkr.ExpectWhen("Does not contain 1",
-                () => input.Count() > 2,
-                () => !input.Contains(1))
-            select Case.Closed;
-    }
-
-    private static void Verify_DeliberatedGreedy(Article article)
-    {
-        Assert.Equal("Does not contain 1", article.FailedExpectation());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(3, article.ShrinkCount);
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("List", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 1, 2, 1 ]", article.Execution(1).Trace(1).Read().Value);
-    }
-
-    [Fact]
-    [DocContent("For this rare case we can also add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:")]
-    [DocExample(typeof(DeliberationPolicy), nameof(ConfigureShrinkCount))]
-    [DocContent("**Report:**")]
-    [DocCodeFile("DeliberationPolicyGreedyFixed.txt", "text")]
-    public void RunTest_DeliberatedGreedyFixed()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckrGreedy().Run(20.Runs(), 1.ExecutionsPerRun(), ConfigureShrinkCount));
-        WriteAsserts(article, false);
-        WriteReport(article, "DeliberationPolicyGreedyFixed.txt", false);
-        Verify_DeliberatedGreedyFixed(article);
-    }
-
-    [CodeExample]
-    private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-        => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
-
-    private static void Verify_DeliberatedGreedyFixed(Article article)
-    {
-        Assert.NotEqual("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
-    }
-
-    [Fact]
-    [DocContent("A similar thing can happen when shrinking objects, and the solution is exactly the same")]
-    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckrGreedyObjects))]
-    [DocContent("**With DeliberationPolicy:**")]
-    [DocCodeFile("DeliberationPolicyGreedyObjects.txt", "text")]
-    public void RunTest_DeliberatedGreedyObjects()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckrGreedyObjects().Run(20.Runs(), 1.ExecutionsPerRun(), ConfigureShrinkCount));
-        WriteAsserts(article, false);
-        WriteReport(article, "DeliberationPolicyGreedyObjects.txt", false);
-        Verify_DeliberatedGreedyObjects(article);
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckrGreedyObjects()
-    {
-        return
-            from obj in Checkr.Input("BaggyInters",
-                from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-                from result in Fuzzr.One<BaggyInters>()
-                select result)
-            from trace in Checkr.Trace("Original", () => obj)
-            from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-                () => obj.IntOne != 1 && obj.IntThree != 1)
-            select Case.Closed;
-    }
-
-    private static void Verify_DeliberatedGreedyObjects(Article article)
-    {
-        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedExpectation());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Inputs());
-    }
 }
