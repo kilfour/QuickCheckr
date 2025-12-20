@@ -1,0 +1,27 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Verification\ExecutionIdMatters.cs:21:1
+ Original failing run:    4 executions
+ Seed:                    2100617630
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 1
+   - Input: Name = AAA
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Counter = 2
+   - Input: Name = BBB
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 3
+   - Input: Name = AAA
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 4
+   - Input: Name = BBB
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 3x
+ ------------------------------------------------------------

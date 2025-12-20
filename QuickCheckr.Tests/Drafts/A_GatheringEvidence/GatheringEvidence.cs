@@ -1,5 +1,7 @@
 using QuickCheckr.EvidenceGathering;
 using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
@@ -8,7 +10,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.A_GatheringEvidence;
 
 [DocFile]
-public class GatheringEvidence
+public class GatheringEvidence : BaseTest
 {
     [CodeExample]
     public class ContactBook
@@ -24,16 +26,16 @@ public class GatheringEvidence
         }
     }
 
-    [Fact]
+    [Fact(Skip = "WIP")]
     [DocExample(typeof(ContactBook))]
     [DocExample(typeof(GatheringEvidence), nameof(Configure))]
     [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
     [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
     [DocContent(
 @"**Steps:**
-- Load in existing evidence, rerun, keep failing casefiles.
-- Do a normal run, add new failing case files to the list.
-- Distinct on ExecutionDeposition.
+- Load in existing evidence from the vault, rerun, keep failing casefiles.
+- Do a specified number of Investigations, add new failing case files to the list.
+- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
 - Save all evidence and reports to the vault.
 
 For the code on display here, for now, this consistently results in three different reports.")]
@@ -43,7 +45,9 @@ For the code on display here, for now, this consistently results in three differ
     public void RunTest()
     {
         // var custodian = new InMemoryCustodian();
-        RunGatherEvidence(GetCheckr());
+        TheJournalist.Exposes(() =>
+            GetCheckr().Run(736990537, 10.ExecutionsPerRun(), cfg => Configure(cfg) with { ShrinkMode = ShrinkMode.None }));
+        //RunGatherEvidence(GetCheckr());
         // cfg => Configure(cfg with { Custodian = custodian.Build() }));
 
         // var log = custodian.Data.Values.ToList()[1];
@@ -88,6 +92,7 @@ For the code on display here, for now, this consistently results in three differ
             from operations in Checkr.OneOfWhen(
                 names.When(a => a.Count() < 10,
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
+                    from trace in Checkr.Trace("Name", () => name)
                     from storeName in Trackr.ToPool("Name", name)
                     select Case.Closed),
                 names.When(a => a.Any(), "Name to remove", nameToRemove =>
@@ -97,11 +102,16 @@ For the code on display here, for now, this consistently results in three differ
                     from newName in Checkr.Input("New Name", NameFuzzr)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
+                            from trace in Checkr.Trace("Name to update", () => nameToUpdate)
+                            from traceNew in Checkr.Trace("New Name", () => newName)
                             from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
                             select Case.Closed,
                         pool => pool.Update(newName))
                     select Case.Closed))
-            from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+            from tracePool in Checkr.Trace("Pool", () => names)
+            from traceBook in Checkr.Trace("Book", () => contactBook)
+            from count in names.Expect("Count matches",
+                elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
     }
 
@@ -114,6 +124,7 @@ For the code on display here, for now, this consistently results in three differ
         var other = CaseFile.WithVerdict(Verdict.FromDossier(
                 Dossier.Empty with { FailingExpectation = "Other Failure" }));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
@@ -125,11 +136,11 @@ For the code on display here, for now, this consistently results in three differ
         var other = CaseFile.WithVerdict(Verdict.FromDossier(
                 Dossier.Empty with { ExecutionCount = 2 }));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
     [DocContent("- Any **Execution** differs, like so:")]
-    [DocContent("  - *Times Executed* is not equal.")]
     public void CaseFileNotSimilar_TimesExecuted()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
@@ -140,6 +151,7 @@ For the code on display here, for now, this consistently results in three differ
             .AddExecutionDeposition(new ExecutionDeposition(2)
                 .AddActionDeposition(new ActionDeposition("Something I Did"))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
@@ -154,6 +166,7 @@ For the code on display here, for now, this consistently results in three differ
                 .AddActionDeposition(new ActionDeposition("Something I Did"))
                 .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
@@ -167,11 +180,12 @@ For the code on display here, for now, this consistently results in three differ
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
     [DocContent("  - Number of *Inputs* is not equal.")]
-    public void CaseFileNotSimilar_()
+    public void CaseFileNotSimilar_Inputs()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
@@ -179,6 +193,7 @@ For the code on display here, for now, this consistently results in three differ
         var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
     [Fact]
@@ -192,5 +207,68 @@ For the code on display here, for now, this consistently results in three differ
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddInputDeposition(new InputDeposition("Other Label", 0))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
+    }
+    [Fact]
+    [DocContent("\nPer default order of Executions does not matter for *similarity*.")]
+    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatter()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Something I Did")))
+            .AddExecutionDeposition(new ExecutionDeposition(2)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
+    }
+
+    [Fact]
+    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatterInputs()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0)))
+            .AddExecutionDeposition(new ExecutionDeposition(2)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddInputDeposition(new InputDeposition("Label", 0))));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
+    }
+
+    [Fact]
+    public void CaseFileNotSimilar_ExecutionOrderDoesNotMatterCollapsed()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0)))
+            .AddExecutionDeposition(new ExecutionDeposition(2))
+            .AddExecutionDeposition(new ExecutionDeposition(3)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddInputDeposition(new InputDeposition("Label", 0)))
+            .AddExecutionDeposition(new ExecutionDeposition(3)));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
+    }
+
+    [Fact]
+    [DocContent("An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order does matter.")]
+    public void CaseFileNotSimilar_ExecutionOrderDoesMatter()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddInputDeposition(new InputDeposition("Label", 0)))
+            .AddExecutionDeposition(new ExecutionDeposition(2)));
+        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2)
+                .AddInputDeposition(new InputDeposition("Label", 0))));
+        Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

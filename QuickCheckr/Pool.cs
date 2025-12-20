@@ -9,7 +9,7 @@ public static class Pool
 
 public class Pool<T>(IEnumerable<T> pool)
 {
-    internal IEnumerable<T> Values => pool;
+    public IEnumerable<T> Values => pool;
 
     public (Func<bool>, CheckrOf<Case>) When(
         Func<IEnumerable<T>, bool> predicate,

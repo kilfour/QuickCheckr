@@ -14,7 +14,8 @@ public static class CheckrOfTGatherEvidence
         InvestigationCount investigationCount,
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure)
+        Func<CheckrConfig, CheckrConfig> configure,
+        bool ordered = false)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
@@ -35,9 +36,9 @@ public static class CheckrOfTGatherEvidence
         var caseFilesToReport = new List<CaseFile>();
         foreach (var caseFile in caseFiles)
         {
-            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a)))
+            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
                 continue;
-            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a)))
+            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
                 continue;
             caseFilesToReport.Add(caseFile);
         }

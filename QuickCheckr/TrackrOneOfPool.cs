@@ -48,13 +48,19 @@ public static partial class Trackr
     public static CheckrOf<Case> OneOfPool<T>(
         string key,
         Func<T, bool> predicate,
-        Func<T, CheckrOf<Case>> checkr) =>
+        Func<T, CheckrOf<Case>> checkr,
+        Action<TrackrPoolOperations<T>>? operations = null) =>
         state =>
         {
             var id = state.Memory.StoreVariable(key,
                 () => Fuzzr.OneOf(state.Memory.GetPoolIds<T>(predicate))(state.FuzzrState).Value);
             var (result, value) = state.Memory.GetFromPool<T>(id);
-            if (result) return CheckrResult.Some(state, checkr(value!)(state).Value);
+            if (result)
+            {
+                if (operations is not null)
+                    operations(new TrackrPoolOperations<T>(state, id));
+                return CheckrResult.Some(state, checkr(value!)(state).Value);
+            }
             return CheckrResult.CaseOnly(state);
         };
 

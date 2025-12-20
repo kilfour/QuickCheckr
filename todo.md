@@ -1,9 +1,11 @@
 ## Current Version: 0.0.5  
-* Review Configuration entry
+* Failure needs to occur on the same execution Id during shrinking !!
 * review (refine ?) evidence gathering 
+* look at the skipped tests
 
 ### Doc Current Focus
 * Add an introduction to pools to the guide, before Bolting Horses 
+* Review Configuration entry
 
 ### Tests Current Focus
 
@@ -46,12 +48,18 @@
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
-
+* Test QuickCheckr with QuickCheckr
+  Targets:
+  * DeskOfficer
+  
 ## Refactoring Targets 
 * GetFromPool (bool, T?) => Result
 * Nested InputShrinkingClue ?
 * Loose the lazy IEnumerable in shrinking (yield)
 * unify ConditionalResult and DelayedResult maybe
+* DeskOfficer seems a bit wastefull with all those lists
+* QuickCheckr internal keys (for memory storage and counter/unique fuzzrs) ii
+  Centralize or better yet, if possible use records
 
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
