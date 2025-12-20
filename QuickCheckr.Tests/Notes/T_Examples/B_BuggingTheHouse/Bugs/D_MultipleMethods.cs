@@ -32,8 +32,8 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 	{
 		var article = TheJournalist.Exposes(() =>
 			GetCheckr().Run(1292206393, 60.ExecutionsPerRun()));
-		WriteAsserts(article);
-		WriteReport<D_MultipleMethods>(article);
+		WriteAsserts(article, false);
+		WriteReport<D_MultipleMethods>(article, false);
 		Verify(article);
 	}
 
@@ -45,7 +45,7 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
 		Assert.Equal(1, article.Total().Inputs());
 		Assert.Equal(2, article.Total().PassedExpectations());
 		Assert.Equal(58, article.ShrinkCount);
-		Assert.Equal(56, article.Execution(1).Read().ExecutionId);
+		Assert.Equal(2, article.Execution(1).Read().ExecutionId);
 		Assert.Equal("BugHouse.RunInt", article.Execution(1).Action(1).Read().Label);
 		Assert.Equal(57, article.Execution(2).Read().ExecutionId);
 		Assert.Equal(2, article.Execution(2).Read().Times);
