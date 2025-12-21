@@ -1,6 +1,4 @@
 ## Current Version: 0.0.5  
-* QuickCheckr internal keys (for memory storage and counter/unique fuzzrs)
-  Centralize or better yet, if possible use records
 * review evidence gathering
 * play more pool
 
@@ -37,7 +35,6 @@ none
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
-
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions

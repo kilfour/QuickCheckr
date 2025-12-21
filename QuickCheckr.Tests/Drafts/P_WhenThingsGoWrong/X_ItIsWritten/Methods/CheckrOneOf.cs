@@ -32,7 +32,7 @@ public class CheckrOneOf
     [CodeRemove("@\"")]
     [CodeRemove("\";")]
     private static string GetMessage() =>
-@"Key 'OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
+@"Key 'Checkr|OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
 
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.

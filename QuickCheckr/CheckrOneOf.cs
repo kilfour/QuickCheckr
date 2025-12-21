@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
 namespace QuickCheckr;
@@ -9,7 +10,7 @@ public static partial class Checkr
     /// Use when modelling behaviour where multiple alternative actions may occur, each with equal probability.
     /// </summary>
     public static CheckrOf<Case> OneOf(params CheckrOf<Case>[] scripts)
-        => OneOf("OneOf|Default|QuickCheckr|Key", scripts);
+        => OneOf(GetKeyFor.CheckrOneOf, scripts);
 
 
     public static CheckrOf<Case> OneOf(string key, params CheckrOf<Case>[] scripts) =>
