@@ -85,6 +85,7 @@ Make pooling tasks feel as native as Trackr pooling.
 * `Taskr.Pool("label", task)` (explicit store)
 * `Taskr.ClearPool()` per run  
 ## Over Flowing
+This looks like a redundant example. I think it started as a case for Trackr.Analyze. It isn't anymore, and does not look like a good one for that anyway.  
 ### The SUT:
 ```csharp
 public sealed class Ledger

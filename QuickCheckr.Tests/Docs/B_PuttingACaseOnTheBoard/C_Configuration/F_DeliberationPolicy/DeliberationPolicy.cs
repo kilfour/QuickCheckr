@@ -1,6 +1,5 @@
-using QuickCheckr;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
+using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -11,6 +10,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 
 [DocFile]
+[DocLink(typeof(DeliberationShrinking), "DeliberationShrinking")]
 [DocContent(
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
@@ -113,7 +113,7 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
 - `DeliberationPolicy.MaximumShrinkCount`
 - `DeliberationPolicy.MinimumWarnings`
 
-See the documentation for *Deliberation Shrinking* for more examples and usage of these policies.
+See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 
 It is also possible to define a custom policy, but this is an ...")]
     [DocExperimental]

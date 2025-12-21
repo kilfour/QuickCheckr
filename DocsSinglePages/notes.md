@@ -1228,6 +1228,215 @@ public class TheFuzzr
   !! Expectation Failed: Bookings do not overlap
  ==================================================
 ```
+## Various
+### Execution Id Matters
+#### The Sut
+```csharp
+public class ContactBook
+{
+    private readonly HashSet<string> contacts = [];
+    public IReadOnlyCollection<string> Contacts => contacts;
+    public void Add(string name) => contacts.Add(name);
+    public void Update(string name, string newName)
+    {
+        contacts.Remove(name);
+        Add(newName);
+    }
+}
+```
+#### The Checkr
+```csharp
+    from contactBook in Trackr.Stashed(() => new ContactBook())
+    from names in Trackr.PoolFor<string>()
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+    from operations in Checkr.OneOfWhen(
+            (() => counter == 1, // add AAA
+                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed),
+            (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
+                    select Case.Closed,
+                    pool => pool.Update(newName))
+                select Case.Closed),
+            (() => counter == 3, // add a new AAA
+                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed),
+            (() => counter == 4, // add BBB, initial run fails here
+                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed))
+    from tracePool in Checkr.Trace("Pool", () => names)
+    from traceSut in Checkr.Trace("Sut", () => contactBook)
+    from count in names.Expect("Count matches",
+        a => a.Count() == contactBook.Contacts.Count)
+    select Case.Closed;
+```
+#### The Report (ShrinkMode.None)
+```text
+------------------------------------------------------------
+ Test:                    RunTestNoShrinking
+ Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
+ Original failing run:    4 executions
+ Seed:                    2052315962
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 1
+   - Input: Name = AAA
+   - Trace: Pool = { Values: [ "AAA" ] }
+   - Trace: Sut = { Contacts: [ "AAA" ] }
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Counter = 2
+   - Input: Name = BBB
+   - Trace: Pool = { Values: [ "BBB" ] }
+   - Trace: Sut = { Contacts: [ "BBB" ] }
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 3
+   - Input: Name = AAA
+   - Trace: Pool = { Values: [ "BBB", "AAA" ] }
+   - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 4
+   - Input: Name = BBB
+   - Trace: Pool = { Values: [ "BBB", "AAA", "BBB" ] }
+   - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 3x
+ ------------------------------------------------------------
+```
+Before this problem was identified, the following happened:
+- Execution shrinker tries removing execution 2.
+- The run now fails on execution 3.
+- Run fails => execution 2 removed.
+- Which means run no longer fails on execution 4
+- Execution shrinker tries removing execution 4.
+- The run still fails on execution 3.
+- Run fails => execution 4 removed.
+In this case it still pointed out a minimal fail case, just not the one that originally failed.  
+But in other, more complex situations, this behaviour can lead to confusing reports.
+
+So now, **Execution Id Matters**.
+  
+```text
+------------------------------------------------------------
+ Test:                    RunTestShrinking
+ Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:49:1
+ Original failing run:    4 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    1117291969
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 1
+   - Trace: Pool = { Values: [ "AAA" ] }
+   - Trace: Sut = { Contacts: [ "AAA" ] }
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Counter = 2
+   - Input: Name = "BBB"
+   - Trace: Pool = { Values: [ "BBB" ] }
+   - Trace: Sut = { Contacts: [ "BBB" ] }
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 4
+   - Input: Name = "BBB"
+   - Trace: Pool = { Values: [ "BBB", "BBB" ] }
+   - Trace: Sut = { Contacts: [ "BBB" ] }
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 3x
+ ------------------------------------------------------------
+```
+#### Also For Exceptions
+```csharp
+public class ContactBook
+{
+    private readonly List<string> contacts = [];
+    public IReadOnlyCollection<string> Contacts => contacts;
+    public void Add(string name)
+    {
+        if (contacts.Contains(name))
+            ComputerSays.No(
+                $"I'm afraid I can't do that {name.Split().FirstOrDefault() ?? name}");
+        contacts.Add(name);
+    }
+    public void Update(string name, string newName)
+    {
+        contacts.Remove(name);
+        Add(newName);
+    }
+}
+```
+```csharp
+    from contactBook in Trackr.Stashed(() => new ContactBook())
+    from names in Trackr.PoolFor<string>()
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+    from operations in Checkr.OneOfWhen(
+            (() => counter == 1, // add AAA
+                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed),
+            (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
+                    select Case.Closed,
+                    pool => pool.Update(newName))
+                select Case.Closed),
+            (() => counter == 3, // add a new AAA
+                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed),
+            (() => counter == 4, // add BBB
+                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+                from act in Checkr.Act("Add", () => contactBook.Add(name))
+                from storeName in Trackr.ToPool("Name", name)
+                select Case.Closed))
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:21:1
+ Original failing run:    4 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    944215577
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Counter = 2
+   - Input: Name = "BBB"
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 4
+   - Input: Name = "BBB"
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 70
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 56
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 24
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+ ===========================================================================
+```
 ## Acting Out Of Sync
 ```csharp
 public class Eventually

@@ -296,7 +296,7 @@ The following Checkrs write to the this bank:
 ```
   Throws:  
 ```text
-Key 'OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
+Key 'Checkr|OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.
@@ -327,7 +327,7 @@ The following Checkrs write to the this bank:
 ```
   Throws:  
 ```text
-Key 'OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same memory location.
+Key 'Checkr|OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same memory location.
 QuickCheckr treats keys as stable identifiers.
 Keys must be unique per memory bank.
 Reusing a key for multiple write operations makes reports and shrinking ambiguous.

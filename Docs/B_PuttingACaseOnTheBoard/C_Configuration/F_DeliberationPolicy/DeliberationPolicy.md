@@ -89,7 +89,7 @@ The following predefined policies are available
 - `DeliberationPolicy.MaximumShrinkCount`
 - `DeliberationPolicy.MinimumWarnings`
 
-See the documentation for *Deliberation Shrinking* for more examples and usage of these policies.
+See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 
 It is also possible to define a custom policy, but this is an ...  
 
@@ -102,3 +102,5 @@ It is also possible to define a custom policy, but this is an ...
 > It is included for users who want to experiment and help shape the future of QuickCheckr.
 
   
+
+[DeliberationShrinking]: QuickCheckr/Tests/Docs/H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
