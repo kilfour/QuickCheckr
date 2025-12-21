@@ -11,10 +11,12 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
+[DocLink(typeof(B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy.DeliberationPolicy))]
 [DocContent(
-@"This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.
+@"This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
-We already saw an example in the entry on 'Deliberation Policies' in the Configuration chapter.
+A first example, as well as how to enable this feature,
+can be found in the entry on [Deliberation Policies][DeliberationPolicy] in the Configuration chapter.
 
 But here are some more use cases.")]
 public class DeliberationShrinking : BaseTest
@@ -94,7 +96,7 @@ but the element values are considered irrelevant (*wrong*).")]
     [Fact]
     [DocContent("A similar thing can happen when shrinking objects, and the solution is exactly the same")]
     [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedyObjects))]
-    [DocContent("**With DeliberationPolicy:**")]
+    [DocContent("**With Deliberation Policy:**")]
     [DocCodeFile("DeliberationShrinkingGreedyObjects.txt", "text")]
     public void RunTest_DeliberatedGreedyObjects()
     {

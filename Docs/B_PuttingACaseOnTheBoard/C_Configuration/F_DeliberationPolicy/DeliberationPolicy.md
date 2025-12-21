@@ -103,4 +103,4 @@ It is also possible to define a custom policy, but this is an ...
 
   
 
-[DeliberationShrinking]: QuickCheckr/Tests/Docs/H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
+[DeliberationShrinking]: ../../../H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
