@@ -1,6 +1,21 @@
 ## Current Version: 0.0.6 
+* Refactoring: simplify casefile compile
 * review evidence gathering
 * play more pool
+  * use a pool operation, but make the checkr used by Trackr.OneOfPool throw, see what happens 
+    (pool mutated, SUT not, probably)
+    ```csharp
+    var outcome = checkr(value!)(state).Value;
+    if (operations is not null)
+        operations(new TrackrPoolOperations<T>(state, id));
+    return CheckrResult.Some(state, outcome);
+    ```
+    better, but semantics
+    ```csharp
+    Func<TrackrPoolOperations<T>, CheckrOf<Case>>? operations
+    ```
+    also semantics I think, LINQ machinery is unaware of exception handling
+    So yeah, I need a `[Fact]`
 
 ### Doc Current Focus 
 * Add an introduction to pools to the guide, before Bolting Horses 
@@ -27,11 +42,13 @@ none
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
-* Editor: configure QuickPulse.Show 
+* Editor: configure QuickPulse.Show (see ideas)
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
-* Stabilize Investigations
+* Stabilize InternalAffairs
+
+## 0.1.0
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
@@ -46,6 +63,8 @@ none
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
+* Bring back Feedback Shrinking, don't need a deep copy of memory with the new structure for one
+  Should be a lot easier than before
   
 ## Refactoring Targets 
 * GetFromPool (bool, T?) => Result
