@@ -16,6 +16,9 @@
     ```
     also semantics I think, LINQ machinery is unaware of exception handling
     So yeah, I need a `[Fact]`
+    Might not be an issue at all, as I think it does not need to be *atomic*
+    The pool is a verification of the SUT, so if the sut fails, were gonna use the pool to verify
+    Making it atomic => no way to verify
 
 ### Doc Current Focus 
 * Add an introduction to pools to the guide, before Bolting Horses 
