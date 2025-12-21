@@ -1,0 +1,26 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:21:1
+ Original failing run:    4 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    944215577
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Counter = 2
+   - Input: Name = "BBB"
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 4
+   - Input: Name = "BBB"
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 70
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 56
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 24
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+ ===========================================================================

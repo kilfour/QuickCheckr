@@ -96,8 +96,8 @@ public class InPoolsWeTrust : BaseTest
     public void AllTogetherNow()
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(523518063, 10.ExecutionsPerRun()));
-        WriteAsserts(article, true);
-        WriteReport<InPoolsWeTrust>(article, true);
+        WriteAsserts(article, false);
+        WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);
     }
 
