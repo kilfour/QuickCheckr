@@ -1,4 +1,4 @@
-## Current Version: 0.0.5  
+## Current Version: 0.0.6 
 * review evidence gathering
 * play more pool
 
@@ -15,14 +15,14 @@
 ### Tests Current Focus
 none
 
-## 0.0.6
+## 0.0.7
 * look into different collection shrinking
   * limitations
   * known issues
   * workarounds
 * update xml summaries
 
-## 0.0.6+
+## 0.0.7+
 * keyed overload for PoolFor, GetPool, ...
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer

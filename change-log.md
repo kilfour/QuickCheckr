@@ -7,7 +7,6 @@
 * Pool encapsulation
 * Conditional Execution Guard in ActCarefully: Guards against Act not executed during shrinking
 * Consistent use of When instead of If
-NEW
 * Pool evolutions (operations for one .Update, .Remove)
 * Some more Exceptions
 * Conditional Execution Guards everywhere 
