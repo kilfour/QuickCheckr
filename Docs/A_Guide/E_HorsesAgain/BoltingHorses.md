@@ -75,8 +75,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         courses.When(a => a.Count() < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
         courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
-        // Maybe assign a coach, if possible.
-        // Pick a random coach and course, if there exists a combination for which the predicate holds.
+        // Maybe assign a coach, if there exists a combination for which the predicate holds.
         Pool.These(coaches, courses).When("Assign Coach to Course",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
