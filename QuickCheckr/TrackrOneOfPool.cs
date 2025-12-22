@@ -11,8 +11,7 @@ public static partial class Trackr
     /// </summary>
     public static CheckrOf<Case> OneOfPool<T>(
         string key,
-        Func<T, CheckrOf<Case>> checkr,
-        Action<TrackrPoolOperations<T>>? operations = null) =>
+        Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
         state =>
         {
             var id = state.Memory.StoreVariable(key,
@@ -20,9 +19,7 @@ public static partial class Trackr
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
             {
-                if (operations is not null)
-                    operations(new TrackrPoolOperations<T>(state, id));
-                return CheckrResult.Some(state, checkr(value!)(state).Value);
+                return CheckrResult.Some(state, checkr(new PoolElement<T>(id, value!))(state).Value);
             }
             return CheckrResult.CaseOnly(state);
         };
@@ -30,18 +27,15 @@ public static partial class Trackr
     public static CheckrOf<Case> OneOfPool<T>(
         string key,
         Func<T, bool> predicate,
-        Func<T, CheckrOf<Case>> checkr,
-        Action<TrackrPoolOperations<T>>? operations = null) =>
+        Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
         state =>
         {
             var id = state.Memory.StoreVariable(key,
-                () => Fuzzr.OneOf(state.Memory.GetPoolIds<T>(predicate))(state.FuzzrState).Value);
+                () => Fuzzr.OneOf(state.Memory.GetPoolIds(predicate))(state.FuzzrState).Value);
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
             {
-                if (operations is not null)
-                    operations(new TrackrPoolOperations<T>(state, id));
-                return CheckrResult.Some(state, checkr(value!)(state).Value);
+                return CheckrResult.Some(state, checkr(new PoolElement<T>(id, value))(state).Value);
             }
             return CheckrResult.CaseOnly(state);
         };

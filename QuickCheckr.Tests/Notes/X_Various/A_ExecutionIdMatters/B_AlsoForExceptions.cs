@@ -42,9 +42,9 @@ public class B_AlsoForExceptions : BaseTest
                     (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                         from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                         from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                            from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
-                            select Case.Closed,
-                            pool => pool.Update(newName))
+                            from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                            from update in nameToUpdate.Update(newName)
+                            select Case.Closed)
                         select Case.Closed),
                     (() => counter == 3, // add a new AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))

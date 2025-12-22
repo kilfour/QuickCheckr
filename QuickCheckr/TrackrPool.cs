@@ -19,9 +19,8 @@ public class Pool<T>(IEnumerable<T> pool)
     public (Func<bool>, CheckrOf<Case>) When(
         Func<IEnumerable<T>, bool> predicate,
         string key,
-        Func<T, CheckrOf<Case>> checkr,
-        Action<TrackrPoolOperations<T>>? operations = null)
-        => (() => predicate(pool), Trackr.OneOfPool(key, checkr, operations));
+        Func<PoolElement<T>, CheckrOf<Case>> checkr)
+        => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
 
     public CheckrOf<Case> Expect(
         string key,

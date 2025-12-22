@@ -14,3 +14,6 @@
 * Evidence gathering
 * Less greedy Execution Shrinking, but now more correct.
 * ReportMode
+
+### 0.0.7
+* Encapsulated the pool element returned from Trackr.OneOfPool and others

@@ -90,9 +90,9 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
             from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from trace in Checkr.Trace("Coach Name", () => coach.Name)
+            from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
-                () => service.UpdateCoachSkillsAsync(coach.Name, skills))
+                () => service.UpdateCoachSkillsAsync(coach.Value.Name, skills))
             select Case.Closed)
         select Case.Closed;
 
@@ -111,9 +111,9 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
             from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+            from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
-                service.UpdateCourseSkillsAsync(course.Name, skills))
+                service.UpdateCourseSkillsAsync(course.Value.Name, skills))
             select Case.Closed)
         select Case.Closed;
 

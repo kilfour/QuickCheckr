@@ -44,9 +44,9 @@ public partial class TheBroadcasterTest : BaseTest
                 // 2) Remove on fault
                 clients.When(a => a.Any(), "Faulty Client",
                     faulty =>
-                    from clientFaults in Checkr.Act("Client Faults", () => faulty.Fault())
+                    from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
                     from clientRemoved in Checkr.Expect("Faulty client is removed", () =>
-                        !broadcaster.HasClient(faulty))
+                        !broadcaster.HasClient(faulty.Value))
                     select Case.Closed),
 
                 // 3) Start broadcaster

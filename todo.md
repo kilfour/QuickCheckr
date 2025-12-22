@@ -19,6 +19,7 @@
     Might not be an issue at all, as I think it does not need to be *atomic*
     The pool is a verification of the SUT, so if the sut fails, were gonna use the pool to verify
     Making it atomic => no way to verify
+  * SOLVED by encapsulating the pool element returned
 
 ### Doc Current Focus 
 * Add an introduction to pools to the guide, before Bolting Horses 

@@ -135,16 +135,16 @@ A coach was assigned while suitable, then a course's required skills changed, in
         select Case.Closed;
 
     [CodeExample]
-    private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
+    private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
             from skills in Checkr.Input("Coach Skills",
                 Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from trace in Checkr.Trace("Coach Name", () => coach.Name)
+            from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
-                () => coach.UpdateSkills(skills)) // Update the Coach.
+                () => coach.Value.UpdateSkills(skills)) // Update the Coach.
             from checkSkills in Checkr.Expect("Coach Skills Set",
-                () => coach.Skills.Count
-                   == skills.Count() && coach.Skills.All(skills.Contains))
+                () => coach.Value.Skills.Count
+                   == skills.Count() && coach.Value.Skills.All(skills.Contains))
             select Case.Closed;
 
     [CodeExample]
@@ -158,15 +158,15 @@ A coach was assigned while suitable, then a course's required skills changed, in
         select Case.Closed;
 
     [CodeExample]
-    private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
+    private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
             from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+            from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
-                () => course.UpdateRequiredSkills(skills)) // Update the Course.
+                () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
             from checkSkills in Checkr.Expect("Course Required Skills Set",
-                () => course.RequiredSkills.Count
-                   == skills.Count() && course.RequiredSkills.All(skills.Contains))
+                () => course.Value.RequiredSkills.Count
+                   == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
             select Case.Closed;
 
     [CodeExample]

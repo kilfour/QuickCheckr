@@ -83,7 +83,7 @@ public class InPoolsWeTrust : BaseTest
     [CodeSnippet]
     private static CheckrOf<Case> UseRandom() =>
         Trackr.OneOfPool<Contact>("A Random Contact",
-            contact => Checkr.Trace("Contact Name", () => contact.Name));
+            contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 
     [Fact]
     [DocHeader("Bringing it all back home")]
@@ -128,10 +128,10 @@ public class InPoolsWeTrust : BaseTest
                 names.When(a => a.Any(), // <= Can not pick from an empty selection.
                     "Contact to update", contact => // Pick a random Contact to update 
                         from newName in Checkr.Input("New Name", NameFuzzr)
-                        from trace in Checkr.Trace("Old Name", () => contact.Name)
-                        from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                        from trace in Checkr.Trace("Old Name", () => contact.Value.Name)
+                        from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                             // Update the contact in the pool, keeping model and test data in sync.
-                        from updatePool in Checkr.Perform(() => contact.Name = newName)
+                        from updatePool in Checkr.Perform(() => contact.Value.Name = newName)
                         select Case.Closed))
             from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
