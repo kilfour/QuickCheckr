@@ -36,7 +36,10 @@ This one is the *entry point* for the test.
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
 It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
-Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.")]
+Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.
+
+*Note:* `Pool.These` combines two pools into one. 
+This allows us to define a predicate that depends on the relation between multiple entities.")]
     [DocExample(typeof(BoltingHorses), nameof(TheCheckr))]
     [DocContent(
 @"**Create Coach Checkr:**  
@@ -198,9 +201,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
             courses.When(a => a.Count() < 5, CreateCourse),
             // Maybe update existing courses. Pick a random course from the pool.
             courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
-            // Maybe assign coach if possible.
-            // - Pool.These combines two pools into one. 
-            //   This allows us to define a predicate that depends on the relation between multiple entities.
+            // Maybe assign a coach, if possible.
             // Pick a random coach and course, if there exists a combination for which the predicate holds.
             Pool.These(coaches, courses).When("Assign Coach to Course",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))

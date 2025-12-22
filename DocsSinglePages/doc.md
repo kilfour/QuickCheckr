@@ -618,7 +618,10 @@ This one is the *entry point* for the test.
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
 It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
-Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
+Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.
+
+*Note:* `Pool.These` combines two pools into one. 
+This allows us to define a predicate that depends on the relation between multiple entities.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
     from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
@@ -632,9 +635,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         courses.When(a => a.Count() < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
         courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
-        // Maybe assign coach if possible.
-        // - Pool.These combines two pools into one. 
-        //   This allows us to define a predicate that depends on the relation between multiple entities.
+        // Maybe assign a coach, if possible.
         // Pick a random coach and course, if there exists a combination for which the predicate holds.
         Pool.These(coaches, courses).When("Assign Coach to Course",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
@@ -980,7 +981,7 @@ private static CheckrConfig ConfigureReduction(CheckrConfig config)
 > It is included for users who want to experiment and help shape the future of QuickCheckr.
 
   
-**Note:** As of now reporting with only this mode active is not fully supported.  
+*Note:* As of now reporting with only this mode active is not fully supported.  
 ##### Default
 Includes all possible ShrinkModes.  
 ```text
@@ -1615,7 +1616,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the verifier pointed it out in above report.
 
-*Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
+*Note:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all verifications or it doesn't.  
 #### Stop! In the Name of ... Perf?
 ```csharp

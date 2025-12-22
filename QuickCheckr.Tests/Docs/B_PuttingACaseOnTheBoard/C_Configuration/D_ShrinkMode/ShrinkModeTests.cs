@@ -152,7 +152,7 @@ public class ShrinkModeTests : BaseTest
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureReduction))]
     [DocExperimental]
-    [DocContent("**Note:** As of now reporting with only this mode active is not fully supported.")]
+    [DocContent("*Note:* As of now reporting with only this mode active is not fully supported.")]
     //[DocCodeFile("ShrinkModeTestsReduction.txt", "text")]
     public void RunTestReduction()
     {

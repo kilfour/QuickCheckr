@@ -104,7 +104,7 @@ private static CheckrConfig ConfigureReduction(CheckrConfig config)
 > It is included for users who want to experiment and help shape the future of QuickCheckr.
 
   
-**Note:** As of now reporting with only this mode active is not fully supported.  
+*Note:* As of now reporting with only this mode active is not fully supported.  
 ## Default
 Includes all possible ShrinkModes.  
 ```text

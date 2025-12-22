@@ -51,7 +51,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the verifier pointed it out in above report.
 
-*Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
+*Note:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all verifications or it doesn't.  
 ## Stop! In the Name of ... Perf?
 ```csharp
