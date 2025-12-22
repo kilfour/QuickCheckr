@@ -1,5 +1,4 @@
 ## Current Version: 0.0.6 
-* Refactoring: simplify casefile compile
 * review evidence gathering
 * play more pool
 
@@ -10,7 +9,7 @@
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian
   * [ x ] ShrinkMode
-  * [ / ] Reportmode
+  * [ x ] Reportmode
   * [ x ] DeliberationPolicy
   * [   ] InternalAffairs
 
@@ -54,11 +53,14 @@ none
   Should be a lot easier than before
   
 ## Refactoring Targets 
-* GetFromPool (bool, T?) => Result
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
+  * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look 
 * Loose the lazy IEnumerable in shrinking (yield)
-* unify ConditionalResult and DelayedResult maybe
 * DeskOfficer seems a bit wastefull with all those lists
+* Refactoring: simplify casefile compile
+  * meh, looked at it. It's annoying occasionally, if a new transformation is needed, but fine for now.
+* GetFromPool (bool, T?) => Result. Also not needed, a tuple will do in this case.
+* unify ConditionalResult and DelayedResult ... maybe
 
 ## Other
 * Scour QuickAcid for any interesting tests left behind.
