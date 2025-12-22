@@ -8,7 +8,7 @@ public class PoolElement<T>(int id, T? value)
 
     public T Value => value!;
 
-    public CheckrOf<Case> Update(T element) =>
+    public CheckrOf<Case> Replace(T element) =>
         state =>
         {
             state.Memory.GetPoolDictionary<T>()[id] = element;

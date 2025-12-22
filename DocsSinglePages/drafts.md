@@ -35,8 +35,9 @@ public class ContactBook
             from newName in Checkr.Input("New Name", NameFuzzr)
             from pool in Trackr.OneOfPool<string>("Name to update",
                 nameToUpdate =>
-                    Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName)),
-                pool => pool.Update(newName))
+                    from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                    from updatePool in nameToUpdate.Replace(newName)
+                    select Case.Closed)
             select Case.Closed))
         // Contrived Expectation, ... it's only a model.
     from count in names.Expect("Count matches",

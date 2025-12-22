@@ -79,7 +79,7 @@ public class GatheringEvidence : BaseTest
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>
                             from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                            from updatePool in nameToUpdate.Update(newName)
+                            from updatePool in nameToUpdate.Replace(newName)
                             select Case.Closed)
                     select Case.Closed))
                 // Contrived Expectation, ... it's only a model.

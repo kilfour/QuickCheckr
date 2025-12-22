@@ -114,7 +114,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     In this case we use:")]
     [DocExample(typeof(TheEvidenceVault), nameof(RunCloseResolvedColdCases))]
     [DocContent(
-@"In case that the seeds stored in the vault still result in failures, the behaviour is exactly the same as `ReviewColdCases`.")]
+@"If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.")]
     public void ClosingColdCases()
     {
         var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };

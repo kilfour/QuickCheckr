@@ -5,7 +5,7 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, Pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
   
 ## Creating a Pool
 Pools are created for *a specific type* using:  
@@ -29,9 +29,33 @@ select Case.Closed;
 ## Using random elements from a Pool
 ```csharp
 Trackr.OneOfPool<Contact>("A Random Contact",
-    contact => Checkr.Trace("Contact Name", () => contact.Name));
+    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
-**TODO: Show Pool.When**  
+As you can see, the second argument to this method, is a function that takes a wrapped value and returns a Checkr.  
+In the same vein that the Pool collection itself is encapsulated, so are its elements.
+This is done because you might want to remove the element from the Pool, or replace it, and the shrinker needs to be aware of these operations.  
+Therefore, the operations are defined on the wrapper object.
+
+*Remove:*  
+```csharp
+Trackr.OneOfPool<Contact>("A Random Contact to Remove",
+    contact => contact.Remove());
+```
+*Replace:*  
+```csharp
+Trackr.OneOfPool<Contact>("A Random Contact to Replace",
+    contact => contact.Replace(new Contact("Replaced by AI")));
+```
+### Conditionally
+Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+Which means, you almost always want to execute this conditionally, and most likely it will be part of a random sequence of executions,
+as you will need one to fill the Pool.  
+For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
+  
+```csharp
+pool.When(a => a.Any(), "A Random Contact",
+    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+```
 ## Bringing it all back home
 ### The Model
 ```csharp
@@ -50,15 +74,14 @@ public class Rolodex
 ### The Checkr
 ```csharp
     from contactBook in Trackr.Stashed(() => new Rolodex())
-        // Create a Pool.
+    // Create a Pool.
     from names in Trackr.PoolFor<Contact>()
-    from name in Checkr.Input("Name", NameFuzzr)
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
         names.When(a => a.Count() < 10,
+            from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
-            from trace in Checkr.Trace("Name", () => name)
                 // Store the Contact in the Pool.
             from storeName in Trackr.ToPool("Name", new Contact(name))
             select Case.Closed),
@@ -66,37 +89,33 @@ public class Rolodex
         names.When(a => a.Any(), // <= Can not pick from an empty selection.
             "Contact to update", contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
-                from trace in Checkr.Trace("Old Name", () => contact.Name)
-                from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
-                from updatePool in Checkr.Perform(() => contact.Name = newName)
+                from updatePool in Checkr.Perform(() => contact.Value.Name = newName)
                 select Case.Closed))
-    from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+    from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 ### The Report
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:98:1
- Original failing run:    6 executions
- Minimal failing case:    3 executions (after 5 shrinks)
- Seed:                    523518063
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    1553195441
  ------------------------------------------------------------
   Executed: Add
-   - Trace: Name = John Harrison
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "Paul Harrison"
-   - Trace: Name = Paul Harrison
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul Harrison"
-   - Trace: Old Name = John Harrison
+   - Input: New Name = "Ringo Harrison"
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "Ringo Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 5x
+ - Count matches: 2x
  ------------------------------------------------------------
 ```

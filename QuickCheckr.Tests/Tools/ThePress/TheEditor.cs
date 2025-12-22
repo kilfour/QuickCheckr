@@ -30,8 +30,14 @@ public class TheEditor
         from article in Pulse.Draw<Article>()
         let inputArticle = article.Execution(cursor.executionIndex).Input(cursor.inputIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Label);")
-        from inputValue in Emit($"Assert.Equal(\"{inputArticle.Value}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
+        from inputValue in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Value)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
         select cursor;
+    private static object ReplaceDoubleQuotes(object value)
+    {
+        if (value is string)
+            return ((string)value).Replace(@"""", @"\""");
+        return value;
+    }
 
     private static readonly Flow<(int, int)> Action =
         from cursor in Pulse.Start<(int executionIndex, int actionIndex)>()

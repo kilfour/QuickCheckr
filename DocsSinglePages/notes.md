@@ -1258,9 +1258,9 @@ public class ContactBook
             (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                 from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
-                    select Case.Closed,
-                    pool => pool.Update(newName))
+                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                    from update in nameToUpdate.Replace(newName)
+                    select Case.Closed)
                 select Case.Closed),
             (() => counter == 3, // add a new AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
@@ -1393,9 +1393,9 @@ public class ContactBook
             (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                 from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
-                    select Case.Closed,
-                    pool => pool.Update(newName))
+                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                    from update in nameToUpdate.Replace(newName)
+                    select Case.Closed)
                 select Case.Closed),
             (() => counter == 3, // add a new AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
@@ -1502,9 +1502,9 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from trace in Checkr.Trace("Coach Name", () => coach.Name)
+        from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
-            () => service.UpdateCoachSkillsAsync(coach.Name, skills))
+            () => service.UpdateCoachSkillsAsync(coach.Value.Name, skills))
         select Case.Closed)
     select Case.Closed;
 ```
@@ -1525,9 +1525,9 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     from service in Trackr.Stashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+        from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
-            service.UpdateCourseSkillsAsync(course.Name, skills))
+            service.UpdateCourseSkillsAsync(course.Value.Name, skills))
         select Case.Closed)
     select Case.Closed;
 ```

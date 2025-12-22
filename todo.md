@@ -4,7 +4,8 @@
 * play more pool
 
 ### Doc Current Focus 
-* Add an introduction to pools to the guide, before Bolting Horses 
+* Review/Polish the Guide, looks solid enough for now
+  * Bolting Horses, Move Pool.These explanation out of code
 * Review Configuration entry
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian

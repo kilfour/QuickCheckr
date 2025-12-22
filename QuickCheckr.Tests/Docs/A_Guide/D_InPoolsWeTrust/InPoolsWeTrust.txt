@@ -1,23 +1,20 @@
  ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:98:1
- Original failing run:    6 executions
- Minimal failing case:    3 executions (after 5 shrinks)
- Seed:                    523518063
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    1553195441
  ------------------------------------------------------------
   Executed: Add
-   - Trace: Name = John Harrison
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "Paul Harrison"
-   - Trace: Name = Paul Harrison
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul Harrison"
-   - Trace: Old Name = John Harrison
+   - Input: New Name = "Ringo Harrison"
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "Ringo Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 5x
+ - Count matches: 2x
  ------------------------------------------------------------

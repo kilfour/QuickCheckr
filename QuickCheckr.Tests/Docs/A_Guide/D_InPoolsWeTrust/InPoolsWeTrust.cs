@@ -17,7 +17,7 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ToPool, ...) encapsulate ""is this state valid?"" so shrinking can replay safely.
+Instead, Pool operations (When, These, ToPool, ...) encapsulate ""is this state valid?"" so shrinking can replay safely.
 ")]
 public class InPoolsWeTrust : BaseTest
 {
@@ -59,10 +59,7 @@ public class InPoolsWeTrust : BaseTest
     [Fact]
     [DocHeader("Storing elements in the Pool")]
     [DocExample(typeof(InPoolsWeTrust), nameof(Store))]
-    public void Storing()
-    {
-        Store().Run();
-    }
+    public void Storing() => Store().Run();
 
     [CodeSnippet]
     private static CheckrOf<Case> Store() =>
@@ -74,16 +71,61 @@ public class InPoolsWeTrust : BaseTest
     [Fact]
     [DocHeader("Using random elements from a Pool")]
     [DocExample(typeof(InPoolsWeTrust), nameof(UseRandom))]
-    [DocContent("**TODO: Show Pool.When**")]
-    public void UsingIt()
-    {
+    public void UsingIt() =>
         Assert.Throws<OneOfEmptyOptionsException>(() => UseRandom().Run());
-    }
 
     [CodeSnippet]
     private static CheckrOf<Case> UseRandom() =>
         Trackr.OneOfPool<Contact>("A Random Contact",
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+
+
+    [Fact]
+    [DocContent(
+@"As you can see, the second argument to this method, is a function that takes a wrapped value and returns a Checkr.  
+In the same vein that the Pool collection itself is encapsulated, so are its elements.
+This is done because you might want to remove the element from the Pool, or replace it, and the shrinker needs to be aware of these operations.  
+Therefore, the operations are defined on the wrapper object.
+
+*Remove:*")]
+    [DocExample(typeof(InPoolsWeTrust), nameof(Remove))]
+    public void Removing()
+        => Assert.Throws<OneOfEmptyOptionsException>(() => Remove().Run());
+
+    [CodeSnippet]
+    private static CheckrOf<Case> Remove() =>
+        Trackr.OneOfPool<Contact>("A Random Contact to Remove",
+            contact => contact.Remove());
+
+    [Fact]
+    [DocContent(
+@"*Replace:*")]
+    [DocExample(typeof(InPoolsWeTrust), nameof(Replace))]
+    public void Replacing() =>
+        Assert.Throws<OneOfEmptyOptionsException>(() => Replace().Run());
+
+    [CodeSnippet]
+    private static CheckrOf<Case> Replace() =>
+        Trackr.OneOfPool<Contact>("A Random Contact to Replace",
+            contact => contact.Replace(new Contact("Replaced by AI")));
+
+    [Fact]
+    [DocHeader("Conditionally", 1)]
+    [DocContent(
+@"Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+Which means, you almost always want to execute this conditionally, and most likely it will be part of a random sequence of executions,
+as you will need one to fill the Pool.  
+For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
+")]
+    [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
+    public void Conditionally() =>
+        Assert.Throws<OneOfEmptyOptionsException>(() => PoolWhen(new Pool<Contact>([])).Item2.Run());
+
+    [CodeSnippet]
+    private static (Func<bool>, CheckrOf<Case>) PoolWhen(Pool<Contact> pool) =>
+        pool.When(a => a.Any(), "A Random Contact",
+            contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+
 
     [Fact]
     [DocHeader("Bringing it all back home")]
@@ -95,8 +137,8 @@ public class InPoolsWeTrust : BaseTest
     [DocCodeFile("InPoolsWeTrust.txt", "text")]
     public void AllTogetherNow()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(523518063, 10.ExecutionsPerRun()));
-        WriteAsserts(article, false);
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(1553195441, 10.ExecutionsPerRun()));
+        WriteAsserts(article, true);
         WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);
     }
@@ -112,15 +154,14 @@ public class InPoolsWeTrust : BaseTest
     {
         return
             from contactBook in Trackr.Stashed(() => new Rolodex())
-                // Create a Pool.
+            // Create a Pool.
             from names in Trackr.PoolFor<Contact>()
-            from name in Checkr.Input("Name", NameFuzzr)
                 // Pick one of two operations.
             from operations in Checkr.OneOfWhen(
                 // 1. Add a (Contact-) name to the Rolodex
                 names.When(a => a.Count() < 10,
+                    from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
-                    from trace in Checkr.Trace("Name", () => name)
                         // Store the Contact in the Pool.
                     from storeName in Trackr.ToPool("Name", new Contact(name))
                     select Case.Closed),
@@ -128,12 +169,11 @@ public class InPoolsWeTrust : BaseTest
                 names.When(a => a.Any(), // <= Can not pick from an empty selection.
                     "Contact to update", contact => // Pick a random Contact to update 
                         from newName in Checkr.Input("New Name", NameFuzzr)
-                        from trace in Checkr.Trace("Old Name", () => contact.Value.Name)
                         from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                             // Update the contact in the pool, keeping model and test data in sync.
                         from updatePool in Checkr.Perform(() => contact.Value.Name = newName)
                         select Case.Closed))
-            from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+            from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
             select Case.Closed;
     }
 
@@ -143,26 +183,20 @@ public class InPoolsWeTrust : BaseTest
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(3, article.Total().Traces());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(5, article.ShrinkCount);
-        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Name", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("John Harrison", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal(3, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Name", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("\"Paul Harrison\"", article.Execution(2).Input(1).Read().Value);
-        Assert.Equal("Name", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("Paul Harrison", article.Execution(2).Trace(1).Read().Value);
-        Assert.Equal(6, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Update", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("New Name", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal("\"Paul Harrison\"", article.Execution(3).Input(1).Read().Value);
-        Assert.Equal("Old Name", article.Execution(3).Trace(1).Read().Label);
-        Assert.Equal("John Harrison", article.Execution(3).Trace(1).Read().Value);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Update", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("New Name", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("\"Ringo Harrison\"", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Name", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal("\"Ringo Harrison\"", article.Execution(3).Input(1).Read().Value);
         Assert.Equal("Count matches", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
+
     }
 }

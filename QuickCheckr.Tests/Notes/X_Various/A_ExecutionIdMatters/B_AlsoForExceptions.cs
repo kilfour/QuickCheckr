@@ -43,7 +43,7 @@ public class B_AlsoForExceptions : BaseTest
                         from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                         from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
                             from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                            from update in nameToUpdate.Update(newName)
+                            from update in nameToUpdate.Replace(newName)
                             select Case.Closed)
                         select Case.Closed),
                     (() => counter == 3, // add a new AAA

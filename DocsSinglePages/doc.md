@@ -281,7 +281,7 @@ A *run* is a full pass through your Checkr script.
 Every run starts with a clean slate:
 
 * All `Trackr.Stashed` values are reset.
-* Pools (explained later) start empty.
+* Pools (explained [later][InPoolsWeTrust]) start empty.
 * Counters, uniqueness constraints, and any internal memories tied to a run are cleared.
 
 This guarantees that each run is **independent**, **repeatable**, and **reproducible** based on the seed.
@@ -315,6 +315,8 @@ the failure only emerges when several executions act on the *same* object.
 **!! Important !! :** The static factory classes follow the same scoping model:
 - `Checkr.*` combinators are execution-scoped: they run once per execution and do not persist state.
 - `Trackr.*` combinators are run-scoped: they hold state that persists across all executions within a run.  
+
+[InPoolsWeTrust]: #in-pools-we-trust
 ### Choosing The Next Move
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
@@ -441,7 +443,7 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, Pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
   
 #### Creating a Pool
 Pools are created for *a specific type* using:  
@@ -465,9 +467,33 @@ select Case.Closed;
 #### Using random elements from a Pool
 ```csharp
 Trackr.OneOfPool<Contact>("A Random Contact",
-    contact => Checkr.Trace("Contact Name", () => contact.Name));
+    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
-**TODO: Show Pool.When**  
+As you can see, the second argument to this method, is a function that takes a wrapped value and returns a Checkr.  
+In the same vein that the Pool collection itself is encapsulated, so are its elements.
+This is done because you might want to remove the element from the Pool, or replace it, and the shrinker needs to be aware of these operations.  
+Therefore, the operations are defined on the wrapper object.
+
+*Remove:*  
+```csharp
+Trackr.OneOfPool<Contact>("A Random Contact to Remove",
+    contact => contact.Remove());
+```
+*Replace:*  
+```csharp
+Trackr.OneOfPool<Contact>("A Random Contact to Replace",
+    contact => contact.Replace(new Contact("Replaced by AI")));
+```
+##### Conditionally
+Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+Which means, you almost always want to execute this conditionally, and most likely it will be part of a random sequence of executions,
+as you will need one to fill the Pool.  
+For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
+  
+```csharp
+pool.When(a => a.Any(), "A Random Contact",
+    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+```
 #### Bringing it all back home
 ##### The Model
 ```csharp
@@ -486,15 +512,14 @@ public class Rolodex
 ##### The Checkr
 ```csharp
     from contactBook in Trackr.Stashed(() => new Rolodex())
-        // Create a Pool.
+    // Create a Pool.
     from names in Trackr.PoolFor<Contact>()
-    from name in Checkr.Input("Name", NameFuzzr)
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
         names.When(a => a.Count() < 10,
+            from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
-            from trace in Checkr.Trace("Name", () => name)
                 // Store the Contact in the Pool.
             from storeName in Trackr.ToPool("Name", new Contact(name))
             select Case.Closed),
@@ -502,38 +527,34 @@ public class Rolodex
         names.When(a => a.Any(), // <= Can not pick from an empty selection.
             "Contact to update", contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
-                from trace in Checkr.Trace("Old Name", () => contact.Name)
-                from update in Checkr.Act("Update", () => contactBook.Update(contact.Name, newName))
+                from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
-                from updatePool in Checkr.Perform(() => contact.Name = newName)
+                from updatePool in Checkr.Perform(() => contact.Value.Name = newName)
                 select Case.Closed))
-    from count in names.Expect("Count matches", elements => elements.Count() == contactBook.Contacts.Count)
+    from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 ##### The Report
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:98:1
- Original failing run:    6 executions
- Minimal failing case:    3 executions (after 5 shrinks)
- Seed:                    523518063
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    1553195441
  ------------------------------------------------------------
   Executed: Add
-   - Trace: Name = John Harrison
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "Paul Harrison"
-   - Trace: Name = Paul Harrison
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Paul Harrison"
-   - Trace: Old Name = John Harrison
+   - Input: New Name = "Ringo Harrison"
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Name = "Ringo Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 5x
+ - Count matches: 2x
  ------------------------------------------------------------
 ```
 ### Bolting Horses
@@ -635,16 +656,16 @@ private static readonly CheckrOf<Case> CreateCoach =
 **Update Coach Skills Checkr:**  
 Now we retrieve a random coach from the pool and update its skills, verifying that the property `Skills` is set correctly.  
 ```csharp
-private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
+private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
     coach =>
         from skills in Checkr.Input("Coach Skills",
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from trace in Checkr.Trace("Coach Name", () => coach.Name)
+        from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
-            () => coach.UpdateSkills(skills)) // Update the Coach.
+            () => coach.Value.UpdateSkills(skills)) // Update the Coach.
         from checkSkills in Checkr.Expect("Coach Skills Set",
-            () => coach.Skills.Count
-               == skills.Count() && coach.Skills.All(skills.Contains))
+            () => coach.Value.Skills.Count
+               == skills.Count() && coach.Value.Skills.All(skills.Contains))
         select Case.Closed;
 ```
 **Create Course Checkr:**  
@@ -662,15 +683,15 @@ private static readonly CheckrOf<Case> CreateCourse =
 **Update Course Skills Checkr:**  
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
-private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
+private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
     course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from traceCourse in Checkr.Trace("Course Name", () => course.Name)
+        from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
-            () => course.UpdateRequiredSkills(skills)) // Update the Course.
+            () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
         from checkSkills in Checkr.Expect("Course Required Skills Set",
-            () => course.RequiredSkills.Count
-               == skills.Count() && course.RequiredSkills.All(skills.Contains))
+            () => course.Value.RequiredSkills.Count
+               == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
         select Case.Closed;
 ```
 **Assigned Coaches Must Be Suitable Checkr:**  
@@ -1197,7 +1218,7 @@ The method mentioned above is usefull for regression testing, but sometimes,
 ```csharp
 checkr.CloseResolvedColdCases(Configure);
 ```
-In case that the seeds stored in the vault still result in failures, the behaviour is exactly the same as `ReviewColdCases`.  
+If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.  
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  

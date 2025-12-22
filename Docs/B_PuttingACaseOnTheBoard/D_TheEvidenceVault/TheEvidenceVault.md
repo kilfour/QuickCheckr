@@ -15,7 +15,7 @@ The method mentioned above is usefull for regression testing, but sometimes,
 ```csharp
 checkr.CloseResolvedColdCases(Configure);
 ```
-In case that the seeds stored in the vault still result in failures, the behaviour is exactly the same as `ReviewColdCases`.  
+If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.  
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
