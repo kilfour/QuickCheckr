@@ -125,7 +125,7 @@ The branch chosen during the original failing run is *the* branch examined durin
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.
-* Shrinking works naturally: QuickCheckr does **not** try unchosen branches. 
+* Shrinking does **not** try unchosen branches. 
   It only minimizes the actual failing scenario.")]
     public void RunTest_Shrunk()
     {

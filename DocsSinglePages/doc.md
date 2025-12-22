@@ -434,7 +434,7 @@ The branch chosen during the original failing run is *the* branch examined durin
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.
-* Shrinking works naturally: QuickCheckr does **not** try unchosen branches. 
+* Shrinking does **not** try unchosen branches. 
   It only minimizes the actual failing scenario.  
 ### In Pools We Trust
 
@@ -450,7 +450,7 @@ Pools are created for *a specific type* using:
 ```csharp
 Trackr.PoolFor<Contact>();
 ```
-So this is a Pool for the following type:  
+Which is a Pool for the following type:  
 ```csharp
 public record Contact(string Name)
 {
@@ -459,8 +459,8 @@ public record Contact(string Name)
 ```
 #### Storing elements in the Pool
 ```csharp
-from pool in Trackr.PoolFor<Contact>()
-from name in Checkr.Input("Name", Fuzzr.String())
+from pool in Trackr.PoolFor<Contact>()                     // Create a Pool.
+from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
 from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
 select Case.Closed;
 ```
@@ -486,8 +486,9 @@ Trackr.OneOfPool<Contact>("A Random Contact to Replace",
 ```
 ##### Conditionally
 Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
-Which means, you almost always want to execute this conditionally, and most likely it will be part of a random sequence of executions,
-as you will need one to fill the Pool.  
+Which means, you almost always want to execute this conditionally,
+and most likely it will be part of a random sequence of executions,
+as you will need another execution to put things into the Pool.  
 For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
   
 ```csharp
@@ -777,7 +778,9 @@ checkr.Run(424242);
 checkr.Run(424242, 5.ExecutionsPerRun());
 ```
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run. We'll get into that later.  
+which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].  
+
+[Configuration]: #configuration
 ### Configuration
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
@@ -885,7 +888,8 @@ The following Checkr will be used to generate the reports throughout this chapte
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
 ```
-No shrinking. QuickCheckr reports the original failing run.  
+##### None
+QuickCheckr reports the original failing run.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
@@ -911,11 +915,12 @@ No shrinking. QuickCheckr reports the original failing run.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+##### Executions
+Trims away irrelevant executions.  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Executions };
 ```
-Trims away irrelevant executions.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
@@ -934,11 +939,12 @@ Trims away irrelevant executions.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+##### Inputs
+Trims inputs to find a minimal failing case.  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
 ```
-Trims inputs to find a minimal failing case.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
@@ -958,11 +964,12 @@ Trims inputs to find a minimal failing case.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+##### Reduction
+Applies configured reducers for fine-grained shrinking.  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
 ```
-Applies configured reducers for fine-grained shrinking.  
 
 !! WARNING: **Experimental Feature** !!
 
@@ -974,7 +981,8 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
-The default settings includes all possible ShrinkModes.  
+##### Default
+Includes all possible ShrinkModes.  
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
@@ -1004,6 +1012,8 @@ The following Checkr will be used to generate the reports throughout this chapte
     from expect in Checkr.Expect("Counter does not equal 2", () => counter != 2)
     select Case.Closed;
 ```
+##### None
+No traces, no warnings.  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ReportMode = ReportMode.None };
@@ -1026,6 +1036,8 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
+##### Trace
+Only traces.  
 ```csharp
 private static CheckrConfig ConfigureTrace(CheckrConfig config)
     => config with { ReportMode = ReportMode.Trace };
@@ -1049,8 +1061,8 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
-
-**`ReportMode.Inputs`**  
+##### Warning
+Only warnings.  
 ```csharp
 private static CheckrConfig ConfigureWarning(CheckrConfig config)
     => config with { ReportMode = ReportMode.Warning };
@@ -1074,7 +1086,8 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
-The default settings includes all possible ReportModes.  
+##### Default
+Includes all possible ReportModes.  
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
@@ -1442,7 +1455,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```
 It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).  
-For this rare case we  add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
+For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
 ```csharp
 private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
     => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
@@ -1604,7 +1617,7 @@ A common mistake, and the verifier pointed it out in above report.
 
 *Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all verifications or it doesn't.  
-#### `Trackr.StopWhenProven`
+#### Stop! In the Name of ... Perf?
 ```csharp
 public class DieSixFixed
 {

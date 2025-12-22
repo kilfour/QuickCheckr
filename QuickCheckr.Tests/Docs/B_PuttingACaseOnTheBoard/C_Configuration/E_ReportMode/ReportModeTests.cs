@@ -38,6 +38,8 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.None };
 
     [Fact]
+    [DocHeader("None")]
+    [DocContent("No traces, no warnings.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureNone))]
     [DocCodeFile("ReportModeTestsNone.txt", "text")]
     public void RunTestNone()
@@ -71,6 +73,8 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.Trace };
 
     [Fact]
+    [DocHeader("Trace")]
+    [DocContent("Only traces.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureTrace))]
     [DocCodeFile("ReportModeTestsTrace.txt", "text")]
     public void RunTestTrace()
@@ -106,7 +110,8 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.Warning };
 
     [Fact]
-    [DocContent("\n**`ReportMode.Inputs`**")]
+    [DocHeader("Warning")]
+    [DocContent("Only warnings.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureWarning))]
     [DocCodeFile("ReportModeTestsWarning.txt", "text")]
     public void RunTestWarning()
@@ -137,7 +142,8 @@ public class ReportModeTests : BaseTest
     }
 
     [Fact]
-    [DocContent("The default settings includes all possible ReportModes.")]
+    [DocHeader("Default")]
+    [DocContent("Includes all possible ReportModes.")]
     [DocCodeFile("ReportModeTestsDefault.txt", "text")]
     public void DefaultSetting()
     {

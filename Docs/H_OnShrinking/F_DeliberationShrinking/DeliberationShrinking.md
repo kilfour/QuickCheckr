@@ -34,7 +34,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```
 It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).  
-For this rare case we  add a DeliberationPolicy, allowing QuickFuzzr to surface a more explanatory fail-case:  
+For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
 ```csharp
 private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
     => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };

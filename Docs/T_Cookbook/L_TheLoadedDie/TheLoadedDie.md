@@ -53,7 +53,7 @@ A common mistake, and the verifier pointed it out in above report.
 
 *Sidenote:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
 either the final state satisfies all verifications or it doesn't.  
-## `Trackr.StopWhenProven`
+## Stop! In the Name of ... Perf?
 ```csharp
 public class DieSixFixed
 {

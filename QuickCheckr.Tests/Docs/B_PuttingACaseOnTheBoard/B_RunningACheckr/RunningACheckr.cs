@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickPulse.Bolts;
@@ -7,6 +8,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 
 [DocFile]
+[DocLink(typeof(Configuration))]
 [DocFileHeader("Running a Checkr")]
 [DocContent(
 @"This is done by calling `Run` on the Checkr instance.  
@@ -140,7 +142,7 @@ public class RunningACheckr : BaseTest
     [Fact]
     [DocContent(
 @"All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run. We'll get into that later.")]
+which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].")]
     public void WithConfigurations()
     {
 

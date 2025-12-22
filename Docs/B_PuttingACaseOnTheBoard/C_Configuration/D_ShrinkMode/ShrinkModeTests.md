@@ -12,7 +12,8 @@ The following Checkr will be used to generate the reports throughout this chapte
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
 ```
-No shrinking. QuickCheckr reports the original failing run.  
+## None
+QuickCheckr reports the original failing run.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
@@ -38,11 +39,12 @@ No shrinking. QuickCheckr reports the original failing run.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+## Executions
+Trims away irrelevant executions.  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Executions };
 ```
-Trims away irrelevant executions.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
@@ -61,11 +63,12 @@ Trims away irrelevant executions.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+## Inputs
+Trims inputs to find a minimal failing case.  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
 ```
-Trims inputs to find a minimal failing case.  
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
@@ -85,11 +88,12 @@ Trims inputs to find a minimal failing case.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+## Reduction
+Applies configured reducers for fine-grained shrinking.  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Reduction };
 ```
-Applies configured reducers for fine-grained shrinking.  
 
 !! WARNING: **Experimental Feature** !!
 
@@ -101,7 +105,8 @@ Applies configured reducers for fine-grained shrinking.
 
   
 **Note:** As of now reporting with only this mode active is not fully supported.  
-The default settings includes all possible ShrinkModes.  
+## Default
+Includes all possible ShrinkModes.  
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting

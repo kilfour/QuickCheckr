@@ -114,7 +114,7 @@ either the final state satisfies all verifications or it doesn't.")]
     }
 
     [Fact]
-    [DocHeader("`Trackr.StopWhenProven`")]
+    [DocHeader("Stop! In the Name of ... Perf?")]
     [DocExample(typeof(DieSixFixed))]
     [DocContent(
 @"Ok, we fixed the bug, so now our Checkr passes.

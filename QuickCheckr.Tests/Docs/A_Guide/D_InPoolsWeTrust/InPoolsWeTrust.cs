@@ -44,7 +44,7 @@ public class InPoolsWeTrust : BaseTest
     [DocHeader("Creating a Pool")]
     [DocContent("Pools are created for *a specific type* using:")]
     [DocExample(typeof(InPoolsWeTrust), nameof(CreatePool))]
-    [DocContent("So this is a Pool for the following type:")]
+    [DocContent("Which is a Pool for the following type:")]
     [DocExample(typeof(Contact))]
     public void CreatingAPool()
     {
@@ -63,8 +63,8 @@ public class InPoolsWeTrust : BaseTest
 
     [CodeSnippet]
     private static CheckrOf<Case> Store() =>
-        from pool in Trackr.PoolFor<Contact>()
-        from name in Checkr.Input("Name", Fuzzr.String())
+        from pool in Trackr.PoolFor<Contact>()                     // Create a Pool.
+        from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
         from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
         select Case.Closed;
 
@@ -113,8 +113,9 @@ Therefore, the operations are defined on the wrapper object.
     [DocHeader("Conditionally", 1)]
     [DocContent(
 @"Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
-Which means, you almost always want to execute this conditionally, and most likely it will be part of a random sequence of executions,
-as you will need one to fill the Pool.  
+Which means, you almost always want to execute this conditionally,
+and most likely it will be part of a random sequence of executions,
+as you will need another execution to put things into the Pool.  
 For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
 ")]
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]

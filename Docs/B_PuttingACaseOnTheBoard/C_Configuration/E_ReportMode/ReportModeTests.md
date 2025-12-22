@@ -10,6 +10,8 @@ The following Checkr will be used to generate the reports throughout this chapte
     from expect in Checkr.Expect("Counter does not equal 2", () => counter != 2)
     select Case.Closed;
 ```
+## None
+No traces, no warnings.  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ReportMode = ReportMode.None };
@@ -32,6 +34,8 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
+## Trace
+Only traces.  
 ```csharp
 private static CheckrConfig ConfigureTrace(CheckrConfig config)
     => config with { ReportMode = ReportMode.Trace };
@@ -55,8 +59,8 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
-
-**`ReportMode.Inputs`**  
+## Warning
+Only warnings.  
 ```csharp
 private static CheckrConfig ConfigureWarning(CheckrConfig config)
     => config with { ReportMode = ReportMode.Warning };
@@ -80,7 +84,8 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
  - Counter does not equal 2: 1x
  ------------------------------------------------------------
 ```
-The default settings includes all possible ReportModes.  
+## Default
+Includes all possible ReportModes.  
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
