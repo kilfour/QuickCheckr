@@ -530,7 +530,7 @@ public class Rolodex
                 from newName in Checkr.Input("New Name", NameFuzzr)
                 from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
-                from updatePool in Checkr.Perform(() => contact.Value.Name = newName)
+                from updatePool in contact.Replace(new Contact(newName))
                 select Case.Closed))
     from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
