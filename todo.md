@@ -4,7 +4,6 @@
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now
-  * The Checkr.Perform is out of place.
 * Review Configuration entry
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian
