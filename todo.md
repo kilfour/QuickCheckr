@@ -3,6 +3,7 @@
 * play more pool
   * Started 'Warehouse' example
     * Look at cfg-able input formatting
+    * looks like preload is needed, eager eval of OrderRequestFuzzr issue => document
   * Another idea: keep a number of 'clients' in a pool calling a web api (or service in this case for ease of coding)
     RESTy, they do get products => use it to place order f.i., client object keeps track of what happened
     Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...

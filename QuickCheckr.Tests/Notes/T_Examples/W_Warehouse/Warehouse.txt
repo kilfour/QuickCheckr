@@ -1,33 +1,63 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                Notes\T_Examples\W_Warehouse\Warehouse.cs:24:1
- Original failing run:    5 executions
- Minimal failing case:    4 executions (after 9 shrinks)
- Seed:                    935347004
+ Test:                    RunTest
+ Location:                Notes\T_Examples\W_Warehouse\Warehouse.cs:40:1
+ Original failing run:    13 executions
+ Minimal failing case:    3 executions (after 18 shrinks)
+ Seed:                    1293091565
  ------------------------------------------------------------
   Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 43 } ] }
-   - Trace:  = { OrderLines: [ Product Two: 25, Product One: 43 ] }
-   - Trace: warehouse = [ { Id: b1c88a3c-444e-4776-a5c4-c660a75e9365, Title: "Product One", AmountInStock: 7 }, { Id: b55e24ac-bc7c-4168-8894-bb1856f0c93f, Title: "Product Two", AmountInStock: 75 }, { Id: 5b94e130-955e-4f11-854c-dc4b296907fa, Title: "Product Three", AmountInStock: 250 } ]
+   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 31 } ] }
+   - Trace:  = {
+    OrderLines: [
+        Four: 39,
+        Five: 48,
+        Two: 4,
+        Three: 31
+    ]
+}
+   - Trace: warehouse = [
+    { Title: "One", AmountInStock: 100 },
+    { Title: "Two", AmountInStock: 96 },
+    { Title: "Three", AmountInStock: 69 },
+    { Title: "Four", AmountInStock: 61 },
+    { Title: "Five", AmountInStock: 52 }
+]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 3 } ] }
-   - Trace:  = { OrderLines: [ Product One: 3, Product Three: 187 ] }
-   - Trace: warehouse = [ { Id: b1c88a3c-444e-4776-a5c4-c660a75e9365, Title: "Product One", AmountInStock: 4 }, { Id: b55e24ac-bc7c-4168-8894-bb1856f0c93f, Title: "Product Two", AmountInStock: 75 }, { Id: 5b94e130-955e-4f11-854c-dc4b296907fa, Title: "Product Three", AmountInStock: 63 } ]
+   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
+   - Trace:  = {
+    OrderLines: [
+        Three: 39,
+        Five: 1
+    ]
+}
+   - Trace: warehouse = [
+    { Title: "One", AmountInStock: 100 },
+    { Title: "Two", AmountInStock: 96 },
+    { Title: "Three", AmountInStock: 30 },
+    { Title: "Four", AmountInStock: 61 },
+    { Title: "Five", AmountInStock: 51 }
+]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 1 } ] }
-   - Trace:  = { OrderLines: [ Product Two: 55, Product One: 1 ] }
-   - Trace: warehouse = [ { Id: b1c88a3c-444e-4776-a5c4-c660a75e9365, Title: "Product One", AmountInStock: 3 }, { Id: b55e24ac-bc7c-4168-8894-bb1856f0c93f, Title: "Product Two", AmountInStock: 20 }, { Id: 5b94e130-955e-4f11-854c-dc4b296907fa, Title: "Product Three", AmountInStock: 63 } ]
- ------------------------------------------------------------
-  Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 3 } ] }
-   - Trace:  = { OrderLines: [ Product One: 3, Product Two: 1 ] }
-   - Trace: warehouse = [ { Id: b1c88a3c-444e-4776-a5c4-c660a75e9365, Title: "Product One", AmountInStock: 0 }, { Id: b55e24ac-bc7c-4168-8894-bb1856f0c93f, Title: "Product Two", AmountInStock: 19 }, { Id: 5b94e130-955e-4f11-854c-dc4b296907fa, Title: "Product Three", AmountInStock: 63 } ]
+   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 30 } ] }
+   - Trace:  = {
+    OrderLines: [
+        Three: 30,
+        Two: 1
+    ]
+}
+   - Trace: warehouse = [
+    { Title: "One", AmountInStock: 100 },
+    { Title: "Two", AmountInStock: 95 },
+    { Title: "Three", AmountInStock: 0 },
+    { Title: "Four", AmountInStock: 61 },
+    { Title: "Five", AmountInStock: 51 }
+]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
  ===============================================================
  Passed Expectations
- - Stock Decreased After Order: 5x
- - No Stock Below Zero After Any Action: 4x
+ - Stock Decreased After Order: 13x
+ - No Stock Below Zero After Any Action: 12x
  ------------------------------------------------------------
