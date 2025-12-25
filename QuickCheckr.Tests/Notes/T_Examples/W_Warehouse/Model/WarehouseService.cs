@@ -16,6 +16,11 @@ public class WarehouseService
                 new Order.OrderLine{ProductId = a.ProductId, Amount = a.Amount})]
         };
         Orders.Add(order);
+        foreach (var orderLine in order.OrderLines)
+        {
+            ProductsForSale.First(a => a.Id == orderLine.ProductId).AmountInStock -= orderLine.Amount;
+        }
+
         return order.Id;
     }
 }
@@ -39,9 +44,9 @@ public record OrderRequest(Guid CustomerId, OrderRequest.OrderLine[] OrderLines)
 
 public class Product
 {
-    public Guid Id { get; } = Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.Empty;
     public string Title { get; set; } = string.Empty;
     public int AmountInStock { get; set; }
 }
 
-public record ProductToOrder(Guid ProductId, string ProductTitle, int Available);
+public record ProductToOrder(Guid ProductId, string Name, int Available);
