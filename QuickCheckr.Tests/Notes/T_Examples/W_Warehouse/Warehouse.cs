@@ -26,8 +26,8 @@ public class Warehouse : BaseTest
     [DocExample(typeof(Warehouse), nameof(GetCheckr))]
     [DocHeader("Report")]
     [DocCodeFile("Warehouse.txt", "text")]
-    [DocHeader("Stash Setup")]
-    [DocExample(typeof(Warehouse), nameof(GetWarehouseService))]
+    // [DocHeader("Stash Setup")]
+    // [DocExample(typeof(Warehouse), nameof(GetWarehouseService))]
     [DocHeader("Fuzzr")]
     [DocExample(typeof(Warehouse), nameof(OrderRequestOrderLineFuzzr))]
     [DocExample(typeof(Warehouse), nameof(OrderRequestFuzzr))]
@@ -37,95 +37,59 @@ public class Warehouse : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1293091565, 20.ExecutionsPerRun(),
-            cfg => cfg with { FileAs = "Warehouse", DeliberationPolicy = Custom }));
+            GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
+        //cfg => cfg with { FileAs = "Warehouse", DeliberationPolicy = Custom }));
         WriteAsserts(article, false);
         WriteReport<Warehouse>(article, false);
         ExplainMe<Warehouse>(false);
         Verify(article);
     }
 
-    [CodeSnippet]
-    [CodeRemove("return")]
+
+    [CodeExample]
     private static ManOfWealthAndTaste GetWarehouseShowr()
-    {
-        return Please.AllowMe()
+        => Please.AllowMe()
             .ToPrettyPrint()
             .ToInline<Product>()
             .To<Product>(a => a.Ignore(a => a.Id));
-    }
 
-    [CodeSnippet]
-    [CodeRemove("return")]
+    [CodeExample]
     private static ManOfWealthAndTaste GetShowr(ClientSim client)
-    {
-        return Please.AllowMe()
-            .ToPrettyPrint()
+        => Please.AllowMe()
             .ToInline<OrderRequest.OrderLine>()
             .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
-    }
 
     [CodeSnippet]
     [CodeRemove("return checkr;")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        var checkr =
-            from service in Trackr.Stashed("Warehouse", GetWarehouseService)
+    private static CheckrOf<Case> GetCheckr() =>
+        from service in Trackr.Stashed("Warehouse", GetWarehouseService)
+        from client in Trackr.Stashed("Client", () => new ClientSim())
+        from ops in Checkr.OneOfWhen(
+            (() => client.ProductsToOrder.Length <= 0,
+                from getProducts in Checkr.Act("Client Gets Products to Order",
+                    () => client.ProductsToOrder = service.GetProducts())
+                select Case.Closed),
+            (() => client.ProductsToOrder.Length > 0,
+                from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
+                from trace in Checkr.Trace("Order Request", () => GetShowr(client).IntroduceThis(orderRequest))
+                from placeOrder in Checkr.Act("Client Places Order",
+                    () => client.Orders.Add(service.PlaceOrder(orderRequest)))
+                from reloadedStock in Checkr.Capture(() => service.GetProducts())
+                from checkStockDecreased in Checkr.Expect("Stock Decreased After Order",
+                    () => orderRequest.OrderLines.All(a =>
+                        reloadedStock.Single(b => a.ProductId == b.ProductId).Available
+                        < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
+                select Case.Closed)
 
-            from client in Trackr.Stashed("Client", () => new ClientSim())
-                // looks like preload is needed, eager eval of OrderRequestFuzzr issue
-            from preload in Checkr.Act("Client Gets Products to Order",
-                () => { client.ProductsToOrder = service.GetProducts(); })
-            from ops in Checkr.OneOfWhen(
+        )
+        from traceStock in Checkr.Trace("warehouse",
+            () => Environment.NewLine + GetWarehouseShowr().IntroduceThis(service.ProductsForSale))
+        from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
+            () => service.GetProducts().Select(a => a.Available).All(a => a > 0))
 
-                (() => client.ProductsToOrder.Length <= 0,
-                    from getProducts in Checkr.Act("Client Gets Products to Order",
-                        () => client.ProductsToOrder = service.GetProducts())
-                    select Case.Closed),
-
-                (() => client.ProductsToOrder.Length > 0,
-                    from orderRequest in Checkr.Input("Order Request", OrderRequestFuzzr(client))
-                    from trace in Checkr.Trace("", () => GetShowr(client).IntroduceThis(orderRequest))
-                    from placeOrder in Checkr.Act("Client Places Order",
-                        () => client.Orders.Add(service.PlaceOrder(orderRequest)))
-                    from reloadedStock in Checkr.Capture(() => service.GetProducts())
-                    from checkStockDecreased in Checkr.Expect("Stock Decreased After Order",
-                        () => orderRequest.OrderLines.All(a =>
-                            reloadedStock.Single(b => a.ProductId == b.ProductId).Available
-                            < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
-                    select Case.Closed)
-
-            )
-            from traceStock in Checkr.Trace("warehouse", () => GetWarehouseShowr().IntroduceThis(service.ProductsForSale))
-            from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
-                () => service.GetProducts().Select(a => a.Available).All(a => a > 0))
-
-            select Case.Closed;
-        return checkr;
-    }
-
-    private static FuzzrOf<IEnumerable<T>> Flatten<T>(IEnumerable<FuzzrOf<T>> fuzzrs) =>
-        state =>
-        {
-            var values = new List<T>();
-            foreach (var fuzzr in fuzzrs)
-            {
-                values.Add(fuzzr(state).Value);
-            }
-            return new Result<IEnumerable<T>>(values, state);
-        };
-
-    private static FuzzrOf<OrderRequest> OrderRequestFuzzrOld(ClientSim client) =>
-        from lines in Fuzzr.OneOf(client.ProductsToOrder)
-            .Unique(Guid.NewGuid())
-            .Select(a => OrderRequestOrderLineFuzzr(a))
-            .Many(1, client.ProductsToOrder.Length - 1)
-        from requestLines in Flatten(lines)
-        from request in Fuzzr.One(() =>
-            new OrderRequest(client.Id, [.. requestLines]))
-        select request;
+        select Case.Closed;
 
     private static FuzzrOf<IEnumerable<U>> FuzzrDotMap<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
         state =>
@@ -138,16 +102,16 @@ public class Warehouse : BaseTest
             return new Result<IEnumerable<U>>(values, state);
         };
 
-    [CodeSnippet]
+    [CodeExample]
     private static FuzzrOf<OrderRequest.OrderLine> OrderRequestOrderLineFuzzr(ProductToOrder productToOrder) =>
         from amount in Fuzzr.Int(1, productToOrder.Available + 1)
         select new OrderRequest.OrderLine(productToOrder.ProductId, amount);
 
-    [CodeSnippet]
+    [CodeExample]
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
         from products in Fuzzr.OneOf(client.ProductsToOrder)
             .Unique(Guid.NewGuid()).Many(1, client.ProductsToOrder.Length - 1)
-            // Move FuzzrDotMap to QuickFuzzr, ... different name maybe ?
+        // Move FuzzrDotMap to QuickFuzzr, ... different name maybe ?
         from lines in FuzzrDotMap(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
@@ -185,11 +149,11 @@ public class Warehouse : BaseTest
     {
         Assert.Equal("No Stock Below Zero After Any Action", article.FailedExpectation());
         Assert.Equal(3, article.Total().Executions());
-        Assert.Equal(6, article.Total().Actions());
-        Assert.Equal(3, article.Total().Inputs());
-        Assert.Equal(6, article.Total().Traces());
+        Assert.Equal(3, article.Total().Actions());
+        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(5, article.Total().Traces());
         Assert.Equal(2, article.Total().PassedExpectations());
-        Assert.Equal(18, article.ShrinkCount);
+        Assert.Equal(8, article.ShrinkCount);
     }
 
     public class ClientSim

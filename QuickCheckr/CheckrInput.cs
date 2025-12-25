@@ -40,6 +40,9 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
+    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
+        state => HandleInput(state, key, factory());
+
 
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
         => CheckrResult.Some(state,

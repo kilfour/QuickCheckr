@@ -1,13 +1,14 @@
 ## Current Version: 0.0.6 
 * review evidence gathering
 * play more pool
+  * Another idea: keep a number of 'clients' in a pool calling a web api (or service in this case for ease of coding)
+    RESTy, they get products => use it to place order f.i., client object keeps track of what happened
+    Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...
   * Started 'Warehouse' example
     * Look at cfg-able input formatting
     * looks like preload is needed, eager eval of OrderRequestFuzzr issue => document
-  * Another idea: keep a number of 'clients' in a pool calling a web api (or service in this case for ease of coding)
-    RESTy, they do get products => use it to place order f.i., client object keeps track of what happened
-    Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...
-* Make OneOf(-When) return T instead of Case ?
+      => Added a *Lazy* Checkr.Input, taking a fuzzr factory function as arg
+    * We need a quickfuzzr map function if I am not mistaken
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now
@@ -27,7 +28,6 @@ none
   * limitations
   * known issues
   * workarounds
-* update xml summaries
 
 ## 0.0.7+
 * keyed overload for PoolFor, GetPool, ...
@@ -41,6 +41,9 @@ none
 * Stabilize InternalAffairs
 
 ## 0.1.0
+* update xml summaries
+
+## 0.1.0++
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
@@ -52,6 +55,7 @@ none
 * Start working on the reference
 
 ## Ideas
+* Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)

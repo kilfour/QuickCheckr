@@ -1,63 +1,47 @@
  ------------------------------------------------------------
  Test:                    RunTest
  Location:                Notes\T_Examples\W_Warehouse\Warehouse.cs:40:1
- Original failing run:    13 executions
- Minimal failing case:    3 executions (after 18 shrinks)
- Seed:                    1293091565
+ Original failing run:    8 executions
+ Minimal failing case:    3 executions (after 8 shrinks)
+ Seed:                    1678214093
  ------------------------------------------------------------
-  Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 31 } ] }
-   - Trace:  = {
-    OrderLines: [
-        Four: 39,
-        Five: 48,
-        Two: 4,
-        Three: 31
-    ]
-}
-   - Trace: warehouse = [
+  Executed: Client Gets Products to Order
+   - Trace: warehouse = 
+[
     { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 96 },
-    { Title: "Three", AmountInStock: 69 },
-    { Title: "Four", AmountInStock: 61 },
-    { Title: "Five", AmountInStock: 52 }
+    { Title: "Two", AmountInStock: 100 },
+    { Title: "Three", AmountInStock: 100 },
+    { Title: "Four", AmountInStock: 100 },
+    { Title: "Five", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
-  Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
-   - Trace:  = {
-    OrderLines: [
-        Three: 39,
-        Five: 1
-    ]
-}
-   - Trace: warehouse = [
+  Executed: Client Places Order
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 79 } ] }
+   - Trace: Order Request = { OrderLines: [ Five: 79 ] }
+   - Trace: warehouse = 
+[
     { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 96 },
-    { Title: "Three", AmountInStock: 30 },
-    { Title: "Four", AmountInStock: 61 },
-    { Title: "Five", AmountInStock: 51 }
+    { Title: "Two", AmountInStock: 100 },
+    { Title: "Three", AmountInStock: 100 },
+    { Title: "Four", AmountInStock: 100 },
+    { Title: "Five", AmountInStock: 21 }
 ]
  ------------------------------------------------------------
-  Executed: Client Gets Products to Order, Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 30 } ] }
-   - Trace:  = {
-    OrderLines: [
-        Three: 30,
-        Two: 1
-    ]
-}
-   - Trace: warehouse = [
-    { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 95 },
-    { Title: "Three", AmountInStock: 0 },
-    { Title: "Four", AmountInStock: 61 },
-    { Title: "Five", AmountInStock: 51 }
+  Executed: Client Places Order
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 48 } ] }
+   - Trace: Order Request = { OrderLines: [ One: 68, Five: 48 ] }
+   - Trace: warehouse = 
+[
+    { Title: "One", AmountInStock: 32 },
+    { Title: "Two", AmountInStock: 100 },
+    { Title: "Three", AmountInStock: 100 },
+    { Title: "Four", AmountInStock: 100 },
+    { Title: "Five", AmountInStock: -27 }
 ]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
  ===============================================================
  Passed Expectations
- - Stock Decreased After Order: 13x
- - No Stock Below Zero After Any Action: 12x
+ - No Stock Below Zero After Any Action: 7x
+ - Stock Decreased After Order: 7x
  ------------------------------------------------------------
