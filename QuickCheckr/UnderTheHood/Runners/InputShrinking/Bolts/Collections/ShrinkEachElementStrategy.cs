@@ -24,7 +24,8 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
             var before = theList[ix];
             var valueType = before!.GetType();
             var elementType = valueType;
-            using (state.Memory.ScopedSwap(info.ExecutionId, info.Key, theList))
+            var substitute = CloneList.GetSubstituteForType(info.Type, theList);
+            using (state.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute))
             {
                 var swapper = new ListLens(elementType, ix);
                 using (state.Memory.NestedValue(info.ExecutionId, swapper))

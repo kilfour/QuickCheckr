@@ -36,4 +36,19 @@ public static class CloneList
 
         return typedList;
     }
+
+    public static object GetSubstituteForType(Type type, IList theList)
+    {
+        if (type.IsArray)
+        {
+            var elementType = type.GetElementType()!;
+            var array = Array.CreateInstance(elementType, theList.Count);
+            for (var i = 0; i < theList.Count; i++)
+            {
+                array.SetValue(theList[i], i);
+            }
+            return array;
+        }
+        return theList;
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
@@ -18,30 +19,8 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             var ix = index;
             var before = theList[ix];
             theList.RemoveAt(ix);
-            // ------------------------------------------------------------------------------
-            // -- HACKED IN AN ARRAY
-            if (info.Value != null)
-            {
-                var valueType = info.Value.GetType();
-                if (info.Value.GetType().IsArray)
-                {
-                    var elementType = valueType.GetElementType()!;
-                    var array = Array.CreateInstance(elementType, theList.Count);
-                    for (var i = 0; i < theList.Count; i++)
-                    {
-                        array.SetValue(theList[i], i);
-                    }
-                    if (verifier.RunFailed(info.ExecutionId, info.Key, array))
-                    {
-                        var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.FullKey}.{indexKey}", info.Value, theList);
-                        state.Docket.Record(new InputShrinkingClueFound(clue));
-                        shrinkCount++;
-                        continue;
-                    }
-                }
-            }
-            // ------------------------------------------------------------------------------
-            if (verifier.RunFailed(info.ExecutionId, info.Key, theList!))
+            var substitute = CloneList.GetSubstituteForType(info.Type, theList);
+            if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
             {
                 var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.FullKey}.{indexKey}", info.Value, theList);
                 state.Docket.Record(new InputShrinkingClueFound(clue));

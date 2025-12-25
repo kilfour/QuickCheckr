@@ -140,7 +140,7 @@ For this reason the following method returns a tuple of a boolean and a Checkr, 
     public void AllTogetherNow()
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(1553195441, 10.ExecutionsPerRun()));
-        WriteAsserts(article, true);
+        WriteAsserts(article, false);
         WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);
     }

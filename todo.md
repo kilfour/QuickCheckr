@@ -1,5 +1,4 @@
 ## Current Version: 0.0.6 
-* Fix Array in object shrinking
 * review evidence gathering
 * play more pool
   * Started 'Warehouse' example

@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\T_ArrayShrinking.cs:19:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1100967994
+ Seed:                    1262413900
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
  ====================================
-  !! Spec Failed: int[0] is not 42
+  !! Expectation Failed: no answer
  ====================================
