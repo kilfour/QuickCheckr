@@ -23,6 +23,17 @@ public class Warehouse : BaseTest
 
     [Fact]
     [DocHeader("Checkr")]
+    [DocContent(
+@"Report stringify config ideas in comments.  
+Basically QuickPulse.Show has a monadic LINQ configurator factory class `Show` (this might be overkill but is consistent)
+and QuickCheckr has a `Showr` registration combinator, which functions like QuickFuzzr's Configr,
+plugging in Show configs in the pipeline.
+
+Showr idea is pretty good I think. Show not sure ... but compared with current way of QP.S config,
+ ... it does play nicer together.
+ 
+ Another question is whether to kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of
+ `Input<T>(string key, Func<FuzzrOf<T>> factory)` for DX.")]
     [DocExample(typeof(Warehouse), nameof(GetCheckr))]
     [DocHeader("Report")]
     [DocCodeFile("Warehouse.txt", "text")]
@@ -61,11 +72,19 @@ public class Warehouse : BaseTest
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 
+
     [CodeSnippet]
     [CodeRemove("return checkr;")]
     private static CheckrOf<Case> GetCheckr() =>
         from service in Trackr.Stashed("Warehouse", GetWarehouseService)
         from client in Trackr.Stashed("Client", () => new ClientSim())
+            // from showOrderRequest in Showr.For<OrderRequest>(
+            //     from _1 in Show<OrderRequest.OrderLine>.Inline()
+            //     from _2 in Show<OrderRequest>.Ignore(a => a.CustomerId)
+            //     from _3 in Show<OrderRequest.OrderLine>.Replace(
+            //         a => $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}")
+            //     select Show.This
+            // )
         from ops in Checkr.OneOfWhen(
             (() => client.ProductsToOrder.Length <= 0,
                 from getProducts in Checkr.Act("Client Gets Products to Order",
