@@ -31,6 +31,7 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
 
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
+        state.Memory.StoreWarning(info.Key, () => $"Can't shrink type '{info.Type.Name}' at input '{info.FullKey}'.");
         return [clue];
     }
 

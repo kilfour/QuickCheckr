@@ -1,10 +1,12 @@
 ## Current Version: 0.0.6 
+* Fix Array in object shrinking
 * review evidence gathering
 * play more pool
   * Started 'Warehouse' example
   * Another idea: keep a number of 'clients' in a pool calling a web api (or service in this case for ease of coding)
     RESTy, they do get products => use it to place order f.i., client object keeps track of what happened
     Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...
+* Make OneOf(-When) return T instead of Case ?
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now

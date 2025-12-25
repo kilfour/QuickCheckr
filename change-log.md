@@ -17,3 +17,4 @@
 
 ### 0.0.7
 * Encapsulated the pool element returned from Trackr.OneOfPool and others
+* Added unsupported type for shrinking WARNING
