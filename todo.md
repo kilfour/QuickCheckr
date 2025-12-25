@@ -55,6 +55,7 @@ none
 * Start working on the reference
 
 ## Ideas
+* `Showr.For<T>(Func<ManofWealthAndTaste, ManofWealthAndTaste>)`
 * Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
