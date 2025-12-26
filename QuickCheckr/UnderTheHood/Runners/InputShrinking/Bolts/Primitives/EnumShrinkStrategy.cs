@@ -13,7 +13,7 @@ public class EnumShrinkStrategy : IShrinkingStrategy
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
-                var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
+                var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 yield return clue;
                 yield break;

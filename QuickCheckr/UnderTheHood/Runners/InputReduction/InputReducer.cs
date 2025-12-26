@@ -64,7 +64,7 @@ public class InputReducer(
         }
         if (found)
         {
-            var clue = InputShrinkingClue.Replace<InputReducer>(executionId, key, value, passed, State.Editor.IntroduceThis(passed));
+            var clue = InputShrinkingClue.Replace<InputReducer>(executionId, key, value, passed, State.InputPrinter.IntroduceThis(passed));
             clue.AddToCount(1);
             State.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];

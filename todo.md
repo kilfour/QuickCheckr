@@ -1,15 +1,7 @@
 ## Current Version: 0.0.6 
 * review evidence gathering
 * play more pool
-  * Idea: keep a number of 'clients' in a pool calling a web api (or service in this case for ease of coding)
-    RESTy, they get products => use it to place order f.i., client object keeps track of what happened
-    Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...
-  * Started 'Warehouse' example
-    * Look at cfg-able input formatting => Showr, ... make it work for Input reporting too
-    * looks like preload is needed, eager eval of OrderRequestFuzzr issue => document
-      * Fixed by Adding a *Lazy* Checkr.Input, taking a fuzzr factory function as arg
-        Always use this one ?
-    * We need a quickfuzzr map function if I am not mistaken
+* Warehousing
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now
@@ -22,7 +14,13 @@
   * [   ] InternalAffairs
 
 ### Tests Current Focus
-none
+* ParsingNumbers example: Uncomment Assert, but decimal separator breaks build.
+
+### Skipped Tests (4)
+* 2 for Configuration InternalAffairs: Work in progress, not too important right now.
+* GatheringEvidence: Touches the file system.
+* TheBroadcasterTests: Explicit experimental, takes quite long too.
+
 
 ## 0.0.7
 * look into different collection shrinking

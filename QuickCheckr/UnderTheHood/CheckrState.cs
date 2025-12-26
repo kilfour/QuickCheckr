@@ -2,6 +2,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickFuzzr.UnderTheHood;
 using QuickPulse;
+using QuickPulse.Show;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood;
@@ -16,9 +17,9 @@ public class CheckrState(
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signals);
     public ManOfWealthAndTaste Editor { get; set; } =
-        new ManOfWealthAndTaste()
-            .ToUseNonLinearTime()
-            .ToInline<List<int>>();
+        Please.AllowMe().ToUseNonLinearTime();
+    public ManOfWealthAndTaste InputPrinter { get; set; } =
+        Please.AllowMe().ToUseNonLinearTime();
 
     public int StartReplay()
     {

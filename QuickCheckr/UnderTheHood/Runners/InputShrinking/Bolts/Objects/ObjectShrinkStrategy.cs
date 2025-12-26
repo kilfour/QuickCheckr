@@ -18,7 +18,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
             state.Memory.StoreWarning(info.FullKey,
                 () => $"Null value for type '{info.Type.Name}' at input '{info.FullKey}'.");

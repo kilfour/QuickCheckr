@@ -1,4 +1,6 @@
-namespace QuickCheckr.Tests.Notes.T_Examples.W_Warehouse.Model;
+using QuickCheckr;
+
+namespace QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 
 public class WarehouseService
 {

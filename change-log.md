@@ -19,3 +19,4 @@
 * Encapsulated the pool element returned from Trackr.OneOfPool and others
 * Added unsupported type for shrinking WARNING
 * Array shrinking supported
+* Added initial configuration of Checkr.Trace output through QuickPulse.Show's ManOfWealthAndTaste

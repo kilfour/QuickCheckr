@@ -1,5 +1,4 @@
 using QuickCheckr.EvidenceGathering;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;

@@ -3,7 +3,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
-using QuickPulse.Show.Bolts;
+using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -18,10 +18,7 @@ public record CheckrRunnerConfig
         DeliberationPolicy = config.DeliberationPolicy;
         Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
-                Pulse.Prime(
-                    () => new ManOfWealthAndTaste()
-                        .ToUseNonLinearTime()
-                        .ToInline<List<int>>())
+                Pulse.Prime(() => Please.AllowMe().ToUseNonLinearTime())
                     .Then(a.Procedure))
                 .SetArtery(a.Officer()))];
 

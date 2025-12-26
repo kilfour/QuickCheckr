@@ -1,20 +1,20 @@
-using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Notes.T_Examples.W_Warehouse.Model;
+using QuickCheckr;
+using QuickCheckr.Tests.Experimental.D_ShowrUse;
+using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
-using QuickFuzzr.UnderTheHood;
 using QuickPulse.Explains;
 using QuickPulse.Show;
 using QuickPulse.Show.Bolts;
 
 
-namespace QuickCheckr.Tests.Notes.T_Examples.W_Warehouse;
+namespace QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne;
 
-[DocFile]
-public class Warehouse : BaseTest
+[DocLink(typeof(ShowrUse))]
+public class WarehouseStepOne : BaseTest
 {
     public static readonly Func<CaseFile, CaseFile, CaseFile> Custom =
         (a, b) =>
@@ -25,23 +25,35 @@ public class Warehouse : BaseTest
     [DocHeader("Checkr")]
     [DocContent(
 @"
- Kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of `Input<T>(string key, Func<FuzzrOf<T>> factory)` ?  
- Less confusing probably.")]
-    [DocExample(typeof(Warehouse), nameof(GetCheckr))]
+**Issue:** Eager evaluation of OrderRequestFuzzr caused issues.  
+Fixed by Adding a *Lazy* Checkr.Input, taking a fuzzr factory function as argument.  
+
+Maybe always use this one ?  
+I.e.: kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of `Input<T>(string key, Func<FuzzrOf<T>> factory)` ?  
+Less confusing I reckon, but ... it's YAL(yet another lamda).
+")]
+    [DocExample(typeof(WarehouseStepOne), nameof(GetCheckr))]
     [DocHeader("Report")]
-    [DocCodeFile("Warehouse.txt", "text")]
+    [DocCodeFile("WarehouseStepOne.txt", "text")]
     [DocHeader("Fuzzr")]
-    [DocExample(typeof(Warehouse), nameof(OrderRequestOrderLineFuzzr))]
-    [DocExample(typeof(Warehouse), nameof(OrderRequestFuzzr))]
+    [DocExample(typeof(WarehouseStepOne), nameof(OrderRequestOrderLineFuzzr))]
+    [DocExample(typeof(WarehouseStepOne), nameof(OrderRequestFuzzr))]
+    [DocContent(
+@"We need a quickfuzzr Fuzzr.Map, if I am not mistaken.  
+I could not figure out how to do this with existing functionality.")]
+    [DocExample(typeof(QFuzzr))]
     [DocHeader("QuickPulse.Show Config")]
-    [DocExample(typeof(Warehouse), nameof(GetShowr))]
+    [DocContent(
+@"Two ways to ignore things, which one to pick ?
+
+Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
+    [DocExample(typeof(WarehouseStepOne), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<Warehouse>(article, false);
-        ExplainMe<Warehouse>(true);
+        WriteReport<WarehouseStepOne>(article, false);
         Verify(article);
     }
 
@@ -73,17 +85,6 @@ public class Warehouse : BaseTest
             () => service.GetProducts().Select(a => a.Available).All(a => a > 0))
         select Case.Closed;
 
-    private static FuzzrOf<IEnumerable<U>> FuzzrDotMap<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
-        state =>
-        {
-            var values = new List<U>();
-            foreach (var element in source)
-            {
-                values.Add(func(element)(state).Value);
-            }
-            return new Result<IEnumerable<U>>(values, state);
-        };
-
     [CodeExample]
     private static FuzzrOf<OrderRequest.OrderLine> OrderRequestOrderLineFuzzr(ProductToOrder productToOrder) =>
         from amount in Fuzzr.Int(1, productToOrder.Available + 1)
@@ -93,8 +94,7 @@ public class Warehouse : BaseTest
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
         from products in Fuzzr.OneOf(client.ProductsToOrder)
             .Unique(Guid.NewGuid()).Many(1, client.ProductsToOrder.Length - 1)
-        // Move FuzzrDotMap to QuickFuzzr, ... different name maybe ?
-        from lines in FuzzrDotMap(products, OrderRequestOrderLineFuzzr)
+        from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
@@ -104,12 +104,9 @@ public class Warehouse : BaseTest
             .ToPrettyPrint()
             .ToPrefix<List<Product>>(Environment.NewLine)
             .ToInline<Product>()
-            // two ways to ignore things, which one to pick ?
-            // this is one.
             .ToIgnore<Product, Guid>(a => a.Id)
             .ToInline<OrderRequest>()
             .ToInline<OrderRequest.OrderLine[]>()
-            // and this is the other
             .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");

@@ -205,23 +205,22 @@ together with the number of executions, relevant actions and inputs that were re
 var array = new[] { 42, 2, 3 };
 var check =
     from input in Checkr.Input("int[]", Fuzzr.Constant(array))
-    from expect in Checkr.ExpectWhen("int[0] is not 42",
-        () => input.Length != 0,
-        () => input.First() != 42)
+    from expect in Checkr.Expect("no answer",
+        () => !input.Contains(42))
     select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\T_ArrayShrinking.cs:19:1
+ Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1100967994
+ Seed:                    1262413900
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
  ====================================
-  !! Spec Failed: int[0] is not 42
+  !! Expectation Failed: no answer
  ====================================
 ```
 #### Objects

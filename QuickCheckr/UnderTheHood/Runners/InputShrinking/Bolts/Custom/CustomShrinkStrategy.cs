@@ -15,7 +15,7 @@ public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker) : 
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
                 var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
-                    info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
+                    info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return [clue];
             }

@@ -9,7 +9,7 @@ using QuickCheckr.Tests.Experimental;
 Explain.These<Documentation>("Docs/");
 // Explain.These<Drafts>("Drafts/");
 // Explain.These<Notes>("Notes/");
-// Explain.These<Experimental>("Experimental/");
+Explain.These<Experimental>("Experimental/");
 
 Explain.OnlyThis<CreateReadMe>("README.md");
 

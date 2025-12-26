@@ -29,7 +29,7 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
         if (info.Type.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, info);
 
-        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.Editor.IntroduceThis(info.Value));
+        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
         state.Memory.StoreWarning(info.Key, () => $"Can't shrink type '{info.Type.Name}' at input '{info.FullKey}'.");
         return [clue];
