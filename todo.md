@@ -2,6 +2,7 @@
 * review evidence gathering
 * play more pool
 * Warehousing
+* QuickPulse.Show config could use another look
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now

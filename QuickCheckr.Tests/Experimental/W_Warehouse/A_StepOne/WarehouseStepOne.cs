@@ -1,5 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.Tests.Experimental.D_ShowrUse;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -13,7 +12,6 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne;
 
-[DocLink(typeof(ShowrUse))]
 public class WarehouseStepOne : BaseTest
 {
     public static readonly Func<CaseFile, CaseFile, CaseFile> Custom =

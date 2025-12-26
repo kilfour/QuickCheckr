@@ -139,4 +139,4 @@ Please.AllowMe()
         $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 ```
 
-[ShowrUse]: ../../D_ShowrUse/ShowrUse.md
+[ShowrUse]: ../D_ShowrUse/ShowrUse.md
