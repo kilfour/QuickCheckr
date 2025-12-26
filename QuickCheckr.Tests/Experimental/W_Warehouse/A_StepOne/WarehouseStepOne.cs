@@ -51,7 +51,7 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<WarehouseStepOne>(article, false);
+        WriteReport<WarehouseStepOne>(article, true);
         Verify(article);
     }
 
@@ -115,23 +115,23 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
             ProductsForSale =
                 [ new()
                         { Id = new Guid("b1c88a3c-444e-4776-a5c4-c660a75e9365")
-                        , Title = "One"
+                        , Name = "One"
                         , AmountInStock = 100
                         }
                 , new() { Id = new Guid("b55e24ac-bc7c-4168-8894-bb1856f0c93f")
-                        , Title = "Two"
+                        , Name = "Two"
                         , AmountInStock = 100
                         }
                 , new() { Id = new Guid("5b94e130-955e-4f11-854c-dc4b296907fa")
-                        , Title = "Three"
+                        , Name = "Three"
                         , AmountInStock = 100
                         }
                 , new() { Id = new Guid("17b6368f-f8b1-4068-b242-6745fa92f122")
-                        , Title = "Four"
+                        , Name = "Four"
                         , AmountInStock = 100
                         }
                 , new() { Id = new Guid("8479cc9e-0dd0-4255-9a5a-6dec33d7b663")
-                        , Title = "Five"
+                        , Name = "Five"
                         , AmountInStock = 100
                         }
                 ]

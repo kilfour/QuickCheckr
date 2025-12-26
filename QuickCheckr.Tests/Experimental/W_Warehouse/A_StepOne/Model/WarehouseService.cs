@@ -6,7 +6,7 @@ public class WarehouseService
 {
     public List<Product> ProductsForSale { get; set; } = [];
     public ProductToOrder[] GetProducts()
-        => [.. ProductsForSale.Select(a => new ProductToOrder(a.Id, a.Title, a.AmountInStock))];
+        => [.. ProductsForSale.Select(a => new ProductToOrder(a.Id, a.Name, a.AmountInStock))];
 
     public List<Order> Orders { get; set; } = [];
     public Guid PlaceOrder(OrderRequest request)
@@ -47,7 +47,7 @@ public record OrderRequest(Guid CustomerId, OrderRequest.OrderLine[] OrderLines)
 public class Product
 {
     public Guid Id { get; set; } = Guid.Empty;
-    public string Title { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public int AmountInStock { get; set; }
 }
 

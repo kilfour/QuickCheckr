@@ -8,11 +8,11 @@
   Executed: Client Gets Products to Order
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: 100 }
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
@@ -20,11 +20,11 @@
    - Trace: Order Request = { OrderLines: [ Five: 79 ] }
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: 21 }
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 21 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
@@ -32,11 +32,11 @@
    - Trace: Order Request = { OrderLines: [ One: 68, Five: 48 ] }
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 32 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: -27 }
+    { Name: "One", AmountInStock: 32 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: -27 }
 ]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
