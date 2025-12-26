@@ -30,7 +30,8 @@ from ops in Checkr.OneOfWhen(
         from placeOrder in Checkr.Act("Client Places Order",
             () => client.Orders.Add(service.PlaceOrder(orderRequest)))
         from reloadedStock in Checkr.Capture(() => service.GetProducts())
-        from checkStockDecreased in Checkr.Expect("Stock Decreased After Order",
+        from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
+            () => orderRequest.OrderLines.Sum(a => a.Amount) > 0,
             () => orderRequest.OrderLines.All(a =>
                 reloadedStock.Single(b => a.ProductId == b.ProductId).Available
                 < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
@@ -44,11 +45,11 @@ select Case.Closed;
 ### Report
 ```text
 ------------------------------------------------------------
- Test:                    RunTest
- Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:52:1
- Original failing run:    8 executions
- Minimal failing case:    3 executions (after 8 shrinks)
- Seed:                    1678214093
+ Test:                    Example
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:46:1
+ Original failing run:    12 executions
+ Minimal failing case:    3 executions (after 14 shrinks)
+ Seed:                    1344312712
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
    - Trace: warehouse = 
@@ -61,34 +62,34 @@ select Case.Closed;
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 79 } ] }
-   - Trace: Order Request = { OrderLines: [ Five: 79 ] }
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
+   - Trace: Order Request = { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
    - Trace: warehouse = 
 [
-    { Name: "One", AmountInStock: 100 },
-    { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
+    { Name: "One", AmountInStock: 88 },
+    { Name: "Two", AmountInStock: 17 },
+    { Name: "Three", AmountInStock: 58 },
     { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: 21 }
+    { Name: "Five", AmountInStock: 54 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 48 } ] }
-   - Trace: Order Request = { OrderLines: [ One: 68, Five: 48 ] }
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
+   - Trace: Order Request = { OrderLines: [ Five: 82 ] }
    - Trace: warehouse = 
 [
-    { Name: "One", AmountInStock: 32 },
-    { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
+    { Name: "One", AmountInStock: 88 },
+    { Name: "Two", AmountInStock: 17 },
+    { Name: "Three", AmountInStock: 58 },
     { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: -27 }
+    { Name: "Five", AmountInStock: -28 }
 ]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
  ===============================================================
  Passed Expectations
- - No Stock Below Zero After Any Action: 7x
- - Stock Decreased After Order: 7x
+ - No Stock Below Zero After Any Action: 11x
+ - Stock Decreased After Order: 5x
  ------------------------------------------------------------
 ```
 ### Fuzzr
@@ -99,8 +100,8 @@ private static FuzzrOf<OrderRequest.OrderLine> OrderRequestOrderLineFuzzr(Produc
 ```
 ```csharp
 private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
-    from products in Fuzzr.OneOf(client.ProductsToOrder)
-        .Unique(Guid.NewGuid()).Many(1, client.ProductsToOrder.Length - 1)
+    from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
+        .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
     from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
     from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
     select request;
@@ -138,7 +139,8 @@ Please.AllowMe()
     .ToReplace<OrderRequest.OrderLine>(a =>
         $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 ```
-## Warehouse Step Two
+## Warehouse Step Four
+So after the dev applies the correct fix, the single client checkr looks like this.  
 ### Checkrs
 ```csharp
 private static readonly CheckrOf<Case> TheCheckr =
@@ -187,9 +189,9 @@ private static readonly CheckrOf<Case> PlaceOrder =
 ```text
 1 Run
  Passed Expectations
- - No Stock Below Zero After Any Action: 20x
- - Stock Decreased After Order: 5x
- - Insufficient Stock means no stock change: 3x
+ - No Stock Below Zero After Any Action: 50x
+ - Stock Decreased After Order: 16x
+ - Insufficient Stock means no stock change: 5x
  ------------------------------------------------------------
 ```
 

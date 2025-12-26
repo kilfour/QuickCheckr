@@ -3,7 +3,6 @@ using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;
@@ -14,11 +13,6 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne;
 
 public class WarehouseStepOne : BaseTest
 {
-    public static readonly Func<CaseFile, CaseFile, CaseFile> Custom =
-        (a, b) =>
-            a.Verdict!.OriginalRunExecutionCount - a.Verdict!.ExecutionDepositions.Count >
-            b.Verdict!.OriginalRunExecutionCount - b.Verdict!.ExecutionDepositions.Count ? a : b;
-
     [Fact]
     [DocHeader("Checkr")]
     [DocContent(
@@ -49,7 +43,7 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
+            GetCheckr().Run(1344312712, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepOne>(article, false);
         Verify(article);
@@ -72,7 +66,8 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
                 from placeOrder in Checkr.Act("Client Places Order",
                     () => client.Orders.Add(service.PlaceOrder(orderRequest)))
                 from reloadedStock in Checkr.Capture(() => service.GetProducts())
-                from checkStockDecreased in Checkr.Expect("Stock Decreased After Order",
+                from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
+                    () => orderRequest.OrderLines.Sum(a => a.Amount) > 0,
                     () => orderRequest.OrderLines.All(a =>
                         reloadedStock.Single(b => a.ProductId == b.ProductId).Available
                         < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
@@ -90,8 +85,8 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
 
     [CodeExample]
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
-        from products in Fuzzr.OneOf(client.ProductsToOrder)
-            .Unique(Guid.NewGuid()).Many(1, client.ProductsToOrder.Length - 1)
+        from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
+            .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
         from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
@@ -145,7 +140,7 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(5, article.Total().Traces());
         Assert.Equal(2, article.Total().PassedExpectations());
-        Assert.Equal(8, article.ShrinkCount);
+        Assert.Equal(14, article.ShrinkCount);
     }
 
     public class ClientSim

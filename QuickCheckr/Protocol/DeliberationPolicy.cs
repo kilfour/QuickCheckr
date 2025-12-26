@@ -16,4 +16,14 @@ public static class DeliberationPolicy
         (a, b) =>
             a.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) <
             b.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) ? a : b;
+
+    public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumExecutionsShrunk =
+        (a, b) =>
+            a.Verdict!.OriginalRunExecutionCount - a.Verdict!.ExecutionDepositions.Count >
+            b.Verdict!.OriginalRunExecutionCount - b.Verdict!.ExecutionDepositions.Count ? a : b;
+
+    public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumDistinctPassedExpectations =
+        (a, b) =>
+            a.PassedExpectationDepositions.Count >
+            b.PassedExpectationDepositions.Count ? a : b;
 }

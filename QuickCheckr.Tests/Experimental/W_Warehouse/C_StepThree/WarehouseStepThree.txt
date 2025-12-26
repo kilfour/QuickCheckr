@@ -1,0 +1,57 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:31:1
+ Original failing run:    19 executions
+ Minimal failing case:    6 executions (after 21 shrinks)
+ Seed:                    433870882
+ ------------------------------------------------------------
+  Executed: Create Client (2 Times)
+   - Trace: warehouse = 
+[
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 100 }
+]
+ ------------------------------------------------------------
+  Executed: Client Gets Products to Order (2 Times)
+   - Trace: warehouse = 
+[
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 100 }
+]
+ ------------------------------------------------------------
+  Executed: Client Places Order
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 60 } ] }
+   - Trace: Order Request = { CustomerId: 9cfc1ac2-5eac-4c3b-90d5-69c37cfda5d0, OrderLines: [ One: 2, Four: 32, Five: 60, Three: 47 ] }
+   - Trace: warehouse = 
+[
+    { Name: "One", AmountInStock: 98 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 53 },
+    { Name: "Four", AmountInStock: 68 },
+    { Name: "Five", AmountInStock: 40 }
+]
+ ------------------------------------------------------------
+  Executed: Client Places Order
+   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 51 } ] }
+   - Trace: Order Request = { CustomerId: 3bf2f2d5-f313-4f28-958b-ee5639e27d4d, OrderLines: [ Four: 34, Five: 51, Two: 61, Three: 14 ] }
+   - Trace: warehouse = 
+[
+    { Name: "One", AmountInStock: 98 },
+    { Name: "Two", AmountInStock: 39 },
+    { Name: "Three", AmountInStock: 39 },
+    { Name: "Four", AmountInStock: 34 },
+    { Name: "Five", AmountInStock: -11 }
+]
+ ===============================================================
+  !! Expectation Failed: No Stock Below Zero After Any Action
+ ===============================================================
+ Passed Expectations
+ - No Stock Below Zero After Any Action: 18x
+ - Stock Decreased After Order: 6x
+ ------------------------------------------------------------

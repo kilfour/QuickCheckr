@@ -1,5 +1,5 @@
 using QuickCheckr;
-using QuickCheckr.Tests.Experimental.W_Warehouse.B_StepTwo.Model;
+using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -14,64 +14,46 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse.B_StepTwo;
 
 public class WarehouseStepTwo : BaseTest
 {
-    public static readonly Func<CaseFile, CaseFile, CaseFile> Custom =
-        (a, b) =>
-            a.Verdict!.OriginalRunExecutionCount - a.Verdict!.ExecutionDepositions.Count >
-            b.Verdict!.OriginalRunExecutionCount - b.Verdict!.ExecutionDepositions.Count ? a : b;
-
     [Fact]
-    [DocHeader("Checkrs")]
-    [DocExample(typeof(WarehouseStepTwo), nameof(TheCheckr))]
-    [DocExample(typeof(WarehouseStepTwo), nameof(GetProductInfo))]
-    [DocExample(typeof(WarehouseStepTwo), nameof(PlaceOrder))]
+    [DocHeader("Checkr")]
+    [DocContent("Simulating dev fixing things in the client by forcing a reload of products to order.")]
+    [DocExample(typeof(WarehouseStepTwo), nameof(GetCheckr))]
     [DocHeader("Report")]
     [DocCodeFile("WarehouseStepTwo.txt", "text")]
+    [DocExample(typeof(WarehouseStepTwo), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>
-            TheCheckr.Run(1678214093, 20.ExecutionsPerRun()));
+            GetCheckr().Run(1344312712, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepTwo>(article, false);
         Verify(article);
     }
 
-    [CodeExample]
-    private static readonly CheckrOf<Case> GetProductInfo =
-        from service in Trackr.Stashed<WarehouseService>()
-        from client in Trackr.Stashed<ClientSim>()
-        from getProducts in Checkr.Act("Client Gets Products to Order",
-            () => client.ProductsToOrder = service.GetProducts())
-        select Case.Closed;
-
-    [CodeExample]
-    private static readonly CheckrOf<Case> PlaceOrder =
-        from service in Trackr.Stashed<WarehouseService>()
-        from client in Trackr.Stashed<ClientSim>()
-        from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-        from trace in Checkr.Trace("Order Request", () => orderRequest)
-        from reloadedStockBefore in Checkr.Capture(() => service.GetProducts())
-        from placeOrder in Checkr.ActCarefully("Client Places Order",
-            () => client.Orders.Add(service.PlaceOrder(orderRequest)))
-        from reloadedStockAfter in Checkr.Capture(() => service.GetProducts())
-        from placeOrderThrew in Checkr.ExpectWhen("Insufficient Stock means no stock change",
-            placeOrder.ThrewExactly<InsufficientStockException>, () =>
-                reloadedStockBefore.All(a =>
-                    reloadedStockAfter.Single(b => b.ProductId == a.ProductId).Available == a.Available))
-        from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
-            () => !placeOrder.Threw,
-            () => orderRequest.OrderLines.All(a =>
-                reloadedStockAfter.Single(b => a.ProductId == b.ProductId).Available
-                < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
-        select Case.Closed;
-
-    [CodeExample]
-    private static readonly CheckrOf<Case> TheCheckr =
+    [CodeSnippet]
+    [CodeRemove("return checkr;")]
+    private static CheckrOf<Case> GetCheckr() =>
         from service in Trackr.Stashed(GetWarehouseService)
         from client in Trackr.Stashed(() => new ClientSim())
         from show in Showr.Use(() => GetShowr(client))
         from ops in Checkr.OneOfWhen(
-            (() => true, GetProductInfo),
-            (() => client.ProductsToOrder.Length > 0, PlaceOrder))
+            (() => client.ProductsToOrder.Length <= 0,
+                from getProducts in Checkr.Act("Client Gets Products to Order",
+                    () => client.ProductsToOrder = service.GetProducts())
+                select Case.Closed),
+            (() => client.ProductsToOrder.Length > 0,
+                from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
+                from trace in Checkr.Trace("Order Request", () => orderRequest)
+                from placeOrder in Checkr.Act("Client Places Order",
+                    () => client.Orders.Add(service.PlaceOrder(orderRequest)))
+                from reloadedStock in Checkr.Capture(() => service.GetProducts())
+                from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
+                    () => orderRequest.OrderLines.Sum(a => a.Amount) > 0,
+                    () => orderRequest.OrderLines.All(a =>
+                        reloadedStock.Single(b => a.ProductId == b.ProductId).Available
+                        < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
+                from forceReload in Checkr.Perform(() => client.ProductsToOrder = [])
+                select Case.Closed))
         from traceStock in Checkr.Trace("warehouse",
             () => service.ProductsForSale)
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
@@ -85,12 +67,11 @@ public class WarehouseStepTwo : BaseTest
 
     [CodeExample]
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
-        from products in Fuzzr.OneOf(client.ProductsToOrder)
-            .Unique(Guid.NewGuid()).Many(1, client.ProductsToOrder.Length - 1)
+        from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
+            .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
         from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
-
 
     [CodeSnippet]
     private static ManOfWealthAndTaste GetShowr(ClientSim client) =>
@@ -135,14 +116,12 @@ public class WarehouseStepTwo : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal(3, article.Total().PassedExpectations());
+        Assert.Equal(2, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("No Stock Below Zero After Any Action", article.PassedExpectation(1).Read().Label);
         Assert.Equal(20, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("Stock Decreased After Order", article.PassedExpectation(2).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(2).Read().TimesPassed);
-        Assert.Equal("Insufficient Stock means no stock change", article.PassedExpectation(3).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(3).Read().TimesPassed);
+        Assert.Equal(9, article.PassedExpectation(2).Read().TimesPassed);
     }
 
     public class ClientSim

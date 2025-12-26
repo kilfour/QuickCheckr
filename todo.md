@@ -1,8 +1,10 @@
 ## Current Version: 0.0.6 
 * review evidence gathering
 * play more pool
+  * Trackr.ToPool: needs to be in report maybe
+  * Also, in Warehouse step 3 client info would be nice
 * Warehousing
-* QuickPulse.Show config could use another look
+* QuickPulse.Show config could use another look 
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now

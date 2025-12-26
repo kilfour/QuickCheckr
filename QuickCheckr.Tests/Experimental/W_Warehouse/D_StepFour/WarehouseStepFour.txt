@@ -1,0 +1,6 @@
+ 1 Run
+ Passed Expectations
+ - No Stock Below Zero After Any Action: 50x
+ - Stock Decreased After Order: 16x
+ - Insufficient Stock means no stock change: 5x
+ ------------------------------------------------------------

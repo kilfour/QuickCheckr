@@ -20,3 +20,4 @@
 * Added unsupported type for shrinking WARNING
 * Array shrinking supported
 * Added initial configuration of Checkr.Trace output through QuickPulse.Show's ManOfWealthAndTaste
+* Split Trackr.OneOfPool into Trackr.OneOfPool and Trackr.OneOfPoolWhen

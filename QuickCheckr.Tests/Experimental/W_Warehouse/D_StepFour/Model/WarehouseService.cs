@@ -1,6 +1,6 @@
 using QuickCheckr;
 
-namespace QuickCheckr.Tests.Experimental.W_Warehouse.B_StepTwo.Model;
+namespace QuickCheckr.Tests.Experimental.W_Warehouse.D_StepFour.Model;
 
 public class WarehouseService
 {
