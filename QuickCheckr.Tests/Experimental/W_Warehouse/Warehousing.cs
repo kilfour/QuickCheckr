@@ -1,5 +1,6 @@
 using QuickCheckr.Tests.Experimental.D_ShowrUse;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne;
+using QuickCheckr.Tests.Experimental.W_Warehouse.B_StepTwo;
 using QuickPulse.Explains;
 
 
@@ -15,6 +16,7 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse;
 ")]
 [DocLink(typeof(ShowrUse))]
 [DocInclude(typeof(WarehouseStepOne))]
+[DocInclude(typeof(WarehouseStepTwo))]
 public class Warehousing
 {
 }

@@ -16,8 +16,8 @@ I.e.: kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of `Input<T>(string 
 Less confusing I reckon, but ... it's YAL(yet another lamda).
   
 ```csharp
-from service in Trackr.Stashed("Warehouse", GetWarehouseService)
-from client in Trackr.Stashed("Client", () => new ClientSim())
+from service in Trackr.Stashed(GetWarehouseService)
+from client in Trackr.Stashed(() => new ClientSim())
 from show in Showr.Use(() => GetShowr(client))
 from ops in Checkr.OneOfWhen(
     (() => client.ProductsToOrder.Length <= 0,
@@ -38,14 +38,14 @@ from ops in Checkr.OneOfWhen(
 from traceStock in Checkr.Trace("warehouse",
     () => service.ProductsForSale)
 from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
-    () => service.GetProducts().Select(a => a.Available).All(a => a > 0))
+    () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
 select Case.Closed;
 ```
 ### Report
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\T_Examples\W_Warehouse\Warehouse.cs:41:1
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:52:1
  Original failing run:    8 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    1678214093
@@ -53,11 +53,11 @@ select Case.Closed;
   Executed: Client Gets Products to Order
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: 100 }
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
@@ -65,11 +65,11 @@ select Case.Closed;
    - Trace: Order Request = { OrderLines: [ Five: 79 ] }
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 100 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: 21 }
+    { Name: "One", AmountInStock: 100 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: 21 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
@@ -77,11 +77,11 @@ select Case.Closed;
    - Trace: Order Request = { OrderLines: [ One: 68, Five: 48 ] }
    - Trace: warehouse = 
 [
-    { Title: "One", AmountInStock: 32 },
-    { Title: "Two", AmountInStock: 100 },
-    { Title: "Three", AmountInStock: 100 },
-    { Title: "Four", AmountInStock: 100 },
-    { Title: "Five", AmountInStock: -27 }
+    { Name: "One", AmountInStock: 32 },
+    { Name: "Two", AmountInStock: 100 },
+    { Name: "Three", AmountInStock: 100 },
+    { Name: "Four", AmountInStock: 100 },
+    { Name: "Five", AmountInStock: -27 }
 ]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
@@ -137,6 +137,60 @@ Please.AllowMe()
     .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
     .ToReplace<OrderRequest.OrderLine>(a =>
         $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
+```
+## Warehouse Step Two
+### Checkrs
+```csharp
+private static readonly CheckrOf<Case> TheCheckr =
+    from service in Trackr.Stashed(GetWarehouseService)
+    from client in Trackr.Stashed(() => new ClientSim())
+    from show in Showr.Use(() => GetShowr(client))
+    from ops in Checkr.OneOfWhen(
+        (() => true, GetProductInfo),
+        (() => client.ProductsToOrder.Length > 0, PlaceOrder))
+    from traceStock in Checkr.Trace("warehouse",
+        () => service.ProductsForSale)
+    from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
+        () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
+    select Case.Closed;
+```
+```csharp
+private static readonly CheckrOf<Case> GetProductInfo =
+    from service in Trackr.Stashed<WarehouseService>()
+    from client in Trackr.Stashed<ClientSim>()
+    from getProducts in Checkr.Act("Client Gets Products to Order",
+        () => client.ProductsToOrder = service.GetProducts())
+    select Case.Closed;
+```
+```csharp
+private static readonly CheckrOf<Case> PlaceOrder =
+    from service in Trackr.Stashed<WarehouseService>()
+    from client in Trackr.Stashed<ClientSim>()
+    from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
+    from trace in Checkr.Trace("Order Request", () => orderRequest)
+    from reloadedStockBefore in Checkr.Capture(() => service.GetProducts())
+    from placeOrder in Checkr.ActCarefully("Client Places Order",
+        () => client.Orders.Add(service.PlaceOrder(orderRequest)))
+    from reloadedStockAfter in Checkr.Capture(() => service.GetProducts())
+    from placeOrderThrew in Checkr.ExpectWhen("Insufficient Stock means no stock change",
+        placeOrder.ThrewExactly<InsufficientStockException>, () =>
+            reloadedStockBefore.All(a =>
+                reloadedStockAfter.Single(b => b.ProductId == a.ProductId).Available == a.Available))
+    from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
+        () => !placeOrder.Threw,
+        () => orderRequest.OrderLines.All(a =>
+            reloadedStockAfter.Single(b => a.ProductId == b.ProductId).Available
+            < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
+    select Case.Closed;
+```
+### Report
+```text
+1 Run
+ Passed Expectations
+ - No Stock Below Zero After Any Action: 20x
+ - Stock Decreased After Order: 5x
+ - Insufficient Stock means no stock change: 3x
+ ------------------------------------------------------------
 ```
 
 [ShowrUse]: ../D_ShowrUse/ShowrUse.md
