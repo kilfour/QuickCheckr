@@ -20,7 +20,6 @@ public class WarehouseStepTwo : BaseTest
     [DocExample(typeof(WarehouseStepTwo), nameof(GetCheckr))]
     [DocHeader("Report")]
     [DocCodeFile("WarehouseStepTwo.txt", "text")]
-    [DocExample(typeof(WarehouseStepTwo), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>

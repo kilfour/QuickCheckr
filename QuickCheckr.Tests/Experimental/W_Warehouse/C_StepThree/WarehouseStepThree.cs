@@ -24,7 +24,6 @@ public class WarehouseStepThree : BaseTest
     [DocExample(typeof(WarehouseStepThree), nameof(PlaceOrder))]
     [DocHeader("Report")]
     [DocCodeFile("WarehouseStepThree.txt", "text")]
-    [DocExample(typeof(WarehouseStepThree), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>
@@ -38,6 +37,7 @@ public class WarehouseStepThree : BaseTest
     private static readonly CheckrOf<Case> LogOn =
         from newClient in Checkr.Act("Create Client", () => new ClientSim())
         from toPool in Trackr.ToPool("Create Client", newClient)
+        from traceClient in Checkr.Trace("Client", () => newClient.Id)
         select Case.Closed;
 
     [CodeExample]
@@ -51,6 +51,7 @@ public class WarehouseStepThree : BaseTest
     [CodeExample]
     private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
         from service in Trackr.Stashed<WarehouseService>()
+        from traceClient in Checkr.Trace("Client", () => client.Value.Id)
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.Value.ProductsToOrder = service.GetProducts())
         select Case.Closed;
@@ -60,6 +61,7 @@ public class WarehouseStepThree : BaseTest
         from service in Trackr.Stashed<WarehouseService>()
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
         from show in Showr.Use(() => GetRequestShowr(client.Value))
+        from traceClient in Checkr.Trace("Client", () => client.Value.Id)
         from trace in Checkr.Trace("Order Request", () => orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
             () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
@@ -79,9 +81,8 @@ public class WarehouseStepThree : BaseTest
         from ops in Checkr.OneOfWhen(
             clients.When(a => a.Count() < 3, LogOn),
             clients.When(a => a.Any(), "Client Action", client => ClientTakesAction(client)))
-        from show in Showr.Use(GetShowr)
-        from traceStock in Checkr.Trace("warehouse",
-            () => service.ProductsForSale)
+        from showStock in Showr.Use(GetShowr)
+        from traceStock in Checkr.Trace("warehouse", () => service.ProductsForSale)
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;
@@ -112,6 +113,7 @@ public class WarehouseStepThree : BaseTest
         Please.AllowMe()
             .ToPrettyPrint()
             .ToInline<OrderRequest>()
+            .ToIgnore<OrderRequest, Guid>(a => a.CustomerId)
             .ToInline<OrderRequest.OrderLine[]>()
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
@@ -147,10 +149,10 @@ public class WarehouseStepThree : BaseTest
     private static void Verify(Article article)
     {
         Assert.Equal("No Stock Below Zero After Any Action", article.FailedExpectation());
-        Assert.Equal(4, article.Total().Executions());
-        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(6, article.Total().Executions());
+        Assert.Equal(6, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(6, article.Total().Traces());
+        Assert.Equal(14, article.Total().Traces());
         Assert.Equal(2, article.Total().PassedExpectations());
         Assert.Equal(21, article.ShrinkCount);
     }
