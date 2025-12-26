@@ -20,7 +20,8 @@ public class WarehouseStepOne : BaseTest
 **Issue:** Eager evaluation of OrderRequestFuzzr caused issues.  
 Fixed by Adding a *Lazy* Checkr.Input, taking a fuzzr factory function as argument.  
 
-Maybe always use this one ?  
+*Maybe always use this one ?*  
+
 I.e.: kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of `Input<T>(string key, Func<FuzzrOf<T>> factory)` ?  
 Less confusing I reckon, but ... it's YAL (yet another lamda).
 ")]
