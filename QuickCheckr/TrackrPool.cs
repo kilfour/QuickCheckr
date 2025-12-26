@@ -50,5 +50,5 @@ public class Pool<T1, T2>(IEnumerable<T1> pool1, IEnumerable<T2> pool2)
         string key,
         Func<T1, T2, bool> predicate,
         Func<T1, T2, CheckrOf<Case>> checkr)
-        => (() => HasAtleastOne(predicate), Trackr.OneOfPool(key, predicate, checkr));
+        => (() => HasAtleastOne(predicate), Trackr.OneOfPoolWhen(key, predicate, checkr));
 }
