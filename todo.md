@@ -15,7 +15,7 @@
   * [   ] InternalAffairs
 
 ### Tests Current Focus
-* ParsingNumbers example: Uncomment Assert, but decimal separator breaks build.
+* ParsingNumbers example: Uncomment Assert, decimal separator now breaks build.
 
 ### Skipped Tests (4)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
