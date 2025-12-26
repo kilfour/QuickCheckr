@@ -51,7 +51,7 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<WarehouseStepOne>(article, true);
+        WriteReport<WarehouseStepOne>(article, false);
         Verify(article);
     }
 
