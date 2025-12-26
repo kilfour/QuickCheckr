@@ -58,8 +58,8 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
     [CodeSnippet]
     [CodeRemove("return checkr;")]
     private static CheckrOf<Case> GetCheckr() =>
-        from service in Trackr.Stashed("Warehouse", GetWarehouseService)
-        from client in Trackr.Stashed("Client", () => new ClientSim())
+        from service in Trackr.Stashed(GetWarehouseService)
+        from client in Trackr.Stashed(() => new ClientSim())
         from show in Showr.Use(() => GetShowr(client))
         from ops in Checkr.OneOfWhen(
             (() => client.ProductsToOrder.Length <= 0,
