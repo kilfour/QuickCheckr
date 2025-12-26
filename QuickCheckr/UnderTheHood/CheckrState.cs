@@ -15,7 +15,7 @@ public class CheckrState(
     public Memory Memory { get; init; } = new();
     public EvidenceRecorder EvidenceRecorder { get; init; } = new();
     public Docket Docket { get; init; } = new(signals);
-    public ManOfWealthAndTaste Editor { get; init; } =
+    public ManOfWealthAndTaste Editor { get; set; } =
         new ManOfWealthAndTaste()
             .ToUseNonLinearTime()
             .ToInline<List<int>>();

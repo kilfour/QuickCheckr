@@ -16,7 +16,7 @@ public class UnknownPrimitives : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 1.ExecutionsPerRun()));
+            GetCheckr().Run(746257211, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<UnknownPrimitives>(article, false);
         Verify(article);
@@ -41,7 +41,7 @@ public class UnknownPrimitives : BaseTest
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Half", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("65,25", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Can't shrink type 'Half' at input 'Half'.", article.Execution(1).Warning(1).Read().Value);
     }
 }

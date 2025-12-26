@@ -24,67 +24,33 @@ public class Warehouse : BaseTest
     [Fact]
     [DocHeader("Checkr")]
     [DocContent(
-@"Report stringify config ideas in comments.  
-Basically QuickPulse.Show has a monadic LINQ configurator factory class `Show` (this might be overkill but is consistent)
-and QuickCheckr has a `Showr` registration combinator, which functions like QuickFuzzr's Configr,
-plugging in Show configs in the pipeline.
-
-Showr idea is pretty good I think. Show not sure ... but compared with current way of QP.S config,
- ... it does play nicer together.
- 
- Another question is whether to kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of
- `Input<T>(string key, Func<FuzzrOf<T>> factory)` for DX.")]
+@"
+ Kill `Input<T>(string key, FuzzrOf<T> fuzzr` in favor of `Input<T>(string key, Func<FuzzrOf<T>> factory)` ?  
+ Less confusing probably.")]
     [DocExample(typeof(Warehouse), nameof(GetCheckr))]
     [DocHeader("Report")]
     [DocCodeFile("Warehouse.txt", "text")]
-    // [DocHeader("Stash Setup")]
-    // [DocExample(typeof(Warehouse), nameof(GetWarehouseService))]
     [DocHeader("Fuzzr")]
     [DocExample(typeof(Warehouse), nameof(OrderRequestOrderLineFuzzr))]
     [DocExample(typeof(Warehouse), nameof(OrderRequestFuzzr))]
-    [DocHeader("QuickPulse.Show Configs")]
-    [DocExample(typeof(Warehouse), nameof(GetWarehouseShowr))]
+    [DocHeader("QuickPulse.Show Config")]
     [DocExample(typeof(Warehouse), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1678214093, 20.ExecutionsPerRun()));
-        //cfg => cfg with { FileAs = "Warehouse", DeliberationPolicy = Custom }));
         WriteAsserts(article, false);
         WriteReport<Warehouse>(article, false);
-        ExplainMe<Warehouse>(false);
+        ExplainMe<Warehouse>(true);
         Verify(article);
     }
-
-
-    [CodeExample]
-    private static ManOfWealthAndTaste GetWarehouseShowr()
-        => Please.AllowMe()
-            .ToPrettyPrint()
-            .ToInline<Product>()
-            .To<Product>(a => a.Ignore(a => a.Id));
-
-    [CodeExample]
-    private static ManOfWealthAndTaste GetShowr(ClientSim client)
-        => Please.AllowMe()
-            .ToInline<OrderRequest.OrderLine>()
-            .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
-            .ToReplace<OrderRequest.OrderLine>(a =>
-                $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
-
 
     [CodeSnippet]
     [CodeRemove("return checkr;")]
     private static CheckrOf<Case> GetCheckr() =>
         from service in Trackr.Stashed("Warehouse", GetWarehouseService)
         from client in Trackr.Stashed("Client", () => new ClientSim())
-            // from showOrderRequest in Showr.For<OrderRequest>(
-            //     from _1 in Show<OrderRequest.OrderLine>.Inline()
-            //     from _2 in Show<OrderRequest>.Ignore(a => a.CustomerId)
-            //     from _3 in Show<OrderRequest.OrderLine>.Replace(
-            //         a => $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}")
-            //     select Show.This
-            // )
+        from show in Showr.Use(() => GetShowr(client))
         from ops in Checkr.OneOfWhen(
             (() => client.ProductsToOrder.Length <= 0,
                 from getProducts in Checkr.Act("Client Gets Products to Order",
@@ -92,7 +58,7 @@ Showr idea is pretty good I think. Show not sure ... but compared with current w
                 select Case.Closed),
             (() => client.ProductsToOrder.Length > 0,
                 from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-                from trace in Checkr.Trace("Order Request", () => GetShowr(client).IntroduceThis(orderRequest))
+                from trace in Checkr.Trace("Order Request", () => orderRequest)
                 from placeOrder in Checkr.Act("Client Places Order",
                     () => client.Orders.Add(service.PlaceOrder(orderRequest)))
                 from reloadedStock in Checkr.Capture(() => service.GetProducts())
@@ -100,14 +66,11 @@ Showr idea is pretty good I think. Show not sure ... but compared with current w
                     () => orderRequest.OrderLines.All(a =>
                         reloadedStock.Single(b => a.ProductId == b.ProductId).Available
                         < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
-                select Case.Closed)
-
-        )
+                select Case.Closed))
         from traceStock in Checkr.Trace("warehouse",
-            () => Environment.NewLine + GetWarehouseShowr().IntroduceThis(service.ProductsForSale))
+            () => service.ProductsForSale)
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a > 0))
-
         select Case.Closed;
 
     private static FuzzrOf<IEnumerable<U>> FuzzrDotMap<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
@@ -136,6 +99,21 @@ Showr idea is pretty good I think. Show not sure ... but compared with current w
         select request;
 
     [CodeSnippet]
+    private static ManOfWealthAndTaste GetShowr(ClientSim client) =>
+        Please.AllowMe()
+            .ToPrettyPrint()
+            .ToPrefix<List<Product>>(Environment.NewLine)
+            .ToInline<Product>()
+            // two ways to ignore things, which one to pick ?
+            // this is one.
+            .ToIgnore<Product, Guid>(a => a.Id)
+            .ToInline<OrderRequest>()
+            .ToInline<OrderRequest.OrderLine[]>()
+            // and this is the other
+            .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
+            .ToReplace<OrderRequest.OrderLine>(a =>
+                $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
+
     private static WarehouseService GetWarehouseService()
         => new()
         {

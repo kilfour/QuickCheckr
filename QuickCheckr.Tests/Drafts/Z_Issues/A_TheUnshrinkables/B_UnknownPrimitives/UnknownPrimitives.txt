@@ -5,7 +5,7 @@
  Seed:                    746257211
  ------------------------------------------------------------
   Executed:
-   - Input: Half = { }
+   - Input: Half = 65,25
    - WARNING: Can't shrink type 'Half' at input 'Half'.
  ================================
   !! Expectation Failed: Fails
