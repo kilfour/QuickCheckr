@@ -28,6 +28,8 @@ Each chapter builds on the previous one, introducing new concepts through execut
 
 [BoltingHorses]: #bolting-horses
 ### Checkr-ing Things Out
+[Top][Guide] | [Next][TheStashRunsAndExecutions]  
+  
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.  
@@ -191,7 +193,15 @@ And here's the report:
  ====================================
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
+
+[Top][Guide] | [Next][TheStashRunsAndExecutions]  
+
+[Guide]: #guide
+
+[TheStashRunsAndExecutions]: #the-stash-runs-and-executions
 ### The Stash, Runs and Executions
+[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+  
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:  
@@ -313,8 +323,18 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
+[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+
 [InPoolsWeTrust]: #in-pools-we-trust
-### Choosing The Next Move
+
+[Guide]: #guide
+
+[CheckringThingsOut]: #checkr-ing-things-out
+
+[ChoosingTheNextMove]: #choosing-the-next-move
+### Choosing the Next Move
+[Top][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+  
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
 
@@ -463,7 +483,17 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.  
+
+[Top][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+
+[Guide]: #guide
+
+[TheStashRunsAndExecutions]: #the-stash-runs-and-executions
+
+[InPoolsWeTrust]: #in-pools-we-trust
 ### In Pools We Trust
+[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+  
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
@@ -588,7 +618,17 @@ public class Rolodex
  - Count matches: 9x
  ------------------------------------------------------------
 ```
+
+[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+
+[Guide]: #guide
+
+[ChoosingTheNextMove]: #choosing-the-next-move
+
+[BoltingHorses]: #bolting-horses
 ### Bolting Horses
+[Top][Guide] | [Previous][InPoolsWeTrust]  
+  
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
 
@@ -763,6 +803,12 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```
 The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+
+[Top][Guide] | [Previous][InPoolsWeTrust]  
+
+[Guide]: #guide
+
+[InPoolsWeTrust]: #in-pools-we-trust
 ## Putting a Case on the Board
 ### Test Framework Integration
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  

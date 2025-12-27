@@ -1,4 +1,6 @@
 # The Stash, Runs and Executions
+[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+  
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:  
@@ -120,4 +122,12 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
+[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
+
+[Guide]: ../Guide.md
+
+[CheckringThingsOut]: ../A_CheckringThingsOut/CheckringThingsOut.md
+
+[ChoosingTheNextMove]: ../C_ChoosingTheNextMove/ChoosingTheNextMove.md

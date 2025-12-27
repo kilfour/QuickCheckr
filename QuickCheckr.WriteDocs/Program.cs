@@ -4,9 +4,11 @@ using QuickCheckr.Tests.Drafts;
 using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
+using QuickCheckr.Tests.Docs.A_Guide;
 
 
 Explain.These<Documentation>("Docs/");
+Explain.These<Guide>("Guide/");
 // Explain.These<Drafts>("Drafts/");
 // Explain.These<Notes>("Notes/");
 Explain.These<Experimental>("Experimental/");
@@ -14,7 +16,7 @@ Explain.These<Experimental>("Experimental/");
 Explain.OnlyThis<CreateReadMe>("README.md");
 
 Explain.This<Documentation>("DocsSinglePages/doc.md");
-// Explain.This<Guide>("DocsSinglePages/guide.md");
+Explain.This<Guide>("DocsSinglePages/guide.md");
 // Explain.This<OnShrinking>("DocsSinglePages/shrinking.md");
 // Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 

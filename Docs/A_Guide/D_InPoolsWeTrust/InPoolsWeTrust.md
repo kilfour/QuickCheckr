@@ -1,4 +1,6 @@
 # In Pools We Trust
+[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+  
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
@@ -123,3 +125,11 @@ public class Rolodex
  - Count matches: 9x
  ------------------------------------------------------------
 ```
+
+[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+
+[Guide]: ../Guide.md
+
+[ChoosingTheNextMove]: ../C_ChoosingTheNextMove/ChoosingTheNextMove.md
+
+[BoltingHorses]: ../E_HorsesAgain/BoltingHorses.md

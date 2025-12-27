@@ -1,4 +1,6 @@
 # Bolting Horses
+[Top][Guide] | [Previous][InPoolsWeTrust]  
+  
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
 
@@ -173,3 +175,9 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```
 The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+
+[Top][Guide] | [Previous][InPoolsWeTrust]  
+
+[Guide]: ../Guide.md
+
+[InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
