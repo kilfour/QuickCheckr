@@ -1,5 +1,5 @@
 ## Current Version: 0.0.6 
-!! update QuickFuzzr to 0.1.8
+* !! update QuickFuzzr to 0.1.8
  
 ### Ready for Changelog after review
 
@@ -14,6 +14,7 @@
     !! needs more investigation before deciding !!
   * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
 * play more pool
+  * only expose readonly version of the enumerable for predicates
 * review evidence gathering
 
 ### Doc Current Focus 
