@@ -6,17 +6,21 @@
  Seed:                    1073869613
  ------------------------------------------------------------
   Executed: Create Coach
+   -  Pool: Store Coach = 746000480
    - Trace: Coach Name = Coach-2
  ------------------------------------------------------------
   Executed: Create Course
+   -  Pool: Store Course = 522791761
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
+   -  Pool: Assign Coach to Course = ( 746000480, 522791761 )
    - Trace: Coach Name = Coach-2
    - Trace: Course Name = Course-1
  ------------------------------------------------------------
   Executed: Update Course Skills
    - Input: Course Skills = [ _ ]
+   -  Pool: Course to Update Skills = 522791761
    - Trace: Course Name = Course-1
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable

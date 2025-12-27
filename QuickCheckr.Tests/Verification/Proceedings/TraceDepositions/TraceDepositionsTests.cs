@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.ActionDepositions;
+namespace QuickCheckr.Tests.Verification.Proceedings.TraceDepositions;
 
 public class TraceDepositionsTests : DepositionTest
 {

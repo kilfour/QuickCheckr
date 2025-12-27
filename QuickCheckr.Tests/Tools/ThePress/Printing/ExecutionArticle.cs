@@ -15,6 +15,10 @@ public class ExecutionArticle(ExecutionDeposition deposition)
         => new(deposition.InputDepositions[number - 1]);
 
     [StackTraceHidden]
+    public PoolTraceArticle PoolTrace(int number)
+        => new(deposition.PoolTraceDepositions[number - 1]);
+
+    [StackTraceHidden]
     public TraceArticle Trace(int number)
         => new(deposition.TraceDepositions[number - 1]);
 

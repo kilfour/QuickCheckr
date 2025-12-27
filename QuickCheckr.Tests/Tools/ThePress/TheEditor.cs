@@ -25,6 +25,14 @@ public class TheEditor
         from value in Emit($"Assert.Equal(\"{traceArticle.Value}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
         select cursor;
 
+    private static readonly Flow<(int, int)> PoolTrace =
+        from cursor in Pulse.Start<(int executionIndex, int traceIndex)>()
+        from article in Pulse.Draw<Article>()
+        let poolTraceArticle = article.Execution(cursor.executionIndex).PoolTrace(cursor.traceIndex).Read()
+        from label in Emit($"Assert.Equal(\"{poolTraceArticle.Label}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Label);")
+        from value in Emit($"Assert.Equal(\"{poolTraceArticle.Value}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Value);")
+        select cursor;
+
     private static readonly Flow<(int, int)> Input =
         from cursor in Pulse.Start<(int executionIndex, int inputIndex)>()
         from article in Pulse.Draw<Article>()
@@ -54,6 +62,7 @@ public class TheEditor
         from times in EmitIf(executionDeposition.Times > 1, $"Assert.Equal({executionDeposition.Times}, article.Execution({index}).Read().Times);")
         from actions in Pulse.ToFlow(Action, Enumerable.Range(1, executionDeposition.ActionDepositions.Count).Select(a => (index, a)))
         from inputs in Pulse.ToFlow(Input, Enumerable.Range(1, executionDeposition.InputDepositions.Count).Select(a => (index, a)))
+        from poolTraces in Pulse.ToFlow(PoolTrace, Enumerable.Range(1, executionDeposition.PoolTraceDepositions.Count).Select(a => (index, a)))
         from traces in Pulse.ToFlow(Trace, Enumerable.Range(1, executionDeposition.TraceDepositions.Count).Select(a => (index, a)))
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select index;
@@ -84,6 +93,9 @@ public class TheEditor
         from inputCount in EmitIf(
             article.Total().Inputs() > 0,
             $"Assert.Equal({article.Total().Inputs()}, article.Total().Inputs());")
+        from poolTraceCount in EmitIf(
+            article.Total().PoolTraces() > 0,
+            $"Assert.Equal({article.Total().PoolTraces()}, article.Total().PoolTraces());")
         from traceCount in EmitIf(
             article.Total().Traces() > 0,
             $"Assert.Equal({article.Total().Traces()}, article.Total().Traces());")

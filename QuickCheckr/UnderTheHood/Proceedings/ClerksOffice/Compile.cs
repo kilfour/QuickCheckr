@@ -57,6 +57,7 @@ public static class Compile
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
         GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting);
+        GetPoolTraceDepositions(executionDeposition, shortTermMemory);
         GetTraceDepositions(executionDeposition, shortTermMemory);
         if (reportWarnings)
             GetWarningDepositions(executionDeposition, shortTermMemory);
@@ -87,6 +88,14 @@ public static class Compile
         foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
         {
             executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!));
+        }
+    }
+
+    private static void GetPoolTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+    {
+        foreach (var (key, val) in shortTermMemory.GetPoolTraces())
+        {
+            executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, (string)val!));
         }
     }
 
