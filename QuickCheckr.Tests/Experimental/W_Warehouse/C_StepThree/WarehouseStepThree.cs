@@ -1,5 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;

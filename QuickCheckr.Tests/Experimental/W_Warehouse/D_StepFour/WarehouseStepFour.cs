@@ -1,10 +1,8 @@
 using QuickCheckr;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.W_Warehouse.D_StepFour.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;
