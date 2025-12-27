@@ -33,24 +33,24 @@ public class B_AlsoForExceptions : BaseTest
             from names in Trackr.PoolFor<string>()
             from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
             from operations in Checkr.OneOfWhen(
-                    (() => counter == 1, // add AAA
+                    Checkr.Option(() => counter == 1, // add AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
                         from storeName in Trackr.ToPool("Name", name)
                         select Case.Closed),
-                    (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+                    Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                         from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                         from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
                             from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
                             from update in nameToUpdate.Replace(newName)
                             select Case.Closed)
                         select Case.Closed),
-                    (() => counter == 3, // add a new AAA
+                    Checkr.Option(() => counter == 3, // add a new AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
                         from storeName in Trackr.ToPool("Name", name)
                         select Case.Closed),
-                    (() => counter == 4, // add BBB
+                    Checkr.Option(() => counter == 4, // add BBB
                         from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
                         from storeName in Trackr.ToPool("Name", name)

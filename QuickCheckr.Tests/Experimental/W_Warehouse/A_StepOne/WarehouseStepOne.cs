@@ -57,11 +57,11 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
         from client in Trackr.Stashed(() => new ClientSim())
         from show in Showr.Use(() => GetShowr(client))
         from ops in Checkr.OneOfWhen(
-            (() => client.ProductsToOrder.Length <= 0,
+            Checkr.Option(() => client.ProductsToOrder.Length <= 0,
                 from getProducts in Checkr.Act("Client Gets Products to Order",
                     () => client.ProductsToOrder = service.GetProducts())
                 select Case.Closed),
-            (() => client.ProductsToOrder.Length > 0,
+            Checkr.Option(() => client.ProductsToOrder.Length > 0,
                 from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
                 from trace in Checkr.Trace("Order Request", () => orderRequest)
                 from placeOrder in Checkr.Act("Client Places Order",

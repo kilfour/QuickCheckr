@@ -44,8 +44,8 @@ public class WarehouseStepThree : BaseTest
     private static CheckrOf<Case> ClientTakesAction(PoolElement<ClientSim> client) =>
         from service in Trackr.GetStashed<WarehouseService>()
         from ops in Checkr.OneOfWhen("Client Actions",
-            (() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
-            (() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
+            Checkr.Option(() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
+            Checkr.Option(() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
         select Case.Closed;
 
     [CodeExample]

@@ -11,16 +11,16 @@ public class Pool<T>(IEnumerable<T> pool)
 {
     public IEnumerable<T> Values => pool;
 
-    public (Func<bool>, CheckrOf<Case>) When(
+    public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
         Func<IEnumerable<T>, bool> predicate,
         CheckrOf<Case> checkr)
-        => (() => predicate(pool), checkr);
+        => Checkr.Option(() => predicate(pool), checkr);
 
-    public (Func<bool>, CheckrOf<Case>) When(
+    public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
         Func<IEnumerable<T>, bool> predicate,
         string key,
         Func<PoolElement<T>, CheckrOf<Case>> checkr)
-        => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
+        => Checkr.Option(() => predicate(pool), Trackr.OneOfPool(key, checkr));
 
     public CheckrOf<Case> Expect(
         string key,
@@ -46,9 +46,9 @@ public class Pool<T1, T2>(IEnumerable<T1> pool1, IEnumerable<T2> pool2)
             t1 => pool2.Select(t2 => predicate(t1, t2)))
             .All(a => a);
 
-    public (Func<bool>, CheckrOf<Case>) When(
+    public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
         string key,
         Func<T1, T2, bool> predicate,
         Func<T1, T2, CheckrOf<Case>> checkr)
-        => (() => HasAtleastOne(predicate), Trackr.OneOfPoolWhen(key, predicate, checkr));
+        => Checkr.Option(() => HasAtleastOne(predicate), Trackr.OneOfPoolWhen(key, predicate, checkr));
 }

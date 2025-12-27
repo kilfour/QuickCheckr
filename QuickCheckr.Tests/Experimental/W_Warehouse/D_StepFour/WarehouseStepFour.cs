@@ -67,8 +67,8 @@ public class WarehouseStepFour : BaseTest
         from client in Trackr.Stashed(() => new ClientSim())
         from show in Showr.Use(() => GetShowr(client))
         from ops in Checkr.OneOfWhen(
-            (() => true, GetProductInfo),
-            (() => client.ProductsToOrder.Length > 0, PlaceOrder))
+            Checkr.Option(() => true, GetProductInfo),
+            Checkr.Option(() => client.ProductsToOrder.Length > 0, PlaceOrder))
         from traceStock in Checkr.Trace("warehouse",
             () => service.ProductsForSale)
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",

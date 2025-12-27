@@ -21,8 +21,8 @@ public class CheckrOneOfWhen
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
-            from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
+            from one in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("One", () => { })))
+            from two in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("Two", () => { })))
             select Case.Closed;
     }
 
@@ -58,8 +58,8 @@ The following Checkrs write to the this bank:
     private static CheckrOf<Case> GetCheckrKeyed()
     {
         return
-            from one in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("One", () => { })))
-            from two in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("Two", () => { })))
+            from one in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("One", () => { })))
+            from two in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("Two", () => { })))
             select Case.Closed;
     }
 

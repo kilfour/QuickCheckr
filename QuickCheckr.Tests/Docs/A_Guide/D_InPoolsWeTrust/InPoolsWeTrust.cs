@@ -121,10 +121,13 @@ For this reason the following method returns a tuple of a boolean and a Checkr, 
 ")]
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
     public void Conditionally() =>
-        Assert.Throws<OneOfEmptyOptionsException>(() => PoolWhen(new Pool<Contact>([])).Item2.Run());
+        Assert.Throws<OneOfEmptyOptionsException>(() => (
+            from option in PoolWhen(new Pool<Contact>([]))
+            from unconditionally in option.checkr
+            select Case.Closed).Run());
 
     [CodeSnippet]
-    private static (Func<bool>, CheckrOf<Case>) PoolWhen(Pool<Contact> pool) =>
+    private static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen(Pool<Contact> pool) =>
         pool.When(a => a.Any(), "A Random Contact",
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 

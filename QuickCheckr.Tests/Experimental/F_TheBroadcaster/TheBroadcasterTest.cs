@@ -50,12 +50,12 @@ public partial class TheBroadcasterTest : BaseTest
                     select Case.Closed),
 
                 // 3) Start broadcaster
-                (() => !broadcaster.Broadcasting,
+                Checkr.Option(() => !broadcaster.Broadcasting,
                     from start in Taskr.Start("start", ct => Task.Run(() => broadcaster.Broadcast(new Notification()), ct))
                     select Case.Closed),
 
                 // 4) Stop broadcast
-                (() => broadcaster.Broadcasting,
+                Checkr.Option(() => broadcaster.Broadcasting,
                     from stop in Checkr.Act("stop",
                         () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
                     select Case.Closed))
