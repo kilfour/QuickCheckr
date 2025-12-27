@@ -183,7 +183,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
+        from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
             coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;

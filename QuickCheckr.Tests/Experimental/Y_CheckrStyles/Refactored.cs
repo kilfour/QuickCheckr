@@ -34,7 +34,7 @@ public class Refactored
             select Case.Closed;
 
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
+        from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
             coach => coach.AssignedCourses.Any(),
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;

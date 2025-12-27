@@ -4,8 +4,8 @@
 * Pool Redesign
   * Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
   * Moved the `Expect`'s from PoolElement<T> to `Trackr.PoolExpect`
-  * Moved the `ExpectForEach`'s from PoolElement<T> to `Trackr.PoolExpectForEach`
-  * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectForEachWhen`
+  * Moved the `ExpectForEach`'s from PoolElement<T> to `Trackr.PoolExpectEach`
+  * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectEachWhen`
     Name is a bit long now.
   * Unified `Pool.These` into `Trackr.PoolWhen`
   * ?? Maybe move some to Checkr. instead of Trackr. or Poolr. ??
@@ -21,6 +21,12 @@
     * remove TrackrPoolThese.cs
 * Warehousing
 * QuickPulse.Show config could use another look 
+* Input: A targeted error rewrite (not warning) for the common misleading case
+  When an eager Input throws OneOfEmptyOptionsException during evaluation, rethrow
+  Ask user if it is dependent on state
+  !! needs more investigation before deciding !!
+* QF map => FromEach : 
+* lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now

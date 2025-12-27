@@ -4,7 +4,7 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
-    public static CheckrOf<Case> PoolExpectForEachWhen<T>(
+    public static CheckrOf<Case> PoolExpectEachWhen<T>(
         string key,
         Func<T, bool> predicate,
         Func<T, bool> condition) =>
