@@ -385,9 +385,7 @@ private static readonly CheckrOf<Case> TheCheckr =
     from clients in Trackr.PoolFor<ClientSim>()
     from ops in Checkr.OneOfWhen(
         Trackr.PoolWhen<ClientSim>(a => a.Count() < 3, LogOn),
-        Trackr.PoolWhen<ClientSim>(a => a.Any(), "Client Action", client => ClientTakesAction(client)))
-    from showStock in Showr.Use(GetShowr)
-    from traceStock in Checkr.Trace("warehouse", () => service.ProductsForSale)
+        Trackr.PoolWhen(a => a.Any(), "Client Action", ClientTakesAction))
     from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
         () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
     select Case.Closed;
@@ -396,34 +394,33 @@ private static readonly CheckrOf<Case> TheCheckr =
 private static readonly CheckrOf<Case> LogOn =
     from newClient in Checkr.Act("Create Client", () => new ClientSim())
     from toPool in Trackr.ToPool("Create Client", newClient)
-    from traceClient in Checkr.Trace("Client", () => newClient.Id)
     select Case.Closed;
 ```
 ```csharp
-private static CheckrOf<Case> ClientTakesAction(PoolElement<ClientSim> client) =>
-    from service in Trackr.GetStashed<WarehouseService>()
-    from ops in Checkr.OneOfWhen("Client Actions",
-        Checkr.Option(() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
-        Checkr.Option(() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
-    select Case.Closed;
+private static readonly Func<PoolElement<ClientSim>, CheckrOf<Case>> ClientTakesAction =
+    client =>
+        from service in Trackr.GetStashed<WarehouseService>()
+        from ops in Checkr.OneOfWhen("Client Actions",
+            Checkr.Option(() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
+            Checkr.Option(() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
+        select Case.Closed;
 ```
 ```csharp
 private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
     from service in Trackr.GetStashed<WarehouseService>()
-    from traceClient in Checkr.Trace("Client", () => client.Value.Id)
     from getProducts in Checkr.Act("Client Gets Products to Order",
         () => client.Value.ProductsToOrder = service.GetProducts())
+    from traceStock in TraceStock
     select Case.Closed;
 ```
 ```csharp
 private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
     from service in Trackr.GetStashed<WarehouseService>()
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
-    from show in Showr.Use(() => GetRequestShowr(client.Value))
-    from traceClient in Checkr.Trace("Client", () => client.Value.Id)
-    from trace in Checkr.Trace("Order Request", () => orderRequest)
+    from trace in TraceRequest(client, orderRequest)
     from placeOrder in Checkr.Act("Client Places Order",
         () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
+    from traceStock in TraceStock
     from reloadedStock in Checkr.Capture(() => service.GetProducts())
     from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
         () => orderRequest.OrderLines.Sum(a => a.Amount) > 0,
@@ -438,85 +435,61 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ------------------------------------------------------------
  Test:                    Example
  Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:30:1
- Original failing run:    19 executions
- Minimal failing case:    6 executions (after 21 shrinks)
- Seed:                    433870882
+ Original failing run:    20 executions
+ Minimal failing case:    6 executions (after 16 shrinks)
+ Seed:                    1764635658
  ------------------------------------------------------------
   Executed: Create Client
-   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
+   -  Pool: Create Client = ClientSim-2
+ ------------------------------------------------------------
+  Executed: Create Client
+   -  Pool: Create Client = ClientSim-3
+ ------------------------------------------------------------
+  Executed: Client Gets Products to Order
+   -  Pool: Client Action = ClientSim-3
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
-    { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: 100 }
-]
- ------------------------------------------------------------
-  Executed: Create Client
-   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
-   - Trace: warehouse = 
-[
-    { Name: "One", AmountInStock: 100 },
-    { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
-    { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: 100 }
+    { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
+   -  Pool: Client Action = ClientSim-2
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
-    { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: 100 }
+    { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
-  Executed: Client Gets Products to Order
-   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
+  Executed: Client Places Order
+   -  Pool: Client Action = ClientSim-2
+   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
+   - Trace: Order Request = { OrderLines: [ Three: 39 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 100 },
-    { Name: "Four", AmountInStock: 100 },
-    { Name: "Five", AmountInStock: 100 }
+    { Name: "Three", AmountInStock: 61 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 60 } ] }
-   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
-   - Trace: Order Request = { OrderLines: [ One: 2, Four: 32, Five: 60, Three: 47 ] }
+   -  Pool: Client Action = ClientSim-3
+   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
+   - Trace: Order Request = { OrderLines: [ Three: 92 ] }
    - Trace: warehouse = 
 [
-    { Name: "One", AmountInStock: 98 },
+    { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
-    { Name: "Three", AmountInStock: 53 },
-    { Name: "Four", AmountInStock: 68 },
-    { Name: "Five", AmountInStock: 40 }
-]
- ------------------------------------------------------------
-  Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 51 } ] }
-   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
-   - Trace: Order Request = { OrderLines: [ Four: 34, Five: 51, Two: 61, Three: 14 ] }
-   - Trace: warehouse = 
-[
-    { Name: "One", AmountInStock: 98 },
-    { Name: "Two", AmountInStock: 39 },
-    { Name: "Three", AmountInStock: 39 },
-    { Name: "Four", AmountInStock: 34 },
-    { Name: "Five", AmountInStock: -11 }
+    { Name: "Three", AmountInStock: -31 }
 ]
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
  ===============================================================
  Passed Expectations
- - No Stock Below Zero After Any Action: 18x
- - Stock Decreased After Order: 6x
+ - No Stock Below Zero After Any Action: 19x
+ - Stock Decreased After Order: 2x
  ------------------------------------------------------------
 ```
 ### Warehouse Step Four

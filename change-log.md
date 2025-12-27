@@ -26,3 +26,10 @@
   from: params (Func<bool> condition, CheckrOf<Case> checkr)[] scripts
   to:   params CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>[] options
 * Added Checkr.Option helper function that goes along the new Checkr.OneOfWhen argument.
+* Pool Redesign
+  * Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
+  * Moved the `Expect`'s from PoolElement<T> to `Trackr.PoolExpect`
+  * Moved the `ExpectForEach`'s from PoolElement<T> to `Trackr.PoolExpectEach`
+  * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectEachWhen`
+  * Unified `Pool.These` into `Trackr.PoolWhen`
+  * Added *PoolTraces* to report.

@@ -22,7 +22,7 @@ public class TheEditor
         from article in Pulse.Draw<Article>()
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
-        from value in Emit($"Assert.Equal(\"{traceArticle.Value}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
+        from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
         select cursor;
 
     private static readonly Flow<(int, int)> PoolTrace =

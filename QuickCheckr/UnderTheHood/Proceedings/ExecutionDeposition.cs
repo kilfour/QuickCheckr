@@ -27,6 +27,8 @@ public record ExecutionDeposition
             return false;
         if (!InputDepositions.SequenceEqual(other.InputDepositions))
             return false;
+        if (!PoolTraceDepositions.SequenceEqual(other.PoolTraceDepositions))
+            return false;
         if (!TraceDepositions.SequenceEqual(other.TraceDepositions))
             return false;
         if (!WarningDepositions.SequenceEqual(other.WarningDepositions))

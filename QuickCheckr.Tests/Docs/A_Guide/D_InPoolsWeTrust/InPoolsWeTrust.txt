@@ -1,23 +1,23 @@
  ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:144:1
- Original failing run:    3 executions
- Minimal failing case:    3 executions (after 1 shrink)
- Seed:                    1553195441
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:145:1
+ Original failing run:    10 executions
+ Minimal failing case:    3 executions (after 8 shrinks)
+ Seed:                    1444257086
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = 552234765
+   -  Pool: Store = Contact-5
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Store = Contact-6
+   - Input: Name = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Ringo Harrison"
-   -  Pool: Contact to update = 552234765
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "Ringo Harrison"
-   -  Pool: Name = 951783242
+   -  Pool: Contact to update = Contact-5
+   - Input: New Name = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 2x
+ - Count matches: 9x
  ------------------------------------------------------------

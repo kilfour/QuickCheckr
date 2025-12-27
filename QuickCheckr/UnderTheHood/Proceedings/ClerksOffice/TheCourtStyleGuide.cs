@@ -84,8 +84,8 @@ public static class The
             a => a with { Intersperse = Valve.Install() },
             Pulse.ToFlow(actionDeposition, input.ActionDepositions))
         from _4 in Pulse.TraceIf(input.Times > 1, () => $" ({input.Times} Times)")
-        from _5 in Pulse.ToFlow(inputDeposition, input.InputDepositions)
-        from _6 in Pulse.ToFlow(poolTraceDeposition, input.PoolTraceDepositions)
+        from _5 in Pulse.ToFlow(poolTraceDeposition, input.PoolTraceDepositions)
+        from _6 in Pulse.ToFlow(inputDeposition, input.InputDepositions)
         from _7 in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
         from _8 in Pulse.ToFlow(warningDeposition, input.WarningDepositions)
         select input;

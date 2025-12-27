@@ -36,7 +36,7 @@ public static partial class Trackr
                 select (t1.Key, t2.Key);
             var (id1, id2) = state.Memory.StoreVariable($"{key}",
                 () => Fuzzr.OneOf(combined).WithDefault((-1, -1))(state.FuzzrState).Value);
-            state.Memory.StorePoolTrace(key, () => $"( {id1}, {id2} )");
+            state.Memory.StorePoolTrace(key, () => $"( {typeof(T1).Name}-{id1}, {typeof(T2).Name}-{id2} )");
             var (result1, value1) = state.Memory.GetFromPool<T1>(id1);
             var (result2, value2) = state.Memory.GetFromPool<T2>(id2);
             if (result1 && result2) return CheckrResult.Some(state, checkr(value1!, value2!)(state).Value);

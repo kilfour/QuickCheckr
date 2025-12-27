@@ -1471,7 +1471,6 @@ private static readonly CheckrOf<Case> TheCheckr =
         Trackr.PoolWhen<CourseBy>(a => a.Count() < 5, CreateCourse),
         Trackr.PoolWhen<CourseBy>(a => a.Any(), UpdateCourseSkills),
         Trackr.PoolWhen<CoachBy>(a => a.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
-        // (() => coaches.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```
@@ -1481,7 +1480,6 @@ private static readonly CheckrOf<Case> CreateCoach =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Coach Name",
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-    from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", service.CreateCoachAsync(name))
     from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
     select Case.Closed;
@@ -1492,7 +1490,6 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => service.UpdateCoachSkillsAsync(coach.Value.Name, skills))
         select Case.Closed)
@@ -1504,7 +1501,6 @@ private static readonly CheckrOf<Case> CreateCourse =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Course Name",
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-    from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", service.CreateCourseAsync(name))
     from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
     select Case.Closed;
@@ -1515,7 +1511,6 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             service.UpdateCourseSkillsAsync(course.Value.Name, skills))
         select Case.Closed)
@@ -1537,23 +1532,21 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ------------------------------------------------------------
  Test:                    Example
  Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
- Original failing run:    11 executions
- Minimal failing case:    4 executions (after 12 shrinks)
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-1
+   -  Pool: Store Coach = CoachBy-2
  ------------------------------------------------------------
   Executed: Create Course
-   - Trace: Course Name = Course-2
+   -  Pool: Store Course = CourseBy-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-1
-   - Trace: Course Name = Course-2
  ------------------------------------------------------------
   Executed: Update Course Skills
+   -  Pool: Course to update = CourseBy-2
    - Input: Course Skills = [ _ ]
-   - Trace: Course Name = Course-2
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================

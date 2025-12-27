@@ -31,16 +31,18 @@ public class PoolPoolTraceDepositionsTests : DepositionTest
     }
 
     [Fact]
-    public void AboveTrace()
+    public void AboveInputs()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Something", "I Traced"))
+                    .AddInputDeposition(new InputDeposition("PropertyName", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Something", "I Traced"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   -  Pool: Something = I Traced", reader.NextLine());
+        Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
         Assert.Equal("   - Trace: Something = I Traced", reader.NextLine());
         EndOfContent(reader);
     }

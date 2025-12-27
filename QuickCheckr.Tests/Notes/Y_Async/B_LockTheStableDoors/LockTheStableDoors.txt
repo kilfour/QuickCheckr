@@ -1,23 +1,21 @@
  ------------------------------------------------------------
  Test:                    Example
  Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
- Original failing run:    11 executions
- Minimal failing case:    4 executions (after 12 shrinks)
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
-   - Trace: Coach Name = Coach-1
+   -  Pool: Store Coach = CoachBy-2
  ------------------------------------------------------------
   Executed: Create Course
-   - Trace: Course Name = Course-2
+   -  Pool: Store Course = CourseBy-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-1
-   - Trace: Course Name = Course-2
  ------------------------------------------------------------
   Executed: Update Course Skills
+   -  Pool: Course to update = CourseBy-2
    - Input: Course Skills = [ _ ]
-   - Trace: Course Name = Course-2
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================

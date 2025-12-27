@@ -1,15 +1,11 @@
 ## Current Version: 0.0.6 
 
 ### Ready for Changelog after review
-* Pool Redesign
-  * Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
-  * Moved the `Expect`'s from PoolElement<T> to `Trackr.PoolExpect`
-  * Moved the `ExpectForEach`'s from PoolElement<T> to `Trackr.PoolExpectEach`
-  * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectEachWhen`
-  * Unified `Pool.These` into `Trackr.PoolWhen`
-  * ?? Maybe move some to Checkr. instead of Trackr. or Poolr. ??
 
 ### Doing
+* Pool Redesign
+  * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
+    Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
 * Warehousing
   * Input: A targeted error rewrite (not warning) for the common misleading case
     When an eager Input throws OneOfEmptyOptionsException during evaluation, rethrow
@@ -18,8 +14,6 @@
   * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
 * QF FromEach 
 * play more pool
-  * Trackr.ToPool: needs to be in report maybe
-  * Also, in Warehouse step 3 client info would be nice
 * review evidence gathering
 
 ### Doc Current Focus 

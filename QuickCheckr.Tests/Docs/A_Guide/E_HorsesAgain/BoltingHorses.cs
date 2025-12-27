@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -70,9 +71,9 @@ A coach was assigned while suitable, then a course's required skills changed, in
     )]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(1073869613, 20.ExecutionsPerRun()));
+        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<BoltingHorses>(article, true);
+        WriteReport<BoltingHorses>(article, false);
         Verify(article);
     }
 
@@ -82,39 +83,37 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(5, article.Total().Traces());
+        Assert.Equal(4, article.Total().PoolTraces());
         Assert.Equal(6, article.Total().PassedExpectations());
-        Assert.Equal(18, article.ShrinkCount);
-        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Coach Name", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("Coach-2", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal(10, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Create Course", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Course Name", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("Course-1", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(21, article.ShrinkCount);
+        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Store Course", article.Execution(1).PoolTrace(1).Read().Label);
+        Assert.Equal("Course-2", article.Execution(1).PoolTrace(1).Read().Value);
+        Assert.Equal(5, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Create Coach", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Store Coach", article.Execution(2).PoolTrace(1).Read().Label);
+        Assert.Equal("Coach-2", article.Execution(2).PoolTrace(1).Read().Value);
         Assert.Equal(11, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Coach Name", article.Execution(3).Trace(1).Read().Label);
-        Assert.Equal("Coach-2", article.Execution(3).Trace(1).Read().Value);
-        Assert.Equal("Course Name", article.Execution(3).Trace(2).Read().Label);
-        Assert.Equal("Course-1", article.Execution(3).Trace(2).Read().Value);
-        Assert.Equal(15, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Assign Coach to Course", article.Execution(3).PoolTrace(1).Read().Label);
+        Assert.Equal("( Coach-2, Course-2 )", article.Execution(3).PoolTrace(1).Read().Value);
+        Assert.Equal(19, article.Execution(4).Read().ExecutionId);
         Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
         Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
-        Assert.Equal("Course Name", article.Execution(4).Trace(1).Read().Label);
-        Assert.Equal("Course-1", article.Execution(4).Trace(1).Read().Value);
-        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(14, article.PassedExpectation(1).Read().TimesPassed);
-        Assert.Equal("Coach Name is set", article.PassedExpectation(2).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(2).Read().TimesPassed);
-        Assert.Equal("Course Name Set", article.PassedExpectation(3).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(3).Read().TimesPassed);
-        Assert.Equal("Coach is assigned", article.PassedExpectation(4).Read().Label);
+        Assert.Equal("Course to Update Skills", article.Execution(4).PoolTrace(1).Read().Label);
+        Assert.Equal("Course-2", article.Execution(4).PoolTrace(1).Read().Value);
+        Assert.Equal("Course Name Set", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(2).Read().Label);
+        Assert.Equal(18, article.PassedExpectation(2).Read().TimesPassed);
+        Assert.Equal("Coach Name is set", article.PassedExpectation(3).Read().Label);
+        Assert.Equal(5, article.PassedExpectation(3).Read().TimesPassed);
+        Assert.Equal("Coach Skills Set", article.PassedExpectation(4).Read().Label);
         Assert.Equal(3, article.PassedExpectation(4).Read().TimesPassed);
-        Assert.Equal("Coach Skills Set", article.PassedExpectation(5).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(5).Read().TimesPassed);
+        Assert.Equal("Coach is assigned", article.PassedExpectation(5).Read().Label);
+        Assert.Equal(5, article.PassedExpectation(5).Read().TimesPassed);
         Assert.Equal("Course Required Skills Set", article.PassedExpectation(6).Read().Label);
         Assert.Equal(1, article.PassedExpectation(6).Read().TimesPassed);
     }
@@ -131,7 +130,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
     private static readonly CheckrOf<Case> CreateCoach =
         from name in Checkr.Input("Coach Name",
             from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-        from trace in Checkr.Trace("Coach Name", () => name)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
@@ -142,7 +140,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
         coach =>
             from skills in Checkr.Input("Coach Skills",
                 Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills)) // Update the Coach.
             from checkSkills in Checkr.Expect("Coach Skills Set",
@@ -154,7 +151,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
     private static readonly CheckrOf<Case> CreateCourse =
         from name in Checkr.Input("Course Name",
             from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-        from trace in Checkr.Trace("Course Name", () => name)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
@@ -164,7 +160,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
             from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
             from checkSkills in Checkr.Expect("Course Required Skills Set",
@@ -175,8 +170,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
     [CodeExample]
     private static readonly Func<Coach, Course, CheckrOf<Case>> AssignCoachToCourse =
         (coach, course) =>
-            from traceCoach in Checkr.Trace("Coach Name", () => coach.Name)
-            from traceCourse in Checkr.Trace("Course Name", () => course.Name)
             from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
             from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
             select Case.Closed;

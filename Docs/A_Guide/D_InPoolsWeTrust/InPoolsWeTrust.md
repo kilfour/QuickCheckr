@@ -84,7 +84,7 @@ public class Rolodex
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
                 // Store the Contact in the Pool.
-            from storeName in Trackr.ToPool("Name", new Contact(name))
+            from storeName in Trackr.ToPool("Store", new Contact(name))
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
         Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
@@ -101,22 +101,25 @@ public class Rolodex
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:144:1
- Original failing run:    3 executions
- Minimal failing case:    3 executions (after 1 shrink)
- Seed:                    1553195441
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:145:1
+ Original failing run:    10 executions
+ Minimal failing case:    3 executions (after 8 shrinks)
+ Seed:                    1444257086
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Store = Contact-5
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Store = Contact-6
+   - Input: Name = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
-   - Input: New Name = "Ringo Harrison"
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Name = "Ringo Harrison"
+   -  Pool: Contact to update = Contact-5
+   - Input: New Name = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 2x
+ - Count matches: 9x
  ------------------------------------------------------------
 ```

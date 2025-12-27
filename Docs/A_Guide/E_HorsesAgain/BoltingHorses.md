@@ -87,7 +87,6 @@ In this one we create a coach with a *semi* random name, verify that the propert
 private static readonly CheckrOf<Case> CreateCoach =
     from name in Checkr.Input("Coach Name",
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-    from trace in Checkr.Trace("Coach Name", () => name)
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
     from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
     from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
@@ -100,7 +99,6 @@ private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkil
     coach =>
         from skills in Checkr.Input("Coach Skills",
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
         from updateSkills in Checkr.Act("Update Coach Skills",
             () => coach.Value.UpdateSkills(skills)) // Update the Coach.
         from checkSkills in Checkr.Expect("Coach Skills Set",
@@ -114,7 +112,6 @@ Same pattern as the *Create Coach Checkr*.
 private static readonly CheckrOf<Case> CreateCourse =
     from name in Checkr.Input("Course Name",
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-    from trace in Checkr.Trace("Course Name", () => name)
     from course in Checkr.Act("Create Course", () => new Course(name))
     from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
     from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
@@ -126,7 +123,6 @@ And again, same pattern as the *Update Coach Skills Checkr*.
 private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
     course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-        from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
         from updateSkills in Checkr.Act("Update Course Skills",
             () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
         from checkSkills in Checkr.Expect("Course Required Skills Set",
@@ -148,33 +144,32 @@ private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:73:1
- Original failing run:    15 executions
- Minimal failing case:    4 executions (after 18 shrinks)
- Seed:                    1073869613
- ------------------------------------------------------------
-  Executed: Create Coach
-   - Trace: Coach Name = Coach-2
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:74:1
+ Original failing run:    19 executions
+ Minimal failing case:    4 executions (after 21 shrinks)
+ Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   - Trace: Course Name = Course-1
+   -  Pool: Store Course = Course-2
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - Trace: Coach Name = Coach-2
-   - Trace: Course Name = Course-1
+   -  Pool: Assign Coach to Course = ( Coach-2, Course-2 )
  ------------------------------------------------------------
   Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-2
    - Input: Course Skills = [ _ ]
-   - Trace: Course Name = Course-1
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Assigned Coach Must Be Suitable: 14x
+ - Course Name Set: 5x
+ - Assigned Coach Must Be Suitable: 18x
  - Coach Name is set: 5x
- - Course Name Set: 1x
- - Coach is assigned: 3x
- - Coach Skills Set: 1x
+ - Coach Skills Set: 3x
+ - Coach is assigned: 5x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```

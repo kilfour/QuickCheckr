@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -141,9 +142,9 @@ For this reason the following method returns a `Checkr.Option`, in order to make
     [DocCodeFile("InPoolsWeTrust.txt", "text")]
     public void AllTogetherNow()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(1553195441, 10.ExecutionsPerRun()));
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(1444257086, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<InPoolsWeTrust>(article, true);
+        WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);
     }
 
@@ -167,7 +168,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                         // Store the Contact in the Pool.
-                    from storeName in Trackr.ToPool("Name", new Contact(name))
+                    from storeName in Trackr.ToPool("Store", new Contact(name))
                     select Case.Closed),
                 // 2. Update a (Contact-) name in the Rolodex
                 Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
@@ -187,20 +188,26 @@ For this reason the following method returns a `Checkr.Option`, in order to make
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(3, article.Total().PoolTraces());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(1, article.ShrinkCount);
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(8, article.ShrinkCount);
+        Assert.Equal(7, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Update", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("New Name", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal("\"Ringo Harrison\"", article.Execution(2).Input(1).Read().Value);
-        Assert.Equal(3, article.Execution(3).Read().ExecutionId);
-        Assert.Equal("Add", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Name", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal("\"Ringo Harrison\"", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Store", article.Execution(1).PoolTrace(1).Read().Label);
+        Assert.Equal("Contact-5", article.Execution(1).PoolTrace(1).Read().Value);
+        Assert.Equal(9, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Name", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("\"Paul Harrison\"", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Store", article.Execution(2).PoolTrace(1).Read().Label);
+        Assert.Equal("Contact-6", article.Execution(2).PoolTrace(1).Read().Value);
+        Assert.Equal(10, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Update", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("New Name", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal("\"Paul Harrison\"", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Contact to update", article.Execution(3).PoolTrace(1).Read().Label);
+        Assert.Equal("Contact-5", article.Execution(3).PoolTrace(1).Read().Value);
         Assert.Equal("Count matches", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
-
+        Assert.Equal(9, article.PassedExpectation(1).Read().TimesPassed);
     }
 }
