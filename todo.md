@@ -1,5 +1,6 @@
 ## Current Version: 0.0.6 
-
+!! update QuickFuzzr to 0.1.8
+ 
 ### Ready for Changelog after review
 
 ### Doing
@@ -12,7 +13,6 @@
     Ask user if it is dependent on state
     !! needs more investigation before deciding !!
   * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
-* QF FromEach 
 * play more pool
 * review evidence gathering
 

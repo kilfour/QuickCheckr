@@ -78,7 +78,7 @@ Less confusing I reckon, but ... it's YAL (yet another lamda).
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
         from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
             .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
-        from lines in QFuzzr.FromEach(products, OrderRequestOrderLineFuzzr)
+        from lines in Fuzzr.FromEach(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
