@@ -1,5 +1,6 @@
 ## Current Version: 0.0.6 
 * !! update QuickFuzzr to 0.1.8
+* Consistency check for PoolWhen arg order
  
 ### Ready for Changelog after review
 
