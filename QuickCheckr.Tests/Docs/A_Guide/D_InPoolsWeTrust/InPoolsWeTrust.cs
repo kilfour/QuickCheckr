@@ -119,11 +119,11 @@ Therefore, the operations are defined on the wrapper object.
     [Fact]
     [DocHeader("Conditionally", 1)]
     [DocContent(
-@"Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+@$"Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
 Which means, you almost always want to execute this conditionally,
 and most likely it will be part of a random sequence of executions,
 as you will need another execution to put things into the Pool.  
-For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `OneOfIf` Checkr.
+For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `{nameof(Checkr.OneOfWhen)}` Checkr.
 ")]
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
     public void Conditionally() =>
