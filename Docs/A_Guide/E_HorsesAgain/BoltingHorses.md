@@ -139,7 +139,7 @@ And finally here's the system invariant.
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
+    from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
         coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
         coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
     select Case.Closed;
@@ -148,7 +148,7 @@ private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:70:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:73:1
  Original failing run:    15 executions
  Minimal failing case:    4 executions (after 18 shrinks)
  Seed:                    1073869613

@@ -37,7 +37,7 @@ Now if we run this we might get something like this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:67:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:66:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
@@ -67,15 +67,15 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:113:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
  Original failing run:    2 executions
- Seed:                    1362685676
+ Seed:                    1305046546
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 2
+   - Input: Amount = 5
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 1
+   - Input: Amount = 4
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================

@@ -17,7 +17,7 @@ QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:43:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:44:1
  Original failing run:    3 executions
  Seed:                    1044984793
  ------------------------------------------------------------
@@ -48,7 +48,7 @@ private static CheckrConfig ConfigureExecutions(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:88:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:89:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1044984793
@@ -72,7 +72,7 @@ private static CheckrConfig ConfigureInputs(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:123:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:124:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
@@ -110,7 +110,7 @@ Includes all possible ShrinkModes.
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:181:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:182:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1044984793

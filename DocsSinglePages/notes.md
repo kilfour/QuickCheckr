@@ -215,7 +215,7 @@ var check =
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1262413900
+ Seed:                    922552796
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
@@ -464,11 +464,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    854072441
+ Seed:                    1203043678
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 3 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 71 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -620,12 +620,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    783214456
+ Seed:                    748184687
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-1^2"
-   - Trace: Original = - 1 ^ (1 / 3 / 1) / (1 * 3 * 1 * 3 - 1 / 3 + 3 + 1 / 2) + (3 * 3 + 1 * 2 / 1 * 2 - 1 * 2) / 3 ^ 2 * - 2 ^ 2 / (2 / 3 + 3 * 2 / 1 / 3 + 2) - (3 * 3) ^ 1 ^ 3
-   - Trace: Compare = Golden: -10,129810828440966 /= SUT: NaN
+   - Input: Expression = "-2^2"
+   - Trace: Original = (- 2 ^ 2 / 3 * 3 * 1 + 2) * - - 1 / (1 / 3) * 2 - - - 1 * - 2 ^ 3 / 1 + - (2 * 2 * 1 + 1 / 1 * 1 - 3 * 2 / 3 * 2 - 2) ^ 1 * - 1
+   - Trace: Compare = Golden: -5 /= SUT: 43
  ================================
   !! Expectation Failed: Match
  ================================
@@ -1215,7 +1215,7 @@ public class TheFuzzr
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\V_Scheduling\Scheduling.cs:25:1
+ Location:                Notes\T_Examples\V_Scheduling\Scheduling.cs:23:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    511619818
@@ -1246,7 +1246,7 @@ public class ContactBook
 #### The Checkr
 ```csharp
     from contactBook in Trackr.Stashed(() => new ContactBook())
-    from names in Trackr.PoolFor<string>()
+    from stringPool in Trackr.PoolFor<string>()
     from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
     from operations in Checkr.OneOfWhen(
             Checkr.Option(() => counter == 1, // add AAA
@@ -1271,7 +1271,6 @@ public class ContactBook
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed))
-    from tracePool in Checkr.Trace("Pool", () => names)
     from traceSut in Checkr.Trace("Sut", () => contactBook)
     from count in Trackr.PoolExpect<string>("Count matches",
         a => a.Count() == contactBook.Contacts.Count)
@@ -1283,30 +1282,26 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    2052315962
+ Seed:                    320847276
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
    - Input: Name = AAA
-   - Trace: Pool = { Values: [ "AAA" ] }
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    - Input: Counter = 2
    - Input: Name = BBB
-   - Trace: Pool = { Values: [ "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 3
    - Input: Name = AAA
-   - Trace: Pool = { Values: [ "BBB", "AAA" ] }
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 4
    - Input: Name = BBB
-   - Trace: Pool = { Values: [ "BBB", "AAA", "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ========================================
   !! Expectation Failed: Count matches
@@ -1331,26 +1326,23 @@ So now, **Execution Id Matters**.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestShrinking
- Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:49:1
+ Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1117291969
+ Seed:                    388851863
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
-   - Trace: Pool = { Values: [ "AAA" ] }
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    - Input: Counter = 2
    - Input: Name = "BBB"
-   - Trace: Pool = { Values: [ "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 4
    - Input: Name = "BBB"
-   - Trace: Pool = { Values: [ "BBB", "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ========================================
   !! Expectation Failed: Count matches
@@ -1381,7 +1373,7 @@ public class ContactBook
 ```
 ```csharp
     from contactBook in Trackr.Stashed(() => new ContactBook())
-    from names in Trackr.PoolFor<string>()
+    from stringPool in Trackr.PoolFor<string>()
     from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
     from operations in Checkr.OneOfWhen(
             Checkr.Option(() => counter == 1, // add AAA
@@ -1411,10 +1403,10 @@ public class ContactBook
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:21:1
+ Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    944215577
+ Seed:                    81763066
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
@@ -1429,8 +1421,8 @@ public class ContactBook
  ===========================================================================
   !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
    at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 70
-   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 56
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 69
+   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 55
    at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 24
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40

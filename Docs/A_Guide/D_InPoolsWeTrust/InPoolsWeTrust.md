@@ -76,7 +76,7 @@ public class Rolodex
 ```csharp
     from contactBook in Trackr.Stashed(() => new Rolodex())
     // Create a Pool.
-    from names in Trackr.PoolFor<Contact>()
+    from createContactPool in Trackr.PoolFor<Contact>()
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
@@ -101,7 +101,7 @@ public class Rolodex
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:144:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 1 shrink)
  Seed:                    1553195441

@@ -117,7 +117,7 @@ public sealed class Ledger
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\B_OverFlowing\OverFlowing.cs:23:1
+ Location:                Experimental\B_OverFlowing\OverFlowing.cs:24:1
  Original failing run:    10 executions
  Minimal failing case:    2 executions (after 8 shrinks)
  Seed:                    1990927690
@@ -277,7 +277,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:46:1
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:47:1
  Original failing run:    12 executions
  Minimal failing case:    3 executions (after 14 shrinks)
  Seed:                    1344312712
@@ -476,7 +476,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
  Seed:                    433870882
  ------------------------------------------------------------
   Executed: Create Client
-   - Trace: Client = 5a29a836-3533-40d3-8d75-b9263f800f0b
+   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -487,7 +487,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ]
  ------------------------------------------------------------
   Executed: Create Client
-   - Trace: Client = 940e02e8-5476-440a-b958-03a4899fb773
+   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -498,7 +498,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   - Trace: Client = 5a29a836-3533-40d3-8d75-b9263f800f0b
+   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -509,7 +509,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   - Trace: Client = 940e02e8-5476-440a-b958-03a4899fb773
+   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -521,7 +521,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
  ------------------------------------------------------------
   Executed: Client Places Order
    - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 60 } ] }
-   - Trace: Client = 940e02e8-5476-440a-b958-03a4899fb773
+   - Trace: Client = 4b164c99-6c38-41b4-90f2-d573c7d40efb
    - Trace: Order Request = { OrderLines: [ One: 2, Four: 32, Five: 60, Three: 47 ] }
    - Trace: warehouse = 
 [
@@ -534,7 +534,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
  ------------------------------------------------------------
   Executed: Client Places Order
    - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 51 } ] }
-   - Trace: Client = 5a29a836-3533-40d3-8d75-b9263f800f0b
+   - Trace: Client = 91f0ea02-bf9c-4b75-a433-18247b2f4ce7
    - Trace: Order Request = { OrderLines: [ Four: 34, Five: 51, Two: 61, Three: 14 ] }
    - Trace: warehouse = 
 [

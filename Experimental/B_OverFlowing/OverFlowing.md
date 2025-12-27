@@ -31,7 +31,7 @@ public sealed class Ledger
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\B_OverFlowing\OverFlowing.cs:23:1
+ Location:                Experimental\B_OverFlowing\OverFlowing.cs:24:1
  Original failing run:    10 executions
  Minimal failing case:    2 executions (after 8 shrinks)
  Seed:                    1990927690

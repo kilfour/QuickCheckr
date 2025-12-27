@@ -239,7 +239,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    RunBugHouseCheckr
- Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:63:1
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:65:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642
@@ -251,8 +251,8 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
  ===========================================================================
   !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
    at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 26
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 54
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 28
+   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 56
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
  ===========================================================================
@@ -514,7 +514,7 @@ public class Rolodex
 ```csharp
     from contactBook in Trackr.Stashed(() => new Rolodex())
     // Create a Pool.
-    from names in Trackr.PoolFor<Contact>()
+    from createContactPool in Trackr.PoolFor<Contact>()
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
@@ -539,7 +539,7 @@ public class Rolodex
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:144:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 1 shrink)
  Seed:                    1553195441
@@ -699,7 +699,7 @@ And finally here's the system invariant.
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
+    from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
         coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
         coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
     select Case.Closed;
@@ -708,7 +708,7 @@ private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:70:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:73:1
  Original failing run:    15 executions
  Minimal failing case:    4 executions (after 18 shrinks)
  Seed:                    1073869613
@@ -892,7 +892,7 @@ QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:43:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:44:1
  Original failing run:    3 executions
  Seed:                    1044984793
  ------------------------------------------------------------
@@ -923,7 +923,7 @@ private static CheckrConfig ConfigureExecutions(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestExecutions
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:88:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:89:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1044984793
@@ -947,7 +947,7 @@ private static CheckrConfig ConfigureInputs(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:123:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:124:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
@@ -985,7 +985,7 @@ Includes all possible ShrinkModes.
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:181:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:182:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1044984793
@@ -1020,7 +1020,7 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:46:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:47:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1044,7 +1044,7 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestTrace
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:80:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:82:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1069,7 +1069,7 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestWarning
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:116:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:119:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1090,7 +1090,7 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:149:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:153:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1146,7 +1146,7 @@ Now if we run this we might get something like this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:67:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:66:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
@@ -1176,15 +1176,15 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationShrinking.cs:113:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
  Original failing run:    2 executions
- Seed:                    1362685676
+ Seed:                    1305046546
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 2
+   - Input: Amount = 5
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 1
+   - Input: Amount = 4
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
@@ -1440,7 +1440,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:38:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:40:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -1463,14 +1463,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:79:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    221913277
+ Seed:                    1589181562
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 0, 3, 1 ]
+   - Trace: List = [ 2, 4, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1490,14 +1490,14 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:102:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:104:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1561553014
+ Seed:                    1384306292
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 3, IntTwo: 2, IntThree: 1 }
+   - Trace: Original = { IntOne: 2, IntTwo: 2, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================
@@ -1604,7 +1604,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    1839279314
+ Seed:                    1218971389
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

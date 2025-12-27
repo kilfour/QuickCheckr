@@ -189,16 +189,6 @@ An optional boolean parameter to the `GatherEvidence` method allows one to overr
 ```
 ## When Things Go Wrong
 ### Everything Means Less Than Null
-#### Trackr Get Pool
-```csharp
-    from one in Trackr.GetPool<int>()
-    select Case.Closed;
-```
-  Throws:  
-```text
-A retrieval attempt was made for a 'Pool' of 'System.Int32', but none was found.
-Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
-```
 #### Trackr To Pool
 ```csharp
     from one in Trackr.ToPool("answer", 42)
