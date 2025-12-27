@@ -117,7 +117,7 @@ Therefore, the operations are defined on the wrapper object.
 Which means, you almost always want to execute this conditionally,
 and most likely it will be part of a random sequence of executions,
 as you will need another execution to put things into the Pool.  
-For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
+For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `OneOfIf` Checkr.
 ")]
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
     public void Conditionally() =>
