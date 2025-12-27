@@ -311,7 +311,7 @@ This means:
 And together, they let QuickCheckr explore both *pure input variation* and *multi-step behaviour*,
 which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
-//   
+  
 
 [InPoolsWeTrust]: #in-pools-we-trust
 ### Choosing The Next Move
