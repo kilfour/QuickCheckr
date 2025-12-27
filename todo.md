@@ -79,9 +79,12 @@ Stabilize Pools
   Should be a lot easier than before
   
 ## Refactoring Targets 
+* Loose the lazy IEnumerable in shrinking (yield)
+
+### Already Considered
+> Looked at these and not deemed needed (now). Just keeping this list in order to avoid me doing the same thing twice.
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
   * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look 
-* Loose the lazy IEnumerable in shrinking (yield)
 * DeskOfficer seems a bit wastefull with all those lists
 * Refactoring: simplify casefile compile
   * meh, looked at it. It's annoying occasionally, if a new transformation is needed, but fine for now.
