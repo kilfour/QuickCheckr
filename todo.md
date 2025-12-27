@@ -16,7 +16,6 @@
   * Also, in Warehouse step 3 client info would be nice
   * TODO after redesign:
     * remove Pool<T> 
-    * remove TrackrPoolThese.cs
 * Warehousing
 * QuickPulse.Show config could use another look 
 * Input: A targeted error rewrite (not warning) for the common misleading case
