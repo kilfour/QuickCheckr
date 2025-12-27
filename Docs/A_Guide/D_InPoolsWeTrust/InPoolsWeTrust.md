@@ -54,7 +54,7 @@ as you will need another execution to put things into the Pool.
 For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
   
 ```csharp
-pool.When(a => a.Any(), "A Random Contact",
+Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
     contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
 ## Bringing it all back home
@@ -80,21 +80,21 @@ public class Rolodex
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
-        names.When(a => a.Count() < 10,
+        Trackr.PoolWhen<Contact>(a => a.Count() < 10,
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
                 // Store the Contact in the Pool.
             from storeName in Trackr.ToPool("Name", new Contact(name))
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
-        names.When(a => a.Any(), // <= Can not pick from an empty selection.
+        Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
             "Contact to update", contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
                 from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
                 from updatePool in contact.Replace(new Contact(newName))
                 select Case.Closed))
-    from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
+    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 ### The Report

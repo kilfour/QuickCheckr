@@ -166,25 +166,25 @@ return
     from clients in Trackr.PoolFor<TestClientProxy>()
     from _ in Checkr.OneOfWhen(
         // 1) Register
-        clients.When(a => a.Count() < 10,
+        Trackr.PoolWhen<TestClientProxy>(a => a.Count() < 10,
             from register in Checkr.Act("Register", broadcaster.Register)
             from client in Trackr.ToPool("Client", factory.LastClient)
             from clientAdded in Checkr.Expect("Client is added to collection",
                 () => broadcaster.HasClient(client))
             select Case.Closed),
         // 2) Remove on fault
-        clients.When(a => a.Any(), "Faulty Client",
+        Trackr.PoolWhen<TestClientProxy>(a => a.Any(), "Faulty Client",
             faulty =>
             from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
             from clientRemoved in Checkr.Expect("Faulty client is removed", () =>
                 !broadcaster.HasClient(faulty.Value))
             select Case.Closed),
         // 3) Start broadcaster
-        (() => !broadcaster.Broadcasting,
+        Checkr.Option(() => !broadcaster.Broadcasting,
             from start in Taskr.Start("start", ct => Task.Run(() => broadcaster.Broadcast(new Notification()), ct))
             select Case.Closed),
         // 4) Stop broadcast
-        (() => broadcaster.Broadcasting,
+        Checkr.Option(() => broadcaster.Broadcasting,
             from stop in Checkr.Act("stop",
                 () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
             select Case.Closed))
@@ -251,11 +251,11 @@ from service in Trackr.Stashed(GetWarehouseService)
 from client in Trackr.Stashed(() => new ClientSim())
 from show in Showr.Use(() => GetShowr(client))
 from ops in Checkr.OneOfWhen(
-    (() => client.ProductsToOrder.Length <= 0,
+    Checkr.Option(() => client.ProductsToOrder.Length <= 0,
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.ProductsToOrder = service.GetProducts())
         select Case.Closed),
-    (() => client.ProductsToOrder.Length > 0,
+    Checkr.Option(() => client.ProductsToOrder.Length > 0,
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
         from trace in Checkr.Trace("Order Request", () => orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
@@ -378,11 +378,11 @@ from service in Trackr.Stashed(GetWarehouseService)
 from client in Trackr.Stashed(() => new ClientSim())
 from show in Showr.Use(() => GetShowr(client))
 from ops in Checkr.OneOfWhen(
-    (() => client.ProductsToOrder.Length <= 0,
+    Checkr.Option(() => client.ProductsToOrder.Length <= 0,
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.ProductsToOrder = service.GetProducts())
         select Case.Closed),
-    (() => client.ProductsToOrder.Length > 0,
+    Checkr.Option(() => client.ProductsToOrder.Length > 0,
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
         from trace in Checkr.Trace("Order Request", () => orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
@@ -417,8 +417,8 @@ private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(GetWarehouseService)
     from clients in Trackr.PoolFor<ClientSim>()
     from ops in Checkr.OneOfWhen(
-        clients.When(a => a.Count() < 3, LogOn),
-        clients.When(a => a.Any(), "Client Action", client => ClientTakesAction(client)))
+        Trackr.PoolWhen<ClientSim>(a => a.Count() < 3, LogOn),
+        Trackr.PoolWhen<ClientSim>(a => a.Any(), "Client Action", client => ClientTakesAction(client)))
     from showStock in Showr.Use(GetShowr)
     from traceStock in Checkr.Trace("warehouse", () => service.ProductsForSale)
     from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
@@ -434,15 +434,15 @@ private static readonly CheckrOf<Case> LogOn =
 ```
 ```csharp
 private static CheckrOf<Case> ClientTakesAction(PoolElement<ClientSim> client) =>
-    from service in Trackr.Stashed<WarehouseService>()
+    from service in Trackr.GetStashed<WarehouseService>()
     from ops in Checkr.OneOfWhen("Client Actions",
-        (() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
-        (() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
+        Checkr.Option(() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
+        Checkr.Option(() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
     select Case.Closed;
 ```
 ```csharp
 private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
-    from service in Trackr.Stashed<WarehouseService>()
+    from service in Trackr.GetStashed<WarehouseService>()
     from traceClient in Checkr.Trace("Client", () => client.Value.Id)
     from getProducts in Checkr.Act("Client Gets Products to Order",
         () => client.Value.ProductsToOrder = service.GetProducts())
@@ -450,7 +450,7 @@ private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
 ```
 ```csharp
 private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
-    from service in Trackr.Stashed<WarehouseService>()
+    from service in Trackr.GetStashed<WarehouseService>()
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
     from show in Showr.Use(() => GetRequestShowr(client.Value))
     from traceClient in Checkr.Trace("Client", () => client.Value.Id)
@@ -561,8 +561,8 @@ private static readonly CheckrOf<Case> TheCheckr =
     from client in Trackr.Stashed(() => new ClientSim())
     from show in Showr.Use(() => GetShowr(client))
     from ops in Checkr.OneOfWhen(
-        (() => true, GetProductInfo),
-        (() => client.ProductsToOrder.Length > 0, PlaceOrder))
+        Checkr.Option(() => true, GetProductInfo),
+        Checkr.Option(() => client.ProductsToOrder.Length > 0, PlaceOrder))
     from traceStock in Checkr.Trace("warehouse",
         () => service.ProductsForSale)
     from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
@@ -571,16 +571,16 @@ private static readonly CheckrOf<Case> TheCheckr =
 ```
 ```csharp
 private static readonly CheckrOf<Case> GetProductInfo =
-    from service in Trackr.Stashed<WarehouseService>()
-    from client in Trackr.Stashed<ClientSim>()
+    from service in Trackr.GetStashed<WarehouseService>()
+    from client in Trackr.GetStashed<ClientSim>()
     from getProducts in Checkr.Act("Client Gets Products to Order",
         () => client.ProductsToOrder = service.GetProducts())
     select Case.Closed;
 ```
 ```csharp
 private static readonly CheckrOf<Case> PlaceOrder =
-    from service in Trackr.Stashed<WarehouseService>()
-    from client in Trackr.Stashed<ClientSim>()
+    from service in Trackr.GetStashed<WarehouseService>()
+    from client in Trackr.GetStashed<ClientSim>()
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
     from trace in Checkr.Trace("Order Request", () => orderRequest)
     from reloadedStockBefore in Checkr.Capture(() => service.GetProducts())

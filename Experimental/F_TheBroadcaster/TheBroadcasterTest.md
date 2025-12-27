@@ -8,25 +8,25 @@ return
     from clients in Trackr.PoolFor<TestClientProxy>()
     from _ in Checkr.OneOfWhen(
         // 1) Register
-        clients.When(a => a.Count() < 10,
+        Trackr.PoolWhen<TestClientProxy>(a => a.Count() < 10,
             from register in Checkr.Act("Register", broadcaster.Register)
             from client in Trackr.ToPool("Client", factory.LastClient)
             from clientAdded in Checkr.Expect("Client is added to collection",
                 () => broadcaster.HasClient(client))
             select Case.Closed),
         // 2) Remove on fault
-        clients.When(a => a.Any(), "Faulty Client",
+        Trackr.PoolWhen<TestClientProxy>(a => a.Any(), "Faulty Client",
             faulty =>
             from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
             from clientRemoved in Checkr.Expect("Faulty client is removed", () =>
                 !broadcaster.HasClient(faulty.Value))
             select Case.Closed),
         // 3) Start broadcaster
-        (() => !broadcaster.Broadcasting,
+        Checkr.Option(() => !broadcaster.Broadcasting,
             from start in Taskr.Start("start", ct => Task.Run(() => broadcaster.Broadcast(new Notification()), ct))
             select Case.Closed),
         // 4) Stop broadcast
-        (() => broadcaster.Broadcasting,
+        Checkr.Option(() => broadcaster.Broadcasting,
             from stop in Checkr.Act("stop",
                 () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
             select Case.Closed))

@@ -1249,31 +1249,31 @@ public class ContactBook
     from names in Trackr.PoolFor<string>()
     from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
     from operations in Checkr.OneOfWhen(
-            (() => counter == 1, // add AAA
+            Checkr.Option(() => counter == 1, // add AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed),
-            (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                 from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
                     from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
                     from update in nameToUpdate.Replace(newName)
                     select Case.Closed)
                 select Case.Closed),
-            (() => counter == 3, // add a new AAA
+            Checkr.Option(() => counter == 3, // add a new AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed),
-            (() => counter == 4, // add BBB, initial run fails here
+            Checkr.Option(() => counter == 4, // add BBB, initial run fails here
                 from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed))
     from tracePool in Checkr.Trace("Pool", () => names)
     from traceSut in Checkr.Trace("Sut", () => contactBook)
-    from count in names.Expect("Count matches",
+    from count in Trackr.PoolExpect<string>("Count matches",
         a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
@@ -1384,24 +1384,24 @@ public class ContactBook
     from names in Trackr.PoolFor<string>()
     from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
     from operations in Checkr.OneOfWhen(
-            (() => counter == 1, // add AAA
+            Checkr.Option(() => counter == 1, // add AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed),
-            (() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                 from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
                     from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
                     from update in nameToUpdate.Replace(newName)
                     select Case.Closed)
                 select Case.Closed),
-            (() => counter == 3, // add a new AAA
+            Checkr.Option(() => counter == 3, // add a new AAA
                 from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
                 select Case.Closed),
-            (() => counter == 4, // add BBB
+            Checkr.Option(() => counter == 4, // add BBB
                 from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                 from act in Checkr.Act("Add", () => contactBook.Add(name))
                 from storeName in Trackr.ToPool("Name", name)
@@ -1474,12 +1474,11 @@ private static readonly CheckrOf<Case> TheCheckr =
     from courses in Trackr.PoolFor<CourseBy>()
     from dbCourses in Checkr.Capture(service.GetCoursesAsync())
     from operations in Checkr.OneOfWhen(
-        coaches.When(a => a.Count() < 10, CreateCoach),
-        coaches.When(a => a.Any(), UpdateCoachSkills),
-        courses.When(a => a.Count() < 5, CreateCourse),
-        courses.When(a => a.Any(), UpdateCourseSkills),
-        courses.When(a => a.Any(), UpdateCourseSkills),
-        coaches.When(a => a.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+        Trackr.PoolWhen<CoachBy>(a => a.Count() < 10, CreateCoach),
+        Trackr.PoolWhen<CoachBy>(a => a.Any(), UpdateCoachSkills),
+        Trackr.PoolWhen<CourseBy>(a => a.Count() < 5, CreateCourse),
+        Trackr.PoolWhen<CourseBy>(a => a.Any(), UpdateCourseSkills),
+        Trackr.PoolWhen<CoachBy>(a => a.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
         // (() => coaches.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
@@ -1487,7 +1486,7 @@ private static readonly CheckrOf<Case> TheCheckr =
 **Create Coach Checkr:**  
 ```csharp
 private static readonly CheckrOf<Case> CreateCoach =
-    from service in Trackr.Stashed<InMemoryCoachCourseService>()
+    from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Coach Name",
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
     from trace in Checkr.Trace("Coach Name", () => name)
@@ -1498,7 +1497,7 @@ private static readonly CheckrOf<Case> CreateCoach =
 **Update Coach Skills Checkr:**  
 ```csharp
 private static readonly CheckrOf<Case> UpdateCoachSkills =
-    from service in Trackr.Stashed<InMemoryCoachCourseService>()
+    from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
         from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
@@ -1510,7 +1509,7 @@ private static readonly CheckrOf<Case> UpdateCoachSkills =
 **Create Course Checkr:**  
 ```csharp
 private static readonly CheckrOf<Case> CreateCourse =
-    from service in Trackr.Stashed<InMemoryCoachCourseService>()
+    from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Course Name",
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
     from trace in Checkr.Trace("Course Name", () => name)
@@ -1521,7 +1520,7 @@ private static readonly CheckrOf<Case> CreateCourse =
 **Update Course Skills Checkr:**  
 ```csharp
 private static readonly CheckrOf<Case> UpdateCourseSkills =
-    from service in Trackr.Stashed<InMemoryCoachCourseService>()
+    from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
@@ -1533,7 +1532,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
 **Assigned Coaches Must Be Suitable Checkr:**  
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from service in Trackr.Stashed<InMemoryCoachCourseService>()
+    from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from coaches in Checkr.Capture(service.GetCoachesAsync())
     from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
         () => coaches.Any(coach => coach.AssignedCourses.Any()),
@@ -1546,8 +1545,8 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ------------------------------------------------------------
  Test:                    Example
  Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
- Original failing run:    13 executions
- Minimal failing case:    4 executions (after 16 shrinks)
+ Original failing run:    11 executions
+ Minimal failing case:    4 executions (after 12 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
@@ -1567,6 +1566,6 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
  Passed Expectations
- - Assigned Coaches Must Be Suitable: 7x
+ - Assigned Coaches Must Be Suitable: 5x
  ------------------------------------------------------------
 ```

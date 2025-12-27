@@ -492,7 +492,7 @@ as you will need another execution to put things into the Pool.
 For this reason the following method returns a tuple of a boolean and a Checkr, in order to make it fit neatly into a `OneOfIf` Checkr.
   
 ```csharp
-pool.When(a => a.Any(), "A Random Contact",
+Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
     contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
 #### Bringing it all back home
@@ -518,21 +518,21 @@ public class Rolodex
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
-        names.When(a => a.Count() < 10,
+        Trackr.PoolWhen<Contact>(a => a.Count() < 10,
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
                 // Store the Contact in the Pool.
             from storeName in Trackr.ToPool("Name", new Contact(name))
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
-        names.When(a => a.Any(), // <= Can not pick from an empty selection.
+        Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
             "Contact to update", contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
                 from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
                 from updatePool in contact.Replace(new Contact(newName))
                 select Case.Closed))
-    from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
+    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 ##### The Report
@@ -628,18 +628,17 @@ public static readonly CheckrOf<Case> TheCheckr =
     from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
-        coaches.When(a => a.Count() < 10, CreateCoach),
+        Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
         // Maybe update existing coaches. Pick a random coach from the pool.
-        coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
+        Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
         // Create up to 5 courses.
-        courses.When(a => a.Count() < 5, CreateCourse),
+        Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
-        courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+        Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
-        Pool.These(coaches, courses).When("Assign Coach to Course",
-            (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+        Trackr.PoolWhen("Assign Coach to Course", (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
-    from invariant in AssignedCoachesMustBeSuitable(coaches)
+    from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```
 **Create Coach Checkr:**  
@@ -699,8 +698,8 @@ private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSk
 And finally here's the system invariant.  
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
-private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches) =>
-    from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
+private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
+    from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
         coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
         coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
     select Case.Closed;

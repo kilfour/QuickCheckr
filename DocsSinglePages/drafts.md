@@ -25,13 +25,13 @@ public class ContactBook
     from names in Trackr.PoolFor<string>()
     from operations in Checkr.OneOfWhen(
         // Add a Contact
-        names.When(a => a.Count() < 10,
+        Trackr.PoolWhen<string>(a => a.Count() < 10,
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
             from storeName in Trackr.ToPool("Name", name)
             select Case.Closed),
         // Update a Contact
-        names.When(a => a.Any(),
+        Trackr.PoolWhen<string>(a => a.Any(),
             from newName in Checkr.Input("New Name", NameFuzzr)
             from pool in Trackr.OneOfPool<string>("Name to update",
                 nameToUpdate =>
@@ -40,7 +40,7 @@ public class ContactBook
                     select Case.Closed)
             select Case.Closed))
         // Contrived Expectation, ... it's only a model.
-    from count in names.Expect("Count matches",
+    from count in Trackr.PoolExpect<string>("Count matches",
         elements => elements.Count() == contactBook.Contacts.Count)
     select Case.Closed;
 ```
@@ -322,8 +322,8 @@ The following Checkrs write to the this bank:
 ```
 #### Checkr One Of When
 ```csharp
-    from one in Checkr.OneOfWhen((() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen((() => true, Checkr.Act("Two", () => { })))
+    from one in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("One", () => { })))
+    from two in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("Two", () => { })))
     select Case.Closed;
 ```
   Throws:  
@@ -337,8 +337,8 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOfWhen'
 ```
 ```csharp
-    from one in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen("reused", (() => true, Checkr.Act("Two", () => { })))
+    from one in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("One", () => { })))
+    from two in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("Two", () => { })))
     select Case.Closed;
 ```
   Throws:  
