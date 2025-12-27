@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:38:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:40:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555

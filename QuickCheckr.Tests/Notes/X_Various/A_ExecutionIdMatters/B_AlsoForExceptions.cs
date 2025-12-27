@@ -30,7 +30,7 @@ public class B_AlsoForExceptions : BaseTest
     {
         return
             from contactBook in Trackr.Stashed(() => new ContactBook())
-            from names in Trackr.PoolFor<string>()
+            from stringPool in Trackr.PoolFor<string>()
             from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
             from operations in Checkr.OneOfWhen(
                     Checkr.Option(() => counter == 1, // add AAA

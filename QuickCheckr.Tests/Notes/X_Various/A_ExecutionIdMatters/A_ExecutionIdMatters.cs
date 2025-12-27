@@ -60,7 +60,7 @@ So now, **Execution Id Matters**.
     {
         return
             from contactBook in Trackr.Stashed(() => new ContactBook())
-            from names in Trackr.PoolFor<string>()
+            from stringPool in Trackr.PoolFor<string>()
             from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
             from operations in Checkr.OneOfWhen(
                     Checkr.Option(() => counter == 1, // add AAA
@@ -85,7 +85,6 @@ So now, **Execution Id Matters**.
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
                         from storeName in Trackr.ToPool("Name", name)
                         select Case.Closed))
-            from tracePool in Checkr.Trace("Pool", () => names)
             from traceSut in Checkr.Trace("Sut", () => contactBook)
             from count in Trackr.PoolExpect<string>("Count matches",
                 a => a.Count() == contactBook.Contacts.Count)

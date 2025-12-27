@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:43:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:44:1
  Original failing run:    3 executions
  Seed:                    1044984793
  ------------------------------------------------------------

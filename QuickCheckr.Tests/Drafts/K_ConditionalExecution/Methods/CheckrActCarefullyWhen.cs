@@ -16,7 +16,7 @@ public class CheckrActCarefullyWhen : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(625676917, 3.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<CheckrWhen>(article, false);
+        WriteReport<CheckrActCarefullyWhen>(article, false);
         Verify(article);
     }
 

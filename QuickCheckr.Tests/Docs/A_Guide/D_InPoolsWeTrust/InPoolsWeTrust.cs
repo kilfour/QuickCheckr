@@ -131,7 +131,6 @@ For this reason the following method returns a `Checkr.Option`, in order to make
         Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 
-
     [Fact]
     [DocHeader("Bringing it all back home")]
     [DocHeader("The Model", 1)]

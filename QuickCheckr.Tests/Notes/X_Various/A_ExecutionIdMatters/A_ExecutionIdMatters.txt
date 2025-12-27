@@ -2,30 +2,26 @@
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    2052315962
+ Seed:                    320847276
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
    - Input: Name = AAA
-   - Trace: Pool = { Values: [ "AAA" ] }
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    - Input: Counter = 2
    - Input: Name = BBB
-   - Trace: Pool = { Values: [ "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 3
    - Input: Name = AAA
-   - Trace: Pool = { Values: [ "BBB", "AAA" ] }
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 4
    - Input: Name = BBB
-   - Trace: Pool = { Values: [ "BBB", "AAA", "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ========================================
   !! Expectation Failed: Count matches

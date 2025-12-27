@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:140:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:144:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 1 shrink)
  Seed:                    1553195441

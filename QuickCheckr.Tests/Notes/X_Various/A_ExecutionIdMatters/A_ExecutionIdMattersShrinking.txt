@@ -1,25 +1,22 @@
  ------------------------------------------------------------
  Test:                    RunTestShrinking
- Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:49:1
+ Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1117291969
+ Seed:                    388851863
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 1
-   - Trace: Pool = { Values: [ "AAA" ] }
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    - Input: Counter = 2
    - Input: Name = "BBB"
-   - Trace: Pool = { Values: [ "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 4
    - Input: Name = "BBB"
-   - Trace: Pool = { Values: [ "BBB", "BBB" ] }
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ========================================
   !! Expectation Failed: Count matches
