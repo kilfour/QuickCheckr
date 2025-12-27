@@ -1,6 +1,6 @@
 # Choosing The Next Move
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
-We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
+We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
 
 `OneOf` is QuickCheckr's way of saying:
 
@@ -100,15 +100,7 @@ The shrunk case shows:
 
 * Only one execution was *relevant*.
 * The relevant action was a `Withdraw`.
-* The amount was positive, so withdrawing it immediately violates the invariant.
-
-This highlights an important point:
-
-> **QuickCheckr does not explore alternative branches during shrinking.**  
-> It only shrinks *what actually happened*.
-
-Shrinking removes irrelevant **executions**, trims **inputs**, and discards everything that had no influence on the failure.
-The branch chosen during the original failing run is *the* branch examined during shrinking.   
+  
 ## On One Condition
 In many cases you would like to control the possible branches taken, based on some condition.  
 For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Option` elements.  
@@ -154,6 +146,4 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
-* Reports show exactly which branch was chosen.
-* Shrinking does **not** try unchosen branches. 
-  It only minimizes the actual failing scenario.  
+* Reports show exactly which branch was chosen.  

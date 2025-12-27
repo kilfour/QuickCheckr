@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_Repo
 [DocFile]
 [DocFileHeader("ReportMode")]
 [DocContent(
-@"Controls which whether *Traces* and/or *Warnigns* show up in the report.
+@"Controls which whether *Traces* and/or *Warnings* show up in the report.
 
 The following Checkr will be used to generate the reports throughout this chapter:")]
 [DocExample(typeof(ReportModeTests), nameof(GetCheckr))]

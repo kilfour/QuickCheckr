@@ -5,7 +5,7 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, Pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
   
 ## Creating a Pool
 Pools are created for *a specific type* using:  

@@ -316,7 +316,7 @@ the failure only emerges when several executions act on the *same* object.
 [InPoolsWeTrust]: #in-pools-we-trust
 ### Choosing The Next Move
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
-We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
+We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
 
 `OneOf` is QuickCheckr's way of saying:
 
@@ -416,15 +416,7 @@ The shrunk case shows:
 
 * Only one execution was *relevant*.
 * The relevant action was a `Withdraw`.
-* The amount was positive, so withdrawing it immediately violates the invariant.
-
-This highlights an important point:
-
-> **QuickCheckr does not explore alternative branches during shrinking.**  
-> It only shrinks *what actually happened*.
-
-Shrinking removes irrelevant **executions**, trims **inputs**, and discards everything that had no influence on the failure.
-The branch chosen during the original failing run is *the* branch examined during shrinking.   
+  
 #### On One Condition
 In many cases you would like to control the possible branches taken, based on some condition.  
 For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Option` elements.  
@@ -470,9 +462,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
-* Reports show exactly which branch was chosen.
-* Shrinking does **not** try unchosen branches. 
-  It only minimizes the actual failing scenario.  
+* Reports show exactly which branch was chosen.  
 ### In Pools We Trust
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
@@ -480,7 +470,7 @@ Where `Stashed` keeps one instance alive, a Pool keeps all created instances, an
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, Pool operations (When, These, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
   
 #### Creating a Pool
 Pools are created for *a specific type* using:  
@@ -658,10 +648,7 @@ This one is the *entry point* for the test.
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
 It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
-Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.
-
-*Note:* `Pool.These` combines two pools into one. 
-This allows us to define a predicate that depends on the relation between multiple entities.  
+Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
     from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
@@ -676,7 +663,8 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe update existing courses. Pick a random course from the pool.
         Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
-        Trackr.PoolWhen("Assign Coach to Course", (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+        Trackr.PoolWhen("Assign Coach to Course",
+            (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
@@ -734,7 +722,7 @@ private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSk
 And finally here's the system invariant.  
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
-private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
+private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
     from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
         coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
         coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
@@ -1035,7 +1023,7 @@ Includes all possible ShrinkModes.
  ------------------------------------------------------------
 ```
 #### ReportMode
-Controls which whether *Traces* and/or *Warnigns* show up in the report.
+Controls which whether *Traces* and/or *Warnings* show up in the report.
 
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp

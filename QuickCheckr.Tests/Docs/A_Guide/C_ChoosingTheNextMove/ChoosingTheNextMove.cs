@@ -10,10 +10,10 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 
 [DocFile]
 [DocContent(
-@"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
+@$"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
 
-`OneOf` is QuickCheckr's way of saying:
+`{nameof(Checkr.OneOf)}` is QuickCheckr's way of saying:
 
 > **""At this step, choose *exactly one* of these possible behaviours and execute it.""**
 
@@ -109,15 +109,7 @@ There is no guesswork.")]
 
 * Only one execution was *relevant*.
 * The relevant action was a `Withdraw`.
-* The amount was positive, so withdrawing it immediately violates the invariant.
-
-This highlights an important point:
-
-> **QuickCheckr does not explore alternative branches during shrinking.**  
-> It only shrinks *what actually happened*.
-
-Shrinking removes irrelevant **executions**, trims **inputs**, and discards everything that had no influence on the failure.
-The branch chosen during the original failing run is *the* branch examined during shrinking. ")]
+")]
     public void RunTest_Shrunk()
     {
         var article = TheJournalist.Exposes(() =>
@@ -175,9 +167,7 @@ For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes 
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
-* Reports show exactly which branch was chosen.
-* Shrinking does **not** try unchosen branches. 
-  It only minimizes the actual failing scenario.")]
+* Reports show exactly which branch was chosen.")]
     public void RunTest_Conditional()
     {
         var article = TheJournalist.Exposes(() =>

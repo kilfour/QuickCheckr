@@ -37,10 +37,7 @@ This one is the *entry point* for the test.
 It creates two pools, one for coaches, and one for courses, which we are going to use to track the state of the system.  
 It then creates a series of actions, randomly choosing one, using `Checkr.OneOfWhen`,
 out of those in the list for which it's predicate is fulfilled.  
-Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.
-
-*Note:* `Pool.These` combines two pools into one. 
-This allows us to define a predicate that depends on the relation between multiple entities.")]
+Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.")]
     [DocExample(typeof(BoltingHorses), nameof(TheCheckr))]
     [DocContent(
 @"**Create Coach Checkr:**  
@@ -175,7 +172,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
             select Case.Closed;
 
     [CodeExample]
-    private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
+    private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
         from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
             coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
@@ -195,7 +192,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
             // Maybe update existing courses. Pick a random course from the pool.
             Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.
-            Trackr.PoolWhen("Assign Coach to Course", (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+            Trackr.PoolWhen("Assign Coach to Course",
+                (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
             // Ensure the system invariant is met at all times.
         from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
