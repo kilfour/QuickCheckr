@@ -1,4 +1,5 @@
 ## Current Version: 0.0.6 
+* Rename Stashed<T> retrieval to GetStashed<T> => update guide
 * review evidence gathering
 * play more pool
   * Trackr.ToPool: needs to be in report maybe
@@ -7,6 +8,7 @@
 * QuickPulse.Show config could use another look 
 
 ### Doc Current Focus 
+* Add keyed overload of Stashed to guide
 * Review/Polish the Guide, looks solid enough for now
 * Review Configuration entry
   * [ x ] FileAs : add CaseSummary info
