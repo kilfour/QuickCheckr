@@ -4,17 +4,21 @@
 * Pool Redesign
   * Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
   * Moved the `Expect`'s from PoolElement<T> to `Trackr.PoolExpect`
+  * Moved the `ExpectForEach`'s from PoolElement<T> to `Trackr.PoolExpectForEach`
   * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectForEachWhen`
     Name is a bit long now.
   * Unified `Pool.These` into `Trackr.PoolWhen`
   * ?? Maybe move some to Checkr. instead of Trackr. or Poolr. ??
-
 
 ### Doing
 * review evidence gathering
 * play more pool
   * Trackr.ToPool: needs to be in report maybe
   * Also, in Warehouse step 3 client info would be nice
+  * TODO after redesign:
+    * remove Pool<T> 
+    * remove Trackr.GetPool<T>
+    * remove TrackrPoolThese.cs
 * Warehousing
 * QuickPulse.Show config could use another look 
 
