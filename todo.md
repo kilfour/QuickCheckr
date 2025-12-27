@@ -10,18 +10,17 @@
   * ?? Maybe move some to Checkr. instead of Trackr. or Poolr. ??
 
 ### Doing
-* review evidence gathering
+* Warehousing
+  * Input: A targeted error rewrite (not warning) for the common misleading case
+    When an eager Input throws OneOfEmptyOptionsException during evaluation, rethrow
+    Ask user if it is dependent on state
+    !! needs more investigation before deciding !!
+  * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
+* QF FromEach 
 * play more pool
   * Trackr.ToPool: needs to be in report maybe
   * Also, in Warehouse step 3 client info would be nice
-* Warehousing
-* QuickPulse.Show config could use another look 
-* Input: A targeted error rewrite (not warning) for the common misleading case
-  When an eager Input throws OneOfEmptyOptionsException during evaluation, rethrow
-  Ask user if it is dependent on state
-  !! needs more investigation before deciding !!
-* QF map => FromEach : 
-* lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
+* review evidence gathering
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now
@@ -77,6 +76,7 @@ Stabilize Pools
 ## Ideas
 * `Showr.For<T>(Func<ManofWealthAndTaste, ManofWealthAndTaste>)`
 * Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
+* QuickPulse.Show config could use another look 
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
