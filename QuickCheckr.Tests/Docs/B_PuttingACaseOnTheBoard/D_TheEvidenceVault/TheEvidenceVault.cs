@@ -35,7 +35,7 @@ public class TheEvidenceVault : BaseTest
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
     [DocExample(typeof(TheEvidenceVault), nameof(RunColdCasesReview))]
-    [DocContent("This will create a report per seed in the evidence file and a log of all evidence vault actions.")]
+    [DocContent("This will create a report per seed in the evidence vault and a log of all evidence vault actions.")]
     public void ReviewingColdCases()
     {
         var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
