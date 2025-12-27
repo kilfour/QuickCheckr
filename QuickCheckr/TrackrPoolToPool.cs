@@ -14,6 +14,8 @@ public static partial class Trackr
         {
             var id = state.Memory.StoreVariable(key,
                 () => Fuzzr.Int(0, int.MaxValue).Unique(GetKeyFor.TrackrToPool)(state.FuzzrState).Value);
+            state.Memory.StorePoolTrace(key, () => id.ToString());
+            // () => Fuzzr.Counter(typeof(T).Name + key)(state.FuzzrState).Value);
             return CheckrResult.Some(state, state.Memory.StoreInPool(id, key, value));
         };
 }

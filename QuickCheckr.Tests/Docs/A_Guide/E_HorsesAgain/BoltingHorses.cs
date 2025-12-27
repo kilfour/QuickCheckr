@@ -72,7 +72,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1073869613, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<BoltingHorses>(article, false);
+        WriteReport<BoltingHorses>(article, true);
         Verify(article);
     }
 

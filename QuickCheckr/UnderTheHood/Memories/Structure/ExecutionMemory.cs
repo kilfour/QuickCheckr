@@ -46,6 +46,14 @@ public class ExecutionMemory
         => traces.Values;
     // --------------------------------------------------------------------------
 
+    // --------------------------------------------------------------------------
+    // Traces
+    private readonly MemoryBank poolTraces = new();
+    public void StorePoolTrace(string key, Func<string> factory)
+        => poolTraces.Store(key, factory);
+    public IReadOnlyDictionary<string, object?> GetPoolTraces()
+        => poolTraces.Values;
+    // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
     // Shrink Outcomes

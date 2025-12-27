@@ -34,6 +34,7 @@
 * Style Guide for LINQ-averse devs (experimental).
 
 ### Tests Current Focus
+* DuplicateKeyWriteGuardForPoolTraces
 * ParsingNumbers example: Uncomment Assert, decimal separator now breaks build.
 
 ### Skipped Tests (4)

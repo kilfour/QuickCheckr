@@ -51,6 +51,7 @@ public class Memory
     private DuplicateKeyWriteGuardForActs actGuard = new();
     public DuplicateKeyWriteGuardForExpectations ExpectGuard { get; private set; } = new();
     private DuplicateKeyWriteGuardForTraces traceGuard = new();
+    private DuplicateKeyWriteGuardForPoolTraces poolTraceGuard = new();
     private DuplicateKeyWriteGuardForVariables variableGuard = new();
     private DuplicateKeyWriteGuardForStashed stashedGuard = new();
     private DuplicateKeyWriteGuardForPools poolGuard = new();
@@ -60,6 +61,7 @@ public class Memory
         actGuard = new();
         ExpectGuard = new();
         traceGuard = new();
+        poolTraceGuard = new();
         variableGuard = new();
         stashedGuard = new();
         poolGuard = new();
@@ -121,7 +123,13 @@ public class Memory
         if (Tracing)
             ShortTermMemory.StoreTrace(traceGuard.Check(key), factory);
     }
-
+    // --------------------------------------------------------------------------
+    // Traces
+    public void StorePoolTrace(string key, Func<string> factory)
+    {
+        if (Tracing)
+            ShortTermMemory.StorePoolTrace(poolTraceGuard.Check(key), factory);
+    }
     // --------------------------------------------------------------------------
     // Variables
     public T? StoreVariable<T>(string key, Func<T> factory)

@@ -16,6 +16,7 @@ public static partial class Trackr
         {
             var id = state.Memory.StoreVariable(key,
                 () => Fuzzr.OneOf(state.Memory.GetPoolIds<T>())(state.FuzzrState).Value);
+            state.Memory.StorePoolTrace(key, () => id.ToString());
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
             {

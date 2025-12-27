@@ -37,6 +37,11 @@ public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
     public DuplicateKeyWriteGuardForTraces() : base(["Checkr.Trace", "Checkr.TraceWhen"]) { }
 }
 
+public class DuplicateKeyWriteGuardForPoolTraces : DuplicateKeyWriteGuard
+{
+    public DuplicateKeyWriteGuardForPoolTraces() : base(["Trackr.ToPool", "..."]) { }
+}
+
 public class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfWhen"]) { }
