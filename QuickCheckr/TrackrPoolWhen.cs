@@ -16,10 +16,4 @@ public static partial class Trackr
         Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
         state => CheckrResult.Some<(Func<bool> condition, CheckrOf<Case> checkr)>(
             state, (() => predicate(state.Memory.GetPool<T>()), OneOfPool<T>(key, checkr)));
-
-    // public CheckrOf<(Func<bool>, CheckrOf<Case>)> PoolWhen<T>(
-    //     Func<IEnumerable<T>, bool> predicate,
-    //     string key,
-    //     Func<PoolElement<T>, CheckrOf<Case>> checkr)
-    //     => (() => predicate(pool), Trackr.OneOfPool(key, checkr));
 }
