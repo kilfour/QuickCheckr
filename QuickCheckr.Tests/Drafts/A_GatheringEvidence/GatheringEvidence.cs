@@ -67,13 +67,13 @@ public class GatheringEvidence : BaseTest
             from names in Trackr.PoolFor<string>()
             from operations in Checkr.OneOfWhen(
                 // Add a Contact
-                names.When(a => a.Count() < 10,
+                Trackr.PoolWhen<string>(a => a.Count() < 10,
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                     from storeName in Trackr.ToPool("Name", name)
                     select Case.Closed),
                 // Update a Contact
-                names.When(a => a.Any(),
+                Trackr.PoolWhen<string>(a => a.Any(),
                     from newName in Checkr.Input("New Name", NameFuzzr)
                     from pool in Trackr.OneOfPool<string>("Name to update",
                         nameToUpdate =>

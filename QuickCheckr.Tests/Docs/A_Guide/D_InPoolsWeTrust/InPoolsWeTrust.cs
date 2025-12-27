@@ -128,7 +128,7 @@ For this reason the following method returns a tuple of a boolean and a Checkr, 
 
     [CodeSnippet]
     private static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen(Pool<Contact> pool) =>
-        pool.When(a => a.Any(), "A Random Contact",
+        Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 
 
@@ -164,14 +164,14 @@ For this reason the following method returns a tuple of a boolean and a Checkr, 
                 // Pick one of two operations.
             from operations in Checkr.OneOfWhen(
                 // 1. Add a (Contact-) name to the Rolodex
-                names.When(a => a.Count() < 10,
+                Trackr.PoolWhen<Contact>(a => a.Count() < 10,
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                         // Store the Contact in the Pool.
                     from storeName in Trackr.ToPool("Name", new Contact(name))
                     select Case.Closed),
                 // 2. Update a (Contact-) name in the Rolodex
-                names.When(a => a.Any(), // <= Can not pick from an empty selection.
+                Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
                     "Contact to update", contact => // Pick a random Contact to update 
                         from newName in Checkr.Input("New Name", NameFuzzr)
                         from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))

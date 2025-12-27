@@ -1,26 +1,19 @@
 namespace QuickCheckr;
 
-public static class Pool
-{
-    public static Pool<T1, T2> These<T1, T2>(Pool<T1> pool1, Pool<T2> pool2)
-        => new(pool1.Values, pool2.Values);
-}
-
-
 public class Pool<T>(IEnumerable<T> pool)
 {
     public IEnumerable<T> Values => pool;
 
-    public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
-        Func<IEnumerable<T>, bool> predicate,
-        CheckrOf<Case> checkr)
-        => Checkr.Option(() => predicate(pool), checkr);
+    // public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
+    //     Func<IEnumerable<T>, bool> predicate,
+    //     CheckrOf<Case> checkr)
+    //     => Checkr.Option(() => predicate(pool), checkr);
 
-    public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
-        Func<IEnumerable<T>, bool> predicate,
-        string key,
-        Func<PoolElement<T>, CheckrOf<Case>> checkr)
-        => Checkr.Option(() => predicate(pool), Trackr.OneOfPool(key, checkr));
+    // public CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> When(
+    //     Func<IEnumerable<T>, bool> predicate,
+    //     string key,
+    //     Func<PoolElement<T>, CheckrOf<Case>> checkr)
+    //     => Checkr.Option(() => predicate(pool), Trackr.OneOfPool(key, checkr));
 
     public CheckrOf<Case> Expect(
         string key,

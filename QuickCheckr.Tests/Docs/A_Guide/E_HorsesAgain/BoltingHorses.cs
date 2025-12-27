@@ -194,15 +194,15 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
         from operations in Checkr.OneOfWhen(
             // Create up to 10 coaches.
-            coaches.When(a => a.Count() < 10, CreateCoach),
+            Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
             // Maybe update existing coaches. Pick a random coach from the pool.
-            coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
+            Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
             // Create up to 5 courses.
-            courses.When(a => a.Count() < 5, CreateCourse),
+            Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
             // Maybe update existing courses. Pick a random course from the pool.
-            courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+            Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.
-            Pool.These(coaches, courses).When("Assign Coach to Course",
+            Trackr.PoolThese(coaches, courses).When("Assign Coach to Course",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
             // Ensure the system invariant is met at all times.
         from invariant in AssignedCoachesMustBeSuitable(coaches)

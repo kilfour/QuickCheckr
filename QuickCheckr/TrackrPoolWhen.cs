@@ -4,17 +4,20 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
+    public static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen<T>(
+        Func<IEnumerable<T>, bool> predicate,
+        CheckrOf<Case> checkr) =>
+        state => CheckrResult.Some<(Func<bool> condition, CheckrOf<Case> checkr)>(
+            state, (() => predicate(state.Memory.GetPool<T>()), checkr));
 
-    // public static CheckrOf<Pool<T>> Whens<T>() =>
-    //     state => CheckrResult.Some(state, new Pool<T>(state.Memory.CreatePool<T>()));
+    public static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen<T>(
+        Func<IEnumerable<T>, bool> predicate,
+        string key,
+        Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
+        state => CheckrResult.Some<(Func<bool> condition, CheckrOf<Case> checkr)>(
+            state, (() => predicate(state.Memory.GetPool<T>()), OneOfPool<T>(key, checkr)));
 
-    // public static (Func<bool>, CheckrOf<Case>) When<T>(
-    //     Func<IEnumerable<T>, bool> predicate,
-    //     CheckrOf<Case> checkr)
-
-    //     => (() => predicate(pool), checkr);
-
-    // public (Func<bool>, CheckrOf<Case>) When(
+    // public CheckrOf<(Func<bool>, CheckrOf<Case>)> PoolWhen<T>(
     //     Func<IEnumerable<T>, bool> predicate,
     //     string key,
     //     Func<PoolElement<T>, CheckrOf<Case>> checkr)

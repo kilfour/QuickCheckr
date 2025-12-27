@@ -43,11 +43,11 @@ public class Refactored
         from coaches in Trackr.PoolFor<Coach>()
         from courses in Trackr.PoolFor<Course>()
         from operations in Checkr.OneOfWhen(
-            coaches.When(a => a.Count() < 10, CreateCoachDefinition.GetCheckr),
-            coaches.When(a => a.Any(), "Coach to Update Skills", UpdateCoachSkillsDefinition.GetCheckr),
-            courses.When(a => a.Count() < 5, CreateCourse),
-            courses.When(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
-            Pool.These(coaches, courses).When("Assign Coach to Course",
+            Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoachDefinition.GetCheckr),
+            Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkillsDefinition.GetCheckr),
+            Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
+            Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+            Trackr.PoolThese(coaches, courses).When("Assign Coach to Course",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         from invariant in AssignedCoachesMustBeSuitable(coaches)
         select Case.Closed;

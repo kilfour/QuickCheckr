@@ -1,4 +1,9 @@
 ## Current Version: 0.0.6 
+
+### Ready for Changelog after review
+* Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
+
+### Doing
 * review evidence gathering
 * play more pool
   * Trackr.ToPool: needs to be in report maybe
@@ -7,8 +12,8 @@
 * QuickPulse.Show config could use another look 
 
 ### Doc Current Focus 
-* Add keyed overload of Stashed to guide
 * Review/Polish the Guide, looks solid enough for now
+  * Add keyed overload of Stashed and example of GetStashed to guide (maybe)
 * Review Configuration entry
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian
