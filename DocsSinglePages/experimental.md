@@ -333,42 +333,9 @@ private static FuzzrOf<OrderRequest.OrderLine> OrderRequestOrderLineFuzzr(Produc
 private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
     from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
         .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
-    from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
+    from lines in QFuzzr.FromEach(products, OrderRequestOrderLineFuzzr)
     from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
     select request;
-```
-We need a quickfuzzr Fuzzr.Map, if I am not mistaken.  
-I could not figure out how to do this with existing functionality.  
-```csharp
-public static class QFuzzr
-{
-    public static FuzzrOf<IEnumerable<U>> Map<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
-        state =>
-        {
-            var values = new List<U>();
-            foreach (var element in source)
-            {
-                values.Add(func(element)(state).Value);
-            }
-            return new Result<IEnumerable<U>>(values, state);
-        };
-}
-```
-#### QuickPulse.Show Config
-Two ways to ignore things, which one to pick ?
-
-Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].  
-```csharp
-Please.AllowMe()
-    .ToPrettyPrint()
-    .ToPrefix<List<Product>>(Environment.NewLine)
-    .ToInline<Product>()
-    .ToIgnore<Product, Guid>(a => a.Id)
-    .ToInline<OrderRequest>()
-    .ToInline<OrderRequest.OrderLine[]>()
-    .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
-    .ToReplace<OrderRequest.OrderLine>(a =>
-        $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 ```
 ### Warehouse Step Two
 #### Checkr

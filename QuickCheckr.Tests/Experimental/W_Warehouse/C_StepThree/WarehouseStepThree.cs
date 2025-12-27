@@ -96,11 +96,10 @@ public class WarehouseStepThree : BaseTest
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
         from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
             .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
-        from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
+        from lines in QFuzzr.FromEach(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
-    [CodeSnippet]
     private static ManOfWealthAndTaste GetShowr() =>
         Please.AllowMe()
             .ToPrettyPrint()
@@ -108,7 +107,6 @@ public class WarehouseStepThree : BaseTest
             .ToInline<Product>()
             .ToIgnore<Product, Guid>(a => a.Id);
 
-    [CodeSnippet]
     private static ManOfWealthAndTaste GetRequestShowr(ClientSim client) =>
         Please.AllowMe()
             .ToPrettyPrint()

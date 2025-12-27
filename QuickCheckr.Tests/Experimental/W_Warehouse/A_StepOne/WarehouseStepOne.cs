@@ -31,16 +31,6 @@ Less confusing I reckon, but ... it's YAL (yet another lamda).
     [DocHeader("Fuzzr")]
     [DocExample(typeof(WarehouseStepOne), nameof(OrderRequestOrderLineFuzzr))]
     [DocExample(typeof(WarehouseStepOne), nameof(OrderRequestFuzzr))]
-    [DocContent(
-@"We need a quickfuzzr Fuzzr.Map, if I am not mistaken.  
-I could not figure out how to do this with existing functionality.")]
-    [DocExample(typeof(QFuzzr))]
-    [DocHeader("QuickPulse.Show Config")]
-    [DocContent(
-@"Two ways to ignore things, which one to pick ?
-
-Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
-    [DocExample(typeof(WarehouseStepOne), nameof(GetShowr))]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
@@ -88,11 +78,10 @@ Had to move QuickPulse.Show config into the LINQ chain see [ShowrUse].")]
     private static FuzzrOf<OrderRequest> OrderRequestFuzzr(ClientSim client) =>
         from products in Fuzzr.OneOf(client.ProductsToOrder.Where(a => a.Available > 0))
             .Unique(Guid.NewGuid()).Many(0, client.ProductsToOrder.Count(a => a.Available > 0) - 1)
-        from lines in QFuzzr.Map(products, OrderRequestOrderLineFuzzr)
+        from lines in QFuzzr.FromEach(products, OrderRequestOrderLineFuzzr)
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
-    [CodeSnippet]
     private static ManOfWealthAndTaste GetShowr(ClientSim client) =>
         Please.AllowMe()
             .ToPrettyPrint()

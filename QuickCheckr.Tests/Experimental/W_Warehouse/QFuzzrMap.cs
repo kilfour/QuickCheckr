@@ -4,10 +4,9 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Experimental.W_Warehouse;
 
-[CodeExample]
 public static class QFuzzr
 {
-    public static FuzzrOf<IEnumerable<U>> Map<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
+    public static FuzzrOf<IEnumerable<U>> FromEach<T, U>(IEnumerable<T> source, Func<T, FuzzrOf<U>> func) =>
         state =>
         {
             var values = new List<U>();
