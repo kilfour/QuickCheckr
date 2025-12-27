@@ -54,7 +54,7 @@ public class InPoolsWeTrust : BaseTest
     }
 
     [CodeSnippet]
-    private static CheckrOf<Pool<Contact>> CreatePool() =>
+    private static CheckrOf<Case> CreatePool() =>
         Trackr.PoolFor<Contact>();
 
     [Fact]
@@ -122,12 +122,12 @@ For this reason the following method returns a `Checkr.Option`, in order to make
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
     public void Conditionally() =>
         Assert.Throws<OneOfEmptyOptionsException>(() => (
-            from option in PoolWhen(new Pool<Contact>([]))
+            from option in PoolWhen()
             from unconditionally in option.checkr
             select Case.Closed).Run());
 
     [CodeSnippet]
-    private static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen(Pool<Contact> pool) =>
+    private static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen() =>
         Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 
@@ -160,7 +160,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
         return
             from contactBook in Trackr.Stashed(() => new Rolodex())
             // Create a Pool.
-            from names in Trackr.PoolFor<Contact>()
+            from createContactPool in Trackr.PoolFor<Contact>()
                 // Pick one of two operations.
             from operations in Checkr.OneOfWhen(
                 // 1. Add a (Contact-) name to the Rolodex

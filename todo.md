@@ -14,8 +14,6 @@
 * play more pool
   * Trackr.ToPool: needs to be in report maybe
   * Also, in Warehouse step 3 client info would be nice
-  * TODO after redesign:
-    * remove Pool<T> 
 * Warehousing
 * QuickPulse.Show config could use another look 
 * Input: A targeted error rewrite (not warning) for the common misleading case
