@@ -25,8 +25,6 @@
 
 ### Doc Current Focus 
 * Review/Polish the Guide, looks solid enough for now
-  * Add Checkr.Option and Checkr.OneOfWhen example
-  * Add keyed overload of Stashed and example of GetStashed (maybe)
 * Review Configuration entry
   * [ x ] FileAs : add CaseSummary info
   * [ x ] Custodian

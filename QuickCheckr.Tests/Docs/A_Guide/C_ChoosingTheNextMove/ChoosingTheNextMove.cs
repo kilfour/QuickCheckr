@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 [DocFile]
 [DocContent(
 @"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
-We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
+We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
 
 `OneOf` is QuickCheckr's way of saying:
 
@@ -118,15 +118,6 @@ This highlights an important point:
 
 Shrinking removes irrelevant **executions**, trims **inputs**, and discards everything that had no influence on the failure.
 The branch chosen during the original failing run is *the* branch examined during shrinking. ")]
-    [DocHeader("Recap")]
-    [DocContent(
-@"`Checkr.OneOf` introduces controlled nondeterminism:
-
-* Each execution picks **exactly one** branch.
-* All branches operate on the same stashed state.
-* Reports show exactly which branch was chosen.
-* Shrinking does **not** try unchosen branches. 
-  It only minimizes the actual failing scenario.")]
     public void RunTest_Shrunk()
     {
         var article = TheJournalist.Exposes(() =>
@@ -167,4 +158,72 @@ The branch chosen during the original failing run is *the* branch examined durin
             from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
             select Case.Closed;
     }
+
+    [Fact]
+    [DocHeader("On One Condition")]
+    [DocContent(
+@$"In many cases you would like to control the possible branches taken, based on some condition.  
+For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes an enumerable of `{nameof(Checkr)}.{nameof(Checkr.Option)}` elements.  
+
+**Example:**")]
+    [DocExample(typeof(ChoosingTheNextMove), nameof(GetConditionalCheckr))]
+    [DocContent("**Results in:**")]
+    [DocCodeFile("ChoosingTheNextConditional.txt", "text")]
+    [DocHeader("Recap")]
+    [DocContent(
+@$"`{nameof(Checkr)}.{nameof(Checkr.OneOf)}` and `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}` introduces controlled nondeterminism:
+
+* Each execution picks **exactly one** branch.
+* All branches operate on the same stashed state.
+* Reports show exactly which branch was chosen.
+* Shrinking does **not** try unchosen branches. 
+  It only minimizes the actual failing scenario.")]
+    public void RunTest_Conditional()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetConditionalCheckr().Run(356083796, 2.ExecutionsPerRun()));
+        WriteAsserts(article, false);
+        WriteReport(article, "ChoosingTheNextConditional.txt", false);
+        Verify_Conditional(article);
+    }
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetConditionalCheckr()
+    {
+        return
+            from everything in Trackr.Stashed(() => new Everything())
+            from operations in Checkr.OneOfWhen(
+                Checkr.Option(() => everything.TheUniverse == null,
+                    from genesis in Checkr.Act("Create the universe",
+                        () => everything.TheUniverse = new Universe())
+                    select Case.Closed),
+                Checkr.Option(() => everything.TheUniverse != null,
+                    from falsify in Checkr.Act("Falsify the answer",
+                        () => everything.TheUniverse!.Answer++)
+                    select Case.Closed)
+            )
+            from checkTheAnswer in Checkr.ExpectWhen("is 42",
+                () => everything.TheUniverse != null,
+                () => everything.TheUniverse!.Answer == 42)
+            select Case.Closed;
+    }
+
+    private static void Verify_Conditional(Article article)
+    {
+        Assert.Equal("is 42", article.FailedExpectation());
+        Assert.Equal(2, article.Total().Executions());
+        Assert.Equal(2, article.Total().Actions());
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Create the universe", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Falsify the answer", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("is 42", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
+    }
+
+    public class Everything { public Universe? TheUniverse; }
+    public class Universe { public int Answer = 42; }
 }

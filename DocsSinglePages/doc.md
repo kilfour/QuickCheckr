@@ -319,7 +319,7 @@ the failure only emerges when several executions act on the *same* object.
 [InPoolsWeTrust]: #in-pools-we-trust
 ### Choosing The Next Move
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
-We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
+We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
 
 `OneOf` is QuickCheckr's way of saying:
 
@@ -428,8 +428,48 @@ This highlights an important point:
 
 Shrinking removes irrelevant **executions**, trims **inputs**, and discards everything that had no influence on the failure.
 The branch chosen during the original failing run is *the* branch examined during shrinking.   
+#### On One Condition
+In many cases you would like to control the possible branches taken, based on some condition.  
+For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Option` elements.  
+
+**Example:**  
+```csharp
+    from everything in Trackr.Stashed(() => new Everything())
+    from operations in Checkr.OneOfWhen(
+        Checkr.Option(() => everything.TheUniverse == null,
+            from genesis in Checkr.Act("Create the universe",
+                () => everything.TheUniverse = new Universe())
+            select Case.Closed),
+        Checkr.Option(() => everything.TheUniverse != null,
+            from falsify in Checkr.Act("Falsify the answer",
+                () => everything.TheUniverse!.Answer++)
+            select Case.Closed)
+    )
+    from checkTheAnswer in Checkr.ExpectWhen("is 42",
+        () => everything.TheUniverse != null,
+        () => everything.TheUniverse!.Answer == 42)
+    select Case.Closed;
+```
+**Results in:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_Conditional
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:183:1
+ Original failing run:    2 executions
+ Seed:                    356083796
+ ------------------------------------------------------------
+  Executed: Create the universe
+ ------------------------------------------------------------
+  Executed: Falsify the answer
+ ================================
+  !! Expectation Failed: is 42
+ ================================
+ Passed Expectations
+ - is 42: 1x
+ ------------------------------------------------------------
+```
 #### Recap
-`Checkr.OneOf` introduces controlled nondeterminism:
+`Checkr.OneOf` and `Checkr.OneOfWhen` introduces controlled nondeterminism:
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
