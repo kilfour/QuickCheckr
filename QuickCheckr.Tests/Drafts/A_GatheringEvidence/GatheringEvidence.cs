@@ -82,7 +82,7 @@ public class GatheringEvidence : BaseTest
                             select Case.Closed)
                     select Case.Closed))
                 // Contrived Expectation, ... it's only a model.
-            from count in names.Expect("Count matches",
+            from count in Trackr.PoolExpect<string>("Count matches",
                 elements => elements.Count() == contactBook.Contacts.Count)
             select Case.Closed;
     }

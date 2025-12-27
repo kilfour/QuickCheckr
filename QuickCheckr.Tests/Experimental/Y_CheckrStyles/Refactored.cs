@@ -33,8 +33,8 @@ public class Refactored
             from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
             select Case.Closed;
 
-    private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches) =>
-        from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
+    private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
+        from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
             coach => coach.AssignedCourses.Any(),
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;
@@ -47,8 +47,7 @@ public class Refactored
             Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkillsDefinition.GetCheckr),
             Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
             Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
-            Trackr.PoolThese(coaches, courses).When("Assign Coach to Course",
-                (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
-        from invariant in AssignedCoachesMustBeSuitable(coaches)
+            Trackr.PoolWhen("Assign Coach to Course", (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+        from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
 }

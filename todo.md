@@ -1,7 +1,14 @@
 ## Current Version: 0.0.6 
 
 ### Ready for Changelog after review
-* Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
+* Pool Redesign
+  * Moved the `When`'s from PoolElement<T> to `Trackr.PoolWhen`
+  * Moved the `Expect`'s from PoolElement<T> to `Trackr.PoolExpect`
+  * Moved the `ExpectForEachWhen`'s from PoolElement<T> to `Trackr.PoolExpectForEachWhen`
+    Name is a bit long now.
+  * Unified `Pool.These` into `Trackr.PoolWhen`
+  * ?? Maybe move some to Checkr. instead of Trackr. or Poolr. ??
+
 
 ### Doing
 * review evidence gathering

@@ -178,7 +178,7 @@ For this reason the following method returns a tuple of a boolean and a Checkr, 
                             // Update the contact in the pool, keeping model and test data in sync.
                         from updatePool in contact.Replace(new Contact(newName))
                         select Case.Closed))
-            from count in names.Expect("Count matches", a => a.Count() == contactBook.Contacts.Count)
+            from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count() == contactBook.Contacts.Count)
             select Case.Closed;
     }
 

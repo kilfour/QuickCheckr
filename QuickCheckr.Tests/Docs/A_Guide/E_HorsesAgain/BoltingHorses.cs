@@ -182,8 +182,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
             select Case.Closed;
 
     [CodeExample]
-    private static CheckrOf<Case> AssignedCoachesMustBeSuitable(Pool<Coach> coaches) =>
-        from assignedCheck in coaches.ExpectForEachWhen("Assigned Coach Must Be Suitable",
+    private static CheckrOf<Case> AssignedCoachesMustBeSuitable =
+        from assignedCheck in Trackr.PoolExpectForEachWhen<Coach>("Assigned Coach Must Be Suitable",
             coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;
@@ -202,9 +202,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
             // Maybe update existing courses. Pick a random course from the pool.
             Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.
-            Trackr.PoolThese(coaches, courses).When("Assign Coach to Course",
-                (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+            Trackr.PoolWhen("Assign Coach to Course", (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
             // Ensure the system invariant is met at all times.
-        from invariant in AssignedCoachesMustBeSuitable(coaches)
+        from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
 }
