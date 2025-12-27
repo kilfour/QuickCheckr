@@ -15,6 +15,7 @@
   * [ x ] Reportmode
   * [ x ] DeliberationPolicy
   * [   ] InternalAffairs
+* Style Guide for LINQ-averse devs (experimental).
 
 ### Tests Current Focus
 * ParsingNumbers example: Uncomment Assert, decimal separator now breaks build.
@@ -24,14 +25,14 @@
 * GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental, takes quite long too.
 
+## 0.0.7: In Pools We Trust
+Stabilize Pools
 
-## 0.0.7
+## 0.0.7+
 * look into different collection shrinking
   * limitations
   * known issues
   * workarounds
-
-## 0.0.7+
 * keyed overload for PoolFor, GetPool, ...
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
