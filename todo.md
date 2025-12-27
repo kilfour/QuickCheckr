@@ -1,5 +1,4 @@
 ## Current Version: 0.0.6 
-* Rename Stashed<T> retrieval to GetStashed<T> => update guide
 * review evidence gathering
 * play more pool
   * Trackr.ToPool: needs to be in report maybe

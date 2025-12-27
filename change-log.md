@@ -21,3 +21,4 @@
 * Array shrinking supported
 * Added initial configuration of Checkr.Trace output through QuickPulse.Show's ManOfWealthAndTaste
 * Split Trackr.OneOfPool into Trackr.OneOfPool and Trackr.OneOfPoolWhen
+* Renamed Stashed<T> retrieval to GetStashed<T>

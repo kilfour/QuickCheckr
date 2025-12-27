@@ -42,7 +42,7 @@ public class WarehouseStepThree : BaseTest
 
     [CodeExample]
     private static CheckrOf<Case> ClientTakesAction(PoolElement<ClientSim> client) =>
-        from service in Trackr.Stashed<WarehouseService>()
+        from service in Trackr.GetStashed<WarehouseService>()
         from ops in Checkr.OneOfWhen("Client Actions",
             (() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
             (() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
@@ -50,7 +50,7 @@ public class WarehouseStepThree : BaseTest
 
     [CodeExample]
     private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
-        from service in Trackr.Stashed<WarehouseService>()
+        from service in Trackr.GetStashed<WarehouseService>()
         from traceClient in Checkr.Trace("Client", () => client.Value.Id)
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.Value.ProductsToOrder = service.GetProducts())
@@ -58,7 +58,7 @@ public class WarehouseStepThree : BaseTest
 
     [CodeExample]
     private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
-        from service in Trackr.Stashed<WarehouseService>()
+        from service in Trackr.GetStashed<WarehouseService>()
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
         from show in Showr.Use(() => GetRequestShowr(client.Value))
         from traceClient in Checkr.Trace("Client", () => client.Value.Id)

@@ -34,16 +34,16 @@ public class WarehouseStepFour : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> GetProductInfo =
-        from service in Trackr.Stashed<WarehouseService>()
-        from client in Trackr.Stashed<ClientSim>()
+        from service in Trackr.GetStashed<WarehouseService>()
+        from client in Trackr.GetStashed<ClientSim>()
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.ProductsToOrder = service.GetProducts())
         select Case.Closed;
 
     [CodeExample]
     private static readonly CheckrOf<Case> PlaceOrder =
-        from service in Trackr.Stashed<WarehouseService>()
-        from client in Trackr.Stashed<ClientSim>()
+        from service in Trackr.GetStashed<WarehouseService>()
+        from client in Trackr.GetStashed<ClientSim>()
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
         from trace in Checkr.Trace("Order Request", () => orderRequest)
         from reloadedStockBefore in Checkr.Capture(() => service.GetProducts())

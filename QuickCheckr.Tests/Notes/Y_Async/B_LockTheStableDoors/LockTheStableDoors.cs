@@ -77,7 +77,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> CreateCoach =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from name in Checkr.Input("Coach Name",
             from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
         from trace in Checkr.Trace("Coach Name", () => name)
@@ -87,7 +87,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCoachSkills =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
             from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from trace in Checkr.Trace("Coach Name", () => coach.Value.Name)
@@ -98,7 +98,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> CreateCourse =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from name in Checkr.Input("Course Name",
             from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
         from trace in Checkr.Trace("Course Name", () => name)
@@ -108,7 +108,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> UpdateCourseSkills =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
             from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from traceCourse in Checkr.Trace("Course Name", () => course.Value.Name)
@@ -119,7 +119,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignCoachToCourse =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CoachBy, CourseBy>("Coach to assign", (coach, course) =>
             from coaches in Checkr.Capture(service.GetCoachesAsync())
             from courses in Checkr.Capture(service.GetCoursesAsync())
@@ -135,7 +135,7 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from service in Trackr.Stashed<InMemoryCoachCourseService>()
+        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from coaches in Checkr.Capture(service.GetCoachesAsync())
         from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
