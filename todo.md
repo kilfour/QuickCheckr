@@ -5,17 +5,12 @@
 
 ### Doing
 * Doc: working on the reference (Checkrs Court)
-* fix input:
-  When an eager Input throws, wrap it in a MaybeUseTheLazyVersionException
-  With an explanation as to why and a helpfull hint 
 * Pool Redesign
   * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
     Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
 * Warehousing
-  * Input: A targeted error rewrite (not warning) for the common misleading case
-    OneOfEmptyOptionsException during evaluation, rethrow
-    Ask user if it is dependent on state
-    !! needs more investigation before deciding !!
+  * Step 5 : dynamically populate WareHouse 
+  * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 * play more pool
 * review evidence gathering
 
@@ -41,7 +36,7 @@
 
 ## 0.0.7: In Pools We Trust
 * Stabilize Pools
-* Better Exception Message format in report
+* Better Exception failure Message format in report
 
 ## 0.0.7+
 * look into different collection shrinking
@@ -72,7 +67,6 @@
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 
 ## Ideas
-* `Showr.For<T>(Func<ManofWealthAndTaste, ManofWealthAndTaste>)`
 * Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
 * QuickPulse.Show config could use another look 
 * QuickPulse.Show turn manofwealth and taste into composable config

@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
 namespace QuickCheckr;
@@ -40,11 +41,22 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
-        state => HandleInput(state, key, factory());
-
-
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
-        => CheckrResult.Some(state,
-            state.Memory.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
+    {
+        try
+        {
+            return CheckrResult.Some(state, state.Memory.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
+        }
+        catch (DuplicateKeyWriteException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new InputFuzzrThrewException(key, exception);
+        }
+    }
+
+    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
+        state => CheckrResult.Some(state, state.Memory.StoreInput(key, () => factory()(state.FuzzrState).Value)!);
 }

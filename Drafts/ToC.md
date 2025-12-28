@@ -1,6 +1,7 @@
   - [Gathering Evidence](A_GatheringEvidence/GatheringEvidence.md)
   - [Checkrs Court](D_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](D_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
+      - [Input](D_CheckrsCourt/A_TheCheckrClass/Methods/A_Input.md)
     - [The Tracker Class](D_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md)
   - [Conditional Execution](K_ConditionalExecution/ConditionalExecution.md)
     - [Checkr Act Carefully When](K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)

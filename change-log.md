@@ -36,3 +36,6 @@
   * Only expose Pool IEnumerable for predicates as IReadOnlyCollection
   * Changed PoolWhen argument order for consistency, key first.
 * Added Stacktrace (yes/no) ReportMode
+* Added *lazy* Checkr.Input
+* When an *eager* Input throws, exception is wrapped in a InputFuzzrThrewException.
+  With an explanation and a suggestion to try the lazy version. 
