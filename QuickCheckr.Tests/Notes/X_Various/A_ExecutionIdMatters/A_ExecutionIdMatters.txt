@@ -2,24 +2,28 @@
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    320847276
+ Seed:                    1355440449
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-1
    - Input: Counter = 1
    - Input: Name = AAA
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
+   -  Pool: Name to update = String-1
    - Input: Counter = 2
    - Input: Name = BBB
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-2
    - Input: Counter = 3
    - Input: Name = AAA
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-3
    - Input: Counter = 4
    - Input: Name = BBB
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }

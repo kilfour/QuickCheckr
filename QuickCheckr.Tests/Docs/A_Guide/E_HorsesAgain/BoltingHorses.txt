@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:74:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:75:1
  Original failing run:    19 executions
  Minimal failing case:    4 executions (after 21 shrinks)
  Seed:                    1473455315

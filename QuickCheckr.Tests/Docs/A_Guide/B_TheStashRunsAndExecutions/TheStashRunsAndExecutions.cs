@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
@@ -63,12 +64,15 @@ because the test loses the state of the `BugHouse` between every run.")]
         from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
         select Case.Closed;
 
+    private static CheckrConfig Configure(CheckrConfig cfg)
+        => cfg with { ReportMode = cfg.ReportMode & ~ReportMode.StackTrace };
 
     [CodeReplace("1854571642", "100.Runs()")]
+    [CodeRemove(", Configure")]
     [CodeSnippet]
     private static void RunBugHouseCheckr()
     {
-        BugHouseCheckr.Run(1854571642, 10.ExecutionsPerRun());
+        BugHouseCheckr.Run(1854571642, 10.ExecutionsPerRun(), Configure);
     }
 
     [Fact]
@@ -146,13 +150,14 @@ the failure only emerges when several executions act on the *same* object.
     public void CheckingTheBugHouse()
     {
         var article = TheJournalist.Exposes(RunBugHouseCheckr);
-        WriteAsserts(article);
-        WriteReport<TheStashRunsAndExecutions>(article);
+        WriteAsserts(article, false);
+        WriteReport<TheStashRunsAndExecutions>(article, false);
         Verify(article);
     }
 
     private static void Verify(Article article)
     {
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

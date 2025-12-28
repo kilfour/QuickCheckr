@@ -3,7 +3,7 @@
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    847377183
+ Seed:                    975485913
  ------------------------------------------------------------
   Executed:
    - Input: List = [ [ 42 ] ]

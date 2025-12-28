@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:65:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:72:1
  Original failing run:    5 executions
  Seed:                    1509195528
  ------------------------------------------------------------

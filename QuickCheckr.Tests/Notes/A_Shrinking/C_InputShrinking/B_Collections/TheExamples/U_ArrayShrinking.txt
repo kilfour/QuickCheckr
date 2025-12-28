@@ -3,7 +3,7 @@
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    922552796
+ Seed:                    636978454
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]

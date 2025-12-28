@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTestWarning
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:117:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:119:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -10,5 +10,5 @@
    - Input: Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
-  !! Exception Thrown: Only one is available
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
  ===========================================================================

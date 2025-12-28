@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -23,7 +24,7 @@ public class CreateReadMe : BaseTest
     public void Example()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1141724745, 100.ExecutionsPerRun()));
+            GetCheckr().Run(1141724745, 100.ExecutionsPerRun(), a => a with { ReportMode = a.ReportMode & ~ReportMode.StackTrace }));
         WriteAsserts(article);
         WriteReport<CreateReadMe>(article, false);
         Verify(article);

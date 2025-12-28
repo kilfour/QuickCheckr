@@ -9,5 +9,5 @@
    - Input: Counter = 2
    - Input: Null Thing = null
  ===========================================================================
-  !! Exception Thrown: Only one is available
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
  ===========================================================================
