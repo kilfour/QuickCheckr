@@ -38,4 +38,5 @@
 * Added Stacktrace (yes/no) ReportMode
 * Added *lazy* Checkr.Input
 * When an *eager* Input throws, exception is wrapped in a InputFuzzrThrewException.
-  With an explanation and a suggestion to try the lazy version. 
+  With an explanation and a suggestion to try the lazy version.
+* `Trackr.PoolWhen<T1,T2>` now also exposes PoolElement's

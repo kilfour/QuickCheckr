@@ -169,10 +169,10 @@ A coach was assigned while suitable, then a course's required skills changed, in
             select Case.Closed;
 
     [CodeExample]
-    private static readonly Func<Coach, Course, CheckrOf<Case>> AssignCoachToCourse =
+    private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
         (coach, course) =>
-            from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
-            from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
+            from assign in Checkr.Act("Assign Coach to Course", () => course.Value.AssignCoach(coach.Value))
+            from isAssigned in Checkr.Expect("Coach is assigned", () => course.Value.AssignedCoach == coach.Value)
             select Case.Closed;
 
     [CodeExample]

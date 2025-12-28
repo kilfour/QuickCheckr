@@ -21,7 +21,7 @@ public static partial class Trackr
     public static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen<T1, T2>(
         string key,
         Func<T1, T2, bool> predicate,
-        Func<T1, T2, CheckrOf<Case>> checkr) =>
+        Func<PoolElement<T1>, PoolElement<T2>, CheckrOf<Case>> checkr) =>
         state =>
             CheckrResult.Some<(Func<bool> condition, CheckrOf<Case> checkr)>(
                 state,

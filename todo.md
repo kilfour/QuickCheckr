@@ -3,25 +3,14 @@
 ### Ready for Changelog after review
 
 ### Doing
-* Doc: working on the reference (Checkrs Court)
-* Pool Redesign
-  * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
-    Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
-* Warehousing
-  * Step 5 : dynamically populate WareHouse 
-  * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
+* Doc: working on the reference (Checkrs Court)  
 * play more pool
+  * Warehousing
+    * Step 5 : dynamically populate WareHouse 
+    * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 * review evidence gathering
 
 ### Doc Current Focus 
-* Review/Polish the Guide, looks solid enough for now
-* Review Configuration entry
-  * [ / ] FileAs : add CaseSummary info
-  * [ x ] Custodian
-  * [ x ] ShrinkMode
-  * [ x ] Reportmode
-  * [ x ] DeliberationPolicy
-  * [   ] InternalAffairs
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
@@ -40,15 +29,17 @@
   * limitations
   * known issues
   * workarounds
-* keyed overload for PoolFor, GetPool, ...
+* `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
+    Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
-* Editor: configure QuickPulse.Show (see ideas)
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
-* Stabilize InternalAffairs
+* keyed overload for PoolFor, GetPool, ...
+* Editor: configure QuickPulse.Show (see ideas)
+* Stabilize + Doc InternalAffairs 
 
 ## 0.1.0
 * update xml summaries

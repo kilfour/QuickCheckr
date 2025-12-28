@@ -21,10 +21,11 @@ public static partial class Trackr
             return CheckrResult.CaseOnly(state);
         };
 
+
     public static CheckrOf<Case> OneOfPoolWhen<T1, T2>(
         string key,
         Func<T1, T2, bool> predicate,
-        Func<T1, T2, CheckrOf<Case>> checkr) =>
+        Func<PoolElement<T1>, PoolElement<T2>, CheckrOf<Case>> checkr) =>
         state =>
         {
             var pool1 = state.Memory.GetPoolDictionary<T1>();
@@ -39,7 +40,7 @@ public static partial class Trackr
             state.Memory.StorePoolTrace(key, () => $"( {typeof(T1).Name}-{id1}, {typeof(T2).Name}-{id2} )");
             var (result1, value1) = state.Memory.GetFromPool<T1>(id1);
             var (result2, value2) = state.Memory.GetFromPool<T2>(id2);
-            if (result1 && result2) return CheckrResult.Some(state, checkr(value1!, value2!)(state).Value);
+            if (result1 && result2) return CheckrResult.Some(state, checkr(new PoolElement<T1>(id1, value1), new PoolElement<T2>(id2, value2))(state).Value);
             return CheckrResult.CaseOnly(state);
         };
 }
