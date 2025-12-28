@@ -17,11 +17,11 @@
 
 ### Skipped Tests (4)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
+  Might get removed.
 * GatheringEvidence: Touches the file system.
-* TheBroadcasterTests: Explicit experimental, takes quite long too.
+* TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.7: In Pools We Trust
-
 
 ## 0.0.7+
 * look into different collection shrinking
@@ -29,16 +29,19 @@
   * known issues
   * workarounds
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
-    Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
+    Still feel uneasy having these on Trackr, but let's see how it feels after a while.
 * Dive into Reducers a bit more
   * Generalize Towards(Zero) reducer
   * More reducers
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
-* keyed overload for PoolFor, GetPool, ...
+* keyed overload for PoolFor, GetPool, ... 
+    * maybe not, looks tricky in impl and yucky in usage
+    * alternative: example in cookbook using subclasses or composition
 * Editor: configure QuickPulse.Show (see ideas)
-* Stabilize + Doc InternalAffairs 
+* Stabilize + Doc InternalAffairs
+  * not using these anymore: only need them when there's a shrinking bug, so maybe hide them completely
 
 ## 0.1.0
 * update xml summaries
