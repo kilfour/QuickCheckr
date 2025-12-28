@@ -114,62 +114,23 @@ public class DeskOfficer
 
     private class Ordered
     {
-        public static bool ExecutionDepositionsAreSimilar(
-            List<ExecutionDeposition> executionDepositions,
-            List<ExecutionDeposition> other)
-        {
-            if (executionDepositions.Count != other.Count)
-                return false;
-            int index = 0;
-            foreach (var executionDeposition in executionDepositions)
-            {
-                if (!ExecutionDepositionIsSimilar(executionDepositions[index], other[index]))
-                    return false;
-                index++;
-            }
-            return true;
-        }
+        public static bool ExecutionDepositionsAreSimilar(List<ExecutionDeposition> one, List<ExecutionDeposition> two)
+            => !TheseDiffer(one, two, ExecutionDepositionDiffers);
 
-        private static bool ExecutionDepositionIsSimilar(
-            ExecutionDeposition executionDeposition,
-            ExecutionDeposition other)
-        {
-            if (!ActionDepositionsAreSimilar(executionDeposition.ActionDepositions, other.ActionDepositions))
-                return false;
-            if (!InputDepositionsAreSimilar(executionDeposition.InputDepositions, other.InputDepositions))
-                return false;
-            return true;
-        }
+        private static bool ExecutionDepositionDiffers(ExecutionDeposition one, ExecutionDeposition two)
+            => TheseDiffer(one.ActionDepositions, two.ActionDepositions, (a, b) => a.Label != b.Label)
+            || TheseDiffer(one.InputDepositions, two.InputDepositions, (a, b) => a.Label != b.Label);
 
-        private static bool ActionDepositionsAreSimilar(
-            List<ActionDeposition> actionDepositions, List<ActionDeposition> other)
+        private static bool TheseDiffer<T>(List<T> one, List<T> two, Func<T, T, bool> differs)
         {
-            if (actionDepositions.Count != other.Count)
-                return false;
-            int index = 0;
-            foreach (var actionDeposition in actionDepositions)
+            if (one.Count != two.Count)
+                return true;
+            for (int i = 0; i < one.Count; i++)
             {
-                if (actionDepositions[index].Label != other[index].Label)
-                    return false;
-                index++;
+                if (differs(one[i], two[i]))
+                    return true;
             }
-            return true;
-        }
-
-        private static bool InputDepositionsAreSimilar(
-            List<InputDeposition> inputDepositions,
-             List<InputDeposition> other)
-        {
-            if (inputDepositions.Count != other.Count)
-                return false;
-            int index = 0;
-            foreach (var inputDeposition in inputDepositions)
-            {
-                if (inputDepositions[index].Label != other[index].Label)
-                    return false;
-                index++;
-            }
-            return true;
+            return false;
         }
     }
 }
