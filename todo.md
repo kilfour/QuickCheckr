@@ -10,6 +10,10 @@
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ### Doc Current Focus 
+* Polish the guide a bit more
+  * better examples for 
+    * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
+    * InPoolsWeTrust: expectation is a bit contrived
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
