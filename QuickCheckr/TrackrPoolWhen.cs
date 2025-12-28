@@ -11,8 +11,8 @@ public static partial class Trackr
             state, (() => predicate((IReadOnlyCollection<T>)state.Memory.GetPool<T>()), checkr));
 
     public static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen<T>(
-        Func<IReadOnlyCollection<T>, bool> predicate,
         string key,
+        Func<IReadOnlyCollection<T>, bool> predicate,
         Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
         state => CheckrResult.Some<(Func<bool> condition, CheckrOf<Case> checkr)>(
             state, (() => predicate((IReadOnlyCollection<T>)state.Memory.GetPool<T>()), OneOfPool(key, checkr)));

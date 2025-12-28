@@ -190,11 +190,11 @@ A coach was assigned while suitable, then a course's required skills changed, in
             // Create up to 10 coaches.
             Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
             // Maybe update existing coaches. Pick a random coach from the pool.
-            Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
+            Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
             // Create up to 5 courses.
             Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
             // Maybe update existing courses. Pick a random course from the pool.
-            Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+            Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.
             Trackr.PoolWhen("Assign Coach to Course",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))

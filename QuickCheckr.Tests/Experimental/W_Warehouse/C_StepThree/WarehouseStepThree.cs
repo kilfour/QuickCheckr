@@ -165,8 +165,8 @@ public class WarehouseStepThree : BaseTest
         from service in Trackr.Stashed(GetWarehouseService)
         from clients in Trackr.PoolFor<ClientSim>()
         from ops in Checkr.OneOfWhen(
-            Trackr.PoolWhen<ClientSim>(a => a.Count() < 3, LogOn),
-            Trackr.PoolWhen(a => a.Any(), "Client Action", ClientTakesAction))
+            Trackr.PoolWhen<ClientSim>(a => a.Count < 3, LogOn),
+            Trackr.PoolWhen("Client Action", a => a.Count != 0, ClientTakesAction))
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;

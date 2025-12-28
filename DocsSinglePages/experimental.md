@@ -119,14 +119,14 @@ return
     from clients in Trackr.PoolFor<TestClientProxy>()
     from _ in Checkr.OneOfWhen(
         // 1) Register
-        Trackr.PoolWhen<TestClientProxy>(a => a.Count() < 10,
+        Trackr.PoolWhen<TestClientProxy>(a => a.Count < 10,
             from register in Checkr.Act("Register", broadcaster.Register)
             from client in Trackr.ToPool("Client", factory.LastClient)
             from clientAdded in Checkr.Expect("Client is added to collection",
                 () => broadcaster.HasClient(client))
             select Case.Closed),
         // 2) Remove on fault
-        Trackr.PoolWhen<TestClientProxy>(a => a.Any(), "Faulty Client",
+        Trackr.PoolWhen<TestClientProxy>("Faulty Client", a => a.Count != 0,
             faulty =>
             from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
             from clientRemoved in Checkr.Expect("Faulty client is removed", () =>
@@ -337,8 +337,8 @@ private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(GetWarehouseService)
     from clients in Trackr.PoolFor<ClientSim>()
     from ops in Checkr.OneOfWhen(
-        Trackr.PoolWhen<ClientSim>(a => a.Count() < 3, LogOn),
-        Trackr.PoolWhen(a => a.Any(), "Client Action", ClientTakesAction))
+        Trackr.PoolWhen<ClientSim>(a => a.Count < 3, LogOn),
+        Trackr.PoolWhen("Client Action", a => a.Count != 0, ClientTakesAction))
     from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
         () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
     select Case.Closed;
@@ -502,51 +502,3 @@ private static readonly CheckrOf<Case> PlaceOrder =
 ```
 
 [ShowrUse]: #showr-use
-## Checkr Styles
-> Decomposing LiNQ chains.  
-```csharp
-public class CreateCoachDefinition
-{
-    public static readonly CheckrOf<Case> GetCheckr =
-        from name in Name()
-        from trace in Trace(name)
-        from coach in CreateCoach(name)
-        from verify in Verify(coach, name)
-        select Case.Closed;
-    private static readonly FuzzrOf<string> CoachNameFuzzr =
-        from cnt in Fuzzr.Counter("coach-name")
-        select $"Coach-{cnt}";
-    private static CheckrOf<string> Name() =>
-        Checkr.Input("Coach Name", CoachNameFuzzr);
-    private static CheckrOf<Case> Trace(string name) =>
-        Checkr.Trace("Coach Name", () => name);
-    private static CheckrOf<Coach> CreateCoach(string name) =>
-        from coach in Checkr.Act("Create Coach", () => new Coach(name))
-        from toPool in Trackr.ToPool("Store Coach", coach)
-        select coach;
-    private static CheckrOf<Case> Verify(Coach coach, string name) =>
-        Checkr.Expect("Coach Name is set", () => coach.Name == name);
-}
-```
-```csharp
-public class UpdateCoachSkillsDefinition
-{
-    public static readonly Func<PoolElement<Coach>, CheckrOf<Case>> GetCheckr =
-        coach =>
-            from trace in Trace(coach)
-            from skills in GetSkills()
-            from act in UpdateCoachSkills(coach, skills)
-            from verify in Verify(coach, skills)
-            select Case.Closed;
-    private static CheckrOf<Case> Trace(PoolElement<Coach> coach) =>
-        Checkr.Trace("Coach Name", () => coach.Value.Name);
-    private static CheckrOf<IEnumerable<string>> GetSkills() =>
-        Checkr.Input("Coach Skills", Fuzzr.OneOf(Skills.List).Unique(Guid.NewGuid()).Many(3, 5));
-    private static CheckrOf<Case> UpdateCoachSkills(PoolElement<Coach> coach, IEnumerable<string> skills) =>
-        Checkr.Act("Update Coach Skills", () => coach.Value.UpdateSkills(skills));
-    private static CheckrOf<Case> Verify(PoolElement<Coach> coach, IEnumerable<string> skills) =>
-        Checkr.Expect("Coach Skills Set", () => SkillsMatch(coach, skills));
-    private static bool SkillsMatch(PoolElement<Coach> coach, IEnumerable<string> skills)
-        => coach.Value.Skills.Count == skills.Count() && coach.Value.Skills.All(skills.Contains);
-}
-```

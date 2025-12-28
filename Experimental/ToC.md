@@ -2,4 +2,3 @@
   - [Showr Use](D_ShowrUse/ShowrUse.md)
   - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
   - [Warehousing](W_Warehouse/Warehousing.md)
-  - [Checkr Styles](Y_CheckrStyles/CheckrStyles.md)

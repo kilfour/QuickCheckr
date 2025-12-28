@@ -34,7 +34,7 @@ public partial class TheBroadcasterTest : BaseTest
             from _ in Checkr.OneOfWhen(
 
                 // 1) Register
-                Trackr.PoolWhen<TestClientProxy>(a => a.Count() < 10,
+                Trackr.PoolWhen<TestClientProxy>(a => a.Count < 10,
                     from register in Checkr.Act("Register", broadcaster.Register)
                     from client in Trackr.ToPool("Client", factory.LastClient)
                     from clientAdded in Checkr.Expect("Client is added to collection",
@@ -42,7 +42,7 @@ public partial class TheBroadcasterTest : BaseTest
                     select Case.Closed),
 
                 // 2) Remove on fault
-                Trackr.PoolWhen<TestClientProxy>(a => a.Any(), "Faulty Client",
+                Trackr.PoolWhen<TestClientProxy>("Faulty Client", a => a.Count != 0,
                     faulty =>
                     from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
                     from clientRemoved in Checkr.Expect("Faulty client is removed", () =>

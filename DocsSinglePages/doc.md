@@ -549,7 +549,7 @@ as you will need another execution to put things into the Pool.
 For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `OneOfWhen` Checkr.
   
 ```csharp
-Trackr.PoolWhen<Contact>(a => a.Any(), "A Random Contact",
+Trackr.PoolWhen<Contact>("A Random Contact", a => a.Count != 0,
     contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
 #### Bringing it all back home
@@ -575,15 +575,15 @@ public class Rolodex
         // Pick one of two operations.
     from operations in Checkr.OneOfWhen(
         // 1. Add a (Contact-) name to the Rolodex
-        Trackr.PoolWhen<Contact>(a => a.Count() < 10,
+        Trackr.PoolWhen<Contact>(a => a.Count < 10,
             from name in Checkr.Input("Name", NameFuzzr)
             from add in Checkr.Act("Add", () => contactBook.Add(name))
                 // Store the Contact in the Pool.
             from storeName in Trackr.ToPool("Store", new Contact(name))
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
-        Trackr.PoolWhen<Contact>(a => a.Any(), // <= Can not pick from an empty selection.
-            "Contact to update", contact => // Pick a random Contact to update 
+        Trackr.PoolWhen<Contact>("Contact to update", a => a.Count != 0, // <= Can not pick from an empty selection.
+            contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
                 from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
                     // Update the contact in the pool, keeping model and test data in sync.
@@ -697,11 +697,11 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Create up to 10 coaches.
         Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
         // Maybe update existing coaches. Pick a random coach from the pool.
-        Trackr.PoolWhen(a => a.Any(), "Coach to Update Skills", UpdateCoachSkills),
+        Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
         // Create up to 5 courses.
         Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
-        Trackr.PoolWhen(a => a.Any(), "Course to Update Skills", UpdateCourseSkills),
+        Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
         Trackr.PoolWhen("Assign Coach to Course",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
