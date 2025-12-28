@@ -15,7 +15,6 @@
 * review evidence gathering
 
 ### Doc Current Focus 
-
 * Review/Polish the Guide, looks solid enough for now
 * Review Configuration entry
   * [ / ] FileAs : add CaseSummary info
@@ -27,7 +26,6 @@
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
-* ParsingNumbers example: Uncomment Assert, decimal separator now breaks build.
 
 ### Skipped Tests (4)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
