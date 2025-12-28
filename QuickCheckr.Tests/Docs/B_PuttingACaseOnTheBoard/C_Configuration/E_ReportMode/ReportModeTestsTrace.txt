@@ -10,5 +10,5 @@
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
  ===========================================================================

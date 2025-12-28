@@ -1,8 +1,8 @@
 ## Current Version: 0.0.6 
- 
+
 ### Ready for Changelog after review
 
-### Doing
+### Doing/Ongoing
 * Doc: working on the reference (Checkrs Court)  
 * play more pool
   * Warehousing
@@ -21,8 +21,7 @@
 * TheBroadcasterTests: Explicit experimental, takes quite long too.
 
 ## 0.0.7: In Pools We Trust
-* Stabilize Pools
-* Better Exception failure Message format in report
+
 
 ## 0.0.7+
 * look into different collection shrinking

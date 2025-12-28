@@ -19,7 +19,7 @@
    - Input: Counter = 4
    - Input: Name = "BBB"
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
+  !! ComputerSaysNo: I'm afraid I can't do that BBB
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 69
    at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 55

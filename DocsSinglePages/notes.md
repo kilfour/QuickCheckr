@@ -397,7 +397,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
    - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 78 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
-  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+  !! NullReferenceException: Object reference not set to an instance of an object.
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
@@ -418,7 +418,7 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
    - WARNING: Null value for type 'Life' at input 'The Universe.Irrelevant'.
  ===========================================================================
-  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+  !! NullReferenceException: Object reference not set to an instance of an object.
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
@@ -446,7 +446,7 @@ The current workaround to avoid the irrelevant input being reported as relevant 
    - Input: Everything = null
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
-  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+  !! NullReferenceException: Object reference not set to an instance of an object.
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass7_2.GetCheckr_Alternative() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 135
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
@@ -471,7 +471,7 @@ private static CheckrConfig Configure(CheckrConfig config)
    - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 35 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
-  !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
+  !! NullReferenceException: Object reference not set to an instance of an object.
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.TheUniverse.GetTheAnswer() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 168
    at QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.E_CheckingNulls.<>c__DisplayClass2_1.GetCheckr() in Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:line 63
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
@@ -1429,7 +1429,7 @@ public class ContactBook
    - Input: Counter = 4
    - Input: Name = "BBB"
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
+  !! ComputerSaysNo: I'm afraid I can't do that BBB
    at QuickPulse.Instruments.ComputerSays.No(String msg)
    at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 69
    at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 55

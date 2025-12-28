@@ -40,3 +40,4 @@
 * When an *eager* Input throws, exception is wrapped in a InputFuzzrThrewException.
   With an explanation and a suggestion to try the lazy version.
 * `Trackr.PoolWhen<T1,T2>` now also exposes PoolElement's
+* Minor change to Exception Failure message formatting in report

@@ -160,7 +160,7 @@ return
  ------------------------------------------------------------
   Executed: stop
  ===========================================================================
-  !! Exception Thrown: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
+  !! InvalidOperationException: Collection was modified; enumeration operation may not execute.
    at System.Collections.Generic.List`1.Enumerator.MoveNext()
    at QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel.Broadcaster.Broadcast(Notification notification) in Experimental\F_TheBroadcaster\SimpleModel\Broadcaster.cs:line 35
    at QuickCheckr.Tests.Experimental.F_TheBroadcaster.TheBroadcasterTest.<>c__DisplayClass1_1.GetCheckr() in Experimental\F_TheBroadcaster\TheBroadcasterTest.cs:line 54

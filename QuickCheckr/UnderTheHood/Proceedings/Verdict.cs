@@ -29,7 +29,7 @@ public class Verdict
 
         if (dossier.Exception is not null)
         {
-            var message = $"{dossier.Exception.GetType()}: {dossier.Exception.Message}";
+            var message = $"{dossier.Exception.GetType().Name}: {dossier.Exception.Message}";
             return dossier.ReportStackTrace
                 ? new ExceptionDeposition(dossier.Exception.ToString(), message)
                 : new ExceptionDeposition(message, message);

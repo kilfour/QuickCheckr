@@ -53,8 +53,8 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyNone(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
@@ -87,8 +87,8 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyTrace(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
@@ -124,8 +124,8 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyWarning(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
@@ -160,7 +160,7 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyStackTrace(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
         Assert.Contains("at QuickPulse.Instruments.ComputerSays.No", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
@@ -193,7 +193,7 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyDefault(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
         Assert.Contains("at QuickPulse.Instruments.ComputerSays.No", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());

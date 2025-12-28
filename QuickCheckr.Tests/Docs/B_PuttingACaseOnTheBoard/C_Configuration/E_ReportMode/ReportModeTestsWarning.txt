@@ -10,5 +10,5 @@
    - Input: Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
  ===========================================================================

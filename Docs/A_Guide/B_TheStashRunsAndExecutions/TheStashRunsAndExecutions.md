@@ -58,7 +58,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+  !! ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
  ===========================================================================
  Passed Expectations
  - Returns true: 2x

@@ -28,7 +28,7 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
    - Input: Counter = 2
    - Input: Null Thing = null
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
 ## Trace
@@ -50,7 +50,7 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
 ## Warning
@@ -72,7 +72,7 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
    - Input: Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
 ## StackTrace
@@ -93,7 +93,7 @@ private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
    - Input: Counter = 2
    - Input: Null Thing = null
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
    at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
@@ -116,7 +116,7 @@ Includes all possible ReportModes.
    - Trace: Irrelevant = 73
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
-  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+  !! ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
    at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12

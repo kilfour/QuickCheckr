@@ -43,7 +43,7 @@ select Case.Closed;
  ------------------------------------------------------------
   Executed: BugHouse.Run (2 Times)
  ===========================================================================
-  !! Exception Thrown: System.Exception: Here's Johnny
+  !! Exception: Here's Johnny
  ===========================================================================
  Passed Expectations
  - Returns true: 84x

@@ -157,7 +157,7 @@ the failure only emerges when several executions act on the *same* object.
 
     private static void Verify(Article article)
     {
-        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.", article.FailureDescription());
+        Assert.Equal("ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
