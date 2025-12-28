@@ -3,7 +3,6 @@
 ### Ready for Changelog after review
 
 ### Doing/Ongoing
-* Doc: working on the reference (Checkrs Court)  
 * play more pool
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
@@ -14,6 +13,7 @@
   * better examples for 
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
+* Working on the reference (Checkrs Court) 
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
@@ -25,6 +25,7 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.7: In Pools We Trust
+I think it's ready ;-)
 
 ## 0.0.7+
 * look into different collection shrinking
