@@ -590,7 +590,8 @@ public class Rolodex
                     // Update the contact in the pool, keeping model and test data in sync.
                 from updatePool in contact.Replace(new Contact(newName))
                 select Case.Closed))
-    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count() == contactBook.Contacts.Count)
+        // This expectation implicitely verifies that duplicates are allowed. 
+    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
     select Case.Closed;
 ```
 #### The Report
