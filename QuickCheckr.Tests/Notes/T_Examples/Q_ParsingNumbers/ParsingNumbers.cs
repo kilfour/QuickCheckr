@@ -38,7 +38,7 @@ public class ParsingNumbers : BaseTest
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("(2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2", article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Compare", article.Execution(1).Trace(2).Read().Label);
-        //Assert.Equal("Golden: 1,5000006416666136 /= SUT: 2139,2800925925926", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal("Golden: 1.5000006416666136 /= SUT: 2139.2800925925926", article.Execution(1).Trace(2).Read().Value.ToString()!.Replace(",", "."));
     }
 
     [CodeSnippet]
