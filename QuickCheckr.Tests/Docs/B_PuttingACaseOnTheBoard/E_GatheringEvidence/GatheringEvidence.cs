@@ -10,7 +10,6 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 
 [DocFile]
 [DocContent("This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.")]
-[DocHeader("!! Check The Reports !! '1073620588' Looks like a Pool shrinking issue.")]
 [DocHeader("Running Investigations")]
 [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
 [DocContent(
@@ -184,9 +183,9 @@ public class GatheringEvidence : BaseTest
     [DocCodeFile("report5.qr", "text")]
     public void RunTest()
     {
-        GetCheckr().Run(1073620588, 10.ExecutionsPerRun(),
-            cfg => cfg with { FileAs = "GatheringEvidence", ShrinkMode = Protocol.ShrinkMode.None });
-        //RunGatherEvidence(GetCheckr());
+        // GetCheckr().Run(1073620588, 10.ExecutionsPerRun(),
+        //     cfg => cfg with { FileAs = "GatheringEvidence", ShrinkMode = Protocol.ShrinkMode.Default });
+        RunGatherEvidence(GetCheckr());
     }
 
     [CodeSnippet]

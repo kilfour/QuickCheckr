@@ -1,6 +1,4 @@
 ## Current Version: 0.0.6 
-* Pool shrinking issue ?
-  * see report_1073620588.qr and report.qr for gathering evidence.
 
 ### Ready for Changelog after review
 

@@ -53,28 +53,19 @@ Running the Checkr without shrinking yields a report similar to this:
 ------------------------------------------------------------
  Test:                    RunTest
  Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:72:1
- Original failing run:    5 executions
- Seed:                    1509195528
+ Original failing run:    2 executions
+ Seed:                    1684147193
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 61
+   - Input: Amount = 17
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 13
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 61
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 20
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 98
+   - Input: Amount = 87
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 4x
+ - No Overdraft: 1x
  ------------------------------------------------------------
 ```
 This shows us that **QuickCheckr records the branch actually taken for each execution**.    
@@ -85,17 +76,17 @@ And if we let the QuickCheckr shrinker do its work:
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
  Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:123:1
- Original failing run:    5 executions
- Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1509195528
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1684147193
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 98
+   - Input: Amount = 87
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 4x
+ - No Overdraft: 1x
  ------------------------------------------------------------
 ```
 The shrunk case shows:

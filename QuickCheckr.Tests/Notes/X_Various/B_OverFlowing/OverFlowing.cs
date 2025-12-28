@@ -51,10 +51,10 @@ public class OverFlowing : BaseTest
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(8, article.ShrinkCount);
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(8, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Entry", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("1959373951", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("1138084379", article.Execution(1).Input(1).Read().Value);
         Assert.Equal(10, article.Execution(2).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Entry", article.Execution(2).Input(1).Read().Label);

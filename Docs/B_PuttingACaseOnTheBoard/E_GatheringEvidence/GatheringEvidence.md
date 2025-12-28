@@ -1,6 +1,5 @@
 # Gathering Evidence
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
-## !! Check The Reports !! '1073620588' Looks like a Pool shrinking issue.
 ## Running Investigations
 ```csharp
 checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
@@ -73,95 +72,26 @@ public class ContactBook
 For the code on display here, running this checkr using the code snippet at the top of this file, consistently results in five different reports.  
 ```text
 ------------------------------------------------------------
- Original failing run:    4 executions
- Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    872928811
+ Original failing run:    8 executions
+ Minimal failing case:    5 executions (after 6 shrinks)
+ Seed:                    144924357
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-2
-   - Input: Name = "John Starr"
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-4
-   - Input: Name = "John Starr"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 3x
- ------------------------------------------------------------
-```
-```text
-------------------------------------------------------------
- Original failing run:    5 executions
- Minimal failing case:    5 executions (after 3 shrinks)
- Seed:                    1020557908
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-1
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-1
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-2
-   - Input: New Name = "Paul Lennon"
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: New Name = "Paul Lennon"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 4x
- ------------------------------------------------------------
-```
-```text
-------------------------------------------------------------
- Original failing run:    10 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    1073620588
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-3
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-2
- ------------------------------------------------------------
-  Executed: Update
    -  Pool: Name to update = String-3
-   - Input: New Name = "George Harrison"
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-7
-   - Input: Name = "George Harrison"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 9x
- ------------------------------------------------------------
-```
-```text
-------------------------------------------------------------
- Original failing run:    8 executions
- Minimal failing case:    3 executions (after 6 shrinks)
- Seed:                    1093669085
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-1
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-4
-   - Input: Name = "John Lennon"
+   - Input: New Name = "Paul Starr"
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: New Name = "John Lennon"
+   -  Pool: Name to update = String-2
+   - Input: New Name = "Paul Starr"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
@@ -171,9 +101,59 @@ For the code on display here, running this checkr using the code snippet at the 
 ```
 ```text
 ------------------------------------------------------------
- Original failing run:    7 executions
- Minimal failing case:    4 executions (after 5 shrinks)
- Seed:                    2128478719
+ Original failing run:    6 executions
+ Minimal failing case:    2 executions (after 4 shrinks)
+ Seed:                    702299080
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-2
+   - Input: Name = "Ringo Lennon"
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-5
+   - Input: Name = "Ringo Lennon"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 5x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    9 executions
+ Minimal failing case:    4 executions (after 7 shrinks)
+ Seed:                    1364717048
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-1
+ ------------------------------------------------------------
+  Executed: Update
+   -  Pool: Name to update = String-1
+ ------------------------------------------------------------
+  Executed: Update
+   -  Pool: Name to update = String-1
+   - Input: New Name = "Paul Starr"
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-5
+   - Input: Name = "Paul Starr"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 8x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    1803941506
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-1
+   - Input: Name = "George Starr"
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-2
@@ -181,17 +161,36 @@ For the code on display here, running this checkr using the code snippet at the 
   Executed: Update
    -  Pool: Name to update = String-2
    - Input: New Name = "George Starr"
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-3
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-3
-   - Input: New Name = "George Starr"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 6x
+ - Count matches: 2x
+ ------------------------------------------------------------
+```
+```text
+------------------------------------------------------------
+ Original failing run:    10 executions
+ Minimal failing case:    4 executions (after 8 shrinks)
+ Seed:                    1887243958
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-1
+ ------------------------------------------------------------
+  Executed: Add
+   -  Pool: Name = String-2
+ ------------------------------------------------------------
+  Executed: Update
+   -  Pool: Name to update = String-2
+   - Input: New Name = "John Starr"
+ ------------------------------------------------------------
+  Executed: Update
+   -  Pool: Name to update = String-1
+   - Input: New Name = "John Starr"
+ ========================================
+  !! Expectation Failed: Count matches
+ ========================================
+ Passed Expectations
+ - Count matches: 9x
  ------------------------------------------------------------
 ```

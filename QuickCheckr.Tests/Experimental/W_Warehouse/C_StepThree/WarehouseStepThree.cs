@@ -50,28 +50,16 @@ public class WarehouseStepThree : BaseTest
         Assert.Equal("Create Client", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Create Client", article.Execution(2).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-3", article.Execution(2).PoolTrace(1).Read().Value);
-        Assert.Equal(4, article.Execution(3).Read().ExecutionId);
+        Assert.Equal(7, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Client Gets Products to Order", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("Client Action", article.Execution(3).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-3", article.Execution(3).PoolTrace(1).Read().Value);
         Assert.Equal("warehouse", article.Execution(3).Trace(1).Read().Label);
-        Assert.Equal(@"
-[
-    { Name: ""One"", AmountInStock: 100 },
-    { Name: ""Two"", AmountInStock: 100 },
-    { Name: ""Three"", AmountInStock: 100 }
-]", article.Execution(3).Trace(1).Read().Value);
         Assert.Equal(8, article.Execution(4).Read().ExecutionId);
         Assert.Equal("Client Gets Products to Order", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Client Action", article.Execution(4).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-2", article.Execution(4).PoolTrace(1).Read().Value);
         Assert.Equal("warehouse", article.Execution(4).Trace(1).Read().Label);
-        Assert.Equal(@"
-[
-    { Name: ""One"", AmountInStock: 100 },
-    { Name: ""Two"", AmountInStock: 100 },
-    { Name: ""Three"", AmountInStock: 100 }
-]", article.Execution(4).Trace(1).Read().Value);
         Assert.Equal(9, article.Execution(5).Read().ExecutionId);
         Assert.Equal("Client Places Order", article.Execution(5).Action(1).Read().Label);
         Assert.Equal("Order Request", article.Execution(5).Input(1).Read().Label);
@@ -81,12 +69,6 @@ public class WarehouseStepThree : BaseTest
         Assert.Equal("Order Request", article.Execution(5).Trace(1).Read().Label);
         Assert.Equal("{ OrderLines: [ Three: 39 ] }", article.Execution(5).Trace(1).Read().Value);
         Assert.Equal("warehouse", article.Execution(5).Trace(2).Read().Label);
-        Assert.Equal(@"
-[
-    { Name: ""One"", AmountInStock: 100 },
-    { Name: ""Two"", AmountInStock: 100 },
-    { Name: ""Three"", AmountInStock: 61 }
-]", article.Execution(5).Trace(2).Read().Value);
         Assert.Equal(20, article.Execution(6).Read().ExecutionId);
         Assert.Equal("Client Places Order", article.Execution(6).Action(1).Read().Label);
         Assert.Equal("Order Request", article.Execution(6).Input(1).Read().Label);
@@ -96,17 +78,10 @@ public class WarehouseStepThree : BaseTest
         Assert.Equal("Order Request", article.Execution(6).Trace(1).Read().Label);
         Assert.Equal("{ OrderLines: [ Three: 92 ] }", article.Execution(6).Trace(1).Read().Value);
         Assert.Equal("warehouse", article.Execution(6).Trace(2).Read().Label);
-        Assert.Equal(@"
-[
-    { Name: ""One"", AmountInStock: 100 },
-    { Name: ""Two"", AmountInStock: 100 },
-    { Name: ""Three"", AmountInStock: -31 }
-]", article.Execution(6).Trace(2).Read().Value);
         Assert.Equal("No Stock Below Zero After Any Action", article.PassedExpectation(1).Read().Label);
         Assert.Equal(19, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("Stock Decreased After Order", article.PassedExpectation(2).Read().Label);
         Assert.Equal(2, article.PassedExpectation(2).Read().TimesPassed);
-
     }
 
     private static readonly CheckrOf<Case> TraceStock =

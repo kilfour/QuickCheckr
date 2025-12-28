@@ -1,21 +1,21 @@
  ------------------------------------------------------------
- Original failing run:    8 executions
- Minimal failing case:    3 executions (after 6 shrinks)
- Seed:                    1093669085
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    1803941506
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-1
+   - Input: Name = "George Starr"
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-4
-   - Input: Name = "John Lennon"
+   -  Pool: Name = String-2
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: New Name = "John Lennon"
+   -  Pool: Name to update = String-2
+   - Input: New Name = "George Starr"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
  Passed Expectations
- - Count matches: 7x
+ - Count matches: 2x
  ------------------------------------------------------------

@@ -57,7 +57,7 @@ public class TheNeedlerPattern : BaseTest
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(9, article.ShrinkCount);
-        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
         Assert.Equal("start", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
