@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:37:1
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:27:1
  Original failing run:    12 executions
  Minimal failing case:    3 executions (after 14 shrinks)
  Seed:                    1344312712

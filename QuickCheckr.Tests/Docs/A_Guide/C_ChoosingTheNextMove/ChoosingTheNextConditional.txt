@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest_Conditional
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:182:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:169:1
  Original failing run:    2 executions
  Seed:                    356083796
  ------------------------------------------------------------
