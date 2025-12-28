@@ -3,7 +3,7 @@
 * Consistency check for PoolWhen arg order
  
 ### Ready for Changelog after review
-* Checked exposing Pool IEnumerable for predicates as IReadOnlyCollection everywhere
+* Only expose Pool IEnumerable for predicates as IReadOnlyCollection
 ### Doing
 * Pool Redesign
   * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
@@ -15,7 +15,6 @@
     !! needs more investigation before deciding !!
   * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
 * play more pool
-  * only expose readonly version of the enumerable for predicates
 * review evidence gathering
 
 ### Doc Current Focus 
@@ -81,13 +80,13 @@ Stabilize Pools
   Should be a lot easier than before
   
 ## Refactoring Targets 
-* Loose the lazy IEnumerable in shrinking (yield)
+* DeskOfficer seems a bit wastefull with all those lists
+  * fixed ordered version
 
 ### Already Considered
 > Looked at these and not deemed needed (now). Just keeping this list in order to avoid me doing the same thing twice.
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
   * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look 
-* DeskOfficer seems a bit wastefull with all those lists
 * Refactoring: simplify casefile compile
   * meh, looked at it. It's annoying occasionally, if a new transformation is needed, but fine for now.
 * GetFromPool (bool, T?) => Result. Also not needed, a tuple will do in this case.

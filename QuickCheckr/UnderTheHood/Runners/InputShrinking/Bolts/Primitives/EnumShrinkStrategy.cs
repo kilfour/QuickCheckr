@@ -8,20 +8,18 @@ public class EnumShrinkStrategy : IShrinkingStrategy
     {
         var verifier = new Verifier(state, check);
         var enumVals = GetEnumValues(info.Type);
-
         foreach (var candidate in enumVals.Where(x => !Equals(x, info.Value)))
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
                 var clue = InputShrinkingClue.Keep<EnumShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
-                yield return clue;
-                yield break;
+                return [clue];
             }
         }
         var ignoreClue = InputShrinkingClue.Ignore<EnumShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-        yield return ignoreClue;
+        return [ignoreClue];
     }
 
     private static IEnumerable<object> GetEnumValues(Type type)

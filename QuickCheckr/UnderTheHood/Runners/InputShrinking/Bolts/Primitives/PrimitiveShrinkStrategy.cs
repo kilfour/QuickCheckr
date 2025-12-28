@@ -12,7 +12,7 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
         var verifier = new Verifier(state, check);
         var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(info.Type));
         if (primitiveKey == null)
-            yield break;
+            return [];
 
         var primitiveVals = PrimitiveValues[primitiveKey];
         foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
@@ -21,13 +21,12 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
             {
                 var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
-                yield return clue;
-                yield break;
+                return [clue];
             }
         }
         var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-        yield return ignoreClue;
+        return [ignoreClue];
     }
 
     public static readonly Dictionary<Type, object[]> PrimitiveValues =
