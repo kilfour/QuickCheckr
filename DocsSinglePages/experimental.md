@@ -23,7 +23,7 @@ public class Eventually
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:34:1
+ Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:35:1
  Original failing run:    10 executions
  Minimal failing case:    2 executions (after 9 shrinks)
  Seed:                    307579878
@@ -223,7 +223,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:37:1
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:27:1
  Original failing run:    12 executions
  Minimal failing case:    3 executions (after 14 shrinks)
  Seed:                    1344312712
