@@ -1,4 +1,6 @@
 # Gathering Evidence
+[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+  
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 ## Running Investigations
 ```csharp
@@ -194,3 +196,9 @@ For the code on display here, running this checkr using the code snippet at the 
  - Count matches: 9x
  ------------------------------------------------------------
 ```
+
+[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+
+[PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
+
+[TheEvidenceVault]: ../D_TheEvidenceVault/TheEvidenceVault.md

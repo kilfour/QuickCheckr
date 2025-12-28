@@ -9,7 +9,7 @@ using QuickPulse.Instruments;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
 
-[DocFile]
+//[DocFile]
 [DocFileHeader("ReportMode")]
 [DocContent(
 @"Controls whether or not *Traces*, *Warnings*  and/or *Exception StackTraces* show up in the report.
@@ -38,7 +38,7 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.None };
 
     [Fact]
-    [DocHeader("None")]
+    [DocHeader("ReportMode.None", 1)]
     [DocContent("No traces, no warnings, no stacktrace.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureNone))]
     [DocCodeFile("ReportModeTestsNone.txt", "text")]
@@ -72,7 +72,7 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.Trace };
 
     [Fact]
-    [DocHeader("Trace")]
+    [DocHeader("ReportMode.Trace", 1)]
     [DocContent("Only traces.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureTrace))]
     [DocCodeFile("ReportModeTestsTrace.txt", "text")]
@@ -109,7 +109,7 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.Warning };
 
     [Fact]
-    [DocHeader("Warning")]
+    [DocHeader("ReportMode.Warning", 1)]
     [DocContent("Only warnings.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureWarning))]
     [DocCodeFile("ReportModeTestsWarning.txt", "text")]
@@ -145,7 +145,7 @@ public class ReportModeTests : BaseTest
         => config with { ReportMode = ReportMode.StackTrace };
 
     [Fact]
-    [DocHeader("StackTrace")]
+    [DocHeader("ReportMode.StackTrace", 1)]
     [DocContent("Includes the StackTrace in the failure description if an exception is thrown.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureStackTrace))]
     [DocCodeFile("ReportModeTestsStackTrace.txt", "text")]
@@ -175,7 +175,7 @@ public class ReportModeTests : BaseTest
     }
 
     [Fact]
-    [DocHeader("Default")]
+    [DocHeader("ReportMode.Default", 1)]
     [DocContent("Includes all possible ReportModes.")]
     [DocCodeFile("ReportModeTestsDefault.txt", "text")]
     public void DefaultSetting()

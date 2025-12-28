@@ -1,5 +1,5 @@
 # In Pools We Trust
-[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
   
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
@@ -128,7 +128,7 @@ public class Rolodex
  ------------------------------------------------------------
 ```
 
-[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
 
 [Guide]: ../Guide.md
 

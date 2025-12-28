@@ -4,7 +4,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 
-[DocFile]
+//[DocFile]
 [DocContent(
 @"`TheCustodian` is in charge of storing and retrieving QuickCheckr artifacts.  
 As we saw in 'Filing Evidence', QuickCheckr stores reports and failing seeds on disk.  

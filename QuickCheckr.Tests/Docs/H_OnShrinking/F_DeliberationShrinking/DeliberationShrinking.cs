@@ -11,7 +11,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
-[DocLink(typeof(B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy.DeliberationPolicy))]
+[DocLink(typeof(B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy.DeliberationPolicyTests))]
 [DocContent(
 @"This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 

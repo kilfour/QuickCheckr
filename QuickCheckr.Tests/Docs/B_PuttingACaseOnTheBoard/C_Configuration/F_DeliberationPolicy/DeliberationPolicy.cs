@@ -9,7 +9,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 
-[DocFile]
+//[DocFile]
 [DocLink(typeof(DeliberationShrinking), "DeliberationShrinking")]
 [DocContent(
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
@@ -18,7 +18,7 @@ Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore
 Consider the following model:")]
 [DocExample(typeof(Account))]
 [DocContent("It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.")]
-public class DeliberationPolicy : BaseTest
+public class DeliberationPolicyTests : BaseTest
 {
     [CodeExample]
     public class Account
@@ -57,7 +57,7 @@ public class DeliberationPolicy : BaseTest
 
     [Fact]
     [DocContent("We can verify this with the following Checkr:")]
-    [DocExample(typeof(DeliberationPolicy), nameof(GetCheckr))]
+    [DocExample(typeof(DeliberationPolicyTests), nameof(GetCheckr))]
     [DocContent("Now if we run this we might get something like this:")]
     [DocCodeFile("DeliberationPolicy.txt", "text")]
     public void RunTest()
@@ -65,7 +65,7 @@ public class DeliberationPolicy : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1920827676, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<DeliberationPolicy>(article, false);
+        WriteReport<DeliberationPolicyTests>(article, false);
         Verify(article);
     }
 
@@ -103,7 +103,7 @@ public class DeliberationPolicy : BaseTest
 @"As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
 
 Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:")]
-    [DocExample(typeof(DeliberationPolicy), nameof(Configure))]
+    [DocExample(typeof(DeliberationPolicyTests), nameof(Configure))]
     [DocContent("Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.")]
     [DocCodeFile("DeliberationPolicyMinimal.txt", "text")]
     [DocContent(

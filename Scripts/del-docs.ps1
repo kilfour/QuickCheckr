@@ -4,3 +4,4 @@ Remove-Item "Drafts" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Experimental" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Notes" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "DocsSinglePages" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "CookBook" -Recurse -Force -ErrorAction SilentlyContinue

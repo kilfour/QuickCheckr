@@ -83,4 +83,4 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  ===============================================================
 ```
 
-[DeliberationPolicy]: ../../B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicy.md
+[DeliberationPolicyTests]: ../../B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicyTests.md

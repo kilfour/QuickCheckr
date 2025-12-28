@@ -15,7 +15,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 [DocLink(typeof(Guide))]
 [DocLink(typeof(ChoosingTheNextMove))]
 [DocLink(typeof(BoltingHorses))]
-[DocContent("[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  \n")]
+[DocContent("[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  \n")]
 [DocContent(
 @"
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
@@ -145,7 +145,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
     [DocExample(typeof(InPoolsWeTrust), nameof(GetCheckr))]
     [DocHeader("The Report", 1)]
     [DocCodeFile("InPoolsWeTrust.txt", "text")]
-    [DocContent("\n[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]")]
+    [DocContent("\n[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]")]
     public void AllTogetherNow()
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(1444257086, 10.ExecutionsPerRun()));

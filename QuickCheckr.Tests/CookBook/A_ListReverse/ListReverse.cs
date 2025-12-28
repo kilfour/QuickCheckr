@@ -6,7 +6,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.T_Cookbook.A_ListReverse;
+namespace QuickCheckr.Tests.CookBook.A_ListReverse;
 
 [DocFile]
 [DocFileHeader("Verifying List Reversal (Double-Reverse Law)")]

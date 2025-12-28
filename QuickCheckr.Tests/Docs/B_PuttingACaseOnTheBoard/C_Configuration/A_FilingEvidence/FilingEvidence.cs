@@ -8,7 +8,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_FilingEvidence;
 
-[DocFile]
+//[DocFile]
 public class FilingEvidence : BaseTest
 {
     private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");

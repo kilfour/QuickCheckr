@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.EvidenceGathering;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -9,6 +10,9 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 
 [DocFile]
+[DocLink(typeof(PuttingACaseOnTheBoard))]
+[DocLink(typeof(TheEvidenceVault))]
+[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  \n")]
 [DocContent("This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.")]
 [DocHeader("Running Investigations")]
 [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
@@ -181,6 +185,7 @@ public class GatheringEvidence : BaseTest
     [DocCodeFile("report3.qr", "text")]
     [DocCodeFile("report4.qr", "text")]
     [DocCodeFile("report5.qr", "text")]
+    [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]
     public void RunTest()
     {
         // GetCheckr().Run(1073620588, 10.ExecutionsPerRun(),

@@ -11,12 +11,11 @@ using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_InternalAffairs;
 
-[DocFile]
-//[DocContent("These tests show the initial version of QuickCheckrs logging configuration.")]
-[DocContent("The clue is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...")]
+//[DocFile]
+[DocContent("The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...")]
 [DocExperimental]
 [DocContent("It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.")]
-public class InternalAffairs : BaseTest
+public class InternalAffairsTests : BaseTest
 {
     [Fact(Skip = "TODO: Pick a different, simpler example")]
     public void CheckEventProcedure()

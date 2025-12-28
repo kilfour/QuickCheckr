@@ -1,5 +1,7 @@
 using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickPulse.Explains.Text;
@@ -8,6 +10,10 @@ using QuickPulse.Explains.Text;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 
 [DocFile]
+[DocLink(typeof(PuttingACaseOnTheBoard))]
+[DocLink(typeof(Configuration))]
+[DocLink(typeof(GatheringEvidence))]
+[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  \n")]
 public class TheEvidenceVault : BaseTest
 {
     private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
@@ -145,6 +151,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 @"If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.")]
+    [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]")]
     public void ClosingColdCasesNowPass()
     {
         var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };

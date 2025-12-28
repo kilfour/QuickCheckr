@@ -8,7 +8,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.D_ShrinkMode;
 
-[DocFile]
+//[DocFile]
 [DocFileHeader("ShrinkMode")]
 [DocContent(
 @"Controls which shrinking strategies are active.
@@ -35,7 +35,7 @@ public class ShrinkModeTests : BaseTest
 
     [Fact]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureNone))]
-    [DocHeader("None")]
+    [DocHeader("ShrinkMode.None", 1)]
     [DocContent("QuickCheckr reports the original failing run.")]
     [DocCodeFile("ShrinkModeTestsNone.txt", "text")]
     public void RunTestNone()
@@ -79,7 +79,7 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Executions };
 
     [Fact]
-    [DocHeader("Executions")]
+    [DocHeader("ShrinkMode.Executions", 1)]
     [DocContent("Trims away irrelevant executions.")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureExecutions))]
     [DocCodeFile("ShrinkModeTestsExecutions.txt", "text")]
@@ -114,7 +114,7 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Inputs };
 
     [Fact]
-    [DocHeader("Inputs")]
+    [DocHeader("ShrinkMode.Inputs", 1)]
     [DocContent("Trims inputs to find a minimal failing case.")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureInputs))]
     [DocCodeFile("ShrinkModeTestsInputs.txt", "text")]
@@ -148,7 +148,7 @@ public class ShrinkModeTests : BaseTest
         => config with { ShrinkMode = ShrinkMode.Reduction };
 
     [Fact]
-    [DocHeader("Reduction")]
+    [DocHeader("ShrinkMode.Reduction", 1)]
     [DocContent("Applies configured reducers for fine-grained shrinking.")]
     [DocExample(typeof(ShrinkModeTests), nameof(ConfigureReduction))]
     [DocExperimental]
@@ -169,7 +169,7 @@ public class ShrinkModeTests : BaseTest
     }
 
     [Fact]
-    [DocHeader("Default")]
+    [DocHeader("ShrinkMode.Default", 1)]
     [DocContent("Includes all possible ShrinkModes.")]
     [DocCodeFile("ShrinkModeTestsDefault.txt", "text")]
     public void DefaultSetting()

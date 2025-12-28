@@ -1,0 +1,3 @@
+- [Cook Book](CookBook.md)
+  - [Verifying List Reversal (Double-Reverse Law)](A_ListReverse/ListReverse.md)
+  - [Testing Aggregate Behaviour (Trackr.Verify)](L_TheLoadedDie/TheLoadedDie.md)

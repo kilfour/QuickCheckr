@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 [DocFile]
 [DocLink(typeof(Guide))]
 [DocLink(typeof(InPoolsWeTrust))]
-[DocContent("[Top][Guide] | [Previous][InPoolsWeTrust]  \n")]
+[DocContent("[Up][Guide] | [Previous][InPoolsWeTrust]  \n")]
 [DocContent(
 @"Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
@@ -69,7 +69,7 @@ And finally here's the system invariant.
 @"The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment."
     )]
-    [DocContent("\n[Top][Guide] | [Previous][InPoolsWeTrust]")]
+    [DocContent("\n[Up][Guide] | [Previous][InPoolsWeTrust]")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun()));

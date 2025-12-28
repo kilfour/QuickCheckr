@@ -1,15 +1,36 @@
 using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_FilingEvidence;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.D_ShrinkMode;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_InternalAffairs;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickPulse.Explains;
 
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 
 [DocFile]
+[DocLink(typeof(PuttingACaseOnTheBoard))]
+[DocLink(typeof(RunningACheckr))]
+[DocLink(typeof(TheEvidenceVault))]
+[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  \n")]
 [DocContent(
 @"QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
 
 All configuration options live in the `QuickCheckr.Protocol` namespace.")]
+[DocContent("\n**Default Configuration:**")]
+[DocExample(typeof(Configuration), nameof(DefaultSettings))]
+[DocInclude(typeof(FilingEvidence))]
+[DocInclude(typeof(TheCustodian))]
+[DocInclude(typeof(ShrinkModeTests))]
+[DocInclude(typeof(ReportModeTests))]
+[DocInclude(typeof(DeliberationPolicyTests))]
+[DocInclude(typeof(InternalAffairsTests))]
+[DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]")]
 public class Configuration
 {
     [CodeSnippet]
@@ -29,8 +50,7 @@ public class Configuration
     }
 
     [Fact]
-    [DocContent("\n**Default Configuration:**")]
-    [DocExample(typeof(Configuration), nameof(DefaultSettings))]
+
     public void DefaultConfig()
     {
         var expected = DefaultSettings();

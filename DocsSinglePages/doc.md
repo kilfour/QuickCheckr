@@ -28,7 +28,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
 
 [BoltingHorses]: #bolting-horses
 ### Checkr-ing Things Out
-[Top][Guide] | [Next][TheStashRunsAndExecutions]  
+[Up][Guide] | [Next][TheStashRunsAndExecutions]  
   
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
@@ -194,13 +194,13 @@ And here's the report:
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
-[Top][Guide] | [Next][TheStashRunsAndExecutions]  
+[Up][Guide] | [Next][TheStashRunsAndExecutions]  
 
 [Guide]: #guide
 
 [TheStashRunsAndExecutions]: #the-stash-runs-and-executions
 ### The Stash, Runs and Executions
-[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
   
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
@@ -318,7 +318,7 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
-[Top][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
 
 [InPoolsWeTrust]: #in-pools-we-trust
 
@@ -328,7 +328,7 @@ the failure only emerges when several executions act on the *same* object.
 
 [ChoosingTheNextMove]: #choosing-the-next-move
 ### Choosing the Next Move
-[Top][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
   
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
@@ -470,7 +470,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.  
 
-[Top][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
 
 [Guide]: #guide
 
@@ -478,7 +478,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 
 [InPoolsWeTrust]: #in-pools-we-trust
 ### In Pools We Trust
-[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
   
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
@@ -607,7 +607,7 @@ public class Rolodex
  ------------------------------------------------------------
 ```
 
-[Top][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
 
 [Guide]: #guide
 
@@ -615,7 +615,7 @@ public class Rolodex
 
 [BoltingHorses]: #bolting-horses
 ### Bolting Horses
-[Top][Guide] | [Previous][InPoolsWeTrust]  
+[Up][Guide] | [Previous][InPoolsWeTrust]  
   
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
@@ -792,7 +792,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 The shrunk case shows exactly how the invariant drifted:  
 A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
 
-[Top][Guide] | [Previous][InPoolsWeTrust]  
+[Up][Guide] | [Previous][InPoolsWeTrust]  
 
 [Guide]: #guide
 
@@ -820,6 +820,8 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 
 [GatheringEvidence]: #gathering-evidence
 ### Test Framework Integration
+[Up][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
+  
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
 A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
@@ -827,7 +829,13 @@ A Checkr is just a LINQ expression that you evaluate by calling `Run()`.
 If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
 
 Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
+
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
+
+[RunningACheckr]: #running-a-checkr
 ### Running a Checkr
+[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+  
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
 - Run the Checkr once with a single execution.  
@@ -857,8 +865,18 @@ checkr.Run(424242, 5.ExecutionsPerRun());
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
 which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].  
 
+[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+
+[Configuration]: #configuration
+
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
+
+[TestFrameworkIntegration]: #test-framework-integration
+
 [Configuration]: #configuration
 ### Configuration
+[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
+  
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
 
@@ -965,7 +983,7 @@ The following Checkr will be used to generate the reports throughout this chapte
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.None };
 ```
-##### None
+###### ShrinkMode.None
 QuickCheckr reports the original failing run.  
 ```text
 ------------------------------------------------------------
@@ -992,7 +1010,7 @@ QuickCheckr reports the original failing run.
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-##### Executions
+###### ShrinkMode.Executions
 Trims away irrelevant executions.  
 ```csharp
 private static CheckrConfig ConfigureExecutions(CheckrConfig config)
@@ -1016,7 +1034,7 @@ private static CheckrConfig ConfigureExecutions(CheckrConfig config)
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-##### Inputs
+###### ShrinkMode.Inputs
 Trims inputs to find a minimal failing case.  
 ```csharp
 private static CheckrConfig ConfigureInputs(CheckrConfig config)
@@ -1041,7 +1059,7 @@ private static CheckrConfig ConfigureInputs(CheckrConfig config)
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
-##### Reduction
+###### ShrinkMode.Reduction
 Applies configured reducers for fine-grained shrinking.  
 ```csharp
 private static CheckrConfig ConfigureReduction(CheckrConfig config)
@@ -1058,7 +1076,7 @@ private static CheckrConfig ConfigureReduction(CheckrConfig config)
 
   
 *Note:* As of now reporting with only this mode active is not fully supported.  
-##### Default
+###### ShrinkMode.Default
 Includes all possible ShrinkModes.  
 ```text
 ------------------------------------------------------------
@@ -1089,7 +1107,7 @@ The following Checkr will be used to generate the reports throughout this chapte
     from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
     select Case.Closed;
 ```
-##### None
+###### ReportMode.None
 No traces, no warnings, no stacktrace.  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
@@ -1110,7 +1128,7 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-##### Trace
+###### ReportMode.Trace
 Only traces.  
 ```csharp
 private static CheckrConfig ConfigureTrace(CheckrConfig config)
@@ -1132,7 +1150,7 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-##### Warning
+###### ReportMode.Warning
 Only warnings.  
 ```csharp
 private static CheckrConfig ConfigureWarning(CheckrConfig config)
@@ -1154,7 +1172,7 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-##### StackTrace
+###### ReportMode.StackTrace
 Includes the StackTrace in the failure description if an exception is thrown.  
 ```csharp
 private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
@@ -1179,7 +1197,7 @@ private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
  ===========================================================================
 ```
-##### Default
+###### ReportMode.Default
 Includes all possible ReportModes.  
 ```text
 ------------------------------------------------------------
@@ -1310,7 +1328,7 @@ It is also possible to define a custom policy, but this is an ...
 
 [DeliberationShrinking]: #deliberation-shrinking
 #### Internal Affairs
-The clue is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
+The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
 
 !! WARNING: **Experimental Feature** !!
 
@@ -1322,7 +1340,17 @@ The clue is in the name. This is used to debug QuickCheckr itself when things go
 
   
 It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
+
+[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
+
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
+
+[RunningACheckr]: #running-a-checkr
+
+[TheEvidenceVault]: #the-evidence-vault
 ### The Evidence Vault
+[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+  
 #### Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
@@ -1343,7 +1371,17 @@ If the seeds stored in the vault still all result in failure, the behaviour is e
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
+
+[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
+
+[Configuration]: #configuration
+
+[GatheringEvidence]: #gathering-evidence
 ### Gathering Evidence
+[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+  
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 #### Running Investigations
 ```csharp
@@ -1539,6 +1577,12 @@ For the code on display here, running this checkr using the code snippet at the 
  - Count matches: 9x
  ------------------------------------------------------------
 ```
+
+[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
+
+[TheEvidenceVault]: #the-evidence-vault
 ## On Shrinking
 ### Philosophy
 
@@ -1808,146 +1852,4 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  ===============================================================
 ```
 
-[DeliberationPolicy]: #deliberation-policy
-## Cook Book
-The QuickCheckr Cookbook is a collection of examples showing common patterns, 
-testing techniques, and pitfalls you can check using QuickCheckr.  
-### Verifying List Reversal (Double-Reverse Law)
-**Demonstrates:**
-- Custom Fuzzrs
-- Relevant input shrinking
-- Double-application property
-
-
-I guess this one is very much tradition in PBT world, and who am I to argue with tradition, ... so here we go.
-
-**The (buggy) implementation:**  
-```csharp
-public class TheReverser
-{
-    public static List<int> Reverses(List<int> list)
-        => [.. HideTheAnswer(list.AsEnumerable()).Reverse()];
-    private static IEnumerable<int> HideTheAnswer(IEnumerable<int> list)
-        => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
-}
-```
-**The Fuzzr:**  
-```csharp
-var listFuzzr =
-    from listLength in Fuzzr.Int(0, 10)
-    from enumerable in Fuzzr.Int().Many(listLength)
-    select enumerable.ToList();
-```
-**The Checkr:**  
-```csharp
-    from input in Checkr.Input("Input", ListFuzzr())
-    from result in Checkr.Act("Result",
-        () => TheReverser.Reverses(TheReverser.Reverses(input)))
-    from trace in Checkr.Trace("Input ", () => input)
-    from traceResult in Checkr.Trace("Result", () => result)
-    from expect in Checkr.Expect(
-        "Input == Result", () => input.SequenceEqual(result))
-    select Case.Closed;
-```
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest
- Location:                Docs\T_Cookbook\A_ListReverse\ListReverse.cs:46:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    498116108
- ------------------------------------------------------------
-  Executed: Result
-   - Input: Input = [ _, 42 ]
-   - Trace: Input  = [ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]
-   - Trace: Result = [ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]
- ==========================================
-  !! Expectation Failed: Input == Result
- ==========================================
-```
-### Testing Aggregate Behaviour (Trackr.Verify)
-**Demonstrates:**
-- Accumulated-state testing
-- `Trackr.Verify`
-- `Trackr.StopWhenProven`
-
-While not strictly speaking a property-test, as there is no shrinking involved,
-this kind of test is nevertheless very useful.  
-So much so that QuickCheckr provides a dedicated tool for it. 
-
-We're testing a simple implementation of a die:
-  
-```csharp
-public class DieSix
-{
-    public int Roll() => new Random().Next(1, 6);
-}
-```
-And we want to ensure that it rolls the numbers 1-6.  For which use the following Checkr:  
-```csharp
-    from die in Trackr.Stashed(() => new DieSix())
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from verify in Trackr.Verify("Rolls",
-        ("Contains 1", () => observer.Contains(1)),
-        ("Contains 2", () => observer.Contains(2)),
-        ("Contains 3", () => observer.Contains(3)),
-        ("Contains 4", () => observer.Contains(4)),
-        ("Contains 5", () => observer.Contains(5)),
-        ("Contains 6", () => observer.Contains(6)))
-    select Case.Closed;
-```
-`Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
-rather than the outcome of any single execution.
-In this Loaded Die example, each roll is recorded in a stashed HashSet<int>, and the *verify* is evaluated only after the final execution has completed.
-This makes it ideal for tests where you want to confirm that a whole series of operations, as a group, produced the expected overall behaviour.
-
-**Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest
- Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
- Original failing run:    100 executions
- Seed:                    1228623675
- ------------------------------------------------------------
-  Executed: Roll (100 Times)
- =================================================
-  !!  The Verifier Disagrees: Rolls: Contains 6
- =================================================
-```
-Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
-A common mistake, and the verifier pointed it out in above report.
-
-*Note:* `Trackr.Verify`never triggers shrinking, because there is no meaningful *minimal failing case*,
-either the final state satisfies all verifications or it doesn't.  
-#### Stop! In the Name of ... Perf?
-```csharp
-public class DieSixFixed
-{
-    public int Roll() => new Random().Next(1, 7);
-}
-```
-Ok, we fixed the bug, so now our Checkr passes.
-But what if we get lucky and we satisfy the verify after the first six rolls ?
-Bit of a waste to continue running the Checkr, no ?  
-
-Let's use `Trackr.StopWhenProven`:  
-```csharp
-    from die in Trackr.Stashed(() => new DieSixFixed())
-    from cnt in Checkr.Perform(() => ++cell.Value)
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from proven in Trackr.StopWhenProven("All sides rolled",
-        () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-    from verify in Trackr.Verify("Rolls",
-        ("Contains 1", () => observer.Contains(1)),
-        ("Contains 2", () => observer.Contains(2)),
-        ("Contains 3", () => observer.Contains(3)),
-        ("Contains 4", () => observer.Contains(4)),
-        ("Contains 5", () => observer.Contains(5)),
-        ("Contains 6", () => observer.Contains(6)))
-    select Case.Closed;
-```
-Whenever the predicate passed into `Trackr.StopWhenProven` returns true,
-the Checkr is considered proven and it concludes immediately, ... no more executions.  
+[DeliberationPolicyTests]: #deliberation-policy

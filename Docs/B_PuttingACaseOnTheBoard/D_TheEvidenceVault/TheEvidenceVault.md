@@ -1,4 +1,6 @@
 # The Evidence Vault
+[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+  
 ## Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
@@ -19,3 +21,11 @@ If the seeds stored in the vault still all result in failure, the behaviour is e
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
+
+[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+
+[PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
+
+[Configuration]: ../C_Configuration/Configuration.md
+
+[GatheringEvidence]: ../E_GatheringEvidence/GatheringEvidence.md

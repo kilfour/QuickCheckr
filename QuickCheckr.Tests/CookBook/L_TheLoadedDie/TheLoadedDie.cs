@@ -5,7 +5,7 @@ using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.T_Cookbook.L_TheLoadedDie;
+namespace QuickCheckr.Tests.CookBook.L_TheLoadedDie;
 
 [DocFile]
 [DocFileHeader("Testing Aggregate Behaviour (Trackr.Verify)")]
