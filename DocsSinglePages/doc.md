@@ -582,7 +582,8 @@ public class Rolodex
             from storeName in Trackr.ToPool("Store", new Contact(name))
             select Case.Closed),
         // 2. Update a (Contact-) name in the Rolodex
-        Trackr.PoolWhen<Contact>("Contact to update", a => a.Count != 0, // <= Can not pick from an empty selection.
+        Trackr.PoolWhen<Contact>("Contact to update",
+            a => a.Count != 0, // <= Can not pick from an empty selection.
             contact => // Pick a random Contact to update 
                 from newName in Checkr.Input("New Name", NameFuzzr)
                 from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
