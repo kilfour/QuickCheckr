@@ -75,7 +75,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe update existing courses. Pick a random course from the pool.
         Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
-        Trackr.PoolWhen("Assign Coach to Course",
+        Trackr.PoolWhen("(Coach, Course) to Assign",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
     from invariant in AssignedCoachesMustBeSuitable
@@ -156,7 +156,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
    -  Pool: Store Coach = Coach-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: Assign Coach to Course = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-2

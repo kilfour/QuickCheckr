@@ -691,7 +691,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe update existing courses. Pick a random course from the pool.
         Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
-        Trackr.PoolWhen("Assign Coach to Course",
+        Trackr.PoolWhen("(Coach, Course) to Assign",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         // Ensure the system invariant is met at all times.
     from invariant in AssignedCoachesMustBeSuitable
@@ -772,7 +772,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
    -  Pool: Store Coach = Coach-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: Assign Coach to Course = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-2
@@ -1309,6 +1309,19 @@ It is also possible to define a custom policy, but this is an ...
   
 
 [DeliberationShrinking]: #deliberation-shrinking
+#### Internal Affairs
+The clue is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
+
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
 ### The Evidence Vault
 #### Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  

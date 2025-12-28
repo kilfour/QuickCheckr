@@ -13,6 +13,7 @@
       - [ShrinkMode](B_PuttingACaseOnTheBoard/C_Configuration/D_ShrinkMode/ShrinkModeTests.md)
       - [ReportMode](B_PuttingACaseOnTheBoard/C_Configuration/E_ReportMode/ReportModeTests.md)
       - [Deliberation Policy](B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicy.md)
+      - [Internal Affairs](B_PuttingACaseOnTheBoard/C_Configuration/H_InternalAffairs/InternalAffairs.md)
     - [The Evidence Vault](B_PuttingACaseOnTheBoard/D_TheEvidenceVault/TheEvidenceVault.md)
     - [Gathering Evidence](B_PuttingACaseOnTheBoard/E_GatheringEvidence/GatheringEvidence.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)

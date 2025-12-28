@@ -97,7 +97,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal("Coach-2", article.Execution(2).PoolTrace(1).Read().Value);
         Assert.Equal(11, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
-        Assert.Equal("Assign Coach to Course", article.Execution(3).PoolTrace(1).Read().Label);
+        Assert.Equal("(Coach, Course) to Assign", article.Execution(3).PoolTrace(1).Read().Label);
         Assert.Equal("( Coach-2, Course-2 )", article.Execution(3).PoolTrace(1).Read().Value);
         Assert.Equal(19, article.Execution(4).Read().ExecutionId);
         Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
@@ -196,7 +196,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
             // Maybe update existing courses. Pick a random course from the pool.
             Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.
-            Trackr.PoolWhen("Assign Coach to Course",
+            Trackr.PoolWhen("(Coach, Course) to Assign",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
             // Ensure the system invariant is met at all times.
         from invariant in AssignedCoachesMustBeSuitable

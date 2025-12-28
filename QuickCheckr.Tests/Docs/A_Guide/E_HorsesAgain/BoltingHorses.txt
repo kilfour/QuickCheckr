@@ -12,7 +12,7 @@
    -  Pool: Store Coach = Coach-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: Assign Coach to Course = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-2
