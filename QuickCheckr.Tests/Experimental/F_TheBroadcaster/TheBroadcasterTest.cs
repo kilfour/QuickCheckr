@@ -10,6 +10,7 @@ namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster;
 public partial class TheBroadcasterTest : BaseTest
 {
     [Fact(Skip = "Explicit Experimental Example")]
+    [DocContent("**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.")]
     [DocHeader("The Checkr:")]
     [DocExample(typeof(TheBroadcasterTest), nameof(GetCheckr))]
     [DocHeader("The Report:")]

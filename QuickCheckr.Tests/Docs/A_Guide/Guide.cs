@@ -8,11 +8,11 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.A_Guide;
 
 [DocFile]
-[DocLink(typeof(CheckringThingsOut), "CheckringThingsOut")]
-[DocLink(typeof(TheStashRunsAndExecutions), "TheStashRunsAndExecutions")]
-[DocLink(typeof(ChoosingTheNextMove), "ChoosingTheNextMove")]
-[DocLink(typeof(InPoolsWeTrust), "InPoolsWeTrust")]
-[DocLink(typeof(BoltingHorses), "BoltingHorses")]
+[DocLink(typeof(CheckringThingsOut))]
+[DocLink(typeof(TheStashRunsAndExecutions))]
+[DocLink(typeof(ChoosingTheNextMove))]
+[DocLink(typeof(InPoolsWeTrust))]
+[DocLink(typeof(BoltingHorses))]
 [DocContent(
 @"**Welcome to the QuickCheckr Guide.**  
 This document walks through the core ideas of QuickCheckr,

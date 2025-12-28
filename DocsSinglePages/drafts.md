@@ -159,6 +159,25 @@ For the code on display here, this consistently results in five different report
 
 Per default order of Executions does not matter for similarity.  
 An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.  
+## Checkrs Court
+The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
+
+Multiple Checkrs can be combined into a composite Checkr using `LINQ` chains, as many of the examples show.  
+
+The *atomic* Checkrs are created through a couple of static Factory classes :
+
+- [The Checkr Class][TheCheckrClass]
+  - Provides methods to create the *basic* Checkrs.
+  - All of the Checkrs created by this class are *execution-scoped*.
+- [The Tracker Class][TheTrackerClass]
+  - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
+  
+
+[TheCheckrClass]: #the-checkr-class
+
+[TheTrackerClass]: #the-tracker-class
+### The Checkr Class
+### The Tracker Class
 ## Conditional Execution
 ### Checkr Act Carefully When
 ```csharp

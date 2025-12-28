@@ -1,4 +1,5 @@
 # The Needler Pattern
+**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.  
 ## The SUT:
 ```csharp
 public class Eventually

@@ -20,6 +20,7 @@ public class TheNeedlerPattern : BaseTest
     }
 
     [Fact]
+    [DocContent("**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.")]
     [DocHeader("The SUT:")]
     [DocExample(typeof(Eventually))]
     [DocHeader("The Checkr:")]

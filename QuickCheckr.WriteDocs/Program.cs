@@ -1,30 +1,19 @@
 ﻿using QuickCheckr.Tests;
 using QuickCheckr.Tests.Docs;
 using QuickCheckr.Tests.Drafts;
-using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
-using QuickCheckr.Tests.Docs.A_Guide;
-
-
-Explain.These<Documentation>("Docs/");
-Explain.These<Guide>("Guide/");
-// Explain.These<Drafts>("Drafts/");
-// Explain.These<Notes>("Notes/");
-Explain.These<Experimental>("Experimental/");
+using QuickCheckr.Tests.Notes;
 
 Explain.OnlyThis<CreateReadMe>("README.md");
 
+Explain.These<Documentation>("Docs/");
+Explain.These<Drafts>("Drafts/");
+Explain.These<Experimental>("Experimental/");
+// Explain.These<Notes>("Notes/");
+
 Explain.This<Documentation>("DocsSinglePages/doc.md");
-Explain.This<Guide>("DocsSinglePages/guide.md");
-// Explain.This<OnShrinking>("DocsSinglePages/shrinking.md");
-// Explain.This<CookBook>("DocsSinglePages/cookbook.md");
-
 Explain.This<Drafts>("DocsSinglePages/drafts.md");
-Explain.This<Notes>("DocsSinglePages/notes.md");
 Explain.This<Experimental>("DocsSinglePages/experimental.md");
-
-
-//Explain.This<PuttingACaseOnTheBoard>("temp-runner.md");
-
+Explain.This<Notes>("DocsSinglePages/notes.md");
 

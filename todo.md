@@ -4,28 +4,31 @@
 ### Ready for Changelog after review
 
 ### Doing
+* Doc: working on the reference (Checkrs Court)
+* fix input:
+  When an eager Input throws, wrap it in a MaybeUseTheLazyVersionException
+  With an explanation as to why and a helpfull hint 
 * Pool Redesign
   * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
     Still feel uneasy having these on Trackr. Maybe move them to Checkr or Poolr.
 * Warehousing
   * Input: A targeted error rewrite (not warning) for the common misleading case
-    When an eager Input throws OneOfEmptyOptionsException during evaluation, rethrow
+    OneOfEmptyOptionsException during evaluation, rethrow
     Ask user if it is dependent on state
     !! needs more investigation before deciding !!
-  * lazy input, maybe solve in quickfuzzr : public static FuzzrOf<T> From<T>(Func<FuzzrOf<T>> factory)
 * play more pool
 * review evidence gathering
 
 ### Doc Current Focus 
+
 * Review/Polish the Guide, looks solid enough for now
 * Review Configuration entry
-  * [ x ] FileAs : add CaseSummary info
+  * [ / ] FileAs : add CaseSummary info
   * [ x ] Custodian
   * [ x ] ShrinkMode
   * [ x ] Reportmode
   * [ x ] DeliberationPolicy
   * [   ] InternalAffairs
-* Style Guide for LINQ-averse devs (experimental).
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
@@ -37,7 +40,8 @@
 * TheBroadcasterTests: Explicit experimental, takes quite long too.
 
 ## 0.0.7: In Pools We Trust
-Stabilize Pools
+* Stabilize Pools
+* Better Exception Message format in report
 
 ## 0.0.7+
 * look into different collection shrinking
@@ -66,7 +70,6 @@ Stabilize Pools
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
-* Start working on the reference (Checkrs Court)
 
 ## Ideas
 * `Showr.For<T>(Func<ManofWealthAndTaste, ManofWealthAndTaste>)`

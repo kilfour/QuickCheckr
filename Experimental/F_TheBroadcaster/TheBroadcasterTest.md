@@ -1,4 +1,5 @@
 # The Broadcaster
+**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.  
 ## The Checkr:
 ```csharp
 return
