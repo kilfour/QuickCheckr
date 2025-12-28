@@ -1,5 +1,4 @@
 ## Current Version: 0.0.6 
-* !! update QuickFuzzr to 0.1.8
  
 ### Ready for Changelog after review
 
