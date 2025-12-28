@@ -6,27 +6,28 @@ namespace QuickCheckr.UnderTheHood.Memories;
 
 public class Memory
 {
+    public KeyGuardian KeyGuardian = new();
     public int StartNewExecution()
     {
-        ClearGuards();
+        KeyGuardian = new();
         return ShortTermMemory.StartNewExecution();
     }
 
     public void GotoExecution(int executionNumber)
     {
-        ClearGuards();
+        KeyGuardian = new();
         ShortTermMemory.GotoExecution(executionNumber);
     }
 
     public int NextExecution()
     {
-        ClearGuards();
+        KeyGuardian = new();
         return ShortTermMemory.NextExecution();
     }
 
     public int Reset()
     {
-        ClearGuards();
+        KeyGuardian = new();
         LongTermMemory.Reset();
         return ShortTermMemory.Reset();
     }
@@ -45,28 +46,6 @@ public class Memory
         => ShortTermMemory.ScopedSwap(executionId, key, value);
     public IDisposable NestedValue(int executionId, MemoryLens swapper)
         => ShortTermMemory.NestedValue(executionId, swapper);
-    // --------------------------------------------------------------------------
-    // Guards
-    private DuplicateKeyWriteGuardForInputs inputGuard = new();
-    private DuplicateKeyWriteGuardForActs actGuard = new();
-    public DuplicateKeyWriteGuardForExpectations ExpectGuard { get; private set; } = new();
-    private DuplicateKeyWriteGuardForTraces traceGuard = new();
-    private DuplicateKeyWriteGuardForPoolTraces poolTraceGuard = new();
-    private DuplicateKeyWriteGuardForVariables variableGuard = new();
-    private DuplicateKeyWriteGuardForStashed stashedGuard = new();
-    private DuplicateKeyWriteGuardForPools poolGuard = new();
-    private void ClearGuards()
-    {
-        inputGuard = new();
-        actGuard = new();
-        ExpectGuard = new();
-        traceGuard = new();
-        poolTraceGuard = new();
-        variableGuard = new();
-        stashedGuard = new();
-        poolGuard = new();
-    }
-    // --------------------------------------------------------------------------
 
 
     // ==========================================================================
@@ -76,13 +55,13 @@ public class Memory
     // --------------------------------------------------------------------------
     // Stashed
     public T StoreStashed<T>(string key, Func<T> factory)
-        => LongTermMemory.StoreStashed(stashedGuard.Check(key), factory);
+        => LongTermMemory.StoreStashed(KeyGuardian.Stash.Check(key), factory);
     public T GetStashed<T>(string key)
         => LongTermMemory.GetStashed<T>(key);
     // --------------------------------------------------------------------------
     // Pool
     public IEnumerable<T> CreatePool<T>()
-        => LongTermMemory.CreatePool<T>(poolGuard.Check(typeof(T).FullName!));
+        => LongTermMemory.CreatePool<T>(KeyGuardian.Pools.Check(typeof(T).FullName!));
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
     public Dictionary<int, T> GetPoolDictionary<T>()
@@ -107,13 +86,13 @@ public class Memory
     // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
-        => ShortTermMemory.StoreInput(inputGuard.Check(key), factory);
+        => ShortTermMemory.StoreInput(KeyGuardian.Inputs.Check(key), factory);
     public Type GetActualType(int executionId, string key) => ShortTermMemory.GetActualType(executionId, key);
 
     // --------------------------------------------------------------------------
     // Actions
     public void StoreAction(string key)
-        => ShortTermMemory.StoreAction(actGuard.Check(key));
+        => ShortTermMemory.StoreAction(KeyGuardian.Acts.Check(key));
 
     // --------------------------------------------------------------------------
     // Traces
@@ -121,19 +100,19 @@ public class Memory
     public void StoreTrace(string key, Func<string> factory)
     {
         if (Tracing)
-            ShortTermMemory.StoreTrace(traceGuard.Check(key), factory);
+            ShortTermMemory.StoreTrace(KeyGuardian.Traces.Check(key), factory);
     }
     // --------------------------------------------------------------------------
     // Traces
     public void StorePoolTrace(string key, Func<string> factory)
     {
         if (Tracing)
-            ShortTermMemory.StorePoolTrace(poolTraceGuard.Check(key), factory);
+            ShortTermMemory.StorePoolTrace(KeyGuardian.PoolTraces.Check(key), factory);
     }
     // --------------------------------------------------------------------------
     // Variables
     public T? StoreVariable<T>(string key, Func<T> factory)
-        => ShortTermMemory.StoreVariable(variableGuard.Check(key), factory);
+        => ShortTermMemory.StoreVariable(KeyGuardian.Variables.Check(key), factory);
     // --------------------------------------------------------------------------
     // Shrinkers
     public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)

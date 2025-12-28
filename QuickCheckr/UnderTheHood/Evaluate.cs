@@ -7,7 +7,7 @@ public static class Evaluate
     public static CheckrOf<Case> Expect(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.ExpectGuard.Check(key);
+            state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"Spec: {key}",

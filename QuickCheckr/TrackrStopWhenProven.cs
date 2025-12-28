@@ -11,7 +11,7 @@ public static partial class Trackr
     public static CheckrOf<Case> StopWhenProven(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.ExpectGuard.Check(key);
+            state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"StopWhenProven: {key}",

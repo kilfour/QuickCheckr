@@ -11,7 +11,7 @@ public static partial class Trackr
     public static CheckrOf<Case> Verify(string key, Func<bool> condition) =>
         state =>
         {
-            state.Memory.ExpectGuard.Check(key);
+            state.Memory.KeyGuardian.Expects.Check(key);
             if (!state.IsThisTheRunsLastExecution())
                 return CheckrResult.CaseOnly(state);
             bool passed = condition();
