@@ -14,6 +14,7 @@
       - [ReportMode](B_PuttingACaseOnTheBoard/C_Configuration/E_ReportMode/ReportModeTests.md)
       - [Deliberation Policy](B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicy.md)
     - [The Evidence Vault](B_PuttingACaseOnTheBoard/D_TheEvidenceVault/TheEvidenceVault.md)
+    - [Gathering Evidence](B_PuttingACaseOnTheBoard/E_GatheringEvidence/GatheringEvidence.md)
   - [On Shrinking](H_OnShrinking/OnShrinking.md)
     - [Execution Shrinking](H_OnShrinking/A_ExecutionShrinking/ExecutionShrinking.md)
     - [Input Shrinking](H_OnShrinking/C_InputShrinking/InputShrinking.md)

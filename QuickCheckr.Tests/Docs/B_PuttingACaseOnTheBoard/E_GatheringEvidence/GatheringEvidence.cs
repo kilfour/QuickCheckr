@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.EvidenceGathering;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Proceedings;
@@ -5,88 +6,29 @@ using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.A_GatheringEvidence;
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 
 [DocFile]
+[DocContent("This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.")]
+[DocHeader("!! Check The Reports !! '1073620588' Looks like a Pool shrinking issue.")]
+[DocHeader("Running Investigations")]
+[DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
+[DocContent(
+@"When you use the above method the following steps are taken:
+- The existing evidence from the vault is loaded (if available), the seeds are run, and the failing casefiles are kept in memory.
+- Next we run the specified number of Investigations, and any new failing case file is added to the in-memory list.
+- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
+- And finally, all evidence and reports are saved to the vault.
+
+**Note:** An *Investigation* is a new kind of scope.  
+Running a Checkr in the *normal* way will always produce one report, even if used with a DeliberationPolicy.  
+When you're gathering evidence, a report is generated per Investigation. This allows for finding different bugs in the same system,
+or for documenting the different ways a single bug can manifest.
+
+As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
+")]
 public class GatheringEvidence : BaseTest
 {
-    [CodeExample]
-    public class ContactBook
-    {
-        private readonly HashSet<string> contacts = [];
-        public IReadOnlyCollection<string> Contacts => contacts;
-        public void Add(string name) => contacts.Add(name);
-        public void Update(string name, string newName)
-        {
-            contacts.Remove(name);
-            Add(newName);
-        }
-    }
-
-    [Fact(Skip = "Explicit: Touches the File System.")]
-    [DocHeader("The Steps")]
-    [DocContent(
-@"
-- Load in existing evidence from the vault, rerun, keep failing casefiles.
-- Do a specified number of Investigations, add new failing case files to the list.
-- A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
-- Save all evidence and reports to the vault.")]
-    [DocHeader("The Sut")]
-    [DocExample(typeof(ContactBook))]
-    [DocHeader("The Checkr")]
-    [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
-    [DocHeader("Running Investigations")]
-    [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
-    [DocContent("For the code on display here, this consistently results in five different reports.")]
-    [DocCodeFile("report1.qr", "text")]
-    [DocCodeFile("report2.qr", "text")]
-    [DocCodeFile("report3.qr", "text")]
-    [DocCodeFile("report4.qr", "text")]
-    [DocCodeFile("report5.qr", "text")]
-    public void RunTest()
-    {
-        RunGatherEvidence(GetCheckr());
-    }
-
-    [CodeSnippet]
-    private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
-            cfg => cfg with { FileAs = "GatheringEvidence" });
-
-    private static readonly FuzzrOf<string> NameFuzzr =
-        from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
-        from lastname in Fuzzr.OneOf("Lennon", "McCartney", "Harrison", "Starr")
-        select $"{firstname} {lastname}";
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from contactBook in Trackr.Stashed(() => new ContactBook())
-            from names in Trackr.PoolFor<string>()
-            from operations in Checkr.OneOfWhen(
-                // Add a Contact
-                Trackr.PoolWhen<string>(a => a.Count() < 10,
-                    from name in Checkr.Input("Name", NameFuzzr)
-                    from add in Checkr.Act("Add", () => contactBook.Add(name))
-                    from storeName in Trackr.ToPool("Name", name)
-                    select Case.Closed),
-                // Update a Contact
-                Trackr.PoolWhen<string>(a => a.Any(),
-                    from newName in Checkr.Input("New Name", NameFuzzr)
-                    from pool in Trackr.OneOfPool<string>("Name to update",
-                        nameToUpdate =>
-                            from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                            from updatePool in nameToUpdate.Replace(newName)
-                            select Case.Closed)
-                    select Case.Closed))
-                // Contrived Expectation, ... it's only a model.
-            from count in Trackr.PoolExpect<string>("Count matches",
-                elements => elements.Count() == contactBook.Contacts.Count)
-            select Case.Closed;
-    }
-
     [Fact]
     [DocContent("**Casefiles are considered *not similar* when:**")]
     [DocContent("- *Failure Description* is not equal.")]
@@ -183,7 +125,7 @@ public class GatheringEvidence : BaseTest
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
     [Fact]
-    [DocContent("\nPer default order of Executions does not matter for similarity.")]
+    [DocContent("\nPer default, the order of Executions does not matter for similarity.")]
     public void CaseFileSimilar_ExecutionOrderDoesNotMatter()
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
@@ -214,6 +156,81 @@ public class GatheringEvidence : BaseTest
                 .AddInputDeposition(new InputDeposition("Label", 0))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
+
+    [CodeExample]
+    public class ContactBook
+    {
+        private readonly HashSet<string> contacts = [];
+        public IReadOnlyCollection<string> Contacts => contacts;
+        public void Add(string name) => contacts.Add(name);
+        public void Update(string name, string newName)
+        {
+            contacts.Remove(name);
+            Add(newName);
+        }
+    }
+
+    [Fact]//(Skip = "Explicit: Touches the File System.")]
+    [DocHeader("Show, Don't Tell")]
+    [DocHeader("The Sut", 1)]
+    [DocExample(typeof(ContactBook))]
+    [DocHeader("The Checkr", 1)]
+    [DocExample(typeof(GatheringEvidence), nameof(GetCheckr))]
+    [DocContent("For the code on display here, running this checkr using the code snippet at the top of this file, consistently results in five different reports.")]
+    [DocCodeFile("report1.qr", "text")]
+    [DocCodeFile("report2.qr", "text")]
+    [DocCodeFile("report3.qr", "text")]
+    [DocCodeFile("report4.qr", "text")]
+    [DocCodeFile("report5.qr", "text")]
+    public void RunTest()
+    {
+        GetCheckr().Run(1073620588, 10.ExecutionsPerRun(),
+            cfg => cfg with { FileAs = "GatheringEvidence", ShrinkMode = Protocol.ShrinkMode.None });
+        //RunGatherEvidence(GetCheckr());
+    }
+
+    [CodeSnippet]
+    private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
+        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
+            cfg => cfg with { FileAs = "GatheringEvidence" });
+
+    private static readonly FuzzrOf<string> NameFuzzr =
+        from firstname in Fuzzr.OneOf("John", "Paul", "George", "Ringo")
+        from lastname in Fuzzr.OneOf("Lennon", "McCartney", "Harrison", "Starr")
+        select $"{firstname} {lastname}";
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckr()
+    {
+        return
+            from contactBook in Trackr.Stashed(() => new ContactBook())
+            from names in Trackr.PoolFor<string>()
+            from operations in Checkr.OneOfWhen(
+                // Add a Contact
+                Trackr.PoolWhen<string>(a => a.Count() < 10,
+                    from name in Checkr.Input("Name", NameFuzzr)
+                    from add in Checkr.Act("Add", () => contactBook.Add(name))
+                    from storeName in Trackr.ToPool("Name", name)
+                    select Case.Closed),
+                // Update a Contact
+                Trackr.PoolWhen<string>(a => a.Any(),
+                    from newName in Checkr.Input("New Name", NameFuzzr)
+                    from pool in Trackr.OneOfPool<string>("Name to update",
+                        nameToUpdate =>
+                            from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                            from updatePool in nameToUpdate.Replace(newName)
+                            select Case.Closed)
+                    select Case.Closed))
+                // Contrived Expectation, ... it's only a model.
+            from count in Trackr.PoolExpect<string>("Count matches",
+                elements => elements.Count() == contactBook.Contacts.Count)
+            select Case.Closed;
+    }
+
+    // ---------------------------------------------------------------------------------------------------------
+    // EXTRA Casefile comparison tests below
+    // -------------------------------------------
 
     [Fact]
     public void CaseFileSimilar_ExecutionOrderDoesNotMatterInputs()

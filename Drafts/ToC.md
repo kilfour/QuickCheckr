@@ -1,4 +1,3 @@
-  - [Gathering Evidence](A_GatheringEvidence/GatheringEvidence.md)
   - [Checkrs Court](D_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](D_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
       - [Input](D_CheckrsCourt/A_TheCheckrClass/Methods/A_Input.md)

@@ -10,7 +10,11 @@ public class Custodian
     public class FileRecorder(string filename, bool relativeToSolution = true) : FileLogArtery(filename, relativeToSolution), IEvidenceRecorder
     {
         public void Append(string evidence) => Absorb(evidence);
-        public void Clear() => File.Delete(FilePath);
+        public void Clear()
+        {
+            if (File.Exists(FilePath))
+                File.Delete(FilePath);
+        }
     }
 
     public required Func<string, IEnumerable<string>> Retriever { get; init; }

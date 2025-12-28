@@ -1,4 +1,6 @@
 ## Current Version: 0.0.6 
+* Pool shrinking issue ?
+  * see report_1073620588.qr and report.qr for gathering evidence.
 
 ### Ready for Changelog after review
 
@@ -8,7 +10,6 @@
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
-* review evidence gathering
 
 ### Doc Current Focus 
 
