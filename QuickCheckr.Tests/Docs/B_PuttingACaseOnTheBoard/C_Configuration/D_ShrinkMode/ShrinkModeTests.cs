@@ -197,6 +197,5 @@ public class ShrinkModeTests : BaseTest
         Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
         Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
-
     }
 }
