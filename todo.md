@@ -3,7 +3,7 @@
 * Consistency check for PoolWhen arg order
  
 ### Ready for Changelog after review
-
+* Checked exposing Pool IEnumerable for predicates as IReadOnlyCollection everywhere
 ### Doing
 * Pool Redesign
   * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
