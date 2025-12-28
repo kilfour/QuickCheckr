@@ -20,7 +20,8 @@ public abstract class DepositionTest
                 Seed: 12345678,
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
-                ReportWarnings: true
+                ReportWarnings: true,
+                ReportStackTrace: false
             );
 
     protected LinesReader Transcribe(CaseFile caseFile)

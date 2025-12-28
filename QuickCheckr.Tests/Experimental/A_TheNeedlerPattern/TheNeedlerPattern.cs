@@ -51,7 +51,7 @@ public class TheNeedlerPattern : BaseTest
 
     private static void VerifyBuiltIn(Article article)
     {
-        Assert.Equal("Is not 7", article.FailedExpectation());
+        Assert.Equal("Is not 7", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

@@ -24,7 +24,7 @@ public class D_RelevantMultipleElements : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("spec", article.FailedExpectation());
+        Assert.Equal("spec", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(3, article.ShrinkCount);

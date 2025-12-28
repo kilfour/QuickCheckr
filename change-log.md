@@ -35,3 +35,4 @@
   * Added *PoolTraces* to report.
   * Only expose Pool IEnumerable for predicates as IReadOnlyCollection
   * Changed PoolWhen argument order for consistency, key first.
+* Added Stacktrace (yes/no) ReportMode

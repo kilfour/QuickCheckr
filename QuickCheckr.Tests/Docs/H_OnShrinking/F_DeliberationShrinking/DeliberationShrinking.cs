@@ -58,7 +58,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     private static void Verify_DeliberatedGreedy(Article article)
     {
-        Assert.Equal("Does not contain 1", article.FailedExpectation());
+        Assert.Equal("Does not contain 1", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
@@ -124,7 +124,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     private static void Verify_DeliberatedGreedyObjects(Article article)
     {
-        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailedExpectation());
+        Assert.Equal("obj.IntOne == 1 || obj.IntThree == 1", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
     }

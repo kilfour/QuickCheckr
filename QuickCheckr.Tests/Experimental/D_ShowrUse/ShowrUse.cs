@@ -39,7 +39,7 @@ public class ShowrUse : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("no answer", article.FailedExpectation());
+        Assert.Equal("no answer", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());

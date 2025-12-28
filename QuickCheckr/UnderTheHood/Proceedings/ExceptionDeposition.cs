@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public record ExceptionDeposition(Exception Exception) : FailureDeposition
+public record ExceptionDeposition(string Message, string FailureDescription) : FailureDeposition
 {
-    public override string GetFailureDescription() => Exception.Message;
+    public override string GetFailureDescription() => FailureDescription;
 };

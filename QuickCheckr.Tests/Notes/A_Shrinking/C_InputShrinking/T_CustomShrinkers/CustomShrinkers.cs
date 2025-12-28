@@ -24,7 +24,7 @@ public class CustomShrinkers : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("One should not be 42", article.FailedExpectation());
+        Assert.Equal("One should not be 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());

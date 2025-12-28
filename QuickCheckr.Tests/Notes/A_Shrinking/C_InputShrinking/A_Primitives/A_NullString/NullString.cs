@@ -36,7 +36,7 @@ public class NullString : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Fails", article.FailedExpectation());
+        Assert.Equal("Fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

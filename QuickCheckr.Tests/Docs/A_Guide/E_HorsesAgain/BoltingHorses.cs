@@ -80,7 +80,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     private static void Verify(Tools.ThePress.Printing.Article article)
     {
-        Assert.Equal("Assigned Coach Must Be Suitable", article.FailedExpectation());
+        Assert.Equal("Assigned Coach Must Be Suitable", article.FailureDescription());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

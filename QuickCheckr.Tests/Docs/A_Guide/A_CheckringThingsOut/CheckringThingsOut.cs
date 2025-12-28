@@ -43,7 +43,7 @@ The report shows a run summary containing :
     public void ExpectAlwaysFalse()
     {
         var article = TheJournalist.Exposes(() => Run_ExpectAlwaysFalse(ExpectAlwaysFalse_Checkr()));
-        Assert.Equal("Always true", article.FailedExpectation());
+        Assert.Equal("Always true", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         WriteAsserts(article);
@@ -90,7 +90,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
         var article = TheJournalist.Exposes(() => AddingAnInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnInput.txt");
-        Assert.Equal("Input /= 42", article.FailedExpectation());
+        Assert.Equal("Input /= 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(0, article.ShrinkCount);
@@ -132,7 +132,7 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
             AddingAnotherInput_Checkr().Run(127648209));
         WriteAsserts(article);
         WriteReport(article, "AddingAnotherInput.txt");
-        Assert.Equal("Input /= 42", article.FailedExpectation());
+        Assert.Equal("Input /= 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);
@@ -169,7 +169,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             NotWithoutATrace_Checkr().Run(769641533));
         WriteAsserts(article);
         WriteReport(article, "NotWithoutATrace.txt");
-        Assert.Equal("Input /= 42", article.FailedExpectation());
+        Assert.Equal("Input /= 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
@@ -209,7 +209,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             TimeToAct_Checkr().Run(1642083259));
         WriteAsserts(article);
         WriteReport(article, "TimeToAct.txt");
-        Assert.Equal("Sum /= 42", article.FailedExpectation());
+        Assert.Equal("Sum /= 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

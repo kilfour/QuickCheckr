@@ -35,7 +35,7 @@ public class CheckrActCarefullyWhen : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Not Null", article.FailedExpectation());
+        Assert.Equal("Not Null", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

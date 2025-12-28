@@ -28,7 +28,7 @@ public class Scheduling : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Bookings do not overlap", article.FailedExpectation());
+        Assert.Equal("Bookings do not overlap", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(8, article.ShrinkCount);

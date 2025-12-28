@@ -46,7 +46,7 @@ public class OverFlowing : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Checked total greater or equal than all entries", article.FailedExpectation());
+        Assert.Equal("Checked total greater or equal than all entries", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

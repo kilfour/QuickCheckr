@@ -19,23 +19,11 @@ public class Article(CaseFile caseFile)
         return null!;
     }
 
-    public string FailedExpectation()
-    {
-        if (caseFile.Verdict?.FailureDeposition is FailedExpectationDeposition failedExpectationDeposition)
-        {
-            return failedExpectationDeposition.FailedExpectation;
-        }
-        return null!;
-    }
+    public string FailureDescription()
+        => caseFile.Verdict!.FailureDeposition.GetFailureDescription();
 
-    public Exception Exception()
-    {
-        if (caseFile.Verdict?.FailureDeposition is ExceptionDeposition exceptionDeposition)
-        {
-            return exceptionDeposition.Exception;
-        }
-        return null!;
-    }
+    public string GetExceptionMessage()
+        => (caseFile.Verdict!.FailureDeposition as ExceptionDeposition)?.Message ?? string.Empty;
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)

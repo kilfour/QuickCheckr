@@ -3,7 +3,6 @@
  
 ### Ready for Changelog after review
 
-
 ### Doing
 * Pool Redesign
   * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
@@ -67,7 +66,7 @@ Stabilize Pools
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
-* Start working on the reference
+* Start working on the reference (Checkrs Court)
 
 ## Ideas
 * `Showr.For<T>(Func<ManofWealthAndTaste, ManofWealthAndTaste>)`

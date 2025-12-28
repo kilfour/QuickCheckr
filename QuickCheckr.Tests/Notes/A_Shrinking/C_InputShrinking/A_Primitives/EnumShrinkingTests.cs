@@ -24,7 +24,7 @@ public class Enums : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Should not be Monday", article.FailedExpectation());
+        Assert.Equal("Should not be Monday", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
@@ -60,7 +60,7 @@ public class Enums : BaseTest
 
     private static void Verify_Custom(Article article)
     {
-        Assert.Equal("Should not be Two", article.FailedExpectation());
+        Assert.Equal("Should not be Two", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

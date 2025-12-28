@@ -11,6 +11,7 @@ public class ExceptionDepositionsTests : DepositionTest
                 Dossier with { FailingExpectation = null, Exception = new Exception("BOOM") }));
 
         var reader = Transcribe(caseFile);
+        reader.AsAssertsToLogFile();
         Assert.Equal(" ===========================================================================", reader.NextLine());
         Assert.Equal("  !! Exception Thrown: System.Exception: BOOM", reader.NextLine());
         Assert.Equal(" ===========================================================================", reader.NextLine());

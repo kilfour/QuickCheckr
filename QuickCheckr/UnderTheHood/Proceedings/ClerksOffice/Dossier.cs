@@ -10,7 +10,8 @@ public record Dossier(
     int Seed,
     IReadOnlyDictionary<string, int> PassedExpectations,
     bool UseMemoryForInputReporting,
-    bool ReportWarnings)
+    bool ReportWarnings,
+    bool ReportStackTrace)
 {
     public static Dossier Empty =>
         new(FailingExpectation: null,
@@ -22,5 +23,6 @@ public record Dossier(
             Seed: 0,
             PassedExpectations: new Dictionary<string, int>(),
             UseMemoryForInputReporting: false,
-            ReportWarnings: false);
+            ReportWarnings: false,
+            ReportStackTrace: false);
 }

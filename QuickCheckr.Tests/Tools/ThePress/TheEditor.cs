@@ -42,8 +42,8 @@ public class TheEditor
         select cursor;
     private static object ReplaceDoubleQuotes(object value)
     {
-        if (value is string)
-            return ((string)value).Replace(@"""", @"\""");
+        if (value is string str)
+            return str.Replace(@"""", @"\""");
         return value;
     }
 
@@ -79,8 +79,8 @@ public class TheEditor
         from article in Pulse.Start<Article>()
         from prime in Pulse.Prime(() => article)
         from failedExpectation in EmitIf(
-            article.FailedExpectation() is not null,
-            $"Assert.Equal(\"{article.FailedExpectation()}\", article.FailedExpectation());")
+            article.FailureDescription() is not null,
+            $"Assert.Equal(\"{article.FailureDescription()}\", article.FailureDescription());")
         from failedAssat in EmitIf(
             article.VerifyFailed() is not null,
             $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")

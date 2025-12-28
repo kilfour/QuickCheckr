@@ -35,7 +35,7 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Length <= 2", article.FailedExpectation());
+        Assert.Equal("Length <= 2", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

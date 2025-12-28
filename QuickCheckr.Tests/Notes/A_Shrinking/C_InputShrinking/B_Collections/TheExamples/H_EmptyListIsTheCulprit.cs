@@ -34,7 +34,7 @@ public class H_EmptyListIsTheCulprit : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List is not empty", article.FailedExpectation());
+        Assert.Equal("List is not empty", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(0, article.ShrinkCount);

@@ -36,7 +36,7 @@ public class LockTheStableDoors : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailedExpectation());
+        Assert.Equal("Assigned Coaches Must Be Suitable", article.FailureDescription());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

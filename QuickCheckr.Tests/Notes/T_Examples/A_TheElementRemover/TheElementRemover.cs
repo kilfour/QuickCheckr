@@ -36,7 +36,7 @@ public class TheElementRemover : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List Does Not Contain Element", article.FailedExpectation());
+        Assert.Equal("List Does Not Contain Element", article.FailureDescription());
 
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());

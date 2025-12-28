@@ -49,7 +49,7 @@ public class ShrinkModeTests : BaseTest
 
     private static void VerifyNone(Article article)
     {
-        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal("Counter does not equal 3", article.FailureDescription());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(6, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
@@ -94,7 +94,7 @@ public class ShrinkModeTests : BaseTest
 
     private static void VerifyExecutions(Article article)
     {
-        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal("Counter does not equal 3", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
@@ -129,7 +129,7 @@ public class ShrinkModeTests : BaseTest
 
     private static void VerifyInputs(Article article)
     {
-        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal("Counter does not equal 3", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
@@ -187,7 +187,7 @@ public class ShrinkModeTests : BaseTest
 
     private static void VerifyDefault(Article article)
     {
-        Assert.Equal("Counter does not equal 3", article.FailedExpectation());
+        Assert.Equal("Counter does not equal 3", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());

@@ -25,7 +25,7 @@ public class InputReduction : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Int should be smaller than 42", article.FailedExpectation());
+        Assert.Equal("Int should be smaller than 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

@@ -6,5 +6,6 @@ public enum ReportMode
     None = 0,
     Trace = 1,
     Warning = 2,
-    Default = Trace | Warning
+    StackTrace = 4,
+    Default = Trace | Warning | StackTrace
 }

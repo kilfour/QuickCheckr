@@ -34,7 +34,7 @@ public class WarehouseStepThree : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Stock Below Zero After Any Action", article.FailedExpectation());
+        Assert.Equal("No Stock Below Zero After Any Action", article.FailureDescription());
         Assert.Equal(6, article.Total().Executions());
         Assert.Equal(6, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

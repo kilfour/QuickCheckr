@@ -1,17 +1,14 @@
  ------------------------------------------------------------
  Test:                    RunTestTrace
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:82:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:81:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
-  Executed:
+  Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
- ===================================================
-  !! Expectation Failed: Counter does not equal 2
- ===================================================
- Passed Expectations
- - Counter does not equal 2: 1x
- ------------------------------------------------------------
+ ===========================================================================
+  !! Exception Thrown: Only one is available
+ ===========================================================================

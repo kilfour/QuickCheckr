@@ -34,7 +34,7 @@ public class UnknownPrimitives : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Fails", article.FailedExpectation());
+        Assert.Equal("Fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Warnings());

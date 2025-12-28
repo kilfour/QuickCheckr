@@ -31,7 +31,7 @@ public class A_RemovingIrrelevantItems : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List does not contain 7", article.FailedExpectation());
+        Assert.Equal("List does not contain 7", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

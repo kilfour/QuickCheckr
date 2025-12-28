@@ -39,7 +39,7 @@ Run( a = 6 ) // count == 3 → fail
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Returns true", article.FailedExpectation());
+        Assert.Equal("Returns true", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());

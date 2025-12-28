@@ -24,7 +24,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List does not contain 0", article.FailedExpectation());
+        Assert.Equal("List does not contain 0", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
@@ -62,7 +62,7 @@ public class A1_WhenRelevantItemIsDefault : BaseTest
 
     private static void Verify_Negated(Article article)
     {
-        Assert.Equal("List contains only 0", article.FailedExpectation());
+        Assert.Equal("List contains only 0", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());

@@ -124,7 +124,7 @@ Less confusing I reckon, but ... it's YAL (yet another lamda).
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Stock Below Zero After Any Action", article.FailedExpectation());
+        Assert.Equal("No Stock Below Zero After Any Action", article.FailureDescription());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

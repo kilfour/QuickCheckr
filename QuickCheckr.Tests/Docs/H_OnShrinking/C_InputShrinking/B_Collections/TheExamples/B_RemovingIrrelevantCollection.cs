@@ -27,7 +27,7 @@ public class B_RemovingIrrelevantCollection : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Always fails", article.FailedExpectation());
+        Assert.Equal("Always fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);

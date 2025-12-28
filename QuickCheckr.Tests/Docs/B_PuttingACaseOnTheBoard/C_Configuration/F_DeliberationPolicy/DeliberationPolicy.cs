@@ -71,7 +71,7 @@ public class DeliberationPolicy : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedExpectation());
+        Assert.Equal("No Overdraft", article.FailureDescription());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(3, article.Total().Inputs());
@@ -128,7 +128,7 @@ It is also possible to define a custom policy, but this is an ...")]
 
     private static void Verify_Deliberated(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedExpectation());
+        Assert.Equal("No Overdraft", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

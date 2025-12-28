@@ -30,7 +30,7 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Turtle Ends on 'TurtlesAllTheWay'", article.FailedExpectation());
+        Assert.Equal("Turtle Ends on 'TurtlesAllTheWay'", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());

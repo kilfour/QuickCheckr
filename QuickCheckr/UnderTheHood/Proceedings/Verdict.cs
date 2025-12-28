@@ -26,8 +26,14 @@ public class Verdict
 
     private static FailureDeposition GetFailureDeposition(Dossier dossier)
     {
+
         if (dossier.Exception is not null)
-            return new ExceptionDeposition(dossier.Exception);
+        {
+            var message = $"{dossier.Exception.GetType()}: {dossier.Exception.Message}";
+            return dossier.ReportStackTrace
+                ? new ExceptionDeposition(dossier.Exception.ToString(), message)
+                : new ExceptionDeposition(message, message);
+        }
         if (dossier.FailingExpectation is not null)
             return new FailedExpectationDeposition(dossier.FailingExpectation);
         return new VerifyingDeposition(dossier.Verification!);

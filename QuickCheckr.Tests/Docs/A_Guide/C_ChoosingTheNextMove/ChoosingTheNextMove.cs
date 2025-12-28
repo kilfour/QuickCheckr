@@ -77,7 +77,7 @@ There is no guesswork.")]
 
     private static void Verify(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedExpectation());
+        Assert.Equal("No Overdraft", article.FailureDescription());
         Assert.Equal(5, article.Total().Executions());
         Assert.Equal(5, article.Total().Actions());
         Assert.Equal(5, article.Total().Inputs());
@@ -128,7 +128,7 @@ There is no guesswork.")]
 
     private static void Verify_Shrunk(Article article)
     {
-        Assert.Equal("No Overdraft", article.FailedExpectation());
+        Assert.Equal("No Overdraft", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
@@ -209,7 +209,7 @@ For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes 
 
     private static void Verify_Conditional(Article article)
     {
-        Assert.Equal("is 42", article.FailedExpectation());
+        Assert.Equal("is 42", article.FailureDescription());
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().PassedExpectations());

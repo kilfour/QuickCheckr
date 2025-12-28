@@ -25,7 +25,7 @@ public class D_IrrelevantObjects : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Not aged 18", article.FailedExpectation());
+        Assert.Equal("Not aged 18", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());

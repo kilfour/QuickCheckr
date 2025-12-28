@@ -192,7 +192,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Count matches", article.FailedExpectation());
+        Assert.Equal("Count matches", article.FailureDescription());
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());

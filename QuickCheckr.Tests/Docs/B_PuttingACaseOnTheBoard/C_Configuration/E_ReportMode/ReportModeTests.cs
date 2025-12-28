@@ -4,6 +4,7 @@ using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickPulse.Instruments;
 
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
@@ -11,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_Repo
 [DocFile]
 [DocFileHeader("ReportMode")]
 [DocContent(
-@"Controls which whether *Traces* and/or *Warnings* show up in the report.
+@"Controls whether or not *Traces*, *Warnings*  and/or *Exception StackTraces* show up in the report.
 
 The following Checkr will be used to generate the reports throughout this chapter:")]
 [DocExample(typeof(ReportModeTests), nameof(GetCheckr))]
@@ -28,7 +29,7 @@ public class ReportModeTests : BaseTest
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
             from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
             from trace in Checkr.Trace("Irrelevant", () => irrelevant)
-            from expect in Checkr.Expect("Counter does not equal 2", () => counter != 2)
+            from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
             select Case.Closed;
     }
 
@@ -38,7 +39,7 @@ public class ReportModeTests : BaseTest
 
     [Fact]
     [DocHeader("None")]
-    [DocContent("No traces, no warnings.")]
+    [DocContent("No traces, no warnings, no stacktrace.")]
     [DocExample(typeof(ReportModeTests), nameof(ConfigureNone))]
     [DocCodeFile("ReportModeTestsNone.txt", "text")]
     public void RunTestNone()
@@ -52,19 +53,18 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyNone(Article article)
     {
-        Assert.Equal("Counter does not equal 2", article.FailedExpectation());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(0, article.Total().Warnings());
-        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
-        Assert.Equal("Counter does not equal 2", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeExample]
@@ -87,21 +87,21 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyTrace(Article article)
     {
-        Assert.Equal("Counter does not equal 2", article.FailedExpectation());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("73", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Counter does not equal 2", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeExample]
@@ -124,20 +124,54 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyWarning(Article article)
     {
-        Assert.Equal("Counter does not equal 2", article.FailedExpectation());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().Warnings());
-        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Null value for type 'Thing' at input 'Null Thing'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("Counter does not equal 2", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
+    }
+
+    [CodeExample]
+    private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
+        => config with { ReportMode = ReportMode.StackTrace };
+
+    [Fact]
+    [DocHeader("StackTrace")]
+    [DocContent("Includes the StackTrace in the failure description if an exception is thrown.")]
+    [DocExample(typeof(ReportModeTests), nameof(ConfigureStackTrace))]
+    [DocCodeFile("ReportModeTestsStackTrace.txt", "text")]
+    public void RunTestStackTrace()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckr().Run(1964562926, 2.ExecutionsPerRun(), ConfigureStackTrace));
+        WriteAsserts(article, false);
+        WriteReport(article, "ReportModeTestsStackTrace.txt", false);
+        VerifyStackTrace(article);
+    }
+
+    private static void VerifyStackTrace(Article article)
+    {
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Contains("at QuickPulse.Instruments.ComputerSays.No", article.GetExceptionMessage());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
+        Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
     }
 
     [Fact]
@@ -148,6 +182,7 @@ public class ReportModeTests : BaseTest
     {
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Trace));
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Warning));
+        Assert.True(ReportMode.Default.HasFlag(ReportMode.StackTrace));
 
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(1964562926, 2.ExecutionsPerRun()));
@@ -158,14 +193,16 @@ public class ReportModeTests : BaseTest
 
     private static void VerifyDefault(Article article)
     {
-        Assert.Equal("Counter does not equal 2", article.FailedExpectation());
+        Assert.Equal("QuickPulse.Instruments.ComputerSaysNo: Only one is available", article.FailureDescription());
+        Assert.Contains("at QuickPulse.Instruments.ComputerSays.No", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
         Assert.Equal(1, article.Total().Warnings());
-        Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
@@ -173,7 +210,5 @@ public class ReportModeTests : BaseTest
         Assert.Equal("Irrelevant", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("73", article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Null value for type 'Thing' at input 'Null Thing'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("Counter does not equal 2", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 }

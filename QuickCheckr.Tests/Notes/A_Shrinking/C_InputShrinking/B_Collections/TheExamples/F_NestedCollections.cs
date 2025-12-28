@@ -24,7 +24,7 @@ public class F_NestedCollections : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("List[0][0] is not 42", article.FailedExpectation());
+        Assert.Equal("List[0][0] is not 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
