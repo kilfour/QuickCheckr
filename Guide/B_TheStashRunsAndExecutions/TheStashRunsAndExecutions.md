@@ -48,7 +48,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    RunBugHouseCheckr
- Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:65:1
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:75:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642
@@ -59,11 +59,6 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
    - Input: Int = 1
  ===========================================================================
   !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
-   at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.BugHouse.DelayedDetonation(Int32 a) in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 28
-   at QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions.TheStashRunsAndExecutions.<>c__DisplayClass8_2..cctor() in Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:line 56
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
  ===========================================================================
  Passed Expectations
  - Returns true: 2x

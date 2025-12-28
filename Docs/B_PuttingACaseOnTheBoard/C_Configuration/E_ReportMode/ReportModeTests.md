@@ -1,5 +1,5 @@
 # ReportMode
-Controls which whether *Traces* and/or *Warnings* show up in the report.
+Controls whether or not *Traces*, *Warnings*  and/or *Exception StackTraces* show up in the report.
 
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
@@ -7,11 +7,11 @@ The following Checkr will be used to generate the reports throughout this chapte
     from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
     from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
     from trace in Checkr.Trace("Irrelevant", () => irrelevant)
-    from expect in Checkr.Expect("Counter does not equal 2", () => counter != 2)
+    from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
     select Case.Closed;
 ```
 ## None
-No traces, no warnings.  
+No traces, no warnings, no stacktrace.  
 ```csharp
 private static CheckrConfig ConfigureNone(CheckrConfig config)
     => config with { ReportMode = ReportMode.None };
@@ -19,20 +19,17 @@ private static CheckrConfig ConfigureNone(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:47:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:48:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
-  Executed:
+  Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
- ===================================================
-  !! Expectation Failed: Counter does not equal 2
- ===================================================
- Passed Expectations
- - Counter does not equal 2: 1x
- ------------------------------------------------------------
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+ ===========================================================================
 ```
 ## Trace
 Only traces.  
@@ -48,16 +45,13 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
-  Executed:
+  Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
- ===================================================
-  !! Expectation Failed: Counter does not equal 2
- ===================================================
- Passed Expectations
- - Counter does not equal 2: 1x
- ------------------------------------------------------------
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+ ===========================================================================
 ```
 ## Warning
 Only warnings.  
@@ -73,36 +67,59 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
-  Executed:
+  Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
- ===================================================
-  !! Expectation Failed: Counter does not equal 2
- ===================================================
- Passed Expectations
- - Counter does not equal 2: 1x
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+ ===========================================================================
+```
+## StackTrace
+Includes the StackTrace in the failure description if an exception is thrown.  
+```csharp
+private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
+    => config with { ReportMode = ReportMode.StackTrace };
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTestStackTrace
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:155:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
  ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Input: Counter = 2
+   - Input: Null Thing = null
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+   at QuickPulse.Instruments.ComputerSays.No[T](String msg)
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+ ===========================================================================
 ```
 ## Default
 Includes all possible ReportModes.  
 ```text
 ------------------------------------------------------------
  Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:153:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:188:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
-  Executed:
+  Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
- ===================================================
-  !! Expectation Failed: Counter does not equal 2
- ===================================================
- Passed Expectations
- - Counter does not equal 2: 1x
- ------------------------------------------------------------
+ ===========================================================================
+  !! Exception Thrown: QuickPulse.Instruments.ComputerSaysNo: Only one is available
+   at QuickPulse.Instruments.ComputerSays.No[T](String msg)
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+ ===========================================================================
 ```

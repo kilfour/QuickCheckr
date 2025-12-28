@@ -215,7 +215,7 @@ var check =
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    922552796
+ Seed:                    636978454
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
@@ -464,11 +464,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:149:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1203043678
+ Seed:                    1796750898
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 71 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 35 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! Exception Thrown: System.NullReferenceException: Object reference not set to an instance of an object.
@@ -1282,24 +1282,28 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    320847276
+ Seed:                    1355440449
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-1
    - Input: Counter = 1
    - Input: Name = AAA
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
+   -  Pool: Name to update = String-1
    - Input: Counter = 2
    - Input: Name = BBB
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-2
    - Input: Counter = 3
    - Input: Name = AAA
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-3
    - Input: Counter = 4
    - Input: Name = BBB
    - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
@@ -1329,18 +1333,21 @@ So now, **Execution Id Matters**.
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    388851863
+ Seed:                    548262801
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-1
    - Input: Counter = 1
    - Trace: Sut = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
+   -  Pool: Name to update = String-1
    - Input: Counter = 2
    - Input: Name = "BBB"
    - Trace: Sut = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-3
    - Input: Counter = 4
    - Input: Name = "BBB"
    - Trace: Sut = { Contacts: [ "BBB" ] }
@@ -1406,16 +1413,19 @@ public class ContactBook
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    81763066
+ Seed:                    1332136545
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-1
    - Input: Counter = 1
  ------------------------------------------------------------
   Executed: Update
+   -  Pool: Name to update = String-1
    - Input: Counter = 2
    - Input: Name = "BBB"
  ------------------------------------------------------------
   Executed: Add
+   -  Pool: Name = String-3
    - Input: Counter = 4
    - Input: Name = "BBB"
  ===========================================================================
@@ -1461,7 +1471,7 @@ public sealed class Ledger
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\B_OverFlowing\OverFlowing.cs:24:1
+ Location:                Notes\X_Various\B_OverFlowing\OverFlowing.cs:24:1
  Original failing run:    10 executions
  Minimal failing case:    2 executions (after 8 shrinks)
  Seed:                    1990927690

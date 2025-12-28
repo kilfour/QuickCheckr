@@ -73,11 +73,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:104:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1384306292
+ Seed:                    223444997
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 2, IntTwo: 2, IntThree: 1 }
+   - Trace: Original = { IntOne: 2, IntTwo: 4, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

@@ -68,19 +68,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
- Original failing run:    2 executions
- Seed:                    1305046546
+ Original failing run:    4 executions
+ Minimal failing case:    2 executions (after 2 shrinks)
+ Seed:                    1556788014
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 5
+   - Input: Amount = 4
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 4
+   - Input: Amount = 3
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 1x
+ - No Overdraft: 3x
  ------------------------------------------------------------
 ```
 The following predefined policies are available

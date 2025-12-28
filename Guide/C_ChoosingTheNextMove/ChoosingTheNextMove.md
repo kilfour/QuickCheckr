@@ -52,7 +52,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:65:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:72:1
  Original failing run:    5 executions
  Seed:                    1509195528
  ------------------------------------------------------------
@@ -84,7 +84,7 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:133:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:123:1
  Original failing run:    5 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1509195528
@@ -129,7 +129,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Conditional
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:183:1
+ Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:182:1
  Original failing run:    2 executions
  Seed:                    356083796
  ------------------------------------------------------------

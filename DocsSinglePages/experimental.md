@@ -230,7 +230,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:47:1
+ Location:                Experimental\W_Warehouse\A_StepOne\WarehouseStepOne.cs:37:1
  Original failing run:    12 executions
  Minimal failing case:    3 executions (after 14 shrinks)
  Seed:                    1344312712
@@ -387,7 +387,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:30:1
+ Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:29:1
  Original failing run:    20 executions
  Minimal failing case:    6 executions (after 16 shrinks)
  Seed:                    1764635658
