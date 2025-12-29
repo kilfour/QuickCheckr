@@ -1,5 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -11,12 +13,12 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
-[DocLink(typeof(B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy.DeliberationPolicyTests))]
+[DocLink(typeof(Configuration))]
 [DocContent(
 @"This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
 A first example, as well as how to enable this feature,
-can be found in the entry on [Deliberation Policies][DeliberationPolicy] in the Configuration chapter.
+can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
 
 But here are some more use cases.")]
 public class DeliberationShrinking : BaseTest

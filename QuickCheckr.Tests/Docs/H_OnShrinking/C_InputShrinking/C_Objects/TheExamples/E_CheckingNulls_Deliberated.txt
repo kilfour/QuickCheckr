@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    RunTest_WithDeliberationPolicy
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:163:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    639078625
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 61 } }
+   - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
+ ===========================================================================
+  !! NullReferenceException: Object reference not set to an instance of an object.
+ ===========================================================================

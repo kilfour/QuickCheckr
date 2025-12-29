@@ -1,6 +1,5 @@
-### 0.0.6
+### 0.0.6: Zen Confirmed
 * Trackr.Analyze
-* Taskr experiment
 * Finished/Fixed ShrinkMode reporting
 * Summary for passing tests
 * OneOf behaviour fix
@@ -15,7 +14,7 @@
 * Less greedy Execution Shrinking, but now more correct.
 * ReportMode
 
-### 0.0.7
+### 0.0.7: In Pools We Trust
 * Encapsulated the pool element returned from Trackr.OneOfPool and others
 * Added unsupported type for shrinking WARNING
 * Array shrinking supported
@@ -39,5 +38,5 @@
 * Added *lazy* Checkr.Input
 * When an *eager* Input throws, exception is wrapped in a InputFuzzrThrewException.
   With an explanation and a suggestion to try the lazy version.
-* `Trackr.PoolWhen<T1,T2>` now also exposes PoolElement's
+* `Trackr.PoolWhen<T1,T2>` now also exposes PoolElements
 * Minor change to Exception Failure message formatting in report

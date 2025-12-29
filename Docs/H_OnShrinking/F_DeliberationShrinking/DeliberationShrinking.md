@@ -2,7 +2,7 @@
 This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
 A first example, as well as how to enable this feature,
-can be found in the entry on [Deliberation Policies][DeliberationPolicy] in the Configuration chapter.
+can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
 
 But here are some more use cases.  
 ## An Eager Shrinker
@@ -83,4 +83,4 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  ===============================================================
 ```
 
-[DeliberationPolicyTests]: ../../B_PuttingACaseOnTheBoard/C_Configuration/F_DeliberationPolicy/DeliberationPolicyTests.md
+[Configuration]: ../../B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md

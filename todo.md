@@ -1,16 +1,16 @@
-## Current Version: 0.0.6 
+## Current Version: 0.0.6 : Zen Confirmed
 
 ### Ready for Changelog after review
 
 ### Doing/Ongoing
-* play more pool
+* Play more pool.
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ### Doc Current Focus 
 * Polish the guide a bit more
-  * better examples for 
+  * Better examples for :
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
 * Working on the reference (Checkrs Court) 
@@ -25,18 +25,31 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.7: In Pools We Trust
-I think it's ready ;-)
+I think it's ready ;-).
 
-## 0.0.7+
-* look into different collection shrinking
-  * limitations
-  * known issues
-  * workarounds
-* `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
-    Still feel uneasy having these on Trackr, but let's see how it feels after a while.
-* Dive into Reducers a bit more
-  * Generalize Towards(Zero) reducer
-  * More reducers
+## 0.0.8: You Can Go Your Own Way
+> **Main focus:** Custom Shrinkers.  
+
+* Showr
+  * Just play around with it, doc in reference, ... 
+  * For inputs ? Same as trace feature, but only apply to *relevant* Inputs
+    Showing the original (cause we need to know what properties were important),
+    but also potentially adding a more readable notation right below.
+    See Warehouse example for ideas.  
+
+And if *that* does not lead us down a rabbit hole:
+* Reducers
+  * Generalize Towards(Zero) reducer.
+  * More of them.
+* Look into different collection shrinking:
+  * Limitations.
+  * Known issues
+  * Workarounds.  
+
+
+
+
+## 0.0.8+
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
@@ -54,6 +67,7 @@ I think it's ready ;-)
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
+* Any exception thrown by the Checkr will be caught and considered a failure.
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
@@ -61,6 +75,8 @@ I think it's ready ;-)
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
 
 ## Ideas
+* `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
+    Still feel uneasy having these on Trackr, but let's see how it feels after a while.
 * Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
 * QuickPulse.Show config could use another look 
 * QuickPulse.Show turn manofwealth and taste into composable config
