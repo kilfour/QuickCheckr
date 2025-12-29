@@ -73,6 +73,12 @@ public class ExecutionMemory
     public Func<object, IEnumerable<object>> GetShrinker(string key)
         => shrinkers.Get<Func<object, IEnumerable<object>>>(key)!;
     // --------------------------------------------------------------------------
+    private Dictionary<string, ShrinkOption[]> shrinkerrs = [];
+    public void StoreShrinkerr<T>(string key, ShrinkOption[] options)
+        => shrinkerrs[key] = options;
+    public ShrinkOption[]? GetShrinkerr(string key)
+        => shrinkerrs.TryGetValue(key, out ShrinkOption[]? value) ? value : null;
+    // --------------------------------------------------------------------------
 
 
     // --------------------------------------------------------------------------

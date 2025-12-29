@@ -119,6 +119,11 @@ public class Memory
     public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
         => ShortTermMemory.GetShrinker(executionId, key);
     // --------------------------------------------------------------------------
+    public void StoreShrinkerr<T>(string key, ShrinkOption[] options)
+        => ShortTermMemory.StoreShrinkerr<T>(key, options);
+    public ShrinkOption[]? GetShrinkerr(int executionId, string key)
+        => ShortTermMemory.GetShrinkerr(executionId, key);
+    // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);

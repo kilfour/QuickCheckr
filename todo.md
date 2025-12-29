@@ -1,5 +1,13 @@
-## Current Version: 0.0.6 : Zen Confirmed
-
+## Current Version: 0.0.7: In Pools We Trust
+* check shrinking of 'System.Type' see QP.S
+* Custom Shrinkers:
+  Shrinkr.For<T>(params ShrinkerOptions)
+  * ShrinkerOption 
+    * Fuzzr
+    * Func<T, IEnumerable<T>
+    * Default
+  * it would be amazing to get it to work like QuickFuzzr's Configr, but that looks tricky
+    
 ### Ready for Changelog after review
 
 ### Doing/Ongoing
@@ -24,9 +32,6 @@
   Might get removed.
 * GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
-
-## 0.0.7: In Pools We Trust
-I think it's ready ;-).
 
 ## 0.0.8: You Can Go Your Own Way
 > **Main focus:** Custom Shrinkers.  

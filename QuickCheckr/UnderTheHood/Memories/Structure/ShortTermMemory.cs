@@ -4,7 +4,7 @@ namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class ShortTermMemory
 {
-    private Dictionary<int, ExecutionMemory> memories = [];
+    private readonly Dictionary<int, ExecutionMemory> memories = [];
     private ExecutionMemory Current => memories[CurrentExecutionNumber];
     public int CurrentExecutionNumber { get; private set; } = 0;
     public int Count() => memories.Count;
@@ -78,6 +78,11 @@ public class ShortTermMemory
         => Current.StoreShrinker(key, shrinker);
     public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
         => memories[executionId].GetShrinker(key);
+    // --------------------------------------------------------------------------
+    public void StoreShrinkerr<T>(string key, ShrinkOption[] options)
+        => Current.StoreShrinkerr<T>(key, options);
+    public ShrinkOption[]? GetShrinkerr(int executionId, string key)
+        => memories[executionId].GetShrinkerr(key);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

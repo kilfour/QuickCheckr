@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1058015788
+ ------------------------------------------------------------
+  Executed:
+   - Input: Thing Two = null
+ ==================================
+  !! Expectation Failed: NotNull
+ ==================================
