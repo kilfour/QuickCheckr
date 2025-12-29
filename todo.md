@@ -46,9 +46,6 @@ And if *that* does not lead us down a rabbit hole:
   * Known issues
   * Workarounds.  
 
-
-
-
 ## 0.0.8+
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
