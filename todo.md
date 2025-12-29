@@ -1,5 +1,6 @@
 ## Current Version: 0.0.7: In Pools We Trust
-* check shrinking of 'System.Type' see QP.S
+
+### Current Focus
 * Custom Shrinkers:
   Shrinkr.For<T>(params ShrinkerOptions)
   * ShrinkerOption 
@@ -7,6 +8,7 @@
     * Func<T, IEnumerable<T>
     * Default
   * it would be amazing to get it to work like QuickFuzzr's Configr, but that looks tricky
+* Check shrinking of 'System.Type' et al see QP.S.
     
 ### Ready for Changelog after review
 
@@ -22,7 +24,7 @@
   * Better examples for :
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
-* Working on the reference (Checkrs Court) 
+* Work on the reference (Checkrs Court) 
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
@@ -35,7 +37,6 @@
 
 ## 0.0.8: You Can Go Your Own Way
 > **Main focus:** Custom Shrinkers.  
-
 * Showr
   * Just play around with it, doc in reference, ... 
   * For inputs ? Same as trace feature, but only apply to *relevant* Inputs
@@ -50,7 +51,8 @@ And if *that* does not lead us down a rabbit hole:
 * Look into different collection shrinking:
   * Limitations.
   * Known issues
-  * Workarounds.  
+  * Workarounds. 
+  * Try dictionaries first maybe, and see what pops up. 
 
 ## 0.0.8+
 * Deliberation Shrinking. Add:
@@ -102,4 +104,10 @@ And if *that* does not lead us down a rabbit hole:
 * unify ConditionalResult and DelayedResult ... maybe
 
 ## Other
+* QuickAcid did multiple passes on Execution Shrinking
+  I never liked it. The Account example however shows it could be usefull.
+  On the other hand, DeliberationPolicies seems like a cleaner solution.
+* QuickAcid Feedback shrinking: which amounts to combining similar executions.
+  F.i. Withdraw(5), Withdraw(10) becomes Withdraw(15).
+  Again DeliberationPolicy and possibly, in the future, Reducers will solve this better I think.
 * Scour QuickAcid for any interesting tests left behind.
