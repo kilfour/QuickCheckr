@@ -1,5 +1,5 @@
 ## Current Version: 0.0.7: In Pools We Trust
-Showr.ForInputs
+Showr.ForInputs (Implemented)
 
 ### Current Focus
     
@@ -15,7 +15,6 @@ Showr.ForInputs
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ### Doc Current Focus 
-* hunt down every last spec (Done, .. I think)
 * Polish the guide a bit more
   * Better examples for :
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
@@ -32,14 +31,6 @@ Showr.ForInputs
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
-* Showr
-  * Just play around with it, doc in reference, ... 
-  * For inputs ? Same as trace feature, but only apply to *relevant* Inputs
-    Showing the original (cause we need to know what properties were important),
-    but also potentially adding a more readable notation right below.
-    See Warehouse example for ideas.  
-
-And if *that* does not lead us down a rabbit hole:
 * Reducers
   * Generalize Towards(Zero) reducer.
   * More of them.
