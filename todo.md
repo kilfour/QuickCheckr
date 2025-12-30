@@ -5,12 +5,15 @@
   Shrinkr.For<T>(params ShrinkerOptions)
   * ShrinkerOption 
     * Fuzzr
-    * Func<T, IEnumerable<T>
+    * params Values
+    * `Func<T, IEnumerable<T>`
     * Default
-  * it would be amazing to get it to work like QuickFuzzr's Configr, but that looks tricky
+  Scoped and Global
 * Check shrinking of 'System.Type' et al see QP.S.
     
 ### Ready for Changelog after review
+* Added *scoped* Custom Shrinkers
+
 
 ### Doing/Ongoing
 * Play more pool.
@@ -91,11 +94,15 @@ And if *that* does not lead us down a rabbit hole:
   Should be a lot easier than before
   
 ## Refactoring Targets 
+* ShrinkingInfo.Strategy: Change from string to Type.
+* Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
 
 ### Already Considered
-> Looked at these and not deemed needed (now). Just keeping this list in order to avoid me doing the same thing twice.
+> Looked at these and not deemed needed (now).  
+> Just keeping this list in order to avoid me doing the same thing twice.  
+
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
   * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look 
 * Refactoring: simplify casefile compile

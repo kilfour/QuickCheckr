@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
@@ -79,10 +80,12 @@ public class ShortTermMemory
     public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
         => memories[executionId].GetShrinker(key);
     // --------------------------------------------------------------------------
-    public void StoreShrinkerr<T>(string key, ShrinkOption[] options)
-        => Current.StoreShrinkerr<T>(key, options);
-    public ShrinkOption[]? GetShrinkerr(int executionId, string key)
-        => memories[executionId].GetShrinkerr(key);
+    public void StoreShrinkerForType<T>(IShrinkOption[] options)
+        => Current.StoreShrinkerForType<T>(options);
+    public void StoreShrinkerForKey<T>(string key)
+        => Current.StoreShrinkerForKey<T>(key);
+    public IShrinkOption[]? GetShrinkerForKey(int executionId, string key)
+        => memories[executionId].GetShrinkerForKey(key);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

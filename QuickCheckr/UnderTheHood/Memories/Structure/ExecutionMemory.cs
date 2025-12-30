@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
@@ -73,11 +74,18 @@ public class ExecutionMemory
     public Func<object, IEnumerable<object>> GetShrinker(string key)
         => shrinkers.Get<Func<object, IEnumerable<object>>>(key)!;
     // --------------------------------------------------------------------------
-    private Dictionary<string, ShrinkOption[]> shrinkerrs = [];
-    public void StoreShrinkerr<T>(string key, ShrinkOption[] options)
-        => shrinkerrs[key] = options;
-    public ShrinkOption[]? GetShrinkerr(string key)
-        => shrinkerrs.TryGetValue(key, out ShrinkOption[]? value) ? value : null;
+    private readonly Dictionary<Type, IShrinkOption[]> shrinkersPerType = [];
+    private readonly Dictionary<string, IShrinkOption[]> shrinkersPerKey = [];
+    public void StoreShrinkerForType<T>(IShrinkOption[] options)
+        => shrinkersPerType[typeof(T)] = options;
+    public void StoreShrinkerForKey<T>(string key)
+    {
+        shrinkersPerType.TryGetValue(typeof(T), out IShrinkOption[]? options);
+        if (options != null)
+            shrinkersPerKey[key] = options;
+    }
+    public IShrinkOption[]? GetShrinkerForKey(string key)
+        => shrinkersPerKey.TryGetValue(key, out IShrinkOption[]? value) ? value : null;
     // --------------------------------------------------------------------------
 
 

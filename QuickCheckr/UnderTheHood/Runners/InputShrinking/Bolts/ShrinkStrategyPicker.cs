@@ -1,4 +1,5 @@
-﻿using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+﻿using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
@@ -11,19 +12,41 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
         if (customShrinker != null)
             return new CustomShrinkStrategy(customShrinker).Shrink(state, check, info);
 
-        var customShrinkerr = state.Memory.GetShrinkerr(info.ExecutionId, info.Type.FullName!);
-        if (customShrinkerr != null)
+        var options = state.Memory.GetShrinkerForKey(info.ExecutionId, info.Key);
+        if (options != null)
         {
-            foreach (var option in customShrinkerr)
+            for (int i = 0; i < options.Length; i++)
             {
+                var option = options[i];
                 if (option is IShrinkOptionFuzzr optionFuzzr)
                 {
-                    var fuzzrShrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
+                    var shrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
                         .Many(optionFuzzr.Times)(state.FuzzrState).Value.Cast<object>();
-                    return new CustomShrinkStrategy(a => fuzzrShrinker).Shrink(state, check, info);
+                    var clues = new CustomShrinkStrategy(a => shrinker).Shrink(state, check, info);
+                    if (clues.Any())
+                        return clues;
+                }
+
+                if (option is IShrinkOptionFunction optionCustom)
+                {
+                    var clues = new CustomShrinkStrategy(optionCustom.GetFunction()).Shrink(state, check, info);
+                    if (clues.Any())
+                        return clues;
+                }
+
+                if (option is IShrinkOptionDefault)
+                {
+                    var clues = new ShrinkStrategyPickerDefault().Shrink(state, check, info);
+                    if (clues.Any(a => a.Strategy != "CantShrinkNull"))
+                        return clues;
                 }
             }
+            var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
+                    info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+            state.Docket.Record(new InputShrinkingClueFound(clue));
+            return [clue];
         }
-        return new ShrinkStrategyPickerDefault().Shrink(state, check, info);
+        else
+            return new ShrinkStrategyPickerDefault().Shrink(state, check, info);
     }
 }
