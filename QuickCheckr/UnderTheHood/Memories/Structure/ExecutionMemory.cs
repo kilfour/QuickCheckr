@@ -11,7 +11,6 @@ public class ExecutionMemory
     private readonly OverlayMemoryBank inputs = new();
     public T? StoreInput<T>(string key, Func<T> factory)
         => inputs.Store(key, factory);
-    public Type GetActualType(string key) => inputs.GetActualType(key);
     public IReadOnlyDictionary<string, object?> GetInputValues() => inputs.Values.Select(a => (a.Key, a.Value.Value)).ToDictionary(a => a.Key, a => a.Value);
     public IReadOnlyDictionary<string, TypedValue> GetInputs() => inputs.Values;
     public IDisposable ScopedSwap(string key, object value)
@@ -27,7 +26,7 @@ public class ExecutionMemory
     private readonly Dictionary<string, Func<ManOfWealthAndTaste>> showrsPerKey = [];
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
         => currentInputShowr = showr;
-    public void StoreInputShowrForKey<T>(string key)
+    public void StoreInputShowrForKey(string key)
     {
         if (currentInputShowr == null) return;
         showrsPerKey[key] = currentInputShowr;

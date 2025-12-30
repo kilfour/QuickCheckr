@@ -33,6 +33,7 @@ public static partial class Checkr
         try
         {
             state.Memory.StoreShrinkerForKey<T>(key);
+            state.Memory.StoreInputShowrForKey(key);
             return CheckrResult.Some(state, state.Memory.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
         }
         catch (DuplicateKeyWriteException)

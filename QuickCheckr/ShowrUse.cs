@@ -15,7 +15,7 @@ public static partial class Showr
     public static CheckrOf<Case> ForInputs(Func<ManOfWealthAndTaste> config) =>
         state =>
         {
-            state.Editor = config();
+            state.Memory.StoreInputShowr(config);
             return CheckrResult.CaseOnly(state);
         };
 }

@@ -1,6 +1,7 @@
 using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories;
 
@@ -87,7 +88,21 @@ public class Memory
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
         => ShortTermMemory.StoreInput(KeyGuardian.Inputs.Check(key), factory);
-    public Type GetActualType(int executionId, string key) => ShortTermMemory.GetActualType(executionId, key);
+    // --------------------------------------------------------------------------
+    // Input Showrs
+    public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
+    {
+        if (StoringShrinkers)
+            ShortTermMemory.StoreInputShowr(showr);
+    }
+    public void StoreInputShowrForKey(string key)
+    {
+        if (StoringShrinkers)
+            ShortTermMemory.StoreInputShowrForKey(key);
+    }
+    public Func<ManOfWealthAndTaste>? GetInputShowrForKey(int executionId, string key)
+        => ShortTermMemory.GetInputShowrForKey(executionId, key);
+    // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
     // Actions
