@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
@@ -17,6 +18,28 @@ public class ExecutionMemory
         => inputs.ScopedSwap(key, value);
     public IDisposable NestedValue(MemoryLens swapper)
         => inputs.NestedValue(swapper);
+    // --------------------------------------------------------------------------
+
+
+    // --------------------------------------------------------------------------
+    // Input Showrs
+    private Func<ManOfWealthAndTaste>? currentInputShowr = null;
+    private readonly Dictionary<string, Func<ManOfWealthAndTaste>> showrsPerKey = [];
+    public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
+        => currentInputShowr = showr;
+    public void StoreInputShowrForKey<T>(string key)
+    {
+        if (currentInputShowr == null) return;
+        showrsPerKey[key] = currentInputShowr;
+    }
+    public Func<ManOfWealthAndTaste>? GetInputShowrForKey(string key)
+    {
+        if (showrsPerKey.TryGetValue(key, out Func<ManOfWealthAndTaste>? showr))
+        {
+            return showr;
+        }
+        return null;
+    }
     // --------------------------------------------------------------------------
 
 
@@ -48,7 +71,7 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
-    // Traces
+    // Pool Traces
     private readonly MemoryBank poolTraces = new();
     public void StorePoolTrace(string key, Func<string> factory)
         => poolTraces.Store(key, factory);
@@ -85,7 +108,6 @@ public class ExecutionMemory
         }
         return null;
     }
-
     // --------------------------------------------------------------------------
 
 
