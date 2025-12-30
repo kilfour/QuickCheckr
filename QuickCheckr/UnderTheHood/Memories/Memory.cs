@@ -126,8 +126,8 @@ public class Memory
         if (StoringShrinkers)
             ShortTermMemory.StoreShrinkerForKey<T>(key);
     }
-    public IShrinkOption[]? GetShrinkerForKey(int executionId, string key)
-        => ShortTermMemory.GetShrinkerForKey(executionId, key);
+    public IShrinkOption[]? GetShrinkerForKey(int executionId, string key, Type type)
+        => ShortTermMemory.GetShrinkerForKey(executionId, key, type);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)

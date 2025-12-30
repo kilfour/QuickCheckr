@@ -8,11 +8,12 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers;
 
 [DocFile]
-[DocExample(typeof(CustomShrinkers), nameof(GetCheckr))]
-[DocCodeFile("CustomShrinkers.txt", "text")]
+
 public class CustomShrinkers : BaseTest
 {
     [Fact]
+    [DocExample(typeof(CustomShrinkers), nameof(GetCheckr))]
+    [DocCodeFile("CustomShrinkers.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
@@ -82,4 +83,63 @@ public class CustomShrinkers : BaseTest
     }
 
     public class Thing;
+
+
+    public class TheUniverse
+    {
+        public class Life { public int Answer { get; set; } }
+        public Life? Everything { get; set; }
+        public Life? Irrelevant { get; set; }
+        public int GetTheAnswer() => Everything!.Answer;
+    }
+
+    [Fact]
+    [DocContent(
+@"The following example, if ran without the Shrinkr, would not be able to shrink the Null value and would also emit a warning.")]
+    [DocExample(typeof(CustomShrinkers), nameof(GetCheckrNested))]
+    [DocCodeFile("CustomShrinkersNested.txt", "text")]
+    public void Nested()
+    {
+        var article = TheJournalist.Exposes(() =>
+            GetCheckrNested().Run(1269557792));
+        WriteAsserts(article, false);
+        WriteReport(article, "CustomShrinkersNested.txt", false);
+        VerifyNested(article);
+    }
+    private static readonly FuzzrOf<TheUniverse.Life?> TheLifeFuzzr =
+        Fuzzr.One<TheUniverse.Life>().NullableRef();
+
+    private static readonly FuzzrOf<TheUniverse> TheUniverseFuzzr =
+        from everything in Configr<TheUniverse>.Property(a => a.Everything, TheLifeFuzzr)
+        from irrelevant in Configr<TheUniverse>.Property(a => a.Irrelevant, TheLifeFuzzr)
+        from one in Fuzzr.One<TheUniverse>()
+        select one;
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    private static CheckrOf<Case> GetCheckrNested()
+    {
+        return
+            from shrink in Shrinkr.For(TheLifeFuzzr)
+            from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
+            from trace in Checkr.Trace("The Universe", () => universe)
+            from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+            select Case.Closed;
+    }
+
+    private static void VerifyNested(Article article)
+    {
+        Assert.Equal("NullReferenceException: Object reference not set to an instance of an object.", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("The Answer", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ Everything: null }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+    }
 }

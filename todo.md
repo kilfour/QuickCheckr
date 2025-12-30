@@ -1,14 +1,6 @@
 ## Current Version: 0.0.7: In Pools We Trust
 
 ### Current Focus
-* Custom Shrinkers:
-  Shrinkr.For<T>(params ShrinkerOptions)
-  * ShrinkerOption 
-    * Fuzzr
-    * params Values
-    * `Func<T, IEnumerable<T>`
-    * Default
-  Scoped and Global
 * Check shrinking of 'System.Type' et al see QP.S.
     
 ### Ready for Changelog after review
