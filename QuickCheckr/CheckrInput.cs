@@ -7,27 +7,14 @@ namespace QuickCheckr;
 public static partial class Checkr
 {
     public record InputCfg<T>(
-        Func<T, IEnumerable<T>>? Shrinker = null,
-        int FuzzrShrinker = 0,
         Func<T, IEnumerable<T>>? Reducer = null
     );
 
-    /// <summary>
-    /// Draws a named input value from a fuzzr and optionally configures how it will be shrunk or reduced.  
-    /// Use when you want to attach custom shrinkers or reducers to an input so QuickCheckr can guide shrinking more precisely.
-    /// </summary>
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<InputCfg<T>, InputCfg<T>> configure)
     {
         var cfg = configure(new InputCfg<T>());
         return state =>
         {
-            if (cfg.FuzzrShrinker > 0)
-            {
-                state.Memory.StoreShrinker<object>(key,
-                    a => fuzzr.Unique($"{key}").Many(cfg.FuzzrShrinker)(state.FuzzrState).Value.Cast<object>());
-            }
-            if (cfg.Shrinker != null)
-                state.Memory.StoreShrinker<object>(key, a => cfg.Shrinker((T)a).Cast<object>());
             if (cfg.Reducer != null)
                 state.Memory.StoreReducer<object>(key, a => cfg.Reducer((T)a).Cast<object>());
             return HandleInput(state, key, fuzzr);

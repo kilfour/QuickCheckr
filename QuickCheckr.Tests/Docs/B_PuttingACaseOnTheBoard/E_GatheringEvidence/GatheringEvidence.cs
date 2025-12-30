@@ -173,7 +173,7 @@ public class GatheringEvidence : BaseTest
         }
     }
 
-    [Fact]//(Skip = "Explicit: Touches the File System.")]
+    [Fact(Skip = "Explicit: Touches the File System.")]
     [DocHeader("Show, Don't Tell")]
     [DocHeader("The Sut", 1)]
     [DocExample(typeof(ContactBook))]

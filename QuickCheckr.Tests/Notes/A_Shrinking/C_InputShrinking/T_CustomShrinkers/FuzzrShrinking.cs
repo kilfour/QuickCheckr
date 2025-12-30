@@ -42,8 +42,9 @@ public class FuzzrShrinking : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.Input("One", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
-            from two in Checkr.Input("Two", Fuzzr.Int(), a => a with { FuzzrShrinker = 3 })
+            from shrink in Shrinkr.For(Fuzzr.Int(), 3)
+            from one in Checkr.Input("One", Fuzzr.Int())
+            from two in Checkr.Input("Two", Fuzzr.Int())
             from traceOne in Checkr.Trace("Original One", () => one)
             from traceTwo in Checkr.Trace("Original Two", () => two)
             from expect in Checkr.Expect("One should not be 42", () => one != 42)
