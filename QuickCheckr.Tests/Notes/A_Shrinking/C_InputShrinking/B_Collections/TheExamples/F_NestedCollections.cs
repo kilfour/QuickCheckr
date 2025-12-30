@@ -43,7 +43,7 @@ public class F_NestedCollections : BaseTest
         return
             from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
             from trace in Checkr.Trace("List", () => input)
-            from spec in Checkr.ExpectWhen("List[0][0] is not 42",
+            from expect in Checkr.ExpectWhen("List[0][0] is not 42",
                 () => input.Any() && input.First().Any(),
                 () => input.First().First() != 42)
             select Case.Closed;
@@ -56,7 +56,7 @@ public class F_NestedCollections : BaseTest
         var checkr =
             from input in Checkr.Input("List", Fuzzr.Constant(list))
             from trace in Checkr.Trace("List", () => input)
-            from spec in Checkr.ExpectWhen("List[0][0] is not 42",
+            from expect in Checkr.ExpectWhen("List[0][0] is not 42",
                 () => input.Count != 0 && input.First().Any(),
                 () => input.First().First() != 42)
             select Case.Closed;

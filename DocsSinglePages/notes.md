@@ -12,7 +12,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
     from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
-    from spec in Checkr.Expect("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
+    from expect in Checkr.Expect("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
     select Case.Closed;
 ```
 ```text
@@ -32,7 +32,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
     from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
-    from spec in Checkr.Expect("Should not be Two", () => inputTwo != SoundCheck.Two)
+    from expect in Checkr.Expect("Should not be Two", () => inputTwo != SoundCheck.Two)
     select Case.Closed;
 ```
 ```text
@@ -53,7 +53,7 @@ together with the number of executions, relevant actions and inputs that were re
 **The Checkr:**  
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.String())
-    from spec in Checkr.Expect("Fails", () => input.Length > 0 && false)
+    from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
     select Case.Closed;
 ```
 **The Report:**  
@@ -74,7 +74,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### When Relevant Item Is Default
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
-    from spec in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
+    from expect in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -95,7 +95,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```
 ```csharp
     from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
-    from spec in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
+    from expect in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
     from trace in Checkr.Trace("List Input", () => listInput)
     select Case.Closed;
 ```
@@ -117,7 +117,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### Relevant Multiple Elements
 ```csharp
     from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
-    from spec in Checkr.ExpectWhen("spec", () => input.Count() > 2, () =>
+    from expect in Checkr.ExpectWhen("expect", () => input.Count() > 2, () =>
         !(input.ToList()[0] == 1
         && input.ToList()[1] == 2
         && input.ToList()[2] == 3))
@@ -140,7 +140,7 @@ together with the number of executions, relevant actions and inputs that were re
 ##### Relevant Element And Size
 ```csharp
     from input in Checkr.Input("List", Fuzzr.Constant<IEnumerable<int>>([666, 42]))
-    from spec in Checkr.ExpectWhen("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
+    from expect in Checkr.ExpectWhen("Second element is not 42", () => input.Count() > 1, () => input.ElementAt(1) != 42)
     select Case.Closed;
 ```
 ```text
@@ -161,7 +161,7 @@ together with the number of executions, relevant actions and inputs that were re
 ```csharp
     from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
     from trace in Checkr.Trace("List", () => input)
-    from spec in Checkr.ExpectWhen("List[0][0] is not 42",
+    from expect in Checkr.ExpectWhen("List[0][0] is not 42",
         () => input.Any() && input.First().Any(),
         () => input.First().First() != 42)
     select Case.Closed;

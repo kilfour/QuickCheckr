@@ -18,10 +18,10 @@ public class PassedExpectationDepositionsTests : DepositionTest
     public void One()
     {
         var caseFile = CaseFile.Empty()
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("a spec", 1));
+                .AddPassedExpectationDeposition(new PassedExpectationDeposition("an expectation", 1));
         var reader = Transcribe(caseFile);
         Assert.Equal(" Passed Expectations", reader.NextLine());
-        Assert.Equal(" - a spec: 1x", reader.NextLine());
+        Assert.Equal(" - an expectation: 1x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());
 
@@ -31,12 +31,12 @@ public class PassedExpectationDepositionsTests : DepositionTest
     public void Two()
     {
         var caseFile = CaseFile.Empty()
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("a spec", 1))
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("another spec", 42));
+                .AddPassedExpectationDeposition(new PassedExpectationDeposition("an expectation", 1))
+                .AddPassedExpectationDeposition(new PassedExpectationDeposition("another expectation", 42));
         var reader = Transcribe(caseFile);
         Assert.Equal(" Passed Expectations", reader.NextLine());
-        Assert.Equal(" - a spec: 1x", reader.NextLine());
-        Assert.Equal(" - another spec: 42x", reader.NextLine());
+        Assert.Equal(" - an expectation: 1x", reader.NextLine());
+        Assert.Equal(" - another expectation: 42x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }

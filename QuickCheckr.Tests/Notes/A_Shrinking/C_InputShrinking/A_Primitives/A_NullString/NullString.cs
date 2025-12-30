@@ -16,7 +16,7 @@ public class NullString : BaseTest
     {
         return
             from input in Checkr.Input("Input", Fuzzr.String())
-            from spec in Checkr.Expect("Fails", () => input.Length > 0 && false)
+            from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
             select Case.Closed;
     }
 

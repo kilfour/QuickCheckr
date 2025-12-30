@@ -91,7 +91,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     }
 
     [Fact]
-    [DocContent("- For every passing seed the report will only contain a list of passed specs.")]
+    [DocContent("- For every passing seed the report will only contain a list of passed expectations.")]
     public void ReviewingColdCases_SeedPasses()
     {
         var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };

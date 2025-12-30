@@ -1359,7 +1359,7 @@ checkr.ReviewColdCases(Configure);
 ```
 This will create a report per seed in the evidence vault and a log of all evidence vault actions.  
 - For every failing seed the report will look like the by now familiar failure report.  
-- For every passing seed the report will only contain a list of passed specs.  
+- For every passing seed the report will only contain a list of passed expectations.  
 #### Closing Cold Cases
 The method mentioned above is usefull for regression testing, but sometimes,
     there is no need to keep the evidence around after the culprit is found.  

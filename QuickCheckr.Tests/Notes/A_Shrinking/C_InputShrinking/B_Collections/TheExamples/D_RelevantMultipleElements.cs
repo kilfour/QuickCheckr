@@ -24,7 +24,7 @@ public class D_RelevantMultipleElements : BaseTest
 
     private static void Verify(Article article)
     {
-        Assert.Equal("spec", article.FailureDescription());
+        Assert.Equal("expect", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(3, article.ShrinkCount);
@@ -39,7 +39,7 @@ public class D_RelevantMultipleElements : BaseTest
     {
         return
             from input in Checkr.Input("input", Fuzzr.Int(1, 10).Many(1, 10))
-            from spec in Checkr.ExpectWhen("spec", () => input.Count() > 2, () =>
+            from expect in Checkr.ExpectWhen("expect", () => input.Count() > 2, () =>
                 !(input.ToList()[0] == 1
                 && input.ToList()[1] == 2
                 && input.ToList()[2] == 3))

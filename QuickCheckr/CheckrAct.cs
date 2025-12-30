@@ -3,14 +3,14 @@ namespace QuickCheckr;
 public static partial class Checkr
 {
     /// <summary>
-    /// Adds a named action step to the Checkr script and captures its result for later specs and traces.
+    /// Adds a named action step to the Checkr script and captures its result for later expectations and traces.
     /// Use when you want a synchronous operation to appear as an executable step in the report.
     /// </summary>
     public static CheckrOf<T> Act<T>(string key, Func<T> func)
         => TryCatch(key, func);
 
     /// <summary>
-    /// Adds a named asynchronous action step to the Checkr script and captures its result for later specs and traces.
+    /// Adds a named asynchronous action step to the Checkr script and captures its result for later expectations and traces.
     /// Use when you want to await a task as part of the Checkr workflow without exposing async plumbing in your test.
     /// </summary>
     public static CheckrOf<T> Act<T>(string key, Task<T> func)
