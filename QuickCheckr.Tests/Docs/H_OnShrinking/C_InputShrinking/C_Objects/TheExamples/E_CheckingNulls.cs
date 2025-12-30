@@ -163,7 +163,7 @@ so the warning can be ignored.
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.")]
     public void RunTest_WithDeliberationPolicy()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(50.Runs(), a => ConfigureNoStackTrace(Configure(a))));
+        var article = TheJournalist.Exposes(() => GetCheckr().Run(75.Runs(), a => ConfigureNoStackTrace(Configure(a))));
         WriteAsserts(article, false);
         WriteReport(article, "E_CheckingNulls_Deliberated.txt", false);
         Verify_Deliberated(article);

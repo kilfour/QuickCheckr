@@ -1340,6 +1340,37 @@ The *clue* is in the name. This is used to debug QuickCheckr itself when things 
 
   
 It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
+#### Hint
+In order to avoid having to deal with the configuration all the time, in case you do not like the defaults, for instance,
+it is advised to simply define your own `CheckrOf` extension method(s):  
+  
+**Fast Deliberation:**  
+```csharp
+public static CaseFile Deliberate(
+    this CheckrOf<Case> checkr,
+    Func<CaseFile, CaseFile, CaseFile>? policy = null)
+    => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
+        cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
+```
+**Auto File:**  
+```csharp
+public static CaseFile RunAndFile(
+    this CheckrOf<Case> checkr,
+    [CallerFilePath] string filePath = "",
+    [CallerMemberName] string testName = "")
+    => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
+         cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
+```
+**Knock on some doors:**  
+```csharp
+public static void Investigate(
+    this CheckrOf<Case> checkr,
+    [CallerFilePath] string filePath = "",
+    [CallerMemberName] string testName = "")
+    => checkr.GatherEvidence(100.Investigations(), 10.Runs(), 20.ExecutionsPerRun(),
+        cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
+```
+You get the idea.  
 
 [Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
 

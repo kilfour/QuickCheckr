@@ -2,6 +2,7 @@
     - [The Checkr Class](D_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
       - [Input](D_CheckrsCourt/A_TheCheckrClass/Methods/A_Input.md)
     - [The Tracker Class](D_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md)
+    - [The Showr Class](D_CheckrsCourt/C_TheShowrClass/TheShowrClass.md)
   - [Custom Shrinkers](G_CustomShrinkers/CustomShrinkers.md)
   - [Conditional Execution](K_ConditionalExecution/ConditionalExecution.md)
     - [Checkr Act Carefully When](K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)

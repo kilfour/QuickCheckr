@@ -6,6 +6,7 @@ using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.D_ShrinkMo
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_InternalAffairs;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.K_Hint;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickPulse.Explains;
 
@@ -30,6 +31,7 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 [DocInclude(typeof(ReportModeTests))]
 [DocInclude(typeof(DeliberationPolicyTests))]
 [DocInclude(typeof(InternalAffairsTests))]
+[DocInclude(typeof(Hint))]
 [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]")]
 public class Configuration
 {

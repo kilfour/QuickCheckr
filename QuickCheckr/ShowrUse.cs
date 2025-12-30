@@ -11,4 +11,11 @@ public static partial class Showr
             state.Editor = config();
             return CheckrResult.CaseOnly(state);
         };
+
+    public static CheckrOf<Case> ForInputs(Func<ManOfWealthAndTaste> config) =>
+        state =>
+        {
+            state.Editor = config();
+            return CheckrResult.CaseOnly(state);
+        };
 }
