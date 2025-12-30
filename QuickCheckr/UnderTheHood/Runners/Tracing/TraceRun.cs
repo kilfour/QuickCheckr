@@ -4,15 +4,17 @@ public class TraceRun(
     CheckrState State,
     CheckrOf<Case> Check)
 {
-    public void Run()
+    public void Run(bool trace)
     {
         State.StartReplay();
-        State.Memory.Tracing = true;
+        State.Memory.Tracing = trace;
+        State.Memory.StoringShrinkers = true;
         foreach (var id in State.Memory.Numbers)
         {
             State.Memory.GotoExecution(id);
             Check(State);
         }
+        State.Memory.StoringShrinkers = false;
         State.Memory.Tracing = false;
     }
 }

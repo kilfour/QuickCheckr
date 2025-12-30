@@ -88,9 +88,9 @@ Make pooling tasks feel as native as Trackr pooling.
 ## Showr Use
 ```csharp
     from input in Checkr.Input("int", Fuzzr.Int())
-    from showOne in Showr.Use(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
+    from showOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
     from traceOne in Checkr.Trace("int One", () => input)
-    from showTwo in Showr.Use(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
+    from showTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
     from traceTwo in Checkr.Trace("int Two", () => input)
     from noAnswer in Checkr.Expect("no answer", () => input != 42)
     select Case.Closed;
@@ -195,15 +195,15 @@ return
 ```csharp
 from service in Trackr.Stashed(GetWarehouseService)
 from client in Trackr.Stashed(() => new ClientSim())
-from show in Showr.Use(() => GetShowr(client))
+from showStock in Showr.ForTrace(GetShowr)
 from ops in Checkr.OneOfWhen(
     Checkr.Option(() => client.ProductsToOrder.Length <= 0,
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.ProductsToOrder = service.GetProducts())
         select Case.Closed),
     Checkr.Option(() => client.ProductsToOrder.Length > 0,
+        from show in Showr.ForInput(() => GetRequestShowr(client))
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-        from trace in Checkr.Trace("Order Request", () => orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
             () => client.Orders.Add(service.PlaceOrder(orderRequest)))
         from reloadedStock in Checkr.Capture(() => service.GetProducts())
@@ -240,7 +240,7 @@ select Case.Closed;
  ------------------------------------------------------------
   Executed: Client Places Order
    - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
-   - Trace: Order Request = { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
+                          = { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 88 },
@@ -252,7 +252,7 @@ select Case.Closed;
  ------------------------------------------------------------
   Executed: Client Places Order
    - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
-   - Trace: Order Request = { OrderLines: [ Five: 82 ] }
+                          = { OrderLines: [ Five: 82 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 88 },
@@ -289,13 +289,14 @@ Simulating dev fixing things in the client by forcing a reload of products to or
 ```csharp
 from service in Trackr.Stashed(GetWarehouseService)
 from client in Trackr.Stashed(() => new ClientSim())
-from show in Showr.Use(() => GetShowr(client))
+from show in Showr.ForTrace(() => GetShowr())
 from ops in Checkr.OneOfWhen(
     Checkr.Option(() => client.ProductsToOrder.Length <= 0,
         from getProducts in Checkr.Act("Client Gets Products to Order",
             () => client.ProductsToOrder = service.GetProducts())
         select Case.Closed),
     Checkr.Option(() => client.ProductsToOrder.Length > 0,
+        from show in Showr.ForTrace(() => GetRequestShowr(client))
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
         from trace in Checkr.Trace("Order Request", () => orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
@@ -329,6 +330,7 @@ So then the tester tries multiple clients at the same time.
 private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(GetWarehouseService)
     from clients in Trackr.PoolFor<ClientSim>()
+    from showStock in Showr.ForTrace(GetShowr)
     from ops in Checkr.OneOfWhen(
         Trackr.PoolWhen<ClientSim>(a => a.Count < 3, LogOn),
         Trackr.PoolWhen("Client Action", a => a.Count != 0, ClientTakesAction))
@@ -362,8 +364,9 @@ private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
 ```csharp
 private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
     from service in Trackr.GetStashed<WarehouseService>()
+    from show in Showr.ForInput(() => GetRequestShowr(client.Value))
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
-    from trace in TraceRequest(client, orderRequest)
+        //from trace in TraceRequest(client, orderRequest)
     from placeOrder in Checkr.Act("Client Places Order",
         () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
     from traceStock in TraceStock
@@ -412,7 +415,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
   Executed: Client Places Order
    -  Pool: Client Action = ClientSim-2
    - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
-   - Trace: Order Request = { OrderLines: [ Three: 39 ] }
+                          = { OrderLines: [ Three: 39 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -423,7 +426,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
   Executed: Client Places Order
    -  Pool: Client Action = ClientSim-3
    - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
-   - Trace: Order Request = { OrderLines: [ Three: 92 ] }
+                          = { OrderLines: [ Three: 92 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -445,7 +448,7 @@ So after the dev applies the correct fix, the single client checkr looks like th
 private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(GetWarehouseService)
     from client in Trackr.Stashed(() => new ClientSim())
-    from show in Showr.Use(() => GetShowr(client))
+    from show in Showr.ForTrace(() => GetShowr())
     from ops in Checkr.OneOfWhen(
         Checkr.Option(() => true, GetProductInfo),
         Checkr.Option(() => client.ProductsToOrder.Length > 0, PlaceOrder))
@@ -467,8 +470,8 @@ private static readonly CheckrOf<Case> GetProductInfo =
 private static readonly CheckrOf<Case> PlaceOrder =
     from service in Trackr.GetStashed<WarehouseService>()
     from client in Trackr.GetStashed<ClientSim>()
+    from show in Showr.ForInput(() => GetRequestShowr(client))
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-    from trace in Checkr.Trace("Order Request", () => orderRequest)
     from reloadedStockBefore in Checkr.Capture(() => service.GetProducts())
     from placeOrder in Checkr.ActCarefully("Client Places Order",
         () => client.Orders.Add(service.PlaceOrder(orderRequest)))

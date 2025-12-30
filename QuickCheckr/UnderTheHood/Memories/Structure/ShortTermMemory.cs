@@ -60,11 +60,8 @@ public class ShortTermMemory
     // Input Showrs
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
         => Current.StoreInputShowr(showr);
-    public void StoreInputShowrForKey(string key)
-        => Current.StoreInputShowrForKey(key);
-    public Func<ManOfWealthAndTaste>? GetInputShowrForKey(int executionId, string key)
-        => memories[executionId].GetInputShowrForKey(key);
-
+    public void StoreOriginal(string key, object? value)
+        => Current.StoreOriginal(key, value);
     // --------------------------------------------------------------------------
     // Actions
     public void StoreAction(string key)

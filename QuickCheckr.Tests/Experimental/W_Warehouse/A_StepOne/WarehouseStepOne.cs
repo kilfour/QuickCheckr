@@ -35,15 +35,15 @@ public class WarehouseStepOne : BaseTest
     private static CheckrOf<Case> GetCheckr() =>
         from service in Trackr.Stashed(GetWarehouseService)
         from client in Trackr.Stashed(() => new ClientSim())
-        from show in Showr.Use(() => GetShowr(client))
+        from showStock in Showr.ForTrace(GetShowr)
         from ops in Checkr.OneOfWhen(
             Checkr.Option(() => client.ProductsToOrder.Length <= 0,
                 from getProducts in Checkr.Act("Client Gets Products to Order",
                     () => client.ProductsToOrder = service.GetProducts())
                 select Case.Closed),
             Checkr.Option(() => client.ProductsToOrder.Length > 0,
+                from show in Showr.ForInput(() => GetRequestShowr(client))
                 from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-                from trace in Checkr.Trace("Order Request", () => orderRequest)
                 from placeOrder in Checkr.Act("Client Places Order",
                     () => client.Orders.Add(service.PlaceOrder(orderRequest)))
                 from reloadedStock in Checkr.Capture(() => service.GetProducts())
@@ -72,15 +72,20 @@ public class WarehouseStepOne : BaseTest
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
-    private static ManOfWealthAndTaste GetShowr(ClientSim client) =>
+    private static ManOfWealthAndTaste GetShowr() =>
         Please.AllowMe()
             .ToPrettyPrint()
             .ToPrefix<List<Product>>(Environment.NewLine)
             .ToInline<Product>()
-            .ToIgnore<Product, Guid>(a => a.Id)
+            .ToIgnore<Product, Guid>(a => a.Id);
+
+
+    private static ManOfWealthAndTaste GetRequestShowr(ClientSim client) =>
+        Please.AllowMe()
+            .ToPrettyPrint()
             .ToInline<OrderRequest>()
+            .ToIgnore<OrderRequest, Guid>(a => a.CustomerId)
             .ToInline<OrderRequest.OrderLine[]>()
-            .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 
@@ -118,7 +123,7 @@ public class WarehouseStepOne : BaseTest
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(3, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(5, article.Total().Traces());
+        Assert.Equal(3, article.Total().Traces());
         Assert.Equal(2, article.Total().PassedExpectations());
         Assert.Equal(14, article.ShrinkCount);
     }

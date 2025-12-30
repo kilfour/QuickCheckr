@@ -33,13 +33,14 @@ public class WarehouseStepTwo : BaseTest
     private static CheckrOf<Case> GetCheckr() =>
         from service in Trackr.Stashed(GetWarehouseService)
         from client in Trackr.Stashed(() => new ClientSim())
-        from show in Showr.Use(() => GetShowr(client))
+        from show in Showr.ForTrace(() => GetShowr())
         from ops in Checkr.OneOfWhen(
             Checkr.Option(() => client.ProductsToOrder.Length <= 0,
                 from getProducts in Checkr.Act("Client Gets Products to Order",
                     () => client.ProductsToOrder = service.GetProducts())
                 select Case.Closed),
             Checkr.Option(() => client.ProductsToOrder.Length > 0,
+                from show in Showr.ForTrace(() => GetRequestShowr(client))
                 from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
                 from trace in Checkr.Trace("Order Request", () => orderRequest)
                 from placeOrder in Checkr.Act("Client Places Order",
@@ -71,15 +72,19 @@ public class WarehouseStepTwo : BaseTest
         from request in Fuzzr.One(() => new OrderRequest(client.Id, [.. lines]))
         select request;
 
-    private static ManOfWealthAndTaste GetShowr(ClientSim client) =>
+    private static ManOfWealthAndTaste GetShowr() =>
         Please.AllowMe()
             .ToPrettyPrint()
             .ToPrefix<List<Product>>(Environment.NewLine)
             .ToInline<Product>()
-            .ToIgnore<Product, Guid>(a => a.Id)
+            .ToIgnore<Product, Guid>(a => a.Id);
+
+    private static ManOfWealthAndTaste GetRequestShowr(ClientSim client) =>
+        Please.AllowMe()
+            .ToPrettyPrint()
             .ToInline<OrderRequest>()
+            .ToIgnore<OrderRequest, Guid>(a => a.CustomerId)
             .ToInline<OrderRequest.OrderLine[]>()
-            .To<OrderRequest>(a => a.Ignore(a => a.CustomerId))
             .ToReplace<OrderRequest.OrderLine>(a =>
                 $"{client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Name}: {a.Amount}");
 

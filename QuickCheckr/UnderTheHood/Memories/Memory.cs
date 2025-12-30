@@ -95,13 +95,11 @@ public class Memory
         if (StoringShrinkers)
             ShortTermMemory.StoreInputShowr(showr);
     }
-    public void StoreInputShowrForKey(string key)
+    public void StoreOriginal(string key, object? value)
     {
         if (StoringShrinkers)
-            ShortTermMemory.StoreInputShowrForKey(key);
+            ShortTermMemory.StoreOriginal(key, value);
     }
-    public Func<ManOfWealthAndTaste>? GetInputShowrForKey(int executionId, string key)
-        => ShortTermMemory.GetInputShowrForKey(executionId, key);
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------

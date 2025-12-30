@@ -29,9 +29,9 @@ public class ShowrUse : BaseTest
     {
         return
             from input in Checkr.Input("int", Fuzzr.Int())
-            from showOne in Showr.Use(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
+            from showOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
             from traceOne in Checkr.Trace("int One", () => input)
-            from showTwo in Showr.Use(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
+            from showTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
             from traceTwo in Checkr.Trace("int Two", () => input)
             from noAnswer in Checkr.Expect("no answer", () => input != 42)
             select Case.Closed;

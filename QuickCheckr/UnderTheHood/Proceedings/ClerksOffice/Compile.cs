@@ -74,20 +74,26 @@ public static class Compile
 
     private static void GetInputDepositions(
         ExecutionDeposition executionDeposition,
-        ExecutionMemory shortTermMemory,
+        ExecutionMemory executionMemory,
         bool useMemoryForInputReporting)
     {
         if (useMemoryForInputReporting)
         {
-            foreach (var (key, val) in shortTermMemory.GetInputValues())
+            foreach (var (key, val) in executionMemory.GetInputValues())
             {
+
                 executionDeposition.AddInputDeposition(new InputDeposition(key, val!));
             }
             return;
         }
-        foreach (var (key, val) in shortTermMemory.GetInputShrinkOutcomes())
+        foreach (var (key, val) in executionMemory.GetInputShrinkOutcomes())
         {
-            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!));
+            var showr = executionMemory.GetOriginalForKey(key);
+            var original = executionMemory.GetOriginalForKey(key);
+            // showr != null
+            //     ? showr().IntroduceThis(((InputShrinkingClue)val!).Original!)
+            //     : null;
+            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original));
         }
     }
 

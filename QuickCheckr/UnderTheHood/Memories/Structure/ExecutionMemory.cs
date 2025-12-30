@@ -23,19 +23,19 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
     // Input Showrs
     private Func<ManOfWealthAndTaste>? currentInputShowr = null;
-    private readonly Dictionary<string, Func<ManOfWealthAndTaste>> showrsPerKey = [];
+    private readonly Dictionary<string, string> originals = [];
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
         => currentInputShowr = showr;
-    public void StoreInputShowrForKey(string key)
+    public void StoreOriginal(string key, object? value)
     {
         if (currentInputShowr == null) return;
-        showrsPerKey[key] = currentInputShowr;
+        originals[key] = currentInputShowr().IntroduceThis(value);
     }
-    public Func<ManOfWealthAndTaste>? GetInputShowrForKey(string key)
+    public string? GetOriginalForKey(string key)
     {
-        if (showrsPerKey.TryGetValue(key, out Func<ManOfWealthAndTaste>? showr))
+        if (originals.TryGetValue(key, out string? value))
         {
-            return showr;
+            return value;
         }
         return null;
     }

@@ -32,9 +32,7 @@ public static partial class Checkr
     {
         try
         {
-            state.Memory.StoreShrinkerForKey<T>(key);
-            state.Memory.StoreInputShowrForKey(key);
-            return CheckrResult.Some(state, state.Memory.StoreInput(key, () => fuzzr(state.FuzzrState).Value)!);
+            return CheckrResult.Some(state, GetValue(key, () => fuzzr, state)!);
         }
         catch (DuplicateKeyWriteException)
         {
@@ -46,6 +44,15 @@ public static partial class Checkr
         }
     }
 
+
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
-        state => CheckrResult.Some(state, state.Memory.StoreInput(key, () => factory()(state.FuzzrState).Value)!);
+        state => CheckrResult.Some(state, GetValue(key, factory, state)!);
+
+    private static T? GetValue<T>(string key, Func<FuzzrOf<T>> factory, CheckrState state)
+    {
+        state.Memory.StoreShrinkerForKey<T>(key);
+        var value = state.Memory.StoreInput(key, () => factory()(state.FuzzrState).Value);
+        state.Memory.StoreOriginal(key, value);
+        return value;
+    }
 }

@@ -65,7 +65,10 @@ public static class The
     private readonly static Flow<InputDeposition> inputDeposition =
         from input in Pulse.Start<InputDeposition>()
         from _ in newLine
-        from __ in Pulse.Trace($"   - Input: {input.Label.Trim()} = {input.Value}")
+        let label = input.Label.Trim()
+        from __ in Pulse.Trace($"   - Input: {label} = {input.Value}")
+        from ___ in Pulse.TraceIf(input.Original is not null,
+            () => $"{Environment.NewLine}{new string(' ', label.Length + 12)} = {input.Original}")
         select input;
 
     private readonly static Flow<ActionDeposition> actionDeposition =

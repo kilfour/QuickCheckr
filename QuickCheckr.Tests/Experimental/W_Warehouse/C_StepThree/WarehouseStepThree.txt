@@ -32,7 +32,7 @@
   Executed: Client Places Order
    -  Pool: Client Action = ClientSim-2
    - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
-   - Trace: Order Request = { OrderLines: [ Three: 39 ] }
+                          = { OrderLines: [ Three: 39 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
@@ -43,7 +43,7 @@
   Executed: Client Places Order
    -  Pool: Client Action = ClientSim-3
    - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
-   - Trace: Order Request = { OrderLines: [ Three: 92 ] }
+                          = { OrderLines: [ Three: 92 ] }
    - Trace: warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
