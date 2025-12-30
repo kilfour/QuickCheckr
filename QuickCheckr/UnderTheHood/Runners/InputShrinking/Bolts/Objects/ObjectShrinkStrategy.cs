@@ -10,11 +10,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 public class ObjectShrinkStrategy : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-        => HandleProperties(state, check, info);
-
-    public record CantShrinkNull;
-
-    private static IEnumerable<InputShrinkingClue> HandleProperties(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         if (info.Value == null)
         {
@@ -24,7 +19,16 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
                 () => $"Null value for type '{info.Type.Name}' at input '{info.FullKey}'.");
             return [clue];
         }
+        return HandleProperties(state, check, info);
+    }
 
+    public record CantShrinkNull;
+
+    public record CantShrinkObjectWithNoProperties;
+
+
+    private static IEnumerable<InputShrinkingClue> HandleProperties(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    {
         var properties = info.Type
             .GetProperties(MyBinding.Flags)
             .Where(p =>
@@ -33,6 +37,14 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
                 p.SetMethod is not null &&
                 p.SetMethod.IsPublic)
             .ToList();
+        if (properties.Count == 0)
+        {
+            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+            state.Docket.Record(new InputShrinkingClueFound(clue));
+            state.Memory.StoreWarning(info.FullKey,
+                () => $"Object of type '{info.Type.Name}' has no shrinkable properties at input '{info.FullKey}'.");
+            return [clue];
+        }
         var values = new List<(string PropertyName, string Value)>();
         var shrinkCount = 0;
         foreach (var property in properties)
@@ -53,7 +65,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
                 }
                 else
                 {
-                    SetPropertyValue(property, info.Value, property.GetValue(info.Value)!);
+                    SetPropertyValue(property, info.Value!, property.GetValue(info.Value)!);
                 }
             }
         }

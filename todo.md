@@ -1,11 +1,11 @@
 ## Current Version: 0.0.7: In Pools We Trust
 
 ### Current Focus
-* Check shrinking of 'System.Type' et al see QP.S.
     
 ### Ready for Changelog after review
-* Added *scoped* Custom Shrinkers
-
+> **Main focus:** Custom Shrinkers. 
+* Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
+* Added a WARNING when encountering an object with no shrinkable properties.
 
 ### Doing/Ongoing
 * Play more pool.
@@ -31,7 +31,6 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
-> **Main focus:** Custom Shrinkers.  
 * Showr
   * Just play around with it, doc in reference, ... 
   * For inputs ? Same as trace feature, but only apply to *relevant* Inputs
