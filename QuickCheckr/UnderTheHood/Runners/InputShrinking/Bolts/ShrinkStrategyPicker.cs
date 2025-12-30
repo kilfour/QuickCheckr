@@ -8,10 +8,6 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        var customShrinker = state.Memory.GetShrinker(info.ExecutionId, info.Key);
-        if (customShrinker != null)
-            return new CustomShrinkStrategy(customShrinker).Shrink(state, check, info);
-
         var options = state.Memory.GetShrinkerForKey(info.ExecutionId, info.Key);
         if (options != null)
         {

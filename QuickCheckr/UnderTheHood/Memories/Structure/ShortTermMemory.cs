@@ -75,11 +75,6 @@ public class ShortTermMemory
         => Current.StoreVariable(key, factory);
     // --------------------------------------------------------------------------
     // Shrinkers
-    public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
-        => Current.StoreShrinker(key, shrinker);
-    public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
-        => memories[executionId].GetShrinker(key);
-    // --------------------------------------------------------------------------
     public void StoreShrinkerForType<T>(IShrinkOption[] options)
         => Current.StoreShrinkerForType<T>(options);
     public void StoreShrinkerForKey<T>(string key)

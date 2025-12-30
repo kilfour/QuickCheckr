@@ -115,11 +115,6 @@ public class Memory
         => ShortTermMemory.StoreVariable(KeyGuardian.Variables.Check(key), factory);
     // --------------------------------------------------------------------------
     // Shrinkers
-    public void StoreShrinker<T>(string key, Func<T, IEnumerable<T>> shrinker)
-        => ShortTermMemory.StoreShrinker(key, shrinker);
-    public Func<object, IEnumerable<object>> GetShrinker(int executionId, string key)
-        => ShortTermMemory.GetShrinker(executionId, key);
-    // --------------------------------------------------------------------------
     public bool StoringShrinkers { get; set; } = false;
     public void StoreShrinkerForType<T>(IShrinkOption[] options)
     {
