@@ -53,7 +53,7 @@ public class CustomShrinkers : BaseTest
             from shrinkThingSix in Shrinkr.For(Shrink.Default<Thing>(), Shrink.Values(new Thing()))
             from thingSix in Checkr.Input("Thing Six", Fuzzr.Constant<Thing>(null!))
                 // Seven: Multiples again. 
-                // Now the first one will shortcircuit shrinking, so no warning.
+                // Now the first one will shortcircuit shrinking, so no warning from the second one.
             from shrinkThingSeven in Shrinkr.For(Shrink.Values(new Thing()), Shrink.Default<Thing>())
             from thingSeven in Checkr.Input("Thing Seven", Fuzzr.Constant<Thing>(null!))
             from expect in Checkr.Expect("count != 2", () => count != 2)
@@ -84,7 +84,7 @@ public class CustomShrinkers : BaseTest
 
     public class Thing;
 
-
+    [CodeExample]
     public class TheUniverse
     {
         public class Life { public int Answer { get; set; } }
@@ -94,8 +94,10 @@ public class CustomShrinkers : BaseTest
     }
 
     [Fact]
+    [DocHeader("Nested", 1)]
+    [DocExample(typeof(TheUniverse))]
     [DocContent(
-@"The following example, if ran without the Shrinkr, would not be able to shrink the Null value and would also emit a warning.")]
+@"The following example, if ran without the Shrinkr, would not be able to shrink the Null values and would also emit warnings.")]
     [DocExample(typeof(CustomShrinkers), nameof(GetCheckrNested))]
     [DocCodeFile("CustomShrinkersNested.txt", "text")]
     public void Nested()

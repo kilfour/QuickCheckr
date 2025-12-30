@@ -2,6 +2,7 @@
     - [The Checkr Class](D_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
       - [Input](D_CheckrsCourt/A_TheCheckrClass/Methods/A_Input.md)
     - [The Tracker Class](D_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md)
+  - [Custom Shrinkers](G_CustomShrinkers/CustomShrinkers.md)
   - [Conditional Execution](K_ConditionalExecution/ConditionalExecution.md)
     - [Checkr Act Carefully When](K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)
     - [Checkr Act When](K_ConditionalExecution/Methods/CheckrActWhen.md)
@@ -26,3 +27,4 @@
   - [Issues](Z_Issues/Issues.md)
     - [The Unshrinkables](Z_Issues/A_TheUnshrinkables/TheUnshrinkables.md)
       - [Unknown Primitives](Z_Issues/A_TheUnshrinkables/B_UnknownPrimitives/UnknownPrimitives.md)
+    - [System Types](Z_Issues/K_SystemTypes/SystemTypes.md)
