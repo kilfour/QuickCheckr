@@ -14,7 +14,7 @@
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ### Doc Current Focus 
-* hunt down every last spec
+* hunt down every last spec (Done, .. I think)
 * Polish the guide a bit more
   * Better examples for :
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
