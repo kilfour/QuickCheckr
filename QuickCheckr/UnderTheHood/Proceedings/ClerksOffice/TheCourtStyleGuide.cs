@@ -73,8 +73,9 @@ public static class The
         from __ in Pulse.Trace("   - ")
         from ___ in Pulse.TraceIf(input.Labeled, () => "Input: ")
         from ____ in Pulse.Trace($"{label} = {input.Value}")
+        let spaces = input.Labeled ? 15 : 8
         from _____ in Pulse.TraceIf(input.Original is not null,
-            () => $"{Environment.NewLine}{new string(' ', label.Length + 12)} = {input.Original}")
+            () => $"{Environment.NewLine}{new string(' ', label.Length + spaces)}{input.Original}")
         select input;
 
     private readonly static Flow<ActionDeposition> actionDeposition =

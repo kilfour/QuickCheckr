@@ -40,3 +40,5 @@
   With an explanation and a suggestion to try the lazy version.
 * `Trackr.PoolWhen<T1,T2>` now also exposes PoolElements
 * Minor change to Exception Failure message formatting in report
+
+### 0.0.8: You Can Go Your Own Way

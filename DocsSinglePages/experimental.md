@@ -229,7 +229,7 @@ select Case.Closed;
  Seed:                    1344312712
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   - Trace: warehouse = 
+   - warehouse = 
 [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
@@ -239,9 +239,9 @@ select Case.Closed;
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
-                          = { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
-   - Trace: warehouse = 
+   - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
+                     { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
+   - warehouse = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },
@@ -251,9 +251,9 @@ select Case.Closed;
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   - Input: Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
-                          = { OrderLines: [ Five: 82 ] }
-   - Trace: warehouse = 
+   - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
+                     { OrderLines: [ Five: 82 ] }
+   - warehouse = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },
@@ -366,7 +366,6 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
     from service in Trackr.GetStashed<WarehouseService>()
     from show in Showr.ForInput(() => GetRequestShowr(client.Value))
     from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
-        //from trace in TraceRequest(client, orderRequest)
     from placeOrder in Checkr.Act("Client Places Order",
         () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
     from traceStock in TraceStock
@@ -383,52 +382,48 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:29:1
+ Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:30:1
  Original failing run:    20 executions
  Minimal failing case:    6 executions (after 16 shrinks)
  Seed:                    1764635658
  ------------------------------------------------------------
   Executed: Create Client
-   -  Pool: Create Client = ClientSim-2
+   - Create Client = ClientSim-2
  ------------------------------------------------------------
   Executed: Create Client
-   -  Pool: Create Client = ClientSim-3
+   - Create Client = ClientSim-3
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   -  Pool: Client Action = ClientSim-3
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-3
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   -  Pool: Client Action = ClientSim-2
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-2
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   -  Pool: Client Action = ClientSim-2
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
-                          = { OrderLines: [ Three: 39 ] }
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-2
+   - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
+                     { OrderLines: [ Three: 39 ] }
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 61 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   -  Pool: Client Action = ClientSim-3
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
-                          = { OrderLines: [ Three: 92 ] }
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-3
+   - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
+                     { OrderLines: [ Three: 92 ] }
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: -31 }

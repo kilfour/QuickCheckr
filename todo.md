@@ -1,14 +1,14 @@
 ## Current Version: 0.0.7: In Pools We Trust
 * Showr.ForInputs (Implemented)
-  * Remove ?
-  * new ReportMode ?
-* Added ReportMode.Labeled
+  * Remove ? new ReportMode instead ?
+
 ### Current Focus
     
 ### Ready for Changelog after review
 > **Main focus:** Custom Shrinkers. 
 * Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
 * Added a WARNING when encountering an object with no shrinkable properties.
+* Added ReportMode.Labeled (default enabled)
 
 ### Doing/Ongoing
 * Refactor the Tests:
@@ -16,7 +16,6 @@
   * find pattern for other tests
 * refactor memory (execution mainly)
   * use interfaces to define boundaries for checkrs
-
 * Play more pool.
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
@@ -52,6 +51,7 @@
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
+  * Composable policies
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
     * alternative: example in cookbook using subclasses or composition

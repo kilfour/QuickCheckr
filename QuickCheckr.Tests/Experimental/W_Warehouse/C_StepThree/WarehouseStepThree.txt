@@ -1,51 +1,47 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:29:1
+ Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:30:1
  Original failing run:    20 executions
  Minimal failing case:    6 executions (after 16 shrinks)
  Seed:                    1764635658
  ------------------------------------------------------------
   Executed: Create Client
-   -  Pool: Create Client = ClientSim-2
+   - Create Client = ClientSim-2
  ------------------------------------------------------------
   Executed: Create Client
-   -  Pool: Create Client = ClientSim-3
+   - Create Client = ClientSim-3
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   -  Pool: Client Action = ClientSim-3
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-3
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
-   -  Pool: Client Action = ClientSim-2
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-2
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   -  Pool: Client Action = ClientSim-2
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
-                          = { OrderLines: [ Three: 39 ] }
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-2
+   - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
+                     { OrderLines: [ Three: 39 ] }
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 61 }
 ]
  ------------------------------------------------------------
   Executed: Client Places Order
-   -  Pool: Client Action = ClientSim-3
-   - Input: Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
-                          = { OrderLines: [ Three: 92 ] }
-   - Trace: warehouse = 
-[
+   - Client Action = ClientSim-3
+   - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
+                     { OrderLines: [ Three: 92 ] }
+   - Stock = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: -31 }

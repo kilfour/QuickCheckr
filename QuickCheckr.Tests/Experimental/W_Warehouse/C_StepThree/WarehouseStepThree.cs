@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -26,7 +27,7 @@ public class WarehouseStepThree : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>
-            TheCheckr.Run(1764635658, 20.ExecutionsPerRun()));
+            TheCheckr.Run(1764635658, 20.ExecutionsPerRun(), Config.NoLabels));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepThree>(article, false);
         Verify(article);
@@ -54,26 +55,26 @@ public class WarehouseStepThree : BaseTest
         Assert.Equal("Client Gets Products to Order", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("Client Action", article.Execution(3).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-3", article.Execution(3).PoolTrace(1).Read().Value);
-        Assert.Equal("warehouse", article.Execution(3).Trace(1).Read().Label);
+        Assert.Equal("Stock", article.Execution(3).Trace(1).Read().Label);
         Assert.Equal(8, article.Execution(4).Read().ExecutionId);
         Assert.Equal("Client Gets Products to Order", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Client Action", article.Execution(4).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-2", article.Execution(4).PoolTrace(1).Read().Value);
-        Assert.Equal("warehouse", article.Execution(4).Trace(1).Read().Label);
+        Assert.Equal("Stock", article.Execution(4).Trace(1).Read().Label);
         Assert.Equal(9, article.Execution(5).Read().ExecutionId);
         Assert.Equal("Client Places Order", article.Execution(5).Action(1).Read().Label);
         Assert.Equal("Order Request", article.Execution(5).Input(1).Read().Label);
         Assert.Equal("{ OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }", article.Execution(5).Input(1).Read().Value);
         Assert.Equal("Client Action", article.Execution(5).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-2", article.Execution(5).PoolTrace(1).Read().Value);
-        Assert.Equal("warehouse", article.Execution(5).Trace(1).Read().Label);
+        Assert.Equal("Stock", article.Execution(5).Trace(1).Read().Label);
         Assert.Equal(20, article.Execution(6).Read().ExecutionId);
         Assert.Equal("Client Places Order", article.Execution(6).Action(1).Read().Label);
         Assert.Equal("Order Request", article.Execution(6).Input(1).Read().Label);
         Assert.Equal("{ OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }", article.Execution(6).Input(1).Read().Value);
         Assert.Equal("Client Action", article.Execution(6).PoolTrace(1).Read().Label);
         Assert.Equal("ClientSim-3", article.Execution(6).PoolTrace(1).Read().Value);
-        Assert.Equal("warehouse", article.Execution(6).Trace(1).Read().Label);
+        Assert.Equal("Stock", article.Execution(6).Trace(1).Read().Label);
         Assert.Equal("No Stock Below Zero After Any Action", article.PassedExpectation(1).Read().Label);
         Assert.Equal(19, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("Stock Decreased After Order", article.PassedExpectation(2).Read().Label);
@@ -82,7 +83,7 @@ public class WarehouseStepThree : BaseTest
 
     private static readonly CheckrOf<Case> TraceStock =
         from service in Trackr.GetStashed<WarehouseService>()
-        from traceStock in Checkr.Trace("warehouse", () => service.ProductsForSale)
+        from traceStock in Checkr.Trace("Stock", () => service.ProductsForSale)
         select Case.Closed;
 
 
@@ -114,7 +115,6 @@ public class WarehouseStepThree : BaseTest
         from service in Trackr.GetStashed<WarehouseService>()
         from show in Showr.ForInput(() => GetRequestShowr(client.Value))
         from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
-            //from trace in TraceRequest(client, orderRequest)
         from placeOrder in Checkr.Act("Client Places Order",
             () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
         from traceStock in TraceStock
@@ -156,7 +156,7 @@ public class WarehouseStepThree : BaseTest
     private static ManOfWealthAndTaste GetShowr() =>
         Please.AllowMe()
             .ToPrettyPrint()
-            .ToPrefix<List<Product>>(Environment.NewLine)
+            //.ToPrefix<List<Product>>(Environment.NewLine)
             .ToInline<Product>()
             .ToIgnore<Product, Guid>(a => a.Id);
 

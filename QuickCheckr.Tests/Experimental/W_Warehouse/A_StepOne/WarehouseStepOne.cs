@@ -24,7 +24,7 @@ public class WarehouseStepOne : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1344312712, 20.ExecutionsPerRun()));
+            GetCheckr().Run(1344312712, 20.ExecutionsPerRun(), Config.NoLabels));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepOne>(article, false);
         Verify(article);

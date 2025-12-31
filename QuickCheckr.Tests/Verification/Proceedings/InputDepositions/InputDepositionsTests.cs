@@ -66,7 +66,7 @@ public class InputDepositionsTests : DepositionTest
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
-        Assert.Equal("                         = Int 42", reader.NextLine());
+        Assert.Equal("                           Int 42", reader.NextLine());
         EndOfContent(reader);
     }
 }
