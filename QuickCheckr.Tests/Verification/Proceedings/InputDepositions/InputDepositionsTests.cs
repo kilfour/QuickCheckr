@@ -69,4 +69,18 @@ public class InputDepositionsTests : DepositionTest
         Assert.Equal("                           Int 42", reader.NextLine());
         EndOfContent(reader);
     }
+
+    [Fact]
+    public void With_Original_Unlabeled()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                    .AddInputDeposition(new InputDeposition("PropertyName", 42, "Int 42", false))));
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
+        Assert.Equal("   - PropertyName = 42", reader.NextLine());
+        Assert.Equal("                    Int 42", reader.NextLine());
+        EndOfContent(reader);
+    }
 }
