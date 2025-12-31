@@ -11,7 +11,7 @@
 
 ### Doing/Ongoing
 * Refactor the Tests:
-  * one checkr per file
+  * one checkr per file (basetest done, implemented for some, ongoing, boyscout rule)
   * find pattern for other tests
 * refactor memory (execution mainly)
 * Play more pool.
