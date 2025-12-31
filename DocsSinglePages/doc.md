@@ -1296,7 +1296,7 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
  Original failing run:    4 executions
  Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1556788014
+ Seed:                    1858281619
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 4
@@ -1825,7 +1825,7 @@ public class TheUniverse
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:34:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:36:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
@@ -1847,7 +1847,7 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_NotShrinkingNull
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:83:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:85:1
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
@@ -1873,7 +1873,7 @@ We could help the shrinker by rewriting your checkr, in order to avoid the irrel
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:115:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -1893,14 +1893,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:163:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    639078625
+ Seed:                    236386873
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 61 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 11 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.
@@ -1933,7 +1933,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:40:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:42:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -1956,14 +1956,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:81:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1589181562
+ Seed:                    1634961092
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, _, 1 ]
-   - Trace: List = [ 2, 4, 1 ]
+   - Input: Input = [ _, 1, _ ]
+   - Trace: List = [ 4, 1, 4 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1983,14 +1983,14 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:104:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    223444997
+ Seed:                    1114047151
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 2, IntTwo: 4, IntThree: 1 }
+   - Trace: Original = { IntOne: 3, IntTwo: 4, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

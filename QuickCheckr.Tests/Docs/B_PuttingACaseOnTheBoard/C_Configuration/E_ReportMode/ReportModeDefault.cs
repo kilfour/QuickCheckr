@@ -22,7 +22,7 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Trace));
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Warning));
         Assert.True(ReportMode.Default.HasFlag(ReportMode.StackTrace));
-        Run(1964562926, 2.ExecutionsPerRun(), Configure);
+        Run(1964562926, 2.ExecutionsPerRun());
     }
 
     [CodeExample]

@@ -36,7 +36,7 @@
  Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 6 shrinks)
- Seed:                    947265496
+ Seed:                    653821537
  ------------------------------------------------------------
   Executed:
    - Input: Counter = 2
@@ -73,7 +73,7 @@ The following example, if ran without the Shrinkr, would not be able to shrink t
 ```text
 ------------------------------------------------------------
  Test:                    Nested
- Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:104:1
+ Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:105:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -83,9 +83,9 @@ The following example, if ran without the Shrinkr, would not be able to shrink t
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.TheUniverse.GetTheAnswer() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 93
-   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.<>c__DisplayClass8_1.GetCheckrNested() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 126
+   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.TheUniverse.GetTheAnswer() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 92
+   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.<>c__DisplayClass8_1.GetCheckrNested() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 127
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
 ```

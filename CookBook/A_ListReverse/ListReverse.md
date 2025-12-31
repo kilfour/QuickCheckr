@@ -19,35 +19,34 @@ public class TheReverser
 ```
 **The Fuzzr:**  
 ```csharp
-var listFuzzr =
-    from listLength in Fuzzr.Int(0, 10)
-    from enumerable in Fuzzr.Int().Many(listLength)
-    select enumerable.ToList();
+from listLength in Fuzzr.Int(0, 10)
+from enumerable in Fuzzr.Int().Many(listLength)
+select enumerable.ToList();
 ```
 **The Checkr:**  
 ```csharp
-    from input in Checkr.Input("Input", ListFuzzr())
-    from result in Checkr.Act("Result",
-        () => TheReverser.Reverses(TheReverser.Reverses(input)))
-    from trace in Checkr.Trace("Input ", () => input)
-    from traceResult in Checkr.Trace("Result", () => result)
-    from expect in Checkr.Expect(
-        "Input == Result", () => input.SequenceEqual(result))
-    select Case.Closed;
+from showr in Showr.ForInput()
+from input in Checkr.Input("Input ", ListFuzzr())
+from result in Checkr.Act("Result",
+    () => TheReverser.Reverses(TheReverser.Reverses(input)))
+from traceResult in Checkr.Trace("Result", () => result)
+from expect in Checkr.Expect(
+    "Input == Result", () => input.SequenceEqual(result))
+select Case.Closed;
 ```
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest
- Location:                Docs\T_Cookbook\A_ListReverse\ListReverse.cs:46:1
+ Test:                    Example
+ Location:                ListReverse.cs:34:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    498116108
  ------------------------------------------------------------
   Executed: Result
-   - Input: Input = [ _, 42 ]
-   - Trace: Input  = [ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]
-   - Trace: Result = [ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]
+   - Input  = [ _, 42 ]
+              [ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]
+   - Result = [ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]
  ==========================================
   !! Expectation Failed: Input == Result
  ==========================================

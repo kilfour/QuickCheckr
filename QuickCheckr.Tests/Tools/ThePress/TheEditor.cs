@@ -23,7 +23,7 @@ public class TheEditor
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
-        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(\article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
+        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
         select cursor;
 
     private static readonly Flow<(int, int)> PoolTrace =

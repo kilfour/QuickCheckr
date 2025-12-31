@@ -13,23 +13,23 @@
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Drafts\D_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:21:1
+ Location:                Drafts\D_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 3 shrinks)
  Seed:                    344916298
  ------------------------------------------------------------
   Executed: Add
    - Input: a = 8
-              = Int 8
+                Int 8
    - Input: b = 16
-              = Int 16
+                Int 16
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 2
    - Input: a = 1
-              = Int 1
+                Int 1
    - Input: b = 17
-              = Int 17
+                Int 17
  ================================================
   !! Expectation Failed: not 42 on execution 2
  ================================================

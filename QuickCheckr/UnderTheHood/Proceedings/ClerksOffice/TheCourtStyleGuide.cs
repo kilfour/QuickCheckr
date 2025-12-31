@@ -69,7 +69,7 @@ public static class The
     private readonly static Flow<InputDeposition> inputDeposition =
         from input in Pulse.Start<InputDeposition>()
         from _ in newLine
-        let label = input.Label.Trim()
+        let label = input.Label
         from __ in Pulse.Trace("   - ")
         from ___ in Pulse.TraceIf(input.Labeled, () => "Input: ")
         from ____ in Pulse.Trace($"{label} = {input.Value}")
@@ -81,7 +81,7 @@ public static class The
     private readonly static Flow<ActionDeposition> actionDeposition =
         from input in Pulse.Start<ActionDeposition>()
         from _ in Pulse.When<Decorum>(a => a.Intersperse.Restricted(), separator)
-        from __ in Pulse.Trace($" {input.Label.Trim()}")
+        from __ in Pulse.Trace($" {input.Label}")
         select input;
 
     private readonly static Flow<ExecutionDeposition> executionDeposition =
@@ -111,7 +111,7 @@ public static class The
 
     private readonly static Flow<FailedExpectationDeposition> failedExpectationDeposition =
         from input in Pulse.Start<FailedExpectationDeposition>()
-        let text = $"  !! Expectation Failed: {input.FailedExpectation.Trim()}"
+        let text = $"  !! Expectation Failed: {input.FailedExpectation}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
         from _2 in Pulse.Trace(text).Then(newLine)

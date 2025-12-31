@@ -420,7 +420,7 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
  Original failing run:    4 executions
  Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1556788014
+ Seed:                    1858281619
  ------------------------------------------------------------
   Executed: Deposit
    - Input: Amount = 4

@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -21,8 +22,12 @@ I guess this one is very much tradition in PBT world, and who am I to argue with
 
 **The (buggy) implementation:**")]
 [DocExample(typeof(TheReverser))]
-public class ListReverse : BaseTest
+public class ListReverse : CheckrTest<ListReverse>
 {
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explanation => false;
+
     [CodeExample]
     public class TheReverser
     {
@@ -33,63 +38,50 @@ public class ListReverse : BaseTest
             => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
     }
 
+    protected override CheckrConfig Configure(CheckrConfig config)
+        => Config.NoLabels(config);
+
     [Fact]
     [DocContent("**The Fuzzr:**")]
     [DocExample(typeof(ListReverse), nameof(ListFuzzr))]
     [DocContent("**The Checkr:**")]
-    [DocExample(typeof(ListReverse), nameof(GetCheckr))]
+    [DocCheckr]
     [DocContent("**The Report:**")]
-    [DocCodeFile("ListReverse.txt", "text")]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(498116108, 1.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<ListReverse>(article, false);
-        Verify(article);
-    }
+    [DocReport]
+    public override void Example() => Run(498116108);
 
     [CodeSnippet]
-    [CodeRemove("return listFuzzr;")]
-    private static FuzzrOf<List<int>> ListFuzzr()
-    {
-        var listFuzzr =
-            from listLength in Fuzzr.Int(0, 10)
-            from enumerable in Fuzzr.Int().Many(listLength)
-            select enumerable.ToList();
-        return listFuzzr;
-    }
+    private static FuzzrOf<List<int>> ListFuzzr() =>
+        from listLength in Fuzzr.Int(0, 10)
+        from enumerable in Fuzzr.Int().Many(listLength)
+        select enumerable.ToList();
 
     [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from input in Checkr.Input("Input", ListFuzzr())
-            from result in Checkr.Act("Result",
-                () => TheReverser.Reverses(TheReverser.Reverses(input)))
-            from trace in Checkr.Trace("Input ", () => input)
-            from traceResult in Checkr.Trace("Result", () => result)
-            from expect in Checkr.Expect(
-                "Input == Result", () => input.SequenceEqual(result))
-            select Case.Closed;
-    }
+    protected override CheckrOf<Case> TheCheckr() =>
+        from showr in Showr.ForInput()
+        from input in Checkr.Input("Input ", ListFuzzr())
+        from result in Checkr.Act("Result",
+            () => TheReverser.Reverses(TheReverser.Reverses(input)))
+        from traceResult in Checkr.Trace("Result", () => result)
+        from expect in Checkr.Expect(
+            "Input == Result", () => input.SequenceEqual(result))
+        select Case.Closed;
 
-    private static void Verify(Article article)
+    protected override void Verify(Article article)
     {
         Assert.Equal("Input == Result", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(2, article.Total().Traces());
+        Assert.Equal(1, article.Total().Traces());
         Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("Input ", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("Input ", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 62, 13, 42, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Result", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(2).Read().Value);
+        Assert.False(article.Execution(1).Input(1).Read().Labeled);
+        Assert.Equal("Result", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

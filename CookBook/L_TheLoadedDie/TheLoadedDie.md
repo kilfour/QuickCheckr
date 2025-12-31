@@ -39,9 +39,9 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\T_Cookbook\L_TheLoadedDie\TheLoadedDie.cs:71:1
+ Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    1228623675
+ Seed:                    1975451154
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

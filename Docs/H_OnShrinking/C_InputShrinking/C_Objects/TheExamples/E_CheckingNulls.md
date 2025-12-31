@@ -20,7 +20,7 @@ public class TheUniverse
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:34:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:36:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
@@ -42,7 +42,7 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_NotShrinkingNull
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:83:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:85:1
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
@@ -68,7 +68,7 @@ We could help the shrinker by rewriting your checkr, in order to avoid the irrel
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:115:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -88,14 +88,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:163:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    639078625
+ Seed:                    236386873
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 61 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 11 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.

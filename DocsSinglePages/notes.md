@@ -133,9 +133,9 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - Input: input = [ 1, 2, 3 ]
- ===============================
-  !! Expectation Failed: spec
- ===============================
+ =================================
+  !! Expectation Failed: expect
+ =================================
 ```
 ##### Relevant Element And Size
 ```csharp
@@ -215,7 +215,7 @@ var check =
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    636978454
+ Seed:                    1633229270
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
@@ -1168,7 +1168,7 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    1355440449
+ Seed:                    705221810
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-1
@@ -1219,7 +1219,7 @@ So now, **Execution Id Matters**.
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    548262801
+ Seed:                    1598823535
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-1
@@ -1299,7 +1299,7 @@ public class ContactBook
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1987116538
+ Seed:                    1611084855
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name = String-1
@@ -1321,7 +1321,7 @@ public class ContactBook
    at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 55
    at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 24
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
 ```
 ### Over Flowing

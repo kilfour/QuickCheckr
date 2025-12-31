@@ -13,6 +13,13 @@ public static partial class Showr
             return CheckrResult.CaseOnly(state);
         };
 
+    public static CheckrOf<Case> ForInput() =>
+        state =>
+        {
+            state.Memory.StoreInputShowr(() => Please.AllowMe());
+            return CheckrResult.CaseOnly(state);
+        };
+
     public static CheckrOf<Case> ForInput(Func<ManOfWealthAndTaste> config) =>
         state =>
         {

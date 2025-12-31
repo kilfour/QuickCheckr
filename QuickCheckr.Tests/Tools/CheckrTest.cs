@@ -29,20 +29,27 @@ public abstract class CheckrTest<T>
 
     protected void Run(
         int seed,
-        CheckrOfTRun.ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
-            () => TheCheckr().Run(seed, executionCount))
+            () => TheCheckr().Run(seed, Configure))
             , callerPath);
 
     protected void Run(
         int seed,
         CheckrOfTRun.ExecutionCount executionCount,
-        Func<CheckrConfig, CheckrConfig> configure,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
-            () => TheCheckr().Run(seed, executionCount, configure))
+            () => TheCheckr().Run(seed, executionCount, Configure))
             , callerPath);
+
+    // protected void Run(
+    //     int seed,
+    //     CheckrOfTRun.ExecutionCount executionCount,
+    //     Func<CheckrConfig, CheckrConfig> configure,
+    //     [CallerFilePath] string callerPath = "")
+    //     => ProcessArticle(TheJournalist.Exposes(
+    //         () => TheCheckr().Run(seed, executionCount, configure))
+    //         , callerPath);
 
     private void ProcessArticle(Article article, string callerPath)
     {
@@ -74,16 +81,7 @@ public abstract class CheckrTest<T>
                     SourceFile = $"{typeof(T).Name}.cs"
                 });
         }
-
         var report = TheClerk.Transcribes(article.CaseFile);
-        // var formattedReport = report
-        //     .Replace(@$"{basePath}QuickCheckr\QuickCheckr.Tests\", "")
-        //     .Replace(@$"{basePath}QuickCheckr\QuickCheckr\", "")
-        //     .Replace(@"<RunTest>b__0_0", "Example");
-        // var cleaned = Regex.Replace(
-        //     formattedReport,
-        //     @"<(?<name>[^>]+)>b__[\d_]+",
-        //     m => m.Groups["name"].Value);
         FileLog.Write(fullPath).Absorb(report);
     }
 
