@@ -1,6 +1,5 @@
 ## Current Version: 0.0.7: In Pools We Trust
 
-
 ### Current Focus
     
 ### Ready for Changelog after review
@@ -55,7 +54,6 @@
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
     * alternative: example in cookbook using subclasses or composition
-* Editor: configure QuickPulse.Show (see ideas)
 * Stabilize + Doc InternalAffairs
   * not using these anymore: only need them when there's a shrinking bug, so maybe hide them completely
 
