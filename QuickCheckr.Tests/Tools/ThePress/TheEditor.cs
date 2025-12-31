@@ -23,6 +23,7 @@ public class TheEditor
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
+        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(\article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
         select cursor;
 
     private static readonly Flow<(int, int)> PoolTrace =
@@ -31,6 +32,7 @@ public class TheEditor
         let poolTraceArticle = article.Execution(cursor.executionIndex).PoolTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{poolTraceArticle.Label}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{poolTraceArticle.Value}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Value);")
+        from labeled in EmitIf(!poolTraceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Labeled);")
         select cursor;
 
     private static readonly Flow<(int, int)> Input =
@@ -39,7 +41,9 @@ public class TheEditor
         let inputArticle = article.Execution(cursor.executionIndex).Input(cursor.inputIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Label);")
         from inputValue in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Value)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
+        from labeled in EmitIf(!inputArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Input({cursor.executionIndex}).Read().Labeled);")
         select cursor;
+
     private static object ReplaceDoubleQuotes(object value)
     {
         if (value is string str)

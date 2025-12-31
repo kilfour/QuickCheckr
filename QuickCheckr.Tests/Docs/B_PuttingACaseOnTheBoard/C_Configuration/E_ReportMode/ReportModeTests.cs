@@ -20,6 +20,8 @@ The following Checkr will be used to generate the reports throughout this chapte
 [DocInclude(typeof(ReportModeTrace))]
 [DocInclude(typeof(ReportModeWarning))]
 [DocInclude(typeof(ReportModeLabels))]
+[DocContent("**Hint: You can use bit-wise operations to manipulate ReportMode``:**")]
+[DocExample(typeof(ReportModeTests), nameof(BitWiseOperationExample))]
 public class ReportModeTests : BaseTest
 {
     public class Thing;
@@ -36,4 +38,8 @@ public class ReportModeTests : BaseTest
             from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
             select Case.Closed;
     }
+
+    [CodeSnippet]
+    private static CheckrConfig BitWiseOperationExample(CheckrConfig config) =>
+        config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
 }

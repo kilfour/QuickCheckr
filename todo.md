@@ -1,6 +1,8 @@
 ## Current Version: 0.0.7: In Pools We Trust
-Showr.ForInputs (Implemented)
-
+* Showr.ForInputs (Implemented)
+  * Remove ?
+  * new ReportMode ?
+* Added ReportMode.Labeled
 ### Current Focus
     
 ### Ready for Changelog after review
@@ -14,9 +16,7 @@ Showr.ForInputs (Implemented)
   * find pattern for other tests
 * refactor memory (execution mainly)
   * use interfaces to define boundaries for checkrs
-* Remove 'Input:', 'Pool:' and 'Trace:' from report ? ReportMode.Labeled
-* Remove Showr.ForInputs ?
-* Add ReportMode: IncludeOriginalInput (better name?)
+
 * Play more pool.
   * Warehousing
     * Step 5 : dynamically populate WareHouse 

@@ -53,21 +53,27 @@ public static class The
     private readonly static Flow<TraceDeposition> traceDeposition =
         from input in Pulse.Start<TraceDeposition>()
         from _ in newLine
-        from __ in Pulse.Trace($"   - Trace: {input.Label} = {input.Value}")
+        from __ in Pulse.Trace("   - ")
+        from ___ in Pulse.TraceIf(input.Labeled, () => "Trace: ")
+        from ____ in Pulse.Trace($"{input.Label} = {input.Value}")
         select input;
 
     private readonly static Flow<PoolTraceDeposition> poolTraceDeposition =
         from input in Pulse.Start<PoolTraceDeposition>()
         from _ in newLine
-        from __ in Pulse.Trace($"   -  Pool: {input.Label} = {input.Value}")
+        from __ in Pulse.Trace("   - ")
+        from ___ in Pulse.TraceIf(input.Labeled, () => " Pool: ")
+        from ____ in Pulse.Trace($"{input.Label} = {input.Value}")
         select input;
 
     private readonly static Flow<InputDeposition> inputDeposition =
         from input in Pulse.Start<InputDeposition>()
         from _ in newLine
         let label = input.Label.Trim()
-        from __ in Pulse.Trace($"   - Input: {label} = {input.Value}")
-        from ___ in Pulse.TraceIf(input.Original is not null,
+        from __ in Pulse.Trace("   - ")
+        from ___ in Pulse.TraceIf(input.Labeled, () => "Input: ")
+        from ____ in Pulse.Trace($"{label} = {input.Value}")
+        from _____ in Pulse.TraceIf(input.Original is not null,
             () => $"{Environment.NewLine}{new string(' ', label.Length + 12)} = {input.Original}")
         select input;
 

@@ -60,9 +60,9 @@ public static class Compile
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
-        GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting);
-        GetPoolTraceDepositions(executionDeposition, shortTermMemory);
-        GetTraceDepositions(executionDeposition, shortTermMemory);
+        GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, reportMode.HasFlag(ReportMode.Labels));
+        GetPoolTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
+        GetTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
         if (reportMode.HasFlag(ReportMode.Warning))
             GetWarningDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
@@ -79,7 +79,8 @@ public static class Compile
     private static void GetInputDepositions(
         ExecutionDeposition executionDeposition,
         ExecutionMemory executionMemory,
-        bool useMemoryForInputReporting)
+        bool useMemoryForInputReporting,
+        bool labeled)
     {
 
         if (useMemoryForInputReporting)
@@ -87,7 +88,7 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(key, val!));
+                    new InputDeposition(key, val!, null, labeled));
             }
             return;
         }
@@ -96,23 +97,23 @@ public static class Compile
         {
             var original = executionMemory.GetOriginalForKey(key);
             executionDeposition.AddInputDeposition(
-                    new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original));
+                    new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original, labeled));
         }
     }
 
-    private static void GetPoolTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+    private static void GetPoolTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
     {
         foreach (var (key, val) in shortTermMemory.GetPoolTraces())
         {
-            executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, (string)val!));
+            executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, (string)val!, labeled));
         }
     }
 
-    private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+    private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
     {
         foreach (var (key, val) in shortTermMemory.GetTraces())
         {
-            executionDeposition.AddTraceDeposition(new TraceDeposition(key, (string)val!));
+            executionDeposition.AddTraceDeposition(new TraceDeposition(key, (string)val!, labeled));
         }
     }
 

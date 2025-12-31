@@ -30,7 +30,6 @@ public class ReportModeWarning : CheckrTest<ReportModeWarning>
     protected override void Verify(Article article)
     {
         Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Equal("ComputerSaysNo: Only one is available", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
@@ -40,8 +39,10 @@ public class ReportModeWarning : CheckrTest<ReportModeWarning>
         Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
+        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
+        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Null value for type 'Thing' at input 'Null Thing'.", article.Execution(1).Warning(1).Read().Value);
     }
 }
