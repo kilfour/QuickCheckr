@@ -85,6 +85,7 @@ The Exception is **not** wrapped:
  - not 42 on execution 2: 1x
  ------------------------------------------------------------
 ```
+### The Shrinkr Class
 ## Custom Shrinkers
 ```csharp
     from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
@@ -204,6 +205,7 @@ The following example, if ran without the Shrinkr, would not be able to shrink t
     from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
     select Case.Closed;
 ```
+## Honey I Shrunk the Inputs
 ## When Things Go Wrong
 ### Everything Means Less Than Null
 #### Trackr To Pool

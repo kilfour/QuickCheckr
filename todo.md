@@ -1,6 +1,5 @@
 ## Current Version: 0.0.7: In Pools We Trust
-* Showr.ForInputs (Implemented)
-  * Remove ? new ReportMode instead ?
+
 
 ### Current Focus
     
@@ -9,13 +8,13 @@
 * Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
 * Added a WARNING when encountering an object with no shrinkable properties.
 * Added ReportMode.Labeled (default enabled)
+* Showr.ForInputs
 
 ### Doing/Ongoing
 * Refactor the Tests:
   * one checkr per file
   * find pattern for other tests
 * refactor memory (execution mainly)
-  * use interfaces to define boundaries for checkrs
 * Play more pool.
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
@@ -26,6 +25,7 @@
   * Better examples for :
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
+* New Chapter: Honey I Shrunk the Inputs, consolidate all shrinking examples from notes
 * Work on the reference (Checkrs Court) 
 
 ### Tests Current Focus
