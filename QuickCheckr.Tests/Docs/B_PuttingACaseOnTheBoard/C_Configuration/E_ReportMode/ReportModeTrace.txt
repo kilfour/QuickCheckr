@@ -1,6 +1,6 @@
  ------------------------------------------------------------
- Test:                    RunTestWarning
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:119:1
+ Test:                    Example
+ Location:                ReportModeTrace.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -8,7 +8,7 @@
   Executed: Blows up on 2
    - Input: Counter = 2
    - Input: Null Thing = null
-   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+   - Trace: Irrelevant = 73
  ===========================================================================
   !! ComputerSaysNo: Only one is available
  ===========================================================================

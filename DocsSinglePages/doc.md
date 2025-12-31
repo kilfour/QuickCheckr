@@ -1128,16 +1128,16 @@ No traces, no warnings, no stacktrace.
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-###### ReportMode.Trace
-Only traces.  
+##### ReportMode.Trace
 ```csharp
-private static CheckrConfig ConfigureTrace(CheckrConfig config)
+protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ReportMode = ReportMode.Trace };
 ```
+Only traces.  
 ```text
 ------------------------------------------------------------
- Test:                    RunTestTrace
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:82:1
+ Test:                    Example
+ Location:                ReportModeTrace.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1150,16 +1150,16 @@ private static CheckrConfig ConfigureTrace(CheckrConfig config)
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-###### ReportMode.Warning
-Only warnings.  
+##### ReportMode.Warning
 ```csharp
-private static CheckrConfig ConfigureWarning(CheckrConfig config)
+protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ReportMode = ReportMode.Warning };
 ```
+Only warnings.  
 ```text
 ------------------------------------------------------------
- Test:                    RunTestWarning
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:119:1
+ Test:                    Example
+ Location:                ReportModeWarning.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1172,37 +1172,16 @@ private static CheckrConfig ConfigureWarning(CheckrConfig config)
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-###### ReportMode.StackTrace
-Includes the StackTrace in the failure description if an exception is thrown.  
+##### ReportMode.Default
 ```csharp
-private static CheckrConfig ConfigureStackTrace(CheckrConfig config)
-    => config with { ReportMode = ReportMode.StackTrace };
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Default };
 ```
-```text
-------------------------------------------------------------
- Test:                    RunTestStackTrace
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:155:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Input: Counter = 2
-   - Input: Null Thing = null
- ===========================================================================
-  !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
-   at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
- ===========================================================================
-```
-###### ReportMode.Default
 Includes all possible ReportModes.  
 ```text
 ------------------------------------------------------------
- Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:188:1
+ Test:                    Example
+ Location:                ReportModeDefault.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1215,9 +1194,9 @@ Includes all possible ReportModes.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.GetCheckr() in Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 32
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\Evaluate.cs:line 40
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 33
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
 ```
 #### Deliberation Policy
