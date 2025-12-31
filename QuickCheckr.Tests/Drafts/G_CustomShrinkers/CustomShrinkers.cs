@@ -8,7 +8,6 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers;
 
 [DocFile]
-
 public class CustomShrinkers : BaseTest
 {
     [Fact]
