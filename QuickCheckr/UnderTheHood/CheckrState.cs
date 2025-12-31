@@ -29,10 +29,7 @@ public class CheckrState(
 
     private bool runStopped = false;
     public bool RunStopped => runStopped;
-    public void StopRun()
-    {
-        runStopped = true;
-    }
+    public void StopRun() { runStopped = true; }
 
     public bool IsThisTheRunsLastExecution()
     {
