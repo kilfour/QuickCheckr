@@ -113,7 +113,7 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
     // Reducers
     private readonly MemoryBank reducers = new();
-    public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
+    public void StoreReducer(string key, Func<object, IEnumerable<object>> reducer)
         => reducers.Store(key, () => reducer);
     public Func<T, IEnumerable<T>> GetReducer<T>(string key)
         => reducers.Get<Func<T, IEnumerable<T>>>(key)!;

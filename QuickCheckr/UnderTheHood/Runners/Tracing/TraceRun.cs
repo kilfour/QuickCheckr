@@ -8,13 +8,13 @@ public class TraceRun(
     {
         State.StartReplay();
         State.Memory.Tracing = trace;
-        State.Memory.StoringShrinkers = true;
+        State.Memory.IsConfigRun = true;
         foreach (var id in State.Memory.Numbers)
         {
             State.Memory.GotoExecution(id);
             Check(State);
         }
-        State.Memory.StoringShrinkers = false;
+        State.Memory.IsConfigRun = false;
         State.Memory.Tracing = false;
     }
 }

@@ -5,6 +5,7 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories;
 
+
 public class Memory
 {
     public KeyGuardian KeyGuardian = new();
@@ -87,18 +88,20 @@ public class Memory
     // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
-        => ShortTermMemory.StoreInput(KeyGuardian.Inputs.Check(key), factory);
-    // --------------------------------------------------------------------------
+    {
+        var value = ShortTermMemory.StoreInput(KeyGuardian.Inputs.Check(key), factory);
+        if (IsConfigRun)
+        {
+            ShortTermMemory.StoreShrinkerForKey<T>(key);
+            ShortTermMemory.StoreOriginal(key, value);
+        }
+        return value;
+    }
     // Input Showrs
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
     {
-        if (StoringShrinkers)
+        if (IsConfigRun)
             ShortTermMemory.StoreInputShowr(showr);
-    }
-    public void StoreOriginal(string key, object? value)
-    {
-        if (StoringShrinkers)
-            ShortTermMemory.StoreOriginal(key, value);
     }
     // --------------------------------------------------------------------------
 
@@ -128,22 +131,17 @@ public class Memory
         => ShortTermMemory.StoreVariable(KeyGuardian.Variables.Check(key), factory);
     // --------------------------------------------------------------------------
     // Shrinkers
-    public bool StoringShrinkers { get; set; } = false;
+    public bool IsConfigRun { get; set; } = false;
     public void StoreShrinkerForType<T>(IShrinkOption[] options)
     {
-        if (StoringShrinkers)
+        if (IsConfigRun)
             ShortTermMemory.StoreShrinkerForType<T>(options);
-    }
-    public void StoreShrinkerForKey<T>(string key)
-    {
-        if (StoringShrinkers)
-            ShortTermMemory.StoreShrinkerForKey<T>(key);
     }
     public IShrinkOption[]? GetShrinkerForKey(int executionId, string key, Type type)
         => ShortTermMemory.GetShrinkerForKey(executionId, key, type);
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducer<T>(string key, Func<T, IEnumerable<T>> reducer)
+    public void StoreReducer(string key, Func<object, IEnumerable<object>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
 

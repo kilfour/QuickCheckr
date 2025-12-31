@@ -9,6 +9,14 @@ Showr.ForInputs (Implemented)
 * Added a WARNING when encountering an object with no shrinkable properties.
 
 ### Doing/Ongoing
+* Refactor the Tests:
+  * one checkr per file
+  * find pattern for other tests
+* refactor memory (execution mainly)
+  * use interfaces to define boundaries for checkrs
+* Remove 'Input:', 'Pool:' and 'Trace:' from report ?
+* Remove Showr.ForInputs ?
+* Add ReportMode: IncludeOriginalInput (better name?)
 * Play more pool.
   * Warehousing
     * Step 5 : dynamically populate WareHouse 

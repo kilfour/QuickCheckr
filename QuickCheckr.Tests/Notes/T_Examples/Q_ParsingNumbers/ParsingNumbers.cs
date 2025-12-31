@@ -46,7 +46,7 @@ public class ParsingNumbers : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), a => a with { Reducer = ParseReducer.Reducer })
+            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
             from trace in Checkr.Trace("Original", () => input)
             from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
             from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
