@@ -21,18 +21,8 @@ dotnet add package QuickCheckr
 QuickCheckr is in the process of being fully documented, with real, executable examples for every feature,
 and every statement in the docs is backed by a test.
 
-- **Start here:** [Checkr-ing Things Out](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
-- **Then see it catch a real bug:** [Bolting Horses](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md)
-
-**[Full Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md):**
-This is a work in progess. Follow the link to find out what's coming next.
-  
-## Roadmap
-
-- Elm-style helpful exceptions.
-- Full Guide + Reference documentation.
-- Additional diagnostic flows.
-- True async execution throughout the engine.
+* **[Index](https://github.com/kilfour/QuickCheckr/blob/main/Docs/ToC.md)**
+* **[The Guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)**
   
 ## Dependencies
 

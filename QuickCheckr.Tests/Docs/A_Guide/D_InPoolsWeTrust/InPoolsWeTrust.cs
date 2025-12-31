@@ -56,7 +56,7 @@ public class InPoolsWeTrust : BaseTest
     {
         var checkr = from pool in CreatePool() select Case.Closed;
         checkr.Run();
-        ExplainMe<InPoolsWeTrust>(true);
+        ExplainMe<InPoolsWeTrust>(false);
     }
 
     [CodeSnippet]
