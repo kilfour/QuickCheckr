@@ -160,7 +160,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-2
-   - Input: Course Skills = [ _ ]
+   - Input: Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================

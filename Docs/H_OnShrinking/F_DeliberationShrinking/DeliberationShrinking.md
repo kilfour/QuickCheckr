@@ -27,7 +27,7 @@ Now when the list contains multiple elements `1`, we might get:
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, _ ]
-   - Trace: List = [ 1, 2, 1 ]
+   - Trace: List  = [ 1, 2, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -46,11 +46,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1634961092
+ Seed:                    1185771041
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 4, 1, 4 ]
+   - Input: Input = [ 1, _, _ ]
+   - Trace: List  = [ 1, 2, 4 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -73,11 +73,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1114047151
+ Seed:                    1136603211
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 3, IntTwo: 4, IntThree: 1 }
+   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

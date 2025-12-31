@@ -30,6 +30,7 @@
 * Work on the reference (Checkrs Court) 
 
 ### Tests Current Focus
+* fix Gathering Evidence reports
 * DuplicateKeyWriteGuardForPoolTraces
 
 ### Skipped Tests (4)

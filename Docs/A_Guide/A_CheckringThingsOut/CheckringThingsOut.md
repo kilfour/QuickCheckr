@@ -129,7 +129,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
  Seed:                    769641533
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input: Input            = 42
    - Trace: Irrelevant Input = 47
  ======================================
   !! Expectation Failed: Input /= 42
@@ -157,7 +157,7 @@ And here's the report:
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed: One plus Three
-   - Input: One = 24
+   - Input: One   = 24
    - Input: Three = 18
  ====================================
   !! Expectation Failed: Sum /= 42

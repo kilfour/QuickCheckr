@@ -158,7 +158,7 @@ By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:
  Seed:                    769641533
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input: Input            = 42
    - Trace: Irrelevant Input = 47
  ======================================
   !! Expectation Failed: Input /= 42
@@ -186,7 +186,7 @@ And here's the report:
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed: One plus Three
-   - Input: One = 24
+   - Input: One   = 24
    - Input: Three = 18
  ====================================
   !! Expectation Failed: Sum /= 42
@@ -594,11 +594,11 @@ public class Rolodex
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-6
-   - Input: Name = "Paul Harrison"
+   - Input: Name  = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Contact to update = Contact-5
-   - Input: New Name = "Paul Harrison"
+   - Input: New Name          = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
@@ -776,7 +776,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-2
-   - Input: Course Skills = [ _ ]
+   - Input: Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
@@ -993,15 +993,15 @@ QuickCheckr reports the original failing run.
  Seed:                    1044984793
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 1
+   - Input: counter    = 1
    - Input: Irrelevant = 13
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 2
+   - Input: counter    = 2
    - Input: Irrelevant = 5
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - Input: counter    = 3
    - Input: Irrelevant = 8
  ===================================================
   !! Expectation Failed: Counter does not equal 3
@@ -1025,7 +1025,7 @@ private static CheckrConfig ConfigureExecutions(CheckrConfig config)
  Seed:                    1044984793
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - Input: counter    = 3
    - Input: Irrelevant = 8
  ===================================================
   !! Expectation Failed: Counter does not equal 3
@@ -1116,20 +1116,20 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeDefault.cs:44:1
+ Location:                ReportModeDefault.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Input: Counter = 2
+   - Input: Counter    = 2
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 38
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
@@ -1143,13 +1143,13 @@ No traces, no warnings, no labels, no stacktrace.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:44:1
+ Location:                ReportModeNone.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
  ===========================================================================
   !! ComputerSaysNo: Only one is available
@@ -1164,13 +1164,13 @@ Only traces.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:44:1
+ Location:                ReportModeTrace.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
    - Irrelevant = 73
  ===========================================================================
@@ -1186,13 +1186,13 @@ Only warnings.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeWarning.cs:44:1
+ Location:                ReportModeWarning.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
@@ -1208,13 +1208,13 @@ Only labels.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeLabels.cs:44:1
+ Location:                ReportModeLabels.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Input: Counter = 2
+   - Input: Counter    = 2
    - Input: Null Thing = null
  ===========================================================================
   !! ComputerSaysNo: Only one is available
@@ -1294,20 +1294,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
- Original failing run:    4 executions
- Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1858281619
+ Original failing run:    5 executions
+ Minimal failing case:    2 executions (after 3 shrinks)
+ Seed:                    146231062
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 4
+   - Input: Amount = 6
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 3
+   - Input: Amount = 5
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 3x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 The following predefined policies are available
@@ -1648,7 +1648,7 @@ So after *Execution Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ExecutionShrinking.cs:32:1
+ Location:                ExecutionShrinking.cs:43:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
@@ -1712,7 +1712,7 @@ Result:
  Seed:                    231122398
  ------------------------------------------------------------
   Executed: Result
-   - Input: Input One = 12
+   - Input: Input One   = 12
    - Input: Input Three = 30
  ===========================================
   !! Expectation Failed: Should not be 42
@@ -1796,7 +1796,7 @@ without introducing noise from element-level changes that could not affect the o
  Seed:                    1393576429
  ------------------------------------------------------------
   Executed:
-   - Input: List = [ _, _, _ ]
+   - Input: List          = [ _, _, _ ]
    - Trace: Original List = [ 12, 45, 56, 18, 31 ]
  ======================================
   !! Expectation Failed: Length <= 2
@@ -1879,7 +1879,7 @@ We could help the shrinker by rewriting your checkr, in order to avoid the irrel
  Seed:                    1269557792
  ------------------------------------------------------------
   Executed: The Answer
-   - Input: Everything = null
+   - Input: Everything   = null
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.
@@ -1896,11 +1896,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    236386873
+ Seed:                    1856738502
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 11 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 13 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.
@@ -1940,7 +1940,7 @@ Now when the list contains multiple elements `1`, we might get:
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, _, _ ]
-   - Trace: List = [ 1, 2, 1 ]
+   - Trace: List  = [ 1, 2, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1959,11 +1959,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1634961092
+ Seed:                    1185771041
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List = [ 4, 1, 4 ]
+   - Input: Input = [ 1, _, _ ]
+   - Trace: List  = [ 1, 2, 4 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1986,11 +1986,11 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1114047151
+ Seed:                    1136603211
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original = { IntOne: 3, IntTwo: 4, IntThree: 1 }
+   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

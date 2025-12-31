@@ -74,10 +74,10 @@ The Exception is **not** wrapped:
  ------------------------------------------------------------
   Executed: Add
    - Input: Counter = 2
-   - Input: a = 1
-                Int 1
-   - Input: b = 17
-                Int 17
+   - Input: a       = 1
+                      Int 1
+   - Input: b       = 17
+                      Int 17
  ================================================
   !! Expectation Failed: not 42 on execution 2
  ================================================
@@ -124,11 +124,11 @@ The Exception is **not** wrapped:
  Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 6 shrinks)
- Seed:                    653821537
+ Seed:                    693048172
  ------------------------------------------------------------
   Executed:
-   - Input: Counter = 2
-   - Input: Thing One = null
+   - Input: Counter     = 2
+   - Input: Thing One   = null
    - Input: Thing Three = null
    - WARNING: Null value for type 'Thing' at input 'Thing One'.
    - WARNING: Null value for type 'Thing' at input 'Thing Three'.
@@ -534,7 +534,7 @@ public class Thing
  Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1032227654
+ Seed:                    724765321
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32, OtherType: Int32 }
@@ -557,7 +557,7 @@ public class Thing
  Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1344458191
+ Seed:                    120783772
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32 }

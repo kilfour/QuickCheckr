@@ -74,7 +74,7 @@ We could help the shrinker by rewriting your checkr, in order to avoid the irrel
  Seed:                    1269557792
  ------------------------------------------------------------
   Executed: The Answer
-   - Input: Everything = null
+   - Input: Everything   = null
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.
@@ -91,11 +91,11 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    236386873
+ Seed:                    1856738502
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 11 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 13 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.

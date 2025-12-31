@@ -103,7 +103,7 @@ Make pooling tasks feel as native as Trackr pooling.
  Seed:                    553690512
  ------------------------------------------------------------
   Executed:
-   - Input: int = 42
+   - Input: int     = 42
    - Trace: int One = One: 42
    - Trace: int Two = Two: 42
  ====================================
@@ -241,7 +241,7 @@ select Case.Closed;
   Executed: Client Places Order
    - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
                      { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
-   - warehouse = 
+   - warehouse     = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },
@@ -253,7 +253,7 @@ select Case.Closed;
   Executed: Client Places Order
    - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
                      { OrderLines: [ Five: 82 ] }
-   - warehouse = 
+   - warehouse     = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },
@@ -395,7 +395,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
    - Client Action = ClientSim-3
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
@@ -403,7 +403,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
    - Client Action = ClientSim-2
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
@@ -413,7 +413,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
    - Client Action = ClientSim-2
    - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
                      { OrderLines: [ Three: 39 ] }
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 61 }
@@ -423,7 +423,7 @@ private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
    - Client Action = ClientSim-3
    - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
                      { OrderLines: [ Three: 92 ] }
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: -31 }

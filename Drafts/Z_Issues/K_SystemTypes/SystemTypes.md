@@ -18,7 +18,7 @@ public class Thing
  Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1032227654
+ Seed:                    724765321
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32, OtherType: Int32 }
@@ -41,7 +41,7 @@ public class Thing
  Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1344458191
+ Seed:                    120783772
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32 }

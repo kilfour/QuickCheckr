@@ -29,7 +29,7 @@ select enumerable.ToList();
 **The Checkr:**  
 ```csharp
 from showr in Showr.ForInput()
-from input in Checkr.Input("Input ", ListFuzzr())
+from input in Checkr.Input("Input", ListFuzzr())
 from result in Checkr.Act("Result",
     () => TheReverser.Reverses(TheReverser.Reverses(input)))
 from traceResult in Checkr.Trace("Result", () => result)
@@ -41,7 +41,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ListReverse.cs:34:1
+ Location:                ListReverse.cs:35:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    498116108
@@ -97,7 +97,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    1975451154
+ Seed:                    1273117969
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

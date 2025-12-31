@@ -41,7 +41,7 @@ This makes it ideal for tests where you want to confirm that a whole series of o
  Test:                    RunTest
  Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:71:1
  Original failing run:    100 executions
- Seed:                    1975451154
+ Seed:                    1273117969
  ------------------------------------------------------------
   Executed: Roll (100 Times)
  =================================================

@@ -117,15 +117,15 @@ QuickCheckr reports the original failing run.
  Seed:                    1044984793
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 1
+   - Input: counter    = 1
    - Input: Irrelevant = 13
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 2
+   - Input: counter    = 2
    - Input: Irrelevant = 5
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - Input: counter    = 3
    - Input: Irrelevant = 8
  ===================================================
   !! Expectation Failed: Counter does not equal 3
@@ -149,7 +149,7 @@ private static CheckrConfig ConfigureExecutions(CheckrConfig config)
  Seed:                    1044984793
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - Input: counter    = 3
    - Input: Irrelevant = 8
  ===================================================
   !! Expectation Failed: Counter does not equal 3
@@ -240,20 +240,20 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeDefault.cs:44:1
+ Location:                ReportModeDefault.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Input: Counter = 2
+   - Input: Counter    = 2
    - Input: Null Thing = null
    - Trace: Irrelevant = 73
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 38
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
@@ -267,13 +267,13 @@ No traces, no warnings, no labels, no stacktrace.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:44:1
+ Location:                ReportModeNone.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
  ===========================================================================
   !! ComputerSaysNo: Only one is available
@@ -288,13 +288,13 @@ Only traces.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:44:1
+ Location:                ReportModeTrace.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
    - Irrelevant = 73
  ===========================================================================
@@ -310,13 +310,13 @@ Only warnings.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeWarning.cs:44:1
+ Location:                ReportModeWarning.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing'.
  ===========================================================================
@@ -332,13 +332,13 @@ Only labels.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeLabels.cs:44:1
+ Location:                ReportModeLabels.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Input: Counter = 2
+   - Input: Counter    = 2
    - Input: Null Thing = null
  ===========================================================================
   !! ComputerSaysNo: Only one is available
@@ -418,20 +418,20 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
  Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
- Original failing run:    4 executions
- Minimal failing case:    2 executions (after 2 shrinks)
- Seed:                    1858281619
+ Original failing run:    5 executions
+ Minimal failing case:    2 executions (after 3 shrinks)
+ Seed:                    146231062
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 4
+   - Input: Amount = 6
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 3
+   - Input: Amount = 5
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 3x
+ - No Overdraft: 4x
  ------------------------------------------------------------
 ```
 The following predefined policies are available

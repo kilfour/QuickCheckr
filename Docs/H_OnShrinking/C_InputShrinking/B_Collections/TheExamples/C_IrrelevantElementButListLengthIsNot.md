@@ -25,7 +25,7 @@ without introducing noise from element-level changes that could not affect the o
  Seed:                    1393576429
  ------------------------------------------------------------
   Executed:
-   - Input: List = [ _, _, _ ]
+   - Input: List          = [ _, _, _ ]
    - Trace: Original List = [ 12, 45, 56, 18, 31 ]
  ======================================
   !! Expectation Failed: Length <= 2

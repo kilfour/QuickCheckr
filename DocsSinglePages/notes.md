@@ -215,7 +215,7 @@ var check =
  Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\U_ArrayShrinking.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1633229270
+ Seed:                    1246126864
  ------------------------------------------------------------
   Executed:
    - Input: int[] = [ 42 ]
@@ -322,8 +322,8 @@ public record Person(string Name, int Age);
  Seed:                    1000847613
  ------------------------------------------------------------
   Executed:
-   - Input: Person = { Age: 18 }
-   - Trace: Person = { Name: "voddj", Age: 18 }
+   - Input: Person       = { Age: 18 }
+   - Trace: Person       = { Name: "voddj", Age: 18 }
    - Trace: Other Person = { Name: "hdpjy", Age: 85 }
  ======================================
   !! Expectation Failed: Not aged 18
@@ -355,9 +355,9 @@ Check this with:
  Seed:                    346547347
  ------------------------------------------------------------
   Executed:
-   - Input: Turtle = { Down: { Down: { Down: null } } }
+   - Input: Turtle       = { Down: { Down: { Down: null } } }
    - Input: Other Turtle = { Down: { Down: null } }
-   - Trace: Turtle = { Down: { Down: { Down: null } } }
+   - Trace: Turtle       = { Down: { Down: { Down: null } } }
    - Trace: Other Turtle = { Down: { Down: null } }
    - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
    - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.
@@ -409,7 +409,7 @@ Check this with:
  Seed:                    2122063655
  ------------------------------------------------------------
   Executed:
-   - Input: One = 42
+   - Input: One          = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90
  ===============================================
@@ -435,7 +435,7 @@ Check this with:
  Seed:                    2122063655
  ------------------------------------------------------------
   Executed:
-   - Input: One = 42
+   - Input: One          = 42
    - Trace: Original One = 42
    - Trace: Original Two = 90
  ===============================================
@@ -506,12 +506,12 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    748184687
+ Seed:                    1203928284
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
    - Input: Expression = "-2^2"
-   - Trace: Original = (- 2 ^ 2 / 3 * 3 * 1 + 2) * - - 1 / (1 / 3) * 2 - - - 1 * - 2 ^ 3 / 1 + - (2 * 2 * 1 + 1 / 1 * 1 - 3 * 2 / 3 * 2 - 2) ^ 1 * - 1
-   - Trace: Compare = Golden: -5 /= SUT: 43
+   - Trace: Original   = (- 2 ^ 2 * 2 / 1 * 1) ^ - - 1
+   - Trace: Compare    = Golden: -8 /= SUT: 8
  ================================
   !! Expectation Failed: Match
  ================================
@@ -628,8 +628,8 @@ The generated report shows the input, the attempted deletion, a trace of the ori
  Seed:                    438724296
  ------------------------------------------------------------
   Executed: Delete from List
-   - Input: List = [ 5, 5 ]
-   - Input: Item to Remove = 5
+   - Input: List                  = [ 5, 5 ]
+   - Input: Item to Remove        = 5
    - Trace: List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
  ========================================================
   !! Expectation Failed: List Does Not Contain Element
@@ -892,19 +892,19 @@ public class ListWrap
  Seed:                    254875886
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ ]
-   - Trace: After = [ 3 ]
+   - Trace: After  = [ 3 ]
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ 3 ]
-   - Trace: After = [ 3, 3 ]
+   - Trace: After  = [ 3, 3 ]
  ------------------------------------------------------------
   Executed: Remove
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ 3, 3 ]
-   - Trace: After = [ 3 ]
+   - Trace: After  = [ 3 ]
  =====================================================
   !! Expectation Failed: List Does Not Contain Item
  =====================================================
@@ -935,8 +935,8 @@ public class ListWrap
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
    - Input: Expression = "2^-2^2"
-   - Trace: Original = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
-   - Trace: Compare = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
+   - Trace: Original   = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
+   - Trace: Compare    = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
  ================================
   !! Expectation Failed: Match
  ================================
@@ -1168,31 +1168,31 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    705221810
+ Seed:                    47424279
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-1
+   -  Pool: Name    = String-1
    - Input: Counter = 1
-   - Input: Name = AAA
-   - Trace: Sut = { Contacts: [ "AAA" ] }
+   - Input: Name    = AAA
+   - Trace: Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
-   - Input: Counter = 2
-   - Input: Name = BBB
-   - Trace: Sut = { Contacts: [ "BBB" ] }
+   - Input: Counter        = 2
+   - Input: Name           = BBB
+   - Trace: Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-2
+   -  Pool: Name    = String-2
    - Input: Counter = 3
-   - Input: Name = AAA
-   - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
+   - Input: Name    = AAA
+   - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-3
+   -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name = BBB
-   - Trace: Sut = { Contacts: [ "BBB", "AAA" ] }
+   - Input: Name    = BBB
+   - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
  ========================================
   !! Expectation Failed: Count matches
  ========================================
@@ -1219,24 +1219,24 @@ So now, **Execution Id Matters**.
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1598823535
+ Seed:                    1012196536
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-1
+   -  Pool: Name    = String-1
    - Input: Counter = 1
-   - Trace: Sut = { Contacts: [ "AAA" ] }
+   - Trace: Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
-   - Input: Counter = 2
-   - Input: Name = "BBB"
-   - Trace: Sut = { Contacts: [ "BBB" ] }
+   - Input: Counter        = 2
+   - Input: Name           = "BBB"
+   - Trace: Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-3
+   -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name = "BBB"
-   - Trace: Sut = { Contacts: [ "BBB" ] }
+   - Input: Name    = "BBB"
+   - Trace: Sut     = { Contacts: [ "BBB" ] }
  ========================================
   !! Expectation Failed: Count matches
  ========================================
@@ -1299,21 +1299,21 @@ public class ContactBook
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1611084855
+ Seed:                    502543886
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-1
+   -  Pool: Name    = String-1
    - Input: Counter = 1
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
-   - Input: Counter = 2
-   - Input: Name = "BBB"
+   - Input: Counter        = 2
+   - Input: Name           = "BBB"
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-3
+   -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name = "BBB"
+   - Input: Name    = "BBB"
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
    at QuickPulse.Instruments.ComputerSays.No(String msg)
@@ -1489,7 +1489,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  ------------------------------------------------------------
   Executed: Update Course Skills
    -  Pool: Course to update = CourseBy-2
-   - Input: Course Skills = [ _ ]
+   - Input: Course Skills    = [ _ ]
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================

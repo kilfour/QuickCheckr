@@ -115,11 +115,11 @@ public class Rolodex
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-6
-   - Input: Name = "Paul Harrison"
+   - Input: Name  = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Contact to update = Contact-5
-   - Input: New Name = "Paul Harrison"
+   - Input: New Name          = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================

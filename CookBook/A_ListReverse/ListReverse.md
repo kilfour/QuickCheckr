@@ -26,7 +26,7 @@ select enumerable.ToList();
 **The Checkr:**  
 ```csharp
 from showr in Showr.ForInput()
-from input in Checkr.Input("Input ", ListFuzzr())
+from input in Checkr.Input("Input", ListFuzzr())
 from result in Checkr.Act("Result",
     () => TheReverser.Reverses(TheReverser.Reverses(input)))
 from traceResult in Checkr.Trace("Result", () => result)
@@ -38,7 +38,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ListReverse.cs:34:1
+ Location:                ListReverse.cs:35:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    498116108
