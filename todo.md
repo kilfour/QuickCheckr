@@ -16,10 +16,6 @@
   * one checkr per file (basetest done, implemented for some, ongoing, boyscout rule)
   * find pattern for other tests
 * refactor memory (execution mainly)
-* Play more pool.
-  * Warehousing
-    * Step 5 : dynamically populate WareHouse 
-    * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ### Doc Current Focus 
 * Polish the guide a bit more
@@ -30,7 +26,7 @@
 * Work on the reference (Checkrs Court) 
 
 ### Tests Current Focus
-* fix Gathering Evidence reports
+* fix Gathering Evidence reports (labels not aligned)
 * DuplicateKeyWriteGuardForPoolTraces
 
 ### Skipped Tests (4)
@@ -48,6 +44,10 @@
   * Known issues
   * Workarounds. 
   * Try dictionaries first maybe, and see what pops up. 
+* Play more pool.
+  * Warehousing
+    * Step 5 : dynamically populate WareHouse 
+    * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ## 0.0.8+
 * Deliberation Shrinking. Add:
