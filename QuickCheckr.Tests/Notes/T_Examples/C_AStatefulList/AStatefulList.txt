@@ -6,19 +6,19 @@
  Seed:                    254875886
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ ]
-   - Trace: After = [ 3 ]
+   - Trace: After  = [ 3 ]
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ 3 ]
-   - Trace: After = [ 3, 3 ]
+   - Trace: After  = [ 3, 3 ]
  ------------------------------------------------------------
   Executed: Remove
-   - Input: Item = 3
+   - Input: Item   = 3
    - Trace: Before = [ 3, 3 ]
-   - Trace: After = [ 3 ]
+   - Trace: After  = [ 3 ]
  =====================================================
   !! Expectation Failed: List Does Not Contain Item
  =====================================================

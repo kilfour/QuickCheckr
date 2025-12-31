@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:44:1
+ Location:                ReportModeTrace.cs:43:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
  ------------------------------------------------------------
   Executed: Blows up on 2
-   - Counter = 2
+   - Counter    = 2
    - Null Thing = null
    - Irrelevant = 73
  ===========================================================================

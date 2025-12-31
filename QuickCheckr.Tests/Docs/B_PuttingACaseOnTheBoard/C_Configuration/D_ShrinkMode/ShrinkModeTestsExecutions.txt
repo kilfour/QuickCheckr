@@ -6,7 +6,7 @@
  Seed:                    1044984793
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - Input: counter    = 3
    - Input: Irrelevant = 8
  ===================================================
   !! Expectation Failed: Counter does not equal 3

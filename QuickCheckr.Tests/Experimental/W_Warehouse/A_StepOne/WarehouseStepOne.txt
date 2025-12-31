@@ -18,7 +18,7 @@
   Executed: Client Places Order
    - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 46 } ] }
                      { OrderLines: [ Three: 42, One: 12, Two: 83, Five: 46 ] }
-   - warehouse = 
+   - warehouse     = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },
@@ -30,7 +30,7 @@
   Executed: Client Places Order
    - Order Request = { OrderLines: [ { ProductId: 8479cc9e-0dd0-4255-9a5a-6dec33d7b663, Amount: 82 } ] }
                      { OrderLines: [ Five: 82 ] }
-   - warehouse = 
+   - warehouse     = 
 [
     { Name: "One", AmountInStock: 88 },
     { Name: "Two", AmountInStock: 17 },

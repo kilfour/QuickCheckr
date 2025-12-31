@@ -5,9 +5,9 @@
  Seed:                    346547347
  ------------------------------------------------------------
   Executed:
-   - Input: Turtle = { Down: { Down: { Down: null } } }
+   - Input: Turtle       = { Down: { Down: { Down: null } } }
    - Input: Other Turtle = { Down: { Down: null } }
-   - Trace: Turtle = { Down: { Down: { Down: null } } }
+   - Trace: Turtle       = { Down: { Down: { Down: null } } }
    - Trace: Other Turtle = { Down: { Down: null } }
    - WARNING: Null value for type 'Turtle' at input 'Turtle.Down.Down.Down'.
    - WARNING: Null value for type 'Turtle' at input 'Other Turtle.Down.Down'.

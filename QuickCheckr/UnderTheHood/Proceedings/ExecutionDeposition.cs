@@ -1,3 +1,4 @@
+
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public record ExecutionDeposition
@@ -76,4 +77,11 @@ public record ExecutionDeposition
         WarningDepositions.Add(warningDeposition);
         return this;
     }
+
+    public int MaxLabelLength() =>
+        new int[]
+            { PoolTraceDepositions.Count == 0 ? 0 : PoolTraceDepositions.Max(a => a.Label.Length)
+            , InputDepositions.Count == 0 ? 0 : InputDepositions.Max(a => a.Label.Length)
+            , TraceDepositions.Count == 0 ? 0 : TraceDepositions.Max(a => a.Label.Length)
+            }.Max();
 };

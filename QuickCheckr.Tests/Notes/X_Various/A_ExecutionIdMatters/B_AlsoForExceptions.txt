@@ -3,21 +3,21 @@
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1611084855
+ Seed:                    502543886
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-1
+   -  Pool: Name    = String-1
    - Input: Counter = 1
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
-   - Input: Counter = 2
-   - Input: Name = "BBB"
+   - Input: Counter        = 2
+   - Input: Name           = "BBB"
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-3
+   -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name = "BBB"
+   - Input: Name    = "BBB"
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
    at QuickPulse.Instruments.ComputerSays.No(String msg)

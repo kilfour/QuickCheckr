@@ -41,8 +41,8 @@ public class PoolTraceDepositionsTests : DepositionTest
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
-        Assert.Equal("   -  Pool: Universe = Pooled", reader.NextLine());
-        Assert.Equal("   - Input: Answer = 42", reader.NextLine());
+        Assert.Equal("   -  Pool: Universe    = Pooled", reader.NextLine());
+        Assert.Equal("   - Input: Answer      = 42", reader.NextLine());
         Assert.Equal("   - Trace: Making Sure = 42", reader.NextLine());
         EndOfContent(reader);
     }

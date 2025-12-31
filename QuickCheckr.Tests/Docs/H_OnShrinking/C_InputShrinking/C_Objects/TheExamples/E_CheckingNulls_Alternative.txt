@@ -6,7 +6,7 @@
  Seed:                    1269557792
  ------------------------------------------------------------
   Executed: The Answer
-   - Input: Everything = null
+   - Input: Everything   = null
    - Trace: The Universe = { Everything: null, Irrelevant: null }
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.

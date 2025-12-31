@@ -6,7 +6,7 @@
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed: One plus Three
-   - Input: One = 24
+   - Input: One   = 24
    - Input: Three = 18
  ====================================
   !! Expectation Failed: Sum /= 42

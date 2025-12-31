@@ -1,5 +1,6 @@
 ## Current Version: 0.0.7: In Pools We Trust
 
+
 ### Current Focus
     
 ### Ready for Changelog after review
@@ -8,6 +9,7 @@
 * Added a WARNING when encountering an object with no shrinkable properties.
 * Added ReportMode.Labeled (default enabled)
 * Showr.ForInputs
+* Report: Execution section: Better label alignment.
 
 ### Doing/Ongoing
 * Refactor the Tests:

@@ -3,24 +3,24 @@
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:50:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1598823535
+ Seed:                    1012196536
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-1
+   -  Pool: Name    = String-1
    - Input: Counter = 1
-   - Trace: Sut = { Contacts: [ "AAA" ] }
+   - Trace: Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
-   - Input: Counter = 2
-   - Input: Name = "BBB"
-   - Trace: Sut = { Contacts: [ "BBB" ] }
+   - Input: Counter        = 2
+   - Input: Name           = "BBB"
+   - Trace: Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name = String-3
+   -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name = "BBB"
-   - Trace: Sut = { Contacts: [ "BBB" ] }
+   - Input: Name    = "BBB"
+   - Trace: Sut     = { Contacts: [ "BBB" ] }
  ========================================
   !! Expectation Failed: Count matches
  ========================================

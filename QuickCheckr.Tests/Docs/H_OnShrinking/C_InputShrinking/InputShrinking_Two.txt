@@ -6,7 +6,7 @@
  Seed:                    231122398
  ------------------------------------------------------------
   Executed: Result
-   - Input: Input One = 12
+   - Input: Input One   = 12
    - Input: Input Three = 30
  ===========================================
   !! Expectation Failed: Should not be 42

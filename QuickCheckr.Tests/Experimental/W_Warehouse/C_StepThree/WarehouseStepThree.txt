@@ -13,7 +13,7 @@
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
    - Client Action = ClientSim-3
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
@@ -21,7 +21,7 @@
  ------------------------------------------------------------
   Executed: Client Gets Products to Order
    - Client Action = ClientSim-2
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 100 }
@@ -31,7 +31,7 @@
    - Client Action = ClientSim-2
    - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 39 } ] }
                      { OrderLines: [ Three: 39 ] }
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: 61 }
@@ -41,7 +41,7 @@
    - Client Action = ClientSim-3
    - Order Request = { OrderLines: [ { ProductId: 5b94e130-955e-4f11-854c-dc4b296907fa, Amount: 92 } ] }
                      { OrderLines: [ Three: 92 ] }
-   - Stock = [
+   - Stock         = [
     { Name: "One", AmountInStock: 100 },
     { Name: "Two", AmountInStock: 100 },
     { Name: "Three", AmountInStock: -31 }

@@ -6,8 +6,8 @@
  Seed:                    438724296
  ------------------------------------------------------------
   Executed: Delete from List
-   - Input: List = [ 5, 5 ]
-   - Input: Item to Remove = 5
+   - Input: List                  = [ 5, 5 ]
+   - Input: Item to Remove        = 5
    - Trace: List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
  ========================================================
   !! Expectation Failed: List Does Not Contain Element

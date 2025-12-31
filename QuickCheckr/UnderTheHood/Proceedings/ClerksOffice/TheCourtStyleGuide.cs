@@ -22,11 +22,14 @@ public record Valve
 
     public bool Restricted() => !Passable();
 }
+
 public record Decorum
 {
     public Valve Intersperse { get; init; } = Valve.Closed();
     public Valve Line { get; init; } = Valve.Closed();
 }
+
+public record MaxLabel(int Length);
 
 public static class The
 {
@@ -52,30 +55,33 @@ public static class The
 
     private readonly static Flow<TraceDeposition> traceDeposition =
         from input in Pulse.Start<TraceDeposition>()
+        from maxLabel in Pulse.Draw<MaxLabel>()
         from _ in newLine
         from __ in Pulse.Trace("   - ")
         from ___ in Pulse.TraceIf(input.Labeled, () => "Trace: ")
-        from ____ in Pulse.Trace($"{input.Label} = {input.Value}")
+        from ____ in Pulse.Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
         select input;
 
     private readonly static Flow<PoolTraceDeposition> poolTraceDeposition =
         from input in Pulse.Start<PoolTraceDeposition>()
+        from maxLabel in Pulse.Draw<MaxLabel>()
         from _ in newLine
         from __ in Pulse.Trace("   - ")
         from ___ in Pulse.TraceIf(input.Labeled, () => " Pool: ")
-        from ____ in Pulse.Trace($"{input.Label} = {input.Value}")
+        from ____ in Pulse.Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
         select input;
 
     private readonly static Flow<InputDeposition> inputDeposition =
         from input in Pulse.Start<InputDeposition>()
-        from _ in newLine
         let label = input.Label
+        from maxLabel in Pulse.Draw<MaxLabel>()
+        from _ in newLine
         from __ in Pulse.Trace("   - ")
         from ___ in Pulse.TraceIf(input.Labeled, () => "Input: ")
-        from ____ in Pulse.Trace($"{label} = {input.Value}")
+        from ____ in Pulse.Trace($"{label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
         let spaces = input.Labeled ? 15 : 8
         from _____ in Pulse.TraceIf(input.Original is not null,
-            () => $"{Environment.NewLine}{new string(' ', label.Length + spaces)}{input.Original}")
+            () => $"{Environment.NewLine}{new string(' ', maxLabel.Length + spaces)}{input.Original}")
         select input;
 
     private readonly static Flow<ActionDeposition> actionDeposition =
@@ -89,6 +95,7 @@ public static class The
         from nl in newLine
         from _1 in line
         let colon = input.HasContent() ? ":" : ""
+        from labelLength in Pulse.Manipulate<MaxLabel>(a => a with { Length = input.MaxLabelLength() })
         from _2 in Pulse.Trace($"  Executed{colon}")
         from _3 in Pulse.Scoped<Decorum>(
             a => a with { Intersperse = Valve.Install() },
@@ -172,11 +179,12 @@ public static class The
     public readonly static Flow<CaseFile> CourtStyleGuide =
         from input in Pulse.Start<CaseFile>()
         from _ in Pulse.Prime(() => new Decorum())
+        from __ in Pulse.Prime(() => new MaxLabel(0))
         from verdict in Pulse.ToFlowIf(input.Verdict != null, verdict, () => input.Verdict)
         from summary in Pulse.OnType(Summary, () => input)
         let needsBreak = input.Verdict != null && input.PassedExpectationDepositions.Count > 0
         from nl in Pulse.TraceIf(needsBreak, () => Environment.NewLine)
-        from __ in Pulse.ToFlowIf(
+        from ___ in Pulse.ToFlowIf(
             input.PassedExpectationDepositions.Count > 0,
             passedExpectationDepositions,
             () => input.PassedExpectationDepositions)

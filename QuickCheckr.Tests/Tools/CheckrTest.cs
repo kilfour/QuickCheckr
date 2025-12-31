@@ -23,6 +23,7 @@ public abstract class CheckrTest<T>
     protected abstract CheckrOf<Case> TheCheckr();
     protected abstract void Verify(Article article);
 
+    private readonly bool writeAllReportsToDisk = false;
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
@@ -42,15 +43,6 @@ public abstract class CheckrTest<T>
             () => TheCheckr().Run(seed, executionCount, Configure))
             , callerPath);
 
-    // protected void Run(
-    //     int seed,
-    //     CheckrOfTRun.ExecutionCount executionCount,
-    //     Func<CheckrConfig, CheckrConfig> configure,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Exposes(
-    //         () => TheCheckr().Run(seed, executionCount, configure))
-    //         , callerPath);
-
     private void ProcessArticle(Article article, string callerPath)
     {
         WriteAsserts(article);
@@ -60,7 +52,6 @@ public abstract class CheckrTest<T>
     }
 
     private const string basePath = @"C:\Code\";
-    private readonly bool writeAllReportsToDisk = false;
 
     private void WriteReport(
         Article article,

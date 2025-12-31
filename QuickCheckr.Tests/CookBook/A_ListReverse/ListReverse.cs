@@ -25,7 +25,7 @@ I guess this one is very much tradition in PBT world, and who am I to argue with
 public class ListReverse : CheckrTest<ListReverse>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explanation => false;
 
     [CodeExample]
@@ -59,7 +59,7 @@ public class ListReverse : CheckrTest<ListReverse>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from showr in Showr.ForInput()
-        from input in Checkr.Input("Input ", ListFuzzr())
+        from input in Checkr.Input("Input", ListFuzzr())
         from result in Checkr.Act("Result",
             () => TheReverser.Reverses(TheReverser.Reverses(input)))
         from traceResult in Checkr.Trace("Result", () => result)
@@ -77,7 +77,7 @@ public class ListReverse : CheckrTest<ListReverse>
         Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input ", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Result", article.Execution(1).Trace(1).Read().Label);
