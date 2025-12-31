@@ -61,8 +61,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 Seed: State.FuzzrState.Seed,
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
-                ReportWarnings: config.ReportMode.HasFlag(ReportMode.Warning),
-                ReportStackTrace: config.ReportMode.HasFlag(ReportMode.StackTrace)
+                ReportMode: config.ReportMode
             );
         return Compile.TheCaseFile(dossier, State.Memory);
     }

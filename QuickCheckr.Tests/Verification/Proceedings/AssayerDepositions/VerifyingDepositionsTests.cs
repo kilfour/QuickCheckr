@@ -20,8 +20,7 @@ public class VerifyingDepositionsTests : DepositionTest
                 Seed: 12345678,
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
-                ReportWarnings: true,
-                ReportStackTrace: false
+                ReportMode: Protocol.ReportMode.Default
             )));
 
         var reader = Transcribe(caseFile);

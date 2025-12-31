@@ -2,6 +2,7 @@ using System.Diagnostics;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Explains.Text;
+using QuickCheckr.Protocol;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 
@@ -20,8 +21,7 @@ public abstract class DepositionTest
                 Seed: 12345678,
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
-                ReportWarnings: true,
-                ReportStackTrace: false
+                ReportMode: ReportMode.Default & ~ReportMode.StackTrace
             );
 
     protected LinesReader Transcribe(CaseFile caseFile)

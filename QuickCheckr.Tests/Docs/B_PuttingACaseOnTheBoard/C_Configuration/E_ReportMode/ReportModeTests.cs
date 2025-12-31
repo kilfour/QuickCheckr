@@ -15,10 +15,11 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_Repo
 
 The following Checkr will be used to generate the reports throughout this chapter:")]
 [DocExample(typeof(ReportModeTests), nameof(GetCheckr))]
+[DocInclude(typeof(ReportModeDefault))]
 [DocInclude(typeof(ReportModeNone))]
 [DocInclude(typeof(ReportModeTrace))]
 [DocInclude(typeof(ReportModeWarning))]
-[DocInclude(typeof(ReportModeDefault))]
+[DocInclude(typeof(ReportModeLabels))]
 public class ReportModeTests : BaseTest
 {
     public class Thing;

@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
@@ -26,11 +27,10 @@ public class Verdict
 
     private static FailureDeposition GetFailureDeposition(Dossier dossier)
     {
-
         if (dossier.Exception is not null)
         {
             var message = $"{dossier.Exception.GetType().Name}: {dossier.Exception.Message}";
-            return dossier.ReportStackTrace
+            return dossier.ReportMode.HasFlag(ReportMode.StackTrace)
                 ? new ExceptionDeposition(dossier.Exception.ToString(), message)
                 : new ExceptionDeposition(message, message);
         }

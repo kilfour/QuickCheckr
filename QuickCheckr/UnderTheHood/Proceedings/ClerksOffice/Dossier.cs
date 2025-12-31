@@ -1,3 +1,5 @@
+using QuickCheckr.Protocol;
+
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public record Dossier(
@@ -10,8 +12,7 @@ public record Dossier(
     int Seed,
     IReadOnlyDictionary<string, int> PassedExpectations,
     bool UseMemoryForInputReporting,
-    bool ReportWarnings,
-    bool ReportStackTrace)
+    ReportMode ReportMode)
 {
     public static Dossier Empty =>
         new(FailingExpectation: null,
@@ -23,6 +24,5 @@ public record Dossier(
             Seed: 0,
             PassedExpectations: new Dictionary<string, int>(),
             UseMemoryForInputReporting: false,
-            ReportWarnings: false,
-            ReportStackTrace: false);
+            ReportMode: ReportMode.None);
 }

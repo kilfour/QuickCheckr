@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
@@ -16,7 +17,7 @@ public static class Compile
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
     {
         var verdict = Verdict.FromDossier(dossier);
-        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, dossier.ReportWarnings);
+        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, dossier.ReportMode);
         AddPassedExpectations(dossier.PassedExpectations, caseFile);
         return caseFile;
     }
@@ -25,9 +26,9 @@ public static class Compile
         Memory memory,
         Verdict verdict,
         bool useMemoryForInputReporting,
-        bool reportWarnings)
+        ReportMode reportMode)
     {
-        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, reportWarnings);
+        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, reportMode);
         var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
     }
@@ -42,24 +43,27 @@ public static class Compile
         Memory memory,
         Verdict verdict,
         bool useMemoryForInputReporting,
-        bool reportWarnings)
+        ReportMode reportMode)
     {
         foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
             verdict.AddExecutionDeposition(
-                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, reportWarnings));
+                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, reportMode));
         }
     }
 
     private static ExecutionDeposition GetExecutionDeposition(
-        ExecutionMemory shortTermMemory, int executionNumber, bool useMemoryForInputReporting, bool reportWarnings)
+        ExecutionMemory shortTermMemory,
+        int executionNumber,
+        bool useMemoryForInputReporting,
+        ReportMode reportMode)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
         GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting);
         GetPoolTraceDepositions(executionDeposition, shortTermMemory);
         GetTraceDepositions(executionDeposition, shortTermMemory);
-        if (reportWarnings)
+        if (reportMode.HasFlag(ReportMode.Warning))
             GetWarningDepositions(executionDeposition, shortTermMemory);
         return executionDeposition;
     }
@@ -77,23 +81,22 @@ public static class Compile
         ExecutionMemory executionMemory,
         bool useMemoryForInputReporting)
     {
+
         if (useMemoryForInputReporting)
         {
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
-
-                executionDeposition.AddInputDeposition(new InputDeposition(key, val!));
+                executionDeposition.AddInputDeposition(
+                    new InputDeposition(key, val!));
             }
             return;
         }
+
         foreach (var (key, val) in executionMemory.GetInputShrinkOutcomes())
         {
-            var showr = executionMemory.GetOriginalForKey(key);
             var original = executionMemory.GetOriginalForKey(key);
-            // showr != null
-            //     ? showr().IntroduceThis(((InputShrinkingClue)val!).Original!)
-            //     : null;
-            executionDeposition.AddInputDeposition(new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original));
+            executionDeposition.AddInputDeposition(
+                    new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original));
         }
     }
 
