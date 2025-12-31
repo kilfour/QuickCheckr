@@ -444,7 +444,7 @@ Check this with:
 ```
 #### Input Reduction
 ```csharp
-    from i in Checkr.Input("Int", Fuzzr.Int(), a => a with { Reducer = TowardsZero })
+    from i in Checkr.Input("Int", Fuzzr.Int(), TowardsZero)
     from expect in Checkr.Expect("Int should be smaller than 42", () => i < 42)
     from trace in Checkr.Trace("Int", () => i)
     select Case.Closed;
@@ -480,7 +480,7 @@ private static IEnumerable<int> TowardsZero(int input)
 ### Parsing Numbers
 #### The Checkr:
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), a => a with { Reducer = ParseReducer.Reducer })
+    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
     from trace in Checkr.Trace("Original", () => input)
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
@@ -915,7 +915,7 @@ public class ListWrap
 ```
 ### Parsing Numbers
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), a => a with { Reducer = ParseReducer.Reducer })
+    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
     from trace in Checkr.Trace("Original", () => input)
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())

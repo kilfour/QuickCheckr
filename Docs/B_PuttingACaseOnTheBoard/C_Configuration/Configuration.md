@@ -231,16 +231,16 @@ The following Checkr will be used to generate the reports throughout this chapte
     from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
     select Case.Closed;
 ```
-#### ReportMode.None
-No traces, no warnings, no stacktrace.  
+### ReportMode.None
 ```csharp
-private static CheckrConfig ConfigureNone(CheckrConfig config)
+protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ReportMode = ReportMode.None };
 ```
+No traces, no warnings, no stacktrace.  
 ```text
 ------------------------------------------------------------
- Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:48:1
+ Test:                    Example
+ Location:                ReportModeNone.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926

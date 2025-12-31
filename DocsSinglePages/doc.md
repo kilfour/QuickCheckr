@@ -1107,16 +1107,16 @@ The following Checkr will be used to generate the reports throughout this chapte
     from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
     select Case.Closed;
 ```
-###### ReportMode.None
-No traces, no warnings, no stacktrace.  
+##### ReportMode.None
 ```csharp
-private static CheckrConfig ConfigureNone(CheckrConfig config)
+protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ReportMode = ReportMode.None };
 ```
+No traces, no warnings, no stacktrace.  
 ```text
 ------------------------------------------------------------
- Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:48:1
+ Test:                    Example
+ Location:                ReportModeNone.cs:44:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1626,9 +1626,9 @@ This avoids surprising or *magical* shrink results.
 This is the first step in QuickCheckr shrinking.  
 The following simple example fails on the third execution.  
 ```csharp
-    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
-    select Case.Closed;
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
+select Case.Closed;
 ```
 
 Execution 1: counter = 1  
@@ -1643,8 +1643,8 @@ So after *Execution Shrinking*, the result is:
   
 ```text
 ------------------------------------------------------------
- Test:                    ExampleTest
- Location:                Docs\H_OnShrinking\A_ExecutionShrinking\ExecutionShrinking.cs:53:1
+ Test:                    Example
+ Location:                ExecutionShrinking.cs:32:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953

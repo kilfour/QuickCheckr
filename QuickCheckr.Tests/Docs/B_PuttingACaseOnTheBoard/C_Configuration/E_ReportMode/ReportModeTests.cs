@@ -6,23 +6,23 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
 
-
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
 
-//[DocFile]
+
 [DocFileHeader("ReportMode")]
 [DocContent(
 @"Controls whether or not *Traces*, *Warnings*  and/or *Exception StackTraces* show up in the report.
 
 The following Checkr will be used to generate the reports throughout this chapter:")]
 [DocExample(typeof(ReportModeTests), nameof(GetCheckr))]
+[DocInclude(typeof(ReportModeNone))]
 public class ReportModeTests : BaseTest
 {
     public class Thing;
 
     [CodeSnippet]
     [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
+    public static CheckrOf<Case> GetCheckr()
     {
         return
             from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
@@ -31,40 +31,6 @@ public class ReportModeTests : BaseTest
             from trace in Checkr.Trace("Irrelevant", () => irrelevant)
             from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
             select Case.Closed;
-    }
-
-    [CodeExample]
-    private static CheckrConfig ConfigureNone(CheckrConfig config)
-        => config with { ReportMode = ReportMode.None };
-
-    [Fact]
-    [DocHeader("ReportMode.None", 1)]
-    [DocContent("No traces, no warnings, no stacktrace.")]
-    [DocExample(typeof(ReportModeTests), nameof(ConfigureNone))]
-    [DocCodeFile("ReportModeTestsNone.txt", "text")]
-    public void RunTestNone()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1964562926, 2.ExecutionsPerRun(), ConfigureNone));
-        WriteAsserts(article, false);
-        WriteReport(article, "ReportModeTestsNone.txt", false);
-        VerifyNone(article);
-    }
-
-    private static void VerifyNone(Article article)
-    {
-        Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Equal("ComputerSaysNo: Only one is available", article.GetExceptionMessage());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(2, article.ShrinkCount);
-        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
     }
 
     [CodeExample]
