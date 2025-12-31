@@ -14,7 +14,7 @@ Showr.ForInputs (Implemented)
   * find pattern for other tests
 * refactor memory (execution mainly)
   * use interfaces to define boundaries for checkrs
-* Remove 'Input:', 'Pool:' and 'Trace:' from report ?
+* Remove 'Input:', 'Pool:' and 'Trace:' from report ? ReportMode.Labeled
 * Remove Showr.ForInputs ?
 * Add ReportMode: IncludeOriginalInput (better name?)
 * Play more pool.

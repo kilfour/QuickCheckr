@@ -1,5 +1,4 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -8,11 +7,15 @@ namespace QuickCheckr.Tests.Docs.H_OnShrinking.A_ExecutionShrinking;
 
 [DocFile]
 [DocContent("This is the first step in QuickCheckr shrinking.")]
-public class ExecutionShrinking : BaseTest
+public class ExecutionShrinking : CheckrTest<ExecutionShrinking>
 {
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explanation => false;
+
     [Fact]
     [DocContent("The following simple example fails on the third execution.")]
-    [DocExample(typeof(ExecutionShrinking), nameof(Example_Check))]
+    [DocCheckr]
     [DocContent(
 @"
 Execution 1: counter = 1  
@@ -25,16 +28,17 @@ If the run still fails, the execution is not deemed relevant for the failure and
 
 So after *Execution Shrinking*, the result is:
 ")]
-    [DocCodeFile("ExecutionShrinking.txt", "text")]
-    public void Example()
-    {
-        var article = TheJournalist.Exposes(ExampleTest);
-        WriteAsserts(article);
-        WriteReport<ExecutionShrinking>(article, false);
-        Verify(article);
-    }
+    [DocReport]
+    public override void Example()
+        => Run(669391953, 3.ExecutionsPerRun());
 
-    private static void Verify(Article article)
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+        from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
     {
         Assert.Equal("Counter does not equal 3", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
@@ -46,22 +50,5 @@ So after *Execution Shrinking*, the result is:
         Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
         Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
-    }
-
-    private static void ExampleTest()
-    {
-        Example_Check().Run(
-            669391953,
-            50.ExecutionsPerRun());
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> Example_Check()
-    {
-        return
-            from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-            from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
-            select Case.Closed;
     }
 }

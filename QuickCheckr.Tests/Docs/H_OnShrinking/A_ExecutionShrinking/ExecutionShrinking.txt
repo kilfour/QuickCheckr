@@ -1,6 +1,6 @@
  ------------------------------------------------------------
- Test:                    ExampleTest
- Location:                Docs\H_OnShrinking\A_ExecutionShrinking\ExecutionShrinking.cs:53:1
+ Test:                    Example
+ Location:                ExecutionShrinking.cs:32:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953

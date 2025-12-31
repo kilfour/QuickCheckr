@@ -21,7 +21,7 @@ public class DelayedResult
         => Threw && Exception is TException;
 
     public bool ThrewExactly<T>() where T : Exception
-    => Exception?.GetType() == typeof(T);
+        => Exception?.GetType() == typeof(T);
 
     public bool ThrewAs<T>(out T ex) where T : Exception
     {
@@ -30,7 +30,6 @@ public class DelayedResult
             ex = matched;
             return true;
         }
-
         ex = default!;
         return false;
     }
@@ -58,7 +57,4 @@ public class DelayedResult<T> : DelayedResult
     private DelayedResult() { isNone = true; }
 
     public static DelayedResult<T> None() => new() { };
-
-    // public static implicit operator T(DelayedResult<T> r) => r.Value!;
-    // public static explicit operator T(DelayedResult<T> r) => r.Value;
 }
