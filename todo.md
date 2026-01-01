@@ -50,6 +50,9 @@
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ## 0.0.8+
+* dotnet new checkr templates
+  * minimal
+  * for newbies
 * Deliberation Shrinking. Add:
   * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
   * decouple the casefile from the predicate
@@ -67,6 +70,7 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
+* Prepare demo talk(s)
 * Any exception thrown by the Checkr will be caught and considered a failure.
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
