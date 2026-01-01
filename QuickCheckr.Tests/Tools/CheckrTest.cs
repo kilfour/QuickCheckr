@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -39,6 +40,7 @@ public abstract class CheckrTest<T>
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
 
+    [StackTraceHidden]
     protected void Run(
         int seed,
         [CallerFilePath] string callerPath = "")
@@ -46,6 +48,7 @@ public abstract class CheckrTest<T>
             () => TheCheckr().Run(seed, Configure))
             , callerPath);
 
+    [StackTraceHidden]
     protected void Run(
         int seed,
         CheckrOfTRun.ExecutionCount executionCount,
@@ -54,6 +57,7 @@ public abstract class CheckrTest<T>
             () => TheCheckr().Run(seed, executionCount, Configure))
             , callerPath);
 
+    [StackTraceHidden]
     protected void Run(
         CheckrOfTRun.RunCount runCount,
         [CallerFilePath] string callerPath = "")
@@ -61,6 +65,7 @@ public abstract class CheckrTest<T>
             () => TheCheckr().Run(runCount, Configure))
             , callerPath);
 
+    [StackTraceHidden]
     protected void Run(
         CheckrOfTRun.RunCount runCount,
         CheckrOfTRun.ExecutionCount executionCount,

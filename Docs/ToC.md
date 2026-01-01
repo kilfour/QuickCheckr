@@ -29,6 +29,7 @@
         - [Relevant Element And Size](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/G_RelevantElementAndSize.md)
         - [Nested Lists](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/H_NestedLists.md)
         - [When An Empty List Is The Culprit](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/I_WhenAnEmptyListIsTheCulprit.md)
+        - [A List Of Objects](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/J_AListOfObjects.md)
       - [Arrays](M_HoneyIShrunkTheInputs/B_Collections/B_Arrays/Arrays.md)
         - [An Array As Input](M_HoneyIShrunkTheInputs/B_Collections/B_Arrays/TheExamples/A_AnArrayAsInput.md)
     - [Objects](M_HoneyIShrunkTheInputs/C_Objects/Objects.md)

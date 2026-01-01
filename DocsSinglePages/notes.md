@@ -29,7 +29,6 @@ together with the number of executions, relevant actions and inputs that were re
   !! Expectation Failed: Fails
  ================================
 ```
-#### Collections
 #### Objects
 ##### Removes Irrelevant Properties
 ```csharp
