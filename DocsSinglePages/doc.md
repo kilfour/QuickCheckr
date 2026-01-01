@@ -1220,7 +1220,7 @@ Only labels.
   !! ComputerSaysNo: Only one is available
  ===========================================================================
 ```
-**Hint: You can use bit-wise operations to manipulate ReportMode``:**  
+**Hint:** You can use bit-wise operations to manipulate `ReportMode`:  
 ```csharp
 config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
 ```

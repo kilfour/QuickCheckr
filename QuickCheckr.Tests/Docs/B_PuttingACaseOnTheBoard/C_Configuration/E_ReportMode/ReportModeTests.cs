@@ -18,7 +18,7 @@ The following Checkr will be used to generate the reports throughout this chapte
 [DocInclude(typeof(ReportModeTrace))]
 [DocInclude(typeof(ReportModeWarning))]
 [DocInclude(typeof(ReportModeLabels))]
-[DocContent("**Hint: You can use bit-wise operations to manipulate ReportMode``:**")]
+[DocContent("**Hint:** You can use bit-wise operations to manipulate `ReportMode`:")]
 [DocExample(typeof(ReportModeTests), nameof(BitWiseOperationExample))]
 public class ReportModeTests : BaseTest
 {
