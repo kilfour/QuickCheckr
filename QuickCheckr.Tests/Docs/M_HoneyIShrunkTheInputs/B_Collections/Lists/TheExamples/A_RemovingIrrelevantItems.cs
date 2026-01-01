@@ -22,10 +22,6 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
     [DocContent(@"Even if the original list was long and varied, QuickCheckr isolates the single relevant element:")]
     public override void Example() => Run(1833095082);
 
-    [CodeExample]
-    protected override CheckrConfig Configure(CheckrConfig config)
-        => config with { ReportMode = ReportMode.Default };
-
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
