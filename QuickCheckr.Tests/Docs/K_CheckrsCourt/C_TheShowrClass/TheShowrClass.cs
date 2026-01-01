@@ -6,7 +6,7 @@ using QuickPulse.Explains;
 using QuickPulse.Show;
 
 
-namespace QuickCheckr.Tests.Drafts.D_CheckrsCourt.C_TheShowrClass;
+namespace QuickCheckr.Tests.Docs.K_CheckrsCourt.C_TheShowrClass;
 
 [DocFile]
 public class TheShowrClass : BaseTest

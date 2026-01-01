@@ -1,8 +1,8 @@
-using QuickCheckr.Tests.Drafts.D_CheckrsCourt.A_TheCheckrClass;
-using QuickCheckr.Tests.Drafts.D_CheckrsCourt.B_TheTrackerClass;
+using QuickCheckr.Tests.Docs.K_CheckrsCourt.A_TheCheckrClass;
+using QuickCheckr.Tests.Docs.K_CheckrsCourt.B_TheTrackerClass;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.D_CheckrsCourt;
+namespace QuickCheckr.Tests.Docs.K_CheckrsCourt;
 
 
 [DocFile]

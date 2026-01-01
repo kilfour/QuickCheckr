@@ -23,7 +23,7 @@
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
 * New Chapter: Honey I Shrunk the Inputs, consolidate all shrinking examples from notes
-* Work on the reference (Checkrs Court) 
+* Checkrs Court: Tricky one
 
 ### Tests Current Focus
 * fix Gathering Evidence reports (labels not aligned)

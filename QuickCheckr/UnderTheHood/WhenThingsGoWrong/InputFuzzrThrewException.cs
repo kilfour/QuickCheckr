@@ -10,8 +10,12 @@ public class InputFuzzrThrewException(string key, Exception exception)
         return
 @$"Input '{key}' threw a '{type}', see InnerException.
 This might mean something is wrong with the way you wrote the Fuzzr.
-But it might also mean that the fuzzr is depending on state, and as 'Input' is eagerly evaluated, this can cause problems.
-In the latter case please try using the 'lazy' version, f.i.: 'Checkr.Input(() => Fuzzr.Int()).
+But it might also mean that the fuzzr is depending on state.
+And as 'Input' is eagerly evaluated, this can cause problems.
+
+In the latter case please try using the 'lazy' version. 
+
+Example: 'Checkr.Input(() => Fuzzr.Int()).
 ";
     }
 }

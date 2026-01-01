@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.D_CheckrsCourt.B_TheTrackerClass;
+namespace QuickCheckr.Tests.Docs.K_CheckrsCourt.B_TheTrackerClass;
 
 [DocFile]
 public class TheTrackerClass { }
