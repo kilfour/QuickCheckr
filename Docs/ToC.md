@@ -22,5 +22,7 @@
         - [Removing Irrelevant Items](M_HoneyIShrunkTheInputs/B_Collections/Lists/TheExamples/A_RemovingIrrelevantItems.md)
         - [Removing Irrelevant Collection](M_HoneyIShrunkTheInputs/B_Collections/Lists/TheExamples/B_RemovingIrrelevantCollection.md)
         - [Irrelevant Element But List Length Is Not](M_HoneyIShrunkTheInputs/B_Collections/Lists/TheExamples/C_IrrelevantElementButListLengthIsNot.md)
+        - [Relevant Item Is Default](M_HoneyIShrunkTheInputs/B_Collections/Lists/TheExamples/D_RelevantItemIsDefault.md)
+        - [Relevant Item Is All But Default](M_HoneyIShrunkTheInputs/B_Collections/Lists/TheExamples/E_RelevantItemIsAllButDefault.md)
     - [Objects](M_HoneyIShrunkTheInputs/C_Objects/Objects.md)
       - [Checking Nulls](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md)

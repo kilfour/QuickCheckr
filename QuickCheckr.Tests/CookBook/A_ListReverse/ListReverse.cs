@@ -25,7 +25,7 @@ I guess this one is very much tradition in PBT world, and who am I to argue with
 public class ListReverse : CheckrTest<ListReverse>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explanation => false;
 
     [CodeExample]
