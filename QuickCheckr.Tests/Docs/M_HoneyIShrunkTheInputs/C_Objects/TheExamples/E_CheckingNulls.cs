@@ -8,7 +8,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking.C_Objects.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.C_Objects.TheExamples;
 
 [DocFile]
 [DocLink(typeof(DeliberationShrinking))]

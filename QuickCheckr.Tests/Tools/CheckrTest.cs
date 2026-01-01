@@ -11,10 +11,21 @@ namespace QuickCheckr.Tests.Tools;
 
 public abstract class CheckrTest<T>
 {
+    public class DocModelHeaderAttribute() :
+        DocContentAttribute("**The Model:**");
+
+    public class DocConfigureHeaderAttribute() :
+        DocContentAttribute("**The Configuration:**");
     public class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");
+
+    public class DocCheckrHeaderAttribute() :
+        DocContentAttribute("**The Checkr:**");
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
+
+    public class DocReportHeaderAttribute() :
+        DocContentAttribute("**The Report:**");
     public class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, path);
 
@@ -41,6 +52,14 @@ public abstract class CheckrTest<T>
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
             () => TheCheckr().Run(seed, executionCount, Configure))
+            , callerPath);
+
+    protected void Run(
+        CheckrOfTRun.RunCount runCount,
+        CheckrOfTRun.ExecutionCount executionCount,
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Exposes(
+            () => TheCheckr().Run(runCount, executionCount, Configure))
             , callerPath);
 
     private void ProcessArticle(Article article, string callerPath)

@@ -1287,7 +1287,7 @@ As you can see, this is a *local* minimal fail-case, but a smaller one exists.
 Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
 ```
 Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
 ```text
@@ -1310,11 +1310,15 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  - No Overdraft: 4x
  ------------------------------------------------------------
 ```
-The following predefined policies are available
-- `DeliberationPolicy.MinimumExecutions`
-- `DeliberationPolicy.MinimumShrinkCount`
-- `DeliberationPolicy.MaximumShrinkCount`
-- `DeliberationPolicy.MinimumWarnings`
+The following predefined policies are available  
+```csharp
+- DeliberationPolicy.MinimumExecutions
+- DeliberationPolicy.MinimumShrinkCount
+- DeliberationPolicy.MaximumShrinkCount
+- DeliberationPolicy.MinimumWarnings
+- DeliberationPolicy.MaximumExecutionsShrunk
+- DeliberationPolicy.MaximumDistinctPassedExpectations
+```
 
 See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 
@@ -1718,25 +1722,174 @@ Result:
   !! Expectation Failed: Should not be 42
  ===========================================
 ```
-#### Collections
-##### Removing Irrelevant Items
-When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
-Instead, it removes items one by one, replaying the run each time to test whether the removed element was relevant for the failure.
+Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
 
-This means that if only some elements in a list contribute to the failing condition, QuickCheckr will aggressively trim the rest away. The result is a minimal list containing only the values that still trigger the failure, even if the original list was large or noisy.
+[HoneyIShrunkTheInputs]: #honey-i-shrunk-the-inputs
+### Deliberation Shrinking
+This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
-Consider a test that forbids the value `7`:  
+A first example, as well as how to enable this feature,
+can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
+
+But here are some more use cases.  
+#### An Eager Shrinker
+Under some rare circumstances, the Shrinker gets *greedy*.  
+Currently the only identified cases where this happens is if more than one input triggers the same failure.  
 ```csharp
-    from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
-    from trace in Checkr.Trace("List Input", () => listInput)
+    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
+    from trace in Checkr.Trace("List", () => input)
+    from expect in Checkr.ExpectWhen("Does not contain 1",
+        () => input.Count() > 2,
+        () => !input.Contains(1))
     select Case.Closed;
 ```
-Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
+Now when the list contains multiple elements `1`, we might get:  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedy
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:42:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    227109555
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, _ ]
+   - Trace: List  = [ 1, 2, 1 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
+```
+It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
+but the element values are considered irrelevant (*wrong*).  
+For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
+```csharp
+private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
+    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
+```
+**Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyFixed
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1185771041
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ 1, _, _ ]
+   - Trace: List  = [ 1, 2, 4 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
+```
+A similar thing can happen when shrinking objects, and the solution is exactly the same  
+```csharp
+    from obj in Checkr.Input("BaggyInters",
+        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+        from result in Fuzzr.One<BaggyInters>()
+        select result)
+    from trace in Checkr.Trace("Original", () => obj)
+    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+        () => obj.IntOne != 1 && obj.IntThree != 1)
+    select Case.Closed;
+```
+**With Deliberation Policy:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyObjects
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1136603211
+ ------------------------------------------------------------
+  Executed:
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
+ ===============================================================
+  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ===============================================================
+```
+
+[Configuration]: #configuration
+### Primitives
+By default QuickCheckr does not *mutate* primitive input values, it only marks them as relevant or irrelevant  
+#### Enumerations
+**The Checkr:**  
+```csharp
+from inputOne in Checkr.Input("One", Fuzzr.Enum<DayOfWeek>())
+from inputTwo in Checkr.Input("Two", Fuzzr.Enum<DayOfWeek>())
+from expect in Checkr.Expect("Two should not be Monday", () => inputTwo != DayOfWeek.Monday)
+select Case.Closed;
+```
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\A_RemovingIrrelevantItems.cs:26:1
+ Location:                A_Enumerations.cs:51:1
+ Original failing run:    10 executions
+ Minimal failing case:    1 execution (after 10 shrinks)
+ Seed:                    1017208542
+ ------------------------------------------------------------
+  Executed:
+   - Input: Two = Monday
+ ===================================================
+  !! Expectation Failed: Two should not be Monday
+ ===================================================
+ Passed Expectations
+ - Two should not be Monday: 9x
+ ------------------------------------------------------------
+```
+#### Custom Enumerations
+**The Checkr:**  
+```csharp
+from inputOne in Checkr.Input("One", Fuzzr.Enum<SoundCheck>())
+from inputTwo in Checkr.Input("Two", Fuzzr.Enum<SoundCheck>())
+from expect in Checkr.Expect("Two should not be Two", () => inputTwo != SoundCheck.Two)
+select Case.Closed;
+```
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_CustomEnumerations.cs:54:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1017208542
+ ------------------------------------------------------------
+  Executed:
+   - Input: Two = Two
+ ================================================
+  !! Expectation Failed: Two should not be Two
+ ================================================
+ Passed Expectations
+ - Two should not be Two: 1x
+ ------------------------------------------------------------
+```
+### Collections
+When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
+Instead, it removes items one by one,
+replaying the run each time to test whether the removed element was relevant for the failure.
+
+This means that if only some elements in a collection contribute to the failing condition,
+QuickCheckr will aggressively trim the rest away.
+The result is a minimal collection containing only the values that still trigger the failure,
+even if the original list was large or noisy.
+  
+#### Lists
+##### Removing Irrelevant Items
+Consider a test that forbids the value `7`.  
+**The Checkr:**  
+```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
+from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
+from trace in Checkr.Trace("List Input", () => listInput)
+select Case.Closed;
+```
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_RemovingIrrelevantItems.cs:46:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1833095082
@@ -1748,18 +1901,21 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
   !! Expectation Failed: List does not contain 7
  ==================================================
 ```
+Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
 ##### Removing Irrelevant Collection
 Ofcourse a collection itself is just an input like another, so if it, as a whole,
 is irrelevant for the failure, QuickCheckr will remove it.  
+**The Checkr:**  
 ```csharp
-    from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
-    from expect in Checkr.Expect("Always fails", () => false)
-    select Case.Closed;
+from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
+from expect in Checkr.Expect("Always fails", () => false)
+select Case.Closed;
 ```
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\B_RemovingIrrelevantCollection.cs:22:1
+ Location:                B_RemovingIrrelevantCollection.cs:46:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
@@ -1781,16 +1937,18 @@ removing elements, and converging toward the smallest list that still violates t
 This yields minimal, focused shrinking artifacts:
 the report shows only the structural signal that mattered (here: the list being *too long*),
 without introducing noise from element-level changes that could not affect the outcome anyway.  
+**The Checkr:**  
 ```csharp
-    from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-    from trace in Checkr.Trace("Original List", () => list)
-    from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
-    select Case.Closed;
+from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
+from trace in Checkr.Trace("Original List", () => list)
+from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
+select Case.Closed;
 ```
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\B_Collections\TheExamples\C_IrrelevantElementButListLengthIsNot.cs:30:1
+ Location:                C_IrrelevantElementButListLengthIsNot.cs:46:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1393576429
@@ -1802,8 +1960,8 @@ without introducing noise from element-level changes that could not affect the o
   !! Expectation Failed: Length <= 2
  ======================================
 ```
-#### Objects
-##### Checking Nulls
+### Objects
+#### Checking Nulls
 **The Model:**  
 ```csharp
 public class TheUniverse
@@ -1911,89 +2069,3 @@ so the warning can be ignored.
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.  
 
 [DeliberationShrinking]: #deliberation-shrinking
-### Deliberation Shrinking
-This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
-
-A first example, as well as how to enable this feature,
-can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
-
-But here are some more use cases.  
-#### An Eager Shrinker
-Under some rare circumstances, the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.  
-```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-    from trace in Checkr.Trace("List", () => input)
-    from expect in Checkr.ExpectWhen("Does not contain 1",
-        () => input.Count() > 2,
-        () => !input.Contains(1))
-    select Case.Closed;
-```
-Now when the list contains multiple elements `1`, we might get:  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:42:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    227109555
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, _ ]
-   - Trace: List  = [ 1, 2, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
-but the element values are considered irrelevant (*wrong*).  
-For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
-```csharp
-private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
-```
-**Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1185771041
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ 1, _, _ ]
-   - Trace: List  = [ 1, 2, 4 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-A similar thing can happen when shrinking objects, and the solution is exactly the same  
-```csharp
-    from obj in Checkr.Input("BaggyInters",
-        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-        from result in Fuzzr.One<BaggyInters>()
-        select result)
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
-```
-**With Deliberation Policy:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1136603211
- ------------------------------------------------------------
-  Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
- ===============================================================
-  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
- ===============================================================
-```
-
-[Configuration]: #configuration

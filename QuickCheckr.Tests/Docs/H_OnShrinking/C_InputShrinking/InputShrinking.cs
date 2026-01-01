@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -7,6 +8,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
 
 [DocFile]
+[DocLink(typeof(HoneyIShrunkTheInputs))]
 [DocContent(
 @"This is the next step in QuickCheckr shrinking and the most complex one.  
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.")]
@@ -72,6 +74,7 @@ QuickCheckr correctly identifies the relevant inputs.
 Result:
 ")]
     [DocCodeFile("InputShrinking_Two.txt", "text")]
+    [DocContent("Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].")]
     public void Example_Two()
     {
         var article = TheJournalist.Exposes(() =>

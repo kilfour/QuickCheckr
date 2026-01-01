@@ -1,13 +1,20 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking.B_Collections.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.Lists.TheExamples;
+
 
 [DocFile]
-[DocContent(
+public class C_IrrelevantElementButListLengthIsNot : CheckrTest<C_IrrelevantElementButListLengthIsNot>
+{
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explanation => false;
+
+    [Fact]
+    [DocContent(
 @"When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
 and leaves irrelevant details untouched. 
 
@@ -19,21 +26,20 @@ removing elements, and converging toward the smallest list that still violates t
 This yields minimal, focused shrinking artifacts:
 the report shows only the structural signal that mattered (here: the list being *too long*),
 without introducing noise from element-level changes that could not affect the outcome anyway.")]
-[DocExample(typeof(C_IrrelevantElementButListLengthIsNot), nameof(GetCheckr))]
-[DocCodeFile("C_IrrelevantElementButListLengthIsNot.txt", "text")]
-public class C_IrrelevantElementButListLengthIsNot : BaseTest
-{
-    [Fact]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1393576429));
-        WriteAsserts(article);
-        WriteReport<C_IrrelevantElementButListLengthIsNot>(article);
-        Verify(article);
-    }
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport]
+    public override void Example() => Run(1393576429);
 
-    private static void Verify(Article article)
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
+        from trace in Checkr.Trace("Original List", () => list)
+        from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
     {
         Assert.Equal("Length <= 2", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
@@ -45,16 +51,5 @@ public class C_IrrelevantElementButListLengthIsNot : BaseTest
         Assert.Equal("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original List", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ 12, 45, 56, 18, 31 ]", article.Execution(1).Trace(1).Read().Value);
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-            from trace in Checkr.Trace("Original List", () => list)
-            from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
-            select Case.Closed;
     }
 }

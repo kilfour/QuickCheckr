@@ -411,7 +411,7 @@ As you can see, this is a *local* minimal fail-case, but a smaller one exists.
 Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:  
 ```csharp
 private static CheckrConfig Configure(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
 ```
 Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.  
 ```text
@@ -434,11 +434,15 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  - No Overdraft: 4x
  ------------------------------------------------------------
 ```
-The following predefined policies are available
-- `DeliberationPolicy.MinimumExecutions`
-- `DeliberationPolicy.MinimumShrinkCount`
-- `DeliberationPolicy.MaximumShrinkCount`
-- `DeliberationPolicy.MinimumWarnings`
+The following predefined policies are available  
+```csharp
+- DeliberationPolicy.MinimumExecutions
+- DeliberationPolicy.MinimumShrinkCount
+- DeliberationPolicy.MaximumShrinkCount
+- DeliberationPolicy.MinimumWarnings
+- DeliberationPolicy.MaximumExecutionsShrunk
+- DeliberationPolicy.MaximumDistinctPassedExpectations
+```
 
 See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 

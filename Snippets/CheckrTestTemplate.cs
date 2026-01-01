@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -13,15 +14,17 @@ public class CheckrTestTemplate : CheckrTest<CheckrTestTemplate>
     protected override bool Explanation => false;
 
     [Fact]
-    [DocContent("")]
+    [DocModelHeader]
+    [DocCheckrHeader]
     [DocCheckr]
-    [DocContent("")]
+    [DocConfigureHeader]
     [DocConfigure]
-    [DocContent("")]
+    [DocReportHeader]
     [DocReport]
     [DocContent("")]
-    public override void Example =>
-        Run(100.Runs(), 10.ExecutionsPerRun(), Configure);
+    [DocContent("")]
+    public override void Example() =>
+        Run(100.Runs(), 10.ExecutionsPerRun());
 
     [CodeExample]
     protected override CheckrConfig Configure(CheckrConfig config)

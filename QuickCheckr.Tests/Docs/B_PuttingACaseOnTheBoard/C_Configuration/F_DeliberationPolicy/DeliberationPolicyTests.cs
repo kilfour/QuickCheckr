@@ -3,6 +3,7 @@ using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -95,7 +96,7 @@ public class DeliberationPolicyTests : BaseTest
 
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
-        => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumExecutions };
+        => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
 
 
     [Fact]
@@ -106,17 +107,6 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     [DocExample(typeof(DeliberationPolicyTests), nameof(Configure))]
     [DocContent("Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.")]
     [DocCodeFile("DeliberationPolicyMinimal.txt", "text")]
-    [DocContent(
-@"The following predefined policies are available
-- `DeliberationPolicy.MinimumExecutions`
-- `DeliberationPolicy.MinimumShrinkCount`
-- `DeliberationPolicy.MaximumShrinkCount`
-- `DeliberationPolicy.MinimumWarnings`
-
-See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
-
-It is also possible to define a custom policy, but this is an ...")]
-    [DocExperimental]
     public void RunTest_Deliberated()
     {
         var article = TheJournalist.Exposes(() =>
@@ -134,5 +124,30 @@ It is also possible to define a custom policy, but this is an ...")]
         Assert.Equal(2, article.Total().Inputs());
     }
 
+    [Fact]
+    [DocContent("The following predefined policies are available")]
+    [DocExample(typeof(DeliberationPolicyTests), nameof(PolicyList))]
+    [DocContent(
+@"
+See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 
+It is also possible to define a custom policy, but this is an ...")]
+    [DocExperimental]
+    public void AvailablePolicies()
+    {
+        Assert.Equal(6, PolicyList().Count()); // need a better way to test this
+    }
+
+    [CodeSnippet]
+    [CodeReplace("[ ", "- ")]
+    [CodeReplace(", ", "- ")]
+    [CodeRemove("];")]
+    private static IEnumerable<Func<CaseFile, CaseFile, CaseFile>> PolicyList() =>
+        [ DeliberationPolicy.MinimumExecutions
+        , DeliberationPolicy.MinimumShrinkCount
+        , DeliberationPolicy.MaximumShrinkCount
+        , DeliberationPolicy.MinimumWarnings
+        , DeliberationPolicy.MaximumExecutionsShrunk
+        , DeliberationPolicy.MaximumDistinctPassedExpectations
+        ];
 }

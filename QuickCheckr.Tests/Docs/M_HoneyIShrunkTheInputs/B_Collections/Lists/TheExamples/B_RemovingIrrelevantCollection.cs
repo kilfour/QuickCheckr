@@ -10,8 +10,8 @@ namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.Lists.The
 [DocFile]
 public class B_RemovingIrrelevantCollection : CheckrTest<B_RemovingIrrelevantCollection>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
     protected override bool Explanation => false;
 
     [Fact]

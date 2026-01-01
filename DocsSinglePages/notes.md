@@ -8,47 +8,6 @@ During this process no further executions are performed and no new random values
 
 QuickCheckr then reports the minimal failing case, 
 together with the number of executions, relevant actions and inputs that were required to find it.  
-#### Enums
-```csharp
-    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<DayOfWeek>())
-    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<DayOfWeek>())
-    from expect in Checkr.Expect("Should not be Monday", () => inputTwo != DayOfWeek.Monday)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:19:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1732064051
- ------------------------------------------------------------
-  Executed:
-   - Input: Input Two = Monday
- ===============================================
-  !! Expectation Failed: Should not be Monday
- ===============================================
-```
-```csharp
-    from inputOne in Checkr.Input("Input One", Fuzzr.Enum<SoundCheck>())
-    from inputTwo in Checkr.Input("Input Two", Fuzzr.Enum<SoundCheck>())
-    from expect in Checkr.Expect("Should not be Two", () => inputTwo != SoundCheck.Two)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    RunTest_Custom
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\EnumShrinkingTests.cs:55:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1205305161
- ------------------------------------------------------------
-  Executed:
-   - Input: Input Two = Two
- ============================================
-  !! Expectation Failed: Should not be Two
- ============================================
-```
 ##### Null String
 **The Checkr:**  
 ```csharp

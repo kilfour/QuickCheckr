@@ -54,3 +54,6 @@ Result:
   !! Expectation Failed: Should not be 42
  ===========================================
 ```
+Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
+
+[HoneyIShrunkTheInputs]: ../../../Drafts/M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md

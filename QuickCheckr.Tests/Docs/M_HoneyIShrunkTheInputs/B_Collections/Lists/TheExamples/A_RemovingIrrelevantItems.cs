@@ -1,6 +1,5 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -12,7 +11,7 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => true;
+    protected override bool Explanation => false;
 
     [Fact]
     [DocContent("Consider a test that forbids the value `7`.")]
