@@ -13,7 +13,6 @@ public class F_MultipleRelevantElements : CheckrTest<F_MultipleRelevantElements>
     protected override bool Explanation => false;
 
     [Fact]
-    [DocContent("Just making sure `default` values, `0` in this case, get handled correctly.")]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]

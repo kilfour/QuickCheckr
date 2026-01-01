@@ -56,6 +56,13 @@ public abstract class CheckrTest<T>
 
     protected void Run(
         CheckrOfTRun.RunCount runCount,
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Exposes(
+            () => TheCheckr().Run(runCount, Configure))
+            , callerPath);
+
+    protected void Run(
+        CheckrOfTRun.RunCount runCount,
         CheckrOfTRun.ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
