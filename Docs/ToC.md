@@ -16,7 +16,7 @@
     - [Deliberation Shrinking](H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md)
   - [Honey I Shrunk the Inputs](M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md)
     - [Primitives](M_HoneyIShrunkTheInputs/A_Primitives/Primitives.md)
-      - [Enumerations](M_HoneyIShrunkTheInputs/A_Primitives/TheExamples/A_Enumerations.md)
+      - [Built In Enumerations](M_HoneyIShrunkTheInputs/A_Primitives/TheExamples/A_BuiltInEnumerations.md)
       - [Custom Enumerations](M_HoneyIShrunkTheInputs/A_Primitives/TheExamples/B_CustomEnumerations.md)
     - [Collections](M_HoneyIShrunkTheInputs/B_Collections/Collections.md)
       - [Lists](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/Lists.md)

@@ -1818,12 +1818,14 @@ They serve both as an accurate description of input shrinking behaviour, and as 
 So if you file an issue regarding input shrinking, you will likely see a new example added here.  
 ### Primitives
 By default QuickCheckr does not *mutate* primitive input values, it only marks them as relevant or irrelevant  
-#### Enumerations
+#### Built In Enumerations
 
 **The Checkr:**  
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<DayOfWeek>())
 from inputTwo in Checkr.Input("Two", Fuzzr.Enum<DayOfWeek>())
+from traceOne in Checkr.Trace("Original One", () => inputOne)
+from traceTwo in Checkr.Trace("Original Two", () => inputTwo)
 from expect in Checkr.Expect("Two should not be Monday", () => inputTwo != DayOfWeek.Monday)
 select Case.Closed;
 ```
@@ -1832,19 +1834,18 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_Enumerations.cs:51:1
- Original failing run:    10 executions
- Minimal failing case:    1 execution (after 10 shrinks)
- Seed:                    1017208542
+ Location:                A_BuiltInEnumerations.cs:65:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    2083214969
  ------------------------------------------------------------
   Executed:
-   - Input: Two = Monday
+   - Input: Two          = Monday
+   - Trace: Original One = Wednesday
+   - Trace: Original Two = Monday
  ===================================================
   !! Expectation Failed: Two should not be Monday
  ===================================================
- Passed Expectations
- - Two should not be Monday: 9x
- ------------------------------------------------------------
 ```
 #### Custom Enumerations
 
@@ -1852,6 +1853,8 @@ select Case.Closed;
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<SoundCheck>())
 from inputTwo in Checkr.Input("Two", Fuzzr.Enum<SoundCheck>())
+from traceOne in Checkr.Trace("Original One", () => inputOne)
+from traceTwo in Checkr.Trace("Original Two", () => inputTwo)
 from expect in Checkr.Expect("Two should not be Two", () => inputTwo != SoundCheck.Two)
 select Case.Closed;
 ```
@@ -1860,19 +1863,18 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_CustomEnumerations.cs:54:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1017208542
+ Location:                B_CustomEnumerations.cs:65:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1735186993
  ------------------------------------------------------------
   Executed:
-   - Input: Two = Two
+   - Input: Two          = Two
+   - Trace: Original One = Two
+   - Trace: Original Two = Two
  ================================================
   !! Expectation Failed: Two should not be Two
  ================================================
- Passed Expectations
- - Two should not be Two: 1x
- ------------------------------------------------------------
 ```
 ### Collections
 When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
