@@ -1,12 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\D_RelevantMultipleElements.cs:19:1
+ Location:                F_MultipleRelevantElements.cs:46:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855
  ------------------------------------------------------------
   Executed:
-   - Input: input = [ 1, 2, 3 ]
- =================================
-  !! Expectation Failed: expect
- =================================
+   - Input: List     = [ 1, 2, 3 ]
+   - Trace: Original = [ 1, 2, 3, 9, 3, 1 ]
+ =============================================
+  !! Expectation Failed: One, Two and Three
+ =============================================
