@@ -15,7 +15,7 @@
 * Refactor the Tests:
   * one checkr per file (basetest done, implemented for some, ongoing, boyscout rule)
   * find pattern for other tests
-* refactor memory (execution mainly)
+* refactor memory (execution mainly) : StoreShrinkerForKey & StoreOriginal => same pattern
 
 ### Doc Current Focus 
 * Polish the guide a bit more

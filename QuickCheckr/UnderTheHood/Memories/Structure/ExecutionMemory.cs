@@ -11,7 +11,8 @@ public class ExecutionMemory
     private readonly OverlayMemoryBank inputs = new();
     public T? StoreInput<T>(string key, Func<T> factory)
         => inputs.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetInputValues() => inputs.Values.Select(a => (a.Key, a.Value.Value)).ToDictionary(a => a.Key, a => a.Value);
+    public IReadOnlyDictionary<string, object?> GetInputValues()
+        => inputs.Values.Select(a => (a.Key, a.Value.Value)).ToDictionary(a => a.Key, a => a.Value);
     public IReadOnlyDictionary<string, TypedValue> GetInputs() => inputs.Values;
     public IDisposable ScopedSwap(string key, object value)
         => inputs.ScopedSwap(key, value);
