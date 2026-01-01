@@ -1,4 +1,5 @@
 # Enumerations
+
 **The Checkr:**  
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<DayOfWeek>())
@@ -6,6 +7,7 @@ from inputTwo in Checkr.Input("Two", Fuzzr.Enum<DayOfWeek>())
 from expect in Checkr.Expect("Two should not be Monday", () => inputTwo != DayOfWeek.Monday)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------

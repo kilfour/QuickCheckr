@@ -9,7 +9,6 @@
     - [Checkr Act Carefully When](K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)
     - [Checkr Act When](K_ConditionalExecution/Methods/CheckrActWhen.md)
     - [Checkr When](K_ConditionalExecution/Methods/CheckrWhen.md)
-  - [Honey I Shrunk the Inputs](M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md)
   - [When Things Go Wrong](P_WhenThingsGoWrong/WhenThingsGoWrong.md)
     - [Everything Means Less Than Null](P_WhenThingsGoWrong/T_EverythingMeansLessThanNull/EverythingMeansLessThanNull.md)
       - [Trackr To Pool](P_WhenThingsGoWrong/T_EverythingMeansLessThanNull/Methods/TrackrToPool.md)

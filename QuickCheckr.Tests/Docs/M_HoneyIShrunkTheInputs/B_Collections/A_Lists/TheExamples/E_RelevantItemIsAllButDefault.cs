@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
 
 [DocFile]
 public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDefault>

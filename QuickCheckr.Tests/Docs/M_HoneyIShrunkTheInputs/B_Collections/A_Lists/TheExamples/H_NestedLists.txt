@@ -1,13 +1,13 @@
  ------------------------------------------------------------
- Test:                    VerifyingShrinkCount
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\F_NestedCollections.cs:64:1
+ Test:                    Example
+ Location:                H_NestedLists.cs:46:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1143925864
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    146712596
  ------------------------------------------------------------
   Executed:
-   - Input: List = [ [ 42 ] ]
-   - Trace: List = [ [ 42, 1 ] ]
+   - Input: List     = [ [ 42 ] ]
+   - Trace: Original = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
  ===============================================
   !! Expectation Failed: List[0][0] is not 42
  ===============================================

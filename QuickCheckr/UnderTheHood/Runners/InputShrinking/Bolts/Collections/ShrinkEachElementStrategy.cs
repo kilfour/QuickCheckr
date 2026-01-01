@@ -48,8 +48,9 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
                 }
             }
         }
+        var report = values.Count == 0 ? "[ ]" : $"[ {string.Join(", ", values)} ]";
         var finalClue = InputShrinkingClue
-            .Replace<ShrinkEachElementStrategy>(info.ExecutionId, info.FullKey, info.Value, theList, $"[ {string.Join(", ", values)} ]");
+            .Replace<ShrinkEachElementStrategy>(info.ExecutionId, info.FullKey, info.Value, theList, report);
         finalClue.AddToCount(shrinkCount);
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];

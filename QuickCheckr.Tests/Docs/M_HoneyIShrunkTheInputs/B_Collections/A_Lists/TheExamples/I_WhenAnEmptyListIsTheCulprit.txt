@@ -1,11 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\B_Collections\TheExamples\H_EmptyListIsTheCulprit.cs:19:1
+ Location:                I_WhenAnEmptyListIsTheCulprit.cs:46:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------
   Executed:
-   - Input: List = [  ]
+   - Input: List     = [ ]
+   - Trace: Original = [ ]
  ============================================
   !! Expectation Failed: List is not empty
  ============================================

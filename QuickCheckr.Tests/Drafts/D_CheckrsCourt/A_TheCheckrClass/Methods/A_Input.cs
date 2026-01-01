@@ -1,11 +1,8 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
-using QuickPulse.Instruments;
 
 
 namespace QuickCheckr.Tests.Drafts.D_CheckrsCourt.A_TheCheckrClass.Methods;

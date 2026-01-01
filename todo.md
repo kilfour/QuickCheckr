@@ -37,6 +37,7 @@
 
 ## 0.0.8: You Can Go Your Own Way
 * Reducers
+  * Example: Expectation: String does not contain "a"
   * Generalize Towards(Zero) reducer.
   * More of them.
 * Look into different collection shrinking:
@@ -77,6 +78,7 @@
 * Cookbook Additions
   * statefull list maybe
   * Scheduling: Non-overlapping bookings that do overlap, needs explanation
+* Find a home for the Parsing Numbers Example
 
 ## Ideas
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`

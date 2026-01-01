@@ -1,4 +1,5 @@
 # Custom Enumerations
+
 **The Checkr:**  
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<SoundCheck>())
@@ -6,6 +7,7 @@ from inputTwo in Checkr.Input("Two", Fuzzr.Enum<SoundCheck>())
 from expect in Checkr.Expect("Two should not be Two", () => inputTwo != SoundCheck.Two)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------

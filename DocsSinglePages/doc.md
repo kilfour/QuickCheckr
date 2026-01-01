@@ -1811,9 +1811,15 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```
 
 [Configuration]: #configuration
+## Honey I Shrunk the Inputs
+This is a collection of simple shrinking examples organized per type.  
+They serve both as an accurate description of input shrinking behaviour, and as regression tests.  
+
+So if you file an issue regarding input shrinking, you will likely see a new example added here.  
 ### Primitives
 By default QuickCheckr does not *mutate* primitive input values, it only marks them as relevant or irrelevant  
 #### Enumerations
+
 **The Checkr:**  
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<DayOfWeek>())
@@ -1821,6 +1827,7 @@ from inputTwo in Checkr.Input("Two", Fuzzr.Enum<DayOfWeek>())
 from expect in Checkr.Expect("Two should not be Monday", () => inputTwo != DayOfWeek.Monday)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1840,6 +1847,7 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 #### Custom Enumerations
+
 **The Checkr:**  
 ```csharp
 from inputOne in Checkr.Input("One", Fuzzr.Enum<SoundCheck>())
@@ -1847,6 +1855,7 @@ from inputTwo in Checkr.Input("Two", Fuzzr.Enum<SoundCheck>())
 from expect in Checkr.Expect("Two should not be Two", () => inputTwo != SoundCheck.Two)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1878,6 +1887,7 @@ even if the original list was large or noisy.
 #### Lists
 ##### Removing Irrelevant Items
 Consider a test that forbids the value `7`.  
+
 **The Checkr:**  
 ```csharp
 from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
@@ -1885,6 +1895,7 @@ from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contain
 from trace in Checkr.Trace("List Input", () => listInput)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1905,12 +1916,14 @@ Even if the original list was long and varied, QuickCheckr isolates the single r
 ##### Removing Irrelevant Collection
 Ofcourse a collection itself is just an input like another, so if it, as a whole,
 is irrelevant for the failure, QuickCheckr will remove it.  
+
 **The Checkr:**  
 ```csharp
 from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
 from expect in Checkr.Expect("Always fails", () => false)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1937,6 +1950,7 @@ removing elements, and converging toward the smallest list that still violates t
 This yields minimal, focused shrinking artifacts:
 the report shows only the structural signal that mattered (here: the list being *too long*),
 without introducing noise from element-level changes that could not affect the outcome anyway.  
+
 **The Checkr:**  
 ```csharp
 from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
@@ -1944,6 +1958,7 @@ from trace in Checkr.Trace("Original List", () => list)
 from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1962,6 +1977,7 @@ select Case.Closed;
 ```
 ##### Relevant Item Is Default
 Just making sure `default` values, `0` in this case, get handled correctly.  
+
 **The Checkr:**  
 ```csharp
 from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
@@ -1969,6 +1985,7 @@ from expect in Checkr.Expect("List does not contain 0", () => !listInput.Contain
 from trace in Checkr.Trace("List Input", () => listInput)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -1987,6 +2004,7 @@ select Case.Closed;
 ```
 ##### Relevant Item Is All But Default
 Just making sure `default` values, `0` in this case, get handled correctly.  
+
 **The Checkr:**  
 ```csharp
 from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
@@ -1994,6 +2012,7 @@ from expect in Checkr.Expect("List contains only 0", () => listInput.All(a => a 
 from trace in Checkr.Trace("List Input", () => listInput)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -2009,6 +2028,147 @@ select Case.Closed;
  ===============================================
   !! Expectation Failed: List contains only 0
  ===============================================
+```
+##### Multiple Relevant Elements
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int(1, 10).Many(1, 10))
+from list in Checkr.Capture(() => input.ToList())
+from trace in Checkr.Trace("Original", () => list)
+from expect in Checkr.ExpectWhen("One, Two and Three", () => input.Count() > 2, () =>
+     !(list[0] == 1
+    && list[1] == 2
+    && list[2] == 3))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                F_MultipleRelevantElements.cs:46:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    500957855
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 2, 3 ]
+   - Trace: Original = [ 1, 2, 3, 9, 3, 1 ]
+ =============================================
+  !! Expectation Failed: One, Two and Three
+ =============================================
+```
+##### Relevant Element And Size
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int(1, 10).Many(1, 10))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen("Second element is not 7",
+    () => input.Count() > 1, () => input.ElementAt(1) != 7)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                G_RelevantElementAndSize.cs:46:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    1374380958
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ _, 7 ]
+   - Trace: Original = [ 6, 7, 9, 7, 3, 2 ]
+ ==================================================
+  !! Expectation Failed: Second element is not 7
+ ==================================================
+```
+##### Nested Lists
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen("List[0][0] is not 42",
+    () => input.Any() && input.First().Any(),
+    () => input.First().First() != 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                H_NestedLists.cs:46:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    146712596
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ [ 42 ] ]
+   - Trace: Original = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
+ ===============================================
+  !! Expectation Failed: List[0][0] is not 42
+ ===============================================
+```
+##### When An Empty List Is The Culprit
+
+**The Checkr:**  
+```csharp
+from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
+from trace in Checkr.Trace("Original", () => list)
+from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                I_WhenAnEmptyListIsTheCulprit.cs:46:1
+ Original failing run:    1 execution
+ Seed:                    2077876521
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ ]
+   - Trace: Original = [ ]
+ ============================================
+  !! Expectation Failed: List is not empty
+ ============================================
+```
+#### Arrays
+##### An Array As Input
+Seeing as all inputs are provided by QuickFuzzr,
+and the default generated enumerable underlying type is a list,
+we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("int[]", Fuzzr.Constant(new int[] { 42, 2, 3 }))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect("No answer here",
+    () => !input.Contains(42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_AnArrayAsInput.cs:61:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    458840352
+ ------------------------------------------------------------
+  Executed:
+   - Input: int[]    = [ 42 ]
+   - Trace: Original = [ 42, 2, 3 ]
+ =========================================
+  !! Expectation Failed: No answer here
+ =========================================
 ```
 ### Objects
 #### Checking Nulls

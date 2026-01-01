@@ -12,20 +12,20 @@ namespace QuickCheckr.Tests.Tools;
 public abstract class CheckrTest<T>
 {
     public class DocModelHeaderAttribute() :
-        DocContentAttribute("**The Model:**");
+        DocContentAttribute("\n**The Model:**");
 
     public class DocConfigureHeaderAttribute() :
-        DocContentAttribute("**The Configuration:**");
+        DocContentAttribute("\n**The Configuration:**");
     public class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");
 
     public class DocCheckrHeaderAttribute() :
-        DocContentAttribute("**The Checkr:**");
+        DocContentAttribute("\n**The Checkr:**");
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
 
     public class DocReportHeaderAttribute() :
-        DocContentAttribute("**The Report:**");
+        DocContentAttribute("\n**The Report:**");
     public class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, path);
 

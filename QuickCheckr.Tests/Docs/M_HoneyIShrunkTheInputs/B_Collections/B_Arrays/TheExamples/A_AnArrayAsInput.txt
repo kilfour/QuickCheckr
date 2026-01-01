@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_AnArrayAsInput.cs:61:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    458840352
+ ------------------------------------------------------------
+  Executed:
+   - Input: int[]    = [ 42 ]
+   - Trace: Original = [ 42, 2, 3 ]
+ =========================================
+  !! Expectation Failed: No answer here
+ =========================================

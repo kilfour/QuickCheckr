@@ -1,6 +1,6 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs;
 
 
 [DocFile]

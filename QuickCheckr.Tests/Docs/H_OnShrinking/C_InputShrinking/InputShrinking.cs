@@ -1,4 +1,4 @@
-using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs;
+using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
