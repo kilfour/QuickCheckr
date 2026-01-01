@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_RemovingIrrelevantCollection.cs:46:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    2014608033
+ ------------------------------------------------------------
+  Executed
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
