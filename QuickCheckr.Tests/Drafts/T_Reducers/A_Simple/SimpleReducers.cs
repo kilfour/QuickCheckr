@@ -1,4 +1,3 @@
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -10,7 +9,7 @@ namespace QuickCheckr.Tests.Drafts.T_Reducers.A_Simple;
 public class SimpleReducers : CheckrTest<SimpleReducers>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explanation => false;
 
     [Fact]
@@ -18,29 +17,33 @@ public class SimpleReducers : CheckrTest<SimpleReducers>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    [DocContent("")]
-    [DocContent("")]
-    public override void Example() => Run(1708781424);
+    public override void Example() => Run(1681332589);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from input in Checkr.Input("Input", Fuzzr.Int(), Towards100)
-        from trace in Checkr.Trace("Original", () => input)
-        from expect in Checkr.Expect("> 10", () => input > 10)
-        select Case.Closed;
+         from input in Checkr.Input("Input", Fuzzr.Int(), TowardsZero)
+         from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
+         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("Input should be smaller than 42", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("79", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("42", article.Execution(1).Input(1).Read().Redux);
     }
 
     [CodeExample]
-    private static IEnumerable<int> Towards100(int input)
+    private static IEnumerable<int> TowardsZero(int input)
     {
         var local = input;
-        while (local != 100)
+        while (local != 0)
         {
-            if (local > 100)
+            if (local > 0)
                 yield return --local;
             else
                 yield return ++local;

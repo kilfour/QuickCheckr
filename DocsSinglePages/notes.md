@@ -248,41 +248,6 @@ Check this with:
   !! Expectation Failed: One should not be 42
  ===============================================
 ```
-#### Input Reduction
-```csharp
-    from i in Checkr.Input("Int", Fuzzr.Int(), TowardsZero)
-    from expect in Checkr.Expect("Int should be smaller than 42", () => i < 42)
-    from trace in Checkr.Trace("Int", () => i)
-    select Case.Closed;
-```
-```csharp
-private static IEnumerable<int> TowardsZero(int input)
-{
-    var local = input;
-    while (local != 0)
-    {
-        if (local > 0)
-            yield return --local;
-        else
-            yield return ++local;
-    }
-}
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\W_Reducers\InputReduction.cs:20:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1681332589
- ------------------------------------------------------------
-  Executed:
-   - Input: Int = 42
-   - Trace: Int = 79
- ========================================================
-  !! Expectation Failed: Int should be smaller than 42
- ========================================================
-```
 ### Parsing Numbers
 #### The Checkr:
 ```csharp
@@ -312,12 +277,13 @@ private static CheckrConfig Configure(CheckrConfig config)
  Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1203928284
+ Seed:                    2003161779
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "-2^2"
-   - Trace: Original   = (- 2 ^ 2 * 2 / 1 * 1) ^ - - 1
-   - Trace: Compare    = Golden: -8 /= SUT: 8
+   - Input: Expression = "- 1 ^ 2 * 3"
+                 Redux   "-1^2"
+   - Trace: Original   = - 1 ^ 2 * 3
+   - Trace: Compare    = Golden: -3 /= SUT: 3
  ================================
   !! Expectation Failed: Match
  ================================
@@ -722,7 +688,6 @@ public class ListWrap
 ### Parsing Numbers
 ```csharp
     from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
-    from trace in Checkr.Trace("Original", () => input)
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
@@ -740,8 +705,8 @@ public class ListWrap
  Seed:                    406406480
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Input: Expression = "2^-2^2"
-   - Trace: Original   = (2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2
+   - Input: Expression = "(2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2"
+                 Redux   "2^-2^2"
    - Trace: Compare    = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
  ================================
   !! Expectation Failed: Match

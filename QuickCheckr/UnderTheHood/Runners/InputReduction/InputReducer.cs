@@ -25,7 +25,7 @@ public class InputReducer(
                 if (replace != null)
                 {
                     State.Docket.Record(new InputReduced(executionId, key));
-                    shortTermMemory.StoreInputShrinkOutcome(key, replace);
+                    shortTermMemory.StoreInputRedux(key, replace.Report);
                 }
             }
         }

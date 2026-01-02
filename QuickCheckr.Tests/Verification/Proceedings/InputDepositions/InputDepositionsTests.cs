@@ -75,12 +75,26 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition(true, "PropertyName", 42, "Int 42"))));
+                    .AddInputDeposition(new InputDeposition(true, "PropertyName", 42, null, 1))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
-        Assert.Equal("                           Int 42", reader.NextLine());
+        Assert.Equal("                   Redux   1", reader.NextLine());
+        EndOfContent(reader);
+    }
+
+    [Fact]
+    public void With_Redux_Unlabeled()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                    .AddInputDeposition(new InputDeposition(false, "PropertyName", 42, null, 1))));
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
+        Assert.Equal("   - PropertyName = 42", reader.NextLine());
+        Assert.Equal("            Redux   1", reader.NextLine());
         EndOfContent(reader);
     }
 

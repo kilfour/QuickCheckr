@@ -96,8 +96,9 @@ public static class Compile
         foreach (var (key, val) in executionMemory.GetInputShrinkOutcomes())
         {
             var original = executionMemory.GetOriginalForKey(key);
+            var redux = executionMemory.GetInputReduxForKey(key);
             executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, ((InputShrinkingClue)val!).Report!, original));
+                    new InputDeposition(labeled, key, ((InputShrinkingClue)val!).Report!, original, redux));
         }
     }
 

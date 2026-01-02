@@ -85,7 +85,22 @@ public class ExecutionMemory
     public void StoreInputShrinkOutcome(string key, object? result)
         => inputShrinkOutcomes[key] = result;
     public IReadOnlyDictionary<string, object?> GetInputShrinkOutcomes()
-        => inputShrinkOutcomes; // Order ?
+        => inputShrinkOutcomes;
+    // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    // Redux Outcomes
+    private readonly Dictionary<string, object?> reduxOutcomes = [];
+    public void StoreInputRedux(string key, object? result)
+        => reduxOutcomes[key] = result;
+    public object? GetInputReduxForKey(string key)
+    {
+        if (reduxOutcomes.TryGetValue(key, out object? value))
+        {
+            return value;
+        }
+        return null;
+    }
     // --------------------------------------------------------------------------
 
 
