@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickPulse.Show.Bolts;
 
@@ -88,7 +89,7 @@ public class ShortTermMemory
         => memories[executionId].GetShrinkerForKey(key, type);
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducer(string key, Func<object, IEnumerable<object>> reducer)
+    public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)
         => Current.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
     // Warnings

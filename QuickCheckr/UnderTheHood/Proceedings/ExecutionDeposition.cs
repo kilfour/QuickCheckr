@@ -81,7 +81,7 @@ public record ExecutionDeposition
     public int MaxLabelLength() =>
         new int[]
             { PoolTraceDepositions.Count == 0 ? 0 : PoolTraceDepositions.Max(a => a.Label.Length)
-            , InputDepositions.Count == 0 ? 0 : InputDepositions.Max(a => a.Label.Length)
+            , InputDepositions.Count == 0 ? 0 : InputDepositions.Max(a => a.MaxLabelLength())
             , TraceDepositions.Count == 0 ? 0 : TraceDepositions.Max(a => a.Label.Length)
             }.Max();
 };

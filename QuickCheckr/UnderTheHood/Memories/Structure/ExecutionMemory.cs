@@ -1,4 +1,6 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickPulse.Show.Bolts;
 
@@ -32,13 +34,13 @@ public class ExecutionMemory
         if (currentInputShowr == null) return;
         originals[key] = currentInputShowr().IntroduceThis(value);
     }
-    public string? GetOriginalForKey(string key)
+    public Maybe GetOriginalForKey(string key)
     {
         if (originals.TryGetValue(key, out string? value))
         {
-            return value;
+            return Maybe.Just(value);
         }
-        return null;
+        return Maybe.Nothing();
     }
     // --------------------------------------------------------------------------
 
@@ -90,16 +92,16 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Redux Outcomes
-    private readonly Dictionary<string, object?> reduxOutcomes = [];
-    public void StoreInputRedux(string key, object? result)
+    private readonly Dictionary<string, string?> reduxOutcomes = [];
+    public void StoreInputRedux(string key, string? result)
         => reduxOutcomes[key] = result;
-    public object? GetInputReduxForKey(string key)
+    public Maybe GetInputReduxForKey(string key)
     {
-        if (reduxOutcomes.TryGetValue(key, out object? value))
+        if (reduxOutcomes.TryGetValue(key, out string? value))
         {
-            return value;
+            return Maybe.Just(value);
         }
-        return null;
+        return Maybe.Nothing();
     }
     // --------------------------------------------------------------------------
 
@@ -129,10 +131,10 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
     // Reducers
     private readonly MemoryBank reducers = new();
-    public void StoreReducer(string key, Func<object, IEnumerable<object>> reducer)
+    public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)
         => reducers.Store(key, () => reducer);
-    public Func<T, IEnumerable<T>> GetReducer<T>(string key)
-        => reducers.Get<Func<T, IEnumerable<T>>>(key)!;
+    public Func<ReductionResult, Reduction> GetReducer(string key)
+        => reducers.Get<Func<ReductionResult, Reduction>>(key)!;
     // --------------------------------------------------------------------------
 
 

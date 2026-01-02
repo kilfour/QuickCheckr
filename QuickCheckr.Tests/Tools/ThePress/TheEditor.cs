@@ -41,8 +41,8 @@ public class TheEditor
         let inputArticle = article.Execution(cursor.executionIndex).Input(cursor.inputIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Label);")
         from inputValue in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Value)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
-        from inputOriginal in EmitIf(inputArticle.Original != null, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Original!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Original);")
-        from inputRedux in EmitIf(inputArticle.Redux != null, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Redux!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Redux);")
+        from inputOriginal in EmitIf(inputArticle.Original.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Original.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Original.Value);")
+        from inputRedux in EmitIf(inputArticle.Redux.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Redux.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Redux.Value.Value);")
         from labeled in EmitIf(!inputArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Input({cursor.executionIndex}).Read().Labeled);")
         select cursor;
 

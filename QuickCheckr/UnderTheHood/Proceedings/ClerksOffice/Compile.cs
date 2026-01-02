@@ -88,7 +88,7 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, val!));
+                    new InputDeposition(labeled, key, val!, Maybe.Nothing(), Maybe.Nothing()));
             }
             return;
         }

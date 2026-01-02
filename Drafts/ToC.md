@@ -22,7 +22,7 @@
       - [Trackr Verify](P_WhenThingsGoWrong/X_ItIsWritten/Methods/TrackrVerify.md)
   - [Reducers](T_Reducers/Reducers.md)
     - [Simple Reducers](T_Reducers/A_Simple/SimpleReducers.md)
-    - [Full Reducers](T_Reducers/B_Full/FullReducers.md)
+    - [Multi Step Reducers](T_Reducers/B_Full/MultiStepReducers.md)
   - [Issues](Z_Issues/Issues.md)
     - [The Unshrinkables](Z_Issues/A_TheUnshrinkables/TheUnshrinkables.md)
       - [Unknown Primitives](Z_Issues/A_TheUnshrinkables/B_UnknownPrimitives/UnknownPrimitives.md)

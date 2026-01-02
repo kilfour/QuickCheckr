@@ -2,7 +2,11 @@
 
 
 ### Current Focus
-    
+* Reducers
+  * Example: Expectation: String does not contain "ab"
+  * Generalize Towards(Zero) reducer.
+  * More of them.
+
 ### Ready for Changelog after review
 > **Main focus:** Custom Shrinkers. 
 * Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
@@ -36,10 +40,7 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
-* Reducers
-  * Example: Expectation: String does not contain "a"
-  * Generalize Towards(Zero) reducer.
-  * More of them.
+* Hey Deskofficer, give me three reports different reports with one execution, ASAP !
 * Look into different collection shrinking:
   * Limitations.
   * Known issues

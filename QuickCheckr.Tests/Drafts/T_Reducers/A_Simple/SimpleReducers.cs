@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Drafts.T_Reducers.A_Simple;
 public class SimpleReducers : CheckrTest<SimpleReducers>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explanation => false;
 
     [Fact]
@@ -34,7 +34,7 @@ public class SimpleReducers : CheckrTest<SimpleReducers>
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("79", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("42", article.Execution(1).Input(1).Read().Redux);
+        Assert.Equal("42", article.Execution(1).Input(1).Read().Redux.Value);
     }
 
     [CodeExample]

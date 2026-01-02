@@ -10,7 +10,7 @@ public class LabelAlignmentDepostionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("One", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "TwoTwo", 42))
+                    .AddInputDeposition(new InputDeposition(false, "TwoTwo", 42, Maybe.Nothing(), Maybe.Nothing()))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled", false))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
@@ -27,7 +27,7 @@ public class LabelAlignmentDepostionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("TwoTwo", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "ThreeThreeThree", 42))
+                    .AddInputDeposition(new InputDeposition(false, "ThreeThreeThree", 42, Maybe.Nothing(), Maybe.Nothing()))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled", false))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());

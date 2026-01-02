@@ -28,5 +28,5 @@ With that caveat out of the way, let's dig in.
 There exist **two different types** of reducers:
 ")]
 [DocInclude(typeof(SimpleReducers))]
-[DocInclude(typeof(FullReducers))]
+[DocInclude(typeof(MultiStepReducers))]
 public class Reducers;

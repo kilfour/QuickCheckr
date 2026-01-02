@@ -74,11 +74,12 @@ public static class The
     private readonly static Flow<InputDeposition> redux =
         from input in Pulse.Start<InputDeposition>()
         from maxLabel in Pulse.Draw<MaxLabel>()
-        let spaces = input.Labeled ? 7 : 0
+        let spaces = input.Labeled ? 12 : 5
         from _1 in newLine
-        from _2 in Pulse.Trace(new string(' ', maxLabel.Length + spaces))
-        from _3 in Pulse.Trace("Redux   ")
-        from _5 in Pulse.Trace(input.Redux!)
+        from _2 in Pulse.Trace(new string(' ', spaces))
+        from _3 in Pulse.Trace("Redux")
+        from _4 in Pulse.Trace(new string(' ', Math.Max(3, maxLabel.Length - 2)))
+        from _5 in Pulse.Trace(input.Redux.Value!)
         select input;
 
     private readonly static Flow<InputDeposition> inputDeposition =
@@ -90,9 +91,9 @@ public static class The
         from _3 in Pulse.TraceIf(input.Labeled, () => "Input: ")
         from _4 in Pulse.Trace($"{label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
         let spaces = input.Labeled ? 15 : 8
-        from _5 in Pulse.TraceIf(input.Original is not null,
-            () => $"{Environment.NewLine}{new string(' ', maxLabel.Length + spaces)}{input.Original}")
-        from _6 in Pulse.ToFlowIf(input.Redux != null, redux, () => input)
+        from _5 in Pulse.TraceIf(input.Original.HasValue,
+            () => $"{Environment.NewLine}{new string(' ', maxLabel.Length + spaces)}{input.Original.Value}")
+        from _6 in Pulse.ToFlowIf(input.Redux.HasValue, redux, () => input)
         select input;
 
     private readonly static Flow<ActionDeposition> actionDeposition =
