@@ -3,12 +3,11 @@
  Location:                MultiStepReducers.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    2042459799
+ Seed:                    1834440365
  ------------------------------------------------------------
   Executed:
-   - Input: Text     = "nhrmdkzabi"
-               Redux   "ab"
-   - Trace: Original = nhrmdkzabi
- ================================
-  !! Expectation Failed: no ab
- ================================
+   - Input: Text  = "tdblaulb"
+            Redux   "ab"
+ =====================================
+  !! Expectation Failed: no a and b
+ =====================================

@@ -14,9 +14,6 @@ of not rewriting what actually happened.
 
 But once again, it is a feature born out of necessity.  
 
-Not sure if it counts as *real world* because it came about while teaching,
-but it is very useful nonetheless.  
-
 With this feature we're venturing closer too the QuickCheck style,
 and I actually tried to use other existing libs first, but that did not work out all that well.  
 Granted, I'm biased, I wrote this thing after all,

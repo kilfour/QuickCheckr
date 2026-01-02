@@ -10,15 +10,15 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
-        Func<T, IEnumerable<T>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreReducer(key, new SimpleReducer<T>(reducer).Reducer);
-            return HandleInput(state, key, fuzzr);
-        };
-    }
+    // public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
+    //     Func<T, IEnumerable<T>> reducer)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreReducer(key, new StopOnFirstPassed<T>(reducer).Reduce);
+    //         return HandleInput(state, key, fuzzr);
+    //     };
+    // }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
         Func<ReductionResult, Reduction> reducer)
@@ -40,15 +40,15 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
         state => CheckrResult.Some(state, GetValue(key, factory, state)!);
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<T, IEnumerable<T>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreReducer(key, new SimpleReducer<T>(reducer).Reducer);
-            return CheckrResult.Some(state, GetValue(key, factory, state)!);
-        };
-    }
+    // public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
+    //     Func<T, IEnumerable<T>> reducer)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreReducer(key, new StopOnFirstPassed<T>(reducer).Reduce);
+    //         return CheckrResult.Some(state, GetValue(key, factory, state)!);
+    //     };
+    // }
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
         Func<ReductionResult, Reduction> reducer)

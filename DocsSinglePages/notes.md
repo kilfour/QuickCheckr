@@ -251,7 +251,7 @@ Check this with:
 ### Parsing Numbers
 #### The Checkr:
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
+    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
     from trace in Checkr.Trace("Original", () => input)
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
@@ -687,7 +687,7 @@ public class ListWrap
 ```
 ### Parsing Numbers
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
+    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")

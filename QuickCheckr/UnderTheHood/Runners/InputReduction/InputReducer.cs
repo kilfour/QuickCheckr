@@ -28,10 +28,10 @@ public class InputReducer(
                         result = new ReductionResult(false, result.Value!);
                     step = reducer(result);
                 }
-                if (result.Value != value)
+                if (step.Result != value)
                 {
                     shrinkCount++;
-                    shortTermMemory.StoreInputRedux(key, State.InputPrinter.IntroduceThis(result.Value!));
+                    shortTermMemory.StoreInputRedux(key, State.InputPrinter.IntroduceThis(step.Result!));
                 }
             }
         }

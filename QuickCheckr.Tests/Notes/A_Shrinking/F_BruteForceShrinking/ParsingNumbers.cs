@@ -1,4 +1,5 @@
 using QuickCheckr.Protocol;
+using QuickCheckr.Reducers;
 using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
 using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
@@ -44,7 +45,7 @@ public class ParsingNumbers : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
+            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
             from trace in Checkr.Trace("Original", () => input)
             from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
             from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())

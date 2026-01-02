@@ -1,7 +1,9 @@
+using QuickCheckr.Reducers;
 using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickPulse.Explains;
 
 
@@ -27,7 +29,7 @@ public class ParsingNumbers : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), ParseReducer.Reducer)
+            from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
             from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
             from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
             from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")

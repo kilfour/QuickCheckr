@@ -2,9 +2,24 @@
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), TowardsZero)
+from input in Checkr.Input("Input", Fuzzr.Int(), Reducr.StopOnFirstPassed<int>(TowardsZero))
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
+```
+
+**The Reducer:**  
+```csharp
+private static IEnumerable<int> TowardsZero(int input)
+{
+    var local = input;
+    while (local != 0)
+    {
+        if (local > 0)
+            yield return --local;
+        else
+            yield return ++local;
+    }
+}
 ```
 
 **The Report:**  
