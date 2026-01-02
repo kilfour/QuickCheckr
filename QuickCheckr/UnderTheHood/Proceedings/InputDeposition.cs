@@ -1,3 +1,8 @@
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public record InputDeposition(string Label, object Value, string? Original = null, bool Labeled = true);
+public record InputDeposition(
+    bool Labeled,
+    string Label,
+    object Value,
+    string? Original = null,
+    object? Redux = null);

@@ -20,7 +20,7 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition("PropertyName", 42))));
+                    .AddInputDeposition(new InputDeposition(true, "PropertyName", 42))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -33,7 +33,7 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition("PropertyName", "\"42\""))));
+                    .AddInputDeposition(new InputDeposition(true, "PropertyName", "\"42\""))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -46,8 +46,8 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition("One", 42))
-                    .AddInputDeposition(new InputDeposition("Two", "\"42\""))));
+                    .AddInputDeposition(new InputDeposition(true, "One", 42))
+                    .AddInputDeposition(new InputDeposition(true, "Two", "\"42\""))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -61,7 +61,21 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition("PropertyName", 42, "Int 42"))));
+                    .AddInputDeposition(new InputDeposition(true, "PropertyName", 42, "Int 42"))));
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
+        Assert.Equal("   - Input: PropertyName = 42", reader.NextLine());
+        Assert.Equal("                           Int 42", reader.NextLine());
+        EndOfContent(reader);
+    }
+
+    [Fact]
+    public void With_Redux()
+    {
+        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                    .AddInputDeposition(new InputDeposition(true, "PropertyName", 42, "Int 42"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -75,7 +89,7 @@ public class InputDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddInputDeposition(new InputDeposition("PropertyName", 42, "Int 42", false))));
+                    .AddInputDeposition(new InputDeposition(false, "PropertyName", 42, "Int 42"))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

@@ -88,7 +88,7 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(key, val!, null, labeled));
+                    new InputDeposition(labeled, key, val!));
             }
             return;
         }
@@ -97,7 +97,7 @@ public static class Compile
         {
             var original = executionMemory.GetOriginalForKey(key);
             executionDeposition.AddInputDeposition(
-                    new InputDeposition(key, ((InputShrinkingClue)val!).Report!, original, labeled));
+                    new InputDeposition(labeled, key, ((InputShrinkingClue)val!).Report!, original));
         }
     }
 
