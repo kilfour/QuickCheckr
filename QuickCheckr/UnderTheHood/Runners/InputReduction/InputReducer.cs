@@ -34,19 +34,6 @@ public class InputReducer(
 
     public IEnumerable<InputShrinkingClue> Reduce(int executionId, string key, object value, IEnumerable<object> values)
     {
-        // var verifier = new Verifier(State, Check);
-        // var lastCandidate = value;
-        // foreach (var candidate in values.Where(x => !Equals(x, value)))
-        // {
-        //     if (verifier.RunPassed(executionId, key, candidate!))
-        //     {
-        //         var clue = InputShrinkingClue.Replace<InputReducer>(executionId, key, value, lastCandidate);
-        //         State.Docket.Record(new InputShrinkingClueFound(clue));
-        //         yield return clue;
-        //     }
-        //     lastCandidate = candidate;
-        // }
-
         var verifier = new Verifier(State, Check); // TODO: Cleanup
         object? passed = null;
         var lastCandidate = value;
