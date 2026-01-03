@@ -1,4 +1,3 @@
-
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public record InputDeposition(
@@ -10,15 +9,7 @@ public record InputDeposition(
 {
     public int MaxLabelLength()
         => Math.Max(Label.Length, Redux.HasValue ? 5 : 0);
-}
 
-public record Maybe
-{
-    public bool HasValue { get; set; }
-    public string? Value { get; set; }
-    public static Maybe Just(string? value)
-        => new() { Value = value, HasValue = true };
-
-    public static Maybe Nothing()
-        => new() { };
+    // public Maybe Original { get; init; } = Maybe.Nothing();
+    // public Maybe Redux { get; init; } = Maybe.Nothing();
 }

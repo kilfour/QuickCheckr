@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.LabelAlignment;

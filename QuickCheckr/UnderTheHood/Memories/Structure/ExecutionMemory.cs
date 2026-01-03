@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickPulse.Show.Bolts;
