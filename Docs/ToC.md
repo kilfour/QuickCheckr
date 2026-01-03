@@ -13,6 +13,7 @@
   - [On Shrinking](H_OnShrinking/OnShrinking.md)
     - [Execution Shrinking](H_OnShrinking/A_ExecutionShrinking/ExecutionShrinking.md)
     - [Input Shrinking](H_OnShrinking/C_InputShrinking/InputShrinking.md)
+    - [Input Reduction](H_OnShrinking/D_InputReduction/InputReduction.md)
     - [Deliberation Shrinking](H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md)
   - [Checkrs Court](K_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](K_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)

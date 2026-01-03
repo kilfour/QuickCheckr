@@ -1,0 +1,21 @@
+using QuickCheckr.UnderTheHood.Runners.InputReduction;
+
+namespace QuickCheckr.Reducers;
+
+public static partial class Reducr
+{
+    public static Func<ReductionResult, Reduction> TowardsZero
+        => new StopOnFirstPassedBuilder<int>(TowardsZeroFactory).Reduce;
+
+    private static IEnumerable<int> TowardsZeroFactory(int input)
+    {
+        var local = input;
+        while (local != 0)
+        {
+            if (local > 0)
+                yield return --local;
+            else
+                yield return ++local;
+        }
+    }
+}
