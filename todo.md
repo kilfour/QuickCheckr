@@ -1,6 +1,7 @@
 ## Current Version: 0.0.7: In Pools We Trust
-Fixed bug in Combined Pool candidate selection. Which surfaced another problem:
+* Fixed bug in Combined Pool candidate selection. Which surfaced another problem:
   * Damn, had to do multiple execution shrinking passes again.
+* The Case of the Invisible List.
 
 ### Current Focus
 * Fix input reporting when not shrinking.
