@@ -1,9 +1,11 @@
 ## Current Version: 0.0.7: In Pools We Trust
-
+Fixed bug in Combined Pool candidate selection. Which surfaced another problem:
+  * Damn, had to do multiple execution shrinking passes again.
 
 ### Current Focus
+* Fix input reporting when not shrinking.
 * Reducers
-  * Example: Expectation: String does not contain "ab"
+  * Example: Expectation: String does not contain "a" or "b"
   * Generalize Towards(Zero) reducer.
   * More of them.
 

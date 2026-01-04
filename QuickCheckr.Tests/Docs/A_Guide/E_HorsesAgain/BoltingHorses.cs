@@ -140,7 +140,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
     private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
             from skills in Checkr.Input("Coach Skills",
-                Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
+                Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(1, 3))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills)) // Update the Coach.
             from checkSkills in Checkr.Expect("Coach Skills Set",
@@ -160,7 +160,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
     [CodeExample]
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
-            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
+            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(1, 3))
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
             from checkSkills in Checkr.Expect("Course Required Skills Set",

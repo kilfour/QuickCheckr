@@ -2,6 +2,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
+using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 

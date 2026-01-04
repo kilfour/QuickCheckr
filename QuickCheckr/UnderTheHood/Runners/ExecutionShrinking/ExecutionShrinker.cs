@@ -9,6 +9,18 @@ public class ExecutionShrinker(
     public int Run()
     {
         var shrinkCount = 0;
+        int passShrinkCount;
+        do
+        {
+            passShrinkCount = OnePass();
+            shrinkCount += passShrinkCount;
+        } while (passShrinkCount != 0);
+        return shrinkCount;
+    }
+
+    public int OnePass()
+    {
+        var shrinkCount = 0;
         for (var i = 0; i < State.Memory.Numbers.Count && State.Memory.Numbers.Count > 1; i++)
         {
             var id = State.Memory.Numbers[i];

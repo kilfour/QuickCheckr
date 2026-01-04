@@ -32,6 +32,9 @@ public static class InternalAffairs
     public static readonly InternalAffair InputShrinking =
         new(() => FileLog.Write(), Procedure.InputShrinking);
 
+    public static readonly InternalAffair ExecutionShrinking =
+        new(() => FileLog.Write(), Procedure.ExecutionShrinking);
+
     /// <summary>
     /// Highlights cases where null values interfere with shrinking.  
     /// Use to identify problematic null structures that prevent full minimisation.
@@ -76,6 +79,17 @@ public static class Procedure
     public static readonly Flow<IFiling> InputShrinking =
         from filing in Pulse.Start<IFiling>()
         from traceClue in Pulse.OnType(clueFlow, () => filing)
+        select filing;
+
+    private static readonly Flow<ExecutionRemoved> executionClueFlow =
+        from filing in Pulse.Start<ExecutionRemoved>()
+        from manOfWealthAndTaste in Pulse.Draw<ManOfWealthAndTaste>()
+        from _ in Pulse.Trace($"Removed Execution {filing.ExecutionId}.")
+        select filing;
+
+    public static readonly Flow<IFiling> ExecutionShrinking =
+        from filing in Pulse.Start<IFiling>()
+        from traceClue in Pulse.OnType(executionClueFlow, () => filing)
         select filing;
 
     private static readonly Flow<EvidenceFailure> evidenceFailureFlow =

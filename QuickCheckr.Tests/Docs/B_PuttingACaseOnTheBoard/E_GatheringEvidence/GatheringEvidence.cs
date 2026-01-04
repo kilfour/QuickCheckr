@@ -1,7 +1,10 @@
 using QuickCheckr;
 using QuickCheckr.EvidenceGathering;
+using QuickCheckr.Protocol;
+using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -174,7 +177,7 @@ public class GatheringEvidence : BaseTest
         }
     }
 
-    [Fact(Skip = "Explicit: Touches the File System.")]
+    [Fact]//(Skip = "Explicit: Touches the File System.")
     [DocHeader("Show, Don't Tell")]
     [DocHeader("The Sut", 1)]
     [DocExample(typeof(ContactBook))]
@@ -189,9 +192,20 @@ public class GatheringEvidence : BaseTest
     [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]
     public void RunTest()
     {
+        // BoltingHorses.TheCheckr.GatherEvidence(100.Investigations(), 5.Runs(), 20.ExecutionsPerRun(),
+        //     cfg => cfg with { FileAs = "GatheringEvidence", Custodian = Custodian.Local() });
+        TheJournalist.Exposes(() =>
+            BoltingHorses.TheCheckr.Run(1830604726, 20.ExecutionsPerRun(),
+                a => a with
+                {
+                    // InternalAffairs = [InternalAffairs.ExecutionShrinking],
+                    // ShrinkMode = ShrinkMode.None,
+                    FileAs = "GatheringEvidence",
+                    Custodian = Custodian.Local()
+                }));
         // GetCheckr().Run(1073620588, 10.ExecutionsPerRun(),
         //     cfg => cfg with { FileAs = "GatheringEvidence", ShrinkMode = Protocol.ShrinkMode.Default });
-        RunGatherEvidence(GetCheckr());
+        //RunGatherEvidence(GetCheckr());
     }
 
     [CodeSnippet]

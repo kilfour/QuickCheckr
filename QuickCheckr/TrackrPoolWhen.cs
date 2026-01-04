@@ -30,5 +30,5 @@ public static partial class Trackr
                     OneOfPoolWhen(key, predicate, checkr)));
 
     private static bool HasAtleastOne<T1, T2>(Func<T1, T2, bool> predicate, IEnumerable<T1> pool1, IEnumerable<T2> pool2)
-        => pool1.SelectMany(t1 => pool2.Select(t2 => predicate(t1, t2))).All(a => a);
+        => pool1.SelectMany(t1 => pool2.Select(t2 => predicate(t1, t2))).Any(a => a);
 }
