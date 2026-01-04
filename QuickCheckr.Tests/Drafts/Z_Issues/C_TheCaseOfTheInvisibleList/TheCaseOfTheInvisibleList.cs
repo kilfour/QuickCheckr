@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Drafts.Z_Issues.C_TheCaseOfTheInvisibleList;
 public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explanation => false;
 
     [Fact]
@@ -22,6 +22,7 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
     [DocConfigure]
     [DocReportHeader]
     [DocReport]
+    [DocContent("Shrinker marks the list as irrelevant, but it is **not**.")]
     public override void Example() =>
         Run(1954145022, 10.ExecutionsPerRun());
 
