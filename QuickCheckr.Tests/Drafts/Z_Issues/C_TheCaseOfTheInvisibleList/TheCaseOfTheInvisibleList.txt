@@ -2,10 +2,10 @@
  Test:                    Example
  Location:                TheCaseOfTheInvisibleList.cs:57:1
  Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1954145022
  ------------------------------------------------------------
   Executed: change
-   - Input: ints = System.Collections.Generic.List`1[System.Int32]
    - Trace: ints = [ 81, 74 ]
  ================================
   !! Expectation Failed: has 1
