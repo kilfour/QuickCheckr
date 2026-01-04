@@ -21,4 +21,7 @@ public static partial class Shrinkr
             state.Memory.StoreShrinkerForType<T>(options);
             return CheckrResult.CaseOnly(state);
         };
+
+    public static CheckrOf<Case> DefaultFor<T>()
+        => For(Shrink.Default<T>());
 }
