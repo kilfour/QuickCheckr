@@ -9,9 +9,11 @@ public class InputShrinker(
     public int Run()
     {
         var shrinkCount = 0;
-        foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
+        foreach (var (executionId, executionMemory) in State.Memory.Entries())
         {
-            var inputs = shortTermMemory.GetInputs();
+            var inputs = executionMemory.GetInputs();
+            var hasAtLeastOne = inputs.Any();
+            var keptAtLeastOne = false;
             foreach (var (key, value) in inputs)
             {
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
@@ -20,17 +22,21 @@ public class InputShrinker(
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
                 {
-                    shortTermMemory.StoreInputShrinkOutcome(key, replace);
+                    keptAtLeastOne = true;
+                    executionMemory.StoreInputShrinkOutcome(key, replace);
                 }
                 else
                 {
                     var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
                     if (keep != null)
                     {
-                        shortTermMemory.StoreInputShrinkOutcome(key, keep);
+                        keptAtLeastOne = true;
+                        executionMemory.StoreInputShrinkOutcome(key, keep);
                     }
                 }
             }
+            if (hasAtLeastOne && !keptAtLeastOne)
+                executionMemory.StoreWarning($"AllInputsShrunk-{executionId}", () => "All inputs were considered irrelevant.");
         }
         return shrinkCount;
     }

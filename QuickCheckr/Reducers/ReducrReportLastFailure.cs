@@ -7,7 +7,7 @@ public static partial class Reducr
     public static Func<ReductionResult, Reduction> ReportLastFailure<T>(Func<T, IEnumerable<T>> factory)
         => new ReportLastFailureBuilder<T>(factory).Reduce;
 
-    public class ReportLastFailureBuilder<T>(Func<T, IEnumerable<T>> factory)
+    private class ReportLastFailureBuilder<T>(Func<T, IEnumerable<T>> factory)
     {
         private List<T>? values = null;
         private int index = 0;

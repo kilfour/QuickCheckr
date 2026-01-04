@@ -2,8 +2,12 @@
 * Fixed bug in Combined Pool candidate selection. Which surfaced another problem:
   * Damn, had to do multiple execution shrinking passes again.
 * The Case of the Invisible List.
+  * add to on shrinking after irrelevant list example
+  * explain warning, add fix: Shrinkr.For([1])
 
 ### Current Focus
+> **Main focus:** Custom Shrinkers. 
+* Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
 * Fix input reporting when not shrinking.
 * Reducers
   * Example: Expectation: String does not contain "a" or "b"
@@ -11,12 +15,11 @@
   * More of them.
 
 ### Ready for Changelog after review
-> **Main focus:** Custom Shrinkers. 
-* Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
 * Added a WARNING when encountering an object with no shrinkable properties.
 * Added ReportMode.Labeled (default enabled)
 * Showr.ForInputs
 * Report: Execution section: Better label alignment.
+* Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
 
 ### Doing/Ongoing
 * Refactor the Tests:

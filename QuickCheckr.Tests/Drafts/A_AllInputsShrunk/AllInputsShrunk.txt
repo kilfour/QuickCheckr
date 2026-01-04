@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                AllInputsShrunk.cs:74:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    2048091244
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
