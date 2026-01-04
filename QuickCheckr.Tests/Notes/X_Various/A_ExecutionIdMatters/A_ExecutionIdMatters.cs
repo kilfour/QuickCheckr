@@ -47,7 +47,7 @@ So now, **Execution Id Matters**.
     public void RunTestShrinking()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(4.ExecutionsPerRun()));
+            GetCheckr().Run(1012196536, 4.ExecutionsPerRun()));
         WriteReport(article, "A_ExecutionIdMattersShrinking.txt", false);
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(4, article.Execution(3).Read().ExecutionId);
