@@ -42,7 +42,17 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("has 1", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("change", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("ints", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ 81, 74 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Empty collection deemed irrelevant at input 'ints'.", article.Execution(1).Warning(1).Read().Value);
     }
 
     [CodeExample]

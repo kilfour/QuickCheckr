@@ -651,6 +651,7 @@ protected override CheckrConfig Configure(CheckrConfig config)
  ------------------------------------------------------------
   Executed: change
    - Trace: ints = [ 81, 74 ]
+   - WARNING: Empty list deemed irrelevant at input 'ints'.
  ================================
   !! Expectation Failed: has 1
  ================================
@@ -673,10 +674,10 @@ public class Thing
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:21:1
+ Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    724765321
+ Seed:                    1487819190
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32, OtherType: Int32 }

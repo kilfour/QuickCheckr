@@ -17,7 +17,7 @@ public class SystemTypes : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 1.ExecutionsPerRun()));
+            GetCheckr().Run(1487819190, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<SystemTypes>(article, false);
         Verify(article);

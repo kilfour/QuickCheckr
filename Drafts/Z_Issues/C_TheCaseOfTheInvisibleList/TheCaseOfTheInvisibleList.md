@@ -33,6 +33,7 @@ protected override CheckrConfig Configure(CheckrConfig config)
  ------------------------------------------------------------
   Executed: change
    - Trace: ints = [ 81, 74 ]
+   - WARNING: Empty list deemed irrelevant at input 'ints'.
  ================================
   !! Expectation Failed: has 1
  ================================
