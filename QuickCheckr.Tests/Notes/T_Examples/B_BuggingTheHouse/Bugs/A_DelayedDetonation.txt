@@ -6,6 +6,7 @@
  Seed:                    1914853878
  ------------------------------------------------------------
   Executed: BugHouse.Run (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.Run
    - Input: a = 1

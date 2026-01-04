@@ -7,9 +7,11 @@
  ------------------------------------------------------------
   Executed: Create Coach
    -  Pool: Store Coach = CoachBy-2
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Create Course
    -  Pool: Store Course = CourseBy-2
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Assign Coach to Course
  ------------------------------------------------------------

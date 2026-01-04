@@ -8,6 +8,14 @@
   Executed:
    - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
    - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Monday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Tuesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Wednesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Friday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Monday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Tuesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Wednesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Friday'.
  ==================================================
   !! Expectation Failed: Bookings do not overlap
  ==================================================

@@ -68,7 +68,7 @@ either the final state satisfies all verifications or it doesn't.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.ExecutionsPerRun()));
+            GetCheckr().Run(1273117969, 100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TheLoadedDie>(article, false);
         Verify(article);

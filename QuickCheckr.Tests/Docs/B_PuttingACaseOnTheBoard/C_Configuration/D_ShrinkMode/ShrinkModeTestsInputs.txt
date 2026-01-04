@@ -5,7 +5,8 @@
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
  ------------------------------------------------------------
-  Executed (2 Times)
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed:
    - Input: counter = 3

@@ -9,6 +9,7 @@
    - Input: a = 6
  ------------------------------------------------------------
   Executed: BugHouse.Run
+   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Returns true
  =======================================

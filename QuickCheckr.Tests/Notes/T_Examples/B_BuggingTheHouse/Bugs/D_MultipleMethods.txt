@@ -6,8 +6,10 @@
  Seed:                    1292206393
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.RunString (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
    - Input: Int = 6
