@@ -4,6 +4,8 @@
 * The Case of the Invisible List.
   * add to on shrinking after irrelevant list example
   * explain warning, add fix: Shrinkr.For([1])
+* Fix BoltingHorses Example, Link to Evidence Gathering
+* Re-use BoltingHorses in Evidence Gathering, Link to The case of the invisible list
 
 ### Current Focus
 * Refactor the Tests: SystemTypes.cs
