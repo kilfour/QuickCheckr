@@ -10,8 +10,12 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
   - All of the Checkrs created by this class are *execution-scoped*.
 - [The Tracker Class][TheTrackerClass]
   - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
+- [The Tracker Class][TheShowrClass]
+  - Allows for customization of the QuickChecker value printer.  
   
 
 [TheCheckrClass]: A_TheCheckrClass/TheCheckrClass.md
 
 [TheTrackerClass]: B_TheTrackerClass/TheTrackerClass.md
+
+[TheShowrClass]: C_TheShowrClass/TheShowrClass.md

@@ -1756,7 +1756,7 @@ public class Account
 
 **The Checkr:**  
 We're running the same checkr, with the same seed.
-The only difference is the addition of `Reducr.TowardsZero` in the `Checkr.Input` argument list.  
+The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
 ```csharp
 from account in Trackr.Stashed(() => new Account())
 from amount in Checkr.Input("Amount", Fuzzr.Int(), Reduce.TowardsZero) // <=
@@ -1896,11 +1896,15 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
   - All of the Checkrs created by this class are *execution-scoped*.
 - [The Tracker Class][TheTrackerClass]
   - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
+- [The Tracker Class][TheShowrClass]
+  - Allows for customization of the QuickChecker value printer.  
   
 
 [TheCheckrClass]: #the-checkr-class
 
 [TheTrackerClass]: #the-tracker-class
+
+[TheShowrClass]: #the-showr-class
 ### The Checkr Class
 #### Input
 `Checkr.Input()` is the only way an *input* can be defined inside a Checkr.  
@@ -1984,7 +1988,6 @@ Possible solutions:
  - not 42 on execution 2: 1x
  ------------------------------------------------------------
 ```
-### The Shrinkr Class
 ## Honey I Shrunk the Inputs
 This is a collection of simple shrinking examples organized per type.  
 They serve both as an accurate description of input shrinking behaviour, and as regression tests.  

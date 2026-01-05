@@ -31,8 +31,8 @@ public class InputReduction : CheckrTest<InputReduction>
     [DocExample(typeof(Account))]
     [DocCheckrHeader]
     [DocContent(
-@"We're running the same checkr, with the same seed.
-The only difference is the addition of `Reducr.TowardsZero` in the `Checkr.Input` argument list.")]
+@$"We're running the same checkr, with the same seed.
+The only difference is the addition of `{nameof(Reduce)}.{nameof(Reduce.TowardsZero)}` in the `Checkr.Input` argument list.")]
     [DocCheckr]
     [DocReportHeader]
     [DocReport]

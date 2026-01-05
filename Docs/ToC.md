@@ -20,7 +20,6 @@
       - [Input](K_CheckrsCourt/A_TheCheckrClass/InputTests/InputTests.md)
     - [The Tracker Class](K_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md)
     - [The Showr Class](K_CheckrsCourt/C_TheShowrClass/TheShowrClass.md)
-    - [The Shrinkr Class](K_CheckrsCourt/D_TheShrinkrClass/TheShrinkrClass.md)
   - [Honey I Shrunk the Inputs](M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md)
     - [Primitives](M_HoneyIShrunkTheInputs/A_Primitives/Primitives.md)
       - [Built In Enumerations](M_HoneyIShrunkTheInputs/A_Primitives/TheExamples/A_BuiltInEnumerations.md)

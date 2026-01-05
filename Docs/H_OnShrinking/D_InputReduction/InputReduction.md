@@ -25,7 +25,7 @@ public class Account
 
 **The Checkr:**  
 We're running the same checkr, with the same seed.
-The only difference is the addition of `Reducr.TowardsZero` in the `Checkr.Input` argument list.  
+The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
 ```csharp
 from account in Trackr.Stashed(() => new Account())
 from amount in Checkr.Input("Amount", Fuzzr.Int(), Reduce.TowardsZero) // <=

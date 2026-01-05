@@ -1,5 +1,6 @@
 using QuickCheckr.Tests.Docs.K_CheckrsCourt.A_TheCheckrClass;
 using QuickCheckr.Tests.Docs.K_CheckrsCourt.B_TheTrackerClass;
+using QuickCheckr.Tests.Docs.K_CheckrsCourt.C_TheShowrClass;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.K_CheckrsCourt;
@@ -8,6 +9,7 @@ namespace QuickCheckr.Tests.Docs.K_CheckrsCourt;
 [DocFile]
 [DocLink(typeof(TheCheckrClass))]
 [DocLink(typeof(TheTrackerClass))]
+[DocLink(typeof(TheShowrClass))]
 [DocContent(
 @"The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
 
@@ -20,6 +22,8 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
   - All of the Checkrs created by this class are *execution-scoped*.
 - [The Tracker Class][TheTrackerClass]
   - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
+- [The Tracker Class][TheShowrClass]
+  - Allows for customization of the QuickChecker value printer.  
 ")]
 public class CheckrsCourt
 {
