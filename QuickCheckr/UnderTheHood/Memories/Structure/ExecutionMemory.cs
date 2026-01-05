@@ -108,22 +108,16 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Shrinkers
+    private readonly TypedMemoryBank<IShrinkOption[]> shrinkers = new();
     private readonly Dictionary<Type, IShrinkOption[]> shrinkersPerType = [];
     private readonly Dictionary<string, Dictionary<Type, IShrinkOption[]>> shrinkersPerKey = [];
-    public void StoreShrinkerForType<T>(IShrinkOption[] options)
-        => shrinkersPerType[typeof(T)] = options;
-    public void StoreShrinkerForKey<T>(string key)
+    public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
+        => shrinkers.Store(key, factory);
+    public IEnumerable<IShrinkOption>? GetShrinker(string key, Type type)
     {
-        shrinkersPerKey[key] = shrinkersPerType.ToDictionary();
-    }
-    public IShrinkOption[]? GetShrinkerForKey(string key, Type type)
-    {
-        if (shrinkersPerKey.TryGetValue(key, out Dictionary<Type, IShrinkOption[]>? dictionary))
-        {
-            if (dictionary.TryGetValue(type, out IShrinkOption[]? options))
-                return options;
-        }
-        return null;
+        var options = shrinkers.Get(key);
+        if (options == null) return null;
+        return options.Where(a => a.TargetType == type);
     }
     // --------------------------------------------------------------------------
 

@@ -11,10 +11,20 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params ShrinkOption<T>[] options)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IShrinkOption> shrinkOption)
     {
         return state =>
         {
+            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+            return HandleInput(state, key, fuzzr);
+        };
+    }
+
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IShrinkOption[]> options)
+    {
+        return state =>
+        {
+            state.Memory.StoreShrinker(key, options);
             return HandleInput(state, key, fuzzr);
         };
     }
@@ -29,24 +39,35 @@ public static partial class Checkr
         };
     }
 
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
+        Func<IShrinkOption> shrinkOption,
+        Func<ReductionResult, Reduction> reducer)
+    {
+        return state =>
+        {
+            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+            state.Memory.StoreReducer(key, reducer);
+            return HandleInput(state, key, fuzzr);
+        };
+    }
+
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
+        Func<IShrinkOption[]> options,
+        Func<ReductionResult, Reduction> reducer)
+    {
+        return state =>
+        {
+            state.Memory.StoreShrinker(key, options);
+            state.Memory.StoreReducer(key, reducer);
+            return HandleInput(state, key, fuzzr);
+        };
+    }
+
     private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
     {
         try { return CheckrResult.Some(state, GetValue(key, () => fuzzr, state)!); }
         catch (DuplicateKeyWriteException) { throw; }
         catch (Exception exception) { throw new InputFuzzrThrewException(key, exception); }
-    }
-
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
-        state => CheckrResult.Some(state, GetValue(key, factory, state)!);
-
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<ReductionResult, Reduction> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreReducer(key, reducer);
-            return CheckrResult.Some(state, GetValue(key, factory, state)!);
-        };
     }
 
     private static T? GetValue<T>(string key, Func<FuzzrOf<T>> factory, CheckrState state)

@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Drafts.T_Reducers.A_Simple;
 public class SimpleReducers : CheckrTest<SimpleReducers>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explanation => false;
 
     [Fact]

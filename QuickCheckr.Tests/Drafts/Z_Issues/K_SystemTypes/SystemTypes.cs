@@ -55,7 +55,7 @@ public class SystemTypes : BaseTest
     public void RunTestSolution()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckrSolution().Run(100.Runs(), 1.ExecutionsPerRun()));
+            GetCheckrSolution().Run(350297528, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "SystemTypesSolution.txt", false);
         VerifySolution(article);
@@ -67,8 +67,9 @@ public class SystemTypes : BaseTest
     private static CheckrOf<Case> GetCheckrSolution()
     {
         return
-            from shrink in Shrinkr.For(typeof(string), typeof(double))
-            from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
+            from thing in Checkr.Input("A thing with a type",
+                Fuzzr.Constant(new Thing()),
+                () => Shrink.Values(typeof(string), typeof(double)))
             from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
             select Case.Closed;
     }

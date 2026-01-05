@@ -24,96 +24,131 @@ select Case.Closed;
 ```
   
   
-## Custom Shrinkers
+## Shrink Function
+
+**The Checkr:**  
 ```csharp
-    from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-    // One: Uses the default shrinker.
-    from thingOne in Checkr.Input("Thing One", Fuzzr.Constant<Thing>(null!))
-        // Two: Uses a Fuzzr for shrinking. 
-        // The second argument is the number of values Fuzzr should produce.
-        // The default number is 10.
-    from shrinkThingTwo in Shrinkr.For(Fuzzr.One<Thing>(), 2)
-    from thingTwo in Checkr.Input("Thing Two", Fuzzr.Constant<Thing>(null!))
-        // Three: Puts back the default shrinker
-    from shrinkThingThree in Shrinkr.For<Thing>(Shrink.Default<Thing>())
-    from thingThree in Checkr.Input("Thing Three", Fuzzr.Constant<Thing>(null!))
-        // Four: Uses hardcoded values for shrinking. 
-    from shrinkThingFour in Shrinkr.For(new Thing(), new Thing())
-    from thingFour in Checkr.Input("Thing Four", Fuzzr.Constant<Thing>(null!))
-        // Five: Uses a factory function for shrinking. 
-        // The lamda argument is the original Input value
-    from shrinkThingFive in Shrinkr.For((Thing a) => [new Thing()])
-    from thingFive in Checkr.Input("Thing Five", Fuzzr.Constant<Thing>(null!))
-        // Six: Uses multiple shrinkers. 
-        // The second one will remove this value from the report.
-        // The first one will still emit a warning.
-    from shrinkThingSix in Shrinkr.For(Shrink.Default<Thing>(), Shrink.Values(new Thing()))
-    from thingSix in Checkr.Input("Thing Six", Fuzzr.Constant<Thing>(null!))
-        // Seven: Multiples again. 
-        // Now the first one will shortcircuit shrinking, so no warning from the second one.
-    from shrinkThingSeven in Shrinkr.For(Shrink.Values(new Thing()), Shrink.Default<Thing>())
-    from thingSeven in Checkr.Input("Thing Seven", Fuzzr.Constant<Thing>(null!))
-    from expect in Checkr.Expect("count != 2", () => count != 2)
-    select Case.Closed;
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    // The lamda argument is the original Input value
+    () => Shrink.Function((Thing a) => [new Thing()]))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
 ```
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
+ Location:                ShrinkFunction.cs:57:1
  Original failing run:    2 executions
- Minimal failing case:    1 execution (after 6 shrinks)
- Seed:                    737523392
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
  ------------------------------------------------------------
   Executed:
-   - Input: Counter     = 2
-   - Input: Thing One   = null
-   - Input: Thing Three = null
-   - WARNING: Null value for type 'Thing' at input 'Thing One'.
-   - WARNING: Null value for type 'Thing' at input 'Thing Three'.
-   - WARNING: Null value for type 'Thing' at input 'Thing Six'.
- =====================================
-  !! Expectation Failed: count != 2
- =====================================
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
  Passed Expectations
- - count != 2: 1x
+ - counter != 2: 1x
  ------------------------------------------------------------
 ```
-#### Nested
+## Shrink Fuzzr
+
+**The Checkr:**  
 ```csharp
-public class TheUniverse
-{
-    public class Life { public int Answer { get; set; } }
-    public Life? Everything { get; set; }
-    public Life? Irrelevant { get; set; }
-    public int GetTheAnswer() => Everything!.Answer;
-}
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
 ```
-The following example, if ran without the Shrinkr, would not be able to shrink the Null values and would also emit warnings.  
-```csharp
-    from shrink in Shrinkr.For(TheLifeFuzzr)
-    from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
-    from trace in Checkr.Trace("The Universe", () => universe)
-    from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
-    select Case.Closed;
-```
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Nested
- Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:105:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1269557792
+ Test:                    Example
+ Location:                ShrinkFuzzr.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
  ------------------------------------------------------------
-  Executed: The Answer
-   - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: null }
- ===========================================================================
-  !! System.NullReferenceException: Object reference not set to an instance of an object.
-   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.TheUniverse.GetTheAnswer() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 92
-   at QuickCheckr.Tests.Drafts.G_CustomShrinkers.CustomShrinkers.<>c__DisplayClass8_1.GetCheckrNested() in Drafts\G_CustomShrinkers\CustomShrinkers.cs:line 127
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+## Shrink Multiple
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thingOne in Checkr.Input("Null Thing One",
+    Fuzzr.Constant<Thing>(null!),
+    // The second one will remove this value from the report.
+    // The first one will still emit a warning.
+    () => [Shrink.Default<Thing>(), Shrink.Values(new Thing())])
+from thingTwo in Checkr.Input("Null Thing Two",
+    Fuzzr.Constant<Thing>(null!),
+    // Now the first one will shortcircuit shrinking, so no warning from the second one.
+    () => [Shrink.Values(new Thing()), Shrink.Default<Thing>()])
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkMultiple.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+   - WARNING: Null value for type 'Thing' at input 'Null Thing One'.
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+## Shrink Values
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    () => Shrink.Values(new Thing()))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkValues.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
 ```
 ## Conditional Execution
 ### Checkr Act Carefully When
@@ -716,8 +751,9 @@ public class Thing
 ```
 ##### Workaround
 ```csharp
-    from shrink in Shrinkr.For(typeof(string), typeof(double))
-    from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
+    from thing in Checkr.Input("A thing with a type",
+        Fuzzr.Constant(new Thing()),
+        () => Shrink.Values(typeof(string), typeof(double)))
     from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
     select Case.Closed;
 ```

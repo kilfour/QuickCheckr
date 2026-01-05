@@ -2,8 +2,15 @@ using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
-public interface IShrinkOption;
-public abstract record ShrinkOption<T> : IShrinkOption;
+public interface IShrinkOption
+{
+    public Type TargetType { get; }
+}
+
+public abstract record ShrinkOption<T> : IShrinkOption
+{
+    public Type TargetType => typeof(T);
+}
 
 public interface IShrinkOptionFuzzr
 {

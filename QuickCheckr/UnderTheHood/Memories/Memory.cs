@@ -93,7 +93,6 @@ public class Memory
         var value = ShortTermMemory.StoreInput(KeyGuardian.Inputs.Check(key), factory);
         if (IsConfigRun)
         {
-            ShortTermMemory.StoreShrinkerForKey<T>(key);
             ShortTermMemory.StoreOriginal(key, value);
         }
         return value;
@@ -133,13 +132,10 @@ public class Memory
     // --------------------------------------------------------------------------
     // Shrinkers
     public bool IsConfigRun { get; set; } = false;
-    public void StoreShrinkerForType<T>(IShrinkOption[] options)
-    {
-        if (IsConfigRun)
-            ShortTermMemory.StoreShrinkerForType<T>(options);
-    }
-    public IShrinkOption[]? GetShrinkerForKey(int executionId, string key, Type type)
-        => ShortTermMemory.GetShrinkerForKey(executionId, key, type);
+    public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
+        => ShortTermMemory.StoreShrinker(key, factory);
+    public IEnumerable<IShrinkOption>? GetShrinker(int executionId, string key, Type type)
+        => ShortTermMemory.GetShrinker(executionId, key, type);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)

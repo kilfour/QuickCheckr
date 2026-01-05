@@ -14,9 +14,9 @@ public class TypedMemoryBank<T>
         var val = value;
         return val;
     }
-    public T Get(string key)
+    public T? Get(string key)
     {
         values.TryGetValue(key, out T? value);
-        return value!;
+        return value;
     }
 }

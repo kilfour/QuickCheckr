@@ -6,8 +6,7 @@
   * explain warning, add fix: Shrinkr.For([1])
 
 ### Current Focus
-> **Main focus:** Custom Shrinkers. 
-* Added *scoped* Custom Shrinkers working similarly as QuickFuzzr's Configr.
+* Refactor the Tests: SystemTypes.cs
 * Fix input reporting when not shrinking.
 * Reducers
   * Example: Expectation: String does not contain "a" or "b"
@@ -20,12 +19,12 @@
 * Showr.ForInputs
 * Report: Execution section: Better label alignment.
 * Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
+* Added Input overloads taking Custom Shrinker(s) as extra argument.
 
 ### Doing/Ongoing
 * Refactor the Tests:
   * one checkr per file (basetest done, implemented for some, ongoing, boyscout rule)
   * find pattern for other tests
-* refactor memory (execution mainly) : StoreShrinkerForKey & StoreOriginal => same pattern
 
 ### Doc Current Focus 
 * Polish the guide a bit more

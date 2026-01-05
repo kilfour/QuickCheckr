@@ -30,8 +30,9 @@ public class Thing
 ```
 ### Workaround
 ```csharp
-    from shrink in Shrinkr.For(typeof(string), typeof(double))
-    from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
+    from thing in Checkr.Input("A thing with a type",
+        Fuzzr.Constant(new Thing()),
+        () => Shrink.Values(typeof(string), typeof(double)))
     from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
     select Case.Closed;
 ```
