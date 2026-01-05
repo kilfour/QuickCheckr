@@ -14,12 +14,13 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:37:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:39:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
  ------------------------------------------------------------
-  Executed
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Always Fails
  =======================================
@@ -42,7 +43,7 @@ Result:
 ```text
 ------------------------------------------------------------
  Test:                    Example_Two
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:78:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    231122398

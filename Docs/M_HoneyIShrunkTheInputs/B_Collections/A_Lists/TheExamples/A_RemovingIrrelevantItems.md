@@ -13,7 +13,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_RemovingIrrelevantItems.cs:46:1
+ Location:                A_RemovingIrrelevantItems.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1833095082

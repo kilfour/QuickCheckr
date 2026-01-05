@@ -20,7 +20,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:42:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:41:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -43,14 +43,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1185771041
+ Seed:                    1405499460
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ 1, _, _ ]
-   - Trace: List  = [ 1, 2, 4 ]
+   - Input: Input = [ _, 1, _ ]
+   - Trace: List  = [ 3, 1, 4 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================

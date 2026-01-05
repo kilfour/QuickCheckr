@@ -255,6 +255,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
  Seed:                    1854571642
  ------------------------------------------------------------
   Executed: BugHouse.DelayedDetonation (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1
@@ -591,6 +592,7 @@ public class Rolodex
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-5
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-6
@@ -1048,7 +1050,8 @@ private static CheckrConfig ConfigureInputs(CheckrConfig config)
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
  ------------------------------------------------------------
-  Executed (2 Times)
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed:
    - Input: counter = 3
@@ -1116,7 +1119,7 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeDefault.cs:43:1
+ Location:                ReportModeDefault.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1129,7 +1132,7 @@ Includes all possible ReportModes.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 38
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
@@ -1143,7 +1146,7 @@ No traces, no warnings, no labels, no stacktrace.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:43:1
+ Location:                ReportModeNone.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1164,7 +1167,7 @@ Only traces.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:43:1
+ Location:                ReportModeTrace.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1186,7 +1189,7 @@ Only warnings.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeWarning.cs:43:1
+ Location:                ReportModeWarning.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1208,7 +1211,7 @@ Only labels.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeLabels.cs:43:1
+ Location:                ReportModeLabels.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1293,21 +1296,21 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
- Original failing run:    5 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    146231062
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:113:1
+ Original failing run:    7 executions
+ Minimal failing case:    2 executions (after 5 shrinks)
+ Seed:                    136908528
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 6
+   - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 5
+   - Input: Amount = 2
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 4x
+ - No Overdraft: 6x
  ------------------------------------------------------------
 ```
 The following predefined policies are available  
@@ -1652,7 +1655,7 @@ So after *Execution Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ExecutionShrinking.cs:43:1
+ Location:                ExecutionShrinking.cs:57:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
@@ -1682,12 +1685,13 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:37:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:39:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
  ------------------------------------------------------------
-  Executed
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Always Fails
  =======================================
@@ -1710,7 +1714,7 @@ Result:
 ```text
 ------------------------------------------------------------
  Test:                    Example_Two
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:78:1
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    231122398
@@ -1816,7 +1820,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:42:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:41:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -1839,14 +1843,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:83:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1185771041
+ Seed:                    1405499460
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ 1, _, _ ]
-   - Trace: List  = [ 1, 2, 4 ]
+   - Input: Input = [ _, 1, _ ]
+   - Trace: List  = [ 3, 1, 4 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -1956,7 +1960,7 @@ Possible solutions:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Drafts\D_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
+ Location:                Docs\K_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 3 shrinks)
  Seed:                    344916298
@@ -2004,7 +2008,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_BuiltInEnumerations.cs:65:1
+ Location:                A_BuiltInEnumerations.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2083214969
@@ -2033,7 +2037,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_CustomEnumerations.cs:65:1
+ Location:                B_CustomEnumerations.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1735186993
@@ -2072,7 +2076,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_RemovingIrrelevantItems.cs:46:1
+ Location:                A_RemovingIrrelevantItems.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1833095082
@@ -2105,7 +2109,9 @@ select Case.Closed;
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
  ------------------------------------------------------------
-  Executed
+  Executed:
+   - WARNING: Empty collection deemed irrelevant at input 'List Input'.
+   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Always fails
  =======================================
@@ -2135,7 +2141,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_IrrelevantElementButListLengthIsNot.cs:46:1
+ Location:                C_IrrelevantElementButListLengthIsNot.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1393576429
@@ -2162,7 +2168,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_RelevantItemIsDefault.cs:46:1
+ Location:                D_RelevantItemIsDefault.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    820833320
@@ -2189,7 +2195,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                E_RelevantItemIsAllButDefault.cs:46:1
+ Location:                E_RelevantItemIsAllButDefault.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    816312044
@@ -2219,7 +2225,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                F_MultipleRelevantElements.cs:46:1
+ Location:                F_MultipleRelevantElements.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855
@@ -2246,7 +2252,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                G_RelevantElementAndSize.cs:46:1
+ Location:                G_RelevantElementAndSize.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1374380958
@@ -2274,7 +2280,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                H_NestedLists.cs:46:1
+ Location:                H_NestedLists.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    146712596
@@ -2300,7 +2306,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                I_WhenAnEmptyListIsTheCulprit.cs:46:1
+ Location:                I_WhenAnEmptyListIsTheCulprit.cs:48:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------
@@ -2373,10 +2379,10 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_AnArrayAsInput.cs:61:1
+ Location:                A_AnArrayAsInput.cs:65:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    458840352
+ Seed:                    27506614
  ------------------------------------------------------------
   Executed:
    - Input: int[]    = [ 42 ]
@@ -2408,7 +2414,7 @@ public class TheUniverse
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:36:1
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:36:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    358877731
@@ -2430,7 +2436,7 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_NotShrinkingNull
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:85:1
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:85:1
  Original failing run:    1 execution
  Seed:                    1269557792
  ------------------------------------------------------------
@@ -2456,7 +2462,7 @@ We could help the shrinker by rewriting your checkr, in order to avoid the irrel
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
@@ -2476,14 +2482,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Docs\H_OnShrinking\C_InputShrinking\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1856738502
+ Seed:                    51994543
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 13 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 89 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.

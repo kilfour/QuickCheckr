@@ -32,6 +32,7 @@ public class Eventually
    - Input: Input = 6
  ------------------------------------------------------------
   Executed: start
+   - WARNING: All inputs were considered irrelevant.
  ===================================
   !! Expectation Failed: Is not 7
  ===================================

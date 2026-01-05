@@ -36,7 +36,7 @@
  Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 6 shrinks)
- Seed:                    693048172
+ Seed:                    737523392
  ------------------------------------------------------------
   Executed:
    - Input: Counter     = 2

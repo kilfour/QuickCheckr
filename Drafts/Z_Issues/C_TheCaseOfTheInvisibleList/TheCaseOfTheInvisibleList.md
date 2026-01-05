@@ -9,7 +9,7 @@ public class Thing { public List<int> Ints = ;
 ```csharp
 from thing in Trackr.Stashed(() => new Thing())
 //from shr in Shrinkr.For<IEnumerable<int>>([1])
-from ints in Checkr.Input("ints", Fuzzr.Int().Many(2))
+from ints in Checkr.Input("ints", Fuzzr.Int().Many(2), Reducr.StopOnFirstPassed<List<int>>(a => [[], [1]]))
 from trace in Checkr.Trace("ints", () => ints)
 from act in Checkr.Act("change", () => thing.Ints = [.. ints])
 from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
@@ -33,7 +33,8 @@ protected override CheckrConfig Configure(CheckrConfig config)
  ------------------------------------------------------------
   Executed: change
    - Trace: ints = [ 81, 74 ]
-   - WARNING: Empty list deemed irrelevant at input 'ints'.
+   - WARNING: Empty collection deemed irrelevant at input 'ints'.
+   - WARNING: All Inputs were considered irrelevant.
  ================================
   !! Expectation Failed: has 1
  ================================

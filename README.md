@@ -60,6 +60,7 @@ select Case.Closed;
    - Input: number = 6
  ------------------------------------------------------------
   Executed: BugHouse.Run (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ===========================================================================
   !! Exception: Here's Johnny
  ===========================================================================

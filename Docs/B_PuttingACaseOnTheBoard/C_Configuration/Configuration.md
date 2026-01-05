@@ -172,7 +172,8 @@ private static CheckrConfig ConfigureInputs(CheckrConfig config)
  Minimal failing case:    3 executions (after 5 shrinks)
  Seed:                    1044984793
  ------------------------------------------------------------
-  Executed (2 Times)
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed:
    - Input: counter = 3
@@ -240,7 +241,7 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeDefault.cs:43:1
+ Location:                ReportModeDefault.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -253,7 +254,7 @@ Includes all possible ReportModes.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 38
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
@@ -267,7 +268,7 @@ No traces, no warnings, no labels, no stacktrace.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:43:1
+ Location:                ReportModeNone.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -288,7 +289,7 @@ Only traces.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:43:1
+ Location:                ReportModeTrace.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -310,7 +311,7 @@ Only warnings.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeWarning.cs:43:1
+ Location:                ReportModeWarning.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -332,7 +333,7 @@ Only labels.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeLabels.cs:43:1
+ Location:                ReportModeLabels.cs:57:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -417,21 +418,21 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicy.cs:123:1
- Original failing run:    5 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    146231062
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:113:1
+ Original failing run:    7 executions
+ Minimal failing case:    2 executions (after 5 shrinks)
+ Seed:                    136908528
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 6
+   - Input: Amount = 3
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 5
+   - Input: Amount = 2
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
  Passed Expectations
- - No Overdraft: 4x
+ - No Overdraft: 6x
  ------------------------------------------------------------
 ```
 The following predefined policies are available  

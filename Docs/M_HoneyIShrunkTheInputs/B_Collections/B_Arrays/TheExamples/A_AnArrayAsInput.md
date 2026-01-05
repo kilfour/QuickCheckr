@@ -16,10 +16,10 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_AnArrayAsInput.cs:61:1
+ Location:                A_AnArrayAsInput.cs:65:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    458840352
+ Seed:                    27506614
  ------------------------------------------------------------
   Executed:
    - Input: int[]    = [ 42 ]

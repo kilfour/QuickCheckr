@@ -24,7 +24,8 @@ together with the number of executions, relevant actions and inputs that were re
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    393010076
  ------------------------------------------------------------
-  Executed
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
  ================================
   !! Expectation Failed: Fails
  ================================
@@ -449,6 +450,7 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
  Seed:                    1914853878
  ------------------------------------------------------------
   Executed: BugHouse.Run (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.Run
    - Input: a = 1
@@ -613,8 +615,10 @@ RunInt(6)            // bug ends with "1221" and `a == 6` → fail
  Seed:                    1292206393
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.RunString (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.RunInt
    - Input: Int = 6
@@ -699,14 +703,14 @@ public class ListWrap
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:19:1
+ Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    406406480
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
    - Input: Expression = "(2 * 1 - 3 * 2 * 1 * 3 + 1 / 2 * 1) ^ - 2 ^ 2 / 3 ^ 2 / 3 - - 3 / 2"
-                 Redux   "2^-2^2"
+            Redux        "2^-2^2"
    - Trace: Compare    = Golden: 1,5000006416666136 /= SUT: 2139,2800925925926
  ================================
   !! Expectation Failed: Match
@@ -880,6 +884,14 @@ public class TheFuzzr
   Executed:
    - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
    - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Monday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Tuesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Wednesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking One.Schedule.Friday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Monday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Tuesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Wednesday'.
+   - WARNING: Empty collection deemed irrelevant at input 'Booking Two.Schedule.Friday'.
  ==================================================
   !! Expectation Failed: Bookings do not overlap
  ==================================================
@@ -939,7 +951,7 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    47424279
+ Seed:                    1266733166
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-1
@@ -1070,7 +1082,7 @@ public class ContactBook
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    502543886
+ Seed:                    376041206
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-1
@@ -1252,9 +1264,11 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  ------------------------------------------------------------
   Executed: Create Coach
    -  Pool: Store Coach = CoachBy-2
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Create Course
    -  Pool: Store Course = CourseBy-2
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Assign Coach to Course
  ------------------------------------------------------------

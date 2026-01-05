@@ -1,3 +1,29 @@
+## All Inputs Shrunk
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("An Input", Fuzzr.Int())
+from expect in Checkr.Expect("Always fails", () => false)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                AllInputsShrunk.cs:74:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1098916919
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
+```
+  
+  
 ## Custom Shrinkers
 ```csharp
     from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
@@ -36,7 +62,7 @@
  Location:                Drafts\G_CustomShrinkers\CustomShrinkers.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 6 shrinks)
- Seed:                    693048172
+ Seed:                    737523392
  ------------------------------------------------------------
   Executed:
    - Input: Counter     = 2
@@ -627,7 +653,7 @@ public class Thing { public List<int> Ints = ;
 ```csharp
 from thing in Trackr.Stashed(() => new Thing())
 //from shr in Shrinkr.For<IEnumerable<int>>([1])
-from ints in Checkr.Input("ints", Fuzzr.Int().Many(2))
+from ints in Checkr.Input("ints", Fuzzr.Int().Many(2), Reducr.StopOnFirstPassed<List<int>>(a => [[], [1]]))
 from trace in Checkr.Trace("ints", () => ints)
 from act in Checkr.Act("change", () => thing.Ints = [.. ints])
 from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
@@ -651,7 +677,8 @@ protected override CheckrConfig Configure(CheckrConfig config)
  ------------------------------------------------------------
   Executed: change
    - Trace: ints = [ 81, 74 ]
-   - WARNING: Empty list deemed irrelevant at input 'ints'.
+   - WARNING: Empty collection deemed irrelevant at input 'ints'.
+   - WARNING: All Inputs were considered irrelevant.
  ================================
   !! Expectation Failed: has 1
  ================================
@@ -697,10 +724,10 @@ public class Thing
 ```text
 ------------------------------------------------------------
  Test:                    RunTestSolution
- Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:59:1
+ Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    120783772
+ Seed:                    350297528
  ------------------------------------------------------------
   Executed:
    - Input: A thing with a type = { Type: Int32 }

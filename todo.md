@@ -46,6 +46,7 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
+* Warning Mode
 * Hey Deskofficer, give me three reports different reports with one execution, ASAP !
 * Look into different collection shrinking:
   * Limitations.

@@ -112,6 +112,7 @@ public class Rolodex
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-5
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Store = Contact-6

@@ -54,6 +54,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
  Seed:                    1854571642
  ------------------------------------------------------------
   Executed: BugHouse.DelayedDetonation (2 Times)
+   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1

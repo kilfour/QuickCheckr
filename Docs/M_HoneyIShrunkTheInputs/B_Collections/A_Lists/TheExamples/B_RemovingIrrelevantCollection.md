@@ -18,7 +18,9 @@ select Case.Closed;
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
  ------------------------------------------------------------
-  Executed
+  Executed:
+   - WARNING: Empty collection deemed irrelevant at input 'List Input'.
+   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Always fails
  =======================================

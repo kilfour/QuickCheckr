@@ -1,3 +1,4 @@
+  - [All Inputs Shrunk](A_AllInputsShrunk/AllInputsShrunk.md)
   - [Custom Shrinkers](G_CustomShrinkers/CustomShrinkers.md)
   - [Conditional Execution](K_ConditionalExecution/ConditionalExecution.md)
     - [Checkr Act Carefully When](K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)
