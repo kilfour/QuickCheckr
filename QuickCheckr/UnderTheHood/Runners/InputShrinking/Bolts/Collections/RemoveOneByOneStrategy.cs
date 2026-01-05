@@ -35,14 +35,16 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value, theList);
             finalClue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
-
             return [finalClue];
         }
         else
         {
             if (elementCount != 0)
-                state.Memory.StoreWarning(info.FullKey,
-                    () => $"Empty collection deemed irrelevant at input '{info.FullKey}'.");
+            {
+                if (!state.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type))
+                    state.Memory.StoreWarning(info.FullKey,
+                        () => $"Empty collection deemed irrelevant at input '{info.FullKey}'.");
+            }
             var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];

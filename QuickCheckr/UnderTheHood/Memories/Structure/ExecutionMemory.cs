@@ -109,8 +109,6 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
     // Shrinkers
     private readonly TypedMemoryBank<IShrinkOption[]> shrinkers = new();
-    private readonly Dictionary<Type, IShrinkOption[]> shrinkersPerType = [];
-    private readonly Dictionary<string, Dictionary<Type, IShrinkOption[]>> shrinkersPerKey = [];
     public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
         => shrinkers.Store(key, factory);
     public IEnumerable<IShrinkOption>? GetShrinker(string key, Type type)

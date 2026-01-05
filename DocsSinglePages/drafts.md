@@ -495,24 +495,9 @@ There exist **two different types** of reducers:
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reducr.StopOnFirstPassed<int>(TowardsZero))
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-private static IEnumerable<int> TowardsZero(int input)
-{
-    var local = input;
-    while (local != 0)
-    {
-        if (local > 0)
-            yield return --local;
-        else
-            yield return ++local;
-    }
-}
 ```
 
 **The Report:**  
@@ -535,26 +520,9 @@ private static IEnumerable<int> TowardsZero(int input)
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), new MinimizeString().Reduce)
+from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-public class MinimizeString
-{
-    private int index = 0;
-    public Reduction Reduce(ReductionResult result)
-    {
-        var str = result.ValueAs<string>();
-        if (result.Passed)
-            index++;
-        if (index >= str.Length)
-            return Reduction.Stop(str);
-        return Reduction.Next(str.Remove(index, 1));
-    }
-}
 ```
 
 **The Report:**  
@@ -577,24 +545,9 @@ public class MinimizeString
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reducr.StopOnFirstPassed<int>(TowardsZero))
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-private static IEnumerable<int> TowardsZero(int input)
-{
-    var local = input;
-    while (local != 0)
-    {
-        if (local > 0)
-            yield return --local;
-        else
-            yield return ++local;
-    }
-}
 ```
 
 **The Report:**  
@@ -617,26 +570,9 @@ private static IEnumerable<int> TowardsZero(int input)
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), new MinimizeString().Reduce)
+from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-public class MinimizeString
-{
-    private int index = 0;
-    public Reduction Reduce(ReductionResult result)
-    {
-        var str = result.ValueAs<string>();
-        if (result.Passed)
-            index++;
-        if (index >= str.Length)
-            return Reduction.Stop(str);
-        return Reduction.Next(str.Remove(index, 1));
-    }
-}
 ```
 
 **The Report:**  
@@ -687,9 +623,10 @@ public class Thing { public List<int> Ints = ;
 **The Checkr:**  
 ```csharp
 from thing in Trackr.Stashed(() => new Thing())
-//from shr in Shrinkr.For<IEnumerable<int>>([1])
-from ints in Checkr.Input("ints", Fuzzr.Int().Many(2), Reducr.StopOnFirstPassed<List<int>>(a => [[], [1]]))
-from trace in Checkr.Trace("ints", () => ints)
+from ints in Checkr.Input("ints",
+    Fuzzr.Int().Many(2),
+    () => Shrink.Values<IEnumerable<int>>(thing.Ints),
+    Reduce.Values([thing.Ints, []]))
 from act in Checkr.Act("change", () => thing.Ints = [.. ints])
 from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
 select Case.Closed;
@@ -705,15 +642,14 @@ protected override CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                TheCaseOfTheInvisibleList.cs:57:1
+ Location:                TheCaseOfTheInvisibleList.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1954145022
  ------------------------------------------------------------
   Executed: change
-   - Trace: ints = [ 81, 74 ]
-   - WARNING: Empty collection deemed irrelevant at input 'ints'.
-   - WARNING: All Inputs were considered irrelevant.
+   - Input: ints  = [ 81, 74 ]
+            Redux   [ ]
  ================================
   !! Expectation Failed: has 1
  ================================

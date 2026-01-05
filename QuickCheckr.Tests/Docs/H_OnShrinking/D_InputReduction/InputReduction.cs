@@ -1,4 +1,3 @@
-using QuickCheckr.Reducers;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -63,7 +62,7 @@ TODO: LINK TO REDUCE REUSE RECYCLE
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from account in Trackr.Stashed(() => new Account())
-        from amount in Checkr.Input("Amount", Fuzzr.Int(), Reducr.TowardsZero) // <=
+        from amount in Checkr.Input("Amount", Fuzzr.Int(), Reduce.TowardsZero) // <=
         from operations in Checkr.OneOf(
             Checkr.Act("Deposit", () => account.Deposit(amount)),
             Checkr.Act("Withdraw", () => account.WithDraw(amount)))

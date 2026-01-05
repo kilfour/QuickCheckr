@@ -1,14 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                TheCaseOfTheInvisibleList.cs:57:1
+ Location:                TheCaseOfTheInvisibleList.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1954145022
  ------------------------------------------------------------
   Executed: change
-   - Trace: ints = [ 81, 74 ]
-   - WARNING: Empty collection deemed irrelevant at input 'ints'.
-   - WARNING: All Inputs were considered irrelevant.
+   - Input: ints  = [ 81, 74 ]
+            Redux   [ ]
  ================================
   !! Expectation Failed: has 1
  ================================

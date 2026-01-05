@@ -29,24 +29,9 @@ There exist **two different types** of reducers:
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reducr.StopOnFirstPassed<int>(TowardsZero))
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-private static IEnumerable<int> TowardsZero(int input)
-{
-    var local = input;
-    while (local != 0)
-    {
-        if (local > 0)
-            yield return --local;
-        else
-            yield return ++local;
-    }
-}
 ```
 
 **The Report:**  
@@ -69,26 +54,9 @@ private static IEnumerable<int> TowardsZero(int input)
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), new MinimizeString().Reduce)
+from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-public class MinimizeString
-{
-    private int index = 0;
-    public Reduction Reduce(ReductionResult result)
-    {
-        var str = result.ValueAs<string>();
-        if (result.Passed)
-            index++;
-        if (index >= str.Length)
-            return Reduction.Stop(str);
-        return Reduction.Next(str.Remove(index, 1));
-    }
-}
 ```
 
 **The Report:**  

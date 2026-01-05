@@ -34,6 +34,7 @@ public class InputShrinker(
                         executionMemory.StoreInputShrinkOutcome(key, keep);
                     }
                 }
+                keptAtLeastOne = keptAtLeastOne || State.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type);
             }
             if (hasAtLeastOne && !keptAtLeastOne)
                 executionMemory.StoreWarning($"AllInputsShrunk-{executionId}", () => "All inputs were considered irrelevant.");

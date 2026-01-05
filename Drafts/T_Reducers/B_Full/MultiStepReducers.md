@@ -2,26 +2,9 @@
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), new MinimizeString().Reduce)
+from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
-```
-
-**The Reducer:**  
-```csharp
-public class MinimizeString
-{
-    private int index = 0;
-    public Reduction Reduce(ReductionResult result)
-    {
-        var str = result.ValueAs<string>();
-        if (result.Passed)
-            index++;
-        if (index >= str.Length)
-            return Reduction.Stop(str);
-        return Reduction.Next(str.Remove(index, 1));
-    }
-}
 ```
 
 **The Report:**  

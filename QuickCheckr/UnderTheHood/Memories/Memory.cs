@@ -136,6 +136,11 @@ public class Memory
         => ShortTermMemory.StoreShrinker(key, factory);
     public IEnumerable<IShrinkOption>? GetShrinker(int executionId, string key, Type type)
         => ShortTermMemory.GetShrinker(executionId, key, type);
+    public bool HasShrinker(int executionId, string key, Type type)
+    {
+        var options = GetShrinker(executionId, key, type);
+        return options is not null && options.Any();
+    }
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)

@@ -247,46 +247,6 @@ Check this with:
   !! Expectation Failed: One should not be 42
  ===============================================
 ```
-### Parsing Numbers
-#### The Checkr:
-```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
-    from trace in Checkr.Trace("Original", () => input)
-    from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
-    from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
-    from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
-    from match in Checkr.ExpectWhen("Match",
-        () => !double.IsNaN(goldenResult),
-        () => goldenResult == result)
-    select Case.Closed;
-```
-#### The Configuration:
-```csharp
-private static CheckrConfig Configure(CheckrConfig config)
-    => config with
-    {
-        DeliberationPolicy = (a, b) =>
-            GetExpressionInputLength(a) < GetExpressionInputLength(b) ? a : b
-    };
-```
-#### The Report:
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\F_BruteForceShrinking\ParsingNumbers.cs:26:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    2003161779
- ------------------------------------------------------------
-  Executed: Golden Result, SUT Result
-   - Input: Expression = "- 1 ^ 2 * 3"
-                 Redux   "-1^2"
-   - Trace: Original   = - 1 ^ 2 * 3
-   - Trace: Compare    = Golden: -3 /= SUT: 3
- ================================
-  !! Expectation Failed: Match
- ================================
-```
 ## Building Blocks
 ### Checkr Act Carefully
 ```csharp
@@ -689,7 +649,7 @@ public class ListWrap
 ```
 ### Parsing Numbers
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reducr.ReportLastFailure<string>(ParseReducer.Reducer))
+    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reduce.Function<string>(ParseReducer.Reducer, true))
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")

@@ -1,4 +1,3 @@
-using QuickCheckr.Reducers;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -16,15 +15,13 @@ public class SimpleReducers : CheckrTest<SimpleReducers>
     [Fact]
     [DocCheckrHeader]
     [DocCheckr]
-    [DocContent("\n**The Reducer:**")]
-    [DocExample(typeof(SimpleReducers), nameof(TowardsZero))]
     [DocReportHeader]
     [DocReport]
     public override void Example() => Run(1681332589);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Reducr.StopOnFirstPassed<int>(TowardsZero))
+         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
          from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
          select Case.Closed;
 
@@ -38,18 +35,5 @@ public class SimpleReducers : CheckrTest<SimpleReducers>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("79", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("42", article.Execution(1).Input(1).Read().Redux.Value);
-    }
-
-    [CodeExample]
-    private static IEnumerable<int> TowardsZero(int input)
-    {
-        var local = input;
-        while (local != 0)
-        {
-            if (local > 0)
-                yield return --local;
-            else
-                yield return ++local;
-        }
     }
 }

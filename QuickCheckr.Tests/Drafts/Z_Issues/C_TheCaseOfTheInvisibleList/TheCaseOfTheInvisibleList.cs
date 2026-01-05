@@ -1,5 +1,4 @@
 using QuickCheckr.Protocol;
-using QuickCheckr.Reducers;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -14,7 +13,7 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
     protected override bool Report => false;
     protected override bool Explanation => false;
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     [DocModelHeader]
     [DocExample(typeof(Thing))]
     [DocCheckrHeader]
@@ -24,8 +23,7 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
     [DocReportHeader]
     [DocReport]
     [DocContent("Shrinker marks the list as irrelevant, but it is **not**.")]
-    public override void Example() =>
-        Run(1954145022, 10.ExecutionsPerRun());
+    public override void Example() => Run(1954145022);
 
     [CodeExample]
     protected override CheckrConfig Configure(CheckrConfig config)
@@ -34,9 +32,10 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from thing in Trackr.Stashed(() => new Thing())
-        //from shr in Shrinkr.For<IEnumerable<int>>([1])
-        from ints in Checkr.Input("ints", Fuzzr.Int().Many(2), Reducr.StopOnFirstPassed<List<int>>(a => [[], [1]]))
-        from trace in Checkr.Trace("ints", () => ints)
+        from ints in Checkr.Input("ints",
+            Fuzzr.Int().Many(2),
+            () => Shrink.Values<IEnumerable<int>>(thing.Ints),
+            Reduce.Values([thing.Ints, []]))
         from act in Checkr.Act("change", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
         select Case.Closed;
@@ -46,14 +45,13 @@ public class TheCaseOfTheInvisibleList : CheckrTest<TheCaseOfTheInvisibleList>
         Assert.Equal("has 1", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("change", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("ints", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 81, 74 ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'ints'.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal("ints", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("[ 81, 74 ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ ]", article.Execution(1).Input(1).Read().Redux.Value);
     }
 
     [CodeExample]

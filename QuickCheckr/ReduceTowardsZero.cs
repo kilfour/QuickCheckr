@@ -1,8 +1,8 @@
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 
-namespace QuickCheckr.Reducers;
+namespace QuickCheckr;
 
-public static partial class Reducr
+public static partial class Reduce
 {
     public static Func<ReductionResult, Reduction> TowardsZero
         => new StopOnFirstPassedBuilder<int>(TowardsZeroFactory).Reduce;
