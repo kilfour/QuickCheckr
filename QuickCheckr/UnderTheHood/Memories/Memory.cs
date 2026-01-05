@@ -148,6 +148,6 @@ public class Memory
 
     // --------------------------------------------------------------------------
     // Warnings
-    public T? StoreWarning<T>(string key, Func<T> factory)
+    public string? StoreWarning(string key, Func<string> factory)
         => ShortTermMemory.StoreWarning(key, factory);
 }

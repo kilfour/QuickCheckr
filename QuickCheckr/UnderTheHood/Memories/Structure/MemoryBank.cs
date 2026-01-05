@@ -19,5 +19,4 @@ public class MemoryBank
         values.TryGetValue(key, out object? value);
         return (T)value!;
     }
-    public void Set(string key, object? value) => values[key] = value;
 }

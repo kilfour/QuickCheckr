@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
@@ -10,15 +11,13 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
-    // public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
-    //     Func<T, IEnumerable<T>> reducer)
-    // {
-    //     return state =>
-    //     {
-    //         state.Memory.StoreReducer(key, new StopOnFirstPassed<T>(reducer).Reduce);
-    //         return HandleInput(state, key, fuzzr);
-    //     };
-    // }
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params ShrinkOption<T>[] options)
+    {
+        return state =>
+        {
+            return HandleInput(state, key, fuzzr);
+        };
+    }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
         Func<ReductionResult, Reduction> reducer)
@@ -39,16 +38,6 @@ public static partial class Checkr
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
         state => CheckrResult.Some(state, GetValue(key, factory, state)!);
-
-    // public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-    //     Func<T, IEnumerable<T>> reducer)
-    // {
-    //     return state =>
-    //     {
-    //         state.Memory.StoreReducer(key, new StopOnFirstPassed<T>(reducer).Reduce);
-    //         return CheckrResult.Some(state, GetValue(key, factory, state)!);
-    //     };
-    // }
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
         Func<ReductionResult, Reduction> reducer)

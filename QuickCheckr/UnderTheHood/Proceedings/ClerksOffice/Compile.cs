@@ -94,12 +94,12 @@ public static class Compile
             return;
         }
 
-        foreach (var (key, val) in executionMemory.GetInputShrinkOutcomes())
+        foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
         {
             var original = executionMemory.GetOriginalForKey(key);
             var redux = executionMemory.GetInputReduxForKey(key);
             executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, ((InputShrinkingClue)val!).Report!, original, redux));
+                    new InputDeposition(labeled, key, clue!.Report!, original, redux));
         }
     }
 
@@ -107,7 +107,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetPoolTraces())
         {
-            executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, (string)val!, labeled));
+            executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, val, labeled));
         }
     }
 
@@ -115,7 +115,7 @@ public static class Compile
     {
         foreach (var (key, val) in shortTermMemory.GetTraces())
         {
-            executionDeposition.AddTraceDeposition(new TraceDeposition(key, (string)val!, labeled));
+            executionDeposition.AddTraceDeposition(new TraceDeposition(key, val, labeled));
         }
     }
 

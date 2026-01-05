@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 using QuickPulse.Show.Bolts;
 
@@ -46,9 +47,9 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Actions
+    private readonly HashSet<string> actions = [];
     public void StoreAction(string key) => actions.Add(key);
     public IReadOnlyList<string> GetActions() => [.. actions.Order()];
-    private readonly HashSet<string> actions = [];
     // --------------------------------------------------------------------------
 
 
@@ -64,35 +65,35 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Traces
-    private readonly MemoryBank traces = new();
+    private readonly TypedMemoryBank<string> traces = new();
     public void StoreTrace(string key, Func<string> factory)
         => traces.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetTraces()
+    public IReadOnlyDictionary<string, string> GetTraces()
         => traces.Values;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
     // Pool Traces
-    private readonly MemoryBank poolTraces = new();
+    private readonly TypedMemoryBank<string> poolTraces = new();
     public void StorePoolTrace(string key, Func<string> factory)
         => poolTraces.Store(key, factory);
-    public IReadOnlyDictionary<string, object?> GetPoolTraces()
+    public IReadOnlyDictionary<string, string> GetPoolTraces()
         => poolTraces.Values;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
     // Shrink Outcomes
-    private readonly Dictionary<string, object?> inputShrinkOutcomes = [];
-    public void StoreInputShrinkOutcome(string key, object? result)
-        => inputShrinkOutcomes[key] = result;
-    public IReadOnlyDictionary<string, object?> GetInputShrinkOutcomes()
+    private readonly Dictionary<string, InputShrinkingClue> inputShrinkOutcomes = [];
+    public void StoreInputShrinkOutcome(string key, InputShrinkingClue inputShrinkingClue)
+        => inputShrinkOutcomes[key] = inputShrinkingClue;
+    public IReadOnlyDictionary<string, InputShrinkingClue> GetInputShrinkOutcomes()
         => inputShrinkOutcomes;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
     // Redux Outcomes
-    private readonly Dictionary<string, string?> reduxOutcomes = [];
-    public void StoreInputRedux(string key, string? result)
+    private readonly Dictionary<string, string> reduxOutcomes = [];
+    public void StoreInputRedux(string key, string result)
         => reduxOutcomes[key] = result;
     public Maybe GetInputReduxForKey(string key)
     {
@@ -129,20 +130,20 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Reducers
-    private readonly MemoryBank reducers = new();
+    private readonly TypedMemoryBank<Func<ReductionResult, Reduction>> reducers = new();
     public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)
         => reducers.Store(key, () => reducer);
     public Func<ReductionResult, Reduction> GetReducer(string key)
-        => reducers.Get<Func<ReductionResult, Reduction>>(key)!;
+        => reducers.Get(key)!;
     // --------------------------------------------------------------------------
 
 
     // --------------------------------------------------------------------------
     // Warnings
-    private readonly MemoryBank warnings = new();
-    public T? StoreWarning<T>(string key, Func<T> factory)
+    private readonly TypedMemoryBank<string> warnings = new();
+    public string? StoreWarning(string key, Func<string> factory)
         => warnings.Store(key, factory);
     public IReadOnlyList<string> GetWarnings()
-        => [.. warnings.Values.Values.Cast<string>()];
+        => [.. warnings.Values.Values];
     // --------------------------------------------------------------------------
 }

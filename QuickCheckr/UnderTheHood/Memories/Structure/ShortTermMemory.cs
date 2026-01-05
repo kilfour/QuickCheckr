@@ -93,7 +93,7 @@ public class ShortTermMemory
         => Current.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
     // Warnings
-    public T? StoreWarning<T>(string key, Func<T> factory)
+    public string? StoreWarning(string key, Func<string> factory)
         => Current.StoreWarning(key, factory);
     // --------------------------------------------------------------------------
 }

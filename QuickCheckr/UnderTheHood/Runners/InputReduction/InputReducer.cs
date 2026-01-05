@@ -12,14 +12,13 @@ public class InputReducer(
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
             var shrinkOutcomes = shortTermMemory.GetInputShrinkOutcomes();
-            foreach (var (key, value) in shrinkOutcomes)
+            foreach (var (key, clue) in shrinkOutcomes)
             {
                 var reducer = shortTermMemory.GetReducer(key);
                 if (reducer == null) continue;
                 var verifier = new Verifier(State, Check);
-                var clue = value as InputShrinkingClue;
-                var result = new ReductionResult(true, clue?.Result!);
-                Reduction step = Reduction.Next(clue?.Result!);
+                var result = new ReductionResult(true, clue.Result!);
+                Reduction step = Reduction.Next(clue.Result!);
                 while (step.Continue)
                 {
                     if (verifier.RunFailed(executionId, key, step.Candidate!))
@@ -28,7 +27,7 @@ public class InputReducer(
                         result = new ReductionResult(false, result.Value!);
                     step = reducer(result);
                 }
-                if (step.Result != value)
+                if (step.Result != clue.Original)
                 {
                     shrinkCount++;
                     shortTermMemory.StoreInputRedux(key, State.InputPrinter.IntroduceThis(step.Result!));
