@@ -30,5 +30,4 @@
   - [Issues](Z_Issues/Issues.md)
     - [The Unshrinkables](Z_Issues/A_TheUnshrinkables/TheUnshrinkables.md)
       - [Unknown Primitives](Z_Issues/A_TheUnshrinkables/B_UnknownPrimitives/UnknownPrimitives.md)
-    - [The Case Of The Invisible List](Z_Issues/C_TheCaseOfTheInvisibleList/TheCaseOfTheInvisibleList.md)
     - [System Types](Z_Issues/K_SystemTypes/SystemTypes.md)

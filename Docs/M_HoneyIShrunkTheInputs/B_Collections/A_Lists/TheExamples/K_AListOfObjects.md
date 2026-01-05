@@ -23,7 +23,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J_AListOfObjects.cs:48:1
+ Location:                K_AListOfObjects.cs:48:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    849984174

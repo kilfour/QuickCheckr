@@ -7,10 +7,10 @@ using QuickPulse.Show;
 namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
 
 [DocFile]
-public class J_AListOfObjects : CheckrTest<J_AListOfObjects>
+public class K_AListOfObjects : CheckrTest<K_AListOfObjects>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explanation => false;
 
     [Fact]
