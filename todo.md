@@ -1,11 +1,7 @@
 ## Current Version: 0.0.7: In Pools We Trust
-* The Case of the Invisible List.
-  * add to on shrinking after irrelevant list example
-  * explain warning, add fix: Shrinkr.For([1])
-
 
 ### Current Focus
-* Refactor the Tests: SystemTypes.cs
+* The Case of the Invisible List. (explain it)
 * Reducers
   * Example: Expectation: String does not contain "a" or "b"
   * Generalize Towards(Zero) reducer.
@@ -36,7 +32,6 @@
 * Checkrs Court: Tricky one
 
 ### Tests Current Focus
-* fix Gathering Evidence reports (labels not aligned)
 * DuplicateKeyWriteGuardForPoolTraces
 
 ### Skipped Tests (4)

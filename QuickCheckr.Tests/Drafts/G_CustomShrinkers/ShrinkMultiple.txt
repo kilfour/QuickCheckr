@@ -2,15 +2,11 @@
  Test:                    Example
  Location:                ShrinkMultiple.cs:57:1
  Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
-   - Input: counter        = 2
-   - Input: Null Thing One = null
-   - Input: Null Thing Two = null
-   - WARNING: Null value for type 'Thing' at input 'Null Thing One'.
-   - WARNING: Null value for type 'Thing' at input 'Null Thing Two'.
+   - Input: counter = 2
  =======================================
   !! Expectation Failed: counter != 2
  =======================================

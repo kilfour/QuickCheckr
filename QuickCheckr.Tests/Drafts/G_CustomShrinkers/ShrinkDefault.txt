@@ -1,0 +1,17 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkDefault.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
