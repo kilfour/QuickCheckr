@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 [DocLink(typeof(Guide))]
 [DocLink(typeof(TheStashRunsAndExecutions))]
 [DocFileHeader("Checkr-ing Things Out")]
-[DocContent("[Up][Guide] | [Next][TheStashRunsAndExecutions]  \n")]
+[DocContent("[Guide][Guide] | [Next][TheStashRunsAndExecutions]  \n")]
 [DocContent(
 @"A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
@@ -202,7 +202,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     [DocContent("And here's the report:")]
     [DocCodeFile("TimeToAct.txt", "text")]
     [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.")]
-    [DocContent("\n[Up][Guide] | [Next][TheStashRunsAndExecutions]")]
+    [DocContent("\n[Guide][Guide] | [Next][TheStashRunsAndExecutions]")]
     public void TimeToAct()
     {
         var article = TheJournalist.Exposes(() =>

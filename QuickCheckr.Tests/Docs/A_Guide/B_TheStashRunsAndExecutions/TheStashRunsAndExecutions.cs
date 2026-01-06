@@ -18,7 +18,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 [DocLink(typeof(CheckringThingsOut))]
 [DocLink(typeof(ChoosingTheNextMove))]
 [DocFileHeader("The Stash, Runs and Executions")]
-[DocContent("[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  \n")]
+[DocContent("[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  \n")]
 [DocContent(
 @"In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
@@ -143,7 +143,7 @@ And together, they let QuickCheckr explore both *pure input variation* and *mult
 which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
 ")]
-    [DocContent("\n[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]")]
+    [DocContent("\n[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]")]
     // **!! Important !! :** The static factory classes follow the same scoping model:
     // - `Checkr.*` combinators are execution-scoped: they run once per execution and do not persist state.
     // - `Trackr.*` combinators are run-scoped: they hold state that persists across all executions within a run.

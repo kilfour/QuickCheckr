@@ -1,6 +1,8 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickFuzzr;
@@ -11,7 +13,8 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 [DocFile]
 [DocLink(typeof(Guide))]
 [DocLink(typeof(InPoolsWeTrust))]
-[DocContent("[Up][Guide] | [Previous][InPoolsWeTrust]  \n")]
+[DocLink(typeof(GatheringEvidence))]
+[DocContent("[Guide][Guide] | [Previous][InPoolsWeTrust]  \n")]
 [DocContent(
 @"Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
@@ -30,7 +33,7 @@ And here's the domain model:
 [DocExample(typeof(Course))]
 public class BoltingHorses : BaseTest
 {
-    [Fact(Skip = "TEMP DISABLED, FIXING INVISIBLE LIST")]
+    [Fact]
     [DocContent("Our Checkr is composed out of several parts:")]
     [DocContent(
 @"
@@ -67,12 +70,15 @@ And finally here's the system invariant.
     [DocCodeFile("BoltingHorses.txt", "text")]
     [DocContent(
 @"The shrunk case shows exactly how the invariant drifted:  
-A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment."
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.
+
+**Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
+Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     )]
-    [DocContent("\n[Up][Guide] | [Previous][InPoolsWeTrust]")]
+    [DocContent("\n[Guide][Guide] | [Previous][InPoolsWeTrust]")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun()));
+        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(), a => a with { ReportMode = a.ReportMode & ~ReportMode.Warning }));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);
         Verify(article);
@@ -86,35 +92,35 @@ A coach was assigned while suitable, then a course's required skills changed, in
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(4, article.Total().PoolTraces());
         Assert.Equal(6, article.Total().PassedExpectations());
-        Assert.Equal(21, article.ShrinkCount);
-        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(14, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Store Course", article.Execution(1).PoolTrace(1).Read().Label);
-        Assert.Equal("Course-2", article.Execution(1).PoolTrace(1).Read().Value);
-        Assert.Equal(5, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Course-1", article.Execution(1).PoolTrace(1).Read().Value);
+        Assert.Equal(4, article.Execution(2).Read().ExecutionId);
         Assert.Equal("Create Coach", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Store Coach", article.Execution(2).PoolTrace(1).Read().Label);
-        Assert.Equal("Coach-2", article.Execution(2).PoolTrace(1).Read().Value);
-        Assert.Equal(11, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Coach-1", article.Execution(2).PoolTrace(1).Read().Value);
+        Assert.Equal(10, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Assign Coach to Course", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("(Coach, Course) to Assign", article.Execution(3).PoolTrace(1).Read().Label);
-        Assert.Equal("( Coach-2, Course-2 )", article.Execution(3).PoolTrace(1).Read().Value);
-        Assert.Equal(19, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("( Coach-1, Course-1 )", article.Execution(3).PoolTrace(1).Read().Value);
+        Assert.Equal(13, article.Execution(4).Read().ExecutionId);
         Assert.Equal("Update Course Skills", article.Execution(4).Action(1).Read().Label);
         Assert.Equal("Course Skills", article.Execution(4).Input(1).Read().Label);
         Assert.Equal("[ _ ]", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Course to Update Skills", article.Execution(4).PoolTrace(1).Read().Label);
-        Assert.Equal("Course-2", article.Execution(4).PoolTrace(1).Read().Value);
+        Assert.Equal("Course-1", article.Execution(4).PoolTrace(1).Read().Value);
         Assert.Equal("Course Name Set", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(2).Read().Label);
-        Assert.Equal(18, article.PassedExpectation(2).Read().TimesPassed);
+        Assert.Equal(12, article.PassedExpectation(2).Read().TimesPassed);
         Assert.Equal("Coach Name is set", article.PassedExpectation(3).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(3).Read().TimesPassed);
+        Assert.Equal(4, article.PassedExpectation(3).Read().TimesPassed);
         Assert.Equal("Coach Skills Set", article.PassedExpectation(4).Read().Label);
-        Assert.Equal(3, article.PassedExpectation(4).Read().TimesPassed);
+        Assert.Equal(2, article.PassedExpectation(4).Read().TimesPassed);
         Assert.Equal("Coach is assigned", article.PassedExpectation(5).Read().Label);
-        Assert.Equal(5, article.PassedExpectation(5).Read().TimesPassed);
+        Assert.Equal(2, article.PassedExpectation(5).Read().TimesPassed);
         Assert.Equal("Course Required Skills Set", article.PassedExpectation(6).Read().Label);
         Assert.Equal(1, article.PassedExpectation(6).Read().TimesPassed);
     }
@@ -188,11 +194,11 @@ A coach was assigned while suitable, then a course's required skills changed, in
         from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
         from operations in Checkr.OneOfWhen(
             // Create up to 10 coaches.
-            Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
+            Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
             // Maybe update existing coaches. Pick a random coach from the pool.
             Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
             // Create up to 5 courses.
-            Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
+            Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
             // Maybe update existing courses. Pick a random course from the pool.
             Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
             // Maybe assign a coach, if there exists a combination for which the predicate holds.

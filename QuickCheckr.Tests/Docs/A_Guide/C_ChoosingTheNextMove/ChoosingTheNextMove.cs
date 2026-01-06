@@ -15,7 +15,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 [DocLink(typeof(TheStashRunsAndExecutions))]
 [DocLink(typeof(InPoolsWeTrust))]
 [DocFileHeader("Choosing the Next Move")]
-[DocContent("[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  \n")]
+[DocContent("[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  \n")]
 [DocContent(
 @$"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
@@ -162,7 +162,7 @@ For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.")]
-    [DocContent("\n[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]")]
+    [DocContent("\n[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]")]
     public void RunTest_Conditional()
     {
         var article = TheJournalist.Exposes(() =>

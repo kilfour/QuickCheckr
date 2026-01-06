@@ -1,30 +1,30 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:75:1
- Original failing run:    19 executions
- Minimal failing case:    4 executions (after 21 shrinks)
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:76:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = Course-2
+   -  Pool: Store Course = Course-1
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = Coach-2
+   -  Pool: Store Coach = Coach-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-1, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to Update Skills = Course-2
+   -  Pool: Course to Update Skills = Course-1
    - Input: Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Course Name Set: 5x
- - Assigned Coach Must Be Suitable: 18x
- - Coach Name is set: 5x
- - Coach Skills Set: 3x
- - Coach is assigned: 5x
+ - Course Name Set: 4x
+ - Assigned Coach Must Be Suitable: 12x
+ - Coach Name is set: 4x
+ - Coach Skills Set: 2x
+ - Coach is assigned: 2x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
