@@ -20,26 +20,26 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
                     var shrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
                         .Many(optionFuzzr.Times)(state.FuzzrState).Value.Cast<object>();
                     var clues = new CustomShrinkStrategy(a => shrinker).Shrink(state, check, info);
-                    if (clues.Any())
+                    if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
                         return clues;
                 }
 
                 if (option is IShrinkOptionFunction optionCustom)
                 {
                     var clues = new CustomShrinkStrategy(optionCustom.GetFunction()).Shrink(state, check, info);
-                    if (clues.Any())
+                    if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
                         return clues;
                 }
 
                 if (option is IShrinkOptionDefault)
                 {
                     var clues = new ShrinkStrategyPickerDefault().Shrink(state, check, info);
-                    if (clues.Any(a => a.Strategy != "CantShrinkNull"))
+                    if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
                         return clues;
                 }
             }
-            var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
-                    info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Ignore<CustomShrinkStrategy>(
+                    info.ExecutionId, info.FullKey, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
