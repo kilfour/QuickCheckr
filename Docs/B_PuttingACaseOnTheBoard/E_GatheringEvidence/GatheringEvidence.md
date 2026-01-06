@@ -57,9 +57,7 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name",
-            from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}",
-            Shrink.None<string>)
+        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Shrink.None<string>)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach)
@@ -67,14 +65,11 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
-            from skills in Checkr.Input("Coach Skills"
-                , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
-                , () =>
-                    [ Shrink.Default<IEnumerable<string>>()
-                    , Shrink.Collection([[.. coach.Value.Skills]])
-                    ]
-                , Reduce.Values<IEnumerable<string>>([[], [.. coach.Value.Skills]])
-                )
+            from skills in Checkr.Input("Coach Skills", SkillFuzzr.Many
+                , () => [
+                    Shrink.Default<IEnumerable<string>>(),
+                    Shrink.Collection([[.. coach.Value.Skills]]) ]
+                , Reduce.Values<IEnumerable<string>>([[], [.. coach.Value.Skills]]))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",
@@ -83,9 +78,7 @@ public class GatheringEvidenceCheckr
             select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCourse =
-        from name in Checkr.Input("Course Name",
-            from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}",
-            Shrink.None<string>)
+        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Shrink.None<string>)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course)
@@ -93,7 +86,7 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
-            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3))
+            from skills in Checkr.Input("Course Skills", SkillFuzzr.Many)
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.Value.UpdateRequiredSkills(skills))
             from checkSkills in Checkr.Expect("Course Required Skills Set",
@@ -103,8 +96,12 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
         (coach, course) =>
-            from assign in Checkr.Act("Assign Coach to Course", () => course.Value.AssignCoach(coach.Value))
-            from isAssigned in Checkr.Expect("Coach is assigned", () => course.Value.AssignedCoach == coach.Value)
+            from assign in Checkr.Act("Assign Coach to Course",
+                () => course.Value.AssignCoach(coach.Value))
+            from isAssigned in Checkr.Expect("Coach is assigned",
+                () => course.Value.AssignedCoach == coach.Value)
+            from hasCourse in Checkr.Expect("Coach has Course",
+                () => coach.Value.AssignedCourses.Contains(course.Value))
             select Case.Closed;
 
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
@@ -115,75 +112,77 @@ public class GatheringEvidenceCheckr
 }
 ```
 Running the Checkr using the code snippet at the top of this file, consistently results in five different reports.  
-For the code on display here, running this checkr using the code snippet at the top of this file, 
+For the code on display here, running this checkr using the code snippet at the top of this doc, 
 consistently results in two different reports.  
 ```text
 ------------------------------------------------------------
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 9 shrinks)
- Seed:                    642429104
- ------------------------------------------------------------
-  Executed: Create Coach
-   - Store Coach = Coach-1
+ Original failing run:    10 executions
+ Minimal failing case:    4 executions (after 11 shrinks)
+ Seed:                    1652806413
  ------------------------------------------------------------
   Executed: Create Course
-   - Store Course = Course-2
+   - Store Course = Course-1
+ ------------------------------------------------------------
+  Executed: Create Coach
+   - Store Coach = Coach-3
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - (Coach, Course) to Assign = ( Coach-1, Course-2 )
+   - (Coach, Course) to Assign = ( Coach-3, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   - Course to Update Skills = Course-2
+   - Course to Update Skills = Course-1
    - Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Coach Name is set: 2x
- - Assigned Coach Must Be Suitable: 8x
+ - Coach Name is set: 3x
  - Coach Skills Set: 2x
- - Course Name Set: 2x
- - Coach is assigned: 2x
- - Course Required Skills Set: 1x
+ - Course Name Set: 1x
+ - Course Required Skills Set: 3x
+ - Coach is assigned: 1x
+ - Coach has Course: 1x
+ - Assigned Coach Must Be Suitable: 1x
  ------------------------------------------------------------
 ```
 ```text
 ------------------------------------------------------------
- Original failing run:    13 executions
+ Original failing run:    12 executions
  Minimal failing case:    6 executions (after 11 shrinks)
- Seed:                    524889622
- ------------------------------------------------------------
-  Executed: Create Coach
-   - Store Coach = Coach-1
+ Seed:                    414682113
  ------------------------------------------------------------
   Executed: Create Course
    - Store Course = Course-1
  ------------------------------------------------------------
-  Executed: Update Coach Skills
-   - Coach to Update Skills = Coach-1
-   - Coach Skills           = [ "SQL" ]
- ------------------------------------------------------------
   Executed: Update Course Skills
    - Course to Update Skills = Course-1
-   - Course Skills           = [ "SQL" ]
+   - Course Skills           = [ "EF Core" ]
  ------------------------------------------------------------
-  Executed: Assign Coach to Course
-   - (Coach, Course) to Assign = ( Coach-1, Course-1 )
+  Executed: Create Coach
+   - Store Coach = Coach-2
  ------------------------------------------------------------
   Executed: Update Coach Skills
-   - Coach to Update Skills = Coach-1
-   - Coach Skills           = [ "C#" ]
+   - Coach to Update Skills = Coach-2
+   - Coach Skills           = [ "EF Core" ]
+ ------------------------------------------------------------
+  Executed: Assign Coach to Course
+   - (Coach, Course) to Assign = ( Coach-2, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   - Coach to Update Skills = Coach-2
+   - Coach Skills           = [ "TDD" ]
      Redux                    [ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Coach Name is set: 2x
- - Assigned Coach Must Be Suitable: 12x
  - Course Name Set: 2x
- - Course Required Skills Set: 4x
- - Coach is assigned: 2x
- - Coach Skills Set: 3x
+ - Coach Name is set: 2x
+ - Course Required Skills Set: 2x
+ - Coach is assigned: 4x
+ - Coach has Course: 4x
+ - Assigned Coach Must Be Suitable: 6x
+ - Coach Skills Set: 2x
  ------------------------------------------------------------
 ```
 

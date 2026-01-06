@@ -1,28 +1,29 @@
  ------------------------------------------------------------
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 9 shrinks)
- Seed:                    642429104
- ------------------------------------------------------------
-  Executed: Create Coach
-   - Store Coach = Coach-1
+ Original failing run:    10 executions
+ Minimal failing case:    4 executions (after 11 shrinks)
+ Seed:                    1652806413
  ------------------------------------------------------------
   Executed: Create Course
-   - Store Course = Course-2
+   - Store Course = Course-1
+ ------------------------------------------------------------
+  Executed: Create Coach
+   - Store Coach = Coach-3
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   - (Coach, Course) to Assign = ( Coach-1, Course-2 )
+   - (Coach, Course) to Assign = ( Coach-3, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   - Course to Update Skills = Course-2
+   - Course to Update Skills = Course-1
    - Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Coach Name is set: 2x
- - Assigned Coach Must Be Suitable: 8x
+ - Coach Name is set: 3x
  - Coach Skills Set: 2x
- - Course Name Set: 2x
- - Coach is assigned: 2x
- - Course Required Skills Set: 1x
+ - Course Name Set: 1x
+ - Course Required Skills Set: 3x
+ - Coach is assigned: 1x
+ - Coach has Course: 1x
+ - Assigned Coach Must Be Suitable: 1x
  ------------------------------------------------------------

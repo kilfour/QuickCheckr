@@ -1,16 +1,11 @@
 ## Current Version: 0.0.7: In Pools We Trust
-* Fixed bug in Combined Pool candidate selection. Which surfaced another problem:
-  * Damn, had to do multiple execution shrinking passes again.
 * The Case of the Invisible List.
   * add to on shrinking after irrelevant list example
   * explain warning, add fix: Shrinkr.For([1])
-* Fix BoltingHorses Example, Link to Evidence Gathering
-* Re-use BoltingHorses in Evidence Gathering, Link to The case of the invisible list
-* loose the params in shrink.values
+
 
 ### Current Focus
 * Refactor the Tests: SystemTypes.cs
-* Fix input reporting when not shrinking.
 * Reducers
   * Example: Expectation: String does not contain "a" or "b"
   * Generalize Towards(Zero) reducer.
@@ -23,6 +18,9 @@
 * Report: Execution section: Better label alignment.
 * Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
 * Added Input overloads taking Custom Shrinker(s) as extra argument.
+* FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
+* FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
+* CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
 
 ### Doing/Ongoing
 * Refactor the Tests:
@@ -44,7 +42,7 @@
 ### Skipped Tests (4)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
   Might get removed.
-* GatheringEvidence: Touches the file system.
+* 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
@@ -102,6 +100,7 @@
   Should be a lot easier than before
   
 ## Refactoring Targets 
+* Try to remove multiple execution shrinking passes.
 * InputReducer: remove Introduce.This Hack
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue

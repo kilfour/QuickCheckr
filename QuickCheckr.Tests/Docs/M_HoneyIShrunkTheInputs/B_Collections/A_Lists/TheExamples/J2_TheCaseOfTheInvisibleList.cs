@@ -24,7 +24,9 @@ public class J2_TheCaseOfTheInvisibleList : CheckrTest<J2_TheCaseOfTheInvisibleL
         from thing in Trackr.Stashed(() => new Thing())
         from ints in Checkr.Input("ints",
             Fuzzr.Int().Many(2),
-            () => [Shrink.Collection<int>([thing.Ints])], // adding default before fails the test !!
+            () => [
+                Shrink.Default<IEnumerable<int>>(),
+                Shrink.Collection([thing.Ints])],
             Reduce.Values([[], thing.Ints]))
         from act in Checkr.Act("change", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
