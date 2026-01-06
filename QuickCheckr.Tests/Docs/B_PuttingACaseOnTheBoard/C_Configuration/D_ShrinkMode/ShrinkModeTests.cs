@@ -56,19 +56,19 @@ public class ShrinkModeTests : BaseTest
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal(1, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("1", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal(13, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal("13", article.Execution(1).Input(2).Read().Value);
         Assert.Equal(2, article.Execution(2).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(2).Input(1).Read().Label);
-        Assert.Equal(2, article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("2", article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(2).Input(2).Read().Label);
-        Assert.Equal(5, article.Execution(2).Input(2).Read().Value);
+        Assert.Equal("5", article.Execution(2).Input(2).Read().Value);
         Assert.Equal(3, article.Execution(3).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(3).Input(1).Read().Label);
-        Assert.Equal(3, article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("3", article.Execution(3).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(3).Input(2).Read().Label);
-        Assert.Equal(8, article.Execution(3).Input(2).Read().Value);
+        Assert.Equal("8", article.Execution(3).Input(2).Read().Value);
         Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
         Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
 
@@ -101,12 +101,11 @@ public class ShrinkModeTests : BaseTest
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(3, article.Execution(1).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal(3, article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal(8, article.Execution(1).Input(2).Read().Value);
+        Assert.Equal("8", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Counter does not equal 3", article.PassedExpectation(1).Read().Label);
         Assert.Equal(2, article.PassedExpectation(1).Read().TimesPassed);
-
     }
 
     [CodeExample]
