@@ -37,3 +37,6 @@ public record ShrinkOptionFunction<T>(Func<T, IEnumerable<T>> Shrinker) : Shrink
 
 public interface IShrinkOptionDefault;
 public record ShrinkOptionDefault<T>() : ShrinkOption<T>, IShrinkOptionDefault;
+
+public interface IShrinkOptionNone;
+public record ShrinkOptionNone<T>() : ShrinkOption<T>, IShrinkOptionNone;
