@@ -68,6 +68,7 @@ public class EvidenceRecorder
                 failedOnWrongExecutionId = true;
             return;
         }
+        if (runFailed) return; // Stop on First Expectation Failed
         FailingExpectation = key;
         failingExecutionId = executionId;
         runFailed = true;
