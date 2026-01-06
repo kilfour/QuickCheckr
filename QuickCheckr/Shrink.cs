@@ -8,7 +8,7 @@ public static class Shrink
     public static ShrinkOption<T> Fuzzr<T>(FuzzrOf<T> fuzzr, int times = 10)
         => new ShrinkOptionFuzzr<T>(fuzzr, times);
 
-    public static ShrinkOption<T> Values<T>(params T[] values)
+    public static ShrinkOption<T> Values<T>(T[] values)
         => new ShrinkOptionFunction<T>(_ => values);
 
     public static ShrinkOption<IEnumerable<T>> Collection<T>(IEnumerable<T>[] values)

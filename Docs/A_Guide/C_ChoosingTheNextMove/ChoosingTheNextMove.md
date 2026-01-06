@@ -1,5 +1,5 @@
 # Choosing the Next Move
-[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
   
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
@@ -141,7 +141,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.  
 
-[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
 
 [Guide]: ../Guide.md
 

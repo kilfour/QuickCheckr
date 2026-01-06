@@ -9,10 +9,10 @@ namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers;
 public class ShrinkMultiple : CheckrTest<ShrinkMultiple>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explanation => false;
 
-    [Fact]
+    [Fact(Skip = "WIP")]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
@@ -27,11 +27,11 @@ public class ShrinkMultiple : CheckrTest<ShrinkMultiple>
             Fuzzr.Constant<Thing>(null!),
             // The second one will remove this value from the report.
             // The first one will still emit a warning.
-            () => [Shrink.Default<Thing>(), Shrink.Values(new Thing())])
+            () => [Shrink.Default<Thing>(), Shrink.Values([new Thing()])])
         from thingTwo in Checkr.Input("Null Thing Two",
             Fuzzr.Constant<Thing>(null!),
             // Now the first one will shortcircuit shrinking, so no warning from the second one.
-            () => [Shrink.Values(new Thing()), Shrink.Default<Thing>()])
+            () => [Shrink.Values([new Thing()]), Shrink.Default<Thing>()])
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

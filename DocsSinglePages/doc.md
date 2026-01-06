@@ -28,7 +28,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
 
 [BoltingHorses]: #bolting-horses
 ### Checkr-ing Things Out
-[Up][Guide] | [Next][TheStashRunsAndExecutions]  
+[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
   
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
@@ -194,13 +194,13 @@ And here's the report:
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
-[Up][Guide] | [Next][TheStashRunsAndExecutions]  
+[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
 
 [Guide]: #guide
 
 [TheStashRunsAndExecutions]: #the-stash-runs-and-executions
 ### The Stash, Runs and Executions
-[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
   
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
@@ -319,7 +319,7 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
-[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
 
 [InPoolsWeTrust]: #in-pools-we-trust
 
@@ -329,7 +329,7 @@ the failure only emerges when several executions act on the *same* object.
 
 [ChoosingTheNextMove]: #choosing-the-next-move
 ### Choosing the Next Move
-[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
   
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
@@ -471,7 +471,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.  
 
-[Up][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
 
 [Guide]: #guide
 
@@ -479,7 +479,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 
 [InPoolsWeTrust]: #in-pools-we-trust
 ### In Pools We Trust
-[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
   
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
@@ -609,7 +609,7 @@ public class Rolodex
  ------------------------------------------------------------
 ```
 
-[Up][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
+[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
 
 [Guide]: #guide
 
@@ -617,7 +617,7 @@ public class Rolodex
 
 [BoltingHorses]: #bolting-horses
 ### Bolting Horses
-[Up][Guide] | [Previous][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][InPoolsWeTrust]  
   
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
@@ -685,11 +685,11 @@ public static readonly CheckrOf<Case> TheCheckr =
     from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
-        Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
+        Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
         // Maybe update existing coaches. Pick a random coach from the pool.
         Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
         // Create up to 5 courses.
-        Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
+        Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
         Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
@@ -762,43 +762,48 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:75:1
- Original failing run:    19 executions
- Minimal failing case:    4 executions (after 21 shrinks)
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:76:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = Course-2
+   -  Pool: Store Course = Course-1
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = Coach-2
+   -  Pool: Store Coach = Coach-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-1, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to Update Skills = Course-2
+   -  Pool: Course to Update Skills = Course-1
    - Input: Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Course Name Set: 5x
- - Assigned Coach Must Be Suitable: 18x
- - Coach Name is set: 5x
- - Coach Skills Set: 3x
- - Coach is assigned: 5x
+ - Course Name Set: 4x
+ - Assigned Coach Must Be Suitable: 12x
+ - Coach Name is set: 4x
+ - Coach Skills Set: 2x
+ - Coach is assigned: 2x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```
 The shrunk case shows exactly how the invariant drifted:  
-A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.
 
-[Up][Guide] | [Previous][InPoolsWeTrust]  
+**Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
+Let me redirect said readers to [Gathering Evidence][GatheringEvidence].  
+
+[Guide][Guide] | [Previous][InPoolsWeTrust]  
 
 [Guide]: #guide
 
 [InPoolsWeTrust]: #in-pools-we-trust
+
+[GatheringEvidence]: #gathering-evidence
 ## Putting a Case on the Board
 This chapter takes you through the different options on how to run, configure and rerun Checkrs.
 It also explains the *Evidence Vault* system and how to gather evidence.
@@ -1443,6 +1448,7 @@ or for documenting the different ways a single bug can manifest.
 
 As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
   
+#### Gathering Evidence Case File Compare
 **Casefiles are considered *not similar* when:**  
 - *Failure Description* is not equal.  
 - *Execution Count* is not equal.  
@@ -1455,168 +1461,157 @@ As stated above, similar CaseFiles are not reported in order to increase the sig
 Per default, the order of Executions does not matter for similarity.  
 An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.  
 #### Show, Don't Tell
-##### The Sut
+As stated in [the guide][Guide] we're going to use the [Bolting Horses][BoltingHorses] example,
+to demonstrate how to find all the different ways the invariant can be violated.
+
+So we're using the same model, and *almost* exactly the same Checkr.  
+Changes:
+- Added Shrink.None to the Name inputs. 
+- Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleList]:  
 ```csharp
-public class ContactBook
+public class GatheringEvidenceCheckr
 {
-    private readonly HashSet<string> contacts = [];
-    public IReadOnlyCollection<string> Contacts => contacts;
-    public void Add(string name) => contacts.Add(name);
-    public void Update(string name, string newName)
-    {
-        contacts.Remove(name);
-        Add(newName);
-    }
+    public static CheckrOf<Case> TheCheckr() =>
+        from coaches in Trackr.PoolFor<Coach>()
+        from courses in Trackr.PoolFor<Course>()
+        from operations in Checkr.OneOfWhen(
+            Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
+            Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
+            Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
+            Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
+            Trackr.PoolWhen("(Coach, Course) to Assign",
+                (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+        from invariant in AssignedCoachesMustBeSuitable
+        select Case.Closed;
+
+    private static readonly CheckrOf<Case> CreateCoach =
+        from name in Checkr.Input("Coach Name",
+            from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}",
+            Shrink.None<string>)
+        from coach in Checkr.Act("Create Coach", () => new Coach(name))
+        from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
+        from toPool in Trackr.ToPool("Store Coach", coach)
+        select Case.Closed;
+
+    private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
+        coach =>
+            from skills in Checkr.Input("Coach Skills"
+                , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
+                , () =>
+                    [ Shrink.Default<IEnumerable<string>>()
+                    , Shrink.Collection([[.. coach.Value.Skills]])
+                    ]
+                , Reduce.Values<IEnumerable<string>>([[], [.. coach.Value.Skills]])
+                )
+            from updateSkills in Checkr.Act("Update Coach Skills",
+                () => coach.Value.UpdateSkills(skills))
+            from checkSkills in Checkr.Expect("Coach Skills Set",
+                () => coach.Value.Skills.Count
+                   == skills.Count() && coach.Value.Skills.All(skills.Contains))
+            select Case.Closed;
+
+    private static readonly CheckrOf<Case> CreateCourse =
+        from name in Checkr.Input("Course Name",
+            from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}",
+            Shrink.None<string>)
+        from course in Checkr.Act("Create Course", () => new Course(name))
+        from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
+        from toPool in Trackr.ToPool("Store Course", course)
+        select Case.Closed;
+
+    private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
+        course =>
+            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3))
+            from updateSkills in Checkr.Act("Update Course Skills",
+                () => course.Value.UpdateRequiredSkills(skills))
+            from checkSkills in Checkr.Expect("Course Required Skills Set",
+                () => course.Value.RequiredSkills.Count
+                   == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
+            select Case.Closed;
+
+    private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
+        (coach, course) =>
+            from assign in Checkr.Act("Assign Coach to Course", () => course.Value.AssignCoach(coach.Value))
+            from isAssigned in Checkr.Expect("Coach is assigned", () => course.Value.AssignedCoach == coach.Value)
+            select Case.Closed;
+
+    private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
+        from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
+            coach => coach.AssignedCourses.Any(),
+            coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
+        select Case.Closed;
 }
 ```
-##### The Checkr
-```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from names in Trackr.PoolFor<string>()
-    from operations in Checkr.OneOfWhen(
-        // Add a Contact
-        Trackr.PoolWhen<string>(a => a.Count() < 10,
-            from name in Checkr.Input("Name", NameFuzzr)
-            from add in Checkr.Act("Add", () => contactBook.Add(name))
-            from storeName in Trackr.ToPool("Name", name)
-            select Case.Closed),
-        // Update a Contact
-        Trackr.PoolWhen<string>(a => a.Any(),
-            from newName in Checkr.Input("New Name", NameFuzzr)
-            from pool in Trackr.OneOfPool<string>("Name to update",
-                nameToUpdate =>
-                    from update in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                    from updatePool in nameToUpdate.Replace(newName)
-                    select Case.Closed)
-            select Case.Closed))
-        // Contrived Expectation, ... it's only a model.
-    from count in Trackr.PoolExpect<string>("Count matches",
-        elements => elements.Count() == contactBook.Contacts.Count)
-    select Case.Closed;
-```
-For the code on display here, running this checkr using the code snippet at the top of this file, consistently results in five different reports.  
-```text
-------------------------------------------------------------
- Original failing run:    8 executions
- Minimal failing case:    5 executions (after 6 shrinks)
- Seed:                    144924357
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-2
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-3
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-3
-   - Input: New Name = "Paul Starr"
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-2
-   - Input: New Name = "Paul Starr"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 7x
- ------------------------------------------------------------
-```
-```text
-------------------------------------------------------------
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    702299080
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
-   - Input: Name = "Ringo Lennon"
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-5
-   - Input: Name = "Ringo Lennon"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 5x
- ------------------------------------------------------------
-```
+Running the Checkr using the code snippet at the top of this file, consistently results in five different reports.  
+For the code on display here, running this checkr using the code snippet at the top of this file, 
+consistently results in two different reports.  
 ```text
 ------------------------------------------------------------
  Original failing run:    9 executions
- Minimal failing case:    4 executions (after 7 shrinks)
- Seed:                    1364717048
+ Minimal failing case:    4 executions (after 9 shrinks)
+ Seed:                    642429104
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-1
+  Executed: Create Coach
+   - Store Coach = Coach-1
  ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-1
+  Executed: Create Course
+   - Store Course = Course-2
  ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: New Name = "Paul Starr"
+  Executed: Assign Coach to Course
+   - (Coach, Course) to Assign = ( Coach-1, Course-2 )
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-5
-   - Input: Name = "Paul Starr"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
+  Executed: Update Course Skills
+   - Course to Update Skills = Course-2
+   - Course Skills           = [ _ ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
  Passed Expectations
- - Count matches: 8x
+ - Coach Name is set: 2x
+ - Assigned Coach Must Be Suitable: 8x
+ - Coach Skills Set: 2x
+ - Course Name Set: 2x
+ - Coach is assigned: 2x
+ - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```
 ```text
 ------------------------------------------------------------
- Original failing run:    3 executions
- Minimal failing case:    3 executions (after 1 shrink)
- Seed:                    1803941506
+ Original failing run:    13 executions
+ Minimal failing case:    6 executions (after 11 shrinks)
+ Seed:                    524889622
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-1
-   - Input: Name = "George Starr"
+  Executed: Create Coach
+   - Store Coach = Coach-1
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
+  Executed: Create Course
+   - Store Course = Course-1
  ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-2
-   - Input: New Name = "George Starr"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
+  Executed: Update Coach Skills
+   - Coach to Update Skills = Coach-1
+   - Coach Skills           = [ "SQL" ]
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   - Course to Update Skills = Course-1
+   - Course Skills           = [ "SQL" ]
+ ------------------------------------------------------------
+  Executed: Assign Coach to Course
+   - (Coach, Course) to Assign = ( Coach-1, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   - Coach to Update Skills = Coach-1
+   - Coach Skills           = [ "C#" ]
+     Redux                    [ ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
  Passed Expectations
- - Count matches: 2x
- ------------------------------------------------------------
-```
-```text
-------------------------------------------------------------
- Original failing run:    10 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    1887243958
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-1
- ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-2
-   - Input: New Name = "John Starr"
- ------------------------------------------------------------
-  Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: New Name = "John Starr"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
- Passed Expectations
- - Count matches: 9x
+ - Coach Name is set: 2x
+ - Assigned Coach Must Be Suitable: 12x
+ - Course Name Set: 2x
+ - Course Required Skills Set: 4x
+ - Coach is assigned: 2x
+ - Coach Skills Set: 3x
  ------------------------------------------------------------
 ```
 
@@ -1625,6 +1620,12 @@ For the code on display here, running this checkr using the code snippet at the 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
 [TheEvidenceVault]: #the-evidence-vault
+
+[Guide]: #guide
+
+[BoltingHorses]: #bolting-horses
+
+[J_TheCaseOfTheInvisibleList]: #the-case-of-the-invisible-list
 ## On Shrinking
 ### Philosophy
 
@@ -2361,8 +2362,8 @@ Shrinker marks the list as irrelevant, but it is **not**.
 from thing in Trackr.Stashed(() => new Thing())
 from ints in Checkr.Input("ints",
     Fuzzr.Int().Many(2),
-    () => Shrink.Collection(thing.Ints),
-    Reduce.Values([thing.Ints, []]))
+    () => [Shrink.Collection<int>([thing.Ints])], // adding default before fails the test !!
+    Reduce.Values([[], thing.Ints]))
 from act in Checkr.Act("change", () => thing.Ints = [.. ints])
 from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
 select Case.Closed;

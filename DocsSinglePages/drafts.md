@@ -92,11 +92,11 @@ from thingOne in Checkr.Input("Null Thing One",
     Fuzzr.Constant<Thing>(null!),
     // The second one will remove this value from the report.
     // The first one will still emit a warning.
-    () => [Shrink.Default<Thing>(), Shrink.Values(new Thing())])
+    () => [Shrink.Default<Thing>(), Shrink.Values([new Thing()])])
 from thingTwo in Checkr.Input("Null Thing Two",
     Fuzzr.Constant<Thing>(null!),
     // Now the first one will shortcircuit shrinking, so no warning from the second one.
-    () => [Shrink.Values(new Thing()), Shrink.Default<Thing>()])
+    () => [Shrink.Values([new Thing()]), Shrink.Default<Thing>()])
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -107,12 +107,15 @@ select Case.Closed;
  Test:                    Example
  Location:                ShrinkMultiple.cs:57:1
  Original failing run:    2 executions
- Minimal failing case:    1 execution (after 3 shrinks)
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 2
+   - Input: counter        = 2
+   - Input: Null Thing One = null
+   - Input: Null Thing Two = null
    - WARNING: Null value for type 'Thing' at input 'Null Thing One'.
+   - WARNING: Null value for type 'Thing' at input 'Null Thing Two'.
  =======================================
   !! Expectation Failed: counter != 2
  =======================================
@@ -127,7 +130,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Shrink.Values(new Thing()))
+    () => Shrink.Values([new Thing()]))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -643,7 +646,7 @@ public class Thing
 ```csharp
     from thing in Checkr.Input("A thing with a type",
         Fuzzr.Constant(new Thing()),
-        () => Shrink.Values(typeof(string), typeof(double)))
+        () => Shrink.Values([typeof(string), typeof(double)]))
     from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
     select Case.Closed;
 ```

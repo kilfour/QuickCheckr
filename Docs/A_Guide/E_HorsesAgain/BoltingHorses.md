@@ -1,5 +1,5 @@
 # Bolting Horses
-[Up][Guide] | [Previous][InPoolsWeTrust]  
+[Guide][Guide] | [Previous][InPoolsWeTrust]  
   
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
@@ -67,11 +67,11 @@ public static readonly CheckrOf<Case> TheCheckr =
     from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
-        Trackr.PoolWhen<Coach>(a => a.Count() < 10, CreateCoach),
+        Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
         // Maybe update existing coaches. Pick a random coach from the pool.
         Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
         // Create up to 5 courses.
-        Trackr.PoolWhen<Course>(a => a.Count() < 5, CreateCourse),
+        Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
         // Maybe update existing courses. Pick a random course from the pool.
         Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
@@ -144,40 +144,45 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:75:1
- Original failing run:    19 executions
- Minimal failing case:    4 executions (after 21 shrinks)
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:76:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = Course-2
+   -  Pool: Store Course = Course-1
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = Coach-2
+   -  Pool: Store Coach = Coach-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: (Coach, Course) to Assign = ( Coach-2, Course-2 )
+   -  Pool: (Coach, Course) to Assign = ( Coach-1, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to Update Skills = Course-2
+   -  Pool: Course to Update Skills = Course-1
    - Input: Course Skills           = [ _ ]
  ==========================================================
   !! Expectation Failed: Assigned Coach Must Be Suitable
  ==========================================================
  Passed Expectations
- - Course Name Set: 5x
- - Assigned Coach Must Be Suitable: 18x
- - Coach Name is set: 5x
- - Coach Skills Set: 3x
- - Coach is assigned: 5x
+ - Course Name Set: 4x
+ - Assigned Coach Must Be Suitable: 12x
+ - Coach Name is set: 4x
+ - Coach Skills Set: 2x
+ - Coach is assigned: 2x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```
 The shrunk case shows exactly how the invariant drifted:  
-A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.  
+A coach was assigned while suitable, then a course's required skills changed, invalidating that assignment.
 
-[Up][Guide] | [Previous][InPoolsWeTrust]  
+**Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
+Let me redirect said readers to [Gathering Evidence][GatheringEvidence].  
+
+[Guide][Guide] | [Previous][InPoolsWeTrust]  
 
 [Guide]: ../Guide.md
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
+
+[GatheringEvidence]: ../../B_PuttingACaseOnTheBoard/E_GatheringEvidence/GatheringEvidence.md

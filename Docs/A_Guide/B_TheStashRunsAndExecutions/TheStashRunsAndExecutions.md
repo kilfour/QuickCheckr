@@ -1,5 +1,5 @@
 # The Stash, Runs and Executions
-[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
   
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
@@ -118,7 +118,7 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
-[Up][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
+[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
 

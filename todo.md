@@ -6,6 +6,7 @@
   * explain warning, add fix: Shrinkr.For([1])
 * Fix BoltingHorses Example, Link to Evidence Gathering
 * Re-use BoltingHorses in Evidence Gathering, Link to The case of the invisible list
+* loose the params in shrink.values
 
 ### Current Focus
 * Refactor the Tests: SystemTypes.cs
@@ -101,6 +102,7 @@
   Should be a lot easier than before
   
 ## Refactoring Targets 
+* InputReducer: remove Introduce.This Hack
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists

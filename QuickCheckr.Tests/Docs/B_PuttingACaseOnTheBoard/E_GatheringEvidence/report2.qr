@@ -1,18 +1,37 @@
  ------------------------------------------------------------
- Original failing run:    6 executions
- Minimal failing case:    2 executions (after 4 shrinks)
- Seed:                    702299080
+ Original failing run:    13 executions
+ Minimal failing case:    6 executions (after 11 shrinks)
+ Seed:                    524889622
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-2
-   - Input: Name = "Ringo Lennon"
+  Executed: Create Coach
+   - Store Coach = Coach-1
  ------------------------------------------------------------
-  Executed: Add
-   -  Pool: Name = String-5
-   - Input: Name = "Ringo Lennon"
- ========================================
-  !! Expectation Failed: Count matches
- ========================================
+  Executed: Create Course
+   - Store Course = Course-1
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   - Coach to Update Skills = Coach-1
+   - Coach Skills           = [ "SQL" ]
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   - Course to Update Skills = Course-1
+   - Course Skills           = [ "SQL" ]
+ ------------------------------------------------------------
+  Executed: Assign Coach to Course
+   - (Coach, Course) to Assign = ( Coach-1, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   - Coach to Update Skills = Coach-1
+   - Coach Skills           = [ "C#" ]
+     Redux                    [ ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
  Passed Expectations
- - Count matches: 5x
+ - Coach Name is set: 2x
+ - Assigned Coach Must Be Suitable: 12x
+ - Course Name Set: 2x
+ - Course Required Skills Set: 4x
+ - Coach is assigned: 2x
+ - Coach Skills Set: 3x
  ------------------------------------------------------------

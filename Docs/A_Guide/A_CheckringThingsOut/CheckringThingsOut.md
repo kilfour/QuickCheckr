@@ -1,5 +1,5 @@
 # Checkr-ing Things Out
-[Up][Guide] | [Next][TheStashRunsAndExecutions]  
+[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
   
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
@@ -165,7 +165,7 @@ And here's the report:
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
-[Up][Guide] | [Next][TheStashRunsAndExecutions]  
+[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
 
 [Guide]: ../Guide.md
 
