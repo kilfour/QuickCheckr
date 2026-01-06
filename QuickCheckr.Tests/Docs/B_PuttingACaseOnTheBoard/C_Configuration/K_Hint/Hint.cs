@@ -6,16 +6,15 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.K_Hint;
 
-//[DocFile]
 [DocContent(
-@$"In order to avoid having to deal with the configuration all the time, in case you do not like the defaults, for instance,
-it is advised to simply define your own `{nameof(CheckrOf<Case>)}` extension method(s):  
+@$"If you do not like the defaults,
+it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` extension method(s):  
 ")]
 [DocContent("**Fast Deliberation:**")]
 [DocExample(typeof(Hint), nameof(Deliberate))]
 [DocContent("**Auto File:**")]
-[DocExample(typeof(Hint), nameof(RunAndFile))]
-[DocContent("**Knock on some doors:**")]
+[DocExample(typeof(Hint), nameof(FileThis))]
+[DocContent("**Run an Investigation:**")]
 [DocExample(typeof(Hint), nameof(Investigate))]
 [DocContent("You get the idea.")]
 public static class Hint
@@ -28,7 +27,7 @@ public static class Hint
             cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 
     [CodeExample]
-    public static CaseFile RunAndFile(
+    public static CaseFile FileThis(
         this CheckrOf<Case> checkr,
         [CallerFilePath] string filePath = "",
         [CallerMemberName] string testName = "")
