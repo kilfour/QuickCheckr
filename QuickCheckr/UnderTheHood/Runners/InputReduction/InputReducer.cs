@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
+using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputReduction;
 
@@ -27,7 +28,7 @@ public class InputReducer(
                         result = new ReductionResult(false, result.Value!);
                     step = reducer(result);
                 }
-                if (step.Result != clue.Original)
+                if (Introduce.This(step.Result!) != Introduce.This(clue.Original!)) // BIG HACK
                 {
                     shrinkCount++;
                     shortTermMemory.StoreInputRedux(key, State.InputPrinter.IntroduceThis(step.Result!));
