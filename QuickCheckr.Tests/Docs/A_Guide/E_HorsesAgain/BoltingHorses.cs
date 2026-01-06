@@ -113,14 +113,14 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
         Assert.Equal("Course-1", article.Execution(4).PoolTrace(1).Read().Value);
         Assert.Equal("Course Name Set", article.PassedExpectation(1).Read().Label);
         Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
-        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(2).Read().Label);
-        Assert.Equal(12, article.PassedExpectation(2).Read().TimesPassed);
-        Assert.Equal("Coach Name is set", article.PassedExpectation(3).Read().Label);
-        Assert.Equal(4, article.PassedExpectation(3).Read().TimesPassed);
-        Assert.Equal("Coach Skills Set", article.PassedExpectation(4).Read().Label);
+        Assert.Equal("Coach Name is set", article.PassedExpectation(2).Read().Label);
+        Assert.Equal(4, article.PassedExpectation(2).Read().TimesPassed);
+        Assert.Equal("Coach Skills Set", article.PassedExpectation(3).Read().Label);
+        Assert.Equal(2, article.PassedExpectation(3).Read().TimesPassed);
+        Assert.Equal("Coach is assigned", article.PassedExpectation(4).Read().Label);
         Assert.Equal(2, article.PassedExpectation(4).Read().TimesPassed);
-        Assert.Equal("Coach is assigned", article.PassedExpectation(5).Read().Label);
-        Assert.Equal(2, article.PassedExpectation(5).Read().TimesPassed);
+        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(5).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(5).Read().TimesPassed);
         Assert.Equal("Course Required Skills Set", article.PassedExpectation(6).Read().Label);
         Assert.Equal(1, article.PassedExpectation(6).Read().TimesPassed);
     }

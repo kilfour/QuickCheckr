@@ -1,6 +1,7 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
@@ -13,10 +14,10 @@ public static class Compile
         return caseFile;
     }
 
-    public static CaseFile TheCaseFile(Dossier dossier, Memory memory)
+    public static CaseFile TheCaseFile(Dossier dossier, Memory memory, ManOfWealthAndTaste inputPrinter)
     {
         var verdict = Verdict.FromDossier(dossier);
-        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, dossier.ReportMode);
+        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, inputPrinter, dossier.ReportMode);
         AddPassedExpectations(dossier.PassedExpectations, caseFile);
         return caseFile;
     }
@@ -25,9 +26,10 @@ public static class Compile
         Memory memory,
         Verdict verdict,
         bool useMemoryForInputReporting,
+        ManOfWealthAndTaste inputPrinter,
         ReportMode reportMode)
     {
-        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, reportMode);
+        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, inputPrinter, reportMode);
         var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
     }
@@ -42,12 +44,13 @@ public static class Compile
         Memory memory,
         Verdict verdict,
         bool useMemoryForInputReporting,
+        ManOfWealthAndTaste inputPrinter,
         ReportMode reportMode)
     {
         foreach (var (executionId, shortTermMemory) in memory.Entries())
         {
             verdict.AddExecutionDeposition(
-                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, reportMode));
+                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, inputPrinter, reportMode));
         }
     }
 
@@ -55,11 +58,12 @@ public static class Compile
         ExecutionMemory shortTermMemory,
         int executionNumber,
         bool useMemoryForInputReporting,
+        ManOfWealthAndTaste inputPrinter,
         ReportMode reportMode)
     {
         var executionDeposition = new ExecutionDeposition(executionNumber);
         GetActionDepositions(executionDeposition, shortTermMemory);
-        GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, reportMode.HasFlag(ReportMode.Labels));
+        GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, inputPrinter, reportMode.HasFlag(ReportMode.Labels));
         GetPoolTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
         GetTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
         if (reportMode.HasFlag(ReportMode.Warning))
@@ -79,6 +83,7 @@ public static class Compile
         ExecutionDeposition executionDeposition,
         ExecutionMemory executionMemory,
         bool useMemoryForInputReporting,
+        ManOfWealthAndTaste inputPrinter,
         bool labeled)
     {
 
@@ -87,7 +92,7 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, val!, Maybe.Nothing(), Maybe.Nothing()));
+                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val!), Maybe.Nothing(), Maybe.Nothing()));
             }
             return;
         }

@@ -24,7 +24,7 @@ public class A_ExecutionIdMatters : BaseTest
         Assert.Equal(4, article.Total().Executions());
         WriteReport<A_ExecutionIdMatters>(article, false);
         Assert.Equal(4, article.Execution(4).Read().ExecutionId);
-        Assert.Equal("BBB", article.Execution(4).Input(2).Read().Value);
+        Assert.Equal("\"BBB\"", article.Execution(4).Input(2).Read().Value);
     }
 
     [Fact]
