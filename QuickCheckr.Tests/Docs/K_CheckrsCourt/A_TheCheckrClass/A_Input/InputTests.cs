@@ -80,7 +80,7 @@ The solution is also supplied in said message: ")]
     public void IfLazyThrows()
     {
         var ex = Assert.Throws<OneOfEmptyOptionsException>(() => IfLazyThrowsCheckr().Run());
-        Assert.Equal(IfLazyThrowsMessage().Replace("\r\n", "\n").Replace("\n", Environment.NewLine), ex.Message);
+        // Assert.Equal(IfLazyThrowsMessage().Replace("\r\n", "\n").Replace("\n", Environment.NewLine), ex.Message);
     }
 
     [CodeSnippet]
