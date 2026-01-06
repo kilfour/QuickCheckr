@@ -1,4 +1,5 @@
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
+using QuickFuzzr;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 
@@ -26,7 +27,8 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
-            from skills in Checkr.Input("Coach Skills", SkillFuzzr.Many
+            from skills in Checkr.Input("Coach Skills"
+                , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
                 , () => [
                     Shrink.Default<IEnumerable<string>>(),
                     Shrink.Collection([[.. coach.Value.Skills]]) ]
@@ -47,7 +49,8 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
-            from skills in Checkr.Input("Course Skills", SkillFuzzr.Many)
+            from skills in Checkr.Input("Course Skills",
+                Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3))
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.Value.UpdateRequiredSkills(skills))
             from checkSkills in Checkr.Expect("Course Required Skills Set",

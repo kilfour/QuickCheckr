@@ -1,6 +1,5 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
@@ -24,30 +23,15 @@ consistently results in two different reports.")]
 [DocCodeFile("report2.qr", "text")]
 public class GatheringEvidenceShowDontTell : BaseTest
 {
-    [Fact(Skip = "Explicit: Touches the File System.")]
+    [Fact(Skip = "Touches the file system.")]
     public void RunTest()
     {
-        GatheringEvidenceCheckr.TheCheckr().GatherEvidence(1000.Investigations(), 3.Runs(), 20.ExecutionsPerRun(),
+        GatheringEvidenceCheckr.TheCheckr().GatherEvidence(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun(),
             cfg => cfg with
             {
                 FileAs = "GatheringEvidence",
-                // DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount,
-                // ShrinkMode = ShrinkMode.None,
                 ReportMode = cfg.ReportMode & ~ReportMode.Labels,
                 Custodian = Custodian.Local()
             });
-    }
-
-    [Fact(Skip = "DEBUG")]
-    public void Debug()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GatheringEvidenceCheckr.TheCheckr().Run(1451845665, 25.ExecutionsPerRun(),
-                cfg => cfg with { ShrinkMode = ShrinkMode.None }));
-        WriteReport(article, "GatheringEvidenceShowDontTellNone.txt", true);
-
-        article = TheJournalist.Exposes(() =>
-            GatheringEvidenceCheckr.TheCheckr().Run(1451845665, 25.ExecutionsPerRun()));
-        WriteReport(article, "GatheringEvidenceShowDontTellShrunk.txt", true);
     }
 }

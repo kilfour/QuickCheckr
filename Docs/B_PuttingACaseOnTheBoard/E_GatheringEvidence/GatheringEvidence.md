@@ -65,7 +65,8 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
-            from skills in Checkr.Input("Coach Skills", SkillFuzzr.Many
+            from skills in Checkr.Input("Coach Skills"
+                , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
                 , () => [
                     Shrink.Default<IEnumerable<string>>(),
                     Shrink.Collection([[.. coach.Value.Skills]]) ]
@@ -86,7 +87,8 @@ public class GatheringEvidenceCheckr
 
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
         course =>
-            from skills in Checkr.Input("Course Skills", SkillFuzzr.Many)
+            from skills in Checkr.Input("Course Skills",
+                Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3))
             from updateSkills in Checkr.Act("Update Course Skills",
                 () => course.Value.UpdateRequiredSkills(skills))
             from checkSkills in Checkr.Expect("Course Required Skills Set",
@@ -183,6 +185,88 @@ consistently results in two different reports.
  - Coach has Course: 4x
  - Assigned Coach Must Be Suitable: 6x
  - Coach Skills Set: 2x
+ ------------------------------------------------------------
+```
+## An Observation
+When I first implemented this feature, I was quite puzzled.
+Surely there are more ways this Checkr can fail I thought.  
+
+I took a bit of investigating as to why this is not the case. Let me give you an example of what is going on.
+
+If you look at the second report, the one with 6 executions, surely there is a similar case,
+but instead of updating the Coach skills, we update the Course skills and that would also fail.
+Now that's a new way of failing the Checkr, right?
+
+Wrong!  
+
+Below is the report of the other failure (the one with 4 executions) with shrinking disabled,
+but I'll save you the *bit of investigating* and give you a recap:
+- Execution 03: Create Course-1
+- Execution 06: Create Coach-3
+- Execution 07: Update Coach Skills to [ "DomainDrivenDesign", "JavaScript" ]
+- Execution 08: Update Course Skills to [ "DomainDrivenDesign" ]
+- Execution 09: Assign Coach-3 to Course-1
+- Execution 10: Update Course Skills to [ "JavaScript", "TDD", "CI/CD" ]
+
+As you can see, this is exactly the case described above.  
+The Shrinker however managed to collapse that one down to only four executions, so it is in fact covered by the first report.
+  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\B_PuttingACaseOnTheBoard\E_GatheringEvidence\GatheringEvidenceObservation.cs:37:1
+ Original failing run:    10 executions
+ Seed:                    1652806413
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-1
+   - Input: Coach Name  = "Coach-1"
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   -  Pool: Coach to Update Skills = Coach-1
+   - Input: Coach Skills           = [ "ASP.NET" ]
+ ------------------------------------------------------------
+  Executed: Create Course
+   -  Pool: Store Course = Course-1
+   - Input: Course Name  = "Course-1"
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-2
+   - Input: Coach Name  = "Coach-2"
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "UnitTesting" ]
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-3
+   - Input: Coach Name  = "Coach-3"
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   -  Pool: Coach to Update Skills = Coach-3
+   - Input: Coach Skills           = [ "DomainDrivenDesign", "JavaScript" ]
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "DomainDrivenDesign" ]
+ ------------------------------------------------------------
+  Executed: Assign Coach to Course
+   -  Pool: (Coach, Course) to Assign = ( Coach-3, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "JavaScript", "TDD", "CI/CD" ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
+ Passed Expectations
+ - Coach Name is set: 3x
+ - Coach Skills Set: 2x
+ - Course Name Set: 1x
+ - Course Required Skills Set: 3x
+ - Coach is assigned: 1x
+ - Coach has Course: 1x
+ - Assigned Coach Must Be Suitable: 1x
  ------------------------------------------------------------
 ```
 

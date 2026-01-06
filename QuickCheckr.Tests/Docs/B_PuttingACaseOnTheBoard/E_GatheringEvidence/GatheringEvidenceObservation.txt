@@ -1,0 +1,56 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\B_PuttingACaseOnTheBoard\E_GatheringEvidence\GatheringEvidenceObservation.cs:37:1
+ Original failing run:    10 executions
+ Seed:                    1652806413
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-1
+   - Input: Coach Name  = "Coach-1"
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   -  Pool: Coach to Update Skills = Coach-1
+   - Input: Coach Skills           = [ "ASP.NET" ]
+ ------------------------------------------------------------
+  Executed: Create Course
+   -  Pool: Store Course = Course-1
+   - Input: Course Name  = "Course-1"
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-2
+   - Input: Coach Name  = "Coach-2"
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "UnitTesting" ]
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: Store Coach = Coach-3
+   - Input: Coach Name  = "Coach-3"
+ ------------------------------------------------------------
+  Executed: Update Coach Skills
+   -  Pool: Coach to Update Skills = Coach-3
+   - Input: Coach Skills           = [ "DomainDrivenDesign", "JavaScript" ]
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "DomainDrivenDesign" ]
+ ------------------------------------------------------------
+  Executed: Assign Coach to Course
+   -  Pool: (Coach, Course) to Assign = ( Coach-3, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Course to Update Skills = Course-1
+   - Input: Course Skills           = [ "JavaScript", "TDD", "CI/CD" ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+ ==========================================================
+ Passed Expectations
+ - Coach Name is set: 3x
+ - Coach Skills Set: 2x
+ - Course Name Set: 1x
+ - Course Required Skills Set: 3x
+ - Coach is assigned: 1x
+ - Coach has Course: 1x
+ - Assigned Coach Must Be Suitable: 1x
+ ------------------------------------------------------------

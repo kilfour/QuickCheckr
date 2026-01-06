@@ -32,6 +32,7 @@ As stated above, similar CaseFiles are not reported in order to increase the sig
 ")]
 [DocInclude(typeof(GatheringEvidenceCaseFileCompare))]
 [DocInclude(typeof(GatheringEvidenceShowDontTell))]
+[DocInclude(typeof(GatheringEvidenceObservation))]
 [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]
 public class GatheringEvidence
 {
