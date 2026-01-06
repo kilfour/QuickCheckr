@@ -32,7 +32,7 @@ public class InputTests
     public void IfItThrows()
     {
         var ex = Assert.Throws<InputFuzzrThrewException>(() => IfItThrowsCheckr().Run());
-        Assert.Equal(IfItThrowsMessage(), ex.Message);
+        Assert.Equal(IfItThrowsMessage().Replace("\r\n", Environment.NewLine), ex.Message);
         Assert.IsType<OneOfEmptyOptionsException>(ex.InnerException);
     }
 
@@ -80,7 +80,7 @@ The solution is also supplied in said message: ")]
     public void IfLazyThrows()
     {
         var ex = Assert.Throws<OneOfEmptyOptionsException>(() => IfLazyThrowsCheckr().Run());
-        Assert.Equal(IfLazyThrowsMessage(), ex.Message);
+        Assert.Equal(IfLazyThrowsMessage().Replace("\r\n", Environment.NewLine), ex.Message);
     }
 
     [CodeSnippet]
