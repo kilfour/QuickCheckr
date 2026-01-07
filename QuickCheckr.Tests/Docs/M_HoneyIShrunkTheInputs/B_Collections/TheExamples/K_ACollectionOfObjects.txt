@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                K_AListOfObjects.cs:48:1
+ Location:                K_ACollectionOfObjects.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    849984174

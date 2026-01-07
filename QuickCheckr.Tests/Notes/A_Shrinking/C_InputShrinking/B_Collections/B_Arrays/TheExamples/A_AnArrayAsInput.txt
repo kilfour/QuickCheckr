@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_AnArrayAsInput.cs:65:1
+ Location:                A_AnArrayAsInput.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    27506614

@@ -12,6 +12,8 @@ namespace QuickCheckr.Tests.Tools;
 
 public abstract class CheckrTest<T>
 {
+    private readonly bool writeAllReportsToDisk = false;
+
     public class DocBoldHeaderAttribute(string header) :
         DocContentAttribute($"\n**{header}:**");
 
@@ -38,7 +40,6 @@ public abstract class CheckrTest<T>
     protected abstract CheckrOf<Case> TheCheckr();
     protected abstract void Verify(Article article);
 
-    private readonly bool writeAllReportsToDisk = false;
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
