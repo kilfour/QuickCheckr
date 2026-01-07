@@ -1,6 +1,6 @@
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 using QuickCheckr.Tests.Drafts.K_CheckrsCourt.A_TheCheckrClass;
 using QuickCheckr.Tests.Drafts.K_CheckrsCourt.B_TheTrackerClass;
-using QuickCheckr.Tests.Drafts.K_CheckrsCourt.C_TheShowrClass;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.K_CheckrsCourt;

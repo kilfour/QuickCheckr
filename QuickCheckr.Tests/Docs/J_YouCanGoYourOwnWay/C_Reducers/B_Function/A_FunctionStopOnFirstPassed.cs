@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers.B_Function;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.B_Function;
 
 [DocFile]
 public class A_FunctionStopOnFirstPassed : CheckrTest<A_FunctionStopOnFirstPassed>

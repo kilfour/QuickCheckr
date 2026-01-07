@@ -12,7 +12,7 @@ to demonstrate how to find all the different ways the invariant can be violated.
 So we're using the same model, and *almost* exactly the same Checkr.  
 Changes:
 - Added Shrink.None to the Name inputs. 
-- Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleList]:")]
+- Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:")]
 [DocCodeFile("GatheringEvidenceCheckr.cs", "csharp", 4)]
 [DocContent(
 @"For the code on display here, running this checkr using the code snippet at the top of this doc, 

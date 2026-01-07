@@ -91,7 +91,7 @@ either the final state satisfies all verifications or it doesn't.")]
         public int Roll() => new Random().Next(1, 7);
     }
 
-    [CodeRemove("from cnt in Trackr.Perform(() => ++cell.Value)")]
+    [CodeRemove("from cnt in Checkr.Perform(() => ++cell.Value)")]
     [CodeSnippet]
     [CodeRemove("return")]
     private static CheckrOf<Case> GetCheckr_Fixed(Cell<int> cell)

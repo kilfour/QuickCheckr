@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkers.Sub;
 
 [DocFile]
-public class ShrinkFuzzr : CheckrTest<ShrinkFuzzr>
+public class ShrinkFunction : CheckrTest<ShrinkFunction>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -22,7 +22,10 @@ public class ShrinkFuzzr : CheckrTest<ShrinkFuzzr>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-        from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+        from thing in Checkr.Input("Null Thing",
+            Fuzzr.Constant<Thing>(null!),
+            // The lamda argument is the original Input value
+            () => Shrink.Function((Thing a) => [new Thing()]))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

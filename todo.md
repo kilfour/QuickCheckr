@@ -2,9 +2,23 @@
 
 ### Current Focus
 * Reducers
-  * Check out Object Reducers
+  * Demonstrate Object Reducers 
+    * Just show the pattern, no need for new implementation
+      Split objects into different Inputs
+* Doc Weak Spots
+  * Polish the guide a bit more
+    * Better examples for :
+      * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
+      * InPoolsWeTrust: expectation is a bit contrived
+  * Running a Checkr
+    * Maybe consilidate Test Framework Integration into this one
+    * Needs a story
 
-### Ready for Changelog after review
+### Ongoing
+* Refactor the Tests:
+  * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
+
+### Done/Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
 * Added ReportMode.Labeled (default enabled)
 * Showr.ForInputs
@@ -17,28 +31,7 @@
 * Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
 * Added Input overloads taking a *Reducer* as extra argument.
 
-### Doing/Ongoing
-* Refactor the Tests:
-  * one checkr per file (basetest done, implemented for some, ongoing, boyscout rule)
-  * find pattern for other tests
-
-### Doc Current Focus 
-* Polish the guide a bit more
-  * Better examples for :
-    * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
-    * InPoolsWeTrust: expectation is a bit contrived
-* New Chapter: Honey I Shrunk the Inputs, consolidate all shrinking examples from notes
-
-### Tests Current Focus
-* DuplicateKeyWriteGuardForPoolTraces
-
-### Skipped Tests (4)
-* 2 for Configuration InternalAffairs: Work in progress, not too important right now.
-  Might get removed.
-* 2 for GatheringEvidence: Touches the file system.
-* TheBroadcasterTests: Explicit experimental.
-
-## 0.0.8: You Can Go Your Own Way
+## Next version: 0.0.8: You Can Go Your Own Way
 * Warning Modes ?
 * Hey Deskofficer, give me three reports different reports with one execution, ASAP !
 * Look into different collection shrinking:
@@ -46,12 +39,13 @@
   * Known issues
   * Workarounds. 
   * Try dictionaries first maybe, and see what pops up. 
-* Play more pool.
+* Play more pool. Not really needed I reckon, but you know, making sure ...
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
 
 ## 0.0.8+
+* Try to remember the cool idea you had for Custom Custodians ;-)
 * dotnet new checkr templates
   * minimal
   * for newbies
@@ -61,7 +55,7 @@
   * Composable policies
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
-    * alternative: example in cookbook using subclasses or composition
+    * alternative: example in cookbook using subclasses or composition <= THIS
 * Stabilize + Doc InternalAffairs
   * not using these anymore: only need them when there's a shrinking bug, so maybe hide them completely
 
@@ -71,6 +65,12 @@
 ## 0.1.0++
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
+### Skipped Tests (4)
+* 2 for Configuration InternalAffairs: Work in progress, not too important right now.
+  Might get removed.
+* 2 for GatheringEvidence: Touches the file system.
+* TheBroadcasterTests: Explicit experimental.
+
 ## Future Doc Work
 * Checkrs Court: Tricky one
 * Prepare demo talk(s)
@@ -78,9 +78,8 @@
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
-  * statefull list maybe
-  * Scheduling: Non-overlapping bookings that do overlap, needs explanation
-* Find a home for the Parsing Numbers Example
+  * statefull list, ... maybe
+  * ParsingNumbers, right after scheduling
 
 ## Ideas
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
@@ -92,6 +91,7 @@
 * Maybe retrieve line number of failed Expectation (perf ?)
   
 ## Refactoring Targets 
+* Add tests for DuplicateKeyWriteGuardForPoolTraces
 * Try to remove multiple execution shrinking passes.
 * Typed WARNINGS instead of string building.
 * ShrinkingInfo.Strategy: Change from string to Type.

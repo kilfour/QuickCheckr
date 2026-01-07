@@ -34,7 +34,7 @@ public class Scheduling : CheckrTest<Scheduling>
     [DocModelHeader]
     [DocCodeFile("Model.cs", "csharp", 2)]
     [DocContent(
-@"So this model is a scheduling thing, with a validation function that verifies whether or not Bookings overlap.
+@"So this model is a scheduling thingy, with a validation function that verifies whether or not Bookings overlap.
 
 The Checkr itself is remarkably simple:
 ")]
@@ -48,7 +48,7 @@ non-overlapping bookings, and rely on shrinking to expose edge cases where the v
 This complicates the Fuzzr somewhat, but not overly so.
 The only slightly tricky bit is the `NonOverlappingTimeSlot` part, I reckon.
 
-Generating a valid Booking is easy, and then we just use that one to generate another, non-overlapping, Booking:
+Generating a valid booking is easy, and then we just use that one to generate another, non-overlapping, booking:
 ")]
     [DocCodeFile("TheFuzzr.cs", "csharp", 5)]
     [DocReportHeader]

@@ -248,7 +248,7 @@ public static CaseFile FileThis(
     => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
          cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
 ```
-**Run an Investigation:**  
+**Investigating:**  
 ```csharp
 public static void Investigate(
     this CheckrOf<Case> checkr,

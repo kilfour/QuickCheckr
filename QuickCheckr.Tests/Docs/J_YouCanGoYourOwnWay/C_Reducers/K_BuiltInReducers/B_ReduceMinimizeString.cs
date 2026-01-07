@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers.K_BuiltInReducers;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.K_BuiltInReducers;
 
 [DocFile]
 public class B_ReduceMinimizeString : CheckrTest<B_ReduceMinimizeString>

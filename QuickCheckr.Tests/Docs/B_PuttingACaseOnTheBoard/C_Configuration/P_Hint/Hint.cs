@@ -14,7 +14,7 @@ it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` exten
 [DocExample(typeof(Hint), nameof(Deliberate))]
 [DocContent("**Auto File:**")]
 [DocExample(typeof(Hint), nameof(FileThis))]
-[DocContent("**Run an Investigation:**")]
+[DocContent("**Investigating:**")]
 [DocExample(typeof(Hint), nameof(Investigate))]
 [DocContent("You get the idea.")]
 public static class Hint

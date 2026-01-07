@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkers.Sub;
 
 [DocFile]
 public class ShrinkValues : CheckrTest<ShrinkValues>

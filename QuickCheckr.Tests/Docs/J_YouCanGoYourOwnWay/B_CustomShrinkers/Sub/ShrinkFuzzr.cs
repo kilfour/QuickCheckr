@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkers.Sub;
 
 [DocFile]
-public class ShrinkNone : CheckrTest<ShrinkNone>
+public class ShrinkFuzzr : CheckrTest<ShrinkFuzzr>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -14,12 +14,6 @@ public class ShrinkNone : CheckrTest<ShrinkNone>
     [Fact]
     [DocCheckrHeader]
     [DocCheckr]
-    [DocContent(
-@"Weird option this one at first glance, maybe. It does not make inputs turn up in the report.  
-We know it works because of the shrink count.
-No shrinking => no shrinking clue => not in report.
-This is correct behavior.
-")]
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
@@ -28,9 +22,7 @@ This is correct behavior.
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-        from thing in Checkr.Input("Null Thing",
-            Fuzzr.Constant<Thing>(null!),
-            () => Shrink.None<Thing>())
+        from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 
@@ -40,7 +32,7 @@ This is correct behavior.
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);

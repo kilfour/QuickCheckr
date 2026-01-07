@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers.P_Custom;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.P_Custom;
 
 [DocFile]
 public class A_Custom : CheckrTest<A_Custom>

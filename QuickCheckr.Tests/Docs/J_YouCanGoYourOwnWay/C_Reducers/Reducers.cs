@@ -1,7 +1,7 @@
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers;
 
 [DocFile]
 [DocUnderConstruction]

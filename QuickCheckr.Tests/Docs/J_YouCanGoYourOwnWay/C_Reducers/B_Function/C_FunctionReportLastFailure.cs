@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers.A_Values;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.B_Function;
 
 [DocFile]
-public class A_ValuesStopOnFirstPassed : CheckrTest<A_ValuesStopOnFirstPassed>
+public class C_FunctionReportLastFailure : CheckrTest<C_FunctionReportLastFailure>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -20,7 +20,7 @@ public class A_ValuesStopOnFirstPassed : CheckrTest<A_ValuesStopOnFirstPassed>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 2, 1, 0]))
+         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2], true))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 
