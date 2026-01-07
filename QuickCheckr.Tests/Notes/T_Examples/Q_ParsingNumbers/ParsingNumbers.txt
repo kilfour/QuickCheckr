@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:21:1
+ Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    406406480

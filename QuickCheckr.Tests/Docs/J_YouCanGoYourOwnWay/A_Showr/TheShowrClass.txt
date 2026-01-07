@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\K_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
+ Location:                Docs\J_YouCanGoYourOwnWay\A_Showr\TheShowrClass.cs:20:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 3 shrinks)
  Seed:                    344916298

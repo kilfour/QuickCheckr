@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:67:1
+ Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:69:1
  Original failing run:    3 executions
  Seed:                    1920827676
  ------------------------------------------------------------
