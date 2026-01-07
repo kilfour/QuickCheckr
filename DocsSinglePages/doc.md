@@ -2758,3 +2758,415 @@ is irrelevant for the failure, QuickCheckr will remove it.
 
 **The Checkr:**  
 ```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
+from expect in Checkr.Expect("Always fails", () => false)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_RemovingIrrelevantCollection.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    2014608033
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: Empty collection deemed irrelevant at input 'List Input'.
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+ =======================================
+```
+#### Irrelevant Element But Collection Length Is Not
+When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
+and leaves irrelevant details untouched. 
+
+In cases like this example where the predicate depends solely on the length of the collection,
+the individual element values play no role.  
+QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
+removing elements, and converging toward the smallest list that still violates the condition.
+
+This yields minimal, focused shrinking artifacts:
+the report shows only the structural signal that mattered (here: the list being *too long*),
+without introducing noise from element-level changes that could not affect the outcome anyway.  
+
+**The Checkr:**  
+```csharp
+from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
+from trace in Checkr.Trace("Original List", () => list)
+from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_IrrelevantElementButCollectionLengthIsNot.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    1393576429
+ ------------------------------------------------------------
+  Executed:
+   - Input: List          = [ _, _, _ ]
+   - Trace: Original List = [ 12, 45, 56, 18, 31 ]
+ ======================================
+  !! Expectation Failed: Length <= 2
+ ======================================
+```
+#### Multiple Relevant Elements
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int(1, 10).Many(1, 10))
+from list in Checkr.Capture(() => input.ToList())
+from trace in Checkr.Trace("Original", () => list)
+from expect in Checkr.ExpectWhen("One, Two and Three", () => input.Count() > 2, () =>
+     !(list[0] == 1
+    && list[1] == 2
+    && list[2] == 3))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                F_MultipleRelevantElements.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    500957855
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 2, 3 ]
+   - Trace: Original = [ 1, 2, 3, 9, 3, 1 ]
+ =============================================
+  !! Expectation Failed: One, Two and Three
+ =============================================
+```
+#### Relevant Element And Size
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int(1, 10).Many(1, 10))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen("Second element is not 7",
+    () => input.Count() > 1, () => input.ElementAt(1) != 7)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                G_RelevantElementAndSize.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    1374380958
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ _, 7 ]
+   - Trace: Original = [ 6, 7, 9, 7, 3, 2 ]
+ ==================================================
+  !! Expectation Failed: Second element is not 7
+ ==================================================
+```
+#### Nested Collections
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("List", Fuzzr.Int().Many(0, 3).Many(0, 3))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen("List[0][0] is not 42",
+    () => input.Any() && input.First().Any(),
+    () => input.First().First() != 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                H_NestedCollections.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    146712596
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ [ 42 ] ]
+   - Trace: Original = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
+ ===============================================
+  !! Expectation Failed: List[0][0] is not 42
+ ===============================================
+```
+#### When An Empty Collection Is The Culprit
+
+**The Checkr:**  
+```csharp
+from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10))
+from trace in Checkr.Trace("Original", () => list)
+from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:59:1
+ Original failing run:    1 execution
+ Seed:                    2077876521
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ ]
+   - Trace: Original = [ ]
+ ============================================
+  !! Expectation Failed: List is not empty
+ ============================================
+```
+#### The Case Of The Invisible Collection
+##### The Issue
+Another case of '*Greedy Shrinker Disease*'.  
+
+This one is caused by the fact that the shrinker only sees the inputs.
+It is unaware of any *state derived* meaningfull values.   
+
+**The Model:**  
+```csharp
+public class Thing
+{
+    public List<int> Ints = [];
+}
+```
+
+**The Checkr:**  
+```csharp
+from thing in Trackr.Stashed(() => new Thing())
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints", Fuzzr.Int().Many(2))
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:68:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    169301180
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Int = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - WARNING: Empty collection deemed irrelevant at input 'Ints'.
+   - WARNING: All inputs were considered irrelevant.
+ ================================
+  !! Expectation Failed: Has 1
+ ================================
+```
+##### The Solution
+Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.  
+
+**The Checkr:**  
+```csharp
+from thing in Trackr.Stashed(() => new Thing())
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints",
+    Fuzzr.Int().Many(2),
+    () => [
+        Shrink.Default<IEnumerable<int>>(),
+        Shrink.Collection([thing.Ints])],
+    Reduce.Collection([[], thing.Ints]))
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:68:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    169301180
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Int = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Ints  = [ 57, 70 ]
+            Redux   [ ]
+ ================================
+  !! Expectation Failed: Has 1
+ ================================
+```
+#### A Collection Of Objects
+
+**The Model:**  
+```csharp
+public class Thing
+{
+    public int One { get; set; }
+    public int Two { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from list in Checkr.Input("List", Fuzzr.One<Thing>().Many(2, 5))
+from show in Showr.ForTrace(ListShowr)
+from trace in Checkr.Trace("Original", () => list)
+from expect in Checkr.ExpectWhen("Only answers for One",
+    () => list.Any(), () => list.All(a => a.One != 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                K_ACollectionOfObjects.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    849984174
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ { One: 42 } ]
+   - Trace: Original = [
+    { One: 13, Two: 49 },
+    { One: 61, Two: 79 },
+    { One: 93, Two: 91 },
+    { One: 18, Two: 39 },
+    { One: 42, Two: 54 }
+]
+ ===============================================
+  !! Expectation Failed: Only answers for One
+ ===============================================
+```
+### Objects
+#### Checking Nulls
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public class Life { public int Answer { get; set; } }
+    public Life? Everything { get; set; }
+    public Life? Irrelevant { get; set; }
+    public int GetTheAnswer() => Everything!.Answer;
+}
+```
+**The Checkr:**  
+```csharp
+    from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
+    from trace in Checkr.Trace("The Universe", () => universe)
+    from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+    select Case.Closed;
+```
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    358877731
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 78 } }
+   - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
+ ===========================================================================
+  !! NullReferenceException: Object reference not set to an instance of an object.
+ ===========================================================================
+```
+Note the shrinking of the `Irrelevant` property.  
+In addition, QuickCheckr reports a shrinking warning:  
+> Null value for type 'Life' at input 'The Universe.Everything'.  
+This tells you that the shrinker reached a `null` value that it cannot safely reduce any further.  
+  
+But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shrink either property, and both limitations are reported as warnings:  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_NotShrinkingNull
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:85:1
+ Original failing run:    1 execution
+ Seed:                    1269557792
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null, Irrelevant: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: null }
+   - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
+   - WARNING: Null value for type 'Life' at input 'The Universe.Irrelevant'.
+ ===========================================================================
+  !! NullReferenceException: Object reference not set to an instance of an object.
+ ===========================================================================
+```
+We could help the shrinker by rewriting your checkr, in order to avoid the irrelevant input being reported as relevant.  
+```csharp
+    from everything in Checkr.Input("Everything", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
+    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
+    from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
+    from trace in Checkr.Trace("The Universe", () => universe)
+    from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTest_Alternative
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1269557792
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: Everything   = null
+   - Trace: The Universe = { Everything: null, Irrelevant: null }
+ ===========================================================================
+  !! NullReferenceException: Object reference not set to an instance of an object.
+ ===========================================================================
+```
+Or, we can solve the issue using a [`DeliberationPolicy`][DeliberationShrinking] that limits the number of warnings:  
+```csharp
+private static CheckrConfig Configure(CheckrConfig config)
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumWarnings };
+```
+```text
+------------------------------------------------------------
+ Test:                    RunTest_WithDeliberationPolicy
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:165:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1643721177
+ ------------------------------------------------------------
+  Executed: The Answer
+   - Input: The Universe = { Everything: null }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 19 } }
+   - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
+ ===========================================================================
+  !! NullReferenceException: Object reference not set to an instance of an object.
+ ===========================================================================
+```
+As you can see the warning is still there for `Universe.Everything` but this is a relevant input,
+so the warning can be ignored.  
+Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.  
+
+[DeliberationShrinking]: #deliberation-shrinking

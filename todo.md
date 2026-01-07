@@ -1,4 +1,22 @@
-## Current Version: 0.0.7: In Pools We Trust
+## Next version: 0.0.8: You Can Go Your Own Way
+
+### Done/Ready for Changelog after review
+* Added a WARNING when encountering an object with no shrinkable properties.
+* Added ReportMode.Labeled (default enabled)
+* Showr.ForInputs
+* Report: Execution section: Better label alignment.
+* Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
+* FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
+* FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
+* CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
+* Added Input overloads taking Custom Shrinker(s) as extra argument.
+* Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
+* Added Input overloads taking a *Reducer* as extra argument.
+
+### Wish List
+* Warning Customization ?
+* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
+  ... maybe, see if it's easy, if not push to later version
 
 ### Current Focus
 * Reducers
@@ -18,23 +36,9 @@
 * Refactor the Tests:
   * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
 
-### Done/Ready for Changelog after review
-* Added a WARNING when encountering an object with no shrinkable properties.
-* Added ReportMode.Labeled (default enabled)
-* Showr.ForInputs
-* Report: Execution section: Better label alignment.
-* Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
-* FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
-* FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
-* CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
-* Added Input overloads taking Custom Shrinker(s) as extra argument.
-* Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
-* Added Input overloads taking a *Reducer* as extra argument.
-
-## Next version: 0.0.8: You Can Go Your Own Way
-* Warning Modes ?
-* Hey Deskofficer, give me three reports different reports with one execution, ASAP !
-* Look into different collection shrinking:
+## 0.0.8+
+* Try to remember the cool idea you had for Custom Custodians ;-)
+* Look into different types of collection shrinking:
   * Limitations.
   * Known issues
   * Workarounds. 
@@ -43,9 +47,6 @@
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
-
-## 0.0.8+
-* Try to remember the cool idea you had for Custom Custodians ;-)
 * dotnet new checkr templates
   * minimal
   * for newbies
@@ -65,7 +66,7 @@
 ## 0.1.0++
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
-### Skipped Tests (4)
+## Skipped Tests (5)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
   Might get removed.
 * 2 for GatheringEvidence: Touches the file system.
