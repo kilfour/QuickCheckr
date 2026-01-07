@@ -70,7 +70,7 @@ public class GatheringEvidenceCheckr
                 , () => [
                     Shrink.Default<IEnumerable<string>>(),
                     Shrink.Collection([[.. coach.Value.Skills]]) ]
-                , Reduce.Values<IEnumerable<string>>([[], [.. coach.Value.Skills]]))
+                , Reduce.Collection([[], [.. coach.Value.Skills]]))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",

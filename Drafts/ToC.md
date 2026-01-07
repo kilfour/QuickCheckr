@@ -30,6 +30,8 @@
     - [Values Stop On First Passed](T_Reducers/A_Values/A_ValuesStopOnFirstPassed.md)
     - [Values Stop On First Passed Alternative](T_Reducers/A_Values/B_ValuesStopOnFirstPassedAlternative.md)
     - [Values Report Last Failure](T_Reducers/A_Values/C_ValuesReportLastFailure.md)
+    - [Collection](T_Reducers/A_Values/D_Collection.md)
+    - [Collection Function](T_Reducers/A_Values/D_CollectionFunction.md)
     - [Function Stop On First Passed](T_Reducers/B_Function/A_FunctionStopOnFirstPassed.md)
     - [Function Stop On First Passed Alternative](T_Reducers/B_Function/B_FunctionStopOnFirstPassedAlternative.md)
     - [Function Report Last Failure](T_Reducers/B_Function/C_FunctionReportLastFailure.md)

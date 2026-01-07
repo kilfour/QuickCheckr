@@ -6,6 +6,7 @@ using QuickFuzzr;
 
 namespace QuickCheckr;
 
+
 public static partial class Checkr
 {
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
@@ -29,36 +30,35 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
-        Func<ReductionResult, Reduction> reducer)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Reducer<T> reducer)
     {
         return state =>
         {
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return HandleInput(state, key, fuzzr);
         };
     }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
         Func<IShrinkOption> shrinkOption,
-        Func<ReductionResult, Reduction> reducer)
+        Reducer<T> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, () => [shrinkOption()]);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return HandleInput(state, key, fuzzr);
         };
     }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
         Func<IShrinkOption[]> options,
-        Func<ReductionResult, Reduction> reducer)
+        Reducer<T> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, options);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return HandleInput(state, key, fuzzr);
         };
     }

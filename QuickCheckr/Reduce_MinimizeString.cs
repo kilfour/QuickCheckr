@@ -4,7 +4,7 @@ namespace QuickCheckr;
 
 public static partial class Reduce
 {
-    public static Func<ReductionResult, Reduction> MinimizeString
+    public static Reducer<string> MinimizeString
         => new MinimizeStringFactory().Reduce;
 
     private class MinimizeStringFactory

@@ -42,7 +42,7 @@ from ints in Checkr.Input("ints",
     () => [
         Shrink.Default<IEnumerable<int>>(),
         Shrink.Collection([thing.Ints])],
-    Reduce.Values([[], thing.Ints]))
+    Reduce.Collection([[], thing.Ints]))
 from act in Checkr.Act("change", () => thing.Ints = [.. ints])
 from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
 select Case.Closed;

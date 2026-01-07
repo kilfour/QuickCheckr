@@ -3,9 +3,9 @@
 ### Current Focus
 * The Case of the Invisible List. (explain it)
 * Reducers
-  * Example: Expectation: String does not contain "a" or "b"
-  * Generalize Towards(Zero) reducer.
-  * More of them.
+  * InputReducer: remove Introduce.This Hack
+* Added Input overloads taking Custom Shrinker(s) as extra argument.
+  * Remove Nesting (for now)
 
 ### Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -13,7 +13,6 @@
 * Showr.ForInputs
 * Report: Execution section: Better label alignment.
 * Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
-* Added Input overloads taking Custom Shrinker(s) as extra argument.
 * FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
 * FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
 * CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
@@ -96,7 +95,6 @@
   
 ## Refactoring Targets 
 * Try to remove multiple execution shrinking passes.
-* InputReducer: remove Introduce.This Hack
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists

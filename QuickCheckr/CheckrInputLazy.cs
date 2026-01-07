@@ -29,35 +29,35 @@ public static partial class Checkr
     }
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<ReductionResult, Reduction> reducer)
+        Reducer<T> reducer)
     {
         return state =>
         {
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return CheckrResult.Some(state, GetValue(key, factory, state)!);
         };
     }
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
         Func<IShrinkOption> shrinkOption,
-        Func<ReductionResult, Reduction> reducer)
+        Reducer<T> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, () => [shrinkOption()]);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return CheckrResult.Some(state, GetValue(key, factory, state)!);
         };
     }
 
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
         Func<IShrinkOption[]> options,
-        Func<ReductionResult, Reduction> reducer)
+        Reducer<T> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, options);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducer(key, a => reducer(a));
             return CheckrResult.Some(state, GetValue(key, factory, state)!);
         };
     }
