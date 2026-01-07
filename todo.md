@@ -1,7 +1,6 @@
 ## Current Version: 0.0.7: In Pools We Trust
 
 ### Current Focus
-* The Case of the Invisible List. (explain it)
 * Reducers
   * Check out Object Reducers
 
@@ -29,7 +28,6 @@
     * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
     * InPoolsWeTrust: expectation is a bit contrived
 * New Chapter: Honey I Shrunk the Inputs, consolidate all shrinking examples from notes
-* Checkrs Court: Tricky one
 
 ### Tests Current Focus
 * DuplicateKeyWriteGuardForPoolTraces
@@ -41,7 +39,7 @@
 * TheBroadcasterTests: Explicit experimental.
 
 ## 0.0.8: You Can Go Your Own Way
-* Warning Mode
+* Warning Modes ?
 * Hey Deskofficer, give me three reports different reports with one execution, ASAP !
 * Look into different collection shrinking:
   * Limitations.
@@ -74,6 +72,7 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
 
 ## Future Doc Work
+* Checkrs Court: Tricky one
 * Prepare demo talk(s)
 * Any exception thrown by the Checkr will be caught and considered a failure.
 * Build HorsesForCourses.Api for testing example
@@ -96,6 +95,7 @@
   
 ## Refactoring Targets 
 * Try to remove multiple execution shrinking passes.
+* Typed WARNINGS instead of string building.
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists
@@ -106,17 +106,14 @@
 > Just keeping this list in order to avoid me doing the same thing twice.  
 
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
-  * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look 
+  * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look. 
 * Refactoring: simplify casefile compile
   * meh, looked at it. It's annoying occasionally, if a new transformation is needed, but fine for now.
 * GetFromPool (bool, T?) => Result. Also not needed, a tuple will do in this case.
 * unify ConditionalResult and DelayedResult ... maybe
 
 ## Other
-* QuickAcid did multiple passes on Execution Shrinking
-  I never liked it. The Account example however shows it could be usefull.
-  On the other hand, DeliberationPolicies seems like a cleaner solution.
 * QuickAcid Feedback shrinking: which amounts to combining similar executions.
   F.i. Withdraw(5), Withdraw(10) becomes Withdraw(15).
-  Again DeliberationPolicy and possibly, in the future, Reducers will solve this better I think.
+  DeliberationPolicy and Reducers solve this better I think.
 * Scour QuickAcid for any interesting tests left behind.

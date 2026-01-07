@@ -6,6 +6,11 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
 
 [DocFileHeader("The Issue")]
+[DocContent(
+@"Another case of '*Greedy Shrinker Disease*'.  
+
+This one is caused by the fact that the shrinker only sees the inputs.
+It is unaware of any *state derived* meaningfull values. ")]
 public class J1_TheCaseOfTheInvisibleList : CheckrTest<J1_TheCaseOfTheInvisibleList>
 {
     protected override bool Asserts => false;

@@ -6,6 +6,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
 
 [DocFileHeader("The Solution")]
+[DocContent("Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.")]
 public class J2_TheCaseOfTheInvisibleList : CheckrTest<J2_TheCaseOfTheInvisibleList>
 {
     protected override bool Asserts => false;

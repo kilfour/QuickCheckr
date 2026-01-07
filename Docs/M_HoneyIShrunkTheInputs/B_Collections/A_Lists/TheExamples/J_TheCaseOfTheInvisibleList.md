@@ -1,5 +1,9 @@
 # The Case Of The Invisible List
 ## The Issue
+Another case of '*Greedy Shrinker Disease*'.  
+
+This one is caused by the fact that the shrinker only sees the inputs.
+It is unaware of any *state derived* meaningfull values.   
 
 **The Model:**  
 ```csharp
@@ -33,6 +37,7 @@ select Case.Closed;
 ```
 Shrinker marks the list as irrelevant, but it is **not**.  
 ## The Solution
+Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.  
 
 **The Checkr:**  
 ```csharp
