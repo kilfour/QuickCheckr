@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers;
+namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
 
 [DocFile]
-public class ShrinkDefault : CheckrTest<ShrinkDefault>
+public class ShrinkFuzzr : CheckrTest<ShrinkFuzzr>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -22,9 +22,7 @@ public class ShrinkDefault : CheckrTest<ShrinkDefault>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-        from thing in Checkr.Input("Null Thing",
-            Fuzzr.Constant<Thing>(null!),
-            () => Shrink.Default<Thing>())
+        from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 
@@ -32,16 +30,12 @@ public class ShrinkDefault : CheckrTest<ShrinkDefault>
     {
         Assert.Equal("counter != 2", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(2, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
-        Assert.Equal("Null value for type 'Thing' at input 'Null Thing'.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal("counter != 2", article.PassedExpectation(1).Read().Label);
         Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }

@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers;
+namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
 
 [DocFile]
 public class RegisteredButUnused : CheckrTest<RegisteredButUnused>

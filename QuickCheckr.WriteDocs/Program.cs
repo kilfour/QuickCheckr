@@ -21,3 +21,6 @@ Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Experimental>("DocsSinglePages/experimental.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
 
+// Explain.This<Reducers>("temp-reducers.md");
+// Explain.This<CustomShrinkers>("temp-shrinkers.md");
+

@@ -37,6 +37,11 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
                     if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
                         return clues;
                 }
+
+                if (option is IShrinkOptionNone)
+                {
+                    return [];
+                }
             }
             var clue = InputShrinkingClue.Ignore<CustomShrinkStrategy>(
                     info.ExecutionId, info.FullKey, info.Value);
