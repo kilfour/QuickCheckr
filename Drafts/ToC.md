@@ -1,4 +1,5 @@
   - [All Inputs Shrunk](A_AllInputsShrunk/AllInputsShrunk.md)
+  - [Registered But Unused](G_CustomShrinkers/RegisteredButUnused.md)
   - [Shrink Default](G_CustomShrinkers/ShrinkDefault.md)
   - [Shrink Function](G_CustomShrinkers/ShrinkFunction.md)
   - [Shrink Fuzzr](G_CustomShrinkers/ShrinkFuzzr.md)

@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                RegisteredButUnused.cs:58:1
+ Original failing run:    1 execution
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+   - WARNING: Unused shrinker found for 'String' at key 'Input'.
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================

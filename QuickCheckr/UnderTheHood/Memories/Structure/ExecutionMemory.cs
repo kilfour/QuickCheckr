@@ -115,7 +115,28 @@ public class ExecutionMemory
     {
         var options = shrinkers.Get(key);
         if (options == null) return null;
+        StoreShrinkerUsed(key, type);
         return options.Where(a => a.TargetType == type);
+    }
+    private readonly Dictionary<string, List<Type>> shrinkersUsed = [];
+    private void StoreShrinkerUsed(string key, Type type)
+    {
+        if (shrinkersUsed.TryGetValue(key, out List<Type>? value))
+            value.Add(type);
+        else
+            shrinkersUsed[key] = [type];
+    }
+    public (bool, IEnumerable<string>) HasUnusedShrinkers(string key)
+    {
+        var options = shrinkers.Get(key);
+        if (options == null) return (false, []);
+        if (shrinkersUsed.TryGetValue(key, out List<Type>? used))
+        {
+            options = [.. options.Where(a => !used.Contains(a.TargetType))];
+        }
+        if (options.Length != 0)
+            return (true, options.Select(a => a.TargetType.Name));
+        return (false, []);
     }
     // --------------------------------------------------------------------------
 

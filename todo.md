@@ -4,8 +4,6 @@
 * The Case of the Invisible List. (explain it)
 * Reducers
   * Check out Object Reducers
-* Added Input overloads taking Custom Shrinker(s) as extra argument.
-  * Remove Nesting (for now)
 
 ### Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -16,6 +14,9 @@
 * FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
 * FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
 * CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
+* Added Input overloads taking Custom Shrinker(s) as extra argument.
+* Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
+* Added Input overloads taking a *Reducer* as extra argument.
 
 ### Doing/Ongoing
 * Refactor the Tests:
