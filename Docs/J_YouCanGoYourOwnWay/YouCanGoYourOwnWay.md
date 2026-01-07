@@ -13,8 +13,7 @@
   
 We already saw in the entry on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
 and/or reporting globally.  
-But there are ways to obtain more fine-grained control.  
-That is what this chapter is about.  
+But there are ways to obtain more fine-grained control. That is what this chapter is about.  
 ## Contents
 
 - [Showr][TheShowrClass]
