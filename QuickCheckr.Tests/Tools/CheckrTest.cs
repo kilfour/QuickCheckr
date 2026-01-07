@@ -12,21 +12,24 @@ namespace QuickCheckr.Tests.Tools;
 
 public abstract class CheckrTest<T>
 {
+    public class DocBoldHeaderAttribute(string header) :
+        DocContentAttribute($"\n**{header}:**");
+
     public class DocModelHeaderAttribute() :
-        DocContentAttribute("\n**The Model:**");
+        DocBoldHeaderAttribute("The Model");
 
     public class DocConfigureHeaderAttribute() :
-        DocContentAttribute("\n**The Configuration:**");
+        DocBoldHeaderAttribute("The Configuration");
     public class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");
 
     public class DocCheckrHeaderAttribute() :
-        DocContentAttribute("\n**The Checkr:**");
+        DocBoldHeaderAttribute("The Checkr");
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
 
     public class DocReportHeaderAttribute() :
-        DocContentAttribute("\n**The Report:**");
+        DocBoldHeaderAttribute("The Report");
     public class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, path);
 
@@ -39,6 +42,13 @@ public abstract class CheckrTest<T>
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
+
+    [StackTraceHidden]
+    protected void Run(
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Exposes(
+            () => TheCheckr().Run(Configure))
+            , callerPath);
 
     [StackTraceHidden]
     protected void Run(

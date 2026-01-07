@@ -1,4 +1,4 @@
-# Multi Step Reducers
+# Reduce Minimize String
 
 **The Checkr:**  
 ```csharp

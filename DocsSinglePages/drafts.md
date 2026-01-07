@@ -537,12 +537,158 @@ of not rewriting what actually happened.
 But once again, it is a feature born out of necessity.  
  
 With that caveat out of the way, let's dig in.  
-
-There exist **two different types** of reducers:
- - [Simple Reducers][SimpleReducers]
- - [Multi Step Reducers][MultiStepReducers]
   
-### Simple Reducers
+### Values Stop On First Passed
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 2, 1, 0]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ValuesStopOnFirstPassed.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Values Stop On First Passed Alternative
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_ValuesStopOnFirstPassedAlternative.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   3
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Values Report Last Failure
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2], true))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_ValuesReportLastFailure.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Function Stop On First Passed
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 2, 1, 0]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_FunctionStopOnFirstPassed.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Function Stop On First Passed Alternative
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_FunctionStopOnFirstPassedAlternative.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   3
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Function Report Last Failure
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2], true))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_FunctionReportLastFailure.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+### Reduce Towards Zero
 
 **The Checkr:**  
 ```csharp
@@ -567,7 +713,7 @@ select Case.Closed;
   !! Expectation Failed: Input should be smaller than 42
  ==========================================================
 ```
-### Multi Step Reducers
+### Reduce Minimize String
 
 **The Checkr:**  
 ```csharp
@@ -592,55 +738,53 @@ select Case.Closed;
   !! Expectation Failed: no a and b
  =====================================
 ```
-### Simple Reducers
+### Custom
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
-from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
+from input in Checkr.Input("Input", Fuzzr.Int(), new CustomTowardsZeroReducer().Reduce)
+from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
+```
+
+**Custom Reducer:**  
+```csharp
+public class CustomTowardsZeroReducer
+{
+    private int lastFailed = 0;
+    public Reduction Reduce(ReductionResult result)
+    {
+        var value = result.ValueAs<int>();
+        if (result.Failed)
+            lastFailed = value;
+        else
+            return Reduction.Stop(lastFailed);
+        if (value == 0)
+            return Reduction.Stop(lastFailed);
+        if (value > 0)
+            value--;
+        else
+            value++;
+        return Reduction.Next(value);
+    }
+}
 ```
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                SimpleReducers.cs:48:1
+ Location:                A_Custom.cs:50:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1681332589
+ Seed:                    211010750
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 79
-            Redux   42
- ==========================================================
-  !! Expectation Failed: Input should be smaller than 42
- ==========================================================
-```
-### Multi Step Reducers
-
-**The Checkr:**  
-```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
-from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                MultiStepReducers.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1834440365
- ------------------------------------------------------------
-  Executed:
-   - Input: Text  = "tdblaulb"
-            Redux   "ab"
- =====================================
-  !! Expectation Failed: no a and b
- =====================================
+   - Input: Input = 10
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
 ```
 ## Issues
 ### The Unshrinkables

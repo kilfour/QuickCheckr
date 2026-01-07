@@ -25,10 +25,10 @@ public static partial class Reduce
             values ??= [.. factory(reductionResult.ValueAs<T>())];
             if (reductionResult.Failed)
                 lastFailure = reductionResult.ValueAs<T>();
-            if (index >= values.Count)
-            {
+            else
                 return Reduction.Stop(lastFailure!);
-            }
+            if (index >= values.Count)
+                return Reduction.Stop(lastFailure!);
             return Reduction.Next(values[index++]!);
         }
     }
@@ -42,13 +42,13 @@ public static partial class Reduce
         public Reduction Reduce(ReductionResult reductionResult)
         {
             values ??= [.. factory(reductionResult.ValueAs<T>())];
-            if (index >= values.Count)
-            {
-                return Reduction.Stop(lastFailure!);
-            }
             if (reductionResult.Failed)
             {
                 lastFailure = reductionResult.ValueAs<T>();
+            }
+            if (index >= values.Count)
+            {
+                return Reduction.Stop(lastFailure!);
             }
             return Reduction.Next(values[index++]!);
         }

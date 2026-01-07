@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.T_Reducers.B_Full;
+namespace QuickCheckr.Tests.Drafts.T_Reducers.B_Function;
 
 [DocFile]
-public class MultiStepReducers : CheckrTest<MultiStepReducers>
+public class A_FunctionStopOnFirstPassed : CheckrTest<A_FunctionStopOnFirstPassed>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -17,23 +17,23 @@ public class MultiStepReducers : CheckrTest<MultiStepReducers>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1834440365);
+    public override void Example() => Run(1681332589);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
-        from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
-        select Case.Closed;
+         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 2, 1, 0]))
+         from expect in Checkr.Expect("Input < 2", () => input < 2)
+         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("no a and b", article.FailureDescription());
+        Assert.Equal("Input < 2", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Text", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("\"tdblaulb\"", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("\"ab\"", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("79", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("2", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

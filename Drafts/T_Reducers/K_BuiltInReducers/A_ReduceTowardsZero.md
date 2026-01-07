@@ -1,4 +1,4 @@
-# Simple Reducers
+# Reduce Towards Zero
 
 **The Checkr:**  
 ```csharp
