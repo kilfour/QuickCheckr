@@ -785,12 +785,12 @@ select Case.Closed;
   !! Expectation Failed: All < 2
  ==================================
 ```
-### Collection Function
+### Collection Of
 Helper function in order to avoid generic type confusion.  
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionFunction<int>(a => [[3], [2], [1], [0]]))
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))
 from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
 select Case.Closed;
 ```

@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.CookBook.V_Scheduling;
 It is not about stateful testing, it is in fact testing a pure function. We are validating a validator.
 
 And even though this is not the main focus of QuickCheckr,
-this example demonstrates how the design decision to split of input generation from shrinking,
+this example demonstrates how the design decision to split off input generation from shrinking,
 simplifies test definition in non-trivial cases.
 
 ")]
@@ -25,6 +25,12 @@ public class Scheduling : CheckrTest<Scheduling>
     protected override CheckrConfig Configure(CheckrConfig config)
         => config with { ReportMode = config.ReportMode & ~(ReportMode.Labels | ReportMode.Warning) };
     [Fact]
+    [DocContent(
+@"**Demonstrates:**
+- Validator testing for pure functions
+- Constraint-preserving input generation
+- Separation of generation and shrinking
+")]
     [DocModelHeader]
     [DocCodeFile("Model.cs", "csharp", 2)]
     [DocContent(
@@ -34,13 +40,15 @@ The Checkr itself is remarkably simple:
 ")]
     [DocCheckr]
     [DocContent(
-@"The trick to this one lies entirely with the Fuzzr.  
-We know what valid input looks like, so if we just generate that we can let the Shrinker do it's thing.
+@"The trick to this one lies entirely with the Fuzzr.
+
+We deliberately generate only valid, 
+non-overlapping bookings, and rely on shrinking to expose edge cases where the validator fails. 
 
 This complicates the Fuzzr somewhat, but not overly so.
 The only slightly tricky bit is the `NonOverlappingTimeSlot` part, I reckon.
 
-Generating a valid Booking is easy, and then we just use that one to generate another, non overlapping, Booking:
+Generating a valid Booking is easy, and then we just use that one to generate another, non-overlapping, Booking:
 ")]
     [DocCodeFile("TheFuzzr.cs", "csharp", 5)]
     [DocReportHeader]

@@ -7,7 +7,7 @@ namespace QuickCheckr.Tests.Drafts.T_Reducers.A_Values;
 
 [DocFile]
 [DocContent("Helper function in order to avoid generic type confusion.")]
-public class D_CollectionFunction : CheckrTest<D_CollectionFunction>
+public class D_CollectionOf : CheckrTest<D_CollectionOf>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -21,7 +21,7 @@ public class D_CollectionFunction : CheckrTest<D_CollectionFunction>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionFunction<int>(a => [[3], [2], [1], [0]]))
+         from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))
          from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
          select Case.Closed;
 
