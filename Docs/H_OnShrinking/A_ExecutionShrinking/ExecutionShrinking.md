@@ -20,7 +20,7 @@ So after *Execution Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ExecutionShrinking.cs:57:1
+ Location:                ExecutionShrinking.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953

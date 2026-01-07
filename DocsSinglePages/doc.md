@@ -587,7 +587,7 @@ public class Rolodex
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:151:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:153:1
  Original failing run:    10 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    1444257086
@@ -1187,7 +1187,7 @@ Includes all possible ReportModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeDefault.cs:57:1
+ Location:                ReportModeDefault.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1200,7 +1200,7 @@ Includes all possible ReportModes.
  ===========================================================================
   !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
    at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMode.Reference.A_ReportModeReference.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\J_ReportMode\Reference\A_ReportModeReference.cs:line 33
    at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
@@ -1214,7 +1214,7 @@ No traces, no warnings, no labels, no stacktrace.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:57:1
+ Location:                ReportModeNone.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1235,7 +1235,7 @@ Only traces.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeTrace.cs:57:1
+ Location:                ReportModeTrace.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1257,7 +1257,7 @@ Only warnings.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeWarning.cs:57:1
+ Location:                ReportModeWarning.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1279,7 +1279,7 @@ Only labels.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeLabels.cs:57:1
+ Location:                ReportModeLabels.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -1313,7 +1313,7 @@ QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeNone.cs:67:1
+ Location:                ShrinkModeNone.cs:68:1
  Original failing run:    3 executions
  Seed:                    2145473476
  ------------------------------------------------------------
@@ -1331,11 +1331,11 @@ QuickCheckr reports the original failing run.
    - Input: counter    = 3
    - Input: Relevant   = 66
    - Input: Irrelevant = 13
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
  Passed Expectations
- - Counter does not equal 3: 2x
+ - Third Time Answer: 2x
  ------------------------------------------------------------
 ```
 ###### ShrinkMode.Executions
@@ -1347,7 +1347,7 @@ Trims away irrelevant executions.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeExecutions.cs:67:1
+ Location:                ShrinkModeExecutions.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    2145473476
@@ -1372,7 +1372,7 @@ Trims inputs to find a minimal failing case.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeInputs.cs:67:1
+ Location:                ShrinkModeInputs.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 7 shrinks)
  Seed:                    2145473476
@@ -1410,7 +1410,7 @@ Applies configured reducers for fine-grained shrinking.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeReduction.cs:67:1
+ Location:                ShrinkModeReduction.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    2145473476
@@ -1422,11 +1422,11 @@ Applies configured reducers for fine-grained shrinking.
    - Input: counter  = 3
    - Input: Relevant = 66
             Redux      42
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
  Passed Expectations
- - Counter does not equal 3: 2x
+ - Third Time Answer: 2x
  ------------------------------------------------------------
 ```
 ###### ShrinkMode.Default
@@ -1438,7 +1438,7 @@ Includes all possible ShrinkModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeDefault.cs:67:1
+ Location:                ShrinkModeDefault.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    2145473476
@@ -1801,7 +1801,7 @@ So after *Execution Shrinking*, the result is:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ExecutionShrinking.cs:57:1
+ Location:                ExecutionShrinking.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
@@ -1927,7 +1927,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                InputReduction.cs:57:1
+ Location:                InputReduction.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1684147193
@@ -2000,11 +2000,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1405499460
+ Seed:                    1133636239
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List  = [ 3, 1, 4 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List  = [ 0, 4, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -2024,14 +2024,14 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:105:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1136603211
+ Seed:                    149961996
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
+   - Trace: Original    = { IntOne: 3, IntTwo: 2, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================
@@ -2084,7 +2084,7 @@ That is what this chapter is about.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\K_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
+ Location:                Docs\J_YouCanGoYourOwnWay\A_Showr\TheShowrClass.cs:20:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 3 shrinks)
  Seed:                    344916298
@@ -2134,7 +2134,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                RegisteredButUnused.cs:58:1
+ Location:                RegisteredButUnused.cs:59:1
  Original failing run:    1 execution
  Seed:                    1681332589
  ------------------------------------------------------------
@@ -2161,7 +2161,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkDefault.cs:57:1
+ Location:                ShrinkDefault.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
@@ -2194,7 +2194,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkFunction.cs:57:1
+ Location:                ShrinkFunction.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
@@ -2222,7 +2222,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkFuzzr.cs:57:1
+ Location:                ShrinkFuzzr.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
@@ -2252,7 +2252,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkMultiple.cs:57:1
+ Location:                ShrinkMultiple.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
@@ -2287,7 +2287,7 @@ This is correct behavior.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkNone.cs:67:1
+ Location:                ShrinkNone.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
@@ -2317,7 +2317,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkValues.cs:57:1
+ Location:                ShrinkValues.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
@@ -2363,7 +2363,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_ValuesStopOnFirstPassed.cs:48:1
+ Location:                A_ValuesStopOnFirstPassed.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2388,7 +2388,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_ValuesStopOnFirstPassedAlternative.cs:48:1
+ Location:                B_ValuesStopOnFirstPassedAlternative.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2413,7 +2413,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_ValuesReportLastFailure.cs:48:1
+ Location:                C_ValuesReportLastFailure.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2439,7 +2439,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_Collection.cs:58:1
+ Location:                D_Collection.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1681332589
@@ -2465,7 +2465,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_CollectionFunction.cs:58:1
+ Location:                D_CollectionOf.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1681332589
@@ -2490,7 +2490,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_FunctionStopOnFirstPassed.cs:58:1
+ Location:                A_FunctionStopOnFirstPassed.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2515,7 +2515,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_FunctionStopOnFirstPassedAlternative.cs:58:1
+ Location:                B_FunctionStopOnFirstPassedAlternative.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2540,7 +2540,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_FunctionReportLastFailure.cs:58:1
+ Location:                C_FunctionReportLastFailure.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2565,7 +2565,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                SimpleReducers.cs:48:1
+ Location:                A_ReduceTowardsZero.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589
@@ -2590,7 +2590,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                MultiStepReducers.cs:48:1
+ Location:                B_ReduceMinimizeString.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1834440365
@@ -2638,7 +2638,7 @@ public class CustomTowardsZeroReducer
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_Custom.cs:50:1
+ Location:                A_Custom.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    211010750
@@ -2673,7 +2673,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_BuiltInEnumerations.cs:48:1
+ Location:                A_BuiltInEnumerations.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2083214969
@@ -2702,7 +2702,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_CustomEnumerations.cs:48:1
+ Location:                B_CustomEnumerations.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1735186993
@@ -2740,7 +2740,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_RemovingIrrelevantItems.cs:48:1
+ Location:                A_RemovingIrrelevantItems.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1833095082
@@ -2768,7 +2768,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_RemovingIrrelevantCollection.cs:48:1
+ Location:                B_RemovingIrrelevantCollection.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
@@ -2805,7 +2805,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_IrrelevantElementButListLengthIsNot.cs:48:1
+ Location:                C_IrrelevantElementButCollectionLengthIsNot.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1393576429
@@ -2835,7 +2835,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                F_MultipleRelevantElements.cs:48:1
+ Location:                F_MultipleRelevantElements.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    500957855
@@ -2862,7 +2862,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                G_RelevantElementAndSize.cs:48:1
+ Location:                G_RelevantElementAndSize.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1374380958
@@ -2890,7 +2890,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                H_NestedLists.cs:48:1
+ Location:                H_NestedCollections.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    146712596
@@ -2916,7 +2916,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                I_WhenAnEmptyListIsTheCulprit.cs:48:1
+ Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:59:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------
@@ -2962,7 +2962,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleList.cs:67:1
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -3005,7 +3005,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleList.cs:67:1
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -3045,7 +3045,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                K_AListOfObjects.cs:48:1
+ Location:                K_ACollectionOfObjects.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    849984174
@@ -3153,14 +3153,14 @@ private static CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_WithDeliberationPolicy
- Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:166:1
+ Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:165:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    51994543
+ Seed:                    1643721177
  ------------------------------------------------------------
   Executed: The Answer
    - Input: The Universe = { Everything: null }
-   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 89 } }
+   - Trace: The Universe = { Everything: null, Irrelevant: { Answer: 19 } }
    - WARNING: Null value for type 'Life' at input 'The Universe.Everything'.
  ===========================================================================
   !! NullReferenceException: Object reference not set to an instance of an object.

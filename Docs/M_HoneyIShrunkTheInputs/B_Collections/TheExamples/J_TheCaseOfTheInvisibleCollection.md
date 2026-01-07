@@ -33,7 +33,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleList.cs:67:1
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -76,7 +76,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleList.cs:67:1
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180

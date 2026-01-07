@@ -12,7 +12,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                I_WhenAnEmptyListIsTheCulprit.cs:48:1
+ Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:59:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------

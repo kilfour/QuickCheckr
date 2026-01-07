@@ -11,7 +11,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                MultiStepReducers.cs:48:1
+ Location:                B_ReduceMinimizeString.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1834440365

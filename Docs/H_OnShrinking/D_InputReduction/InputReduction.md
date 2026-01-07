@@ -50,7 +50,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                InputReduction.cs:57:1
+ Location:                InputReduction.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1684147193

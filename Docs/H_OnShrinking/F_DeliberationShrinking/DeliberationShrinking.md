@@ -46,11 +46,11 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
  Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1405499460
+ Seed:                    1133636239
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 1, _ ]
-   - Trace: List  = [ 3, 1, 4 ]
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List  = [ 0, 4, 1 ]
  =============================================
   !! Expectation Failed: Does not contain 1
  =============================================
@@ -70,14 +70,14 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:106:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:105:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1136603211
+ Seed:                    149961996
  ------------------------------------------------------------
   Executed:
    - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original    = { IntOne: 2, IntTwo: 3, IntThree: 1 }
+   - Trace: Original    = { IntOne: 3, IntTwo: 2, IntThree: 1 }
  ===============================================================
   !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
  ===============================================================

@@ -13,7 +13,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                RegisteredButUnused.cs:58:1
+ Location:                RegisteredButUnused.cs:59:1
  Original failing run:    1 execution
  Seed:                    1681332589
  ------------------------------------------------------------

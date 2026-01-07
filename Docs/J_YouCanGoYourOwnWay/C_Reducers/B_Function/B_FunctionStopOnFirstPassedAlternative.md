@@ -11,7 +11,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_FunctionStopOnFirstPassedAlternative.cs:58:1
+ Location:                B_FunctionStopOnFirstPassedAlternative.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1681332589

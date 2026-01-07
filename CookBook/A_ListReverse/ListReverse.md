@@ -38,7 +38,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ListReverse.cs:48:1
+ Location:                ListReverse.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    498116108

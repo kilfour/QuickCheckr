@@ -14,7 +14,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_BuiltInEnumerations.cs:48:1
+ Location:                A_BuiltInEnumerations.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2083214969

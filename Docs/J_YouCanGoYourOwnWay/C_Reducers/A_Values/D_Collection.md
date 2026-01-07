@@ -12,7 +12,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_Collection.cs:58:1
+ Location:                D_Collection.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1681332589

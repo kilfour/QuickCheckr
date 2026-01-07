@@ -16,7 +16,7 @@ QuickCheckr reports the original failing run.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeNone.cs:67:1
+ Location:                ShrinkModeNone.cs:68:1
  Original failing run:    3 executions
  Seed:                    2145473476
  ------------------------------------------------------------
@@ -34,11 +34,11 @@ QuickCheckr reports the original failing run.
    - Input: counter    = 3
    - Input: Relevant   = 66
    - Input: Irrelevant = 13
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
  Passed Expectations
- - Counter does not equal 3: 2x
+ - Third Time Answer: 2x
  ------------------------------------------------------------
 ```
 ## ShrinkMode.Executions
@@ -50,7 +50,7 @@ Trims away irrelevant executions.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeExecutions.cs:67:1
+ Location:                ShrinkModeExecutions.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    2145473476
@@ -75,7 +75,7 @@ Trims inputs to find a minimal failing case.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeInputs.cs:67:1
+ Location:                ShrinkModeInputs.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 7 shrinks)
  Seed:                    2145473476
@@ -113,7 +113,7 @@ Applies configured reducers for fine-grained shrinking.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeReduction.cs:67:1
+ Location:                ShrinkModeReduction.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    2145473476
@@ -125,11 +125,11 @@ Applies configured reducers for fine-grained shrinking.
    - Input: counter  = 3
    - Input: Relevant = 66
             Redux      42
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
  Passed Expectations
- - Counter does not equal 3: 2x
+ - Third Time Answer: 2x
  ------------------------------------------------------------
 ```
 ## ShrinkMode.Default
@@ -141,7 +141,7 @@ Includes all possible ShrinkModes.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeDefault.cs:67:1
+ Location:                ShrinkModeDefault.cs:68:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    2145473476

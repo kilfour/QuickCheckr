@@ -13,7 +13,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                G_RelevantElementAndSize.cs:48:1
+ Location:                G_RelevantElementAndSize.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1374380958

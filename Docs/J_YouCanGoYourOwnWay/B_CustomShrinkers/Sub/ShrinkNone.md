@@ -19,7 +19,7 @@ This is correct behavior.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkNone.cs:67:1
+ Location:                ShrinkNone.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321

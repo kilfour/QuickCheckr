@@ -45,7 +45,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_RelevantItemIsDefault.cs:48:1
+ Location:                D_RelevantItemIsDefault.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    820833320
@@ -72,7 +72,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                E_RelevantItemIsAllButDefault.cs:48:1
+ Location:                E_RelevantItemIsAllButDefault.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    816312044
@@ -103,7 +103,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                A_AnArrayAsInput.cs:65:1
+ Location:                A_AnArrayAsInput.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    27506614
@@ -748,7 +748,7 @@ public class ListWrap
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:21:1
+ Location:                Notes\T_Examples\Q_ParsingNumbers\ParsingNumbers.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    406406480
@@ -816,30 +816,30 @@ public class ContactBook
  Test:                    RunTestNoShrinking
  Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
  Original failing run:    4 executions
- Seed:                    1266733166
+ Seed:                    342559779
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-1
    - Input: Counter = 1
-   - Input: Name    = AAA
+   - Input: Name    = "AAA"
    - Trace: Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
    -  Pool: Name to update = String-1
    - Input: Counter        = 2
-   - Input: Name           = BBB
+   - Input: Name           = "BBB"
    - Trace: Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-2
    - Input: Counter = 3
-   - Input: Name    = AAA
+   - Input: Name    = "AAA"
    - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-3
    - Input: Counter = 4
-   - Input: Name    = BBB
+   - Input: Name    = "BBB"
    - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
  ========================================
   !! Expectation Failed: Count matches
@@ -947,7 +947,7 @@ public class ContactBook
  Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    376041206
+ Seed:                    1954794658
  ------------------------------------------------------------
   Executed: Add
    -  Pool: Name    = String-1

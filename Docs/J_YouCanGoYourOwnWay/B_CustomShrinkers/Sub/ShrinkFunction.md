@@ -15,7 +15,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkFunction.cs:57:1
+ Location:                ShrinkFunction.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
