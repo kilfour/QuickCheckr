@@ -1,4 +1,4 @@
-# A List Of Objects
+# A Collection Of Objects
 
 **The Model:**  
 ```csharp

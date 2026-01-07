@@ -3,11 +3,11 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 [DocFileHeader("The Solution")]
 [DocContent("Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.")]
-public class J2_TheCaseOfTheInvisibleList : CheckrTest<J2_TheCaseOfTheInvisibleList>
+public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

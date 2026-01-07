@@ -1,4 +1,4 @@
-# When An Empty List Is The Culprit
+# When An Empty Collection Is The Culprit
 
 **The Checkr:**  
 ```csharp

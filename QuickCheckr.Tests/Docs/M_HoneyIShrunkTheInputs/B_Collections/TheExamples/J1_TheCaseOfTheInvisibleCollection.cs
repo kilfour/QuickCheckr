@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 [DocFileHeader("The Issue")]
 [DocContent(
@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.T
 
 This one is caused by the fact that the shrinker only sees the inputs.
 It is unaware of any *state derived* meaningfull values. ")]
-public class J1_TheCaseOfTheInvisibleList : CheckrTest<J1_TheCaseOfTheInvisibleList>
+public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -59,5 +59,8 @@ public class J1_TheCaseOfTheInvisibleList : CheckrTest<J1_TheCaseOfTheInvisibleL
     }
 
     [CodeExample]
-    public class Thing { public List<int> Ints = []; }
+    public class Thing
+    {
+        public List<int> Ints = [];
+    }
 }

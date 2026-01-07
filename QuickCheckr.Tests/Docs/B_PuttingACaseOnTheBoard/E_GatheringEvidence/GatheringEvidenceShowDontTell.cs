@@ -15,8 +15,6 @@ Changes:
 - Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleList]:")]
 [DocCodeFile("GatheringEvidenceCheckr.cs", "csharp", 4)]
 [DocContent(
-@"Running the Checkr using the code snippet at the top of this file, consistently results in five different reports.")]
-[DocContent(
 @"For the code on display here, running this checkr using the code snippet at the top of this doc, 
 consistently results in two different reports.")]
 [DocCodeFile("report1.qr", "text")]

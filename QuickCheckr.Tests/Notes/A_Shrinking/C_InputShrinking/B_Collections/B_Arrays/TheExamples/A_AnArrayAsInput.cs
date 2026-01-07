@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.B_Arrays.TheExamples;
+namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.B_Collections.B_Arrays.TheExamples;
 
 [DocFile]
 public class A_AnArrayAsInput : CheckrTest<A_AnArrayAsInput>

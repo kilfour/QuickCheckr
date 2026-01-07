@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 [DocFile]
-public class I_WhenAnEmptyListIsTheCulprit : CheckrTest<I_WhenAnEmptyListIsTheCulprit>
+public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyCollectionIsTheCulprit>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

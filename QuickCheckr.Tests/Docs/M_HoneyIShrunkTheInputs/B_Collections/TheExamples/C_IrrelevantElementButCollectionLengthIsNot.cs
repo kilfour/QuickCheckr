@@ -3,11 +3,11 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 
 [DocFile]
-public class C_IrrelevantElementButListLengthIsNot : CheckrTest<C_IrrelevantElementButListLengthIsNot>
+public class C_IrrelevantElementButCollectionLengthIsNot : CheckrTest<C_IrrelevantElementButCollectionLengthIsNot>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -17,7 +17,7 @@ public class C_IrrelevantElementButListLengthIsNot : CheckrTest<C_IrrelevantElem
 @"When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
 and leaves irrelevant details untouched. 
 
-In cases like this example where the predicate depends solely on the length of the list,
+In cases like this example where the predicate depends solely on the length of the collection,
 the individual element values play no role.  
 QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
 removing elements, and converging toward the smallest list that still violates the condition.

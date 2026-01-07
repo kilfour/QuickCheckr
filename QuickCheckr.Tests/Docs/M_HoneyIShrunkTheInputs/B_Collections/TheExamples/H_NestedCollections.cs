@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 [DocFile]
-public class H_NestedLists : CheckrTest<H_NestedLists>
+public class H_NestedCollections : CheckrTest<H_NestedCollections>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

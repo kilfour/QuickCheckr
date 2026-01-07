@@ -14,7 +14,7 @@ public class ShrinkModeInputs : CheckrTest<ShrinkModeInputs>
 
     [Fact]
     [DocConfigure]
-    [DocContent("rims inputs to find a minimal failing case.")]
+    [DocContent("Trims inputs to find a minimal failing case.")]
     [DocReport]
     public override void Example()
         => Run(2145473476, 3.ExecutionsPerRun());

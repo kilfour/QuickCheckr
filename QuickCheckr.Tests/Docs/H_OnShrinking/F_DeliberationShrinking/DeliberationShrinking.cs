@@ -27,7 +27,7 @@ public class DeliberationShrinking : BaseTest
     [DocHeader("An Eager Shrinker")]
     [DocContent(
 @"Under some rare circumstances, the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.")]
+One currently identified case where this happens is if more than one input triggers the same failure.")]
     [DocExample(typeof(DeliberationShrinking), nameof(GetCheckrGreedy))]
     [DocContent(
 @"Now when the list contains multiple elements `1`, we might get:")]
@@ -87,7 +87,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     [CodeExample]
     private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-        => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
+        => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
 
     private static void Verify_DeliberatedGreedyFixed(Article article)
     {

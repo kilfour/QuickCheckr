@@ -1,4 +1,4 @@
-# The Case Of The Invisible List
+# The Case Of The Invisible Collection
 ## The Issue
 Another case of '*Greedy Shrinker Disease*'.  
 
@@ -7,7 +7,10 @@ It is unaware of any *state derived* meaningfull values.
 
 **The Model:**  
 ```csharp
-public class Thing { public List<int> Ints = ;
+public class Thing
+{
+    public List<int> Ints = [];
+}
 ```
 
 **The Checkr:**  

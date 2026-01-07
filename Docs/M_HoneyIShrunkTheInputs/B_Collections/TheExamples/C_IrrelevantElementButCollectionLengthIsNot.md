@@ -1,8 +1,8 @@
-# Irrelevant Element But List Length Is Not
+# Irrelevant Element But Collection Length Is Not
 When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
 and leaves irrelevant details untouched. 
 
-In cases like this example where the predicate depends solely on the length of the list,
+In cases like this example where the predicate depends solely on the length of the collection,
 the individual element values play no role.  
 QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
 removing elements, and converging toward the smallest list that still violates the condition.

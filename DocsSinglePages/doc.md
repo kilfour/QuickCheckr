@@ -1368,7 +1368,7 @@ Trims away irrelevant executions.
 protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Inputs };
 ```
-rims inputs to find a minimal failing case.  
+Trims inputs to find a minimal failing case.  
 ```text
 ------------------------------------------------------------
  Test:                    Example
@@ -1604,7 +1604,6 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 }
 ```
-Running the Checkr using the code snippet at the top of this file, consistently results in five different reports.  
 For the code on display here, running this checkr using the code snippet at the top of this doc, 
 consistently results in two different reports.  
 ```text
@@ -1771,7 +1770,7 @@ The Shrinker however managed to collapse that one down to only four executions, 
 
 [BoltingHorses]: #bolting-horses
 
-[J_TheCaseOfTheInvisibleList]: #the-case-of-the-invisible-list
+[J_TheCaseOfTheInvisibleCollection]: #the-case-of-the-invisible-collection
 ## On Shrinking
 ### Philosophy
 
@@ -1962,7 +1961,7 @@ can be found in the entry on Deliberation Policies in the [Configuration][Config
 But here are some more use cases.  
 #### An Eager Shrinker
 Under some rare circumstances, the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.  
+One currently identified case where this happens is if more than one input triggers the same failure.  
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
@@ -1992,7 +1991,7 @@ but the element values are considered irrelevant (*wrong*).
 For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
 ```csharp
 private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
 ```
 **Report:**  
 ```text
@@ -2114,8 +2113,7 @@ QuickCheckr will aggressively trim the rest away.
 The result is a minimal collection containing only the values that still trigger the failure,
 even if the original list was large or noisy.
   
-#### Lists
-##### Removing Irrelevant Items
+#### Removing Irrelevant Items
 Consider a test that forbids the value `7`.  
 
 **The Checkr:**  
@@ -2143,7 +2141,7 @@ select Case.Closed;
  ==================================================
 ```
 Even if the original list was long and varied, QuickCheckr isolates the single relevant element:  
-##### Removing Irrelevant Collection
+#### Removing Irrelevant Collection
 Ofcourse a collection itself is just an input like another, so if it, as a whole,
 is irrelevant for the failure, QuickCheckr will remove it.  
 
@@ -2170,11 +2168,11 @@ select Case.Closed;
   !! Expectation Failed: Always fails
  =======================================
 ```
-##### Irrelevant Element But List Length Is Not
+#### Irrelevant Element But Collection Length Is Not
 When shrinking collections, QuickCheckr isolates the structural aspects that contributed to the failure
 and leaves irrelevant details untouched. 
 
-In cases like this example where the predicate depends solely on the length of the list,
+In cases like this example where the predicate depends solely on the length of the collection,
 the individual element values play no role.  
 QuickCheckr therefore preserves them as anonymous placeholders (_) and concentrates entirely on reducing the collection's shape:
 removing elements, and converging toward the smallest list that still violates the condition.
@@ -2207,7 +2205,7 @@ select Case.Closed;
   !! Expectation Failed: Length <= 2
  ======================================
 ```
-##### Multiple Relevant Elements
+#### Multiple Relevant Elements
 
 **The Checkr:**  
 ```csharp
@@ -2237,7 +2235,7 @@ select Case.Closed;
   !! Expectation Failed: One, Two and Three
  =============================================
 ```
-##### Relevant Element And Size
+#### Relevant Element And Size
 
 **The Checkr:**  
 ```csharp
@@ -2264,7 +2262,7 @@ select Case.Closed;
   !! Expectation Failed: Second element is not 7
  ==================================================
 ```
-##### Nested Lists
+#### Nested Collections
 
 **The Checkr:**  
 ```csharp
@@ -2292,7 +2290,7 @@ select Case.Closed;
   !! Expectation Failed: List[0][0] is not 42
  ===============================================
 ```
-##### When An Empty List Is The Culprit
+#### When An Empty Collection Is The Culprit
 
 **The Checkr:**  
 ```csharp
@@ -2317,8 +2315,8 @@ select Case.Closed;
   !! Expectation Failed: List is not empty
  ============================================
 ```
-##### The Case Of The Invisible List
-###### The Issue
+#### The Case Of The Invisible Collection
+##### The Issue
 Another case of '*Greedy Shrinker Disease*'.  
 
 This one is caused by the fact that the shrinker only sees the inputs.
@@ -2326,7 +2324,10 @@ It is unaware of any *state derived* meaningfull values.
 
 **The Model:**  
 ```csharp
-public class Thing { public List<int> Ints = ;
+public class Thing
+{
+    public List<int> Ints = [];
+}
 ```
 
 **The Checkr:**  
@@ -2364,7 +2365,7 @@ select Case.Closed;
   !! Expectation Failed: Has 1
  ================================
 ```
-###### The Solution
+##### The Solution
 Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.  
 
 **The Checkr:**  
@@ -2407,7 +2408,7 @@ select Case.Closed;
   !! Expectation Failed: Has 1
  ================================
 ```
-##### A List Of Objects
+#### A Collection Of Objects
 
 **The Model:**  
 ```csharp
@@ -2449,37 +2450,6 @@ select Case.Closed;
  ===============================================
   !! Expectation Failed: Only answers for One
  ===============================================
-```
-#### Arrays
-##### An Array As Input
-Seeing as all inputs are provided by QuickFuzzr,
-and the default generated enumerable underlying type is a list,
-we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array.  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("int[]", Fuzzr.Constant(new int[] { 42, 2, 3 }))
-from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.Expect("No answer here",
-    () => !input.Contains(42))
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                A_AnArrayAsInput.cs:65:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    27506614
- ------------------------------------------------------------
-  Executed:
-   - Input: int[]    = [ 42 ]
-   - Trace: Original = [ 42, 2, 3 ]
- =========================================
-  !! Expectation Failed: No answer here
- =========================================
 ```
 ### Objects
 #### Checking Nulls

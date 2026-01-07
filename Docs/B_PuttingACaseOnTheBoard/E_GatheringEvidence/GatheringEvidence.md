@@ -113,7 +113,6 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 }
 ```
-Running the Checkr using the code snippet at the top of this file, consistently results in five different reports.  
 For the code on display here, running this checkr using the code snippet at the top of this doc, 
 consistently results in two different reports.  
 ```text
@@ -280,4 +279,4 @@ The Shrinker however managed to collapse that one down to only four executions, 
 
 [BoltingHorses]: ../../A_Guide/E_HorsesAgain/BoltingHorses.md
 
-[J_TheCaseOfTheInvisibleList]: ../../M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/J_TheCaseOfTheInvisibleList.md
+[J_TheCaseOfTheInvisibleCollection]: ../../M_HoneyIShrunkTheInputs/B_Collections/TheExamples/J_TheCaseOfTheInvisibleCollection.md

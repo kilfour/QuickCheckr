@@ -7,7 +7,7 @@ can be found in the entry on Deliberation Policies in the [Configuration][Config
 But here are some more use cases.  
 ## An Eager Shrinker
 Under some rare circumstances, the Shrinker gets *greedy*.  
-Currently the only identified cases where this happens is if more than one input triggers the same failure.  
+One currently identified case where this happens is if more than one input triggers the same failure.  
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
     from trace in Checkr.Trace("List", () => input)
@@ -37,7 +37,7 @@ but the element values are considered irrelevant (*wrong*).
 For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
 ```csharp
 private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = Protocol.DeliberationPolicy.MinimumShrinkCount };
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
 ```
 **Report:**  
 ```text

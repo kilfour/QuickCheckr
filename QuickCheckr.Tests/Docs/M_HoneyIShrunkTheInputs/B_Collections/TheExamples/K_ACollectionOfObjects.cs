@@ -4,10 +4,10 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;
 
-namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.A_Lists.TheExamples;
+namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 
 [DocFile]
-public class K_AListOfObjects : CheckrTest<K_AListOfObjects>
+public class K_ACollectionOfObjects : CheckrTest<K_ACollectionOfObjects>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
