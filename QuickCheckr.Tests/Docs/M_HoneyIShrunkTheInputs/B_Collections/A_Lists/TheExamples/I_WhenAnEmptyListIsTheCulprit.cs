@@ -10,7 +10,6 @@ public class I_WhenAnEmptyListIsTheCulprit : CheckrTest<I_WhenAnEmptyListIsTheCu
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

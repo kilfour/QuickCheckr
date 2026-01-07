@@ -2,11 +2,13 @@ using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.A_FilingEvidence;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.D_ShrinkMode;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.H_InternalAffairs;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.K_Hint;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMode;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMode.Reference;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
+using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.Z_InternalAffairs;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickPulse.Explains;
 
@@ -17,7 +19,9 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 [DocLink(typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(RunningACheckr))]
 [DocLink(typeof(TheEvidenceVault))]
-[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  \n")]
+[DocLink(typeof(A_ReportModeReference))]
+[DocLink(typeof(A_ShrinkModeReference))]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  \n")]
 [DocContent(
 @"QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
@@ -27,12 +31,12 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 [DocExample(typeof(Configuration), nameof(DefaultSettings))]
 [DocInclude(typeof(FilingEvidence))]
 [DocInclude(typeof(TheCustodian))]
-[DocInclude(typeof(ShrinkModeTests))]
-[DocInclude(typeof(ReportModeTests))]
 [DocInclude(typeof(DeliberationPolicyTests))]
-[DocInclude(typeof(InternalAffairsTests))]
+[DocInclude(typeof(ReportModeTests))]
+[DocInclude(typeof(ShrinkModeTests))]
 [DocInclude(typeof(Hint))]
-[DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]")]
+[DocInclude(typeof(InternalAffairsTests))]
+[DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]")]
 public class Configuration
 {
     [CodeSnippet]

@@ -10,7 +10,6 @@ public class B_CustomEnumerations : CheckrTest<B_CustomEnumerations>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

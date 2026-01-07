@@ -8,9 +8,9 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 [DocFileHeader("An Observation")]
 [DocContent(
 @"When I first implemented this feature, I was quite puzzled.
-Surely there are more ways this Checkr can fail I thought.  
+Surely there are more ways this Checkr can fail, I thought.  
 
-I took a bit of investigating as to why this is not the case. Let me give you an example of what is going on.
+It took a bit of investigating as to why this is not the case. Let me give you an example of what is going on.
 
 If you look at the second report, the one with 6 executions, surely there is a similar case,
 but instead of updating the Coach skills, we update the Course skills and that would also fail.

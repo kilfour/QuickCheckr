@@ -1,5 +1,5 @@
 # The Evidence Vault
-[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
   
 ## Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
@@ -22,7 +22,7 @@ If however a run for a given seed no longer fails, the seed is removed from the 
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 
-[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
 
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
 

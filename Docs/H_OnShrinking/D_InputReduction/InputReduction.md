@@ -1,4 +1,14 @@
 # Input Reduction
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
 After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
 are run on the remaining relevant inputs (example below).  
 
@@ -64,6 +74,4 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
-
-TODO: LINK TO REDUCE REUSE RECYCLE
   

@@ -6,6 +6,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
 
 [DocFile]
+[DocUnderConstruction]
 [DocContent(
 @"After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
 are run on the remaining relevant inputs (example below).  
@@ -24,7 +25,6 @@ public class InputReduction : CheckrTest<InputReduction>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocModelHeader]
@@ -46,8 +46,6 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
-
-TODO: LINK TO REDUCE REUSE RECYCLE
 ")]
     public override void Example() => Run(1684147193, 10.ExecutionsPerRun());
 

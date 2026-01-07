@@ -1,0 +1,17 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeDefault.cs:67:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter  = 3
+   - Input: Relevant = 66
+            Redux      42
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
+ Passed Expectations
+ - Third Time Answer: 2x
+ ------------------------------------------------------------

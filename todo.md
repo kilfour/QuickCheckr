@@ -3,7 +3,7 @@
 ### Current Focus
 * The Case of the Invisible List. (explain it)
 * Reducers
-  * InputReducer: remove Introduce.This Hack
+  * Check out Object Reducers
 * Added Input overloads taking Custom Shrinker(s) as extra argument.
   * Remove Nesting (for now)
 

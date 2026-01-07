@@ -205,6 +205,110 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
+## Checkrs Court
+The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
+
+Multiple Checkrs can be combined into a composite Checkr using `LINQ` chains, as many of the examples show.  
+
+The *atomic* Checkrs are created through a couple of static Factory classes :
+
+- [The Checkr Class][TheCheckrClass]
+  - Provides methods to create the *basic* Checkrs.
+  - All of the Checkrs created by this class are *execution-scoped*.
+- [The Tracker Class][TheTrackerClass]
+  - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
+- [The Tracker Class][TheShowrClass]
+  - Allows for customization of the QuickChecker value printer.  
+  
+
+[TheCheckrClass]: #the-checkr-class
+
+[TheTrackerClass]: #the-tracker-class
+
+[TheShowrClass]: #the-showr-class
+### The Checkr Class
+#### Input
+`Checkr.Input()` is the only way an *input* can be defined inside a Checkr.  
+Inputs serve as shrinkable parameters that in all likelyhood will be consumed by an Act Checkr down the line.  
+
+**Usage**  
+```csharp
+Checkr.Input("AnInt", Fuzzr.Int());
+```
+###### Exception Handling
+The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
+```csharp
+    from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
+    select Case.Closed;
+```
+Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
+```csharp
+Input 'AnInt' threw a 'OneOfEmptyOptionsException', see InnerException.
+This might mean something is wrong with the way you wrote the Fuzzr.
+But it might also mean that the fuzzr is depending on state.
+And as 'Input' is eagerly evaluated, this can cause problems.
+In the latter case please try using the 'lazy' version. 
+Example: 'Checkr.Input(() => Fuzzr.Int()).
+```
+As you can gather from the exception message, this is done in order to inform the user of a rare, but real,
+issue when a Fuzzr depends on external state.  
+The solution is also supplied in said message:   
+```csharp
+Checkr.Input("AnInt", () => Fuzzr.Int());
+```
+If the *lazy* version throws:  
+```csharp
+    from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
+    select Case.Closed;
+```
+The Exception is **not** wrapped.  
+```csharp
+Fuzzr.OneOf<Int32> cannot select from an empty sequence.
+Possible solutions:
+- Provide at least one option (ensure the sequence is non-empty).
+- Use a fallback: Fuzzr.OneOf(values).WithDefault()
+- Guard upstream: values.Any() ? Fuzzr.OneOf(values) : Fuzzr.Constant(default!).
+```
+### The Tracker Class
+### The Showr Class
+```csharp
+    from acc in Trackr.Stashed(() => new Accumelator())
+    from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
+    from show in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
+    from a in Checkr.Input("a", Fuzzr.Int())
+    from b in Checkr.Input("b", Fuzzr.Int())
+    from c in Checkr.Input("c", Fuzzr.Int())
+    from add in Checkr.Act("Add", () => acc.Add(a, b))
+    from notAnswerOnTwo in Checkr.Expect("not 42 on execution 2", () => !(count == 2 && acc.Total == 42))
+    select Case.Closed;
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\K_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 3 shrinks)
+ Seed:                    344916298
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: a = 8
+                Int 8
+   - Input: b = 16
+                Int 16
+ ------------------------------------------------------------
+  Executed: Add
+   - Input: Counter = 2
+   - Input: a       = 1
+                      Int 1
+   - Input: b       = 17
+                      Int 17
+ ================================================
+  !! Expectation Failed: not 42 on execution 2
+ ================================================
+ Passed Expectations
+ - not 42 on execution 2: 1x
+ ------------------------------------------------------------
+```
 ## Conditional Execution
 ### Checkr Act Carefully When
 ```csharp

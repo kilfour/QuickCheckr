@@ -7,7 +7,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.A_TestFrameworkIntegra
 [DocFile]
 [DocLink(typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(RunningACheckr))]
-[DocContent("[Up][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  \n")]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  \n")]
 [DocRawFile("TestFrameworkIntegration.md")]
 public class TestFrameworkIntegration
 {

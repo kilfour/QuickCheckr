@@ -10,7 +10,6 @@ public class A_FunctionStopOnFirstPassed : CheckrTest<A_FunctionStopOnFirstPasse
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

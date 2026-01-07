@@ -10,7 +10,6 @@ public class B_FunctionStopOnFirstPassedAlternative : CheckrTest<B_FunctionStopO
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

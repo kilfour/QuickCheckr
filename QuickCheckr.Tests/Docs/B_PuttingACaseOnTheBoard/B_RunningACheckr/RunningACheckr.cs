@@ -14,7 +14,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 [DocLink(typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(TestFrameworkIntegration))]
 [DocLink(typeof(Configuration))]
-[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  \n")]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  \n")]
 [DocContent(
 @"This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:")]
@@ -147,8 +147,8 @@ public class RunningACheckr : BaseTest
     [Fact]
     [DocContent(
 @"All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].")]
-    [DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]")]
+which allows for controlling specific aspects of the Checkr run.")]
+    [DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]")]
     public void WithConfigurations()
     {
 

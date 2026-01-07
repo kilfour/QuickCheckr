@@ -11,7 +11,6 @@ public class CheckrTestTemplate : CheckrTest<CheckrTestTemplate>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocModelHeader]

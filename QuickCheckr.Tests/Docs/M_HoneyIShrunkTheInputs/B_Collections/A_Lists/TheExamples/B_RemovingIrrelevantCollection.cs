@@ -11,7 +11,6 @@ public class B_RemovingIrrelevantCollection : CheckrTest<B_RemovingIrrelevantCol
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocContent(

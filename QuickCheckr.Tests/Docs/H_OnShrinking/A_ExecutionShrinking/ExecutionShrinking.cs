@@ -11,7 +11,6 @@ public class ExecutionShrinking : CheckrTest<ExecutionShrinking>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocContent("The following simple example fails on the third execution.")]

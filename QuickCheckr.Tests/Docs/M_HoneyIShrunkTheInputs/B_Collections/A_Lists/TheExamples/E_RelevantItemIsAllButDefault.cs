@@ -10,7 +10,6 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocContent("Just making sure `default` values, `0` in this case, get handled correctly.")]

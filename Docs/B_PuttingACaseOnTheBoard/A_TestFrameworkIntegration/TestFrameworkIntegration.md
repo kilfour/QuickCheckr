@@ -1,5 +1,5 @@
 # Test Framework Integration
-[Up][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
+[The Board][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
   
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 

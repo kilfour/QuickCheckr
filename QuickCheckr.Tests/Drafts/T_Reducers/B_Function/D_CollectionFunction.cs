@@ -11,7 +11,6 @@ public class D_CollectionFunction : CheckrTest<D_CollectionFunction>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

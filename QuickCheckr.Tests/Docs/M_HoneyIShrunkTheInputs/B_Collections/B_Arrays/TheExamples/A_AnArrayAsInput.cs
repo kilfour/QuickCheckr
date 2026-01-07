@@ -10,7 +10,6 @@ public class A_AnArrayAsInput : CheckrTest<A_AnArrayAsInput>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocContent(

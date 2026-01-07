@@ -10,7 +10,6 @@ public class H_NestedLists : CheckrTest<H_NestedLists>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

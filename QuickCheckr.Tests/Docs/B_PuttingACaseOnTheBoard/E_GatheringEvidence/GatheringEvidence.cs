@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 [DocLink(typeof(Guide))]
 [DocLink(typeof(BoltingHorses))]
 [DocLink(typeof(J_TheCaseOfTheInvisibleList))]
-[DocContent("[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  \n")]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  \n")]
 [DocContent("This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.")]
 [DocHeader("Running Investigations")]
 [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
@@ -33,7 +33,7 @@ As stated above, similar CaseFiles are not reported in order to increase the sig
 [DocInclude(typeof(GatheringEvidenceCaseFileCompare))]
 [DocInclude(typeof(GatheringEvidenceShowDontTell))]
 [DocInclude(typeof(GatheringEvidenceObservation))]
-[DocContent("\n[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]
+[DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]
 public class GatheringEvidence
 {
     [CodeSnippet]

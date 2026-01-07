@@ -1,5 +1,5 @@
 # Running a Checkr
-[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
   
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
@@ -28,9 +28,9 @@ checkr.Run(424242);
 checkr.Run(424242, 5.ExecutionsPerRun());
 ```
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].  
+which allows for controlling specific aspects of the Checkr run.  
 
-[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
 
 [Configuration]: ../C_Configuration/Configuration.md
 

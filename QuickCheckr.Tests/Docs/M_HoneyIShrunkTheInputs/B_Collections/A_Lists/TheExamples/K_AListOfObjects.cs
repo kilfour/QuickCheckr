@@ -11,7 +11,6 @@ public class K_AListOfObjects : CheckrTest<K_AListOfObjects>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocModelHeader]

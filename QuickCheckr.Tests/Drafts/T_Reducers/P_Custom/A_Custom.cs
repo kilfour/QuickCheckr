@@ -11,7 +11,6 @@ public class A_Custom : CheckrTest<A_Custom>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

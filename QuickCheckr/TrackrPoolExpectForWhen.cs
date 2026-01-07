@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood;
-using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr;
 

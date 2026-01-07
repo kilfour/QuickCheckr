@@ -10,7 +10,6 @@ public class ShrinkFunction : CheckrTest<ShrinkFunction>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

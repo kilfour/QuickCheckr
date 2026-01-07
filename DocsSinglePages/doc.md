@@ -827,7 +827,7 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 
 [GatheringEvidence]: #gathering-evidence
 ### Test Framework Integration
-[Up][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
+[The Board][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
   
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
@@ -841,7 +841,7 @@ Because the failure is surfaced as a standard exception, any test framework can 
 
 [RunningACheckr]: #running-a-checkr
 ### Running a Checkr
-[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
   
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
@@ -870,9 +870,9 @@ checkr.Run(424242);
 checkr.Run(424242, 5.ExecutionsPerRun());
 ```
 All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run. We'll get into that [later][Configuration].  
+which allows for controlling specific aspects of the Checkr run.  
 
-[Up][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
 
 [Configuration]: #configuration
 
@@ -882,7 +882,7 @@ which allows for controlling specific aspects of the Checkr run. We'll get into 
 
 [Configuration]: #configuration
 ### Configuration
-[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
   
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.
@@ -976,262 +976,6 @@ public class InMemoryRecorder : IEvidenceRecorder
 }
 ```
 This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem  
-#### ShrinkMode
-Controls which shrinking strategies are active.
-
-The following Checkr will be used to generate the reports throughout this chapter:  
-```csharp
-    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
-    from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
-    select Case.Closed;
-```
-```csharp
-private static CheckrConfig ConfigureNone(CheckrConfig config)
-    => config with { ShrinkMode = ShrinkMode.None };
-```
-###### ShrinkMode.None
-QuickCheckr reports the original failing run.  
-```text
-------------------------------------------------------------
- Test:                    RunTestNone
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:44:1
- Original failing run:    3 executions
- Seed:                    1044984793
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 1
-   - Input: Irrelevant = 13
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 2
-   - Input: Irrelevant = 5
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 3
-   - Input: Irrelevant = 8
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
- Passed Expectations
- - Counter does not equal 3: 2x
- ------------------------------------------------------------
-```
-###### ShrinkMode.Executions
-Trims away irrelevant executions.  
-```csharp
-private static CheckrConfig ConfigureExecutions(CheckrConfig config)
-    => config with { ShrinkMode = ShrinkMode.Executions };
-```
-```text
-------------------------------------------------------------
- Test:                    RunTestExecutions
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:89:1
- Original failing run:    3 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1044984793
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 3
-   - Input: Irrelevant = 8
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
- Passed Expectations
- - Counter does not equal 3: 2x
- ------------------------------------------------------------
-```
-###### ShrinkMode.Inputs
-Trims inputs to find a minimal failing case.  
-```csharp
-private static CheckrConfig ConfigureInputs(CheckrConfig config)
-    => config with { ShrinkMode = ShrinkMode.Inputs };
-```
-```text
-------------------------------------------------------------
- Test:                    RunTestInputs
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:124:1
- Original failing run:    3 executions
- Minimal failing case:    3 executions (after 5 shrinks)
- Seed:                    1044984793
- ------------------------------------------------------------
-  Executed: (2 Times)
-   - WARNING: All inputs were considered irrelevant.
- ------------------------------------------------------------
-  Executed:
-   - Input: counter = 3
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
- Passed Expectations
- - Counter does not equal 3: 2x
- ------------------------------------------------------------
-```
-###### ShrinkMode.Reduction
-Applies configured reducers for fine-grained shrinking.  
-```csharp
-private static CheckrConfig ConfigureReduction(CheckrConfig config)
-    => config with { ShrinkMode = ShrinkMode.Reduction };
-```
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
-*Note:* As of now reporting with only this mode active is not fully supported.  
-###### ShrinkMode.Default
-Includes all possible ShrinkModes.  
-```text
-------------------------------------------------------------
- Test:                    DefaultSetting
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\D_ShrinkMode\ShrinkModeTests.cs:182:1
- Original failing run:    3 executions
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1044984793
- ------------------------------------------------------------
-  Executed:
-   - Input: counter = 3
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
- Passed Expectations
- - Counter does not equal 3: 2x
- ------------------------------------------------------------
-```
-#### ReportMode
-Controls whether or not *Traces*, *Warnings*  and/or *Exception StackTraces* show up in the report.
-
-The following Checkr will be used to generate the reports throughout this chapter:  
-```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
-    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
-    from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
-    from trace in Checkr.Trace("Irrelevant", () => irrelevant)
-    from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
-    select Case.Closed;
-```
-##### ReportMode.Default
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ReportMode = ReportMode.Default };
-```
-Includes all possible ReportModes.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReportModeDefault.cs:57:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Input: Counter    = 2
-   - Input: Null Thing = null
-   - Trace: Irrelevant = 73
-   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
- ===========================================================================
-  !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
-   at QuickPulse.Instruments.ComputerSays.No[T](String msg)
-   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
-```
-##### ReportMode.None
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ReportMode = ReportMode.None };
-```
-No traces, no warnings, no labels, no stacktrace.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReportModeNone.cs:57:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Counter    = 2
-   - Null Thing = null
- ===========================================================================
-  !! ComputerSaysNo: Only one is available
- ===========================================================================
-```
-##### ReportMode.Trace
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ReportMode = ReportMode.Trace };
-```
-Only traces.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReportModeTrace.cs:57:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Counter    = 2
-   - Null Thing = null
-   - Irrelevant = 73
- ===========================================================================
-  !! ComputerSaysNo: Only one is available
- ===========================================================================
-```
-##### ReportMode.Warning
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ReportMode = ReportMode.Warning };
-```
-Only warnings.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReportModeWarning.cs:57:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Counter    = 2
-   - Null Thing = null
-   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
- ===========================================================================
-  !! ComputerSaysNo: Only one is available
- ===========================================================================
-```
-##### ReportMode.Labels
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ReportMode = ReportMode.Labels };
-```
-Only labels.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReportModeLabels.cs:57:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1964562926
- ------------------------------------------------------------
-  Executed: Blows up on 2
-   - Input: Counter    = 2
-   - Input: Null Thing = null
- ===========================================================================
-  !! ComputerSaysNo: Only one is available
- ===========================================================================
-```
-**Hint:** You can use bit-wise operations to manipulate `ReportMode`:  
-```csharp
-config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
-```
 #### Deliberation Policy
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
@@ -1343,19 +1087,27 @@ It is also possible to define a custom policy, but this is an ...
   
 
 [DeliberationShrinking]: #deliberation-shrinking
-#### Internal Affairs
-The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
+#### ReportMode
+You can use this to customize report formatting somewhat.  
+I personally almost always disable the *Labels* ('Input:', 'Pool:', etc...), but your milage may vary.  
 
-!! WARNING: **Experimental Feature** !!
+It is also useful to toggle traces on or off, for instance.  
+```csharp
+private static CheckrConfig DisableTraces(CheckrConfig config) =>
+    config with { ReportMode = config.ReportMode & ~ReportMode.Trace };
+```
+A full reference to the available options can be found [here][A_ReportModeReference].  
+#### ShrinkMode
+Controls which shrinking strategies are active.  
 
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
-It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
+This is an option you will likely never need.  
+It's main use is to investigate what happened during shrinking.  
+As such, disabling shrinking entirely is probably the most useful step.  
+```csharp
+private static CheckrConfig DisableShrinking(CheckrConfig config) =>
+    config with { ShrinkMode = ShrinkMode.None };
+```
+A full reference to the available options can be found [here][A_ShrinkModeReference].  
 #### Hint
 If you do not like the defaults,
 it is advised to simply wrap them into your own `CheckrOf` extension method(s):  
@@ -1387,16 +1139,323 @@ public static void Investigate(
         cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
 ```
 You get the idea.  
+#### Internal Affairs
+The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
 
-[Up][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
+
+[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
 [RunningACheckr]: #running-a-checkr
 
 [TheEvidenceVault]: #the-evidence-vault
+
+[A_ReportModeReference]: #reportmode-reference
+
+[A_ShrinkModeReference]: #shrinkmode-reference
+##### ReportMode Reference
+The following Checkr will be used to generate the reports throughout this chapter:  
+```csharp
+    from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
+    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
+    from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
+    from trace in Checkr.Trace("Irrelevant", () => irrelevant)
+    from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
+    select Case.Closed;
+```
+###### ReportMode.Default
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Default };
+```
+Includes all possible ReportModes.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeDefault.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Input: Counter    = 2
+   - Input: Null Thing = null
+   - Trace: Irrelevant = 73
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ ===========================================================================
+  !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
+   at QuickPulse.Instruments.ComputerSays.No[T](String msg)
+   at QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.E_ReportMode.ReportModeTests.<>c__DisplayClass1_1.<GetCheckr>b__9() in C:\Code\QuickCheckr\QuickCheckr.Tests\Docs\B_PuttingACaseOnTheBoard\C_Configuration\E_ReportMode\ReportModeTests.cs:line 36
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 12
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+```
+###### ReportMode.None
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.None };
+```
+No traces, no warnings, no labels, no stacktrace.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeNone.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Counter    = 2
+   - Null Thing = null
+ ===========================================================================
+  !! ComputerSaysNo: Only one is available
+ ===========================================================================
+```
+###### ReportMode.Trace
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Trace };
+```
+Only traces.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeTrace.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Counter    = 2
+   - Null Thing = null
+   - Irrelevant = 73
+ ===========================================================================
+  !! ComputerSaysNo: Only one is available
+ ===========================================================================
+```
+###### ReportMode.Warning
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Warning };
+```
+Only warnings.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeWarning.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Counter    = 2
+   - Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ ===========================================================================
+  !! ComputerSaysNo: Only one is available
+ ===========================================================================
+```
+###### ReportMode.Labels
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.Labels };
+```
+Only labels.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeLabels.cs:57:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed: Blows up on 2
+   - Input: Counter    = 2
+   - Input: Null Thing = null
+ ===========================================================================
+  !! ComputerSaysNo: Only one is available
+ ===========================================================================
+```
+**Hint:** You can use bit-wise operations to manipulate `ReportMode`:  
+```csharp
+config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
+```
+##### ShrinkMode Reference
+The following Checkr will be used to generate the reports throughout this chapter:  
+```csharp
+    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+    from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Reduce.TowardsZero)
+    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
+    from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
+    select Case.Closed;
+```
+###### ShrinkMode.None
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.None };
+```
+QuickCheckr reports the original failing run.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeNone.cs:67:1
+ Original failing run:    3 executions
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 1
+   - Input: Relevant   = 51
+   - Input: Irrelevant = 6
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Relevant   = 38
+   - Input: Irrelevant = 19
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 3
+   - Input: Relevant   = 66
+   - Input: Irrelevant = 13
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
+###### ShrinkMode.Executions
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Executions };
+```
+Trims away irrelevant executions.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeExecutions.cs:67:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 3
+   - Input: Relevant   = 66
+   - Input: Irrelevant = 13
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
+ Passed Expectations
+ - Third Time Answer: 2x
+ ------------------------------------------------------------
+```
+###### ShrinkMode.Inputs
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Inputs };
+```
+rims inputs to find a minimal failing case.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeInputs.cs:67:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 7 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter  = 3
+   - Input: Relevant = 66
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
+ Passed Expectations
+ - Third Time Answer: 2x
+ ------------------------------------------------------------
+```
+###### ShrinkMode.Reduction
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Inputs | ShrinkMode.Reduction };
+```
+Applies configured reducers for fine-grained shrinking.  
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
+*Note:* For this mode to have any effect `ShrinkMode.Inputs` also needs to be activated.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeReduction.cs:67:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 8 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter  = 3
+   - Input: Relevant = 66
+            Redux      42
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
+###### ShrinkMode.Default
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ShrinkMode = ShrinkMode.Default };
+```
+Includes all possible ShrinkModes.  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeDefault.cs:67:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter  = 3
+   - Input: Relevant = 66
+            Redux      42
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
+ Passed Expectations
+ - Third Time Answer: 2x
+ ------------------------------------------------------------
+```
+**Hint:** You can use bit-wise operations to manipulate `ShrinkMode`:  
+```csharp
+config with { ShrinkMode = config.ShrinkMode & ~ShrinkMode.Reduction };
+```
 ### The Evidence Vault
-[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
   
 #### Reviewing Cold Cases
 Once an evidence vault exists the seeds therein contained can be reviewed.  
@@ -1419,7 +1478,7 @@ If however a run for a given seed no longer fails, the seed is removed from the 
     and no report is generated for the passing run.  
     Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 
-[Up][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
@@ -1427,7 +1486,7 @@ If however a run for a given seed no longer fails, the seed is removed from the 
 
 [GatheringEvidence]: #gathering-evidence
 ### Gathering Evidence
-[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
   
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 #### Running Investigations
@@ -1617,9 +1676,9 @@ consistently results in two different reports.
 ```
 #### An Observation
 When I first implemented this feature, I was quite puzzled.
-Surely there are more ways this Checkr can fail I thought.  
+Surely there are more ways this Checkr can fail, I thought.  
 
-I took a bit of investigating as to why this is not the case. Let me give you an example of what is going on.
+It took a bit of investigating as to why this is not the case. Let me give you an example of what is going on.
 
 If you look at the second report, the one with 6 executions, surely there is a similar case,
 but instead of updating the Coach skills, we update the Course skills and that would also fail.
@@ -1698,7 +1757,7 @@ The Shrinker however managed to collapse that one down to only four executions, 
  ------------------------------------------------------------
 ```
 
-[Up][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
@@ -1814,6 +1873,16 @@ Many more examples focused on shrinking behaviour can be found [here][HoneyIShru
 
 [HoneyIShrunkTheInputs]: #honey-i-shrunk-the-inputs
 ### Input Reduction
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
 After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
 are run on the remaining relevant inputs (example below).  
 
@@ -1879,8 +1948,6 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
-
-TODO: LINK TO REDUCE REUSE RECYCLE
   
 ### Deliberation Shrinking
 This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
@@ -1968,110 +2035,6 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```
 
 [Configuration]: #configuration
-## Checkrs Court
-The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
-
-Multiple Checkrs can be combined into a composite Checkr using `LINQ` chains, as many of the examples show.  
-
-The *atomic* Checkrs are created through a couple of static Factory classes :
-
-- [The Checkr Class][TheCheckrClass]
-  - Provides methods to create the *basic* Checkrs.
-  - All of the Checkrs created by this class are *execution-scoped*.
-- [The Tracker Class][TheTrackerClass]
-  - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
-- [The Tracker Class][TheShowrClass]
-  - Allows for customization of the QuickChecker value printer.  
-  
-
-[TheCheckrClass]: #the-checkr-class
-
-[TheTrackerClass]: #the-tracker-class
-
-[TheShowrClass]: #the-showr-class
-### The Checkr Class
-#### Input
-`Checkr.Input()` is the only way an *input* can be defined inside a Checkr.  
-Inputs serve as shrinkable parameters that in all likelyhood will be consumed by an Act Checkr down the line.  
-
-**Usage**  
-```csharp
-Checkr.Input("AnInt", Fuzzr.Int());
-```
-###### Exception Handling
-The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
-```csharp
-    from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
-```
-Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
-```csharp
-Input 'AnInt' threw a 'OneOfEmptyOptionsException', see InnerException.
-This might mean something is wrong with the way you wrote the Fuzzr.
-But it might also mean that the fuzzr is depending on state.
-And as 'Input' is eagerly evaluated, this can cause problems.
-In the latter case please try using the 'lazy' version. 
-Example: 'Checkr.Input(() => Fuzzr.Int()).
-```
-As you can gather from the exception message, this is done in order to inform the user of a rare, but real,
-issue when a Fuzzr depends on external state.  
-The solution is also supplied in said message:   
-```csharp
-Checkr.Input("AnInt", () => Fuzzr.Int());
-```
-If the *lazy* version throws:  
-```csharp
-    from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
-```
-The Exception is **not** wrapped.  
-```csharp
-Fuzzr.OneOf<Int32> cannot select from an empty sequence.
-Possible solutions:
-- Provide at least one option (ensure the sequence is non-empty).
-- Use a fallback: Fuzzr.OneOf(values).WithDefault()
-- Guard upstream: values.Any() ? Fuzzr.OneOf(values) : Fuzzr.Constant(default!).
-```
-### The Tracker Class
-### The Showr Class
-```csharp
-    from acc in Trackr.Stashed(() => new Accumelator())
-    from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-    from show in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
-    from a in Checkr.Input("a", Fuzzr.Int())
-    from b in Checkr.Input("b", Fuzzr.Int())
-    from c in Checkr.Input("c", Fuzzr.Int())
-    from add in Checkr.Act("Add", () => acc.Add(a, b))
-    from notAnswerOnTwo in Checkr.Expect("not 42 on execution 2", () => !(count == 2 && acc.Total == 42))
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Docs\K_CheckrsCourt\C_TheShowrClass\TheShowrClass.cs:20:1
- Original failing run:    2 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    344916298
- ------------------------------------------------------------
-  Executed: Add
-   - Input: a = 8
-                Int 8
-   - Input: b = 16
-                Int 16
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Counter = 2
-   - Input: a       = 1
-                      Int 1
-   - Input: b       = 17
-                      Int 17
- ================================================
-  !! Expectation Failed: not 42 on execution 2
- ================================================
- Passed Expectations
- - not 42 on execution 2: 1x
- ------------------------------------------------------------
-```
 ## Honey I Shrunk the Inputs
 This is a collection of simple shrinking examples organized per type.  
 They serve both as an accurate description of input shrinking behaviour, and as regression tests.  

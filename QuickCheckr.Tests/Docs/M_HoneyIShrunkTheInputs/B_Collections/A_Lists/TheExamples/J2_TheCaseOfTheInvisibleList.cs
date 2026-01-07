@@ -10,7 +10,6 @@ public class J2_TheCaseOfTheInvisibleList : CheckrTest<J2_TheCaseOfTheInvisibleL
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

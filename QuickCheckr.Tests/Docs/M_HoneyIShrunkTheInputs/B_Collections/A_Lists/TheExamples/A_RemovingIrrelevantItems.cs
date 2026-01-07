@@ -10,7 +10,6 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
 
     [Fact]
     [DocContent("Consider a test that forbids the value `7`.")]
