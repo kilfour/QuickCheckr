@@ -1,4 +1,6 @@
 # Registered But Unused
+Because custom shrinkers can be defined for *nested* types, mistakes are possible.
+Hence this warning.  
 
 **The Checkr:**  
 ```csharp

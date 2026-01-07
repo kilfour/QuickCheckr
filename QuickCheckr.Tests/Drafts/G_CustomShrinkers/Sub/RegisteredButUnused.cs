@@ -6,6 +6,9 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.G_CustomShrinkers.Sub;
 
 [DocFile]
+[DocContent(
+@"Because custom shrinkers can be defined for *nested* types, mistakes are possible.
+Hence this warning.")]
 public class RegisteredButUnused : CheckrTest<RegisteredButUnused>
 {
     protected override bool Asserts => false;
