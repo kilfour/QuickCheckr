@@ -30,6 +30,60 @@ together with the number of executions, relevant actions and inputs that were re
   !! Expectation Failed: Fails
  ================================
 ```
+#### Relevant Item Is Default
+Just making sure `default` values, `0` in this case, get handled correctly.  
+
+**The Checkr:**  
+```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
+from expect in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
+from trace in Checkr.Trace("List Input", () => listInput)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_RelevantItemIsDefault.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    820833320
+ ------------------------------------------------------------
+  Executed:
+   - Input: List Input = [ 0 ]
+   - Trace: List Input = [ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]
+ ==================================================
+  !! Expectation Failed: List does not contain 0
+ ==================================================
+```
+#### Relevant Item Is All But Default
+Just making sure `default` values, `0` in this case, get handled correctly.  
+
+**The Checkr:**  
+```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
+from expect in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
+from trace in Checkr.Trace("List Input", () => listInput)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                E_RelevantItemIsAllButDefault.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    816312044
+ ------------------------------------------------------------
+  Executed:
+   - Input: List Input = [ 51 ]
+   - Trace: List Input = [ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]
+ ===============================================
+  !! Expectation Failed: List contains only 0
+ ===============================================
+```
 #### Objects
 ##### Removes Irrelevant Properties
 ```csharp
@@ -649,7 +703,9 @@ public class ListWrap
 ```
 ### Parsing Numbers
 ```csharp
-    from input in Checkr.Input("Expression", ParseFuzzr.Expression(), Reduce.Function<string>(ParseReducer.Reducer, true))
+    from input in Checkr.Input("Expression",
+        ParseFuzzr.Expression(),
+        Reduce.Function<string>(ParseReducer.Reducer, true))
     from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
     from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")

@@ -97,6 +97,8 @@ This one stores evidence and reports in memory, and is used in the tests to avoi
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
 
+In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal fail-case.
+
 Consider the following model:  
 ```csharp
 public class Account

@@ -1,13 +1,16 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleList.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1954145022
+ Location:                J1_TheCaseOfTheInvisibleList.cs:67:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    169301180
  ------------------------------------------------------------
-  Executed: change
-   - WARNING: Empty collection deemed irrelevant at input 'ints'.
+  Executed: Add
+   - Input: Int = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - WARNING: Empty collection deemed irrelevant at input 'Ints'.
    - WARNING: All inputs were considered irrelevant.
  ================================
-  !! Expectation Failed: has 1
+  !! Expectation Failed: Has 1
  ================================

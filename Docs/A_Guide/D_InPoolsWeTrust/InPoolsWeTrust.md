@@ -5,6 +5,8 @@
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
 
+Pools exist to model systems where the set of things you can act upon change over time.  
+
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
 Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.

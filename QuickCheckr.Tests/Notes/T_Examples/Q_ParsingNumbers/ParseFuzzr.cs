@@ -6,8 +6,9 @@ namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
 
 public class ParseFuzzr
 {
-    public static readonly FuzzrOf<string> Number = from i in Fuzzr.Int(1, 4) select i.ToString();
+    public static FuzzrOf<string> Expression(int maxDepth = 4) => Expr(maxDepth);
 
+    public static readonly FuzzrOf<string> Number = from i in Fuzzr.Int(1, 4) select i.ToString();
     private static readonly FuzzrOf<string> AddOp = Fuzzr.OneOf("+", "-");
     private static readonly FuzzrOf<string> MulOp = Fuzzr.OneOf("*", "/");
     private static readonly FuzzrOf<string> PowOp = Fuzzr.Constant("^");
@@ -68,8 +69,6 @@ public class ParseFuzzr
             select w1 + op + w2 + rhs
         ).Many(0, 3)
         select head + string.Concat(pieces);
-
-    public static FuzzrOf<string> Expression(int maxDepth = 4) => Expr(maxDepth);
 }
 
 

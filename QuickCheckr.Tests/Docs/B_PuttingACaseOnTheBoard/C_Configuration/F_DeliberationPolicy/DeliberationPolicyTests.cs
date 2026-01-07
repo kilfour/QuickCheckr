@@ -16,6 +16,8 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_Deli
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
 
+In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal fail-case.
+
 Consider the following model:")]
 [DocExample(typeof(Account))]
 [DocContent("It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.")]

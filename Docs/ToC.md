@@ -26,8 +26,6 @@
         - [Removing Irrelevant Items](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/A_RemovingIrrelevantItems.md)
         - [Removing Irrelevant Collection](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/B_RemovingIrrelevantCollection.md)
         - [Irrelevant Element But List Length Is Not](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/C_IrrelevantElementButListLengthIsNot.md)
-        - [Relevant Item Is Default](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/D_RelevantItemIsDefault.md)
-        - [Relevant Item Is All But Default](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/E_RelevantItemIsAllButDefault.md)
         - [Multiple Relevant Elements](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/F_MultipleRelevantElements.md)
         - [Relevant Element And Size](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/G_RelevantElementAndSize.md)
         - [Nested Lists](M_HoneyIShrunkTheInputs/B_Collections/A_Lists/TheExamples/H_NestedLists.md)

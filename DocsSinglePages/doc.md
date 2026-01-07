@@ -485,6 +485,8 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
 
+Pools exist to model systems where the set of things you can act upon change over time.  
+
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
 Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
@@ -979,6 +981,8 @@ This one stores evidence and reports in memory, and is used in the tests to avoi
 #### Deliberation Policy
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
+
+In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal fail-case.
 
 Consider the following model:  
 ```csharp
@@ -2203,60 +2207,6 @@ select Case.Closed;
   !! Expectation Failed: Length <= 2
  ======================================
 ```
-##### Relevant Item Is Default
-Just making sure `default` values, `0` in this case, get handled correctly.  
-
-**The Checkr:**  
-```csharp
-from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
-from expect in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
-from trace in Checkr.Trace("List Input", () => listInput)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                D_RelevantItemIsDefault.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    820833320
- ------------------------------------------------------------
-  Executed:
-   - Input: List Input = [ 0 ]
-   - Trace: List Input = [ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]
- ==================================================
-  !! Expectation Failed: List does not contain 0
- ==================================================
-```
-##### Relevant Item Is All But Default
-Just making sure `default` values, `0` in this case, get handled correctly.  
-
-**The Checkr:**  
-```csharp
-from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
-from expect in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
-from trace in Checkr.Trace("List Input", () => listInput)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                E_RelevantItemIsAllButDefault.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    816312044
- ------------------------------------------------------------
-  Executed:
-   - Input: List Input = [ 51 ]
-   - Trace: List Input = [ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]
- ===============================================
-  !! Expectation Failed: List contains only 0
- ===============================================
-```
 ##### Multiple Relevant Elements
 
 **The Checkr:**  
@@ -2382,9 +2332,16 @@ public class Thing { public List<int> Ints = ;
 **The Checkr:**  
 ```csharp
 from thing in Trackr.Stashed(() => new Thing())
-from ints in Checkr.Input("ints", Fuzzr.Int().Many(2))
-from act in Checkr.Act("change", () => thing.Ints = [.. ints])
-from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints", Fuzzr.Int().Many(2))
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
 select Case.Closed;
 ```
 
@@ -2392,33 +2349,42 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleList.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1954145022
+ Location:                J1_TheCaseOfTheInvisibleList.cs:67:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    169301180
  ------------------------------------------------------------
-  Executed: change
-   - WARNING: Empty collection deemed irrelevant at input 'ints'.
+  Executed: Add
+   - Input: Int = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - WARNING: Empty collection deemed irrelevant at input 'Ints'.
    - WARNING: All inputs were considered irrelevant.
  ================================
-  !! Expectation Failed: has 1
+  !! Expectation Failed: Has 1
  ================================
 ```
-Shrinker marks the list as irrelevant, but it is **not**.  
 ###### The Solution
 Supply said *state derived* meaningfull values, through a combination of a custom Shrinker and a Reducer.  
 
 **The Checkr:**  
 ```csharp
 from thing in Trackr.Stashed(() => new Thing())
-from ints in Checkr.Input("ints",
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints",
     Fuzzr.Int().Many(2),
     () => [
         Shrink.Default<IEnumerable<int>>(),
         Shrink.Collection([thing.Ints])],
     Reduce.Collection([[], thing.Ints]))
-from act in Checkr.Act("change", () => thing.Ints = [.. ints])
-from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
 select Case.Closed;
 ```
 
@@ -2426,16 +2392,19 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleList.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1954145022
+ Location:                J2_TheCaseOfTheInvisibleList.cs:67:1
+ Original failing run:    2 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    169301180
  ------------------------------------------------------------
-  Executed: change
-   - Input: ints  = [ 81, 74 ]
+  Executed: Add
+   - Input: Int = 1
+ ------------------------------------------------------------
+  Executed: Update
+   - Input: Ints  = [ 57, 70 ]
             Redux   [ ]
  ================================
-  !! Expectation Failed: has 1
+  !! Expectation Failed: Has 1
  ================================
 ```
 ##### A List Of Objects

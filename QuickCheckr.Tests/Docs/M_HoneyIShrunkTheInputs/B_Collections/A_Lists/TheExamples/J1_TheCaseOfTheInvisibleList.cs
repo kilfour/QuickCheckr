@@ -23,30 +23,41 @@ public class J1_TheCaseOfTheInvisibleList : CheckrTest<J1_TheCaseOfTheInvisibleL
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    [DocContent("Shrinker marks the list as irrelevant, but it is **not**.")]
-    public override void Example() => Run(1954145022);
+    public override void Example() => Run(169301180, 2.ExecutionsPerRun());
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from thing in Trackr.Stashed(() => new Thing())
-        from ints in Checkr.Input("ints", Fuzzr.Int().Many(2))
-        from act in Checkr.Act("change", () => thing.Ints = [.. ints])
-        from check in Checkr.Expect("has 1", () => thing.Ints.Contains(1))
+        from _ in Checkr.OneOfWhen(
+            Checkr.Option(() => !thing.Ints.Contains(1),
+                from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+                from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+                select Case.Closed),
+            Checkr.Option(() => thing.Ints.Contains(1),
+                from ints in Checkr.Input("Ints", Fuzzr.Int().Many(2))
+                from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+                from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+                select Case.Closed))
         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("has 1", article.FailureDescription());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal("Has 1", article.FailureDescription());
+        Assert.Equal(2, article.Total().Executions());
+        Assert.Equal(2, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Warnings());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("change", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Empty collection deemed irrelevant at input 'ints'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(2).Read().Value);
+        Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Int", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("1", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal(2, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Update", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Empty collection deemed irrelevant at input 'Ints'.", article.Execution(2).Warning(1).Read().Value);
+        Assert.Equal("All inputs were considered irrelevant.", article.Execution(2).Warning(2).Read().Value);
     }
 
     [CodeExample]
-    public class Thing { public List<int> Ints = [1]; }
+    public class Thing { public List<int> Ints = []; }
 }

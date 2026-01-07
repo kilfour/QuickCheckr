@@ -90,8 +90,6 @@
 * QuickPulse.Show turn manofwealth and taste into composable config
   => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
-* Bring back Feedback Shrinking, don't need a deep copy of memory with the new structure for one
-  Should be a lot easier than before
   
 ## Refactoring Targets 
 * Try to remove multiple execution shrinking passes.
