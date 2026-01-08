@@ -3,8 +3,7 @@ This static factory class produces a CheckrOf<Case> which allows one to configur
 
 It is implemented as such, instead of as an option on the configuration object,
 because this allows for two useful things:  
-## The Showr Class Dynamic Configuration
-- You can change configuration anywhere in the `LINQ chain`, multiple times.  
+> You can change configuration anywhere in the `LINQ chain`, multiple times.  
 
 **The Checkr:**  
 ```csharp
@@ -24,8 +23,7 @@ Executed:
    - Trace: One   = PREFIXED 7
    - Trace: Two   = OTHER 7
 ```
-## The Showr Class Context Aware
-- Configuration can depend on context.  
+> Configuration can depend on context.  
 
 **The Model:**  
 ```csharp

@@ -14,8 +14,8 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 
 It is implemented as such, instead of as an option on the configuration object,
 because this allows for two useful things:")]
-[DocInclude(typeof(B_TheShowrClassDynamicConfiguration))]
-[DocInclude(typeof(C_TheShowrClassContextAware))]
+[DocInclude(typeof(B_TheShowrClassDynamicConfiguration), true)]
+[DocInclude(typeof(C_TheShowrClassContextAware), true)]
 public class A_TheShowrClass : BaseTest
 {
     [Fact]

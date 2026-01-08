@@ -6,8 +6,7 @@ using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 
-[DocFileHeader("")]
-[DocContent("- You can change configuration anywhere in the `LINQ chain`, multiple times.")]
+[DocContent("> You can change configuration anywhere in the `LINQ chain`, multiple times.")]
 public class B_TheShowrClassDynamicConfiguration : CheckrTest<B_TheShowrClassDynamicConfiguration>
 {
     protected override bool Asserts => false;

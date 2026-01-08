@@ -7,8 +7,7 @@ using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 
-[DocFileHeader("")]
-[DocContent("- Configuration can depend on context.")]
+[DocContent("> Configuration can depend on context.")]
 public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAware>
 {
     protected override bool Asserts => false;
