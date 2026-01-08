@@ -1,8 +1,15 @@
 # The Showr Class
+This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
+
+It is implemented as such, instead of as an option on the configuration object,
+because this allows for two useful things:
+- You can change configuration anywhere in the `LINQ chain`, multiple times.
+- Configuration can depend on context.
+  
 ```csharp
     from acc in Trackr.Stashed(() => new Accumelator())
     from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-    from show in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
+    from show in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
     from a in Checkr.Input("a", Fuzzr.Int())
     from b in Checkr.Input("b", Fuzzr.Int())
     from c in Checkr.Input("c", Fuzzr.Int())

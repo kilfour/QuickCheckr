@@ -2063,16 +2063,23 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [Configuration]: #configuration
 
-[TheShowrClass]: #the-showr-class
+[A_TheShowrClass]: #the-showr-class
 
 [CustomShrinkers]: #custom-shrinkers
 
 [Reducers]: #reducers
 ### The Showr Class
+This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
+
+It is implemented as such, instead of as an option on the configuration object,
+because this allows for two useful things:
+- You can change configuration anywhere in the `LINQ chain`, multiple times.
+- Configuration can depend on context.
+  
 ```csharp
     from acc in Trackr.Stashed(() => new Accumelator())
     from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-    from show in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
+    from show in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
     from a in Checkr.Input("a", Fuzzr.Int())
     from b in Checkr.Input("b", Fuzzr.Int())
     from c in Checkr.Input("c", Fuzzr.Int())
@@ -2106,6 +2113,114 @@ But there are ways to obtain more fine-grained control. That is what this chapte
  Passed Expectations
  - not 42 on execution 2: 1x
  ------------------------------------------------------------
+```
+#### Showr Reference
+##### For Trace
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = PREFIXED 7
+```
+##### For Input
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    PREFIXED 7
+   - Trace: AnInt = 7
+```
+##### For Input Without Configuration
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForInput()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    7
+   - Trace: AnInt = 7
+```
+##### For All
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    PREFIXED 7
+   - Trace: AnInt = PREFIXED 7
+```
+##### None
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from showrNone in Showr.None()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = 7
+```
+#### None
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from showrNone in Showr.None()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = 7
 ```
 ### Custom Shrinkers
 

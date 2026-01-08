@@ -23,7 +23,7 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [Configuration]: ../B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md
 
-[TheShowrClass]: A_Showr/TheShowrClass.md
+[A_TheShowrClass]: A_Showr/A_TheShowrClass.md
 
 [CustomShrinkers]: B_CustomShrinkers/CustomShrinkers.md
 

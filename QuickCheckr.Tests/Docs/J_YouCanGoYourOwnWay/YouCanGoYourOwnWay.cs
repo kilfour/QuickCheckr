@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
 
 [DocFile]
 [DocLink(typeof(Configuration))]
-[DocLink(typeof(TheShowrClass))]
+[DocLink(typeof(A_TheShowrClass))]
 [DocLink(typeof(CustomShrinkers))]
 [DocLink(typeof(Reducers))]
 [DocExplanationInProgress]

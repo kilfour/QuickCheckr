@@ -9,17 +9,25 @@ using QuickPulse.Show;
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 
 [DocFile]
-public class TheShowrClass : BaseTest
+[DocContent(
+@"This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
+
+It is implemented as such, instead of as an option on the configuration object,
+because this allows for two useful things:
+- You can change configuration anywhere in the `LINQ chain`, multiple times.
+- Configuration can depend on context.
+")]
+public class A_TheShowrClass : BaseTest
 {
     [Fact]
-    [DocExample(typeof(TheShowrClass), nameof(GetCheckr))]
+    [DocExample(typeof(A_TheShowrClass), nameof(GetCheckr))]
     [DocCodeFile("TheShowrClass.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(344916298, 2.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<TheShowrClass>(article, false);
+        WriteReport<A_TheShowrClass>(article, false);
         Verify(article);
     }
 
@@ -30,7 +38,7 @@ public class TheShowrClass : BaseTest
         return
             from acc in Trackr.Stashed(() => new Accumelator())
             from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-            from show in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
+            from show in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
             from a in Checkr.Input("a", Fuzzr.Int())
             from b in Checkr.Input("b", Fuzzr.Int())
             from c in Checkr.Input("c", Fuzzr.Int())

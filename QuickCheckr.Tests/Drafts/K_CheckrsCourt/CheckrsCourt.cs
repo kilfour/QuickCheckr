@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Drafts.K_CheckrsCourt;
 [DocFile]
 [DocLink(typeof(TheCheckrClass))]
 [DocLink(typeof(TheTrackerClass))]
-[DocLink(typeof(TheShowrClass))]
+[DocLink(typeof(A_TheShowrClass))]
 [DocContent(
 @"The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
 

@@ -33,7 +33,12 @@ public abstract class CheckrTest<T>
     public class DocReportHeaderAttribute() :
         DocBoldHeaderAttribute("The Report");
     public class DocReport([CallerFilePath] string path = "") :
-        DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, path);
+        DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
+
+    public class DocReportExcerptHeaderAttribute() :
+        DocBoldHeaderAttribute("Report Excerpt");
+    public class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
+        DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", skiplines, numberOfLines, path);
 
     public abstract void Example();
     protected virtual CheckrConfig Configure(CheckrConfig config) => config;

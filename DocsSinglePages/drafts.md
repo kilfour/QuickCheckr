@@ -44,7 +44,7 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
 
 [TheTrackerClass]: #the-tracker-class
 
-[TheShowrClass]: #the-showr-class
+[A_TheShowrClass]: #the-showr-class
 ### The Checkr Class
 #### Input
 `Checkr.Input()` is the only way an *input* can be defined inside a Checkr.  

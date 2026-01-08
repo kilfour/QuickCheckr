@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                D_ForInputWithoutConfiguration.cs:64:1
+ Original failing run:    1 execution
+ Seed:                    695266907
+ ------------------------------------------------------------
+  Executed:
+   - Input: AnInt = 7
+                    7
+   - Trace: AnInt = 7
+ ================================
+  !! Expectation Failed: not 7
+ ================================

@@ -16,7 +16,7 @@ public static partial class Showr
     public static CheckrOf<Case> ForInput() =>
         state =>
         {
-            state.Memory.StoreInputShowr(() => Please.AllowMe());
+            state.Memory.StoreInputShowr(() => Please.AllowMe().ToUseNonLinearTime());
             return CheckrResult.CaseOnly(state);
         };
 

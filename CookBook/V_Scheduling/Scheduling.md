@@ -185,7 +185,7 @@ And ofcourse, there's an edge-case.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Scheduling.cs:59:1
+ Location:                Scheduling.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    511619818
