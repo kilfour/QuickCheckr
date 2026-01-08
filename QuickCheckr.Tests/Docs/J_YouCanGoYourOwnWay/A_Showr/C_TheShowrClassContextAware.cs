@@ -22,21 +22,33 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
     [DocReportExcerpt(6, 3)]
     public override void Example() => Run(695266907);
 
+    private static readonly List<Product> productsForSale =
+        [ new() { Id = new Guid("b1c88a3c-444e-4776-a5c4-c660a75e9365")
+                , Name = "Product One" , AmountInStock = 50
+                }
+        , new() { Id = new Guid("b55e24ac-bc7c-4168-8894-bb1856f0c93f")
+                , Name = "Product Two" , AmountInStock = 50
+                }
+        , new() { Id = new Guid("5b94e130-955e-4f11-854c-dc4b296907fa")
+                , Name = "Product Three" , AmountInStock = 50
+                }
+        ];
+
+    private static FuzzrOf<OrderRequest> RequestFuzzr(Warehouse warehouse) =>
+        from productId in Fuzzr.OneOf(warehouse.ProductsForSale.Select(a => a.Id))
+        from amount in Fuzzr.Int()
+        select new OrderRequest(productId, amount);
+
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from warehouse in Trackr.Stashed(() => new Warehouse())
+        from warehouse in Trackr.Stashed(() => new Warehouse(productsForSale))
         from showr in Showr.ForInput(() =>
-            Please.AllowMe()
-            .ToReplace<OrderRequest>(a =>
+            Please.AllowMe().ToReplace<OrderRequest>(a =>
                 $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))
-        from request in Checkr.Input("Order request",
-            from productId in Fuzzr.OneOf(warehouse.ProductsForSale.Select(a => a.Id))
-            from amount in Fuzzr.Int()
-            select new OrderRequest(productId, amount))
+        from request in Checkr.Input("Order request", RequestFuzzr(warehouse))
         from placeOrder in Checkr.Act("Place order", () => warehouse.PlaceOrder(request))
         from noNegativeStock in Checkr.Expect("No negative stock",
-            () => warehouse.ProductsForSale.Select(a => a.AmountInStock)
-                .All(a => a >= 0))
+            () => warehouse.ProductsForSale.Select(a => a.AmountInStock).All(a => a >= 0))
         select Case.Closed;
 
     protected override void Verify(Article article)

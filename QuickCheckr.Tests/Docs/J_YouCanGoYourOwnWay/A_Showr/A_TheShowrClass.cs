@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr.Reference;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -9,6 +10,7 @@ using QuickPulse.Show;
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 
 [DocFile]
+[DocLink(typeof(A_ShowrReference))]
 [DocContent(
 @"This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
@@ -16,6 +18,7 @@ It is implemented as such, instead of as an option on the configuration object,
 because this allows for two useful things:")]
 [DocInclude(typeof(B_TheShowrClassDynamicConfiguration), true)]
 [DocInclude(typeof(C_TheShowrClassContextAware), true)]
+[DocContent("A full reference to the available options can be found [here][A_ShowrReference].")]
 public class A_TheShowrClass : BaseTest
 {
     [Fact]
