@@ -75,12 +75,12 @@
 ## Future Doc Work
 * Checkrs Court: Tricky one
 * Prepare demo talk(s)
-* Any exception thrown by the Checkr will be caught and considered a failure.
+* Any exception thrown during execution of the Act Checkr will be caught and considered a failure
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
   * statefull list, ... maybe
-  * ParsingNumbers, right after scheduling
+  * ParsingNumbers, right after scheduling, need better DeliberationPolicies first.
 
 ## Ideas
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
