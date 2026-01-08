@@ -13,15 +13,12 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
 @"This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
 It is implemented as such, instead of as an option on the configuration object,
-because this allows for two useful things:
-- You can change configuration anywhere in the `LINQ chain`, multiple times.
-- Configuration can depend on context.
-")]
+because this allows for two useful things:")]
+[DocInclude(typeof(B_TheShowrClassDynamicConfiguration))]
+[DocInclude(typeof(C_TheShowrClassContextAware))]
 public class A_TheShowrClass : BaseTest
 {
     [Fact]
-    [DocExample(typeof(A_TheShowrClass), nameof(GetCheckr))]
-    [DocCodeFile("TheShowrClass.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>

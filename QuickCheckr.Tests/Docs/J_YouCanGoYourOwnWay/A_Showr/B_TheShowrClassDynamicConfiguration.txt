@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_TheShowrClassDynamicConfiguration.cs:64:1
+ Original failing run:    1 execution
+ Seed:                    695266907
+ ------------------------------------------------------------
+  Executed:
+   - Input: AnInt = 7
+   - Trace: One   = PREFIXED 7
+   - Trace: Two   = OTHER 7
+ ================================
+  !! Expectation Failed: not 7
+ ================================

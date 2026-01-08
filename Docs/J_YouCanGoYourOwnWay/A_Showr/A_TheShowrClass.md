@@ -2,45 +2,84 @@
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
 It is implemented as such, instead of as an option on the configuration object,
-because this allows for two useful things:
-- You can change configuration anywhere in the `LINQ chain`, multiple times.
-- Configuration can depend on context.
-  
+because this allows for two useful things:  
+## The Showr Class Dynamic Configuration
+- You can change configuration anywhere in the `LINQ chain`, multiple times.  
+
+**The Checkr:**  
 ```csharp
-    from acc in Trackr.Stashed(() => new Accumelator())
-    from count in Checkr.Input("Counter", Fuzzr.Counter("count"))
-    from show in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"Int {a}"))
-    from a in Checkr.Input("a", Fuzzr.Int())
-    from b in Checkr.Input("b", Fuzzr.Int())
-    from c in Checkr.Input("c", Fuzzr.Int())
-    from add in Checkr.Act("Add", () => acc.Add(a, b))
-    from notAnswerOnTwo in Checkr.Expect("not 42 on execution 2", () => !(count == 2 && acc.Total == 42))
-    select Case.Closed;
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from showrOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from traceOne in Checkr.Trace("One", () => anInt)
+from showrTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"OTHER {a}"))
+from traceTwo in Checkr.Trace("Two", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
 ```
+
+**Report Excerpt:**  
 ```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Docs\J_YouCanGoYourOwnWay\A_Showr\TheShowrClass.cs:20:1
- Original failing run:    2 executions
- Minimal failing case:    2 executions (after 3 shrinks)
- Seed:                    344916298
- ------------------------------------------------------------
-  Executed: Add
-   - Input: a = 8
-                Int 8
-   - Input: b = 16
-                Int 16
- ------------------------------------------------------------
-  Executed: Add
-   - Input: Counter = 2
-   - Input: a       = 1
-                      Int 1
-   - Input: b       = 17
-                      Int 17
- ================================================
-  !! Expectation Failed: not 42 on execution 2
- ================================================
- Passed Expectations
- - not 42 on execution 2: 1x
- ------------------------------------------------------------
+Executed:
+   - Input: AnInt = 7
+   - Trace: One   = PREFIXED 7
+   - Trace: Two   = OTHER 7
+```
+## The Showr Class Context Aware
+- Configuration can depend on context.  
+
+**The Model:**  
+```csharp
+public class Product
+{
+    public Guid Id { get; set; } = Guid.Empty;
+    public string Name { get; set; } = string.Empty;
+    public int AmountInStock { get; set; }
+}
+
+public record OrderRequest(Guid ProductId, int Amount);
+
+public class Warehouse
+{
+    private readonly List<Product> productsForSale = [ new()
+                { Id = new Guid("b1c88a3c-444e-4776-a5c4-c660a75e9365")
+                , Name = "Product One" , AmountInStock = 50
+                }
+        , new() { Id = new Guid("b55e24ac-bc7c-4168-8894-bb1856f0c93f")
+                , Name = "Product Two" , AmountInStock = 50
+                }
+        , new() { Id = new Guid("5b94e130-955e-4f11-854c-dc4b296907fa")
+                , Name = "Product Three" , AmountInStock = 50
+                }
+        ];
+
+    public List<Product> ProductsForSale => productsForSale;
+
+    public void PlaceOrder(OrderRequest request) =>
+        ProductsForSale.First(a => a.Id == request.ProductId).AmountInStock -= request.Amount;
+}
+```
+
+**The Checkr:**  
+```csharp
+from warehouse in Trackr.Stashed(() => new Warehouse())
+from showr in Showr.ForInput(() =>
+    Please.AllowMe()
+    .ToReplace<OrderRequest>(a =>
+        $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))
+from request in Checkr.Input("Order request",
+    from productId in Fuzzr.OneOf(warehouse.ProductsForSale.Select(a => a.Id))
+    from amount in Fuzzr.Int()
+    select new OrderRequest(productId, amount))
+from placeOrder in Checkr.Act("Place order", () => warehouse.PlaceOrder(request))
+from noNegativeStock in Checkr.Expect("No negative stock",
+    () => warehouse.ProductsForSale.Select(a => a.AmountInStock)
+        .All(a => a >= 0))
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed: Place order
+   - Input: Order request = { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 53 }
+                            Ordered 53 pieces of Product One.
 ```

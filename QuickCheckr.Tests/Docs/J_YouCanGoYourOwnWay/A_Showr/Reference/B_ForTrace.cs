@@ -4,7 +4,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;
 
-namespace QuickCheckr.Tests;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr.Reference;
 
 
 public class B_ForTrace : CheckrTest<B_ForTrace>
