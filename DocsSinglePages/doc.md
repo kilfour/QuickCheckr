@@ -899,6 +899,7 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
     ShrinkMode = ShrinkMode.Default,
     ReportMode = ReportMode.Default,
     DeliberationPolicy = null,
+    DeliberationTarget = null,
     InternalAffairs = []
 }
 ```
@@ -1120,7 +1121,7 @@ it is advised to simply wrap them into your own `CheckrOf` extension method(s):
 ```csharp
 public static CaseFile Deliberate(
     this CheckrOf<Case> checkr,
-    Func<CaseFile, CaseFile, CaseFile>? policy = null)
+    Func<CaseFile, int>? policy = null)
     => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
         cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 ```
@@ -2117,7 +2118,7 @@ public class Warehouse(List<Product> productsForSale)
 
 **The Checkr:**  
 ```csharp
-from warehouse in Trackr.Stashed(() => new Warehouse(productsForSale))
+from warehouse in Trackr.Stashed(() => new Warehouse(ProductsForSale()))
 from showr in Showr.ForInput(() =>
     Please.AllowMe().ToReplace<OrderRequest>(a =>
         $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))
@@ -2743,7 +2744,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), new CustomTowardsZeroReducer().Reduce)
+from input in Checkr.Input("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```

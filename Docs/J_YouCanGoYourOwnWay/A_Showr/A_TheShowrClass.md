@@ -47,7 +47,7 @@ public class Warehouse(List<Product> productsForSale)
 
 **The Checkr:**  
 ```csharp
-from warehouse in Trackr.Stashed(() => new Warehouse(productsForSale))
+from warehouse in Trackr.Stashed(() => new Warehouse(ProductsForSale()))
 from showr in Showr.ForInput(() =>
     Please.AllowMe().ToReplace<OrderRequest>(a =>
         $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))

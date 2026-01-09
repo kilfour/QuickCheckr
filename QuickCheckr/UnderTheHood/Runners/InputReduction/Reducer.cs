@@ -1,3 +1,3 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputReduction;
 
-public delegate Reduction Reducer<T>(ReductionResult state);
+public delegate Reduction Reducer<T>(ReductionResult result);

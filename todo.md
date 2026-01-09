@@ -21,11 +21,21 @@
 ### Current Focus
 * DeliberationPolicy
   * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
+* Added DeliberationTarget, Deliberation stops when reached.
 * InputDeposition, object Value is in run-time always a string !!!
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation
       Split objects into different Inputs
+  * Que ?
+    ```csharp
+    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
+        => reducers.Store(key, () => () => // aaaaaaargh
+            {
+                Reducer<T> f = reducer();
+                return a => f(a);
+            });
+    ```
 * Doc Weak Spots
   * Polish the guide a bit more
     * Better examples for :

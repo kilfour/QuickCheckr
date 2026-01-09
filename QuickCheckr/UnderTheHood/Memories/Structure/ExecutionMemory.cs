@@ -143,10 +143,14 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Reducers
-    private readonly TypedMemoryBank<Func<ReductionResult, Reduction>> reducers = new();
-    public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)
-        => reducers.Store(key, () => reducer);
-    public Func<ReductionResult, Reduction> GetReducer(string key)
+    private readonly TypedMemoryBank<Func<Func<ReductionResult, Reduction>>> reducers = new();
+    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
+        => reducers.Store(key, () => () =>
+            {
+                Reducer<T> f = reducer();
+                return a => f(a);
+            });
+    public Func<Func<ReductionResult, Reduction>> GetReducer(string key)
         => reducers.Get(key)!;
     // --------------------------------------------------------------------------
 

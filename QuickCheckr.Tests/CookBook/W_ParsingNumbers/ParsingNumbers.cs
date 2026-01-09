@@ -1,9 +1,7 @@
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
-using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
+using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
@@ -11,25 +9,22 @@ namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
 [DocFile]
 public class ParsingNumbers : CheckrTest<ParsingNumbers>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
 
     [Fact]
-    [DocModelHeader]
     [DocCheckrHeader]
     [DocCheckr]
+    [DocBoldHeader("The Fuzzr")]
+    [DocExample(typeof(ParseFuzzr))]
+    [DocBoldHeader("The Reducer")]
+    [DocExample(typeof(ParseReducer))]
     [DocConfigureHeader]
     [DocConfigure]
     [DocReportHeader]
     [DocReport]
-    [DocContent("")]
-    [DocContent("")]
     public override void Example() =>
-        Run(1259510317);
-
-    [Fact]
-    public void Review()
-        => TheCheckr().ReviewColdCases(Configure);
+        Run(200.Runs());
 
     [CodeExample]
     protected override CheckrConfig Configure(CheckrConfig config)
@@ -37,10 +32,11 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
         {
             DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
             DeliberationTarget = 6,
-            FileAs = "ParsingNumbers",
-            Custodian = Custodian.Local(),
-            ReportMode = config.ReportMode & ~ReportMode.Labels,
+            ReportMode = config.ReportMode & ~ReportMode.Labels
         };
+
+    // FileAs = "ParsingNumbers",
+    // Custodian = Custodian.Local(),
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

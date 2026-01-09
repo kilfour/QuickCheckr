@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model.Lexing;
+using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model.Lexing;
 
-namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
+namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 
 public static partial class Lexer
 {

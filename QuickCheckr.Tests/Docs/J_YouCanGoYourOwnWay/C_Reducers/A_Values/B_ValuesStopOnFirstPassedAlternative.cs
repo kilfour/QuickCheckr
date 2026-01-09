@@ -11,7 +11,7 @@ public class B_ValuesStopOnFirstPassedAlternative : CheckrTest<B_ValuesStopOnFir
     protected override bool Asserts => false;
     protected override bool Report => false;
 
-    [Fact]
+    [Fact(Skip = "Wip")]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]

@@ -337,3 +337,146 @@ And ofcourse, there's an edge-case.
   !! Expectation Failed: Bookings do not overlap
  ==================================================
 ```
+## Parsing Numbers
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Expression",
+        ParseFuzzr.Expression(),
+        Reduce.Function<string>(ParseReducer.Reducer, true))
+from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
+from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
+from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
+from match in Checkr.ExpectWhen("Match",
+    () => !double.IsNaN(goldenResult),
+    () => goldenResult == result)
+select Case.Closed;
+```
+
+**The Fuzzr:**  
+```csharp
+public class ParseFuzzr
+{
+    public static FuzzrOf<string> Expression(int maxDepth = 4) => Expr(maxDepth);
+    public static readonly FuzzrOf<string> Number = from i in Fuzzr.Int(1, 4) select i.ToString();
+    private static readonly FuzzrOf<string> AddOp = Fuzzr.OneOf("+", "-");
+    private static readonly FuzzrOf<string> MulOp = Fuzzr.OneOf("*", "/");
+    private static readonly FuzzrOf<string> PowOp = Fuzzr.Constant("^");
+    private static readonly FuzzrOf<string> WS =
+        from chs in Fuzzr.Constant(' ').Many(1)
+        select new string([.. chs]);
+    private static readonly FuzzrOf<string> UnaryOp = Fuzzr.OneOf("-");
+    private static FuzzrOf<string> Primary(int maxDepth) =>
+        maxDepth <= 0
+        ? Number
+        : Fuzzr.OneOf(
+            Number,
+            from l in Fuzzr.Constant("(")
+            from e in Expr(maxDepth - 1)
+            from r in Fuzzr.Constant(")")
+            select l + e + r,
+            from op in UnaryOp
+            from ws in WS
+            from inner in Primary(maxDepth - 1)
+            select op + ws + inner
+          );
+    private static FuzzrOf<string> Factor(int maxDepth) =>
+        from a in Primary(maxDepth)
+        from tail in maxDepth <= 0
+            ? Fuzzr.Constant("")
+            : Fuzzr.OneOf(
+                  Fuzzr.Constant(""),
+                  from w1 in WS
+                  from op in PowOp
+                  from w2 in WS
+                  from b in Factor(maxDepth - 1)
+                  select w1 + op + w2 + b)
+        select a + tail;
+    private static FuzzrOf<string> Term(int maxDepth) =>
+        from head in Factor(maxDepth)
+        from pieces in (
+            from w1 in WS
+            from op in MulOp
+            from w2 in WS
+            from rhs in Factor(maxDepth - 1)
+            select w1 + op + w2 + rhs
+        ).Many(0, 3)
+        select head + string.Concat(pieces);
+    private static FuzzrOf<string> Expr(int maxDepth) =>
+        from depth in Fuzzr.Int(0, maxDepth)
+        from head in Term(depth)
+        from pieces in (
+            from w1 in WS
+            from op in AddOp
+            from w2 in WS
+            from rhs in Term(depth - 1)
+            select w1 + op + w2 + rhs
+        ).Many(0, 3)
+        select head + string.Concat(pieces);
+}
+```
+
+**The Reducer:**  
+```csharp
+public static class ParseReducer
+{
+    public static IEnumerable<string> Reducer(string expr)
+    {
+        foreach (var item in RemoveOperations(expr))
+            yield return item;
+        string output = Regex.Replace(expr, @"\([^()]*\)", "2");
+        yield return output;
+        foreach (var item in RemoveOperations(output))
+            yield return item;
+    }
+    private static IEnumerable<string> RemoveOperations(string expr)
+    {
+        var tokens = Lexer.Tokenize(expr);
+        tokens = tokens.Where(a => a.Kind != TokenKind.LParen && a.Kind != TokenKind.RParen);
+        yield return TokensToString(tokens);
+        var list = tokens.ToList();
+        for (int i = 0; i < list.Count; i++)
+        {
+            yield return TokensToString(tokens.Skip(i));
+            if (list[i].IsOperator && !list[i + 1].IsOperator)
+                yield return TokensToString(tokens.Skip(i + 1));
+        }
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            if (list[i].IsOperator && !list[i - 1].IsOperator)
+                yield return TokensToString(tokens.Take(i));
+        }
+    }
+    private static string TokensToString(IEnumerable<Token> tokens)
+        => string.Join("", tokens.Select(a => a.Text));
+}
+```
+
+**The Configuration:**  
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with
+    {
+        DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
+        DeliberationTarget = 6,
+        ReportMode = config.ReportMode & ~ReportMode.Labels
+    };
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ParsingNumbers.cs:81:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1739527267
+ ------------------------------------------------------------
+  Executed: Golden Result, SUT Result
+   - Expression = "- 1 ^ (2 * 1 / 1) ^ 3 / - 1 ^ 3 - - 2 ^ 3 - (1 * 3 + 2 / 1 * 1 + 2 * 1 / 3) / 3 / 3 / 1"
+     Redux        "-1^2"
+   - Compare    = Golden: 8,37037037037037 /= SUT: 6,37037037037037
+ ================================
+  !! Expectation Failed: Match
+ ================================
+```

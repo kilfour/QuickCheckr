@@ -4,8 +4,8 @@ namespace QuickCheckr;
 
 public static partial class Reduce
 {
-    public static Reducer<T> Values<T>(IEnumerable<T> values, bool checkAll = false)
+    public static Func<Reducer<T>> Values<T>(IEnumerable<T> values, bool checkAll = false)
         => checkAll
-            ? new ReportLastFailureBuilder<T>(_ => values).Reduce
-            : new StopOnFirstPassedBuilder<T>(_ => values).Reduce;
+            ? () => new ReportLastFailureBuilder<T>(_ => values).Reduce
+            : () => new StopOnFirstPassedBuilder<T>(_ => values).Reduce;
 }

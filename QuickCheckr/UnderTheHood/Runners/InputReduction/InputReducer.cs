@@ -14,8 +14,9 @@ public class InputReducer(
             var shrinkOutcomes = shortTermMemory.GetInputShrinkOutcomes();
             foreach (var (key, clue) in shrinkOutcomes)
             {
-                var reducer = shortTermMemory.GetReducer(key);
-                if (reducer == null) continue;
+                var reducerFactory = shortTermMemory.GetReducer(key);
+                if (reducerFactory == null) continue;
+                var reducer = reducerFactory();
                 var verifier = new Verifier(State, Check);
                 var result = new ReductionResult(true, clue.Result!);
                 Reduction step = Reduction.Next(clue.Result!);

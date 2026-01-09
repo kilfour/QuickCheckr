@@ -1,4 +1,4 @@
-namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model.AstNodes;
+namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model.AstNodes;
 
 public record UnaryMinus(AstNode Value) : AstNode
 {

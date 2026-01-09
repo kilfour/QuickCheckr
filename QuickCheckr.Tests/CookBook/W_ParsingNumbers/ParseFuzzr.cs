@@ -1,9 +1,11 @@
 using QuickCheckr;
 using QuickFuzzr;
+using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
+namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
 
+[CodeExample]
 public class ParseFuzzr
 {
     public static FuzzrOf<string> Expression(int maxDepth = 4) => Expr(maxDepth);

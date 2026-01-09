@@ -2,7 +2,7 @@
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), new CustomTowardsZeroReducer().Reduce)
+from input in Checkr.Input("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```

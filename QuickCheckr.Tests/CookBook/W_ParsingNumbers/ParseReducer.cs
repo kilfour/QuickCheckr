@@ -1,9 +1,11 @@
 using System.Text.RegularExpressions;
-using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model;
-using QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model.Lexing;
+using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
+using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model.Lexing;
+using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers;
+namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
 
+[CodeExample]
 public static class ParseReducer
 {
     public static IEnumerable<string> Reducer(string expr)

@@ -87,7 +87,7 @@ public class ShortTermMemory
         => memories[executionId].GetShrinker(key, type);
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducer(string key, Func<ReductionResult, Reduction> reducer)
+    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
         => Current.StoreReducer(key, reducer);
     // --------------------------------------------------------------------------
     // Warnings

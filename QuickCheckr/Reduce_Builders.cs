@@ -4,7 +4,6 @@ namespace QuickCheckr;
 
 public static partial class Reduce
 {
-    // private Reducer<T> Build<T>§
     private class StopOnFirstPassedBuilder<T>(Func<T, IEnumerable<T>> factory)
     {
         private List<T>? values = null;
@@ -19,7 +18,10 @@ public static partial class Reduce
             else
                 return Reduction.Stop(lastFailure!);
             if (index >= values.Count)
+            {
+                index = 0;
                 return Reduction.Stop(lastFailure!);
+            }
             return Reduction.Next(values[index++]!);
         }
     }
@@ -39,6 +41,7 @@ public static partial class Reduce
             }
             if (index >= values.Count)
             {
+                index = 0;
                 return Reduction.Stop(lastFailure!);
             }
             return Reduction.Next(values[index++]!);

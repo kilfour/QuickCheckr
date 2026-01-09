@@ -1,4 +1,4 @@
-namespace QuickCheckr.Tests.Notes.T_Examples.Q_ParsingNumbers.Model.Lexing;
+namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model.Lexing;
 
 public record Token(TokenKind Kind, string Text, int Offset)
 {
