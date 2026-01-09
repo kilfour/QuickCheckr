@@ -14,6 +14,35 @@ from match in Checkr.ExpectWhen("Match",
 select Case.Closed;
 ```
 
+**The Configuration:**  
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with
+    {
+        DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
+        DeliberationTarget = 6,
+        ReportMode = config.ReportMode & ~ReportMode.Labels
+    };
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ParsingNumbers.cs:81:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1739527267
+ ------------------------------------------------------------
+  Executed: Golden Result, SUT Result
+   - Expression = "- 1 ^ (2 * 1 / 1) ^ 3 / - 1 ^ 3 - - 2 ^ 3 - (1 * 3 + 2 / 1 * 1 + 2 * 1 / 3) / 3 / 3 / 1"
+     Redux        "-1^2"
+   - Compare    = Golden: 8,37037037037037 /= SUT: 6,37037037037037
+ ================================
+  !! Expectation Failed: Match
+ ================================
+```
+
 **The Fuzzr:**  
 ```csharp
 public class ParseFuzzr
@@ -111,33 +140,4 @@ public static class ParseReducer
     private static string TokensToString(IEnumerable<Token> tokens)
         => string.Join("", tokens.Select(a => a.Text));
 }
-```
-
-**The Configuration:**  
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with
-    {
-        DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
-        DeliberationTarget = 6,
-        ReportMode = config.ReportMode & ~ReportMode.Labels
-    };
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ParsingNumbers.cs:81:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1739527267
- ------------------------------------------------------------
-  Executed: Golden Result, SUT Result
-   - Expression = "- 1 ^ (2 * 1 / 1) ^ 3 / - 1 ^ 3 - - 2 ^ 3 - (1 * 3 + 2 / 1 * 1 + 2 * 1 / 3) / 3 / 3 / 1"
-     Redux        "-1^2"
-   - Compare    = Golden: 8,37037037037037 /= SUT: 6,37037037037037
- ================================
-  !! Expectation Failed: Match
- ================================
 ```

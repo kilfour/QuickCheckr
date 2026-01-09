@@ -15,14 +15,14 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     [Fact]
     [DocCheckrHeader]
     [DocCheckr]
-    [DocBoldHeader("The Fuzzr")]
-    [DocExample(typeof(ParseFuzzr))]
-    [DocBoldHeader("The Reducer")]
-    [DocExample(typeof(ParseReducer))]
     [DocConfigureHeader]
     [DocConfigure]
     [DocReportHeader]
     [DocReport]
+    [DocBoldHeader("The Fuzzr")]
+    [DocExample(typeof(ParseFuzzr))]
+    [DocBoldHeader("The Reducer")]
+    [DocExample(typeof(ParseReducer))]
     public override void Example() =>
         Run(200.Runs());
 
