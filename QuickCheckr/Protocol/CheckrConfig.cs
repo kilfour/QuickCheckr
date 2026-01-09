@@ -26,7 +26,7 @@ public record CheckrConfig
             };
     }
 
-    public required Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
+    public required Func<CaseFile, int>? DeliberationPolicy { get; init; }
 
     /// <summary>
     /// Controls how shrinking behaves for this run.  

@@ -29,6 +29,6 @@ public record CheckrRunnerConfig
     public Custodian Custodian { get; init; }
     public ShrinkMode ShrinkMode { get; init; }
     public ReportMode ReportMode { get; init; }
-    public Func<CaseFile, CaseFile, CaseFile>? DeliberationPolicy { get; init; }
+    public Func<CaseFile, int>? DeliberationPolicy { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
 }

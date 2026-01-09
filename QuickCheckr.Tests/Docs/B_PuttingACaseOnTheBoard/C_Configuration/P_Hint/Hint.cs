@@ -22,7 +22,7 @@ public static class Hint
     [CodeExample]
     public static CaseFile Deliberate(
         this CheckrOf<Case> checkr,
-        Func<CaseFile, CaseFile, CaseFile>? policy = null)
+        Func<CaseFile, int>? policy = null)
         => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
             cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 

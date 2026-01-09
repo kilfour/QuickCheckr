@@ -4,29 +4,23 @@ namespace QuickCheckr.Protocol;
 
 public static class DeliberationPolicy
 {
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MinimumExecutions =
-        (a, b) => a.Verdict!.ExecutionCount < b.Verdict!.ExecutionCount ? a : b;
+    public static readonly Func<CaseFile, int> MinimumExecutions =
+        a => a.Verdict!.ExecutionCount;
 
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MinimumOriginalExecutions =
-        (a, b) => a.Verdict!.OriginalRunExecutionCount < b.Verdict!.OriginalRunExecutionCount ? a : b;
+    public static readonly Func<CaseFile, int> MinimumOriginalExecutions =
+        a => a.Verdict!.OriginalRunExecutionCount;
 
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MinimumShrinkCount =
-        (a, b) => a.Verdict!.ShrinkCount < b.Verdict!.ShrinkCount ? a : b;
+    public static readonly Func<CaseFile, int> MinimumShrinkCount =
+        a => a.Verdict!.ShrinkCount;
 
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumShrinkCount =
-        (a, b) => a.Verdict!.ShrinkCount > b.Verdict!.ShrinkCount ? a : b;
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MinimumWarnings =
-        (a, b) =>
-            a.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) <
-            b.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count) ? a : b;
+    public static readonly Func<CaseFile, int> MaximumShrinkCount =
+        a => 0 - a.Verdict!.ShrinkCount;
+    public static readonly Func<CaseFile, int> MinimumWarnings =
+        a => a.Verdict!.ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
 
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumExecutionsShrunk =
-        (a, b) =>
-            a.Verdict!.OriginalRunExecutionCount - a.Verdict!.ExecutionDepositions.Count >
-            b.Verdict!.OriginalRunExecutionCount - b.Verdict!.ExecutionDepositions.Count ? a : b;
+    public static readonly Func<CaseFile, int> MaximumExecutionsShrunk =
+        a => 0 - (a.Verdict!.OriginalRunExecutionCount - a.Verdict!.ExecutionDepositions.Count);
 
-    public static readonly Func<CaseFile, CaseFile, CaseFile> MaximumDistinctPassedExpectations =
-        (a, b) =>
-            a.PassedExpectationDepositions.Count >
-            b.PassedExpectationDepositions.Count ? a : b;
+    public static readonly Func<CaseFile, int> MaximumDistinctPassedExpectations =
+        a => 0 - a.PassedExpectationDepositions.Count;
 }

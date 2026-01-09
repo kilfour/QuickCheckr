@@ -7,6 +7,7 @@ using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr;
 
+public record DeliberatedCaseFile(CaseFile CaseFile, int Score);
 /// <summary>
 /// Provides helpers for executing a Checkr script and controlling how often it is run.  
 /// Use these extensions to run a case once, repeatedly, or with custom configuration.
@@ -27,7 +28,7 @@ public static class CheckrOfTRun
         int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var finalCaseFile = CaseFile.Empty();
+        DeliberatedCaseFile? deliberatedCaseFile = null;
         var caseFiles = new List<CaseFile>();
 
         for (int i = 0; i < runs.NumberOfRuns; i++)
@@ -38,14 +39,20 @@ public static class CheckrOfTRun
             if (caseFile.HasVerdict())
             {
                 if (config.DeliberationPolicy != null)
-                    finalCaseFile = config.DeliberationPolicy(finalCaseFile.HasVerdict()
-                        ? finalCaseFile : caseFile, caseFile);
+                {
+
+                    var score = config.DeliberationPolicy!(caseFile);
+                    if (deliberatedCaseFile is null)
+                        deliberatedCaseFile = new(caseFile, score);
+                    else
+                        deliberatedCaseFile = deliberatedCaseFile.Score <= score ? deliberatedCaseFile : new(caseFile, score);
+                }
                 else
                     ReportCaseFile(executionsPerRun, config, caseFile);
             }
         }
-        if (finalCaseFile.HasVerdict())
-            ReportCaseFile(executionsPerRun, config, finalCaseFile);
+        if (deliberatedCaseFile is not null)
+            ReportCaseFile(executionsPerRun, config, deliberatedCaseFile.CaseFile);
         else
             ReportCaseFileSummary(config, caseFiles);
         return CaseSummary.FromCaseFiles(caseFiles);

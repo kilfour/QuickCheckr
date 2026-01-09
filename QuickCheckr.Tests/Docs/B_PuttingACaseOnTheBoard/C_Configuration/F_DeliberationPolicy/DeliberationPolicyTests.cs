@@ -144,7 +144,7 @@ It is also possible to define a custom policy, but this is an ...")]
     [CodeReplace("[ ", "- ")]
     [CodeReplace(", ", "- ")]
     [CodeRemove("];")]
-    private static IEnumerable<Func<CaseFile, CaseFile, CaseFile>> PolicyList() =>
+    private static IEnumerable<Func<CaseFile, int>> PolicyList() =>
         [ DeliberationPolicy.MinimumExecutions
         , DeliberationPolicy.MinimumShrinkCount
         , DeliberationPolicy.MaximumShrinkCount

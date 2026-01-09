@@ -19,6 +19,8 @@
   ... maybe, see if it's easy, if not push to later version
 
 ### Current Focus
+* DeliberationPolicy
+  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation
