@@ -92,17 +92,19 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val!), Maybe.Nothing(), Maybe.Nothing()));
+                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val!)));
             }
             return;
         }
 
         foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
         {
-            var original = executionMemory.GetOriginalForKey(key);
-            var redux = executionMemory.GetInputReduxForKey(key);
             executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, clue!.Report!, original, redux));
+                    new InputDeposition(labeled, key, clue!.Report!)
+                    {
+                        Original = executionMemory.GetOriginalForKey(key),
+                        Redux = executionMemory.GetInputReduxForKey(key)
+                    });
         }
     }
 

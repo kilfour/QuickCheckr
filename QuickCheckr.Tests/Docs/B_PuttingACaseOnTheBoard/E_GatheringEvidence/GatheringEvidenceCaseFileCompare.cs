@@ -84,7 +84,7 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0, Maybe.Nothing(), Maybe.Nothing()))));
+                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
         var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
@@ -97,10 +97,10 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0, Maybe.Nothing(), Maybe.Nothing()))));
+                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
         var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Other Label", 0, Maybe.Nothing(), Maybe.Nothing()))));
+                .AddInputDeposition(new InputDeposition(true, "Other Label", 0))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -126,12 +126,12 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0, Maybe.Nothing(), Maybe.Nothing())))
+                .AddInputDeposition(new InputDeposition(true, "Label", 0)))
             .AddExecutionDeposition(new ExecutionDeposition(2)));
         var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0, Maybe.Nothing(), Maybe.Nothing()))));
+                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

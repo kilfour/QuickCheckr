@@ -11,7 +11,7 @@ public class UnlabeledDepostionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "Answer", 42, Maybe.Nothing(), Maybe.Nothing()))
+                    .AddInputDeposition(new InputDeposition(false, "Answer", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled", false))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
@@ -28,7 +28,7 @@ public class UnlabeledDepostionsTests : DepositionTest
         var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "Answer", 42, Maybe.Just("666"), Maybe.Nothing()))
+                    .AddInputDeposition(new InputDeposition(false, "Answer", 42) { Original = Maybe.Just("666") })
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled", false))));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());

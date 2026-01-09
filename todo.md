@@ -38,6 +38,8 @@
 
 ## 0.0.8+
 * Try to remember the cool idea you had for Custom Custodians ;-)
+  * emit case files instead of reports
+  * generalize the court style guide
 * Look into different types of collection shrinking:
   * Limitations.
   * Known issues

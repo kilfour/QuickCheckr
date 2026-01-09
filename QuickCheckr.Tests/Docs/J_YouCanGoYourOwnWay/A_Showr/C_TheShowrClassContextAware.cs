@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -22,7 +23,7 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
     [DocReportExcerpt(6, 3)]
     public override void Example() => Run(695266907);
 
-    private static readonly List<Product> productsForSale =
+    private static List<Product> ProductsForSale() =>
         [ new() { Id = new Guid("b1c88a3c-444e-4776-a5c4-c660a75e9365")
                 , Name = "Product One" , AmountInStock = 50
                 }
@@ -41,7 +42,7 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from warehouse in Trackr.Stashed(() => new Warehouse(productsForSale))
+        from warehouse in Trackr.Stashed(() => new Warehouse(ProductsForSale()))
         from showr in Showr.ForInput(() =>
             Please.AllowMe().ToReplace<OrderRequest>(a =>
                 $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))

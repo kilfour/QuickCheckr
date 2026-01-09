@@ -1,8 +1,3 @@
-
-
-
-
-
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseFile
