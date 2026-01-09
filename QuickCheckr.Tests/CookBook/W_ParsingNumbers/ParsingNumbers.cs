@@ -7,6 +7,17 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
 
 [DocFile]
+[DocContent(
+@"Another non-stateful testing example. And one where a Reducer is absolutely necessary.
+
+I used this one, during a course I was teaching to verify student code,
+because I did not feel like combing through all the code looking for bugs manually.  
+So you could say it's a real world example, and I deliberately did not clean up the code.  
+
+I had a working model, so all that was needed was a Fuzzr, and a way to get to a minimal fail-case.  
+The Reducer is far from perfect, but by adding a deliberation policy, this test quickly and reliably came up with said minimal fail-case.  
+
+")]
 public class ParsingNumbers : CheckrTest<ParsingNumbers>
 {
     protected override bool Asserts => false;
