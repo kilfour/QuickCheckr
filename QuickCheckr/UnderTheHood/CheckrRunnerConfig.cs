@@ -16,6 +16,7 @@ public record CheckrRunnerConfig
         ShrinkMode = config.ShrinkMode;
         ReportMode = config.ReportMode;
         DeliberationPolicy = config.DeliberationPolicy;
+        DeliberationTarget = config.DeliberationTarget;
         Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
                 Pulse.Prime(() => Please.AllowMe().ToUseNonLinearTime())
@@ -30,5 +31,6 @@ public record CheckrRunnerConfig
     public ShrinkMode ShrinkMode { get; init; }
     public ReportMode ReportMode { get; init; }
     public Func<CaseFile, int>? DeliberationPolicy { get; init; }
+    public int? DeliberationTarget { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
 }

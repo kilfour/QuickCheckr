@@ -21,6 +21,7 @@
 ### Current Focus
 * DeliberationPolicy
   * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
+* InputDeposition, object Value is in run-time always a string !!!
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation

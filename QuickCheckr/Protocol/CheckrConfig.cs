@@ -22,11 +22,13 @@ public record CheckrConfig
                 ShrinkMode = ShrinkMode.Default,
                 ReportMode = ReportMode.Default,
                 DeliberationPolicy = null,
+                DeliberationTarget = null,
                 InternalAffairs = []
             };
     }
 
     public required Func<CaseFile, int>? DeliberationPolicy { get; init; }
+    public required int? DeliberationTarget { get; init; }
 
     /// <summary>
     /// Controls how shrinking behaves for this run.  

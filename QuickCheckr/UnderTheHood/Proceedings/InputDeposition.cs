@@ -7,4 +7,6 @@ public record InputDeposition(bool Labeled, string Label, object Value)
 
     public Maybe Original { get; init; } = Maybe.Nothing();
     public Maybe Redux { get; init; } = Maybe.Nothing();
+    public string GetReduxOrValue()
+        => (Redux.HasValue ? Redux.Value : (string)Value)!;
 }

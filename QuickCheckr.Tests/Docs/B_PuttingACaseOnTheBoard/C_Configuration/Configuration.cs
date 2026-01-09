@@ -51,6 +51,7 @@ public class Configuration
             ShrinkMode = ShrinkMode.Default,
             ReportMode = ReportMode.Default,
             DeliberationPolicy = null,
+            DeliberationTarget = null,
             InternalAffairs = []
         };
     }

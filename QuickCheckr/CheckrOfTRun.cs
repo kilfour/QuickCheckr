@@ -39,7 +39,14 @@ public static class CheckrOfTRun
             if (caseFile.HasVerdict())
             {
                 if (config.DeliberationPolicy != null)
+                {
                     deliberatedCaseFile = Deliberate(config.DeliberationPolicy, deliberatedCaseFile, caseFile);
+                    if (config.DeliberationTarget != null)
+                    {
+                        if (deliberatedCaseFile.Score <= config.DeliberationTarget.Value)
+                            ReportCaseFile(executionsPerRun, config, deliberatedCaseFile.CaseFile);
+                    }
+                }
                 else
                     ReportCaseFile(executionsPerRun, config, caseFile);
             }

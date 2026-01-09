@@ -1,3 +1,5 @@
+
+
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseFile
@@ -21,5 +23,15 @@ public class CaseFile
     {
         PassedExpectationDepositions.Add(passedExpectationDepositions);
         return this;
+    }
+
+    public int InputsNamed(string key, Func<string, int> scorer)
+    {
+        if (!HasVerdict()) return int.MaxValue;
+        return Verdict!.ExecutionDepositions
+            .SelectMany(a => a.InputDepositions)
+            .Where(a => a.Label == key)
+            .Select(a => a.GetReduxOrValue())
+            .Sum(a => scorer(a));
     }
 }
