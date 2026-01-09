@@ -39,14 +39,7 @@ public static class CheckrOfTRun
             if (caseFile.HasVerdict())
             {
                 if (config.DeliberationPolicy != null)
-                {
-
-                    var score = config.DeliberationPolicy!(caseFile);
-                    if (deliberatedCaseFile is null)
-                        deliberatedCaseFile = new(caseFile, score);
-                    else
-                        deliberatedCaseFile = deliberatedCaseFile.Score <= score ? deliberatedCaseFile : new(caseFile, score);
-                }
+                    deliberatedCaseFile = Deliberate(config.DeliberationPolicy, deliberatedCaseFile, caseFile);
                 else
                     ReportCaseFile(executionsPerRun, config, caseFile);
             }
@@ -56,6 +49,17 @@ public static class CheckrOfTRun
         else
             ReportCaseFileSummary(config, caseFiles);
         return CaseSummary.FromCaseFiles(caseFiles);
+    }
+
+    private static DeliberatedCaseFile Deliberate(
+        Func<CaseFile, int> deliberator,
+        DeliberatedCaseFile? current,
+        CaseFile caseFile)
+    {
+        var score = deliberator(caseFile);
+        if (current is null) return new(caseFile, score);
+        if (current.Score <= score) return current;
+        return new(caseFile, score);
     }
 
     [StackTraceHidden]
