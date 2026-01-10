@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
 namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 
@@ -13,7 +13,7 @@ public class Article(CaseFile caseFile)
 
     public string VerifyFailed()
     {
-        if (caseFile.Verdict?.FailureDeposition is VerifyingDeposition verifyingDeposition)
+        if (caseFile.Verdict?.FailureDeposition is FailedVerifierDeposition verifyingDeposition)
         {
             return verifyingDeposition.FailedExpectation;
         }
@@ -24,7 +24,7 @@ public class Article(CaseFile caseFile)
         => caseFile.Verdict!.FailureDeposition.GetFailureDescription();
 
     public string GetExceptionMessage()
-        => (caseFile.Verdict!.FailureDeposition as ExceptionDeposition)?.Message ?? string.Empty;
+        => (caseFile.Verdict!.FailureDeposition as FailedExceptionDeposition)?.Message ?? string.Empty;
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)

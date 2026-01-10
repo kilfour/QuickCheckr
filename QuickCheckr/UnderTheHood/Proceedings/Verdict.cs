@@ -1,6 +1,7 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
@@ -32,12 +33,12 @@ public class Verdict
         {
             var message = $"{dossier.Exception.GetType().Name}: {dossier.Exception.Message}";
             return dossier.ReportMode.HasFlag(ReportMode.StackTrace)
-                ? new ExceptionDeposition(dossier.Exception.ToString(), message)
-                : new ExceptionDeposition(message, message);
+                ? new FailedExceptionDeposition(dossier.Exception.ToString(), message)
+                : new FailedExceptionDeposition(message, message);
         }
         if (dossier.FailingExpectation is not null)
             return new FailedExpectationDeposition(dossier.FailingExpectation);
-        return new VerifyingDeposition(dossier.Verification!);
+        return new FailedVerifierDeposition(dossier.Verification!);
     }
 
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];

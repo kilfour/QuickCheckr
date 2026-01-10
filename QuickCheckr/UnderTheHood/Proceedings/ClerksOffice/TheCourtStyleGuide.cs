@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -121,8 +122,8 @@ public static class The
         from _8 in Pulse.ToFlow(warningDeposition, execution.WarningDepositions)
         select input;
 
-    private readonly static Flow<VerifyingDeposition> verifyingDeposition =
-        from input in Pulse.Start<VerifyingDeposition>()
+    private readonly static Flow<FailedVerifierDeposition> verifyingDeposition =
+        from input in Pulse.Start<FailedVerifierDeposition>()
         let text = $"  !!  The Verifier Disagrees: {input.FailedExpectation}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
@@ -139,8 +140,8 @@ public static class The
         from _3 in DoubleLineOf(length)
         select input;
 
-    private readonly static Flow<ExceptionDeposition> exceptionDeposition =
-        from input in Pulse.Start<ExceptionDeposition>()
+    private readonly static Flow<FailedExceptionDeposition> exceptionDeposition =
+        from input in Pulse.Start<FailedExceptionDeposition>()
         from _1 in newLine.Then(DoubleLineOf(75)).Then(newLine)
         from _2 in Pulse.Trace($"  !! {input.Message}").Then(newLine)
         from _3 in DoubleLineOf(75)
@@ -150,8 +151,8 @@ public static class The
         Pulse.Start<FailureDeposition>(input =>
             Pulse.FirstOf(
                 (() => input is FailedExpectationDeposition, () => Pulse.ToFlow(failedExpectationDeposition, (FailedExpectationDeposition)input)),
-                (() => input is ExceptionDeposition, () => Pulse.ToFlow(exceptionDeposition, (ExceptionDeposition)input)),
-                (() => input is VerifyingDeposition, () => Pulse.ToFlow(verifyingDeposition, (VerifyingDeposition)input))));
+                (() => input is FailedExceptionDeposition, () => Pulse.ToFlow(exceptionDeposition, (FailedExceptionDeposition)input)),
+                (() => input is FailedVerifierDeposition, () => Pulse.ToFlow(verifyingDeposition, (FailedVerifierDeposition)input))));
 
     private readonly static Flow<TestMethodInfoDeposition?> testMethodInfoDeposition =
         from input in Pulse.Start<TestMethodInfoDeposition>()
