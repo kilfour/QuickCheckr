@@ -73,7 +73,7 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val!)));
+                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val.Value!)));
             }
             return;
         }

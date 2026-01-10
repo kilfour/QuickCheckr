@@ -18,8 +18,8 @@ public class SwapperTests
         Assert.Equal(0, Get(memory, 1, "int"));
     }
 
-    private int Get(Memory memory, int executionId, string key) =>
-        (int)memory.ShortTermMemory.GetMemory(executionId).GetInputValues()[key]!;
+    private static int Get(Memory memory, int executionId, string key) =>
+        (int)memory.ShortTermMemory.GetMemory(executionId).GetInputValues()[key]!.Value!;
 
     // [Fact]
     // public void ScopedSwap_list()

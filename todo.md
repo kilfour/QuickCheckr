@@ -1,4 +1,18 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
+* Deliberation Shrinking.
+  * Composable policies
+  
+### Doing
+* Refactoring: simplify casefile compile
+* InputDeposition, object Value is in run-time always a string !!!
+* DeliberationPolicy
+  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
+    => IReadOnlyCaseFile, or, better yet, make the whole thing immutable
+
+### Wish List
+* Warning Customization ?
+* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
+  ... maybe, see if it's easy, if not push to later version
 
 ### Done/Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -12,18 +26,11 @@
 * Added Input overloads taking Custom Shrinker(s) as extra argument.
 * Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
 * Added Input overloads taking a *Reducer* as extra argument.
-
-### Wish List
-* Warning Customization ?
-* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
-  ... maybe, see if it's easy, if not push to later version
-
-### Current Focus
-* Refactoring: simplify casefile compile
 * DeliberationPolicy
   * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
 * Added DeliberationTarget, Deliberation stops when reached.
-* InputDeposition, object Value is in run-time always a string !!!
+
+### Current Focus
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation
@@ -66,10 +73,6 @@
 * dotnet new checkr templates
   * minimal
   * for newbies
-* Deliberation Shrinking. Add:
-  * a stop when predicate like executioncount <= 4, user can then up the number of runs to 10000 relatively safely
-  * decouple the casefile from the predicate
-  * Composable policies
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
     * alternative: example in cookbook using subclasses or composition <= THIS
