@@ -63,9 +63,10 @@ public class TheEditor
     private static readonly Flow<int> Execution =
         from index in Pulse.Start<int>()
         from article in Pulse.Draw<Article>()
+
         let executionDeposition = article.Execution(index).Read()
         from execution in Emit($"Assert.Equal({executionDeposition.ExecutionId}, article.Execution({index}).Read().ExecutionId);")
-        from times in EmitIf(executionDeposition.Times > 1, $"Assert.Equal({executionDeposition.Times}, article.Execution({index}).Read().Times);")
+        from times in EmitIf(article.Execution(index).Times > 1, $"Assert.Equal({article.Execution(index).Times}, article.Execution({index}).Times);")
         from actions in Pulse.ToFlow(Action, Enumerable.Range(1, executionDeposition.ActionDepositions.Count).Select(a => (index, a)))
         from inputs in Pulse.ToFlow(Input, Enumerable.Range(1, executionDeposition.InputDepositions.Count).Select(a => (index, a)))
         from poolTraces in Pulse.ToFlow(PoolTrace, Enumerable.Range(1, executionDeposition.PoolTraceDepositions.Count).Select(a => (index, a)))

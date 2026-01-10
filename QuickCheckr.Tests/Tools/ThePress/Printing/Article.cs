@@ -27,7 +27,7 @@ public class Article(CaseFile caseFile)
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)
-        => new(caseFile.Verdict?.ExecutionDepositions[number - 1]!);
+        => new(caseFile.Verdict?.GetCollapsableExecutionDepositions()[number - 1]!);
 
     [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)

@@ -44,7 +44,7 @@ Run( a = 6 ) // count == 3 → fail
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(9, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(3, article.Execution(1).Read().Times);
+        Assert.Equal(3, article.Execution(1).Times);
         Assert.Equal("BugHouse.Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("a", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("6", article.Execution(1).Input(1).Read().Value);

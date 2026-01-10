@@ -42,10 +42,30 @@ public class Verdict
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];
     public Verdict AddExecutionDeposition(ExecutionDeposition executionDepostion)
     {
-        var last = ExecutionDepositions.LastOrDefault();
-        if (last == null || !last.Collapsed(executionDepostion))
-            ExecutionDepositions.Add(executionDepostion);
+        ExecutionDepositions.Add(executionDepostion);
         return this;
+    }
+
+    public List<CollapsableExecutionDeposition> GetCollapsableExecutionDepositions()
+    {
+        CollapsableExecutionDeposition? collapsableExecutionDeposition = null;
+        var result = new List<CollapsableExecutionDeposition>();
+        foreach (var executionDeposition in ExecutionDepositions)
+        {
+            if (collapsableExecutionDeposition == null)
+            {
+                collapsableExecutionDeposition = new CollapsableExecutionDeposition(executionDeposition);
+                result.Add(collapsableExecutionDeposition);
+            }
+            else
+            {
+                if (collapsableExecutionDeposition.Collapsed(executionDeposition))
+                    continue;
+                collapsableExecutionDeposition = new CollapsableExecutionDeposition(executionDeposition);
+                result.Add(collapsableExecutionDeposition);
+            }
+        }
+        return result;
     }
 
     public TestMethodInfoDeposition? TestMethodInfoDeposition { get; private set; }

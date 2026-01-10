@@ -28,7 +28,7 @@ public class TrackrVerify : BaseTest
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(20, article.Execution(1).Read().Times);
+        Assert.Equal(20, article.Execution(1).Times);
         Assert.Equal("Roll", article.Execution(1).Action(1).Read().Label);
     }
 
@@ -62,7 +62,7 @@ public class TrackrVerify : BaseTest
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(20, article.Execution(1).Read().Times);
+        Assert.Equal(20, article.Execution(1).Times);
         Assert.Equal("Roll", article.Execution(1).Action(1).Read().Label);
     }
 

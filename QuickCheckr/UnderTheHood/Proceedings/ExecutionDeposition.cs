@@ -5,8 +5,6 @@ public record ExecutionDeposition
 {
     public int ExecutionId { get; }
 
-    public int Times { get; private set; } = 1;
-
     public List<ActionDeposition> ActionDepositions { get; } = [];
 
     public List<InputDeposition> InputDepositions { get; } = [];
@@ -20,22 +18,6 @@ public record ExecutionDeposition
     public ExecutionDeposition(int executionId)
     {
         ExecutionId = executionId;
-    }
-
-    public bool Collapsed(ExecutionDeposition other)
-    {
-        if (!ActionDepositions.SequenceEqual(other.ActionDepositions))
-            return false;
-        if (!InputDepositions.SequenceEqual(other.InputDepositions))
-            return false;
-        if (!PoolTraceDepositions.SequenceEqual(other.PoolTraceDepositions))
-            return false;
-        if (!TraceDepositions.SequenceEqual(other.TraceDepositions))
-            return false;
-        if (!WarningDepositions.SequenceEqual(other.WarningDepositions))
-            return false;
-        Times++;
-        return true;
     }
 
     public bool HasContent()

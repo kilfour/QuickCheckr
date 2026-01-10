@@ -25,8 +25,6 @@ public class DeskOfficer
             List<ExecutionDeposition> executionDepositions,
             List<ExecutionDeposition> other)
         {
-            if (executionDepositions.Sum(a => a.Times) != other.Sum(a => a.Times))
-                return false;
             var notes = Note.From(executionDepositions);
             var otherNotes = Note.From(other);
             foreach (var note in notes)
@@ -94,19 +92,16 @@ public class DeskOfficer
             var notepad = new List<Note>();
             foreach (var executionDeposition in executionDepositions)
             {
-                for (int i = 0; i < executionDeposition.Times; i++)
+                var note = new Note();
+                foreach (var actionDeposition in executionDeposition.ActionDepositions)
                 {
-                    var note = new Note();
-                    foreach (var actionDeposition in executionDeposition.ActionDepositions)
-                    {
-                        note.Actions.Add(actionDeposition.Label);
-                    }
-                    foreach (var inputDeposition in executionDeposition.InputDepositions)
-                    {
-                        note.Inputs.Add(inputDeposition.Label);
-                    }
-                    notepad.Add(note);
+                    note.Actions.Add(actionDeposition.Label);
                 }
+                foreach (var inputDeposition in executionDeposition.InputDepositions)
+                {
+                    note.Inputs.Add(inputDeposition.Label);
+                }
+                notepad.Add(note);
             }
             return notepad;
         }

@@ -37,12 +37,12 @@ public class CreateReadMe : BaseTest
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(4, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(3, article.Execution(1).Read().Times);
+        Assert.Equal(3, article.Execution(1).Times);
         Assert.Equal("BugHouse.Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("number", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
         Assert.Equal(84, article.Execution(2).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(2).Read().Times);
+        Assert.Equal(2, article.Execution(2).Times);
         Assert.Equal("BugHouse.Run", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Returns true", article.PassedExpectation(1).Read().Label);
         Assert.Equal(84, article.PassedExpectation(1).Read().TimesPassed);

@@ -102,21 +102,22 @@ public static class The
         from __ in Pulse.Trace($" {input.Label}")
         select input;
 
-    private readonly static Flow<ExecutionDeposition> executionDeposition =
-        from input in Pulse.Start<ExecutionDeposition>()
+    private readonly static Flow<CollapsableExecutionDeposition> executionDeposition =
+        from input in Pulse.Start<CollapsableExecutionDeposition>()
+        let execution = input.ExecutionDeposition
         from nl in newLine
         from _1 in line
-        let colon = input.HasContent() ? ":" : ""
-        from labelLength in Pulse.Manipulate<MaxLabel>(a => a with { Length = input.MaxLabelLength() })
+        let colon = execution.HasContent() ? ":" : ""
+        from labelLength in Pulse.Manipulate<MaxLabel>(a => a with { Length = execution.MaxLabelLength() })
         from _2 in Pulse.Trace($"  Executed{colon}")
         from _3 in Pulse.Scoped<Decorum>(
             a => a with { Intersperse = Valve.Install() },
-            Pulse.ToFlow(actionDeposition, input.ActionDepositions))
+            Pulse.ToFlow(actionDeposition, execution.ActionDepositions))
         from _4 in Pulse.TraceIf(input.Times > 1, () => $" ({input.Times} Times)")
-        from _5 in Pulse.ToFlow(poolTraceDeposition, input.PoolTraceDepositions)
-        from _6 in Pulse.ToFlow(inputDeposition, input.InputDepositions)
-        from _7 in Pulse.ToFlow(traceDeposition, input.TraceDepositions)
-        from _8 in Pulse.ToFlow(warningDeposition, input.WarningDepositions)
+        from _5 in Pulse.ToFlow(poolTraceDeposition, execution.PoolTraceDepositions)
+        from _6 in Pulse.ToFlow(inputDeposition, execution.InputDepositions)
+        from _7 in Pulse.ToFlow(traceDeposition, execution.TraceDepositions)
+        from _8 in Pulse.ToFlow(warningDeposition, execution.WarningDepositions)
         select input;
 
     private readonly static Flow<VerifyingDeposition> verifyingDeposition =
@@ -171,7 +172,7 @@ public static class The
         let _22 = $"{verdict.ShrinkCount} {Pluralize(verdict.ShrinkCount, "shrink")}"
         from _2 in Pulse.TraceIf(verdict.ShrinkCount > 0, () => $" Minimal failing case:    {_21} (after {_22}){Environment.NewLine}")
         from _3 in Pulse.Trace($" Seed:                    {verdict.Seed}")
-        from _4 in Pulse.ToFlow(executionDeposition, verdict.ExecutionDepositions)
+        from _4 in Pulse.ToFlow(executionDeposition, verdict.GetCollapsableExecutionDepositions())
         from _5 in Pulse.ToFlow(failureDeposition, verdict.FailureDeposition)
         select verdict;
 

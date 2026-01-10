@@ -37,7 +37,7 @@ public class ShrinkModeReduction : CheckrTest<ShrinkModeReduction>
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal(2, article.Execution(1).Times);
         Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal(3, article.Execution(2).Read().ExecutionId);
         Assert.Equal("counter", article.Execution(2).Input(1).Read().Label);

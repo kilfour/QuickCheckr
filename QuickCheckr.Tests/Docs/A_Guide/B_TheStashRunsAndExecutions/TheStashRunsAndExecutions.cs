@@ -164,7 +164,7 @@ the failure only emerges when several executions act on the *same* object.
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal(2, article.Execution(1).Times);
         Assert.Equal("BugHouse.DelayedDetonation", article.Execution(1).Action(1).Read().Label);
         Assert.Equal(3, article.Execution(2).Read().ExecutionId);
         Assert.Equal("BugHouse.DelayedDetonation", article.Execution(2).Action(1).Read().Label);

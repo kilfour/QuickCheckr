@@ -3,8 +3,8 @@ using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 
-public class ExecutionArticle(ExecutionDeposition deposition)
-    : AbstractArticle<ExecutionDeposition>(deposition)
+public class ExecutionArticle(CollapsableExecutionDeposition collapsableExecutionDeposition)
+    : AbstractArticle<ExecutionDeposition>(collapsableExecutionDeposition.ExecutionDeposition)
 {
     [StackTraceHidden]
     public ActionArticle Action(int number)
@@ -25,4 +25,6 @@ public class ExecutionArticle(ExecutionDeposition deposition)
     [StackTraceHidden]
     public WarningArticle Warning(int number)
         => new(deposition.WarningDepositions[number - 1]);
+
+    public int Times => collapsableExecutionDeposition.Times;
 }

@@ -52,7 +52,7 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(1).Read().Times);
+        Assert.Equal(2, article.Execution(1).Times);
         Assert.Equal("BugHouse.Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal(3, article.Execution(2).Read().ExecutionId);
         Assert.Equal("BugHouse.Run", article.Execution(2).Action(1).Read().Label);
