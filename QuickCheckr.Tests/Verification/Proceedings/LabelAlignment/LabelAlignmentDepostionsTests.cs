@@ -8,11 +8,11 @@ public class LabelAlignmentDepostionsTests : DepositionTest
     [Fact]
     public void Check()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("One", "42", false))
                     .AddInputDeposition(new InputDeposition(false, "TwoTwo", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled", false))));
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled", false)));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -25,11 +25,11 @@ public class LabelAlignmentDepostionsTests : DepositionTest
     [Fact]
     public void CheckAgain()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("TwoTwo", "42", false))
                     .AddInputDeposition(new InputDeposition(false, "ThreeThreeThree", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled", false))));
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled", false)));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

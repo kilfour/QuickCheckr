@@ -7,13 +7,11 @@ namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 public class Article(CaseFile caseFile)
 {
     private readonly CaseFile caseFile = caseFile;
-
     public CaseFile CaseFile { get; } = caseFile;
-    public bool VerdictReached() => caseFile.HasVerdict();
 
     public string VerifyFailed()
     {
-        if (caseFile.Verdict?.FailureDeposition is FailedVerifierDeposition verifyingDeposition)
+        if (caseFile.FailureDeposition is FailedVerificationDeposition verifyingDeposition)
         {
             return verifyingDeposition.FailedExpectation;
         }
@@ -21,22 +19,20 @@ public class Article(CaseFile caseFile)
     }
 
     public string FailureDescription()
-        => caseFile.Verdict!.FailureDeposition.GetFailureDescription();
+        => caseFile.FailureDeposition.GetFailureDescription();
 
     public string GetExceptionMessage()
-        => (caseFile.Verdict!.FailureDeposition as FailedExceptionDeposition)?.Message ?? string.Empty;
+        => (caseFile.FailureDeposition as FailedExceptionDeposition)?.Message ?? string.Empty;
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)
-        => new(caseFile.Verdict?.GetCollapsableExecutionDepositions()[number - 1]!);
+        => new(caseFile.GetCollapsableExecutionDepositions()[number - 1]!);
 
     [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)
         => new(caseFile.PassedExpectationDepositions[number - 1]);
 
     public WordCount Total() => new(caseFile);
-    public int Seed() => (int)caseFile.Verdict?.Seed!;
-    public int ShrinkCount =>
-        caseFile.Verdict is null
-            ? 0 : caseFile.Verdict!.ShrinkCount;
+    public int Seed() => caseFile.Seed;
+    public int ShrinkCount => caseFile.ShrinkCount;
 }

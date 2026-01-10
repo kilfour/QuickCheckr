@@ -10,19 +10,7 @@ public class VerifyingDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(new Dossier(
-                FailingExpectation: null,
-                Exception: null,
-                Verification: "Some Invariant",
-                OriginalRunExecutionCount: 10,
-                ExecutionCount: 4,
-                ShrinkCount: 0,
-                Seed: 12345678,
-                PassedExpectations: new Dictionary<string, int>(),
-                UseMemoryForInputReporting: false,
-                ReportMode: Protocol.ReportMode.Default
-            )));
-
+        var caseFile = CaseFile.From(new FailureInfo(Verification: "Some Invariant"), Dossier.RunInfo with { ShrinkCount = 0 });
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());

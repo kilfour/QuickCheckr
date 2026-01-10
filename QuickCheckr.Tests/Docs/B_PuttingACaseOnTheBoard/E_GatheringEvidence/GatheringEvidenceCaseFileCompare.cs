@@ -14,10 +14,8 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("- *Failure Description* is not equal.")]
     public void CaseFileNotSimilar_FailureDescription()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(
-                Dossier.Empty with { FailingExpectation = "Some Failure" }));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(
-                Dossier.Empty with { FailingExpectation = "Other Failure" }));
+        var caseFile = CaseFile.From(new FailureInfo(FailingExpectation: "Some Failure"), new RunInfo());
+        var other = CaseFile.From(new FailureInfo(FailingExpectation: "Other Failure"), new RunInfo());
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -26,10 +24,8 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("- *Execution Count* is not equal.")]
     public void CaseFileNotSimilar_ExecutionCount()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(
-                Dossier.Empty with { ExecutionCount = 1 }));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(
-                Dossier.Empty with { ExecutionCount = 2 }));
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo(ExecutionCount: 1));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo(ExecutionCount: 2));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -38,13 +34,13 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("- Any **Execution** differs, like so:")]
     public void CaseFileNotSimilar_TimesExecuted()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1))
-            .AddExecutionDeposition(new ExecutionDeposition(2)));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(2));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+                .AddActionDeposition(new ActionDeposition("Something I Did")));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -53,13 +49,13 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("  - Number of *Actions Performed* is not equal.")]
     public void CaseFileNotSimilar_NumberOfActions()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddActionDeposition(new ActionDeposition("Something I Did"))));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+                .AddActionDeposition(new ActionDeposition("Something I Did")));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Something I Did"))
-                .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
+                .AddActionDeposition(new ActionDeposition("Something Else I Did")));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -68,12 +64,12 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("  - Any *Action label* is not equal.")]
     public void CaseFileNotSimilar_ActionLabels()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddActionDeposition(new ActionDeposition("Something I Did"))));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+                .AddActionDeposition(new ActionDeposition("Something I Did")));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddActionDeposition(new ActionDeposition("Something Else I Did"))));
+                .AddActionDeposition(new ActionDeposition("Something Else I Did")));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -82,11 +78,11 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("  - Number of *Inputs* is not equal.")]
     public void CaseFileNotSimilar_Inputs()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
-            .AddExecutionDeposition(new ExecutionDeposition(1)));
+                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
+            .AddExecutionDeposition(new ExecutionDeposition(1));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -95,12 +91,12 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("  - Any *Input label* is not equal.")]
     public void CaseFileNotSimilar_InputLabels()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Other Label", 0))));
+                .AddInputDeposition(new InputDeposition(true, "Other Label", 0)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -108,14 +104,14 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("\nPer default, the order of Executions does not matter for similarity.")]
     public void CaseFileSimilar_ExecutionOrderDoesNotMatter()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Something I Did")))
-            .AddExecutionDeposition(new ExecutionDeposition(2)));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(2));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddActionDeposition(new ActionDeposition("Something I Did"))));
+                .AddActionDeposition(new ActionDeposition("Something I Did")));
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
     }
@@ -124,14 +120,14 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("An optional boolean parameter to the `GatherEvidence` method allows one to override this default behaviour, so that Execution order **does** matter.")]
     public void CaseFileNotSimilar_ExecutionOrderDoesMatter()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddInputDeposition(new InputDeposition(true, "Label", 0)))
-            .AddExecutionDeposition(new ExecutionDeposition(2)));
-        var other = CaseFile.WithVerdict(Verdict.FromDossier(Dossier.Empty)
+            .AddExecutionDeposition(new ExecutionDeposition(2));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0))));
+                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

@@ -110,10 +110,10 @@ public abstract class CheckrTest<T>
         if (!Report && !writeAllReportsToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
-        if (article.CaseFile.HasVerdict())
+        if (article.CaseFile.HasEvidence)
         {
-            article.CaseFile.Verdict!.AddTestMethodDisposition(
-                article.CaseFile.Verdict?.TestMethodInfoDeposition! with
+            article.CaseFile.AddTestMethodDisposition(
+                article.CaseFile.TestMethodInfoDeposition! with
                 {
                     MethodName = "Example",
                     SourceFile = $"{typeof(T).Name}.cs"

@@ -6,18 +6,15 @@ namespace QuickCheckr.EvidenceGathering;
 public class DeskOfficer
 {
     public static bool AreCaseFilesSimilar(CaseFile caseFile, CaseFile other, bool ordered = false)
-        => VerdictIsSimilar(caseFile.Verdict!, other.Verdict!, ordered);
-
-    private static bool VerdictIsSimilar(Verdict verdict, Verdict other, bool ordered)
     {
-        if (verdict.FailureDeposition.GetFailureDescription() != other.FailureDeposition.GetFailureDescription())
+        if (caseFile.FailureDeposition.GetFailureDescription() != other.FailureDeposition.GetFailureDescription())
             return false;
-        if (verdict.ExecutionCount != other.ExecutionCount)
+        if (caseFile.ExecutionCount != other.ExecutionCount)
             return false;
         if (ordered)
-            return Ordered.ExecutionDepositionsAreSimilar(verdict.ExecutionDepositions, other.ExecutionDepositions);
+            return Ordered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions);
         else
-            return UnOrdered.ExecutionDepositionsAreSimilar(verdict.ExecutionDepositions, other.ExecutionDepositions);
+            return UnOrdered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions);
     }
 
     private class UnOrdered

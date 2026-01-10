@@ -35,7 +35,7 @@ public class FalsifiableException : Exception
                 if (method == null) continue;
                 var declaringAssembly = method.DeclaringType?.Assembly;
                 if (declaringAssembly == assembly) continue;
-                caseFile.Verdict!.AddTestMethodDisposition(
+                caseFile.AddTestMethodDisposition(
                     new TestMethodInfoDeposition(
                         method?.Name ?? "unknown_test", file, frame.GetFileLineNumber()));
                 return caseFile;

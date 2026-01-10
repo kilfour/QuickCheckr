@@ -8,9 +8,9 @@ public class WarningDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddWarningDeposition(new WarningDeposition("Careful now"))));
+                    .AddWarningDeposition(new WarningDeposition("Careful now")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -21,10 +21,10 @@ public class WarningDepositionsTests : DepositionTest
     [Fact]
     public void BelowTrace()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Something   ", "I Traced"))
-                    .AddWarningDeposition(new WarningDeposition("Careful now"))));
+                    .AddWarningDeposition(new WarningDeposition("Careful now")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

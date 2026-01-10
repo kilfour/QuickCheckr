@@ -12,13 +12,8 @@ public abstract class DepositionTest
     protected virtual bool IgnoreFailingExpectation { get; init; } = true;
     protected Dossier Dossier { get; } =
         new Dossier(
-                FailingExpectation: "Some Invariant",
-                Exception: null,
-                Verification: null,
-                OriginalRunExecutionCount: 10,
-                ExecutionCount: 4,
-                ShrinkCount: 1,
-                Seed: 12345678,
+                FailureInfo: new FailureInfo(FailingExpectation: "Some Invariant"),
+                RunInfo: new RunInfo(10, 4, 1, 12345678),
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
                 ReportMode: ReportMode.Default & ~ReportMode.StackTrace

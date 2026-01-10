@@ -8,9 +8,9 @@ public class PoolTraceDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("Something", "I Pooled"))));
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Something", "I Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -21,9 +21,9 @@ public class PoolTraceDepositionsTests : DepositionTest
     [Fact]
     public void UntrimmedLabel()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("Something   ", "I Pooled"))));
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Something   ", "I Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -34,11 +34,11 @@ public class PoolTraceDepositionsTests : DepositionTest
     [Fact]
     public void AboveInputs()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier)
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
                     .AddInputDeposition(new InputDeposition(true, "Answer", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled"))));
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

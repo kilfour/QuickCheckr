@@ -27,7 +27,7 @@ public static class CheckrOfTGatherEvidence
             {
                 var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
                 var caseFile = runner.Run();
-                if (caseFile.HasVerdict())
+                if (caseFile.HasEvidence)
                 {
                     caseFiles.Add(caseFile);
                 }
@@ -49,13 +49,13 @@ public static class CheckrOfTGatherEvidence
         {
             // ---------------------------------------------------------------------------------------------
             // BEHOLD THE DUPLICATION ... from Vault.cs
-            logRecorder.Append($"Run failed for Seed: {caseFile.Verdict!.Seed}.");
+            logRecorder.Append($"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{caseFile.Verdict!.Seed}.qr"))
+                config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"))
                     .Append(TheClerk.Transcribes(caseFile));
             }
-            vault.AddSeed(caseFile.Verdict!.Seed, caseFile.Verdict!.OriginalRunExecutionCount, caseFile.Verdict!.GetFailure());
+            vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount, caseFile.GetFailure());
             // ---------------------------------------------------------------------------------------------
         }
     }

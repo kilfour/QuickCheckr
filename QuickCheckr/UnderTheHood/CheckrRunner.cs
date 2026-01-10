@@ -29,7 +29,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         var shrinkCount = 0;
 
         if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerify))
-            return CompileTheCaseFile(originalRunExecutionCount, shrinkCount, true);
+            return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
@@ -47,18 +47,22 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 
     private CaseFile CompileTheCaseFile(
         int originalRunExecutionCount,
-        int shrinkCount,
-        bool forVerifier = false)
+        int shrinkCount)
     {
         var dossier =
             new Dossier(
-                Verification: forVerifier ? State.EvidenceRecorder.FailingVerify : null,
-                FailingExpectation: forVerifier ? null : State.EvidenceRecorder.FailingExpectation,
-                Exception: State.EvidenceRecorder.Exception,
-                OriginalRunExecutionCount: originalRunExecutionCount,
-                ExecutionCount: State.Memory.Count(),
-                ShrinkCount: shrinkCount,
-                Seed: State.FuzzrState.Seed,
+                FailureInfo:
+                    new FailureInfo(
+                        State.EvidenceRecorder.FailingExpectation,
+                        State.EvidenceRecorder.FailingVerify,
+                        State.EvidenceRecorder.Exception,
+                        config.ReportMode.HasFlag(ReportMode.StackTrace)),
+                RunInfo:
+                    new RunInfo(
+                        originalRunExecutionCount,
+                        State.Memory.Count(),
+                        shrinkCount,
+                        State.FuzzrState.Seed),
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
                 ReportMode: config.ReportMode

@@ -6,6 +6,8 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
+
+
 public static class Compile
 {
     public static CaseFile PassedExpectations(IReadOnlyDictionary<string, int> passedExpectations)
@@ -17,21 +19,13 @@ public static class Compile
 
     public static CaseFile TheCaseFile(Dossier dossier, Memory memory, ManOfWealthAndTaste inputPrinter)
     {
-        var verdict = Verdict.FromDossier(dossier);
-        var caseFile = FromMemoryAndVerdict(memory, verdict, dossier.UseMemoryForInputReporting, inputPrinter, dossier.ReportMode);
+        var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo);
+        foreach (var (executionId, shortTermMemory) in memory.Entries())
+        {
+            caseFile.AddExecutionDeposition(
+                GetExecutionDeposition(shortTermMemory, executionId, dossier.UseMemoryForInputReporting, inputPrinter, dossier.ReportMode));
+        }
         AddPassedExpectations(dossier.PassedExpectations, caseFile);
-        return caseFile;
-    }
-
-    private static CaseFile FromMemoryAndVerdict(
-        Memory memory,
-        Verdict verdict,
-        bool useMemoryForInputReporting,
-        ManOfWealthAndTaste inputPrinter,
-        ReportMode reportMode)
-    {
-        AddExecutionDepositions(memory, verdict, useMemoryForInputReporting, inputPrinter, reportMode);
-        var caseFile = CaseFile.WithVerdict(verdict);
         return caseFile;
     }
 
@@ -39,20 +33,6 @@ public static class Compile
     {
         foreach (var passedExpectation in passedExpectations)
             caseFile.AddPassedExpectationDeposition(new PassedExpectationDeposition(passedExpectation.Key, passedExpectation.Value));
-    }
-
-    private static void AddExecutionDepositions(
-        Memory memory,
-        Verdict verdict,
-        bool useMemoryForInputReporting,
-        ManOfWealthAndTaste inputPrinter,
-        ReportMode reportMode)
-    {
-        foreach (var (executionId, shortTermMemory) in memory.Entries())
-        {
-            verdict.AddExecutionDeposition(
-                GetExecutionDeposition(shortTermMemory, executionId, useMemoryForInputReporting, inputPrinter, reportMode));
-        }
     }
 
     private static ExecutionDeposition GetExecutionDeposition(

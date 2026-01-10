@@ -122,8 +122,8 @@ public static class The
         from _8 in Pulse.ToFlow(warningDeposition, execution.WarningDepositions)
         select input;
 
-    private readonly static Flow<FailedVerifierDeposition> verifyingDeposition =
-        from input in Pulse.Start<FailedVerifierDeposition>()
+    private readonly static Flow<FailedVerificationDeposition> verifyingDeposition =
+        from input in Pulse.Start<FailedVerificationDeposition>()
         let text = $"  !!  The Verifier Disagrees: {input.FailedExpectation}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
@@ -152,7 +152,7 @@ public static class The
             Pulse.FirstOf(
                 (() => input is FailedExpectationDeposition, () => Pulse.ToFlow(failedExpectationDeposition, (FailedExpectationDeposition)input)),
                 (() => input is FailedExceptionDeposition, () => Pulse.ToFlow(exceptionDeposition, (FailedExceptionDeposition)input)),
-                (() => input is FailedVerifierDeposition, () => Pulse.ToFlow(verifyingDeposition, (FailedVerifierDeposition)input))));
+                (() => input is FailedVerificationDeposition, () => Pulse.ToFlow(verifyingDeposition, (FailedVerificationDeposition)input))));
 
     private readonly static Flow<TestMethodInfoDeposition?> testMethodInfoDeposition =
         from input in Pulse.Start<TestMethodInfoDeposition>()
@@ -163,8 +163,8 @@ public static class The
     private static string Pluralize(int count, string str) =>
         count > 1 ? $"{str}s" : str;
 
-    private readonly static Flow<Verdict?> verdict =
-        from verdict in Pulse.Start<Verdict>()
+    private readonly static Flow<CaseFile> evidence =
+        from verdict in Pulse.Start<CaseFile>()
         from _ in line
         from __ in Pulse.ToFlowIf(verdict.TestMethodInfoDeposition != null, testMethodInfoDeposition, () => verdict.TestMethodInfoDeposition)
         let __1 = $"{verdict.OriginalRunExecutionCount} {Pluralize(verdict.OriginalRunExecutionCount, "execution")}"
@@ -193,13 +193,13 @@ public static class The
 
     public readonly static Flow<CaseFile> CourtStyleGuide =
         from input in Pulse.Start<CaseFile>()
-        from _ in Pulse.Prime(() => new Decorum())
-        from __ in Pulse.Prime(() => new MaxLabel(0))
-        from verdict in Pulse.ToFlowIf(input.Verdict != null, verdict, () => input.Verdict)
+        from _1 in Pulse.Prime(() => new Decorum())
+        from _2 in Pulse.Prime(() => new MaxLabel(0))
+        from _3 in Pulse.ToFlowIf(input.HasEvidence, evidence, () => input)
         from summary in Pulse.OnType(Summary, () => input)
-        let needsBreak = input.Verdict != null && input.PassedExpectationDepositions.Count > 0
+        let needsBreak = input.HasEvidence && input.PassedExpectationDepositions.Count > 0
         from nl in Pulse.TraceIf(needsBreak, () => Environment.NewLine)
-        from ___ in Pulse.ToFlowIf(
+        from _4 in Pulse.ToFlowIf(
             input.PassedExpectationDepositions.Count > 0,
             passedExpectationDepositions,
             () => input.PassedExpectationDepositions)

@@ -36,7 +36,7 @@ public static class CheckrOfTRun
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
             var caseFile = runner.Run();
             caseFiles.Add(caseFile);
-            if (caseFile.HasVerdict())
+            if (caseFile.HasEvidence)
             {
                 if (config.DeliberationPolicy != null)
                 {
@@ -79,9 +79,9 @@ public static class CheckrOfTRun
             config.Custodian.Recorder(filenameCf)
                 .Append(TheClerk.Transcribes(caseFile));
 
-            Vault.From(config).AddSeed(caseFile.Verdict!.Seed,
+            Vault.From(config).AddSeed(caseFile.Seed,
                 executionsPerRun.NumberOfExecutions,
-                caseFile.Verdict!.GetFailure());
+                caseFile.GetFailure());
         }
         throw new FalsifiableException(caseFile);
     }

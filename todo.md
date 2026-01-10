@@ -19,6 +19,7 @@
   ... maybe, see if it's easy, if not push to later version
 
 ### Current Focus
+* Refactoring: simplify casefile compile
 * DeliberationPolicy
   * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
 * Added DeliberationTarget, Deliberation stops when reached.
@@ -121,8 +122,6 @@
 
 * Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
   * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look. 
-* Refactoring: simplify casefile compile
-  * meh, looked at it. It's annoying occasionally, if a new transformation is needed, but fine for now.
 * GetFromPool (bool, T?) => Result. Also not needed, a tuple will do in this case.
 * unify ConditionalResult and DelayedResult ... maybe
 

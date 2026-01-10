@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 
@@ -7,9 +8,7 @@ public class ExceptionDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(
-                Dossier with { FailingExpectation = null, Exception = new Exception("BOOM") }));
-
+        var caseFile = CaseFile.From(new FailureInfo(Exception: new Exception("BOOM")), Dossier.RunInfo);
         var reader = Transcribe(caseFile);
         Assert.Equal(" ===========================================================================", reader.NextLine());
         Assert.Equal("  !! Exception: BOOM", reader.NextLine());

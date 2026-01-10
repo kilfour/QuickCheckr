@@ -9,7 +9,7 @@ public class FailedExpectationDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.WithVerdict(Verdict.FromDossier(Dossier));
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo);
 
         var reader = Transcribe(caseFile);
         Assert.Equal(" =========================================", reader.NextLine());

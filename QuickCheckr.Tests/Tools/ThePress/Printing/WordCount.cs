@@ -5,9 +5,7 @@ namespace QuickCheckr.Tests.Tools.ThePress.Printing;
 
 public class WordCount(CaseFile caseFile)
 {
-    private readonly List<CollapsableExecutionDeposition> depositions =
-        caseFile.Verdict is null
-            ? [] : caseFile.Verdict.GetCollapsableExecutionDepositions();
+    private readonly List<CollapsableExecutionDeposition> depositions = caseFile.GetCollapsableExecutionDepositions();
     public int Executions() => depositions.Count;
     public int Actions() => depositions.Sum(a => a.ExecutionDeposition.ActionDepositions.Count);
     public int Inputs() => depositions.Sum(a => a.ExecutionDeposition.InputDepositions.Count);
