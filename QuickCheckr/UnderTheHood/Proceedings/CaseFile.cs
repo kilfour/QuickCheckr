@@ -21,12 +21,7 @@ public class CaseFile
         FailureDeposition = new FailedNoneDeposition();
     }
 
-    protected CaseFile(FailureDeposition failureDeposition)
-    {
-        FailureDeposition = failureDeposition;
-    }
-
-    protected CaseFile(FailureDeposition failureDeposition, RunInfo runInfo)
+    private CaseFile(FailureDeposition failureDeposition, RunInfo runInfo)
     {
         FailureDeposition = failureDeposition;
         OriginalRunExecutionCount = runInfo.OriginalRunExecutionCount;
@@ -80,19 +75,7 @@ public class CaseFile
     public string GetFailure()
         => FailureDeposition.GetFailureDescription();
 
-    // protected CaseFile(Verdict verdict) { Verdict = verdict; }
-
-    public static CaseFile Empty()
-    {
-        return new CaseFile();
-    }
-
-    // public Verdict? Verdict { get; private set; }
-    // public bool HasVerdict() { return Verdict != null; }
-    // public static CaseFile WithVerdict(Verdict verdict)
-    // {
-    //     return new CaseFile(verdict);
-    // }
+    public static CaseFile Empty() => new();
 
     public List<PassedExpectationDeposition> PassedExpectationDepositions { get; init; } = [];
     public CaseFile AddPassedExpectationDeposition(PassedExpectationDeposition passedExpectationDepositions)
