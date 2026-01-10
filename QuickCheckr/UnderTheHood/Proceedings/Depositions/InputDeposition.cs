@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Proceedings;
+namespace QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 public record InputDeposition(bool Labeled, string Label, object Value)
 {

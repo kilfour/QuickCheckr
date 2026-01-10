@@ -1,7 +1,8 @@
 using QuickCheckr.EvidenceGathering;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains;
+using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 

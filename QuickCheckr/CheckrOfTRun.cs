@@ -2,8 +2,8 @@ using System.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr;
 

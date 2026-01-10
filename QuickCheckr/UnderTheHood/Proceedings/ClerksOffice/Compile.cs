@@ -1,6 +1,7 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;

@@ -1,5 +1,7 @@
 
 
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseFile

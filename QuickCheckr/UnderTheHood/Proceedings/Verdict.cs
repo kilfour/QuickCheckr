@@ -1,5 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
 

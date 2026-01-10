@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public class CaseSummary(int numberOfRuns) : CaseFile(null!)
