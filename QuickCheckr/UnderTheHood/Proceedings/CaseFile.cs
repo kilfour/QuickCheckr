@@ -3,6 +3,7 @@
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
@@ -19,6 +20,7 @@ public interface ICaseFileSummary
     public int WarningCount { get; }
     public int PassedExpectationCount { get; }
     public int InputsNamed<T>(string key, Func<T, int> calculateScore);
+    public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
 }
 
 public class CaseFile : ICaseFileSummary
@@ -46,6 +48,17 @@ public class CaseFile : ICaseFileSummary
             .SelectMany(a => a.InputDepositions)
             .Where(a => a.Label == key)
             .Select(a => a.GetReduxOrValueAsObject())
+            .Sum(a => calculateScore((T)a));
+    }
+
+
+    public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning
+    {
+        if (!HasEvidence) return int.MaxValue;
+        return ExecutionDepositions
+            .SelectMany(a => a.WarningDepositions)
+            .Where(a => a.Warning is T)
+            .Select(a => a.Warning)
             .Sum(a => calculateScore((T)a));
     }
     // -----------------------------------------------------------------------

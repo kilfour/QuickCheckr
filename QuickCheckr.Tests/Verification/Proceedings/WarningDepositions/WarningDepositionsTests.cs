@@ -1,5 +1,7 @@
+using QuickCheckr.Tests.Drafts.A_AllInputsShrunk;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.WarningDepositions;
 
@@ -10,11 +12,11 @@ public class WarningDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddWarningDeposition(new WarningDeposition("Careful now")));
+                    .AddWarningDeposition(new WarningDeposition(new AllInputsIrrelevantWarning())));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
-        Assert.Equal("   - WARNING: Careful now", reader.NextLine());
+        Assert.Equal("   - WARNING: All inputs were considered irrelevant.", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -24,12 +26,12 @@ public class WarningDepositionsTests : DepositionTest
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Something   ", "I Traced"))
-                    .AddWarningDeposition(new WarningDeposition("Careful now")));
+                    .AddWarningDeposition(new WarningDeposition(new AllInputsIrrelevantWarning())));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Trace: Something    = I Traced", reader.NextLine());
-        Assert.Equal("   - WARNING: Careful now", reader.NextLine());
+        Assert.Equal("   - WARNING: All inputs were considered irrelevant.", reader.NextLine());
         EndOfContent(reader);
     }
 }

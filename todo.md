@@ -15,9 +15,7 @@
 * Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
 
 ### Wish List
-* Warning Customization ?
-* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
-  ... maybe, see if it's easy, if not push to later version
+
 
 ### Done/Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -35,14 +33,14 @@
   * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<ICaseFileSummary, int>`
   * Added DeliberationTarget, Deliberation stops when reached.
   * ICaseFileSummary added:
-    * public int InputsNamed<T>(string key, Func<T, int> calculateScore);
+    * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
+    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;
 
 ### Doc
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation
       Split objects into different Inputs
-
 * Weak Spots
   * Polish the guide a bit more
     * Better examples for :
@@ -57,6 +55,9 @@
   * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
 
 ## 0.0.8+
+* Warning Customization ?
+* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
+  ... maybe, see if it's easy, if not push to later version
 * Try to remember the cool idea you had for Custom Custodians ;-)
   * emit case files instead of reports
   * generalize the court style guide
