@@ -7,24 +7,37 @@ Property-based testing for the pragmatic.
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)
 
-**QuickCheckr** is inspired by Haskell's QuickCheck, and as such, it is a Property Based Testing framework.  
-But it is not a straight-up clone. I could not write one of those anyway. I can't read the maths.  
-Instead it took the ideas of QuickCheck, not the algorithms, and was built from the ground up,
-iteratively, over a long period of time.
+**QuickCheckr** is inspired by Haskell's QuickCheck, but it is not a straight-up clone.  
+It borrows the *ideas* of property-based testing, not the algorithms, and was built from the ground up for the realities of day-to-day .NET code.
 
-So if you are looking for a mathematically correct, powerfull shrinking algorithm, and are dealing with pure functional code,
-there are better solutions out there. FsCheck comes to mind, even if it is slightly unwieldly in C#.  
-But if you're dealing with the impure, messy world of day to day .NET code ...  
+If you are testing *pure* functions and are primarily interested in mathematically minimal counterexamples,
+there are excellent tools available, FsCheck being the obvious choice, even if it can feel slightly unwieldy in C#.
+
+But most C# code is not pure.
 
 > QuickCheckr is all about state and side-effects, because most C# code is all about state and side-effects.
 
-Now there *is* a non-trivial *learning-curve*. 
-Because in order to get the shrinker to work, we have to encapsulate all state under test. QuickCheckr uses `LINQ` composition to achieve that, which is atleast familiar to most C# devs.  
-But it does come with it's own dialect and the idea of *stateful LINQ* might feel strange at first sight.
+Instead of shrinking individual input values, QuickCheckr shrinks *behaviour*:
+sequences of inputs, actions, branching decisions, and state transitions.
+Failures are treated as things that *emerge over time*, not necessarily as the result of a single call.
 
-All that said, below is a first, granted, contrived, example. A more [real world one](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md) can be found at the end of the guide. But before you get to that it is advised to start at the [beginning](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md) of said guide.
-  
+This comes with a non-trivial learning curve.
+To make shrinking meaningful, all state under test must be encapsulated and described explicitly.
+QuickCheckr uses `LINQ` composition to express this, which is familiar to most C# developers, but the idea of *stateful LINQ* may feel unusual at first.
+
+The payoff is that bugs which are invisible to traditional property-based tests, because no single operation fails in isolation, become both detectable *and explainable*.
+
+Below is a small, deliberately contrived example.
+A more realistic, end-to-end [scenario](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md) can be found at the end of the guide,
+but it is strongly recommended to start at the [beginning](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md) and follow it step by step.
+
 ## Example
+The following example demonstrates a class of bug that is easy to miss in traditional tests and difficult to express using classic property-based testing.
+
+No single call fails.  
+The failure only occurs after a *specific sequence* of operations has been performed on the same instance.  
+QuickCheckr is designed to explore and shrink exactly this kind of behaviour.  
+
 **Buggy Code:**  
 ```csharp
 public class BugHouse
