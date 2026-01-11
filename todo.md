@@ -92,6 +92,7 @@
   * You Can Go Your Own Way is very much unfinished.
   * Consider splitting of Honey I Shrunk the Inputs.  
     This makes cross referencing impossible though.
+  * Meet the Team: Clerk, Custodian, etc ...
   * Maybe add When Things Go Wrong.
 * dotnet new checkr templates
   * minimal
