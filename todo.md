@@ -2,9 +2,10 @@
 
 ### Doing
 * Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
+  added just needs testing
 * ICaseFileSummary added:
     * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;
-
+      added just needs testing
   
 ### Todo
 * Que ?
