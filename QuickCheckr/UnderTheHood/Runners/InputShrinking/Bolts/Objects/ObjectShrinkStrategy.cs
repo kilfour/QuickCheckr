@@ -2,6 +2,7 @@
 using System.Reflection;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood;
 
@@ -15,8 +16,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         {
             var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.FullKey,
-                () => $"Null value for type '{info.Type.Name}' at input '{info.FullKey}'.");
+            state.Memory.StoreWarning(info.FullKey, () => new NullValueWarning(info.Type, info.FullKey));
             return [clue];
         }
         return HandleProperties(state, check, info);
@@ -41,8 +41,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         {
             var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.FullKey,
-                () => $"Object of type '{info.Type.Name}' has no shrinkable properties at input '{info.FullKey}'.");
+            state.Memory.StoreWarning(info.FullKey, () => new NoPropertiesWarning(info.Type, info.FullKey));
             return [clue];
         }
         var values = new List<(string PropertyName, string Value)>();

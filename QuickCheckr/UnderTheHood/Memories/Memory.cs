@@ -2,6 +2,7 @@ using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickCheckr.UnderTheHood.Warnings;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories;
@@ -149,6 +150,6 @@ public class Memory
 
     // --------------------------------------------------------------------------
     // Warnings
-    public string? StoreWarning(string key, Func<string> factory)
+    public Warning? StoreWarning(string key, Func<Warning> factory)
         => ShortTermMemory.StoreWarning(key, factory);
 }

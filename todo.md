@@ -12,7 +12,7 @@
   ```
   
 ### Todo
-
+* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
 
 ### Wish List
 * Warning Customization ?
@@ -112,7 +112,6 @@
 ## Refactoring Targets 
 * Add tests for DuplicateKeyWriteGuardForPoolTraces
 * Try to remove multiple execution shrinking passes.
-* Typed WARNINGS instead of string building.
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists

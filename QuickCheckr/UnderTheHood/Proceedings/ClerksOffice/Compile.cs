@@ -115,7 +115,7 @@ public static class Compile
     {
         foreach (var warning in shortTermMemory.GetWarnings())
         {
-            executionDeposition.AddWarningDeposition(new WarningDeposition(warning));
+            executionDeposition.AddWarningDeposition(new WarningDeposition(warning.Message));
         }
     }
 }

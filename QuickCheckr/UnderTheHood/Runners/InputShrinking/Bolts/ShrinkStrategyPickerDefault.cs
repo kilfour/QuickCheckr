@@ -3,6 +3,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
+using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
@@ -27,7 +28,7 @@ public class ShrinkStrategyPickerDefault : IShrinkingStrategy
 
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
-        state.Memory.StoreWarning(info.FullKey, () => $"Can't shrink type '{info.Type.Name}' at input '{info.FullKey}'.");
+        state.Memory.StoreWarning(info.FullKey, () => new CantShrinkWarning(info.Type, info.FullKey));
         return [clue];
     }
 

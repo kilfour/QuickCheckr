@@ -2,6 +2,7 @@ using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickCheckr.UnderTheHood.Warnings;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
@@ -128,7 +129,7 @@ public class ExecutionMemory
         else
             shrinkersUsed[key] = [type];
     }
-    public (bool, IEnumerable<string>) HasUnusedShrinkers(string key)
+    public (bool, List<Type>) HasUnusedShrinkers(string key)
     {
         var options = shrinkers.Get(key);
         if (options == null) return (false, []);
@@ -137,7 +138,7 @@ public class ExecutionMemory
             options = [.. options.Where(a => !used.Contains(a.TargetType))];
         }
         if (options.Length != 0)
-            return (true, options.Select(a => a.TargetType.Name));
+            return (true, [.. options.Select(a => a.TargetType)]);
         return (false, []);
     }
     // --------------------------------------------------------------------------
@@ -159,10 +160,10 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Warnings
-    private readonly TypedMemoryBank<string> warnings = new();
-    public string? StoreWarning(string key, Func<string> factory)
+    private readonly TypedMemoryBank<Warning> warnings = new();
+    public Warning? StoreWarning(string key, Func<Warning> factory)
         => warnings.Store(key, factory);
-    public IReadOnlyList<string> GetWarnings()
+    public IReadOnlyList<Warning> GetWarnings()
         => [.. warnings.Values.Values];
     // --------------------------------------------------------------------------
 }
