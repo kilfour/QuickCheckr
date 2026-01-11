@@ -42,7 +42,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
         => config with
         {
             DeliberationPolicy = caseFile => caseFile.InputsNamed<string>("Expression", a => a.Length),
-            DeliberationTarget = 6,
+            DeliberationTarget = 4,
             ReportMode = config.ReportMode & ~ReportMode.Labels
         };
 

@@ -84,11 +84,13 @@ public static class Compile
         foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
         {
             var input = executionMemory.GetInput(key);
+            var redux = executionMemory.GetInputReduxForKey(key);
             executionDeposition.AddInputDeposition(
                     new InputDeposition(labeled, key, clue!.Report!)
                     {
                         Original = executionMemory.GetOriginalForKey(key),
-                        Redux = executionMemory.GetInputReduxForKey(key),
+                        Redux = redux.HasValue ? Maybe.Just(inputPrinter.IntroduceThis(redux.Value)) : Maybe.Nothing(),
+                        ReduxValue = redux,
                         InputValue = input.Value,
                         Type = input.Type
                     });

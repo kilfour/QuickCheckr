@@ -1,6 +1,12 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
+* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
+* ICaseFileSummary added:
+    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;
+
+  
+### Todo
 * Que ?
   ```csharp
   public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
@@ -10,9 +16,6 @@
           return a => f(a);
       });
   ```
-  
-### Todo
-* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
 
 ### Wish List
 
@@ -34,7 +37,6 @@
   * Added DeliberationTarget, Deliberation stops when reached.
   * ICaseFileSummary added:
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
-    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;
 
 ### Doc
 * Reducers

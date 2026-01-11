@@ -29,7 +29,7 @@ public class InputReducer(
                     step = reducer(result);
                 }
                 shrinkCount++;
-                shortTermMemory.StoreInputRedux(key, State.InputPrinter.IntroduceThis(step.Result!));
+                shortTermMemory.StoreInputRedux(key, step.Result!);
             }
         }
         return shrinkCount;

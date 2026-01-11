@@ -95,16 +95,16 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Redux Outcomes
-    private readonly Dictionary<string, string> reduxOutcomes = [];
-    public void StoreInputRedux(string key, string result)
+    private readonly Dictionary<string, object> reduxOutcomes = [];
+    public void StoreInputRedux(string key, object result)
         => reduxOutcomes[key] = result;
-    public Maybe GetInputReduxForKey(string key)
+    public Maybe<object> GetInputReduxForKey(string key)
     {
-        if (reduxOutcomes.TryGetValue(key, out string? value))
+        if (reduxOutcomes.TryGetValue(key, out object? value))
         {
-            return Maybe.Just(value);
+            return Maybe<object>.Just(value);
         }
-        return Maybe.Nothing();
+        return Maybe<object>.Nothing();
     }
     // --------------------------------------------------------------------------
 
