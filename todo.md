@@ -1,8 +1,8 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
-* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc.  
-  Added just needs testing.  
+* Added Deliberator: => easy testing of InBuilt Policies in Configuration doc.  
+  Needs testing.  
   Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
   Recap : 
     * Execution Scope: 1 Execution.
@@ -16,10 +16,12 @@
       * We could expand this.  
         For instance:  
         > Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
-        
-  * ICaseFileSummary added:
+  * ICaseFileSummary added (needs tests):
     * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
-      Added just needs testing.
+    * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
+  * Added DeliberationTarget, Deliberation stops when reached.  
+    Needs testing.
+* Move casefile GetMaxLabelLength closer to reporting.
   
 ### Todo
 * Que ?
