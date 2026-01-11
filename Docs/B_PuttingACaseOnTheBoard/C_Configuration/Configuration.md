@@ -205,8 +205,6 @@ It is also possible to define a custom policy, but this is an ...
 > It is included for users who want to experiment and help shape the future of QuickCheckr.
 
   
-
-[DeliberationShrinking]: ../../../H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
 ## ReportMode
 You can use this to customize report formatting somewhat.  
 I personally almost always disable the *Labels* ('Input:', 'Pool:', etc...), but your milage may vary.  
@@ -284,3 +282,5 @@ It might evolve into something that is *open to the public*, or it might get rem
 [A_ReportModeReference]: J_ReportMode/Reference/A_ReportModeReference.md
 
 [A_ShrinkModeReference]: N_ShrinkMode/Reference/A_ShrinkModeReference.md
+
+[DeliberationShrinking]: ../../H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md

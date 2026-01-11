@@ -11,7 +11,6 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 
 //[DocFile]
-[DocLink(typeof(DeliberationShrinking), "DeliberationShrinking")]
 [DocContent(
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  

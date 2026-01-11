@@ -14,13 +14,13 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
 [DocLink(typeof(Reducers))]
 [DocExplanationInProgress]
 [DocContent(
-@"We already saw in the entry on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
+@"We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
 and/or reporting globally.  
 But there are ways to obtain more fine-grained control. That is what this chapter is about.")]
 [DocHeader("Contents")]
 [DocContent(
 @"
-- [Showr][TheShowrClass]
+- [Showr][A_TheShowrClass]
 - [Custom Shrinkers][CustomShrinkers]
 - [Reducers][Reducers]
 ")]

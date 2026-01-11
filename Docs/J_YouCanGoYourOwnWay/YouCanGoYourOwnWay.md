@@ -16,7 +16,7 @@ and/or reporting globally.
 But there are ways to obtain more fine-grained control. That is what this chapter is about.  
 ## Contents
 
-- [Showr][TheShowrClass]
+- [Showr][A_TheShowrClass]
 - [Custom Shrinkers][CustomShrinkers]
 - [Reducers][Reducers]
   
