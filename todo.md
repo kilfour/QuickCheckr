@@ -1,11 +1,25 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
-* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc
-  added just needs testing
-* ICaseFileSummary added:
-    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;
-      added just needs testing
+* Add Deliberator: => easy testing of InBuilt Policies in Configuration doc.  
+  Added just needs testing.  
+  Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
+  Recap : 
+    * Execution Scope: 1 Execution.
+    * Run Scope: 1 Run, possibly many Executions.
+    * Case Scope: Multiple Runs.  
+      Can lead to :
+        * Failing Run => CaseFile
+        * All Runs Pass => Case Summary
+    * Investigation Scope:
+      * Multiple Cases investigated, only through GatherEvidence for now.
+      * We could expand this.  
+        For instance:  
+        > Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
+        
+  * ICaseFileSummary added:
+    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
+      Added just needs testing.
   
 ### Todo
 * Que ?
@@ -17,9 +31,28 @@
           return a => f(a);
       });
   ```
+  Not in the public api, but quite confusing when encountered.
+  It's needed though, check the design of this one, ... **before 0.0.8 publish**.
 
 ### Wish List
+* Warning Customization ? 
+  * See Schedule example with Warnings enabled for a *problem*. Too many warnings.
+  * Maybe:
+    * Short Description.
+    * Long one with explanation and/or workarounds and solutions.
+* Custom Custodians: 
+  * Emit case files instead of reports.
+  * Same for the vault stuff: no strings => typed.
 
+### Doc
+* Reducers
+  * Demonstrate Object Reducers 
+    * Just show the pattern, no need for new implementation.  
+      Split objects into different Inputs.
+
+### Ongoing
+* Refactor the Tests:
+  * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
 
 ### Done/Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -39,43 +72,37 @@
   * ICaseFileSummary added:
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
 
-### Doc
-* Reducers
-  * Demonstrate Object Reducers 
-    * Just show the pattern, no need for new implementation
-      Split objects into different Inputs
-* Weak Spots
-  * Polish the guide a bit more
-    * Better examples for :
-      * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy
-      * InPoolsWeTrust: expectation is a bit contrived
-  * Running a Checkr
-    * Maybe consilidate Test Framework Integration into this one
-    * Needs a story
-
-### Ongoing
-* Refactor the Tests:
-  * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
-
-## 0.0.8+
-* Warning Customization ?
-* Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
-  ... maybe, see if it's easy, if not push to later version
-* Try to remember the cool idea you had for Custom Custodians ;-)
-  * emit case files instead of reports
-  * generalize the court style guide
+## 0.0.9 All Aboard
+* Do a sanity pass on the public API.
 * Look into different types of collection shrinking:
   * Limitations.
   * Known issues
   * Workarounds. 
-  * Try dictionaries first maybe, and see what pops up. 
+  * Try dictionaries first maybe, and see what pops up.
+* Make sure Doc and Cookbook is finished and complete.
+    * Polish the guide a bit more
+      * Better examples for :
+        * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy.
+        * InPoolsWeTrust: expectation is a bit contrived.
+      * Put the following in there somewhere:
+        > Any exception thrown during execution of an Act Checkr will be caught and considered a failure.
+  * Running a Checkr
+    * Maybe consolidate Test Framework Integration into this one
+    * Needs a story
+  * You Can Go Your Own Way is very much unfinished.
+  * Consider splitting of Honey I Shrunk the Inputs.  
+    This makes cross referencing impossible though.
+  * Maybe add When Things Go Wrong.
+* dotnet new checkr templates
+  * minimal
+  * for newbies
+
+## 0.0.9+
 * Play more pool. Not really needed I reckon, but you know, making sure ...
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
-* dotnet new checkr templates
-  * minimal
-  * for newbies
+
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
     * alternative: example in cookbook using subclasses or composition <= THIS
@@ -97,7 +124,6 @@
 ## Future Doc Work
 * Checkrs Court: Tricky one
 * Prepare demo talk(s)
-* Any exception thrown during execution of the Act Checkr will be caught and considered a failure
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
