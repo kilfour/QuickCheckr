@@ -556,13 +556,13 @@ Run( a = 6 ) // count == 3 → fail
 ```csharp
 public class BugHouse
 {
-	private int count;
-	public bool Run(int a)
-	{
-		if (a == 6 && count != 3) count++;
-		if (count >= 3) count++;
-		if (count == 5) return false; return true;
-	}
+    private int count;
+    public bool Run(int a)
+    {
+        if (a == 6 && count != 3) count++;
+        if (count >= 3) count++;
+        if (count == 5) return false; return true;
+    }
 }
 ```
 Fails after a more complex sequence: specific inputs increment the counter in different ways, 
@@ -606,38 +606,38 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
 ```csharp
 public class BugHouse
 {
-	private string? bug;
-	public bool RunInt(int a)
-	{
-		bug += "1";
-		if (bug.EndsWith("1221") && a == 6) return false;
-		return true;
-	}
-	public bool RunString(string a)
-	{
-		bug += "2";
-		if (bug.EndsWith("122") && a == "p") return false;
-		return true;
-	}
+    private string? bug;
+    public bool RunInt(int a)
+    {
+        bug += "1";
+        if (bug.EndsWith("1221") && a == 6) return false;
+        return true;
+    }
+    public bool RunString(string a)
+    {
+        bug += "2";
+        if (bug.EndsWith("122") && a == "p") return false;
+        return true;
+    }
 }
 ```
 Exception occurs only from a specific interleaving of RunInt and RunString calls, each appending different markers to state.
 Demonstrates multi-method state interaction.  
 ```csharp
-	from bughouse in Trackr.Stashed(() => new BugHouse())
-	from operations in Checkr.OneOf(
-		// --
-		from i in Checkr.Input("Int", Fuzzr.Int())
-		from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
-		from expect in Checkr.Expect("RunInt s true", () => output)
-		select Case.Closed,
-		// --
-		from str in Checkr.Input("String", Fuzzr.String())
-		from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
-		from expect in Checkr.Expect("RunString s true", () => output)
-		select Case.Closed)
-		//--
-	select Case.Closed;
+    from bughouse in Trackr.Stashed(() => new BugHouse())
+    from operations in Checkr.OneOf(
+        // --
+        from i in Checkr.Input("Int", Fuzzr.Int())
+        from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
+        from expect in Checkr.Expect("RunInt s true", () => output)
+        select Case.Closed,
+        // --
+        from str in Checkr.Input("String", Fuzzr.String())
+        from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
+        from expect in Checkr.Expect("RunString s true", () => output)
+        select Case.Closed)
+        //--
+    select Case.Closed;
 ```
 ##### Minimal Fail Case (one example):
 - **Length:** 4 executions.

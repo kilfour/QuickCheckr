@@ -1121,7 +1121,7 @@ it is advised to simply wrap them into your own `CheckrOf` extension method(s):
 ```csharp
 public static CaseFile Deliberate(
     this CheckrOf<Case> checkr,
-    Func<CaseFile, int>? policy = null)
+    Func<ICaseFileSummary, int>? policy = null)
     => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
         cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 ```

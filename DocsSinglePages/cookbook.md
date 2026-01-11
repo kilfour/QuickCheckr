@@ -368,8 +368,8 @@ select Case.Closed;
 protected override CheckrConfig Configure(CheckrConfig config)
     => config with
     {
-        DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
-        DeliberationTarget = 6,
+        DeliberationPolicy = caseFile => caseFile.InputsNamed<string>("Expression", a => a.Length),
+        DeliberationTarget = 4,
         ReportMode = config.ReportMode & ~ReportMode.Labels
     };
 ```
@@ -381,12 +381,12 @@ protected override CheckrConfig Configure(CheckrConfig config)
  Location:                ParsingNumbers.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1739527267
+ Seed:                    1951918903
  ------------------------------------------------------------
   Executed: Golden Result, SUT Result
-   - Expression = "- 1 ^ (2 * 1 / 1) ^ 3 / - 1 ^ 3 - - 2 ^ 3 - (1 * 3 + 2 / 1 * 1 + 2 * 1 / 3) / 3 / 3 / 1"
-     Redux        "-1^2"
-   - Compare    = Golden: 8,37037037037037 /= SUT: 6,37037037037037
+   - Expression = "- (3 / 1 * 1 + 3 / 3 + 2 * 2 * 2 + 3 / 3 / 2 / 3) ^ (1 / 1 * 1 + 3) / 1 ^ (1 / 2 + 2 / 3 * 2 * 1 + 2 / 2 / 1 + 3 / 2 * 2 * 3) ^ 2 / 2 ^ 1 + (1 + 3 * 1 * 3 * 2 - 2 / 1 / 3 - 1 / 3) / (2 / 2 / 2 - 1 + 3 * 2 / 3 / 3 + 2 * 3)"
+     Redux        "-2^2"
+   - Compare    = Golden: -10953,19257799466 /= SUT: 10959,030415832496
  ================================
   !! Expectation Failed: Match
  ================================
