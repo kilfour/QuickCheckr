@@ -91,28 +91,6 @@ public class CaseFile : ICaseFileSummary
         return this;
     }
 
-    public List<CollapsableExecutionDeposition> GetCollapsableExecutionDepositions()
-    {
-        CollapsableExecutionDeposition? collapsableExecutionDeposition = null;
-        var result = new List<CollapsableExecutionDeposition>();
-        foreach (var executionDeposition in ExecutionDepositions)
-        {
-            if (collapsableExecutionDeposition == null)
-            {
-                collapsableExecutionDeposition = new CollapsableExecutionDeposition(executionDeposition);
-                result.Add(collapsableExecutionDeposition);
-            }
-            else
-            {
-                if (collapsableExecutionDeposition.Collapsed(executionDeposition))
-                    continue;
-                collapsableExecutionDeposition = new CollapsableExecutionDeposition(executionDeposition);
-                result.Add(collapsableExecutionDeposition);
-            }
-        }
-        return result;
-    }
-
     public TestMethodInfoDeposition? TestMethodInfoDeposition { get; private set; }
     public CaseFile AddTestMethodDisposition(TestMethodInfoDeposition testMethodInfoDeposition)
     {

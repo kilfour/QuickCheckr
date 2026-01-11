@@ -9,6 +9,9 @@ public class Article(CaseFile caseFile)
     private readonly CaseFile caseFile = caseFile;
     public CaseFile CaseFile { get; } = caseFile;
 
+    private readonly List<CollapsableExecutionDeposition> collapsableExecutionDepositions =
+        Collapse.TheExecutionDepositions(caseFile.ExecutionDepositions);
+
     public string VerifyFailed()
     {
         if (caseFile.FailureDeposition is FailedVerificationDeposition verifyingDeposition)
@@ -26,7 +29,7 @@ public class Article(CaseFile caseFile)
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)
-        => new(caseFile.GetCollapsableExecutionDepositions()[number - 1]!);
+        => new(collapsableExecutionDepositions[number - 1]!);
 
     [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)

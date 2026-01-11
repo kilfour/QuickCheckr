@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 namespace QuickCheckr.Tests.Tools.ThePress.Printing;

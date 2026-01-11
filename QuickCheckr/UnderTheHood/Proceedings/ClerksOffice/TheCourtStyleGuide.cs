@@ -164,19 +164,19 @@ public static class The
         count > 1 ? $"{str}s" : str;
 
     private readonly static Flow<CaseFile> evidence =
-        from verdict in Pulse.Start<CaseFile>()
+        from caseFile in Pulse.Start<CaseFile>()
         from _ in line
-        from __ in Pulse.ToFlowIf(verdict.TestMethodInfoDeposition != null, testMethodInfoDeposition, () => verdict.TestMethodInfoDeposition)
-        let __1 = $"{verdict.OriginalRunExecutionCount} {Pluralize(verdict.OriginalRunExecutionCount, "execution")}"
+        from __ in Pulse.ToFlowIf(caseFile.TestMethodInfoDeposition != null, testMethodInfoDeposition, () => caseFile.TestMethodInfoDeposition)
+        let __1 = $"{caseFile.OriginalRunExecutionCount} {Pluralize(caseFile.OriginalRunExecutionCount, "execution")}"
         from _1 in Pulse.Trace($" Original failing run:    {__1}")
         from n1 in newLine
-        let _21 = $"{verdict.ExecutionCount} {Pluralize(verdict.ExecutionCount, "execution")}"
-        let _22 = $"{verdict.ShrinkCount} {Pluralize(verdict.ShrinkCount, "shrink")}"
-        from _2 in Pulse.TraceIf(verdict.ShrinkCount > 0, () => $" Minimal failing case:    {_21} (after {_22}){Environment.NewLine}")
-        from _3 in Pulse.Trace($" Seed:                    {verdict.Seed}")
-        from _4 in Pulse.ToFlow(executionDeposition, verdict.GetCollapsableExecutionDepositions())
-        from _5 in Pulse.ToFlow(failureDeposition, verdict.FailureDeposition)
-        select verdict;
+        let _21 = $"{caseFile.ExecutionCount} {Pluralize(caseFile.ExecutionCount, "execution")}"
+        let _22 = $"{caseFile.ShrinkCount} {Pluralize(caseFile.ShrinkCount, "shrink")}"
+        from _2 in Pulse.TraceIf(caseFile.ShrinkCount > 0, () => $" Minimal failing case:    {_21} (after {_22}){Environment.NewLine}")
+        from _3 in Pulse.Trace($" Seed:                    {caseFile.Seed}")
+        from _4 in Pulse.ToFlow(executionDeposition, Collapse.TheExecutionDepositions(caseFile.ExecutionDepositions))
+        from _5 in Pulse.ToFlow(failureDeposition, caseFile.FailureDeposition)
+        select caseFile;
 
     private readonly static Flow<IEnumerable<PassedExpectationDeposition>> passedExpectationDepositions =
         from input in Pulse.Start<IEnumerable<PassedExpectationDeposition>>()
