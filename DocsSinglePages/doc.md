@@ -2052,7 +2052,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 >
 > Come back soon.
   
-We already saw in the entry on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
+We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
 and/or reporting globally.  
 But there are ways to obtain more fine-grained control. That is what this chapter is about.  
 ### Contents
