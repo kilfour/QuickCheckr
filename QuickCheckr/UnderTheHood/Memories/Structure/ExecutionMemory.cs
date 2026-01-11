@@ -13,6 +13,8 @@ public class ExecutionMemory
     private readonly OverlayMemoryBank inputs = new();
     public T? StoreInput<T>(string key, Func<T> factory)
         => inputs.Store(key, factory);
+    public TypedValue GetInput(string key)
+       => inputs.Values[key];
     public IReadOnlyDictionary<string, TypedValue> GetInputValues()
         => inputs.Values.Select(a => (a.Key, a.Value)).ToDictionary(a => a.Key, a => a.Value);
     public IReadOnlyDictionary<string, TypedValue> GetInputs() => inputs.Values;

@@ -7,7 +7,6 @@ using QuickPulse.Show.Bolts;
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 
-
 public static class Compile
 {
     public static CaseFile PassedExpectations(IReadOnlyDictionary<string, int> passedExpectations)
@@ -73,18 +72,25 @@ public static class Compile
             foreach (var (key, val) in executionMemory.GetInputValues())
             {
                 executionDeposition.AddInputDeposition(
-                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val.Value!)));
+                    new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val.Value!))
+                    {
+                        InputValue = val.Value,
+                        Type = val.Type
+                    });
             }
             return;
         }
 
         foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
         {
+            var input = executionMemory.GetInput(key);
             executionDeposition.AddInputDeposition(
                     new InputDeposition(labeled, key, clue!.Report!)
                     {
                         Original = executionMemory.GetOriginalForKey(key),
-                        Redux = executionMemory.GetInputReduxForKey(key)
+                        Redux = executionMemory.GetInputReduxForKey(key),
+                        InputValue = input.Value,
+                        Type = input.Type
                     });
         }
     }

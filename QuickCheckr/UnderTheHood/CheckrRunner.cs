@@ -60,7 +60,6 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 RunInfo:
                     new RunInfo(
                         originalRunExecutionCount,
-                        State.Memory.Count(),
                         shrinkCount,
                         State.FuzzrState.Seed),
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,

@@ -4,24 +4,24 @@ namespace QuickCheckr.Protocol;
 
 public static class DeliberationPolicy
 {
-    public static readonly Func<CaseFile, int> MinimumExecutions =
+    public static readonly Func<ICaseFileSummary, int> MinimumExecutions =
         a => a.ExecutionCount;
 
-    public static readonly Func<CaseFile, int> MinimumOriginalExecutions =
+    public static readonly Func<ICaseFileSummary, int> MinimumOriginalExecutions =
         a => a.OriginalRunExecutionCount;
 
-    public static readonly Func<CaseFile, int> MinimumWarnings =
-        a => a.ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
+    public static readonly Func<ICaseFileSummary, int> MinimumWarnings =
+        a => a.WarningCount;
 
-    public static readonly Func<CaseFile, int> MinimumShrinkCount =
+    public static readonly Func<ICaseFileSummary, int> MinimumShrinkCount =
         a => a.ShrinkCount;
 
-    public static readonly Func<CaseFile, int> MaximumShrinkCount =
+    public static readonly Func<ICaseFileSummary, int> MaximumShrinkCount =
         a => 0 - a.ShrinkCount;
 
-    public static readonly Func<CaseFile, int> MaximumExecutionsShrunk =
-        a => 0 - (a.OriginalRunExecutionCount - a.ExecutionDepositions.Count);
+    public static readonly Func<ICaseFileSummary, int> MaximumExecutionsShrunk =
+        a => 0 - (a.OriginalRunExecutionCount - a.ExecutionCount);
 
-    public static readonly Func<CaseFile, int> MaximumDistinctPassedExpectations =
-        a => 0 - a.PassedExpectationDepositions.Count;
+    public static readonly Func<ICaseFileSummary, int> MaximumDistinctPassedExpectations =
+        a => 0 - a.PassedExpectationCount;
 }

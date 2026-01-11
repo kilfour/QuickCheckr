@@ -24,8 +24,11 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("- *Execution Count* is not equal.")]
     public void CaseFileNotSimilar_ExecutionCount()
     {
-        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo(ExecutionCount: 1));
-        var other = CaseFile.From(new FailureInfo(), new RunInfo(ExecutionCount: 2));
+        var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
+            .AddExecutionDeposition(new ExecutionDeposition(1));
+        var other = CaseFile.From(new FailureInfo(), new RunInfo())
+            .AddExecutionDeposition(new ExecutionDeposition(1))
+            .AddExecutionDeposition(new ExecutionDeposition(2));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }

@@ -41,7 +41,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     protected override CheckrConfig Configure(CheckrConfig config)
         => config with
         {
-            DeliberationPolicy = caseFile => caseFile.InputsNamed("Expression", a => a.Length),
+            DeliberationPolicy = caseFile => caseFile.InputsNamed<string>("Expression", a => a.Length),
             DeliberationTarget = 6,
             ReportMode = config.ReportMode & ~ReportMode.Labels
         };

@@ -1,13 +1,18 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
-* Deliberation Shrinking.
-  * Composable policies
-  
+
 ### Doing
-* Refactoring: simplify casefile compile
-* InputDeposition, object Value is in run-time always a string !!!
-* DeliberationPolicy
-  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
-    => IReadOnlyCaseFile, or, better yet, make the whole thing immutable
+* Que ?
+  ```csharp
+  public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
+      => reducers.Store(key, () => () => // aaaaaaargh
+      {
+          Reducer<T> f = reducer();
+          return a => f(a);
+      });
+  ```
+  
+### Todo
+
 
 ### Wish List
 * Warning Customization ?
@@ -27,24 +32,18 @@
 * Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
 * Added Input overloads taking a *Reducer* as extra argument.
 * DeliberationPolicy
-  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<CaseFile, int>`
-* Added DeliberationTarget, Deliberation stops when reached.
+  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<ICaseFileSummary, int>`
+  * Added DeliberationTarget, Deliberation stops when reached.
+  * ICaseFileSummary added:
+    * public int InputsNamed<T>(string key, Func<T, int> calculateScore);
 
-### Current Focus
+### Doc
 * Reducers
   * Demonstrate Object Reducers 
     * Just show the pattern, no need for new implementation
       Split objects into different Inputs
-  * Que ?
-    ```csharp
-    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
-        => reducers.Store(key, () => () => // aaaaaaargh
-            {
-                Reducer<T> f = reducer();
-                return a => f(a);
-            });
-    ```
-* Doc Weak Spots
+
+* Weak Spots
   * Polish the guide a bit more
     * Better examples for :
       * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy

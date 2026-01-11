@@ -13,7 +13,7 @@ public abstract class DepositionTest
     protected Dossier Dossier { get; } =
         new Dossier(
                 FailureInfo: new FailureInfo(FailingExpectation: "Some Invariant"),
-                RunInfo: new RunInfo(10, 4, 1, 12345678),
+                RunInfo: new RunInfo(10, 1, 12345678),
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
                 ReportMode: ReportMode.Default & ~ReportMode.StackTrace

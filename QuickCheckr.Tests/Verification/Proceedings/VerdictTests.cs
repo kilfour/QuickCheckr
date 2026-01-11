@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 
@@ -8,12 +9,20 @@ public class VerdictTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo);
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
+            .AddExecutionDeposition(new ExecutionDeposition(1));
         var reader = Transcribe(caseFile);
+        reader.AsAssertsToLogFile();
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());
-        Assert.Equal(" Minimal failing case:    4 executions (after 1 shrink)", reader.NextLine());
+        Assert.Equal(" Minimal failing case:    1 execution (after 1 shrink)", reader.NextLine());
         Assert.Equal(" Seed:                    12345678", reader.NextLine());
-        EndOfContent(reader);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed", reader.NextLine());
+        Assert.Equal(" =========================================", reader.NextLine());
+        Assert.Equal("  !! Expectation Failed: Some Invariant", reader.NextLine());
+        Assert.Equal(" =========================================", reader.NextLine());
+        Assert.True(reader.EndOfContent());
+
     }
 }

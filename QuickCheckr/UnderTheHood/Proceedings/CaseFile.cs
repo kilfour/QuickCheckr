@@ -6,14 +6,50 @@ using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public class CaseFile
+
+public interface ICaseFileSummary
+{
+    int OriginalRunExecutionCount { get; }
+    int ExecutionCount { get; }
+    int ShrinkCount { get; }
+    public int ActionCount { get; }
+    public int InputCount { get; }
+    public int PoolTraceCount { get; }
+    public int TraceCount { get; }
+    public int WarningCount { get; }
+    public int PassedExpectationCount { get; }
+    public int InputsNamed<T>(string key, Func<T, int> calculateScore);
+}
+
+public class CaseFile : ICaseFileSummary
 {
     public bool HasEvidence { get; init; }
     public FailureDeposition FailureDeposition { get; init; }
 
+    // -----------------------------------------------------------------------
+    // ICaseFileSummary
+    // --
     public int OriginalRunExecutionCount { get; init; }
-    public int ExecutionCount { get; init; }
+    public int ExecutionCount => ExecutionDepositions.Count;
     public int ShrinkCount { get; init; }
+    public int ActionCount => ExecutionDepositions.Sum(a => a.ActionDepositions.Count);
+    public int InputCount => ExecutionDepositions.Sum(a => a.InputDepositions.Count);
+    public int PoolTraceCount => ExecutionDepositions.Sum(a => a.PoolTraceDepositions.Count);
+    public int TraceCount => ExecutionDepositions.Sum(a => a.TraceDepositions.Count);
+    public int WarningCount => ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
+    public int PassedExpectationCount => PassedExpectationDepositions.Count;
+
+    public int InputsNamed<T>(string key, Func<T, int> calculateScore)
+    {
+        if (!HasEvidence) return int.MaxValue;
+        return ExecutionDepositions
+            .SelectMany(a => a.InputDepositions)
+            .Where(a => a.Label == key)
+            .Select(a => a.GetReduxOrValueAsObject())
+            .Sum(a => calculateScore((T)a));
+    }
+    // -----------------------------------------------------------------------
+
     public int Seed { get; init; }
 
     protected CaseFile()
@@ -25,7 +61,6 @@ public class CaseFile
     {
         FailureDeposition = failureDeposition;
         OriginalRunExecutionCount = runInfo.OriginalRunExecutionCount;
-        ExecutionCount = runInfo.ExecutionCount;
         ShrinkCount = runInfo.ShrinkCount;
         Seed = runInfo.Seed;
         HasEvidence = true;
@@ -82,15 +117,5 @@ public class CaseFile
     {
         PassedExpectationDepositions.Add(passedExpectationDepositions);
         return this;
-    }
-
-    public int InputsNamed(string key, Func<string, int> scorer)
-    {
-        if (!HasEvidence) return int.MaxValue;
-        return ExecutionDepositions
-            .SelectMany(a => a.InputDepositions)
-            .Where(a => a.Label == key)
-            .Select(a => a.GetReduxOrValue())
-            .Sum(a => scorer(a));
     }
 }
