@@ -148,7 +148,7 @@ public class ExecutionMemory
     // Reducers
     private readonly TypedMemoryBank<Func<Func<ReductionResult, Reduction>>> reducers = new();
     public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
-        => reducers.Store(key, () => () =>
+        => reducers.Store(key, () => () => // looks ugly, but is needed
             {
                 Reducer<T> f = reducer();
                 return a => f(a);

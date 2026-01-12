@@ -4,18 +4,6 @@
 
 
 ### Todo
-* Que ?
-  ```csharp
-  public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
-      => reducers.Store(key, () => () => // aaaaaaargh
-      {
-          Reducer<T> f = reducer();
-          return a => f(a);
-      });
-  ```
-  Not in the public api, but quite confusing when encountered.
-  It's needed though, check the design of this one, ... **before 0.0.8 publish**.
-  internal delegate Reducer<T> ReducerFactory<T>();
 
 ### Wish List
 * Warning Customization ? 
@@ -160,6 +148,7 @@
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
 * Compile the CaseFile
+* ExecutionMemory.StoreReducer
 
 ### Already Considered
 > Looked at these and not deemed needed (now).  
