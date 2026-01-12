@@ -10,23 +10,7 @@
   * Maybe:
     * Short Description.
     * Long one with explanation and/or workarounds and solutions.
-* Added Deliberator: 
-  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
-  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
-  Recap : 
-    * Execution Scope: 1 Execution.
-    * Run Scope: 1 Run, possibly many Executions.
-    * Case Scope: Multiple Runs.  
-      Can lead to :
-        * Failing Run => CaseFile
-        * All Runs Pass => Case Summary
-    * Investigation Scope:
-      * Multiple Cases investigated, only through GatherEvidence for now.
-      * We could expand this.  
-        For instance:  
-        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
 
-        Probably not now though.
 
 ### Doc
 * Reducers
@@ -86,6 +70,7 @@
   * minimal
   * for newbies
   * web api
+* Shrink Log, i.e.: polish InternalAffairs
 
 ## 0.0.9+
 * Play more pool. Not really needed I reckon, but you know, making sure ...
@@ -138,6 +123,23 @@
       * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
       * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
     * DeliberationTarget
+* Added Deliberator: 
+  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
+  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
+  Recap : 
+    * Execution Scope: 1 Execution.
+    * Run Scope: 1 Run, possibly many Executions.
+    * Case Scope: Multiple Runs.  
+      Can lead to :
+        * Failing Run => CaseFile
+        * All Runs Pass => Case Summary
+    * Investigation Scope:
+      * Multiple Cases investigated, only through GatherEvidence for now.
+      * We could expand this.  
+        For instance:  
+        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
+
+        Probably not now though.
 * Try to remove multiple execution shrinking passes.
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in CheckrOfTGatherEvidence and Vault
