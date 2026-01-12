@@ -15,6 +15,7 @@
   ```
   Not in the public api, but quite confusing when encountered.
   It's needed though, check the design of this one, ... **before 0.0.8 publish**.
+  internal delegate Reducer<T> ReducerFactory<T>();
 
 ### Wish List
 * Warning Customization ? 
@@ -26,7 +27,7 @@
   * Emit case files instead of reports.
   * Same for the vault stuff: no strings => typed.
 * Added Deliberator: 
-  Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
+  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
   This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
   Recap : 
     * Execution Scope: 1 Execution.
