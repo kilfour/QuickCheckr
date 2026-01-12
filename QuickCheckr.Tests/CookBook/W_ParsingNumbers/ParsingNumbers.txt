@@ -3,12 +3,12 @@
  Location:                ParsingNumbers.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1951918903
+ Seed:                    1166603196
  ------------------------------------------------------------
-  Executed: Golden Result, SUT Result
-   - Expression = "- (3 / 1 * 1 + 3 / 3 + 2 * 2 * 2 + 3 / 3 / 2 / 3) ^ (1 / 1 * 1 + 3) / 1 ^ (1 / 2 + 2 / 3 * 2 * 1 + 2 / 2 / 1 + 3 / 2 * 2 * 3) ^ 2 / 2 ^ 1 + (1 + 3 * 1 * 3 * 2 - 2 / 1 / 3 - 1 / 3) / (2 / 2 / 2 - 1 + 3 * 2 / 3 / 3 + 2 * 3)"
+  Executed: Oracle Result, SUT Result
+   - Expression = "- (3 * 1 - 2 * 2 / 2 * 3) ^ (1 * 1 - 2 * 3 / 2) ^ (1 / 1) ^ 1 - (2 / 3 * 1 * 2 + 1 + 2 / 3 / 2) * (1 / 2 / 3 * 3 - 1) ^ 3"
      Redux        "-2^2"
-   - Compare    = Golden: -10953,19257799466 /= SUT: 10959,030415832496
+   - Compare    = Oracle: 0,2222222222222222 /= SUT: 0,4444444444444444
  ================================
   !! Expectation Failed: Match
  ================================

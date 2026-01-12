@@ -9,18 +9,23 @@ I had a working model, so all that was needed was a Fuzzr, and a way to get to a
 The Reducer is far from perfect, but by adding a deliberation policy, this test quickly and reliably came up with said minimal fail-case.  
 
   
+**Demonstrates:**
+- Oracle style testing
+- Custom Reducers
+- Custom Deliberation Policies
+  
 
 **The Checkr:**  
 ```csharp
 from input in Checkr.Input("Expression",
         ParseFuzzr.Expression(),
         Reduce.Function<string>(ParseReducer.Reducer, true))
-from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
+from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
 from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
-from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
+from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
 from match in Checkr.ExpectWhen("Match",
-    () => !double.IsNaN(goldenResult),
-    () => goldenResult == result)
+    () => !double.IsNaN(oracleResult),
+    () => oracleResult == result)
 select Case.Closed;
 ```
 
@@ -42,12 +47,12 @@ protected override CheckrConfig Configure(CheckrConfig config)
  Location:                ParsingNumbers.cs:81:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1951918903
+ Seed:                    1166603196
  ------------------------------------------------------------
-  Executed: Golden Result, SUT Result
-   - Expression = "- (3 / 1 * 1 + 3 / 3 + 2 * 2 * 2 + 3 / 3 / 2 / 3) ^ (1 / 1 * 1 + 3) / 1 ^ (1 / 2 + 2 / 3 * 2 * 1 + 2 / 2 / 1 + 3 / 2 * 2 * 3) ^ 2 / 2 ^ 1 + (1 + 3 * 1 * 3 * 2 - 2 / 1 / 3 - 1 / 3) / (2 / 2 / 2 - 1 + 3 * 2 / 3 / 3 + 2 * 3)"
+  Executed: Oracle Result, SUT Result
+   - Expression = "- (3 * 1 - 2 * 2 / 2 * 3) ^ (1 * 1 - 2 * 3 / 2) ^ (1 / 1) ^ 1 - (2 / 3 * 1 * 2 + 1 + 2 / 3 / 2) * (1 / 2 / 3 * 3 - 1) ^ 3"
      Redux        "-2^2"
-   - Compare    = Golden: -10953,19257799466 /= SUT: 10959,030415832496
+   - Compare    = Oracle: 0,2222222222222222 /= SUT: 0,4444444444444444
  ================================
   !! Expectation Failed: Match
  ================================
@@ -114,6 +119,15 @@ public class ParseFuzzr
         ).Many(0, 3)
         select head + string.Concat(pieces);
 }
+```
+This Fuzzr generates a valid numeric expression string of variable length.  
+ *Some Examples:*  
+```text
+(2 * 1 / 1 / 3 + 3) ^ - 1 ^ 1 / - 2 / 3 ^ 3 * - 1
+- 1 ^ 3 / 2 / 1 * 1
+- 3
+- 2 * 1 * 2 * 3 - 1 * 1 * 1 / 3 + 2
+(1 - 1 - 1 / 2) ^ - 2 ^ 3 / (1 / 2 * 3 / 2 - 1 * 2 / 1) ^ 2 - - 2 ^ 2 + - 3 ^ 3
 ```
 
 **The Reducer:**  

@@ -24,6 +24,12 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     protected override bool Report => false;
 
     [Fact]
+    [DocContent(
+@"**Demonstrates:**
+- Oracle style testing
+- Custom Reducers
+- Custom Deliberation Policies
+")]
     [DocCheckrHeader]
     [DocCheckr]
     [DocConfigureHeader]
@@ -32,6 +38,8 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     [DocReport]
     [DocBoldHeader("The Fuzzr")]
     [DocExample(typeof(ParseFuzzr))]
+    [DocContent("This Fuzzr generates a valid numeric expression string of variable length.  \n *Some Examples:*")]
+    [DocCodeFile("ExpressionExamples.txt", "text")]
     [DocBoldHeader("The Reducer")]
     [DocExample(typeof(ParseReducer))]
     public override void Example() =>
@@ -54,12 +62,12 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
         from input in Checkr.Input("Expression",
                 ParseFuzzr.Expression(),
                 Reduce.Function<string>(ParseReducer.Reducer, true))
-        from goldenResult in Checkr.Act("Golden Result", () => LostIn.Translation(input).Eval())
+        from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
-        from traceResult in Checkr.Trace("Compare", () => $"Golden: {goldenResult} /= SUT: {result}")
+        from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
         from match in Checkr.ExpectWhen("Match",
-            () => !double.IsNaN(goldenResult),
-            () => goldenResult == result)
+            () => !double.IsNaN(oracleResult),
+            () => oracleResult == result)
         select Case.Closed;
 
     protected override void Verify(Article article)

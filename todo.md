@@ -7,7 +7,6 @@
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
   * Added DeliberationTarget, Deliberation stops when reached.  
     Needs testing.
-* Move casefile GetMaxLabelLength closer to reporting.
   
 ### Todo
 * Que ?
