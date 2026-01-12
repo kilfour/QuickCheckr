@@ -20,8 +20,7 @@ But in some cases it is a must.
 
 So what is a reducer ?  
 
-Well let me show you.  
-Using the `Account` example from the guide:  
+Well let me show you:  
 
 **The Model:**  
 ```csharp

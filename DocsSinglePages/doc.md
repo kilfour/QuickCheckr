@@ -348,55 +348,65 @@ public class Account
 {
     public int Balance { get; private set; }
     public void Deposit(int amount) => Balance += amount;
-    public void WithDraw(int amount) => Balance -= amount;
+    public void WithDraw(int amount)
+    {
+        if (amount == 42)
+            ComputerSays.No("No answers for you.");
+        Balance -= amount;
+    }
 }
 ```
-Suppose our system has a (not implemented here) 'no overdraft' invariant.
-The bug is trivial, but that's fine: we're here to demonstrate *behavioural branching*, not banking security.  
 #### A Checkr With a Choice
 ```csharp
-    from account in Trackr.Stashed(() => new Account())
-    from amount in Checkr.Input("Amount", Fuzzr.Int())
-    from operations in Checkr.OneOf(
-        Checkr.Act("Deposit", () => account.Deposit(amount)),
-        Checkr.Act("Withdraw", () => account.WithDraw(amount))
-    )
-    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
-    select Case.Closed;
+from account in Trackr.Stashed(() => new Account())
+from amount in Checkr.Input("Amount", Fuzzr.Int())
+from operations in Checkr.OneOf(
+    Checkr.Act("Deposit", () => account.Deposit(amount)),
+    Checkr.Act("Withdraw", () => account.WithDraw(amount))
+)
+select Case.Closed;
 ```
 Every execution through this Checkr does the same things:
 
 1. Generate a random amount.
 2. Pick exactly **one** action: `Deposit` *or* `Withdraw`.
-3. Check the invariant.
 
 A key detail:
 
-> **Each branch runs inside the same execution scope.**
+> **Each branch runs inside the same *Run Scope*.**
 > This means both branches mutate the same stashed `account` instance.
 
 So across executions, QuickCheckr builds a sequence of deposits and withdrawals, any of which may lead to a failure.
+
+**Note:**  
+> Any exception thrown during execution of a `Checkr.Act` operation will be caught and considered a failure.
   
 #### Seeing Which Branches Were Chosen
 Running the Checkr without shrinking yields a report similar to this:  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:72:1
- Original failing run:    2 executions
- Seed:                    1684147193
- ------------------------------------------------------------
-  Executed: Deposit
-   - Input: Amount = 17
+ Test:                    Example
+ Location:                ChoosingTheNextMove.cs:90:1
+ Original failing run:    5 executions
+ Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 87
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 1x
+   - Input: Amount = 55
  ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 30
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 79
+ ------------------------------------------------------------
+  Executed: Deposit
+   - Input: Amount = 21
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 42
+ ===========================================================================
+  !! ComputerSaysNo: No answers for you.
+ ===========================================================================
 ```
 This shows us that **QuickCheckr records the branch actually taken for each execution**.    
 There is no guesswork.  
@@ -404,20 +414,17 @@ There is no guesswork.
 And if we let the QuickCheckr shrinker do its work:  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:111:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1684147193
+ Test:                    Example
+ Location:                ChoosingTheNextMoveShrunk.cs:73:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 87
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 1x
- ------------------------------------------------------------
+   - Input: Amount = 42
+ ===========================================================================
+  !! ComputerSaysNo: No answers for you.
+ ===========================================================================
 ```
 The shrunk case shows:
 
@@ -429,28 +436,31 @@ In many cases you would like to control the possible branches taken, based on so
 For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Option` elements.  
 
 **Example:**  
+
+**The Checkr:**  
 ```csharp
-    from everything in Trackr.Stashed(() => new Everything())
-    from operations in Checkr.OneOfWhen(
-        Checkr.Option(() => everything.TheUniverse == null,
-            from genesis in Checkr.Act("Create the universe",
-                () => everything.TheUniverse = new Universe())
-            select Case.Closed),
-        Checkr.Option(() => everything.TheUniverse != null,
-            from falsify in Checkr.Act("Falsify the answer",
-                () => everything.TheUniverse!.Answer++)
-            select Case.Closed)
-    )
-    from checkTheAnswer in Checkr.ExpectWhen("is 42",
-        () => everything.TheUniverse != null,
-        () => everything.TheUniverse!.Answer == 42)
-    select Case.Closed;
+from everything in Trackr.Stashed(() => new Everything())
+from operations in Checkr.OneOfWhen(
+    Checkr.Option(() => everything.TheUniverse == null,
+        from genesis in Checkr.Act("Create the universe",
+            () => everything.TheUniverse = new Universe())
+        select Case.Closed),
+    Checkr.Option(() => everything.TheUniverse != null,
+        from falsify in Checkr.Act("Falsify the answer",
+            () => everything.TheUniverse!.Answer++)
+        select Case.Closed)
+)
+from checkTheAnswer in Checkr.ExpectWhen("is 42",
+    () => everything.TheUniverse != null,
+    () => everything.TheUniverse!.Answer == 42)
+select Case.Closed;
 ```
-**Results in:**  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest_Conditional
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:169:1
+ Test:                    Example
+ Location:                ChoosingTheNextMoveConditional.cs:73:1
  Original failing run:    2 executions
  Seed:                    356083796
  ------------------------------------------------------------
@@ -464,7 +474,7 @@ For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Op
  - is 42: 1x
  ------------------------------------------------------------
 ```
-#### Recap
+##### Recap
 `Checkr.OneOf` and `Checkr.OneOfWhen` introduces controlled nondeterminism:
 
 * Each execution picks **exactly one** branch.
@@ -1887,8 +1897,7 @@ But in some cases it is a must.
 
 So what is a reducer ?  
 
-Well let me show you.  
-Using the `Account` example from the guide:  
+Well let me show you:  
 
 **The Model:**  
 ```csharp

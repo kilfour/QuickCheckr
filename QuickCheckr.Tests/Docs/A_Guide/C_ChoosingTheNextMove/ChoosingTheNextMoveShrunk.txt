@@ -1,15 +1,12 @@
  ------------------------------------------------------------
- Test:                    RunTest_Shrunk
- Location:                Docs\A_Guide\C_ChoosingTheNextMove\ChoosingTheNextMove.cs:111:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1684147193
+ Test:                    Example
+ Location:                ChoosingTheNextMoveShrunk.cs:73:1
+ Original failing run:    5 executions
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 87
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 1x
- ------------------------------------------------------------
+   - Input: Amount = 42
+ ===========================================================================
+  !! ComputerSaysNo: No answers for you.
+ ===========================================================================

@@ -55,6 +55,8 @@
 ### Ongoing
 * Refactor the Tests:
   * one checkr per file (use CheckrTest instead of BaseTest, boyscout rule)
+  * Next up:
+    * A_TheShowrClass
 
 ### Done/Ready for Changelog after review
 * Added a WARNING when encountering an object with no shrinkable properties.
@@ -83,11 +85,7 @@
   * Try dictionaries first maybe, and see what pops up.
 * Make sure Doc and Cookbook is finished and complete.
     * Polish the guide a bit more
-      * Better examples for :
-        * ChoosingTheNextMove: this one works, per chance, in reality it needs a deliberation policy.
-        * InPoolsWeTrust: expectation is a bit contrived.
-      * Put the following in there somewhere:
-        > Any exception thrown during execution of an Act Checkr will be caught and considered a failure.
+      * InPoolsWeTrust: expectation is a bit contrived.
   * Running a Checkr
     * Maybe consolidate Test Framework Integration into this one
     * Needs a story

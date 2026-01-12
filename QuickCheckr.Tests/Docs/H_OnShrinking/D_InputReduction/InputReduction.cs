@@ -19,8 +19,7 @@ But in some cases it is a must.
 
 So what is a reducer ?  
 
-Well let me show you.  
-Using the `Account` example from the guide:")]
+Well let me show you:")]
 public class InputReduction : CheckrTest<InputReduction>
 {
     protected override bool Asserts => false;
