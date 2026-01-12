@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.Protocol;
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
@@ -27,7 +28,7 @@ public record CheckrRunnerConfig
 
     public int? Seed { get; set; } = null;
     public string FileAs { get; init; }
-    public Custodian Custodian { get; init; }
+    public ICustodian Custodian { get; init; }
     public ShrinkMode ShrinkMode { get; init; }
     public ReportMode ReportMode { get; init; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; init; }

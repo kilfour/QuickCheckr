@@ -1,29 +1,39 @@
-using QuickCheckr.Protocol;
-using QuickCheckr.UnderTheHood;
+using QuickCheckr.Protocol.Custodians;
+using QuickCheckr.UnderTheHood.Archiving;
+using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 
-public class InMemoryCustodian
+public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodian
 {
-    public Dictionary<string, InMemoryRecorder> Data = [];
-    public List<string> StartingEvidence = [];
-    public Custodian Build() =>
-        new()
-        {
-            Recorder = fn =>
-            {
-                if (!Data.ContainsKey(fn))
-                    Data[fn] = new InMemoryRecorder();
-                return Data[fn];
-            },
-            Retriever = fn => StartingEvidence
-        };
-}
+    public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
 
-public class InMemoryRecorder : IEvidenceRecorder
-{
-    public bool Cleared;
-    public List<string> Values = [];
-    public void Append(string evidence) => Values.Add(evidence);
-    public void Clear() { Cleared = true; Values.Clear(); }
+    public void StoreCaseFile(string path, CaseFile caseFile)
+        => CaseFiles[path] = caseFile;
+
+    public string RemoveFileCalledWith { get; private set; } = string.Empty;
+    public void RemoveCaseFile(string path)
+    {
+        RemoveFileCalledWith = path;
+        CaseFiles.Remove(path);
+    }
+
+    public string EvidenceFileName { get; private set; } = string.Empty;
+    public HashSet<VaultEntry> Entries { get; private set; } = StartingEvidence;
+    public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
+    {
+        EvidenceFileName = path;
+        Entries = [.. entries];
+    }
+
+    public HashSet<VaultEntry> RetrieveVaultEntries(string path)
+        => Entries;
+
+    public string LogFileName { get; private set; } = string.Empty;
+    public List<string> Log = [];
+    public void LogVaultAction(string path, string line)
+    {
+        LogFileName = path;
+        Log.Add(line);
+    }
 }

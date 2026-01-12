@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Protocol;
@@ -18,7 +19,7 @@ public record CheckrConfig
             new CheckrConfig()
             {
                 FileAs = string.Empty,
-                Custodian = Custodian.Default,
+                Custodian = Protocol.Custodian.Default,
                 ShrinkMode = ShrinkMode.Default,
                 ReportMode = ReportMode.Default,
                 DeliberationPolicy = null,
@@ -44,7 +45,7 @@ public record CheckrConfig
     /// </summary>
     public required string FileAs { get; init; }
 
-    public required Custodian Custodian { get; init; }
+    public required ICustodian Custodian { get; init; }
 
     /// <summary>
     /// The set of enabled InternalAffair modes.  

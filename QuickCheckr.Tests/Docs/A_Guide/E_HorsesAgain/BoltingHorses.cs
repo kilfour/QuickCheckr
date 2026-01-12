@@ -78,7 +78,11 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     [DocContent("\n[Guide][Guide] | [Previous][InPoolsWeTrust]")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(), a => a with { ReportMode = a.ReportMode & ~ReportMode.Warning }));
+        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(),
+            a => a with
+            {
+                ReportMode = a.ReportMode & ~ReportMode.Warning
+            }));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);
         Verify(article);

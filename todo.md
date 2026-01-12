@@ -2,7 +2,6 @@
 
 ### Doing
 
-
 ### Todo
 
 ### Wish List
@@ -11,9 +10,6 @@
   * Maybe:
     * Short Description.
     * Long one with explanation and/or workarounds and solutions.
-* Custom Custodians: 
-  * Emit case files instead of reports.
-  * Same for the vault stuff: no strings => typed.
 * Added Deliberator: 
   Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
   This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
@@ -62,6 +58,7 @@
   * ICaseFileSummary added:
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
     * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
+* Custodians now takes a `CaseFile` and `VaultEntry` objects instead of already stringified ones. 
 
 ## 0.0.9 All Aboard
 * Do a sanity pass on the public API.

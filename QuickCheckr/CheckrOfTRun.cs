@@ -70,14 +70,9 @@ public static class CheckrOfTRun
     {
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
-            var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-
-            config.Custodian.Recorder(filenameCf)
-                .Append(TheClerk.Transcribes(caseFile));
-
-            Vault.From(config).AddSeed(caseFile.Seed,
-                executionsPerRun.NumberOfExecutions,
-                caseFile.GetFailure());
+            var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+            config.Custodian.StoreCaseFile(fileName, caseFile);
+            Vault.From(config).AddSeed(caseFile.Seed, executionsPerRun.NumberOfExecutions);
         }
         throw new FalsifiableException(caseFile);
     }
@@ -86,10 +81,9 @@ public static class CheckrOfTRun
     {
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
-            var filenameCf = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+            var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
             var summary = CaseSummary.FromCaseFiles(caseFiles);
-            config.Custodian.Recorder(filenameCf)
-                .Append(TheClerk.Transcribes(summary));
+            config.Custodian.StoreCaseFile(fileName, summary);
         }
     }
 

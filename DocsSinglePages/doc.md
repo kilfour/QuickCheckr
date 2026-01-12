@@ -938,10 +938,10 @@ In addition a sub folder is created containing the evidence vault files:
 .quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql
 ```
 
-- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is an append only log of all evidence vault actions.
+    - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
+    - `evidence-log.ql` is an append only log of all evidence vault actions.
 
-This *evidence* can later be used to potentially solve *Cold Cases*.  
+    This *evidence* can later be used to potentially solve *Cold Cases*.  
 #### The Custodian
 `TheCustodian` is in charge of storing and retrieving QuickCheckr artifacts.  
 As we saw in 'Filing Evidence', QuickCheckr stores reports and failing seeds on disk.  
@@ -951,44 +951,45 @@ Currently only one extra `Custodian` is provided: `Custodian.Local()`.
 This one stores everything in a '.quickcheckr' directory in the same directory as the test file that created it.
   
 ##### Custom Custodians
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
 You can also supply your own implementation:  
 ```csharp
-public class InMemoryCustodian
+public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodian
 {
-    public Dictionary<string, InMemoryRecorder> Data = [];
-    public List<string> StartingEvidence = [];
-    public Custodian Build() =>
-        new()
-        {
-            Recorder = fn =>
-            {
-                if (!Data.ContainsKey(fn))
-                    Data[fn] = new InMemoryRecorder();
-                return Data[fn];
-            },
-            Retriever = fn => StartingEvidence
-        };
-}
+    public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
 
-public class InMemoryRecorder : IEvidenceRecorder
-{
-    public bool Cleared;
-    public List<string> Values = [];
-    public void Append(string evidence) => Values.Add(evidence);
-    public void Clear() { Cleared = true; Values.Clear(); }
+    public void StoreCaseFile(string path, CaseFile caseFile)
+        => CaseFiles[path] = caseFile;
+
+    public string RemoveFileCalledWith { get; private set; } = string.Empty;
+    public void RemoveCaseFile(string path)
+    {
+        RemoveFileCalledWith = path;
+        CaseFiles.Remove(path);
+    }
+
+    public string EvidenceFileName { get; private set; } = string.Empty;
+    public HashSet<VaultEntry> Entries { get; private set; } = StartingEvidence;
+    public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
+    {
+        EvidenceFileName = path;
+        Entries = [.. entries];
+    }
+
+    public HashSet<VaultEntry> RetrieveVaultEntries(string path)
+        => Entries;
+
+    public string LogFileName { get; private set; } = string.Empty;
+    public List<string> Log = [];
+    public void LogVaultAction(string path, string line)
+    {
+        LogFileName = path;
+        Log.Add(line);
+    }
 }
 ```
-This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem  
+This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem.
+
+Obviously, this is the hook provided for when you would like to produce your own artifacts in a CI build.  
 #### Deliberation Policy
 Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
 Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
@@ -1472,15 +1473,15 @@ This will create a report per seed in the evidence vault and a log of all eviden
 - For every passing seed the report will only contain a list of passed expectations.  
 #### Closing Cold Cases
 The method mentioned above is usefull for regression testing, but sometimes,
-    there is no need to keep the evidence around after the culprit is found.  
-    In this case we use:  
+there is no need to keep the evidence around after the culprit is found.  
+In this case we use:  
 ```csharp
 checkr.CloseResolvedColdCases(Configure);
 ```
 If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.  
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
-    and no report is generated for the passing run.  
-    Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
+and no report is generated for the passing run.  
+Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 
 [The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
 

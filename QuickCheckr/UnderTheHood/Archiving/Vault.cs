@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
@@ -8,7 +9,7 @@ public class Vault
 {
     public virtual IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved) => [];
     public virtual bool Replay() { return false; }
-    public virtual void AddSeed(int seed, int numberOfExecutions, string failure) { }
+    public virtual void AddSeed(int seed, int numberOfExecutions) { }
 
     public static Vault From(CheckrRunnerConfig config)
         => string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config);
@@ -16,28 +17,17 @@ public class Vault
 
 public class EvidenceVault : Vault
 {
-    private readonly string path;
+    private readonly string evidencePath;
     private readonly string logPath;
     private readonly HashSet<VaultEntry> entries;
-
-    private readonly IEvidenceRecorder evidenceRecorder;
-    private readonly IEvidenceRecorder logRecorder;
+    private readonly ICustodian custodian;
 
     public EvidenceVault(CheckrRunnerConfig config)
     {
-        path = GetVaultPath(config.FileAs, "evidence.qv");
+        evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
         logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
-        entries = GetVaultEntries(config);
-        evidenceRecorder = config.Custodian.Recorder(path);
-        logRecorder = config.Custodian.Recorder(logPath);
-    }
-
-    private HashSet<VaultEntry> GetVaultEntries(CheckrRunnerConfig config)
-    {
-        return config.Custodian.Retriever(path)
-            .Select(ParseVaultEntry)
-            .Where(entry => entry != null)
-            .ToHashSet()!;
+        custodian = config.Custodian;
+        entries = custodian.RetrieveVaultEntries(evidencePath);//GetVaultEntries(config);
     }
 
     private static string GetVaultPath(string fileAs, string filename)
@@ -52,73 +42,70 @@ public class EvidenceVault : Vault
             if (caseFile.HasEvidence)
             {
                 caseFiles.Add(caseFile);
-                logRecorder.Append($"Run failed for Seed: {entry.Seed}.");
+                custodian.LogVaultAction(logPath, $"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
-                        .Append(TheClerk.Transcribes(caseFile));
+                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile);
                 }
             }
             else
             {
-                logRecorder.Append($"Run passed for Seed: {entry.Seed}.");
+                custodian.LogVaultAction(logPath, $"Run passed for Seed: {entry.Seed}.");
                 if (closeResolved)
                 {
                     Remove(entry);
-                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
-                        .Clear();
+                    custodian.RemoveCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"));
                 }
-
                 else if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    config.Custodian.Recorder(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"))
-                        .Append(TheClerk.Transcribes(caseFile));
+                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile);
                 }
             }
         }
-        Save();
+        custodian.StoreVaultEntries(evidencePath, entries);
         return caseFiles;
     }
 
-    public override void AddSeed(int seed, int numberOfExecutions, string failure)
+    public override void AddSeed(int seed, int numberOfExecutions)
     {
-        Add(new(seed, numberOfExecutions, failure));
+        Add(new(seed, numberOfExecutions));
     }
 
     private void Add(VaultEntry vaultEntry)
     {
         if (entries.Add(vaultEntry))
         {
-            logRecorder.Append($"Added Seed: {vaultEntry.Seed}.");
+            custodian.LogVaultAction(logPath, $"Added Seed: {vaultEntry.Seed}.");
         }
-        Save();
+        custodian.StoreVaultEntries(evidencePath, entries);
     }
 
-    private static VaultEntry ParseVaultEntry(string line)
-    {
-        var parts = line.Split(',');
-        return parts.Length == 3 &&
-            int.TryParse(parts[0], out var seed) &&
-            int.TryParse(parts[1], out var executions)
-            ? new VaultEntry(seed, executions, parts[2])
-            : null!;
-    }
+    // private static VaultEntry ParseVaultEntry(string line)
+    // {
+    //     var parts = line.Split(',');
+    //     return parts.Length == 3 &&
+    //         int.TryParse(parts[0], out var seed) &&
+    //         int.TryParse(parts[1], out var executions)
+    //         ? new VaultEntry(seed, executions, parts[2])
+    //         : null!;
+    // }
 
     private void Remove(VaultEntry vaultEntry)
     {
         if (entries.Remove(vaultEntry))
         {
-            logRecorder.Append($"Removed Seed: {vaultEntry.Seed}.");
+            custodian.LogVaultAction(logPath, $"Removed Seed: {vaultEntry.Seed}.");
         }
     }
 
-    private void Save()
-    {
-        foreach (var entry in entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"))
-        {
-            evidenceRecorder.Append(entry);
-        }
-        if (entries.Count == 0)
-            evidenceRecorder.Clear();
-    }
+    // private void Save()
+    // {
+    //     (logPath, 
+    //     foreach (var entry in entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"))
+    //     {
+    //         evidenceRecorder.Append(entry);
+    //     }
+    //     if (entries.Count == 0)
+    //         evidenceRecorder.Clear();
+    // }
 }

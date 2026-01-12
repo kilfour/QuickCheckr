@@ -14,8 +14,10 @@ Currently only one extra `Custodian` is provided: `Custodian.Local()`.
 This one stores everything in a '.quickcheckr' directory in the same directory as the test file that created it.
 ")]
 [DocHeader("Custom Custodians")]
-[DocExperimental]
 [DocContent("You can also supply your own implementation:")]
 [DocCodeFile("InMemoryCustodian.cs", "csharp", 5)]
-[DocContent("This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem")]
+[DocContent(
+@"This one stores evidence and reports in memory, and is used in the tests to avoid touching the filesystem.
+
+Obviously, this is the hook provided for when you would like to produce your own artifacts in a CI build.")]
 public class TheCustodian;

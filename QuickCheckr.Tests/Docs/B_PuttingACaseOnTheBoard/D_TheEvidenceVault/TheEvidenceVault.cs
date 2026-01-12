@@ -3,8 +3,9 @@ using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;
-using QuickPulse.Explains.Text;
 
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
@@ -44,102 +45,102 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     [DocContent("This will create a report per seed in the evidence vault and a log of all evidence vault actions.")]
     public void ReviewingColdCases()
     {
-        var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
+        var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
         RunColdCasesReview(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian.Build() }));
+            cfg => Configure(cfg with { Custodian = custodian }));
 
-        Assert.Equal(3, custodian.Data.Count);
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.Data.Keys.ToList()[1]));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Data.Keys.ToList()[2]));
+        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
+        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.CaseFiles.Keys.Single()));
 
-        var evidence = custodian.Data.Values.ToList()[0];
-        Assert.Single(evidence.Values);
-        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
+        Assert.Single(custodian.Entries);
+        var entry = custodian.Entries.Single();
+        Assert.Equal(1862095796, entry.Seed);
+        Assert.Equal(1, entry.ExecutionsPerRun);
 
-        var log = custodian.Data.Values.ToList()[1];
-        Assert.Single(log.Values);
-        Assert.Equal("Run failed for Seed: 1862095796.", log.Values[0]);
+        Assert.Single(custodian.Log);
+        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
     }
 
     [Fact]
     [DocContent("- For every failing seed the report will look like the by now familiar failure report.")]
     public void ReviewingColdCases_SeedStillFails()
     {
-        var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
+        var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
         RunColdCasesReview(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian.Build() }));
+            cfg => Configure(cfg with { Custodian = custodian }));
 
-        var log = custodian.Data.Values.ToList()[1];
-        var report = custodian.Data.Values.ToList()[2];
+        Assert.Single(custodian.Log);
+        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
 
-        Assert.Single(log.Values);
-        Assert.Equal("Run failed for Seed: 1862095796.", log.Values[0]);
+        var caseFile = custodian.CaseFiles.Values.Single();
+        var article = TheJournalist.Unearths(caseFile);
 
-        var reader = LinesReader.FromText(report.Values[0]);
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal(" Original failing run:    1 execution", reader.NextLine());
-        Assert.Equal(" Seed:                    1862095796", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Executed", reader.NextLine());
-        Assert.Equal(" ================================", reader.NextLine());
-        Assert.Equal("  !! Expectation Failed: Fails", reader.NextLine());
-        Assert.Equal(" ================================", reader.NextLine());
-        Assert.True(reader.EndOfContent());
+        Assert.Equal("Fails", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
     [Fact]
     [DocContent("- For every passing seed the report will only contain a list of passed expectations.")]
     public void ReviewingColdCases_SeedPasses()
     {
-        var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
+        var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
         RunColdCasesReview(Checkr.Expect("Fails", () => true),
-            cfg => Configure(cfg with { Custodian = custodian.Build() }));
+            cfg => Configure(cfg with { Custodian = custodian }));
 
-        var log = custodian.Data.Values.ToList()[1];
-        var report = custodian.Data.Values.ToList()[2];
+        Assert.Single(custodian.Log);
+        Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
 
-        Assert.Single(log.Values);
-        Assert.Equal("Run passed for Seed: 1862095796.", log.Values[0]);
+        var caseFile = custodian.CaseFiles.Values.Single();
+        var article = TheJournalist.Unearths(caseFile);
 
-        var reader = LinesReader.FromText(report.Values[0]);
-        Assert.Equal(" Passed Expectations", reader.NextLine());
-        Assert.Equal(" - Fails: 1x", reader.NextLine());
-        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.True(reader.EndOfContent());
+        Assert.Equal("", article.FailureDescription());
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal("Fails", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [Fact]
     [DocHeader("Closing Cold Cases")]
     [DocContent(
 @"The method mentioned above is usefull for regression testing, but sometimes,
-    there is no need to keep the evidence around after the culprit is found.  
-    In this case we use:")]
+there is no need to keep the evidence around after the culprit is found.  
+In this case we use:")]
     [DocExample(typeof(TheEvidenceVault), nameof(RunCloseResolvedColdCases))]
     [DocContent(
 @"If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.")]
     public void ClosingColdCases()
     {
-        var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
+        var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
         RunCloseResolvedColdCases(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian.Build() }));
+            cfg => Configure(cfg with { Custodian = custodian }));
 
-        Assert.Equal(3, custodian.Data.Count);
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.Data.Keys.ToList()[1]));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Data.Keys.ToList()[2]));
+        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
+        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.CaseFiles.Keys.Single()));
 
-        var evidence = custodian.Data.Values.ToList()[0];
-        Assert.Single(evidence.Values);
-        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
+        Assert.Single(custodian.Entries);
+        var entry = custodian.Entries.Single();
+        Assert.Equal(1862095796, entry.Seed);
+        Assert.Equal(1, entry.ExecutionsPerRun);
 
-        var log = custodian.Data.Values.ToList()[1];
-        Assert.Single(log.Values);
-        Assert.Equal("Run failed for Seed: 1862095796.", log.Values[0]);
+        Assert.Single(custodian.Log);
+        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
+
+        var caseFile = custodian.CaseFiles.Values.Single();
+        var article = TheJournalist.Unearths(caseFile);
+
+        Assert.Equal("Fails", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
     [CodeSnippet]
@@ -149,32 +150,27 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     [Fact]
     [DocContent(
 @"If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
-    and no report is generated for the passing run.  
-    Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.")]
+and no report is generated for the passing run.  
+Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.")]
     [DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]")]
     public void ClosingColdCasesNowPass()
     {
-        var custodian = new InMemoryCustodian { StartingEvidence = ["1862095796,1,Fails"] };
+        var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
         RunCloseResolvedColdCases(Checkr.Expect("Fails", () => true),
-            cfg => Configure(cfg with { Custodian = custodian.Build() }));
+            cfg => Configure(cfg with { Custodian = custodian }));
 
-        Assert.Equal(3, custodian.Data.Count);
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.Data.Keys.ToList()[1]));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Data.Keys.ToList()[2]));
+        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
+        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
 
-        var evidence = custodian.Data.Values.ToList()[0];
-        Assert.Empty(evidence.Values);
-        Assert.True(evidence.Cleared);
+        Assert.Empty(custodian.Entries);
+        // FILE DELETED is untested as this is handled by specific Custodians
 
-        var log = custodian.Data.Values.ToList()[1];
-        Assert.Equal(2, log.Values.Count);
-        Assert.Equal("Run passed for Seed: 1862095796.", log.Values[0]);
-        Assert.Equal("Removed Seed: 1862095796.", log.Values[1]);
+        Assert.Equal(2, custodian.Log.Count);
+        Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
+        Assert.Equal("Removed Seed: 1862095796.", custodian.Log[1]);
 
-        var report = custodian.Data.Values.ToList()[2];
-        Assert.Empty(report.Values);
-        Assert.True(report.Cleared);
+        Assert.Empty(custodian.CaseFiles);
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
     }
 }

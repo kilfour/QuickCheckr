@@ -30,12 +30,11 @@ public class FilingEvidence : BaseTest
     [DocExample(typeof(FilingEvidence), nameof(DefaultFileName))]
     public void ReportLocation()
     {
-        var custodian = new InMemoryCustodian();
+        var custodian = new InMemoryCustodian([]);
         TheJournalist.Exposes(() =>
             Checkr.Expect("Fails", () => false).Run(cfg =>
-                Configure(cfg with { Custodian = custodian.Build() })));
-        Assert.Equal(3, custodian.Data.Count);
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
+                Configure(cfg with { Custodian = custodian })));
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.CaseFiles.Keys.Single()));
     }
 
     [Fact]
@@ -43,14 +42,13 @@ public class FilingEvidence : BaseTest
     [DocCodeFile("FilingEvidenceRunPassed.txt", "text")]
     public void RunPassedReport()
     {
-        var custodian = new InMemoryCustodian();
-        var article = TheJournalist.Unearths(
-            Checkr.Expect("Always Passes", () => true).Run(2.Runs(), 5.ExecutionsPerRun(), cfg =>
-                Configure(cfg with { Custodian = custodian.Build() })));
-        WriteAsserts(article, false);
+        var custodian = new InMemoryCustodian([]);
+        Checkr.Expect("Always Passes", () => true).Run(cfg =>
+            Configure(cfg with { Custodian = custodian }));
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.CaseFiles.Keys.Single()));
+        var caseFile = custodian.CaseFiles.Values.Single();
+        var article = TheJournalist.Unearths(caseFile);
         WriteReport(article, "FilingEvidenceRunPassed.txt", false);
-        Assert.Single(custodian.Data);
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Data.Keys.ToList()[0]));
         VerifyPassedReport(article);
     }
 
@@ -59,7 +57,7 @@ public class FilingEvidence : BaseTest
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("Always Passes", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(10, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
     [CodeSnippet]
@@ -80,24 +78,27 @@ public class FilingEvidence : BaseTest
     [DocExample(typeof(FilingEvidence), nameof(DefaultEvidenceLogFileName))]
     [DocContent(
 @"
-- `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-- `evidence-log.ql` is an append only log of all evidence vault actions.
+    - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
+    - `evidence-log.ql` is an append only log of all evidence vault actions.
 
-This *evidence* can later be used to potentially solve *Cold Cases*.")]
+    This *evidence* can later be used to potentially solve *Cold Cases*.")]
     public void EvidenceLocation()
     {
-        var custodian = new InMemoryCustodian();
+        var custodian = new InMemoryCustodian([]);
         TheJournalist.Exposes(() =>
             Checkr.Expect("Fails", () => false).Run(1862095796, cfg =>
-                Configure(cfg with { Custodian = custodian.Build() })));
-        Assert.Equal(3, custodian.Data.Count);
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.Data.Keys.ToList()[1]));
-        var evidence = custodian.Data.Values.ToList()[1];
-        Assert.Single(evidence.Values);
-        Assert.Equal("1862095796,1,Fails", evidence.Values[0]);
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.Data.Keys.ToList()[2]));
-        var log = custodian.Data.Values.ToList()[2];
-        Assert.Single(log.Values);
-        Assert.Equal($"Added Seed: 1862095796.", log.Values[0]);
+                Configure(cfg with { Custodian = custodian })));
+
+        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
+
+        Assert.Single(custodian.Entries);
+        var entry = custodian.Entries.Single();
+        Assert.Equal(1862095796, entry.Seed);
+        Assert.Equal(1, entry.ExecutionsPerRun);
+
+        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
+
+        Assert.Single(custodian.Log);
+        Assert.Equal($"Added Seed: 1862095796.", custodian.Log[0]);
     }
 }

@@ -12,15 +12,15 @@ This will create a report per seed in the evidence vault and a log of all eviden
 - For every passing seed the report will only contain a list of passed expectations.  
 ## Closing Cold Cases
 The method mentioned above is usefull for regression testing, but sometimes,
-    there is no need to keep the evidence around after the culprit is found.  
-    In this case we use:  
+there is no need to keep the evidence around after the culprit is found.  
+In this case we use:  
 ```csharp
 checkr.CloseResolvedColdCases(Configure);
 ```
 If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.  
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
-    and no report is generated for the passing run.  
-    Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
+and no report is generated for the passing run.  
+Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 
 [The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
 
