@@ -13,7 +13,6 @@ namespace QuickCheckr.Tests;
 public class CreateReadMe : BaseTest
 {
     [Fact]
-    [DocHeader("Example")]
     [DocContent("**Buggy Code:**")]
     [DocExample(typeof(BugHouse))]
     [DocContent("**The Checkr:**")]

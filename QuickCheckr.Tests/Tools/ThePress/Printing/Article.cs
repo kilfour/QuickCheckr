@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
 namespace QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -10,7 +11,7 @@ public class Article(CaseFile caseFile)
     public CaseFile CaseFile { get; } = caseFile;
 
     private readonly List<CollapsableExecutionDeposition> collapsableExecutionDepositions =
-        Collapse.TheExecutionDepositions(caseFile.ExecutionDepositions);
+        caseFile.CollapseExecutions();
 
     public string VerifyFailed()
     {

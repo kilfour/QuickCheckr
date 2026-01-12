@@ -174,7 +174,7 @@ public static class The
         let _22 = $"{caseFile.ShrinkCount} {Pluralize(caseFile.ShrinkCount, "shrink")}"
         from _2 in Pulse.TraceIf(caseFile.ShrinkCount > 0, () => $" Minimal failing case:    {_21} (after {_22}){Environment.NewLine}")
         from _3 in Pulse.Trace($" Seed:                    {caseFile.Seed}")
-        from _4 in Pulse.ToFlow(executionDeposition, Collapse.TheExecutionDepositions(caseFile.ExecutionDepositions))
+        from _4 in Pulse.ToFlow(executionDeposition, caseFile.CollapseExecutions())
         from _5 in Pulse.ToFlow(failureDeposition, caseFile.FailureDeposition)
         select caseFile;
 

@@ -183,28 +183,17 @@ Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistentl
  ------------------------------------------------------------
 ```
 The following predefined policies are available  
-```csharp
-- DeliberationPolicy.MinimumExecutions
-- DeliberationPolicy.MinimumShrinkCount
-- DeliberationPolicy.MaximumShrinkCount
-- DeliberationPolicy.MinimumWarnings
-- DeliberationPolicy.MaximumExecutionsShrunk
-- DeliberationPolicy.MaximumDistinctPassedExpectations
-```
+- `DeliberationPolicy.MinimumExecutions`  
+- `DeliberationPolicy.MinimumOriginalExecutions`  
+- `DeliberationPolicy.MinimumShrinkCount`  
+- `DeliberationPolicy.MaximumShrinkCount`  
+- `DeliberationPolicy.MinimumWarnings`  
+- `DeliberationPolicy.MaximumExecutionsShrunk`  
+- `DeliberationPolicy.MaximumDistinctPassedExpectations`  
 
 See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
 
 It is also possible to define a custom policy, but this is an ...  
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
 ## ReportMode
 You can use this to customize report formatting somewhat.  
 I personally almost always disable the *Labels* ('Input:', 'Pool:', etc...), but your milage may vary.  

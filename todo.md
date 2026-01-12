@@ -1,22 +1,8 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
-* Added Deliberator: => easy testing of InBuilt Policies in Configuration doc.  
-  Needs testing.  
-  Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
-  Recap : 
-    * Execution Scope: 1 Execution.
-    * Run Scope: 1 Run, possibly many Executions.
-    * Case Scope: Multiple Runs.  
-      Can lead to :
-        * Failing Run => CaseFile
-        * All Runs Pass => Case Summary
-    * Investigation Scope:
-      * Multiple Cases investigated, only through GatherEvidence for now.
-      * We could expand this.  
-        For instance:  
-        > Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
-  * ICaseFileSummary added (needs tests):
+* Deliberation
+  * ICaseFileSummary new methods (needs tests):
     * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
   * Added DeliberationTarget, Deliberation stops when reached.  
@@ -45,6 +31,20 @@
 * Custom Custodians: 
   * Emit case files instead of reports.
   * Same for the vault stuff: no strings => typed.
+* Added Deliberator: 
+  Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
+  Recap : 
+    * Execution Scope: 1 Execution.
+    * Run Scope: 1 Run, possibly many Executions.
+    * Case Scope: Multiple Runs.  
+      Can lead to :
+        * Failing Run => CaseFile
+        * All Runs Pass => Case Summary
+    * Investigation Scope:
+      * Multiple Cases investigated, only through GatherEvidence for now.
+      * We could expand this.  
+        For instance:  
+        > Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
 
 ### Doc
 * Reducers

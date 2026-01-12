@@ -37,7 +37,7 @@ The following example demonstrates a class of bug that is easy to miss in tradit
 No single call fails.  
 The failure only occurs after a *specific sequence* of operations has been performed on the same instance.  
 QuickCheckr is designed to explore and shrink exactly this kind of behaviour.  
-
+  
 **Buggy Code:**  
 ```csharp
 public class BugHouse
