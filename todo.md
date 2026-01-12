@@ -1,13 +1,8 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
-* Deliberation
-  * ICaseFileSummary new methods (needs tests):
-    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
-    * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
-  * Added DeliberationTarget, Deliberation stops when reached.  
-    Needs testing.
-  
+
+
 ### Todo
 * Que ?
   ```csharp
@@ -32,6 +27,7 @@
   * Same for the vault stuff: no strings => typed.
 * Added Deliberator: 
   Maybe change it to an overseer (needs better name) and move all the *Case Scoped* logic in there.  
+  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
   Recap : 
     * Execution Scope: 1 Execution.
     * Run Scope: 1 Run, possibly many Executions.
@@ -43,7 +39,9 @@
       * Multiple Cases investigated, only through GatherEvidence for now.
       * We could expand this.  
         For instance:  
-        > Hey Deskofficer, give me three reports different reports with one execution, ASAP ! 
+        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
+
+        Probably not now though.
 
 ### Doc
 * Reducers
@@ -74,9 +72,11 @@
   * Added DeliberationTarget, Deliberation stops when reached.
   * ICaseFileSummary added:
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
+    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
 
 ## 0.0.9 All Aboard
 * Do a sanity pass on the public API.
+* Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:
   * Limitations.
   * Known issues
@@ -92,10 +92,14 @@
   * Consider splitting of Honey I Shrunk the Inputs.  
     This makes cross referencing impossible though.
   * Meet the Team: Clerk, Custodian, etc ...
+    Glossary kind of thing.  
+    Reiterate scopes.  
+    Trackr vs Checkr.
   * Maybe add When Things Go Wrong.
 * dotnet new checkr templates
   * minimal
   * for newbies
+  * web api
 
 ## 0.0.9+
 * Play more pool. Not really needed I reckon, but you know, making sure ...
@@ -111,6 +115,7 @@
 
 ## 0.1.0
 * update xml summaries
+* Checkr's Court
 
 ## 0.1.0++
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
@@ -140,12 +145,20 @@
 * Maybe retrieve line number of failed Expectation (perf ?)
   
 ## Refactoring Targets 
-* Add tests for DuplicateKeyWriteGuardForPoolTraces
+* Add tests for:
+  * DuplicateKeyWriteGuardForPoolTraces
+  * Deliberation
+    * ICaseFileSummary:
+      * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
+      * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
+    * DeliberationTarget
 * Try to remove multiple execution shrinking passes.
 * ShrinkingInfo.Strategy: Change from string to Type.
+* Duplicate code in CheckrOfTGatherEvidence and Vault
 * Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
+* Compile the CaseFile
 
 ### Already Considered
 > Looked at these and not deemed needed (now).  
