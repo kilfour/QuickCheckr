@@ -8,6 +8,8 @@ public class Deliberator(Func<ICaseFileSummary, int>? scoringFunction, int? deli
     private readonly int? deliberationTarget = deliberationTarget;
     private DeliberatedCaseFile? current = null;
 
+    public bool HasCaseFile => current is not null;
+
     public void Check(CaseFile caseFile)
     {
         if (scoringFunction is null)

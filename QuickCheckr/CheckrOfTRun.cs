@@ -2,7 +2,6 @@ using System.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr;
@@ -47,7 +46,7 @@ public static class CheckrOfTRun
                     ReportCaseFile(executionsPerRun, config, caseFile);
             }
         }
-        if (config.DeliberationPolicy != null)
+        if (config.DeliberationPolicy != null && deliberator.HasCaseFile)
             ReportCaseFile(executionsPerRun, config, deliberator.GetCaseFile());
         else
             ReportCaseFileSummary(config, caseFiles);
