@@ -20,7 +20,6 @@ or for documenting the different ways a single bug can manifest.
 
 As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
   
-## Gathering Evidence Case File Compare
 **Casefiles are considered *not similar* when:**  
 - *Failure Description* is not equal.  
 - *Execution Count* is not equal.  

@@ -30,7 +30,7 @@ or for documenting the different ways a single bug can manifest.
 
 As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
 ")]
-[DocInclude(typeof(GatheringEvidenceCaseFileCompare))]
+[DocInclude(typeof(GatheringEvidenceCaseFileCompare), true)]
 [DocInclude(typeof(GatheringEvidenceShowDontTell))]
 [DocInclude(typeof(GatheringEvidenceObservation))]
 [DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]")]

@@ -25,7 +25,7 @@ Pools exist to model systems where the set of things you can act upon change ove
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate ""is this state valid?"" so shrinking can replay safely.
+Instead, Pool operations encapsulate ""is this state valid?"" so shrinking can replay safely.
 ")]
 public class InPoolsWeTrust : BaseTest
 {

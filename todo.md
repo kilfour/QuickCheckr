@@ -11,7 +11,6 @@
     * Short Description.
     * Long one with explanation and/or workarounds and solutions.
 
-
 ### Doc
 * Reducers
   * Demonstrate Object Reducers 

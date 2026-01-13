@@ -499,7 +499,7 @@ Pools exist to model systems where the set of things you can act upon change ove
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
-Instead, Pool operations (PoolWhen, PoolExpect, ToPool, ...) encapsulate "is this state valid?" so shrinking can replay safely.
+Instead, Pool operations encapsulate "is this state valid?" so shrinking can replay safely.
   
 #### Creating a Pool
 Pools are created for *a specific type* using:  
@@ -1512,7 +1512,6 @@ or for documenting the different ways a single bug can manifest.
 
 As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
   
-#### Gathering Evidence Case File Compare
 **Casefiles are considered *not similar* when:**  
 - *Failure Description* is not equal.  
 - *Execution Count* is not equal.  
