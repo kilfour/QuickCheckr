@@ -20,10 +20,8 @@ simplifies test definition in non-trivial cases.
 public class Scheduling : CheckrTest<Scheduling>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
-    protected override CheckrConfig Configure(CheckrConfig config)
-        => config with { ReportMode = config.ReportMode & ~(ReportMode.Labels | ReportMode.Warning) };
     [Fact]
     [DocContent(
 @"**Demonstrates:**
@@ -63,6 +61,8 @@ Generating a valid booking is easy, and then we just use that one to generate an
         from expect in Checkr.Expect("Bookings do not overlap", () => !bookingOne.OverlapsWith(bookingTwo))
         select Case.Closed;
 
+    protected override CheckrConfig Configure(CheckrConfig config)
+        => config with { ReportMode = config.ReportMode & ~(ReportMode.Labels | ReportMode.Warning) };
 
     protected override void Verify(Article article)
     {

@@ -8,11 +8,9 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
-        //var opt = state.Memory.GetShrinker(info.ExecutionId, info.Key, info.Type);
         var options = state.Memory.GetShrinker(info.ExecutionId, info.Key, info.Type);
         if (options is not null && options.Any())
         {
-            //for (int i = 0; i < options.Length; i++)
             foreach (var option in options)
             {
                 if (option is IShrinkOptionFuzzr optionFuzzr)

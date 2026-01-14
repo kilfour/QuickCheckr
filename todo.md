@@ -1,7 +1,21 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
+* Reducers
+  * Demonstrate Object Reducers 
+    * Just show the pattern, no need for new implementation.  
+      Split objects into different Inputs.
+      Turns out we need a drastically new implementation ;-).
 
+* InputShrinkingClue refactor:  
+    1. Operation (engine-level)  
+        Target: (ExecutionId, Key)  
+        Action: Ignore | Keep | Replace | Remove  
+        Payload: only when Replace (and maybe Keep, but keep shouldn’t need one)  
+    2. Explanation (human-level)  
+        Origin: strategy type  
+        Narrative: an optional "why/how" text  
+        Stats: counts, candidate count, etc.  
 ### Todo
 
 ### Wish List
@@ -10,12 +24,14 @@
   * Maybe:
     * Short Description.
     * Long one with explanation and/or workarounds and solutions.
+    ```text
+    WARNING: Empty collections deemed irrelevant at:
+      Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
+      Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
+    ```
 
 ### Doc
-* Reducers
-  * Demonstrate Object Reducers 
-    * Just show the pattern, no need for new implementation.  
-      Split objects into different Inputs.
+
 
 ### Ongoing
 * Refactor the Tests:
@@ -76,7 +92,6 @@
   * Warehousing
     * Step 5 : dynamically populate WareHouse 
     * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
-
 * keyed overload for PoolFor, GetPool, ... 
     * maybe not, looks tricky in impl and yucky in usage
     * alternative: example in cookbook using subclasses or composition <= THIS
@@ -103,7 +118,6 @@
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
   * statefull list, ... maybe
-  * ParsingNumbers, right after scheduling, need better DeliberationPolicies first.
 
 ## Ideas
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
