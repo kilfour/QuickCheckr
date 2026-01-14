@@ -6,7 +6,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.N_Nested;
 
-[DocFile]
+//[DocFile]
 public class NestedInObject : CheckrTest<NestedInObject>
 {
     protected override bool Asserts => false;

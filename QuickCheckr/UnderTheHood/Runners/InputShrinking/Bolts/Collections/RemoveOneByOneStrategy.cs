@@ -43,7 +43,7 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             if (elementCount != 0)
             {
                 if (!state.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type))
-                    state.Memory.StoreWarning(info.FullKey, () => new EmptyCollectionWarning(info.FullKey));
+                    state.Memory.StoreWarning(info.FullKey, () => new EmptyCollectionWarning(info.Key, info.FullKey));
             }
             var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));

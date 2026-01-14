@@ -18,16 +18,14 @@
         Stats: counts, candidate count, etc.  
 
 ### Todo
-* Warning Customization ? 
-  * See Schedule example with Warnings enabled for a *problem*. Too many warnings.
-  * Maybe:
-    * Short Description.
-    * Long one with explanation and/or workarounds and solutions.
-    ```text
-    WARNING: Empty collections deemed irrelevant at:
-      Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
-      Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
-    ```
+#### Warning Customization 
+See Schedule example with Warnings enabled for a *problem*. Too many warnings.
+```text
+WARNING: Empty collections deemed irrelevant at:
+    Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
+    Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
+```
+Implemented, ... in a hacky way, needs refactoring and testing. Not nessisarely in that order ;-).
 
 ### Wish List
 
