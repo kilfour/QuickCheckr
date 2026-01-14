@@ -16,7 +16,7 @@ public static class TheCatcher
         }
         catch (CheckrWasNotExecuted)
         {
-            state.Docket.Record(new SpecCaughtActionWasNotExecuted(key));
+            state.Docket.Record(new ExpectationCaughtActionWasNotExecuted(key));
             return CheckrResult.Default<T>(state);
         }
         catch (Exception exception)
