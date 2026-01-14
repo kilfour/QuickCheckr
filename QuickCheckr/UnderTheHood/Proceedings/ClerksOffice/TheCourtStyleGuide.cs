@@ -119,7 +119,7 @@ public static class The
         from _5 in Pulse.ToFlow(poolTraceDeposition, execution.PoolTraceDepositions)
         from _6 in Pulse.ToFlow(inputDeposition, execution.InputDepositions)
         from _7 in Pulse.ToFlow(traceDeposition, execution.TraceDepositions)
-        from _8 in Pulse.ToFlow(warningDeposition, execution.WarningDepositions)
+        from _8 in Pulse.ToFlow(warningDeposition, execution.GetWarningDepositionsForReport())
         select input;
 
     private readonly static Flow<FailedVerificationDeposition> verifyingDeposition =

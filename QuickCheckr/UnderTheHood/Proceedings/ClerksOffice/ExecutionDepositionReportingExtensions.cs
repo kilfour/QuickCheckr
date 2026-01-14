@@ -1,4 +1,3 @@
-using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Warnings;
 
@@ -6,23 +5,23 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class ExecutionDepositionReportingExtensions
 {
-    public static void GetWarningDepositions(this ExecutionDeposition executionDeposition, ExecutionMemory executionMemory)
+    public static IEnumerable<WarningDeposition> GetWarningDepositionsForReport(this ExecutionDeposition executionDeposition)
     {
-        foreach (var warning in executionMemory.GetWarnings().Where(a => a is not EmptyCollectionWarning))
+        foreach (var warningDeposition in executionDeposition.WarningDepositions.Where(a => a.Warning is not EmptyCollectionWarning))
         {
-            executionDeposition.AddWarningDeposition(new WarningDeposition(warning));
+            yield return warningDeposition;
         }
-        var emptyCollectionWarnings = GetEmptyCollectionWarnings(executionMemory);
+        var emptyCollectionWarnings = GetEmptyCollectionWarnings(executionDeposition);
         if (!emptyCollectionWarnings.Any())
-            return;
+            yield break;
         if (emptyCollectionWarnings.Count() == 1)
         {
-            executionDeposition.AddWarningDeposition(new WarningDeposition(emptyCollectionWarnings.Single()));
-            return;
+            yield return emptyCollectionWarnings.Single();
+            yield break;
         }
 
         var info = new List<string>();
-        foreach (var group in emptyCollectionWarnings.GroupBy(a => a.Key))
+        foreach (var group in emptyCollectionWarnings.Select(a => a.Warning).Cast<EmptyCollectionWarning>().GroupBy(a => a.Key))
         {
             if (group.Count() == 1)
                 info.Add("       " + group.Key);
@@ -32,13 +31,12 @@ public static class ExecutionDepositionReportingExtensions
                 info.Add($"       {GetRoot(group, index)}: {string.Join(", ", group.Select(a => a.Path[index..]))}");
             }
         }
-        executionDeposition.AddWarningDeposition(new WarningDeposition(new CompositeEmptyCollectionWarning(info)));
+        yield return new WarningDeposition(new CompositeEmptyCollectionWarning(info));
     }
 
-    private static IEnumerable<EmptyCollectionWarning> GetEmptyCollectionWarnings(ExecutionMemory shortTermMemory)
-    {
-        return shortTermMemory.GetWarnings().Where(a => a is EmptyCollectionWarning).Cast<EmptyCollectionWarning>();
-    }
+    private static IEnumerable<WarningDeposition> GetEmptyCollectionWarnings(ExecutionDeposition executionDeposition)
+        => executionDeposition.WarningDepositions.Where(a => a.Warning is EmptyCollectionWarning);
+
 
     private static string GetRoot(IGrouping<string, EmptyCollectionWarning> group, int index)
     {
