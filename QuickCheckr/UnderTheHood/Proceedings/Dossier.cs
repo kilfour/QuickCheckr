@@ -1,17 +1,6 @@
 using QuickCheckr.Protocol;
 
-namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-
-public record RunInfo(
-    int OriginalRunExecutionCount = 0,
-    int ShrinkCount = 0,
-    int Seed = 0);
-
-public record FailureInfo(
-    string? FailingExpectation = null,
-    string? Verification = null,
-    Exception? Exception = null,
-    bool IncludeStackTrace = false);
+namespace QuickCheckr.UnderTheHood.Proceedings;
 
 public record Dossier(
     FailureInfo FailureInfo,

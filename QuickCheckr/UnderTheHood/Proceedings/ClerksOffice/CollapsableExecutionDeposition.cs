@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
-namespace QuickCheckr.UnderTheHood.Proceedings;
+namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public record CollapsableExecutionDeposition(ExecutionDeposition ExecutionDeposition)
 {

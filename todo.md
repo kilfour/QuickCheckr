@@ -25,7 +25,7 @@ WARNING: Empty collections deemed irrelevant at:
     Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
     Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
 ```
-Implemented, ... in a hacky way, needs refactoring and testing. Not nessisarely in that order ;-).
+Implemented, ... in a hacky way, needs refactoring and testing. Not necisarely in that order ;-).
 
 ### Wish List
 

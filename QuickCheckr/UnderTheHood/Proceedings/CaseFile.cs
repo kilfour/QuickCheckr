@@ -1,6 +1,3 @@
-
-
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 using QuickCheckr.UnderTheHood.Warnings;
