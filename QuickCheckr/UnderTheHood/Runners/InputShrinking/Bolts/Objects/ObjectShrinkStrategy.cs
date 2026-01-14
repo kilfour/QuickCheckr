@@ -14,9 +14,9 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.FullKey, () => new NullValueWarning(info.Type, info.FullKey));
+            state.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return [clue];
         }
         return HandleProperties(state, check, info);
@@ -39,9 +39,9 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
             .ToList();
         if (properties.Count == 0)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
             state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.FullKey, () => new NoPropertiesWarning(info.Type, info.FullKey));
+            state.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
             return [clue];
         }
         var values = new List<(string PropertyName, string Value)>();
@@ -71,7 +71,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
 
         if (values.Count == 0)
         {
-            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
+            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
             clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
@@ -79,7 +79,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         else
         {
             var clue = InputShrinkingClue
-                .Keep<ObjectShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value,
+                .Keep<ObjectShrinkStrategy>(info.ExecutionId, info.Path, info.Value,
                     $"{{ {string.Join(", ", values.Select(a => $"{a.PropertyName}: {a.Value}"))} }}");
             clue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(clue));
@@ -93,7 +93,7 @@ public class ObjectShrinkStrategy : IShrinkingStrategy
         var swapper = new ObjectLens(propertyInfo);
         using (state.Memory.NestedValue(info.ExecutionId, swapper))
         {
-            var childInfo = info with { Value = propertyValue, FullKey = $"{info.FullKey}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
+            var childInfo = info with { Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
             foreach (var clue in new ShrinkStrategyPicker().Shrink(state, check, childInfo))
                 yield return clue;
         }

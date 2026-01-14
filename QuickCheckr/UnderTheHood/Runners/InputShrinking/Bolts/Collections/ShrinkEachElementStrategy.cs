@@ -30,7 +30,7 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
                 var swapper = new ListLens(elementType, ix);
                 using (state.Memory.NestedValue(info.ExecutionId, swapper))
                 {
-                    var childInfo = info with { Value = before, FullKey = $"{info.FullKey}.{GetMappedIndex(index)}", Type = elementType };
+                    var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
                     var clues = new ShrinkStrategyPicker().Shrink(state, check, childInfo);
                     var removeForShrinking = clues.Any(a => a.Intent == ShrinkingIntent.Ignore);
                     shrinkCount += clues.Sum(a => a.Count);
@@ -50,7 +50,7 @@ public class ShrinkEachElementStrategy : IShrinkingStrategy
         }
         var report = values.Count == 0 ? "[ ]" : $"[ {string.Join(", ", values)} ]";
         var finalClue = InputShrinkingClue
-            .Replace<ShrinkEachElementStrategy>(info.ExecutionId, info.FullKey, info.Value, theList, report);
+            .Replace<ShrinkEachElementStrategy>(info.ExecutionId, info.Path, info.Value, theList, report);
         finalClue.AddToCount(shrinkCount);
         state.Docket.Record(new InputShrinkingClueFound(finalClue));
         return [finalClue];

@@ -26,9 +26,9 @@ public class ShrinkStrategyPickerDefault : IShrinkingStrategy
         if (info.Type.IsClass)
             return new ObjectShrinkStrategy().Shrink(state, check, info);
 
-        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
-        state.Memory.StoreWarning(info.FullKey, () => new CantShrinkWarning(info.Type, info.FullKey));
+        state.Memory.StoreWarning(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
         return [clue];
     }
 

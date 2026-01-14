@@ -4,5 +4,5 @@ public record ShrinkingInfo(
         int ExecutionId,
         string Key,
         object? Value,
-        string FullKey,
+        string Path,
         Type Type);

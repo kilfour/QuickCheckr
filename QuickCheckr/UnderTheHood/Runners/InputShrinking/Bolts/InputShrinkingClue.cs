@@ -5,7 +5,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 public class InputShrinkingClue
 {
     public int ExecutionId { get; private set; } = 0;
-    public string Key { get; set; } = string.Empty;
+    public string Path { get; set; } = string.Empty;
     public object? Original { get; private set; } = null;
     public object? Result { get; private set; } = null;
     public string? Report { get; private set; } = null;
@@ -14,11 +14,11 @@ public class InputShrinkingClue
     public int Count { get; private set; } = 0;
     public int AddToCount(int number) => Count += number;
 
-    public static InputShrinkingClue Ignore<T>(int executionId, string key, object? value)
+    public static InputShrinkingClue Ignore<T>(int executionId, string path, object? value)
         => new()
         {
             ExecutionId = executionId,
-            Key = key,
+            Path = path,
             Original = value,
             Result = null,
             Report = string.Empty,
@@ -28,11 +28,11 @@ public class InputShrinkingClue
         };
 
     // this should be a replace one i reckon
-    public static InputShrinkingClue Keep<T>(int executionId, string key, object? value, object? result)
+    public static InputShrinkingClue Keep<T>(int executionId, string path, object? value, object? result)
        => new()
        {
            ExecutionId = executionId,
-           Key = key,
+           Path = path,
            Original = value,
            Result = result,
            Report = Introduce.This(result!, false),
@@ -40,11 +40,11 @@ public class InputShrinkingClue
            Strategy = typeof(T).Name
        };
 
-    public static InputShrinkingClue Keep<T>(int executionId, string key, object? value, string report)
+    public static InputShrinkingClue Keep<T>(int executionId, string path, object? value, string report)
         => new()
         {
             ExecutionId = executionId,
-            Key = key,
+            Path = path,
             Original = value,
             Result = value,
             Report = report,
@@ -54,14 +54,14 @@ public class InputShrinkingClue
 
     public static InputShrinkingClue Replace<T>(
             int executionId,
-            string key,
+            string path,
             object? value,
             object? result,
             string report)
         => new()
         {
             ExecutionId = executionId,
-            Key = key,
+            Path = path,
             Original = value,
             Result = result,
             Report = report,
@@ -72,13 +72,13 @@ public class InputShrinkingClue
 
     public static InputShrinkingClue Remove<T>(
             int executionId,
-            string key,
+            string path,
             object? value,
             object? result)
         => new()
         {
             ExecutionId = executionId,
-            Key = key,
+            Path = path,
             Original = value,
             Result = result,
             Report = null,

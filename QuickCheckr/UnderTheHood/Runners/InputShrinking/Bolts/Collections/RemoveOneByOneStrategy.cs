@@ -22,7 +22,7 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
             if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
             {
-                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.FullKey}.{indexKey}", info.Value, theList);
+                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 shrinkCount++;
                 continue;
@@ -33,7 +33,7 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
 
         if (elementCount == 0 || elementCount != shrinkCount)
         {
-            var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value, theList);
+            var finalClue = InputShrinkingClue.Keep<RemoveOneByOneStrategy>(info.ExecutionId, info.Path, info.Value, theList);
             finalClue.AddToCount(shrinkCount);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
@@ -43,9 +43,9 @@ public class RemoveOneByOneStrategy : IShrinkingStrategy
             if (elementCount != 0)
             {
                 if (!state.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type))
-                    state.Memory.StoreWarning(info.FullKey, () => new EmptyCollectionWarning(info.Key, info.FullKey));
+                    state.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
             }
-            var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.ExecutionId, info.FullKey, info.Value);
+            var finalClue = InputShrinkingClue.Ignore<RemoveOneByOneStrategy>(info.ExecutionId, info.Path, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(finalClue));
             return [finalClue];
         }

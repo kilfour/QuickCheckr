@@ -19,12 +19,12 @@ public class PrimitiveShrinkStrategy : IShrinkingStrategy
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
-                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return [clue];
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.FullKey, info.Value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         return [ignoreClue];
     }

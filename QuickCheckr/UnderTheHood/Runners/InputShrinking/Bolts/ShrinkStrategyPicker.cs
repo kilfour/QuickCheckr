@@ -42,7 +42,7 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
                 }
             }
             var clue = InputShrinkingClue.Ignore<CustomShrinkStrategy>(
-                    info.ExecutionId, info.FullKey, info.Value);
+                    info.ExecutionId, info.Path, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return [clue];
         }
