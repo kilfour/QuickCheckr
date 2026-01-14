@@ -16,9 +16,8 @@
         Origin: strategy type  
         Narrative: an optional "why/how" text  
         Stats: counts, candidate count, etc.  
-### Todo
 
-### Wish List
+### Todo
 * Warning Customization ? 
   * See Schedule example with Warnings enabled for a *problem*. Too many warnings.
   * Maybe:
@@ -30,8 +29,9 @@
       Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
     ```
 
-### Doc
+### Wish List
 
+### Doc
 
 ### Ongoing
 * Refactor the Tests:
