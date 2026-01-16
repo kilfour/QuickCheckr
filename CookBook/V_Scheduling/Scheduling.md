@@ -191,8 +191,11 @@ And ofcourse, there's an edge-case.
  Seed:                    511619818
  ------------------------------------------------------------
   Executed:
-   - Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
-   - Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
+   - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
+   - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
+   - WARNING: Empty collections deemed irrelevant at:
+       Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
+       Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
  ==================================================
   !! Expectation Failed: Bookings do not overlap
  ==================================================

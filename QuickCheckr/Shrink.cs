@@ -20,4 +20,6 @@ public static class Shrink
     public static ShrinkOption<T> Default<T>() => new ShrinkOptionDefault<T>();
 
     public static ShrinkOption<T> None<T>() => new ShrinkOptionNone<T>();
+
+    public static ShrinkOption<T> Keep<T>() => new ShrinkOptionKeep<T>();
 }

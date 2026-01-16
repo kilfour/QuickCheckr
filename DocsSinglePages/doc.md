@@ -2372,6 +2372,37 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
+#### Shrink Keep
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    () => Shrink.Keep<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkKeep.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
 #### Shrink Multiple
 
 **The Checkr:**  
@@ -2738,6 +2769,42 @@ select Case.Closed;
   !! Expectation Failed: no a and b
  =====================================
 ```
+#### Nested In Object
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int Answer { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from answer in Checkr.Input("Answer", Fuzzr.Int(), Reduce.TowardsZero)
+from universe in Checkr.Capture(() => new TheUniverse { Answer = answer })
+from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedInObject.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1930190827
+ ------------------------------------------------------------
+  Executed:
+   - Input: Answer = 96
+            Redux    43
+ =======================================
+  !! Expectation Failed: answer <= 42
+ =======================================
+```
+  
+  
 #### Custom
 
 **The Checkr:**  

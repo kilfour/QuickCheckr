@@ -40,3 +40,6 @@ public record ShrinkOptionDefault<T>() : ShrinkOption<T>, IShrinkOptionDefault;
 
 public interface IShrinkOptionNone;
 public record ShrinkOptionNone<T>() : ShrinkOption<T>, IShrinkOptionNone;
+
+public interface IShrinkOptionKeep;
+public record ShrinkOptionKeep<T>() : ShrinkOption<T>, IShrinkOptionKeep;

@@ -36,6 +36,14 @@ public class ShrinkStrategyPicker : IShrinkingStrategy
                         return clues;
                 }
 
+                if (option is IShrinkOptionKeep)
+                {
+                    var keep = InputShrinkingClue.Keep<CustomShrinkStrategy>(
+                    info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+                    state.Docket.Record(new InputShrinkingClueFound(keep));
+                    return [keep];
+                }
+
                 if (option is IShrinkOptionNone)
                 {
                     return [];

@@ -1,12 +1,6 @@
 ## Next version: 0.0.8: You Can Go Your Own Way
 
 ### Doing
-* Reducers
-  * Demonstrate Object Reducers 
-    * Just show the pattern, no need for new implementation.  
-      Split objects into different Inputs.
-      Turns out we need a drastically new implementation ;-).
-
 * InputShrinkingClue refactor:  
     1. Operation (engine-level)  
         Target: (ExecutionId, Key)  
@@ -18,14 +12,7 @@
         Stats: counts, candidate count, etc.  
 
 ### Todo
-#### Warning Customization 
-See Schedule example with Warnings enabled for a *problem*. Too many warnings.
-```text
-WARNING: Empty collections deemed irrelevant at:
-    Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
-    Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
-```
-Implemented, ... in a hacky way, needs refactoring and testing. Not necisarely in that order ;-).
+* Add *Deposition Tests* for collapsed Empty collections warnings.
 
 ### Wish List
 
@@ -56,8 +43,13 @@ Implemented, ... in a hacky way, needs refactoring and testing. Not necisarely i
     * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
     * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
 * Custodians now takes a `CaseFile` and `VaultEntry` objects instead of already stringified ones. 
+* Better formatting for *Empty collection deemed irrelevant* WARNING.
+* new Custom Shrinker: `Shrink.Keep<T>()`
 
-## 0.0.9 All Aboard
+## 0.0.9 Reduce, Reuse, Recycle
+* *Nested* Reducers, first on type, later by path.
+
+## 0.0.10 All Aboard
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:
