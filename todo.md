@@ -25,26 +25,7 @@
     * A_TheShowrClass
 
 ### Done/Ready for Changelog after review
-* Added a WARNING when encountering an object with no shrinkable properties.
-* Added ReportMode.Labeled (default enabled)
-* Showr.ForInputs
-* Report: Execution section: Better label alignment.
-* Added a WARNING when an execution has at least one input, but all are deemed irrelevant.
-* FIX: PoolExpectEachWhen. If predicate is false, it no longer qualifies as passed expectation.
-* FIX: Reports without InputShrinking now (also) use QuickPulse.Show to report inputs.
-* CHANGE: Now the first failing expectation in an execution is the one that matters, not the last.
-* Added Input overloads taking Custom Shrinker(s) as extra argument.
-* Added a WARNING when a registered Custom Shrinker is unused (avoiding type mismatches).
-* Added Input overloads taking a *Reducer* as extra argument.
-* DeliberationPolicy
-  * Changed sig from `Func<CaseFile, CaseFile, CaseFile>` to `Func<ICaseFileSummary, int>`
-  * Added DeliberationTarget, Deliberation stops when reached.
-  * ICaseFileSummary added:
-    * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
-    * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
-* Custodians now takes a `CaseFile` and `VaultEntry` objects instead of already stringified ones. 
-* Better formatting for *Empty collection deemed irrelevant* WARNING.
-* new Custom Shrinker: `Shrink.Keep<T>()`
+
 
 ## 0.0.9 Reduce, Reuse, Recycle
 * *Nested* Reducers, first on type, later by path.
