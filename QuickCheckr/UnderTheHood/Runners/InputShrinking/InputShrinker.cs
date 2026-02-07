@@ -1,6 +1,5 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Warnings;
-using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking;
 
@@ -40,7 +39,7 @@ public class InputShrinker(
                 var (unused, types) = executionMemory.HasUnusedShrinkers(key);
                 if (unused)
                 {
-                    var noun = types.Count() == 1 ? "shrinker" : "shrinkers";
+                    var noun = types.Count == 1 ? "shrinker" : "shrinkers";
                     executionMemory.StoreWarning($"UnusedShrinkers-{executionId}", () => new UnusedShrinkerWarning(types, key));
                 }
             }
