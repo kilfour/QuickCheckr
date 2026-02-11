@@ -14,7 +14,7 @@ It is unaware of any *state derived* meaningfull values. ")]
 public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
 
     [Fact]
     [DocModelHeader]
@@ -36,6 +36,7 @@ public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvi
             Checkr.Option(() => thing.Ints.Contains(1),
                 from ints in Checkr.Input("Ints", Fuzzr.Int().Many(2))
                 from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+                from trace in Checkr.Trace("Ints", () => thing.Ints)
                 from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
                 select Case.Closed))
         select Case.Closed;

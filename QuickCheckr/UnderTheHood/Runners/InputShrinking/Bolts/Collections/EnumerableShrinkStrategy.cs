@@ -1,8 +1,60 @@
 
+using QuickCheckr.UnderTheHood.Docketing;
+using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
-public class EnumerableShrinkStrategy : IShrinkingStrategy
+public class EnumerableShrinkStrategy
 {
+    public Dictionary<int, int>? Mapper { get; set; }
+
+    private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
+
+    public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    {
+        var verifier = new Verifier(state, check);
+        var theList = CloneList.AsOriginalType(info.Value!);
+        var values = new List<InputShrinkingClassification>();
+        var elementCount = theList.Count;
+        int index = 0;
+        int indexKey = -1;
+        while (index < theList.Count)
+        {
+            indexKey++;
+            var ix = index;
+            var before = theList[ix];
+            var valueType = before!.GetType();
+            var elementType = valueType;
+            theList.RemoveAt(ix);
+            var substitute = CloneList.GetSubstituteForType(info.Type, theList);
+            if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
+            {
+                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
+                state.Docket.Record(new InputShrinkingClueFound(clue));
+                values.Add(new ElementAssumedIrrelevant());
+                continue;
+            }
+            // values.Add(new InputRelevant(state.InputPrinter.IntroduceThis(before)));
+            theList.Insert(ix, before);
+            substitute = CloneList.GetSubstituteForType(info.Type, theList);
+            using (state.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute))
+            {
+                var swapper = new ListLens(elementType, ix);
+                using (state.Memory.NestedValue(info.ExecutionId, swapper))
+                {
+                    var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
+                    values.Add(new ShrinkStrategyPicker().Classify(state, check, childInfo));
+                }
+            }
+            index++;
+        }
+        if (elementCount == 0 || values.Count(a => a is not ElementAssumedIrrelevant) != 0)
+        {
+            return new CollectionRelevant(values);
+        }
+        return new InputAssumedIrrelevant();
+    }
+
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var clues = new RemoveOneByOneStrategy().Shrink(state, check, info);

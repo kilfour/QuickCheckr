@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\C_Objects\TheExamples\D_IrrelevantObjects.cs:20:1
+ Location:                D_IrrelevantObjects.cs:64:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1000847613

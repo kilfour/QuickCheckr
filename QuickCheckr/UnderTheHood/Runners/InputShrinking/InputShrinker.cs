@@ -18,6 +18,9 @@ public class InputShrinker(
             foreach (var (key, value) in inputs)
             {
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
+                var classification = new ShrinkStrategyPicker().Classify(State, Check, info);
+                executionMemory.StoreInputShrinkingClassification(key, classification);
+
                 var clues = new ShrinkStrategyPicker().Shrink(State, Check, info).ToList();
                 shrinkCount += clues.Sum(a => a.Count);
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);

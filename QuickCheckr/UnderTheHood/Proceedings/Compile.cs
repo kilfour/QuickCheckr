@@ -2,6 +2,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice
@@ -81,12 +82,30 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice
                 return;
             }
 
-            foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
+            // foreach (var (key, clue) in executionMemory.GetInputShrinkOutcomes())
+            // {
+            //     var input = executionMemory.GetInput(key);
+            //     var redux = executionMemory.GetInputReduxForKey(key);
+            //     executionDeposition.AddInputDeposition(
+            //             new InputDeposition(labeled, key, clue!.Report!)
+            //             {
+            //                 Original = executionMemory.GetOriginalForKey(key),
+            //                 Redux = redux.HasValue ? Maybe.Just(inputPrinter.IntroduceThis(redux.Value)) : Maybe.Nothing(),
+            //                 ReduxValue = redux,
+            //                 InputValue = input.Value,
+            //                 Type = input.Type
+            //             });
+            // }
+
+            foreach (var (key, classification) in executionMemory.GetInputShrinkingClassifications())
             {
+                var relevant = classification as InputRelevant;
+                if (relevant == null) continue;
                 var input = executionMemory.GetInput(key);
                 var redux = executionMemory.GetInputReduxForKey(key);
+                var report = relevant.Report;
                 executionDeposition.AddInputDeposition(
-                        new InputDeposition(labeled, key, clue!.Report!)
+                        new InputDeposition(labeled, key, report!)
                         {
                             Original = executionMemory.GetOriginalForKey(key),
                             Redux = redux.HasValue ? Maybe.Just(inputPrinter.IntroduceThis(redux.Value)) : Maybe.Nothing(),

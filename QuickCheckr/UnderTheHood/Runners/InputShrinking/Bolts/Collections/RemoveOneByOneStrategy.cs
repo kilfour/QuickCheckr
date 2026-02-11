@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
-public class RemoveOneByOneStrategy : IShrinkingStrategy
+public class RemoveOneByOneStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {

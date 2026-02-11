@@ -91,6 +91,12 @@ public class ExecutionMemory
         => inputShrinkOutcomes[key] = inputShrinkingClue;
     public IReadOnlyDictionary<string, InputShrinkingClue> GetInputShrinkOutcomes()
         => inputShrinkOutcomes;
+    // -- NEW --
+    private readonly Dictionary<string, InputShrinkingClassification> inputShrinkClassifications = [];
+    public void StoreInputShrinkingClassification(string key, InputShrinkingClassification inputShrinkingClassification)
+        => inputShrinkClassifications[key] = inputShrinkingClassification;
+    public IReadOnlyDictionary<string, InputShrinkingClassification> GetInputShrinkingClassifications()
+        => inputShrinkClassifications;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
@@ -114,10 +120,10 @@ public class ExecutionMemory
     private readonly TypedMemoryBank<IShrinkOption[]> shrinkers = new();
     public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
         => shrinkers.Store(key, factory);
-    public IEnumerable<IShrinkOption>? GetShrinker(string key, Type type)
+    public IEnumerable<IShrinkOption> GetShrinkOptions(string key, Type type)
     {
         var options = shrinkers.Get(key);
-        if (options == null) return null;
+        if (options == null) return [];
         StoreShrinkerUsed(key, type);
         return options.Where(a => a.TargetType == type);
     }

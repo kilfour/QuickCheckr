@@ -2,31 +2,29 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
-public class PrimitiveShrinkStrategy : IShrinkingStrategy
+public class PrimitiveShrinkStrategy
 {
-    public IEnumerable<InputShrinkingClue> Shrink(
+    public InputShrinkingClassification Classify(
         CheckrState state,
         CheckrOf<Case> check,
         ShrinkingInfo info)
     {
         var verifier = new Verifier(state, check);
-        var primitiveKey = PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(info.Type));
-        if (primitiveKey == null)
-            return [];
-
+        var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.Type));
         var primitiveVals = PrimitiveValues[primitiveKey];
         foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
+                // Mark input as relevant, because we found a candidate that makes the run pass.
                 var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
-                return [clue];
+                return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
             }
         }
         var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-        return [ignoreClue];
+        return new InputAssumedIrrelevant();
     }
 
     public static readonly Dictionary<Type, object[]> PrimitiveValues =

@@ -1,5 +1,4 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -8,22 +7,41 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples;
 
 [DocFile]
-public class D_IrrelevantObjects : BaseTest
+public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
 {
+    protected override bool Asserts => false;
+    protected override bool Report => true;
 
     [Fact]
-    [DocExample(typeof(D_IrrelevantObjects), nameof(GetCheckr))]
-    [DocCodeFile("D_IrrelevantObjects.txt", "text")]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1000847613));
-        WriteAsserts(article);
-        WriteReport<D_IrrelevantObjects>(article);
-        Verify(article);
-    }
+    [DocContent("**The Checkr:**")]
+    [DocCheckr]
+    [DocContent("**The Report:**")]
+    [DocReport]
+    public override void Example() => Run(1000847613);
 
-    private static void Verify(Article article)
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from person in Checkr.Input("Person", Fuzzr.One<Person>())
+        from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
+        from tracePerson in Checkr.Trace("Person", () => person)
+        from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
+        from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
+        select Case.Closed;
+
+
+    // [Fact]
+    // [DocExample(typeof(D_IrrelevantObjects), nameof(GetCheckr))]
+    // [DocCodeFile("D_IrrelevantObjects.txt", "text")]
+    // public void RunTest()
+    // {
+    //     var article = TheJournalist.Exposes(() =>
+    //         GetCheckr().Run(1000847613));
+    //     WriteAsserts(article);
+    //     WriteReport<D_IrrelevantObjects>(article);
+    //     Verify(article);
+    // }
+
+    protected override void Verify(Article article)
     {
         Assert.Equal("Not aged 18", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
@@ -39,18 +57,18 @@ public class D_IrrelevantObjects : BaseTest
         Assert.Equal("{ Name: \"hdpjy\", Age: 85 }", article.Execution(1).Trace(2).Read().Value);
     }
 
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from person in Checkr.Input("Person", Fuzzr.One<Person>())
-            from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
-            from tracePerson in Checkr.Trace("Person", () => person)
-            from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
-            from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
-            select Case.Closed;
-    }
+    // [CodeSnippet]
+    // [CodeRemove("return")]
+    // private static CheckrOf<Case> GetCheckr()
+    // {
+    //     return
+    //         from person in Checkr.Input("Person", Fuzzr.One<Person>())
+    //         from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
+    //         from tracePerson in Checkr.Trace("Person", () => person)
+    //         from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
+    //         from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
+    //         select Case.Closed;
+    // }
 
     public class Person
     {

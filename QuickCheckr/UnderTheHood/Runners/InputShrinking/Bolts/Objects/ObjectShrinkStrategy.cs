@@ -8,7 +8,7 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 
-public class ObjectShrinkStrategy : IShrinkingStrategy
+public class ObjectShrinkStrategy
 {
     public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {

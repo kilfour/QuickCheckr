@@ -9,6 +9,7 @@
    - Input: Int = 1
  ------------------------------------------------------------
   Executed: Update
+   - Trace: Ints = [ 57, 70 ]
    - WARNING: All inputs were considered irrelevant.
    - WARNING: Empty collection deemed irrelevant at input 'Ints'.
  ================================

@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
-public class ShrinkEachElementStrategy : IShrinkingStrategy
+public class ShrinkEachElementStrategy
 {
     public Dictionary<int, int>? Mapper { get; set; }
 

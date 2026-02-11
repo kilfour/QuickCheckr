@@ -2,6 +2,8 @@ using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
+
+
 public class InputShrinkingClue
 {
     public int ExecutionId { get; private set; } = 0;
@@ -27,7 +29,7 @@ public class InputShrinkingClue
             Count = 1
         };
 
-    // this should be a replace one i reckon
+    // only used by RemoveOneByOneStrategy to replace shrunk lists
     public static InputShrinkingClue Keep<T>(int executionId, string path, object? value, object? result)
        => new()
        {
@@ -52,6 +54,7 @@ public class InputShrinkingClue
             Strategy = typeof(T).Name
         };
 
+    // only used by ShrinkEachElementStrategy to replace shrunk lists
     public static InputShrinkingClue Replace<T>(
             int executionId,
             string path,
@@ -70,6 +73,7 @@ public class InputShrinkingClue
             Count = 0
         };
 
+    // only used by RemoveOneByOneStrategy to shrink lists, only for docket reporting
     public static InputShrinkingClue Remove<T>(
             int executionId,
             string path,
