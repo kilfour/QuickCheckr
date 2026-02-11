@@ -85,13 +85,7 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
-    // Shrink Outcomes
-    private readonly Dictionary<string, InputShrinkingClue> inputShrinkOutcomes = [];
-    public void StoreInputShrinkOutcome(string key, InputShrinkingClue inputShrinkingClue)
-        => inputShrinkOutcomes[key] = inputShrinkingClue;
-    public IReadOnlyDictionary<string, InputShrinkingClue> GetInputShrinkOutcomes()
-        => inputShrinkOutcomes;
-    // -- NEW --
+    // Shrink Classifications
     private readonly Dictionary<string, InputShrinkingClassification> inputShrinkClassifications = [];
     public void StoreInputShrinkingClassification(string key, InputShrinkingClassification inputShrinkingClassification)
         => inputShrinkClassifications[key] = inputShrinkingClassification;
