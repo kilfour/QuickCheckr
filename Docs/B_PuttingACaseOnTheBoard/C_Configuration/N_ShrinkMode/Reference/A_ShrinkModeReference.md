@@ -93,45 +93,6 @@ Trims inputs to find a minimal failing case.
  - Third Time Answer: 2x
  ------------------------------------------------------------
 ```
-## ShrinkMode.Reduction
-```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
-    => config with { ShrinkMode = ShrinkMode.Inputs | ShrinkMode.Reduction };
-```
-Applies configured reducers for fine-grained shrinking.  
-
-!! WARNING: **Under Construction** !!
-
-> This feature is **actively** being worked on. And as such this notice will disappear soon.  
-> But API and semantics may change somewhat in future versions.  
-> We're ... erm ... you know, ... considering our options.
->  
-> Use with caution in production code. 
-
-  
-*Note:* For this mode to have any effect `ShrinkMode.Inputs` also needs to be activated.  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ShrinkModeReduction.cs:68:1
- Original failing run:    3 executions
- Minimal failing case:    3 executions (after 8 shrinks)
- Seed:                    2145473476
- ------------------------------------------------------------
-  Executed: (2 Times)
-   - WARNING: All inputs were considered irrelevant.
- ------------------------------------------------------------
-  Executed:
-   - Input: counter  = 3
-   - Input: Relevant = 66
-            Redux      42
- ============================================
-  !! Expectation Failed: Third Time Answer
- ============================================
- Passed Expectations
- - Third Time Answer: 2x
- ------------------------------------------------------------
-```
 ## ShrinkMode.Default
 ```csharp
 protected override CheckrConfig Configure(CheckrConfig config)
@@ -159,5 +120,5 @@ Includes all possible ShrinkModes.
 ```
 **Hint:** You can use bit-wise operations to manipulate `ShrinkMode`:  
 ```csharp
-config with { ShrinkMode = config.ShrinkMode & ~ShrinkMode.Reduction };
+config with { ShrinkMode = config.ShrinkMode & ~ShrinkMode.Inputs };
 ```

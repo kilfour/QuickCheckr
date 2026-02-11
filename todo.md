@@ -1,4 +1,5 @@
-## Next version: 0.0.8: You Can Go Your Own Way
+## Next version: 0.0.9 : Reduce, Reuse, Recycle
+* *Nested* Reducers, first on type, later by path.
 
 ### Doing
 * InputShrinkingClue refactor:  
@@ -26,11 +27,7 @@
 
 ### Done/Ready for Changelog after review
 
-
-## 0.0.9 Reduce, Reuse, Recycle
-* *Nested* Reducers, first on type, later by path.
-
-## 0.0.10 All Aboard
+## 0.0.10 : All Aboard
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:
