@@ -1,6 +1,7 @@
 
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
@@ -47,9 +48,14 @@ public class EnumerableShrinkStrategy
             }
             index++;
         }
-        if (elementCount == 0 || values.Count(a => a is not ElementAssumedIrrelevant) != 0)
+        if (elementCount == 0 || values.Any(a => a is not ElementAssumedIrrelevant))
         {
             return new CollectionRelevant(values);
+        }
+        if (elementCount != 0)
+        {
+            if (!state.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type))
+                state.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         }
         return new InputAssumedIrrelevant();
     }

@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Warnings;
 
@@ -21,21 +22,26 @@ public class InputShrinker(
                 var classification = new ShrinkStrategyPicker().Classify(State, Check, info);
                 shrinkCount += IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
-
-                var clues = new ShrinkStrategyPicker().Shrink(State, Check, info).ToList();
-                var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
-                if (replace != null)
+                if (classification is InputRelevant)
                 {
                     keptAtLeastOne = true;
-                    executionMemory.StoreInputShrinkOutcome(key, replace);
-                }
-                else
-                {
-                    var keep = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Keep);
-                    if (keep != null)
+                    var reducerFactory = executionMemory.GetReducer(key);
+                    if (reducerFactory != null)
                     {
-                        keptAtLeastOne = true;
-                        executionMemory.StoreInputShrinkOutcome(key, keep);
+                        var reducer = reducerFactory();
+                        var verifier = new Verifier(State, Check);
+                        var result = new ReductionResult(true, value.Value);
+                        Reduction step = Reduction.Next(value.Value!);
+                        while (step.Continue)
+                        {
+                            if (verifier.RunFailed(executionId, key, step.Candidate!))
+                                result = new ReductionResult(true, step.Candidate!);
+                            else
+                                result = new ReductionResult(false, result.Value!);
+                            step = reducer(result);
+                        }
+                        shrinkCount++;
+                        executionMemory.StoreInputRedux(key, step.Result!);
                     }
                 }
                 keptAtLeastOne = keptAtLeastOne || State.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type);
