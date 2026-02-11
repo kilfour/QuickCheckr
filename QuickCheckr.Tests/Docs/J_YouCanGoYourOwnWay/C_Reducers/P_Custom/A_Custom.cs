@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Runners.InputReduction;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
 using QuickPulse.Explains;
 

@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 

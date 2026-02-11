@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Runners.InputReduction;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 public record Reduction
 {

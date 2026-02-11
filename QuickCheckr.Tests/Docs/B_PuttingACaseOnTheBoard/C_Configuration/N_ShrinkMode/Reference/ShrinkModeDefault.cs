@@ -20,8 +20,8 @@ public class ShrinkModeDefault : CheckrTest<ShrinkModeDefault>
     {
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Executions));
         Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Inputs));
-        Assert.True(ShrinkMode.Default.HasFlag(ShrinkMode.Reduction));
     }
+
     [Fact]
     public override void Example()
         => Run(2145473476, 3.ExecutionsPerRun());

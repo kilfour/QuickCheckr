@@ -3,7 +3,6 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
-using QuickCheckr.UnderTheHood.Runners.InputReduction;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
 
 namespace QuickCheckr.UnderTheHood;
@@ -38,9 +37,6 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += new InputShrinker(State, Check).Run();
-
-        if (config.ShrinkMode.HasFlag(ShrinkMode.Reduction))
-            shrinkCount += new InputReducer(State, Check).Run();
 
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }

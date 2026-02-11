@@ -73,96 +73,13 @@ public class ShrinkStrategyPicker
             return new EnumerableShrinkStrategy().Classify(state, check, info);
 
         if (info.Type.IsClass)
-            return new ObjectShrinkStrategy2().Classify(state, check, info);
+            return new ObjectShrinkStrategy().Classify(state, check, info);
 
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
         state.Memory.StoreWarning(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
 
         return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
-    }
-
-    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-    {
-        var shrinkOptions = state.Memory.GetShrinkOptions(info.ExecutionId, info.Key, info.Type);
-        if (shrinkOptions.Any())
-            return HandleCustomShrinkOptions(state, check, info, shrinkOptions);
-        return Default(state, check, info);
-    }
-
-    private IEnumerable<InputShrinkingClue> HandleCustomShrinkOptions(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info, IEnumerable<IShrinkOption> options)
-    {
-        foreach (var option in options)
-        {
-            if (option is IShrinkOptionFuzzr optionFuzzr)
-            {
-                var shrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
-                    .Many(optionFuzzr.Times)(state.FuzzrState).Value.Cast<object>();
-                var clues = new CustomShrinkStrategy(a => shrinker).Shrink(state, check, info);
-                if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
-                    return clues;
-            }
-
-            if (option is IShrinkOptionFunction optionCustom)
-            {
-                var clues = new CustomShrinkStrategy(optionCustom.GetFunction()).Shrink(state, check, info);
-                if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
-                    return clues;
-            }
-
-            if (option is IShrinkOptionDefault)
-            {
-                var clues = Default(state, check, info);
-                if (clues.Any(a => a.Intent != ShrinkingIntent.Ignore))
-                    return clues;
-            }
-
-            if (option is IShrinkOptionKeep)
-            {
-                var keep = InputShrinkingClue.Keep<CustomShrinkStrategy>(
-                info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-                state.Docket.Record(new InputShrinkingClueFound(keep));
-                return [keep];
-            }
-
-            if (option is IShrinkOptionNone) return [];
-        }
-        var clue = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
-        state.Docket.Record(new InputShrinkingClueFound(clue));
-        return [clue];
-    }
-
-    public IEnumerable<InputShrinkingClue> Default(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-    {
-        var normalizedType = Nullable.GetUnderlyingType(info.Type) ?? info.Type;
-        var primitiveKey = PrimitiveShrinkStrategy.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
-
-        if (primitiveKey != null)
-        {
-            var result = new PrimitiveShrinkStrategy().Classify(state, check, info);
-            if (result is InputRelevant)
-            {
-                var cluer = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-                return [cluer];
-            }
-            var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
-            state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-            return [ignoreClue]; // Only for shrink count i think
-        }
-
-        if (info.Type.IsEnum)
-            return new EnumShrinkStrategy().Shrink(state, check, info);
-
-        if (typeof(IEnumerable).IsAssignableFrom(info.Type))
-            return new EnumerableShrinkStrategy().Shrink(state, check, info);
-
-        if (info.Type.IsClass)
-            return new ObjectShrinkStrategy().Shrink(state, check, info);
-
-        var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-        state.Docket.Record(new InputShrinkingClueFound(clue));
-        state.Memory.StoreWarning(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
-        return [clue];
     }
 
     public class NoShrinkerFound { }

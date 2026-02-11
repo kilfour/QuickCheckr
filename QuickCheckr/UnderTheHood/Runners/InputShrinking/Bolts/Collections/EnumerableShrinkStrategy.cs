@@ -30,7 +30,7 @@ public class EnumerableShrinkStrategy
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
             if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
             {
-                var clue = InputShrinkingClue.Remove<RemoveOneByOneStrategy>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
+                var clue = InputShrinkingClue.Remove<int>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 values.Add(new ElementAssumedIrrelevant());
                 continue;
@@ -58,15 +58,5 @@ public class EnumerableShrinkStrategy
                 state.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         }
         return new InputAssumedIrrelevant();
-    }
-
-    public IEnumerable<InputShrinkingClue> Shrink(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-    {
-        var clues = new RemoveOneByOneStrategy().Shrink(state, check, info);
-        if (clues.Any(a => a.Intent == ShrinkingIntent.Ignore)) return clues;
-
-        var keep = clues.First(a => a.Intent != ShrinkingIntent.Ignore);
-        clues = clues.Concat(new ShrinkEachElementStrategy().Shrink(state, check, info with { Value = keep.Result }));
-        return clues;
     }
 }

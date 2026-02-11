@@ -12,7 +12,6 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_Shri
 [DocInclude(typeof(ShrinkModeNone))]
 [DocInclude(typeof(ShrinkModeExecutions))]
 [DocInclude(typeof(ShrinkModeInputs))]
-[DocInclude(typeof(ShrinkModeReduction))]
 [DocInclude(typeof(ShrinkModeDefault))]
 [DocContent("**Hint:** You can use bit-wise operations to manipulate `ShrinkMode`:")]
 [DocExample(typeof(A_ShrinkModeReference), nameof(BitWiseOperationExample))]
@@ -32,5 +31,5 @@ public class A_ShrinkModeReference : BaseTest
 
     [CodeSnippet]
     private static CheckrConfig BitWiseOperationExample(CheckrConfig config) =>
-        config with { ShrinkMode = config.ShrinkMode & ~ShrinkMode.Reduction };
+        config with { ShrinkMode = config.ShrinkMode & ~ShrinkMode.Inputs };
 }
