@@ -19,10 +19,10 @@ public class InputShrinker(
             {
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
                 var classification = new ShrinkStrategyPicker().Classify(State, Check, info);
+                shrinkCount += IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
 
                 var clues = new ShrinkStrategyPicker().Shrink(State, Check, info).ToList();
-                shrinkCount += clues.Sum(a => a.Count);
                 var replace = clues.FirstOrDefault(a => a.Intent == ShrinkingIntent.Replace);
                 if (replace != null)
                 {

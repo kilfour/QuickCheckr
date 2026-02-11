@@ -34,7 +34,6 @@ public class EnumerableShrinkStrategy
                 values.Add(new ElementAssumedIrrelevant());
                 continue;
             }
-            // values.Add(new InputRelevant(state.InputPrinter.IntroduceThis(before)));
             theList.Insert(ix, before);
             substitute = CloneList.GetSubstituteForType(info.Type, theList);
             using (state.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute))

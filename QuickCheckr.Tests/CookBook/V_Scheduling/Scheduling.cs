@@ -20,7 +20,7 @@ simplifies test definition in non-trivial cases.
 public class Scheduling : CheckrTest<Scheduling>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocContent(

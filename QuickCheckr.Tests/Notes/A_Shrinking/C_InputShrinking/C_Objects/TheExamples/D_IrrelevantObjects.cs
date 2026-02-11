@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExam
 public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocContent("**The Checkr:**")]

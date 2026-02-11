@@ -62,7 +62,7 @@ public class ObjectShrinkStrategy2
         {
             var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
-            return new InputAssumedIrrelevant();
+            return new ObjectAssumedIrrelevant(values);
         }
     }
 

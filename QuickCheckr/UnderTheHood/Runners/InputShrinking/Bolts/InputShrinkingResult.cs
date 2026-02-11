@@ -20,6 +20,9 @@ public record CollectionRelevant(IEnumerable<InputShrinkingClassification> Eleme
                 .Select(a => a is InputRelevant relevant ? relevant.Report : "_"))} ]";
 };
 
+public record ObjectAssumedIrrelevant(Dictionary<string, InputShrinkingClassification> Members)
+    : InputShrinkingClassification;
+
 public record ObjectRelevant(Dictionary<string, InputShrinkingClassification> Members)
     : InputRelevant(GetReport(Members))
 {
@@ -38,6 +41,7 @@ public static class IrrelevantCount
             ElementAssumedIrrelevant => 1,
             CollectionRelevant c => c.Elements.Sum(From),
             ObjectRelevant o => o.Members.Values.Sum(From),
+            ObjectAssumedIrrelevant o => 1 + o.Members.Values.Sum(From),
             _ => 0
         };
 }
