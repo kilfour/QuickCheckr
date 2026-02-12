@@ -8,7 +8,7 @@ public class ObjectLens(PropertyInfo propertyInfo)
         (val, propValue) => { SetPropertyValue(propertyInfo, val!, propValue); return val; }
     )
 {
-    //duplicate from ObjectShrinkStrategy
+    //duplicate from ObjectShrinkClassifier
     private static void SetPropertyValue(PropertyInfo propertyInfo, object target, object value)
     {
         var prop = propertyInfo;

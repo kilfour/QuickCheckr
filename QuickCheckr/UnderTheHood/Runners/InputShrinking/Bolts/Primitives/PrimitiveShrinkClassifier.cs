@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
 
-public class PrimitiveShrinkStrategy
+public class PrimitiveShrinkClassifier
 {
     public InputShrinkingClassification Classify(
         CheckrState state,
@@ -17,12 +17,12 @@ public class PrimitiveShrinkStrategy
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
                 // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
+                var clue = InputShrinkingClue.Keep<PrimitiveShrinkClassifier>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         return new InputAssumedIrrelevant();
     }

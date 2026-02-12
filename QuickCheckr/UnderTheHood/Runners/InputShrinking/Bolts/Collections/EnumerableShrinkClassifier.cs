@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
-public class EnumerableShrinkStrategy
+public class EnumerableShrinkClassifier
 {
     public Dictionary<int, int>? Mapper { get; set; }
 
@@ -43,7 +43,7 @@ public class EnumerableShrinkStrategy
                 using (state.Memory.NestedValue(info.ExecutionId, swapper))
                 {
                     var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
-                    values.Add(new ShrinkStrategyPicker().Classify(state, check, childInfo));
+                    values.Add(new ShrinkClassifierSelector().Classify(state, check, childInfo));
                 }
             }
             index++;

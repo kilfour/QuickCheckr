@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
@@ -9,7 +9,7 @@ using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public class ShrinkStrategyPicker
+public class ShrinkClassifierSelector
 {
     public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
@@ -27,14 +27,14 @@ public class ShrinkStrategyPicker
             {
                 var shrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
                     .Many(optionFuzzr.Times)(state.FuzzrState).Value.Cast<object>();
-                var classification = new CustomShrinkStrategy(a => shrinker).Classify(state, check, info);
+                var classification = new CustomShrinkClassifier(a => shrinker).Classify(state, check, info);
                 if (classification is not InputAssumedIrrelevant)
                     return classification;
             }
 
             if (option is IShrinkOptionFunction optionCustom)
             {
-                var classification = new CustomShrinkStrategy(optionCustom.GetFunction()).Classify(state, check, info);
+                var classification = new CustomShrinkClassifier(optionCustom.GetFunction()).Classify(state, check, info);
                 if (classification is not InputAssumedIrrelevant)
                     return classification;
             }
@@ -48,7 +48,7 @@ public class ShrinkStrategyPicker
 
             if (option is IShrinkOptionKeep)
             {
-                var keep = InputShrinkingClue.Keep<CustomShrinkStrategy>(
+                var keep = InputShrinkingClue.Keep<CustomShrinkClassifier>(
                 info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(keep));
                 return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
@@ -56,7 +56,7 @@ public class ShrinkStrategyPicker
 
             if (option is IShrinkOptionNone) return new Unclassified();
         }
-        var clue = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
+        var clue = InputShrinkingClue.Ignore<CustomShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(clue));
         return new InputAssumedIrrelevant();
     }
@@ -64,16 +64,16 @@ public class ShrinkStrategyPicker
     public InputShrinkingClassification ClassifyDefault(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
         var normalizedType = Nullable.GetUnderlyingType(info.Type) ?? info.Type;
-        var primitiveKey = PrimitiveShrinkStrategy.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
+        var primitiveKey = PrimitiveShrinkClassifier.PrimitiveValues.Keys.FirstOrDefault(k => k.IsAssignableFrom(normalizedType));
         if (primitiveKey != null)
-            return new PrimitiveShrinkStrategy().Classify(state, check, info);
+            return new PrimitiveShrinkClassifier().Classify(state, check, info);
         if (info.Type.IsEnum)
-            return new EnumShrinkStrategy().Classify(state, check, info);
+            return new EnumShrinkClassifier().Classify(state, check, info);
         if (typeof(IEnumerable).IsAssignableFrom(info.Type))
-            return new EnumerableShrinkStrategy().Classify(state, check, info);
+            return new EnumerableShrinkClassifier().Classify(state, check, info);
 
         if (info.Type.IsClass)
-            return new ObjectShrinkStrategy().Classify(state, check, info);
+            return new ObjectShrinkClassifier().Classify(state, check, info);
 
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));

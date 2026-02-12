@@ -198,7 +198,7 @@ public class Objects
     //     for (int i = 0; i < 100; i++)
     //     {
     //         var script =
-    //             from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkStrategy(), new PowersetPropertyNullingStrategy())
+    //             from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkClassifier(), new PowersetPropertyNullingStrategy())
     //             from input in "input".Input(generator)
     //             from foo in "act".Act(() =>
     //             {
@@ -243,7 +243,7 @@ public class Objects
     //         select thing;
 
     //     var script =
-    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkStrategy(), new PowersetPropertyNullingStrategy())
+    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkClassifier(), new PowersetPropertyNullingStrategy())
     //         from input in "input".Input(generator)
     //         from result in "act".Act(() => new Something { MyFirstProperty = input.MyFirstProperty })
     //         from spec in "equal".Spec(() =>
@@ -278,7 +278,7 @@ public class Objects
     //         select thing;
 
     //     var script =
-    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkStrategy(), new PowersetPropertyNullingStrategy())
+    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkClassifier(), new PowersetPropertyNullingStrategy())
     //         from input in "input".Input(generator)
     //         from result in "act".Act(() => new Something { MyFirstProperty = input.MyFirstProperty })
     //         from spec in "equal".Spec(() =>
@@ -314,7 +314,7 @@ public class Objects
     //         select thing;
 
     //     var script =
-    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkStrategy(), new PowersetPropertyNullingStrategy())
+    //         from _ in ShrinkingPolicy.ForObjects(new ObjectShrinkClassifier(), new PowersetPropertyNullingStrategy())
     //         from input in "input".Input(generator)
     //         from result in "act".Act(() => new Something { MyFirstProperty = input.MyFirstProperty })
     //         from spec in "equal".Spec(() =>

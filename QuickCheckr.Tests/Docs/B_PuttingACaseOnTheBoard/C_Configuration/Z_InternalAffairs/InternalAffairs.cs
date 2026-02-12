@@ -99,7 +99,7 @@ public class InternalAffairsTests : BaseTest
         Assert.Equal("    Result: null,", reader.NextLine());
         Assert.Equal("    Report: \"\",", reader.NextLine());
         Assert.Equal("    Intent: Ignore,", reader.NextLine());
-        Assert.Equal("    Strategy: \"PrimitiveShrinkStrategy\",", reader.NextLine());
+        Assert.Equal("    Strategy: \"PrimitiveShrinkClassifier\",", reader.NextLine());
         Assert.Equal("    Count: 1", reader.NextLine());
         Assert.Equal("}", reader.NextLine());
         Assert.Equal("-------------------------------------", reader.NextLine());
@@ -110,7 +110,7 @@ public class InternalAffairsTests : BaseTest
         Assert.Equal("    Result: null,", reader.NextLine());
         Assert.Equal("    Report: \"\",", reader.NextLine());
         Assert.Equal("    Intent: Ignore,", reader.NextLine());
-        Assert.Equal("    Strategy: \"PrimitiveShrinkStrategy\",", reader.NextLine());
+        Assert.Equal("    Strategy: \"PrimitiveShrinkClassifier\",", reader.NextLine());
         Assert.Equal("    Count: 1", reader.NextLine());
         Assert.Equal("}", reader.NextLine());
         Assert.Equal("-------------------------------------", reader.NextLine());
@@ -121,7 +121,7 @@ public class InternalAffairsTests : BaseTest
         Assert.Equal("    Result: null,", reader.NextLine());
         Assert.Equal("    Report: \"\",", reader.NextLine());
         Assert.Equal("    Intent: Ignore,", reader.NextLine());
-        Assert.Equal("    Strategy: \"PrimitiveShrinkStrategy\",", reader.NextLine());
+        Assert.Equal("    Strategy: \"PrimitiveShrinkClassifier\",", reader.NextLine());
         Assert.Equal("    Count: 1", reader.NextLine());
         Assert.Equal("}", reader.NextLine());
         Assert.Equal("-------------------------------------", reader.NextLine());

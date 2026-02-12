@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
 
-public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker)
+public class CustomShrinkClassifier(Func<object, IEnumerable<object>> shrinker)
 {
     public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
@@ -14,13 +14,13 @@ public class CustomShrinkStrategy(Func<object, IEnumerable<object>> shrinker)
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
-                var clue = InputShrinkingClue.Keep<CustomShrinkStrategy>(
+                var clue = InputShrinkingClue.Keep<CustomShrinkClassifier>(
                     info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
                 state.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
             }
         }
-        var ignore = InputShrinkingClue.Ignore<CustomShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
+        var ignore = InputShrinkingClue.Ignore<CustomShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
         state.Docket.Record(new InputShrinkingClueFound(ignore));
         return new InputAssumedIrrelevant();
     }

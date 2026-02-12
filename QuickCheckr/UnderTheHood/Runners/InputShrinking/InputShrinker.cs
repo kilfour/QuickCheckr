@@ -19,7 +19,7 @@ public class InputShrinker(
             foreach (var (key, value) in inputs)
             {
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
-                var classification = new ShrinkStrategyPicker().Classify(State, Check, info);
+                var classification = new ShrinkClassifierSelector().Classify(State, Check, info);
                 shrinkCount += IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
                 if (classification is InputRelevant)

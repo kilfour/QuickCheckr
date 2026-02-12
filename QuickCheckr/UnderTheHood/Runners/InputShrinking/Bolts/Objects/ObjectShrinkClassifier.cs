@@ -8,7 +8,7 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 
-public class ObjectShrinkStrategy
+public class ObjectShrinkClassifier
 {
     public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
     {
@@ -53,14 +53,14 @@ public class ObjectShrinkStrategy
         if (values.Any(a => a.Value is InputRelevant))
         {
             var clue = InputShrinkingClue
-                .Keep<ObjectShrinkStrategy>(info.ExecutionId, info.Path, info.Value,
+                .Keep<ObjectShrinkClassifier>(info.ExecutionId, info.Path, info.Value,
                     $"{{ {string.Join(", ", values.Select(a => $"{a.Key}: {a.Value}"))} }}");
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectRelevant(values);
         }
         else
         {
-            var clue = InputShrinkingClue.Ignore<ObjectShrinkStrategy>(info.ExecutionId, info.Path, info.Value);
+            var clue = InputShrinkingClue.Ignore<ObjectShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
             state.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectAssumedIrrelevant(values);
         }
@@ -73,7 +73,7 @@ public class ObjectShrinkStrategy
         using (state.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
-            return new ShrinkStrategyPicker().Classify(state, check, childInfo);
+            return new ShrinkClassifierSelector().Classify(state, check, childInfo);
         }
     }
 

@@ -2,12 +2,10 @@
  Test:                    Example
  Location:                NestedInObject.cs:64:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1930190827
  ------------------------------------------------------------
   Executed:
-   - Input: Answer = 96
-            Redux    43
+   - Input: Answer = { Answer: 96 }
  =======================================
   !! Expectation Failed: answer <= 42
  =======================================
