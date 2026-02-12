@@ -45,3 +45,8 @@ public static class IrrelevantCount
             _ => 0
         };
 }
+
+
+public record InputShrinkingResult(
+    InputShrinkingClassification InputShrinkingClassification,
+    Maybe<object> Redux);

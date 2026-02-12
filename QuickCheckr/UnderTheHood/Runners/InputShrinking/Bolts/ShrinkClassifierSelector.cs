@@ -71,14 +71,11 @@ public class ShrinkClassifierSelector
             return new EnumShrinkClassifier().Classify(state, check, info);
         if (typeof(IEnumerable).IsAssignableFrom(info.Type))
             return new EnumerableShrinkClassifier().Classify(state, check, info);
-
         if (info.Type.IsClass)
             return new ObjectShrinkClassifier().Classify(state, check, info);
-
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
         state.Docket.Record(new InputShrinkingClueFound(clue));
         state.Memory.StoreWarning(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
-
         return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
     }
 

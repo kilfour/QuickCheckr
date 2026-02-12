@@ -7,6 +7,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
 
 public class EnumerableShrinkClassifier
 {
+    private ShrinkClassifierSelector selector = new();
     public Dictionary<int, int>? Mapper { get; set; }
 
     private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
@@ -43,7 +44,7 @@ public class EnumerableShrinkClassifier
                 using (state.Memory.NestedValue(info.ExecutionId, swapper))
                 {
                     var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
-                    values.Add(new ShrinkClassifierSelector().Classify(state, check, childInfo));
+                    values.Add(selector.Classify(state, check, childInfo));
                 }
             }
             index++;
