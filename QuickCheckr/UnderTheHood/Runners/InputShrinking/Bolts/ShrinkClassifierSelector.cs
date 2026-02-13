@@ -6,37 +6,42 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 public class ShrinkClassifierSelector
 {
-    public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    public InputShrinkingClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
-        var shrinkOptions = state.Memory.GetShrinkOptions(info.ExecutionId, info.Key, info.Type);
+        var shrinkOptions = context.State.Memory.GetShrinkOptions(info.ExecutionId, info.Key, info.Type);
         if (shrinkOptions.Any())
-            return ClassifyCustom(state, check, info, shrinkOptions);
-        return ClassifyDefault(state, check, info);
+            return ClassifyCustom(info, shrinkOptions, context);
+        return ClassifyDefault(info, context);
     }
 
-    private InputShrinkingClassification ClassifyCustom(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info, IEnumerable<IShrinkOption> options)
+    private InputShrinkingClassification ClassifyCustom2(ShrinkingInfo info, IEnumerable<IShrinkOption> options, ShrinkingContext context)
+    {
+        return new InputAssumedIrrelevant();
+    }
+
+    private InputShrinkingClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IShrinkOption> options, ShrinkingContext context)
     {
         foreach (var option in options)
         {
             if (option is IShrinkOptionFuzzr optionFuzzr)
             {
                 var shrinker = optionFuzzr.GetFuzzr().Unique(Guid.NewGuid())
-                    .Many(optionFuzzr.Times)(state.FuzzrState).Value.Cast<object>();
-                var classification = new CustomShrinkClassifier(a => shrinker).Classify(state, check, info);
+                    .Many(optionFuzzr.Times)(context.State.FuzzrState).Value.Cast<object>();
+                var classification = new CustomShrinkClassifier(a => shrinker).Classify(info, context);
                 if (classification is not InputAssumedIrrelevant)
                     return classification;
             }
 
             if (option is IShrinkOptionFunction optionCustom)
             {
-                var classification = new CustomShrinkClassifier(optionCustom.GetFunction()).Classify(state, check, info);
+                var classification = new CustomShrinkClassifier(optionCustom.GetFunction()).Classify(info, context);
                 if (classification is not InputAssumedIrrelevant)
                     return classification;
             }
 
             if (option is IShrinkOptionDefault)
             {
-                var classification = ClassifyDefault(state, check, info);
+                var classification = ClassifyDefault(info, context);
                 if (classification is not InputAssumedIrrelevant)
                     return classification;
             }
@@ -44,19 +49,20 @@ public class ShrinkClassifierSelector
             if (option is IShrinkOptionKeep)
             {
                 var keep = InputShrinkingClue.Keep<CustomShrinkClassifier>(
-                info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-                state.Docket.Record(new InputShrinkingClueFound(keep));
-                return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
+                info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+                context.State.Docket.Record(new InputShrinkingClueFound(keep));
+                return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
             }
 
             if (option is IShrinkOptionNone) return new Unclassified();
         }
         var clue = InputShrinkingClue.Ignore<CustomShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
-        state.Docket.Record(new InputShrinkingClueFound(clue));
+        context.State.Docket.Record(new InputShrinkingClueFound(clue));
         return new InputAssumedIrrelevant();
     }
 
-    public InputShrinkingClassification ClassifyDefault(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
-        => new DefaultClassifier()
-            .Dispatch(info, new ShrinkingContext(state, check));
+    // TODO: private readonly DefaultClassifier defaultClassifier = new();
+
+    public InputShrinkingClassification ClassifyDefault(ShrinkingInfo info, ShrinkingContext context)
+        => new DefaultClassifier().Dispatch(info, context);
 }

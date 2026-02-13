@@ -27,7 +27,7 @@ public class ObjectShrinkClassifier : Classifier
             context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
         }
-        return HandleProperties(context.State, context.Check, info);
+        return HandleProperties(context, info);
     }
 
     public record CantShrinkNull;
@@ -35,7 +35,7 @@ public class ObjectShrinkClassifier : Classifier
     public record CantShrinkObjectWithNoProperties;
 
 
-    private static InputShrinkingClassification HandleProperties(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    private static InputShrinkingClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
     {
         var properties = info.Type
             .GetProperties(MyBinding.Flags)
@@ -47,15 +47,15 @@ public class ObjectShrinkClassifier : Classifier
             .ToList();
         if (properties.Count == 0)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-            state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
-            return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+            context.State.Docket.Record(new InputShrinkingClueFound(clue));
+            context.State.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
+            return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
         }
         var values = new Dictionary<string, InputShrinkingClassification>();
         foreach (var property in properties)
         {
-            values[property.Name] = HandleProperty(state, check, info, property);
+            values[property.Name] = HandleProperty(context, info, property);
         }
 
         if (values.Any(a => a.Value is InputRelevant))
@@ -63,25 +63,25 @@ public class ObjectShrinkClassifier : Classifier
             var clue = InputShrinkingClue
                 .Keep<ObjectShrinkClassifier>(info.ExecutionId, info.Path, info.Value,
                     $"{{ {string.Join(", ", values.Select(a => $"{a.Key}: {a.Value}"))} }}");
-            state.Docket.Record(new InputShrinkingClueFound(clue));
+            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectRelevant(values);
         }
         else
         {
             var clue = InputShrinkingClue.Ignore<ObjectShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
-            state.Docket.Record(new InputShrinkingClueFound(clue));
+            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectAssumedIrrelevant(values);
         }
     }
 
-    private static InputShrinkingClassification HandleProperty(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info, PropertyInfo propertyInfo)
+    private static InputShrinkingClassification HandleProperty(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
     {
         var propertyValue = propertyInfo.GetValue(info.Value);
         var swapper = new ObjectLens(propertyInfo);
-        using (state.Memory.NestedValue(info.ExecutionId, swapper))
+        using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
-            return new ShrinkClassifierSelector().Classify(state, check, childInfo);
+            return new ShrinkClassifierSelector().Classify(childInfo, context);
         }
     }
 }

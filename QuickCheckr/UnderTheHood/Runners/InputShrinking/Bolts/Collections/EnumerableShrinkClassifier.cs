@@ -54,7 +54,7 @@ public class EnumerableShrinkClassifier : Classifier
                 using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                 {
                     var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
-                    values.Add(selector.Classify(context.State, context.Check, childInfo));
+                    values.Add(selector.Classify(childInfo, context));
                 }
             }
             index++;
