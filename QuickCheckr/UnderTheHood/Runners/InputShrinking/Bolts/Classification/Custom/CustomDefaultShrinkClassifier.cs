@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
