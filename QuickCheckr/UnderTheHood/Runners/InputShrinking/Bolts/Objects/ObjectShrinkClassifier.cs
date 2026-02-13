@@ -84,15 +84,4 @@ public class ObjectShrinkClassifier : Classifier
             return new ShrinkClassifierSelector().Classify(state, check, childInfo);
         }
     }
-
-    //duplicate from ObjectLens
-    private static void SetPropertyValue(PropertyInfo propertyInfo, object target, object value)
-    {
-        var prop = propertyInfo;
-        if (!prop.CanWrite)
-            prop = propertyInfo.DeclaringType!.GetProperty(propertyInfo.Name);
-
-        if (prop != null && prop.CanWrite)
-            prop.SetValue(target, value, null);
-    }
 }
