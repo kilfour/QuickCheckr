@@ -17,6 +17,7 @@ public class EnumerableShrinkClassifier : Classifier
     }
 
     private ShrinkClassifierSelector selector = new();
+
     public Dictionary<int, int>? Mapper { get; set; }
 
     private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
