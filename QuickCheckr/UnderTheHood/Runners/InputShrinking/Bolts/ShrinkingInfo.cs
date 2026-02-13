@@ -5,4 +5,7 @@ public record ShrinkingInfo(
         string Key,
         object? Value,
         string Path,
-        Type Type);
+        Type Type)
+{
+    public Type NormalizedType => Nullable.GetUnderlyingType(Type) ?? Type;
+}

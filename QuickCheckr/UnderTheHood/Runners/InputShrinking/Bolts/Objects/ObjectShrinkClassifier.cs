@@ -1,5 +1,5 @@
-
 using System.Reflection;
+using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -8,18 +8,26 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
 
-public class ObjectShrinkClassifier
+public class ObjectShrinkClassifier : Classifier
 {
-    public InputShrinkingClassification Classify(CheckrState state, CheckrOf<Case> check, ShrinkingInfo info)
+    public override HandlerResult<InputShrinkingClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    {
+        if (!CanHandle(info)) return Unhandled;
+        return HandlerResult.Handled(Handle(info, context));
+    }
+
+    private static bool CanHandle(ShrinkingInfo info) => info.Type.IsClass;
+
+    private static InputShrinkingClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, state.InputPrinter.IntroduceThis(info.Value));
-            state.Docket.Record(new InputShrinkingClueFound(clue));
-            state.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
-            return new InputRelevant(state.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+            context.State.Docket.Record(new InputShrinkingClueFound(clue));
+            context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
+            return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
         }
-        return HandleProperties(state, check, info);
+        return HandleProperties(context.State, context.Check, info);
     }
 
     public record CantShrinkNull;
