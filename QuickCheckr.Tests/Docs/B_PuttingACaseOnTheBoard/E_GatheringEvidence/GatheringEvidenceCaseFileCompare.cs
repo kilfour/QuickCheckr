@@ -1,6 +1,5 @@
 using QuickCheckr.EvidenceGathering;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains;
 using QuickCheckr.UnderTheHood.Proceedings;
 

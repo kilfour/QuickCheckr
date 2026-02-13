@@ -1,11 +1,9 @@
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;

@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 public class EnumerableShrinkClassifier : Classifier
 {

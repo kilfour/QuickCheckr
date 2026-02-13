@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 

@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Drafts.A_AllInputsShrunk;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Warnings;

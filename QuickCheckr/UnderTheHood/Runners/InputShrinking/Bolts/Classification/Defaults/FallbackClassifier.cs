@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Fallback;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingContext, InputShrinkingClassification>
 {

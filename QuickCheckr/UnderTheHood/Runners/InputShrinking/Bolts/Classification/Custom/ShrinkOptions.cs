@@ -1,6 +1,6 @@
 using QuickFuzzr;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
 public interface IShrinkOption
 {

@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Docketing;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Primitives;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 public class PrimitiveShrinkClassifier : Classifier
 {

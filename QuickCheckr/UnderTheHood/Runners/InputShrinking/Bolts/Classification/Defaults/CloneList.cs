@@ -1,7 +1,7 @@
 
 using System.Collections;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collections;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 public static class CloneList
 {

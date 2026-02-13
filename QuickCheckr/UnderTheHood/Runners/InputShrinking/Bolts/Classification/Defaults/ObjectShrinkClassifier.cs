@@ -1,4 +1,5 @@
 using System.Reflection;
+using QuickCheckr;
 using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
@@ -6,7 +7,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Objects;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 public class ObjectShrinkClassifier : Classifier
 {

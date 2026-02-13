@@ -2,7 +2,7 @@
 
 using QuickCheckr.UnderTheHood.Docketing;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
 public class CustomShrinkClassifier(Func<object, IEnumerable<object>> shrinker)
 {

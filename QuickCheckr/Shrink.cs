@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Custom;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickFuzzr;
 
 namespace QuickCheckr;
