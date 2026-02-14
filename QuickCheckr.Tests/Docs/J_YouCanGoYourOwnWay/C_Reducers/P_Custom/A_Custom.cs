@@ -23,9 +23,10 @@ public class A_Custom : CheckrTest<A_Custom>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
-         from expect in Checkr.Expect("Input < 2", () => input < 2)
-         select Case.Closed;
+        // we need to get rid of the generic types here
+        from input in Checkr.Input<int, int>("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
+        from expect in Checkr.Expect("Input < 2", () => input < 2)
+        select Case.Closed;
 
     protected override void Verify(Article article)
     {

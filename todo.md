@@ -2,18 +2,13 @@
 * *Nested* Reducers, first on type, later by path.
 
 ### Doing
-* InputShrinkingClue refactor:  
-    1. Operation (engine-level)  
-        Target: (ExecutionId, Key)  
-        Action: Ignore | Keep | Replace | Remove  
-        Payload: only when Replace (and maybe Keep, but keep shouldn’t need one)  
-    2. Explanation (human-level)  
-        Origin: strategy type  
-        Narrative: an optional "why/how" text  
-        Stats: counts, candidate count, etc.  
+* **Reducers**
+* ReductionNotPossible.cs
 
 ### Todo
+* Add Reducers to Lazy Input
 * Add *Deposition Tests* for collapsed Empty collections warnings.
+* doc/test Reduce.Towards
 
 ### Wish List
 

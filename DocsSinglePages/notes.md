@@ -224,7 +224,7 @@ select Case.Closed;
  ======================================
 ```
 ##### Irrelevant Objects Null Issues
-Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkStrategy.
+Can't shrink/remove 'Other Turtle' because of the null property, see top of ObjectShrinkClassifier.
 
 Check this with: 
 * `InternalAffairs = [InternalAffairs.NullIssues]`  

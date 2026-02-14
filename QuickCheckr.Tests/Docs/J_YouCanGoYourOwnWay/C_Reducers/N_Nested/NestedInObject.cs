@@ -37,6 +37,13 @@ public class NestedInObject : CheckrTest<NestedInObject>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("answer <= 42", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Answer", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("96", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("43", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

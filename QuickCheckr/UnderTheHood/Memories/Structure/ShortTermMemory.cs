@@ -88,10 +88,14 @@ public class ShortTermMemory
         => memories[executionId].GetShrinkOptions(key, type);
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
-        => Current.StoreReducer(key, reducer);
-    public Func<Func<ReductionResult, Reduction>> GetReducer(string key)
-        => Current.GetReducer(key)!;
+    public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
+        => Current.StoreReducerByType(key, reducer);
+    public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
+        => Current.GetReducerByType(key, type);
+    public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
+        => Current.StoreReducerByPath(key, reducers);
+    public Func<Func<ReductionResult, Reduction>>? GetReducerByPath(string key, string path, Type type)
+        => Current.GetReducerByPath(key, path, type);
     // --------------------------------------------------------------------------
     // Warnings
     public Warning? StoreWarning(string key, Func<Warning> factory)

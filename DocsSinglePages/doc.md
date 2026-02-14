@@ -2730,6 +2730,32 @@ select Case.Closed;
   !! Expectation Failed: no a and b
  =====================================
 ```
+#### Reduction Not Possible
+What to do if all reduction values fail ?  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReductionNotPossible.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1373577700
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 21
+            Redux   0
+ ==========================================================
+  !! Expectation Failed: Input should be greater than 42
+ ==========================================================
+```
 #### Nested In Object
 
 **The Model:**  
@@ -2766,11 +2792,85 @@ select Case.Closed;
 ```
   
   
+#### Nested Reducer In Object
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int Answer { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Reduce.TowardsZero)
+from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedReducerInObject.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    686899245
+ ------------------------------------------------------------
+  Executed:
+   - Input: Universe = { Answer: 61 }
+            Redux      { Answer: 43 }
+ =======================================
+  !! Expectation Failed: answer <= 42
+ =======================================
+```
+  
+  
+#### Nested Reducer In Object On Path
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int AnswerOne { get; set; }
+    public int AnswerTwo { get; set; }
+    public int AnswerThree { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(),
+    [("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
+from trace in Checkr.Trace("Universe", () => universe)
+from justRight in Checkr.Expect("just right", () => universe.AnswerOne <= 42 || universe.AnswerTwo >= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedReducerInObjectOnPath.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1118829238
+ ------------------------------------------------------------
+  Executed:
+   - Input: Universe = { AnswerOne: 91, AnswerTwo: 15 }
+            Redux      { AnswerOne: 43, AnswerTwo: 41 }
+   - Trace: Universe = { AnswerOne: 91, AnswerTwo: 15, AnswerThree: 52 }
+ =====================================
+  !! Expectation Failed: just right
+ =====================================
+```
 #### Custom
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
+// we need to get rid of the generic types here
+from input in Checkr.Input<int, int>("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```

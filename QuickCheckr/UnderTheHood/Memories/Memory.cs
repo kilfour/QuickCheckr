@@ -141,10 +141,14 @@ public class Memory
         => GetShrinkOptions(executionId, key, type).Any();
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
-        => ShortTermMemory.StoreReducer(key, reducer);
-    public Func<Func<ReductionResult, Reduction>> GetReducer(string key)
-        => ShortTermMemory.GetReducer(key)!;
+    public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
+        => ShortTermMemory.StoreReducerByType(key, reducer);
+    public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
+        => ShortTermMemory.StoreReducerByPath(key, reducers);
+    public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
+        => ShortTermMemory.GetReducerByType(key, type);
+    public Func<Func<ReductionResult, Reduction>>? GetReducerByPath(string key, string path, Type type)
+        => ShortTermMemory.GetReducerByPath(key, path, type);
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------

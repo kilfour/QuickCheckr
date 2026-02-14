@@ -28,37 +28,37 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<Reducer<T>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreReducer(key, reducer);
-            return CheckrResult.Some(state, GetValue(key, factory, state)!);
-        };
-    }
+    // public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
+    //     Func<Reducer<T>> reducer)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreReducer(key, reducer);
+    //         return CheckrResult.Some(state, GetValue(key, factory, state)!);
+    //     };
+    // }
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<IShrinkOption> shrinkOption,
-        Func<Reducer<T>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
-            state.Memory.StoreReducer(key, reducer);
-            return CheckrResult.Some(state, GetValue(key, factory, state)!);
-        };
-    }
+    // public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
+    //     Func<IShrinkOption> shrinkOption,
+    //     Func<Reducer<T>> reducer)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+    //         state.Memory.StoreReducer(key, reducer);
+    //         return CheckrResult.Some(state, GetValue(key, factory, state)!);
+    //     };
+    // }
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
-        Func<IShrinkOption[]> options,
-        Func<Reducer<T>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreShrinker(key, options);
-            state.Memory.StoreReducer(key, reducer);
-            return CheckrResult.Some(state, GetValue(key, factory, state)!);
-        };
-    }
+    // public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory,
+    //     Func<IShrinkOption[]> options,
+    //     Func<Reducer<T>> reducer)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreShrinker(key, options);
+    //         state.Memory.StoreReducer(key, reducer);
+    //         return CheckrResult.Some(state, GetValue(key, factory, state)!);
+    //     };
+    // }
 }

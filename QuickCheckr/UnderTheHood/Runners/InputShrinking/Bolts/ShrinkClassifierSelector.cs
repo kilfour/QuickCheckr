@@ -23,21 +23,26 @@ public class ShrinkClassifierSelector
         return classification;
     }
 
-    private (Maybe, Maybe<object>) GetRedux(ShrinkingInfo info, ShrinkingContext context)
+    private static (Maybe, Maybe<object>) GetRedux(ShrinkingInfo info, ShrinkingContext context)
     {
-        var reducerFactory = context.State.Memory.GetReducer(info.Path);
+        var reducerFactory = context.State.Memory.GetReducerByType(info.Key, info.Type);
+        reducerFactory ??= context.State.Memory.GetReducerByPath(info.Key, info.Path, info.Type);
         if (reducerFactory == null) return (Maybe.Nothing(), Maybe<object>.Nothing());
         var reducer = reducerFactory();
         var result = new ReductionResult(true, info.Value);
         Reduction step = Reduction.Next(info.Value!);
+        bool failed = false;
         while (step.Continue)
         {
-            if (context.Verifier.RunFailed(info.ExecutionId, info.Key, step.Candidate!))
+            failed = context.Verifier.RunFailed(info.ExecutionId, info.Key, step.Candidate!);
+            if (failed)
                 result = new ReductionResult(true, step.Candidate!);
             else
                 result = new ReductionResult(false, result.Value!);
             step = reducer(result);
         }
+        // if (failed)
+        //     return (Maybe.Nothing(), Maybe<object>.Nothing());
         return (
             Maybe.Just(context.State.InputPrinter.IntroduceThis(step.Result!)),
             Maybe<object>.Just(step.Result!));

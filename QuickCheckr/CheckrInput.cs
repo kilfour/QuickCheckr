@@ -30,35 +30,45 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<Reducer<T>> reducer)
+
+    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr, Func<Reducer<Y>> reducer)
     {
         return state =>
         {
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
+    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr, (string, Func<Reducer<Y>>)[] pathReducers)
+    {
+        return state =>
+        {
+            state.Memory.StoreReducerByPath(key, pathReducers);
+            return HandleInput(state, key, fuzzr);
+        };
+    }
+
+    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr,
         Func<IShrinkOption> shrinkOption,
-        Func<Reducer<T>> reducer)
+        Func<Reducer<Y>> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, () => [shrinkOption()]);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr,
+    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr,
         Func<IShrinkOption[]> options,
-        Func<Reducer<T>> reducer)
+        Func<Reducer<Y>> reducer)
     {
         return state =>
         {
             state.Memory.StoreShrinker(key, options);
-            state.Memory.StoreReducer(key, reducer);
+            state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
     }

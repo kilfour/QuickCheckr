@@ -4,4 +4,6 @@ public abstract record InputShrinkingClassification
 {
     public Maybe Redux { get; init; } = Maybe.Nothing();
     public Maybe<object> ReduxValue { get; init; } = Maybe<object>.Nothing();
+
+    public virtual Maybe GetRedux() => Redux;
 }
