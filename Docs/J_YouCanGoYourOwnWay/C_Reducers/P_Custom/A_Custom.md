@@ -1,17 +1,28 @@
 # Custom
 
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+
 **The Checkr:**  
 ```csharp
-// we need to get rid of the generic types here
-from input in Checkr.Input<int, int>("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
+from input in Checkr.Input("Input", Fuzzr.Int(), CustomTowardsZero.Reducer())
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
 
-**Custom Reducer:**  
+**Reducer:**  
 ```csharp
-public class CustomTowardsZeroReducer
+public class CustomTowardsZero
 {
+    public static Func<Reducer<int>> Reducer() =>
+        () => new CustomTowardsZero().Reduce;
     private int lastFailed = 0;
     public Reduction Reduce(ReductionResult result)
     {

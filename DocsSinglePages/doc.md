@@ -2730,32 +2730,6 @@ select Case.Closed;
   !! Expectation Failed: no a and b
  =====================================
 ```
-#### Reduction Not Possible
-What to do if all reduction values fail ?  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
-from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ReductionNotPossible.cs:64:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1373577700
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 21
-            Redux   0
- ==========================================================
-  !! Expectation Failed: Input should be greater than 42
- ==========================================================
-```
 #### Nested In Object
 
 **The Model:**  
@@ -2867,18 +2841,29 @@ select Case.Closed;
 ```
 #### Custom
 
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+
 **The Checkr:**  
 ```csharp
-// we need to get rid of the generic types here
-from input in Checkr.Input<int, int>("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
+from input in Checkr.Input("Input", Fuzzr.Int(), CustomTowardsZero.Reducer())
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
 
-**Custom Reducer:**  
+**Reducer:**  
 ```csharp
-public class CustomTowardsZeroReducer
+public class CustomTowardsZero
 {
+    public static Func<Reducer<int>> Reducer() =>
+        () => new CustomTowardsZero().Reduce;
     private int lastFailed = 0;
     public Reduction Reduce(ReductionResult result)
     {
@@ -2913,6 +2898,32 @@ public class CustomTowardsZeroReducer
  ====================================
   !! Expectation Failed: Input < 2
  ====================================
+```
+#### Reduction Not Possible
+What to do if all reduction values fail ?  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReductionNotPossible.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1373577700
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 21
+            Redux   0
+ ==========================================================
+  !! Expectation Failed: Input should be greater than 42
+ ==========================================================
 ```
 ## Honey I Shrunk the Inputs
 This is a collection of simple shrinking examples organized per type.  

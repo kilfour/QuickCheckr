@@ -7,6 +7,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers.P_Custom;
 
 [DocFile]
+[DocExperimental]
 public class A_Custom : CheckrTest<A_Custom>
 {
     protected override bool Asserts => false;
@@ -15,16 +16,15 @@ public class A_Custom : CheckrTest<A_Custom>
     [Fact]
     [DocCheckrHeader]
     [DocCheckr]
-    [DocBoldHeader("Custom Reducer")]
-    [DocExample(typeof(CustomTowardsZeroReducer))]
+    [DocBoldHeader("Reducer")]
+    [DocExample(typeof(CustomTowardsZero))]
     [DocReportHeader]
     [DocReport]
     public override void Example() => Run(211010750);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        // we need to get rid of the generic types here
-        from input in Checkr.Input<int, int>("Input", Fuzzr.Int(), () => new CustomTowardsZeroReducer().Reduce)
+        from input in Checkr.Input("Input", Fuzzr.Int(), CustomTowardsZero.Reducer())
         from expect in Checkr.Expect("Input < 2", () => input < 2)
         select Case.Closed;
 
@@ -41,9 +41,20 @@ public class A_Custom : CheckrTest<A_Custom>
     }
 
     [CodeExample]
-    public class CustomTowardsZeroReducer
+    public class CustomTowardsZero
     {
+        /// <summary>
+        /// Returns a reducer which tries to reduce the input to zero.
+        /// </summary>
+        /// <remarks>
+        /// The reducer will try to reduce the value by one if it is greater than zero,
+        /// and increase the value by one if it is less than zero.
+        /// </remarks>
+        public static Func<Reducer<int>> Reducer() =>
+            () => new CustomTowardsZero().Reduce;
+
         private int lastFailed = 0;
+
         public Reduction Reduce(ReductionResult result)
         {
             var value = result.ValueAs<int>();

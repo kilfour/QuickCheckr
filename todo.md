@@ -3,12 +3,13 @@
 
 ### Doing
 * **Reducers**
-* ReductionNotPossible.cs
+* ReductionNotPossible.cs => Warning
 
 ### Todo
 * Add Reducers to Lazy Input
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * doc/test Reduce.Towards
+* figure out which Reducer warnings are needed/useful
 
 ### Wish List
 
