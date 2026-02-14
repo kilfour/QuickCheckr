@@ -90,6 +90,8 @@ public class ShortTermMemory
     // Reducers
     public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
         => Current.StoreReducer(key, reducer);
+    public Func<Func<ReductionResult, Reduction>> GetReducer(string key)
+        => Current.GetReducer(key)!;
     // --------------------------------------------------------------------------
     // Warnings
     public Warning? StoreWarning(string key, Func<Warning> factory)

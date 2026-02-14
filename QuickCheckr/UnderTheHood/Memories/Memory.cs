@@ -143,6 +143,8 @@ public class Memory
     // Reducers
     public void StoreReducer<T>(string key, Func<Reducer<T>> reducer)
         => ShortTermMemory.StoreReducer(key, reducer);
+    public Func<Func<ReductionResult, Reduction>> GetReducer(string key)
+        => ShortTermMemory.GetReducer(key)!;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------

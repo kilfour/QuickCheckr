@@ -108,8 +108,8 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice
                         new InputDeposition(labeled, key, report!)
                         {
                             Original = executionMemory.GetOriginalForKey(key),
-                            Redux = redux.HasValue ? Maybe.Just(inputPrinter.IntroduceThis(redux.Value)) : Maybe.Nothing(),
-                            ReduxValue = redux,
+                            Redux = classification.Redux,
+                            ReduxValue = classification.ReduxValue,
                             InputValue = input.Value,
                             Type = input.Type
                         });

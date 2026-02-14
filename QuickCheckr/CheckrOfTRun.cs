@@ -53,17 +53,6 @@ public static class CheckrOfTRun
         return CaseSummary.FromCaseFiles(caseFiles);
     }
 
-    private static DeliberatedCaseFile Deliberate(
-        Func<CaseFile, int> deliberator,
-        DeliberatedCaseFile? current,
-        CaseFile caseFile)
-    {
-        var score = deliberator(caseFile);
-        if (current is null) return new(caseFile, score);
-        if (current.Score <= score) return current;
-        return new(caseFile, score);
-    }
-
     [StackTraceHidden]
     private static void ReportCaseFile(ExecutionCount executionsPerRun, CheckrRunnerConfig config, CaseFile caseFile)
     {

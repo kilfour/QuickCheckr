@@ -27,24 +27,24 @@ public class InputShrinker(
                 if (classification is InputRelevant)
                 {
                     keptAtLeastOne = true;
-                    var reducerFactory = executionMemory.GetReducer(key);
-                    if (reducerFactory != null)
-                    {
-                        var reducer = reducerFactory();
-                        var verifier = new Verifier(State, Check);
-                        var result = new ReductionResult(true, value.Value);
-                        Reduction step = Reduction.Next(value.Value!);
-                        while (step.Continue)
-                        {
-                            if (verifier.RunFailed(executionId, key, step.Candidate!))
-                                result = new ReductionResult(true, step.Candidate!);
-                            else
-                                result = new ReductionResult(false, result.Value!);
-                            step = reducer(result);
-                        }
-                        shrinkCount++;
-                        executionMemory.StoreInputRedux(key, step.Result!);
-                    }
+                    // var reducerFactory = executionMemory.GetReducer(key);
+                    // if (reducerFactory != null)
+                    // {
+                    //     var reducer = reducerFactory();
+                    //     var verifier = new Verifier(State, Check);
+                    //     var result = new ReductionResult(true, value.Value);
+                    //     Reduction step = Reduction.Next(value.Value!);
+                    //     while (step.Continue)
+                    //     {
+                    //         if (verifier.RunFailed(executionId, key, step.Candidate!))
+                    //             result = new ReductionResult(true, step.Candidate!);
+                    //         else
+                    //             result = new ReductionResult(false, result.Value!);
+                    //         step = reducer(result);
+                    //     }
+                    //     shrinkCount++;
+                    //     //executionMemory.StoreInputRedux(key, step.Result!);
+                    // }
                 }
                 keptAtLeastOne = keptAtLeastOne || State.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type);
                 var (unused, types) = executionMemory.HasUnusedShrinkers(key);
