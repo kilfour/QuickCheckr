@@ -8,8 +8,8 @@ namespace QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
 [DocFile]
 [DocUnderConstruction]
 [DocContent(
-@"After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
-are run on the remaining relevant inputs (example below).  
+@"After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
+are run on a relevant input (example below).  
 
 Note the use of the word *registered*. Staying true to it's shrinking philosophy,
 QuickChecker does not try and guess how to reduce input values. It's up to the user to supply that information.  
