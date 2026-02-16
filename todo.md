@@ -93,6 +93,8 @@
 * Maybe retrieve line number of failed Expectation (perf ?)
   
 ## Refactoring Targets 
+* PrimitiveShrinkClassifier : uses non-deterministic shrinking candidates
+  Guid.NewGuid(), DateTime.UtcNow, ...
 * Add tests for:
   * DuplicateKeyWriteGuardForPoolTraces
   * Deliberation
@@ -120,11 +122,9 @@
 * Try to remove multiple execution shrinking passes.
 * ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in CheckrOfTGatherEvidence and Vault
-* Duplicate code in ObjectLens and ObjectShrinkStrategy.SetPropertyValue
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
 * Compile the CaseFile
-* ExecutionMemory.StoreReducer
 
 ### Already Considered
 > Looked at these and not deemed needed (now).  

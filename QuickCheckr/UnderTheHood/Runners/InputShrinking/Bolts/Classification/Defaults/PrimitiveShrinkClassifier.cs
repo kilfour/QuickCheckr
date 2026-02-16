@@ -18,7 +18,7 @@ public class PrimitiveShrinkClassifier : Classifier
     private static InputShrinkingClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
-        var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.Type));
+        var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.NormalizedType));
         var primitiveVals = PrimitiveValues[primitiveKey];
         foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
         {

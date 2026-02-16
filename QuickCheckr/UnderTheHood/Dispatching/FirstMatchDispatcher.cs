@@ -7,9 +7,9 @@ public class FirstMatchDispatcher<TIn, TContext, TOut>(
     private readonly IEnumerable<FirstMatchHandler<TIn, TContext, TOut>> chain = [.. handlers];
     public TOut Dispatch(TIn input, TContext context)
     {
-        foreach (var h in handlers)
+        foreach (var handler in chain)
         {
-            var result = h.TryHandle(input, context);
+            var result = handler.TryHandle(input, context);
             if (result.HasOutput)
                 return result.Output;
         }

@@ -1,5 +1,4 @@
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -8,33 +7,25 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.A_Primitives.A_NullString;
 
 [DocFile]
-public class NullString : BaseTest
+public class NullString : CheckrTest<NullString>
 {
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from input in Checkr.Input("Input", Fuzzr.String())
-            from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
-            select Case.Closed;
-    }
+    protected override bool Asserts => false;
+    protected override bool Report => false;
 
     [Fact]
-    [DocContent("**The Checkr:**")]
-    [DocExample(typeof(NullString), nameof(GetCheckr))]
-    [DocContent("**The Report:**")]
-    [DocCodeFile("NullString.txt", "text")]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(393010076, 1.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<NullString>(article, false);
-        Verify(article);
-    }
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport]
+    public override void Example() => Run(393010076);
 
-    private static void Verify(Article article)
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from input in Checkr.Input("Input", Fuzzr.String())
+        from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
     {
         Assert.Equal("Fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());

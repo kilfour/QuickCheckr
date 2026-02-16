@@ -37,7 +37,7 @@ public class EnumerableShrinkClassifier : Classifier
             indexKey++;
             var ix = index;
             var before = theList[ix];
-            var valueType = before!.GetType();
+            var valueType = GetElementType(info.Type);
             var elementType = valueType;
             theList.RemoveAt(ix);
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
@@ -71,5 +71,20 @@ public class EnumerableShrinkClassifier : Classifier
                 context.State.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         }
         return new InputAssumedIrrelevant();
+    }
+
+    private static Type GetElementType(Type collectionType)
+    {
+        if (collectionType.IsArray)
+            return collectionType.GetElementType()!;
+
+        if (collectionType.IsGenericType)
+            return collectionType.GetGenericArguments()[0];
+
+        var ienum = collectionType
+            .GetInterfaces()
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+        return ienum?.GetGenericArguments()[0] ?? typeof(object);
     }
 }

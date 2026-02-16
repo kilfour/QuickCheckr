@@ -13,9 +13,9 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
     protected override bool Report => false;
 
     [Fact]
-    [DocContent("**The Checkr:**")]
+    [DocCheckrHeader]
     [DocCheckr]
-    [DocContent("**The Report:**")]
+    [DocReportHeader]
     [DocReport]
     public override void Example() => Run(1000847613);
 

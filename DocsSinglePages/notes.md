@@ -9,12 +9,14 @@ During this process no further executions are performed and no new random values
 QuickCheckr then reports the minimal failing case, 
 together with the number of executions, relevant actions and inputs that were required to find it.  
 ##### Null String
+
 **The Checkr:**  
 ```csharp
-    from input in Checkr.Input("Input", Fuzzr.String())
-    from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.String())
+from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
+select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -26,6 +28,29 @@ together with the number of executions, relevant actions and inputs that were re
  ------------------------------------------------------------
   Executed:
    - WARNING: All inputs were considered irrelevant.
+ ================================
+  !! Expectation Failed: Fails
+ ================================
+```
+##### Nullable Types
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Constant<Nullable<int>>(null!))
+from expect in Checkr.Expect("Fails", () => input.HasValue)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NullableTypes.cs:64:1
+ Original failing run:    1 execution
+ Seed:                    393010076
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = null
  ================================
   !! Expectation Failed: Fails
  ================================
@@ -115,6 +140,32 @@ select Case.Closed;
   !! Expectation Failed: No answer here
  =========================================
 ```
+##### List Containing Null Values
+
+**The Checkr:**  
+```csharp
+from listInput in Checkr.Input("List Input", Fuzzr.Int().Nullable().Many(0, 10))
+from expect in Checkr.Expect("no nulls allowed", () => listInput.All(a => a.HasValue))
+from trace in Checkr.Trace("List Input", () => listInput)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ListContainingNullValues.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    1833095082
+ ------------------------------------------------------------
+  Executed:
+   - Input: List Input = [ null ]
+   - Trace: List Input = [ 49, 36, null, 95, null, 82, 73, 58, 2 ]
+ ===========================================
+  !! Expectation Failed: no nulls allowed
+ ===========================================
+```
 #### Objects
 ##### Removes Irrelevant Properties
 ```csharp
@@ -197,6 +248,7 @@ public record Person(string Name, int Age);
  ==========================================
 ```
 ##### Irrelevant Objects
+
 **The Checkr:**  
 ```csharp
 from person in Checkr.Input("Person", Fuzzr.One<Person>())
@@ -206,6 +258,7 @@ from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
 from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
