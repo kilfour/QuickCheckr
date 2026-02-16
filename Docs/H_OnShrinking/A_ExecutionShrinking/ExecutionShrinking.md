@@ -1,4 +1,6 @@
 # Execution Shrinking
+[On Shrinking][OnShrinking] | [Next][InputShrinking]  
+  
 This is the first step in QuickCheckr shrinking.  
 The following simple example fails on the third execution.  
 ```csharp
@@ -34,3 +36,7 @@ So after *Execution Shrinking*, the result is:
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+
+[OnShrinking]: ../OnShrinking.md
+
+[InputShrinking]: ../C_InputShrinking/InputShrinking.md

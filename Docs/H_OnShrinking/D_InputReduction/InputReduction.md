@@ -1,4 +1,6 @@
 # Input Reduction
+[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  
+  
 
 !! WARNING: **Under Construction** !!
 
@@ -9,8 +11,8 @@
 > Use with caution in production code. 
 
   
-After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
-are run on the remaining relevant inputs (example below).  
+After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
+are run on a relevant input (example below).  
 
 Note the use of the word *registered*. Staying true to it's shrinking philosophy,
 QuickChecker does not try and guess how to reduce input values. It's up to the user to supply that information.  
@@ -74,3 +76,9 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
   
+
+[OnShrinking]: ../OnShrinking.md
+
+[InputShrinking]: ../C_InputShrinking/InputShrinking.md
+
+[DeliberationShrinking]: ../F_DeliberationShrinking/DeliberationShrinking.md

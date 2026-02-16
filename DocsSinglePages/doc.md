@@ -9,7 +9,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
 - [Checkr-ing Things Out (a quick tour)][CheckringThingsOut]
   -  A minimal Checkr and how to run it.
   -  How to add inputs, actions, and traces.
-- [The Stash, Runs and executions][TheStashRunsAndExecutions]
+- [The Stash, Runs and Executions][TheStashRunsAndExecutions]
   -  An example and an explanation of how QuickCheckr handles stateful testing.
 - [Choosing the Next Move][ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.
@@ -1740,7 +1740,24 @@ It never tries to *outsmart* your domain with clever global algorithms.
 Shrinking is purely local and irrelevance-based: if removing a value (or execution) still makes the property fail,
 QuickCheckr marks it as *irrelevant*.  
 This avoids surprising or *magical* shrink results.  
+### Contents
+
+- [Execution Shrinking][ExecutionShrinking]
+- [Input Shrinking][ExecutionShrinking]
+- [Input Reduction][Input Reduction]
+- [Deliberation Shrinking][DeliberationShrinking]
+  
+
+[ExecutionShrinking]: #execution-shrinking
+
+[InputShrinking]: #input-shrinking
+
+[InputReduction]: #input-reduction
+
+[DeliberationShrinking]: #deliberation-shrinking
 ### Execution Shrinking
+[On Shrinking][OnShrinking] | [Next][InputShrinking]  
+  
 This is the first step in QuickCheckr shrinking.  
 The following simple example fails on the third execution.  
 ```csharp
@@ -1776,7 +1793,13 @@ So after *Execution Shrinking*, the result is:
  - Counter does not equal 3: 2x
  ------------------------------------------------------------
 ```
+
+[OnShrinking]: #on-shrinking
+
+[InputShrinking]: #input-shrinking
 ### Input Shrinking
+[On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  
+  
 This is the next step in QuickCheckr shrinking and the most complex one.  
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.  
 The following simple example has one input but always fails.  
@@ -1836,7 +1859,15 @@ Result:
 Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
 
 [HoneyIShrunkTheInputs]: #honey-i-shrunk-the-inputs
+
+[OnShrinking]: #on-shrinking
+
+[ExecutionShrinking]: #execution-shrinking
+
+[InputReduction]: #input-reduction
 ### Input Reduction
+[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  
+  
 
 !! WARNING: **Under Construction** !!
 
@@ -1847,8 +1878,8 @@ Many more examples focused on shrinking behaviour can be found [here][HoneyIShru
 > Use with caution in production code. 
 
   
-After InputShrinking has classified all inputs as either relevant or irrelevant, any registered *reducers*
-are run on the remaining relevant inputs (example below).  
+After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
+are run on a relevant input (example below).  
 
 Note the use of the word *registered*. Staying true to it's shrinking philosophy,
 QuickChecker does not try and guess how to reduce input values. It's up to the user to supply that information.  
@@ -1912,7 +1943,15 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
   
+
+[OnShrinking]: #on-shrinking
+
+[InputShrinking]: #input-shrinking
+
+[DeliberationShrinking]: #deliberation-shrinking
 ### Deliberation Shrinking
+[On Shrinking][OnShrinking] | [Previous][InputReduction]  
+  
 This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
 A first example, as well as how to enable this feature,
@@ -1998,6 +2037,10 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```
 
 [Configuration]: #configuration
+
+[InputReduction]: #input-reduction
+
+[DeliberationShrinking]: #deliberation-shrinking
 ## You Can Go Your Own Way
 
 !! WARNING: **Unfinished Documentation** !!
@@ -2862,6 +2905,13 @@ select Case.Closed;
 ```csharp
 public class CustomTowardsZero
 {
+    /// <summary>
+    /// Returns a reducer which tries to reduce the input to zero.
+    /// </summary>
+    /// <remarks>
+    /// The reducer will try to reduce the value by one if it is greater than zero,
+    /// and increase the value by one if it is less than zero.
+    /// </remarks>
     public static Func<Reducer<int>> Reducer() =>
         () => new CustomTowardsZero().Reduce;
     private int lastFailed = 0;

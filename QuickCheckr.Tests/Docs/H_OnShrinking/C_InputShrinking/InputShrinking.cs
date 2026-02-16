@@ -1,3 +1,5 @@
+using QuickCheckr.Tests.Docs.H_OnShrinking.A_ExecutionShrinking;
+using QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
 using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -9,6 +11,10 @@ namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
 
 [DocFile]
 [DocLink(typeof(HoneyIShrunkTheInputs))]
+[DocLink(typeof(OnShrinking))]
+[DocLink(typeof(ExecutionShrinking))]
+[DocLink(typeof(InputReduction))]
+[DocContent("[On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  \n")]
 [DocContent(
 @"This is the next step in QuickCheckr shrinking and the most complex one.  
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.")]

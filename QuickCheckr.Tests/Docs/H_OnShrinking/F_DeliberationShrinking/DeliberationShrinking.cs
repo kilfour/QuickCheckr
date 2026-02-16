@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
+using QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
 using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -13,6 +14,9 @@ namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
 [DocLink(typeof(Configuration))]
+[DocLink(typeof(InputReduction))]
+[DocLink(typeof(DeliberationShrinking))]
+[DocContent("[On Shrinking][OnShrinking] | [Previous][InputReduction]  \n")]
 [DocContent(
 @"This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 

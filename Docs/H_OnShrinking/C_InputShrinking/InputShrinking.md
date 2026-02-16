@@ -1,4 +1,6 @@
 # Input Shrinking
+[On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  
+  
 This is the next step in QuickCheckr shrinking and the most complex one.  
 QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.  
 The following simple example has one input but always fails.  
@@ -58,3 +60,9 @@ Result:
 Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
 
 [HoneyIShrunkTheInputs]: ../../M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md
+
+[OnShrinking]: ../OnShrinking.md
+
+[ExecutionShrinking]: ../A_ExecutionShrinking/ExecutionShrinking.md
+
+[InputReduction]: ../D_InputReduction/InputReduction.md

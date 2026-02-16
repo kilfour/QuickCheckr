@@ -25,7 +25,7 @@ Each chapter builds on the previous one, introducing new concepts through execut
 - [Checkr-ing Things Out (a quick tour)][CheckringThingsOut]
   -  A minimal Checkr and how to run it.
   -  How to add inputs, actions, and traces.
-- [The Stash, Runs and executions][TheStashRunsAndExecutions]
+- [The Stash, Runs and Executions][TheStashRunsAndExecutions]
   -  An example and an explanation of how QuickCheckr handles stateful testing.
 - [Choosing the Next Move][ChoosingTheNextMove]
   -  A brief introduction to behavioural branching.

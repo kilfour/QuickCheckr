@@ -1,3 +1,5 @@
+using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
+using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -6,6 +8,10 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
 
 [DocFile]
+[DocLink(typeof(OnShrinking))]
+[DocLink(typeof(InputShrinking))]
+[DocLink(typeof(DeliberationShrinking))]
+[DocContent("[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  \n")]
 [DocUnderConstruction]
 [DocContent(
 @"After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*

@@ -1,4 +1,6 @@
 # Deliberation Shrinking
+[On Shrinking][OnShrinking] | [Previous][InputReduction]  
+  
 This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
 
 A first example, as well as how to enable this feature,
@@ -84,3 +86,7 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 ```
 
 [Configuration]: ../../B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md
+
+[InputReduction]: ../D_InputReduction/InputReduction.md
+
+[DeliberationShrinking]: DeliberationShrinking.md
