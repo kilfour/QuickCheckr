@@ -10,7 +10,7 @@ This avoids surprising or *magical* shrink results.
 
 - [Execution Shrinking][ExecutionShrinking]
 - [Input Shrinking][ExecutionShrinking]
-- [Input Reduction][Input Reduction]
+- [Input Reduction][InputReduction]
 - [Deliberation Shrinking][DeliberationShrinking]
   
 

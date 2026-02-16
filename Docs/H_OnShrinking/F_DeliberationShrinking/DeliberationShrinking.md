@@ -87,6 +87,6 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 
 [Configuration]: ../../B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md
 
-[InputReduction]: ../D_InputReduction/InputReduction.md
+[OnShrinking]: ../OnShrinking.md
 
-[DeliberationShrinking]: DeliberationShrinking.md
+[InputReduction]: ../D_InputReduction/InputReduction.md

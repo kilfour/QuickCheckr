@@ -1744,7 +1744,7 @@ This avoids surprising or *magical* shrink results.
 
 - [Execution Shrinking][ExecutionShrinking]
 - [Input Shrinking][ExecutionShrinking]
-- [Input Reduction][Input Reduction]
+- [Input Reduction][InputReduction]
 - [Deliberation Shrinking][DeliberationShrinking]
   
 
@@ -2038,9 +2038,9 @@ A similar thing can happen when shrinking objects, and the solution is exactly t
 
 [Configuration]: #configuration
 
-[InputReduction]: #input-reduction
+[OnShrinking]: #on-shrinking
 
-[DeliberationShrinking]: #deliberation-shrinking
+[InputReduction]: #input-reduction
 ## You Can Go Your Own Way
 
 !! WARNING: **Unfinished Documentation** !!
