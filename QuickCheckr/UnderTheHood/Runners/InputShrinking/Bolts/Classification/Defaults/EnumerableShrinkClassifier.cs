@@ -30,6 +30,7 @@ public class EnumerableShrinkClassifier : Classifier
         var theList = CloneList.AsOriginalType(info.Value!);
         var values = new List<InputShrinkingClassification>();
         var elementCount = theList.Count;
+        var valueType = GetElementType(info.Type);
         int index = 0;
         int indexKey = -1;
         while (index < theList.Count)
@@ -37,7 +38,7 @@ public class EnumerableShrinkClassifier : Classifier
             indexKey++;
             var ix = index;
             var before = theList[ix];
-            var valueType = GetElementType(info.Type);
+
             var elementType = valueType;
             theList.RemoveAt(ix);
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
