@@ -40,11 +40,11 @@ public class ListReverse : CheckrTest<ListReverse>
         => Config.NoLabels(config);
 
     [Fact]
-    [DocContent("**The Fuzzr:**")]
+    [DocBoldHeader("The Fuzzr")]
     [DocExample(typeof(ListReverse), nameof(ListFuzzr))]
-    [DocContent("**The Checkr:**")]
+    [DocBoldHeader("The Checkr")]
     [DocCheckr]
-    [DocContent("**The Report:**")]
+    [DocBoldHeader("The Report")]
     [DocReport]
     public override void Example() => Run(498116108);
 

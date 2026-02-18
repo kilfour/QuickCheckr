@@ -10,7 +10,7 @@ public static partial class Checkr
     public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory) =>
         state => CheckrResult.Some(state, GetValue(key, factory, state)!);
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory, Func<IShrinkOption> shrinkOption)
+    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory, Func<IClassificationOption> shrinkOption)
     {
         return state =>
         {
@@ -19,7 +19,7 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory, Func<IShrinkOption[]> options)
+    public static CheckrOf<T> Input<T>(string key, Func<FuzzrOf<T>> factory, Func<IClassificationOption[]> options)
     {
         return state =>
         {

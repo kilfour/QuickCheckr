@@ -5,6 +5,7 @@ using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
 using QuickCheckr.Tests.Notes;
 using QuickCheckr.Tests.CookBook;
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
 
 
 Explain.OnlyThis<CreateReadMe>("README.md");
@@ -15,6 +16,7 @@ Explain.These<Drafts>("Drafts/");
 Explain.These<Experimental>("Experimental/");
 // Explain.These<Notes>("Notes/");
 
+Explain.This<YouCanGoYourOwnWay>("fleetwood.md");
 Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 Explain.This<Documentation>("DocsSinglePages/doc.md");
 Explain.This<Drafts>("DocsSinglePages/drafts.md");

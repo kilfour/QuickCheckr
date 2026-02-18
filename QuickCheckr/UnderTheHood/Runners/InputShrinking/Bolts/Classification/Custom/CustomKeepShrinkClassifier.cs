@@ -3,12 +3,12 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomKeepShrinkClassifier : CustomClassifier<IShrinkOptionKeep>
+public class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOptionKeep>
 {
-    protected override InputShrinkingClassification GetClassification(IShrinkOptionKeep option, CustomShrinkingContext customContext)
+    protected override InputShrinkingClassification GetClassification(IClassificationOptionKeep option, CustomShrinkingContext customContext)
     {
         var info = customContext.Info;
-        var keep = InputShrinkingClue.Keep<CustomShrinkClassifier>(
+        var keep = InputShrinkingClue.Keep<CustomClassifierRunner>(
             info.ExecutionId, info.Path, info.Value, customContext.Context.State.InputPrinter.IntroduceThis(info.Value));
         customContext.Context.State.Docket.Record(new InputShrinkingClueFound(keep));
         return new InputRelevant(customContext.Context.State.InputPrinter.IntroduceThis(info.Value));

@@ -1509,7 +1509,7 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Shrink.None<string>)
+        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Try.None<string>)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach)
@@ -1520,8 +1520,8 @@ public class GatheringEvidenceCheckr
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
                 , () => [
-                    Shrink.Default<IEnumerable<string>>(),
-                    Shrink.Collection([[.. coach.Value.Skills]]) ]
+                    Try.Default<IEnumerable<string>>(),
+                    Try.Collection([[.. coach.Value.Skills]]) ]
                 , Reduce.Collection([[], [.. coach.Value.Skills]]))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
@@ -1531,7 +1531,7 @@ public class GatheringEvidenceCheckr
             select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCourse =
-        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Shrink.None<string>)
+        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Try.None<string>)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course)
@@ -2265,7 +2265,7 @@ Hence this warning.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), () => Shrink.Values(["unused"]))
+from input in Checkr.Input("Input", Fuzzr.Int(), () => Try.Values(["unused"]))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -2292,7 +2292,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Shrink.Default<Thing>())
+    () => Try.Default<Thing>())
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2325,7 +2325,7 @@ from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
     // The lamda argument is the original Input value
-    () => Shrink.Function((Thing a) => [new Thing()]))
+    () => Try.Function((Thing a) => [new Thing()]))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2353,7 +2353,8 @@ select Case.Closed;
 **The Checkr:**  
 ```csharp
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+    //from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), () => Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Shrink.OnType<Thing>(() => Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2383,7 +2384,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Shrink.Keep<Thing>())
+    () => Try.Keep<Thing>())
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2414,7 +2415,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => [Shrink.Values([new Thing()]), Shrink.Function((Thing a) => [new Thing()])])
+    () => [Try.Values([new Thing()]), Try.Function((Thing a) => [new Thing()])])
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2444,7 +2445,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Shrink.None<Thing>())
+    () => Try.None<Thing>())
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2479,7 +2480,7 @@ This is correct behavior.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Shrink.Values([new Thing()]))
+    () => Try.Values([new Thing()]))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -2727,7 +2728,8 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+//from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
 ```
@@ -3317,8 +3319,8 @@ from _ in Checkr.OneOfWhen(
         from ints in Checkr.Input("Ints",
     Fuzzr.Int().Many(2),
     () => [
-        Shrink.Default<IEnumerable<int>>(),
-        Shrink.Collection([thing.Ints])],
+        Try.Default<IEnumerable<int>>(),
+        Try.Collection([thing.Ints])],
     Reduce.Collection([[], thing.Ints]))
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
@@ -3448,8 +3450,8 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```
 We could help the shrinker by rewriting your checkr, in order to avoid the irrelevant input being reported as relevant.  
 ```csharp
-    from everything in Checkr.Input("Everything", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
-    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
+    from everything in Checkr.Input("Everything", TheLifeFuzzr, () => Try.Fuzzr(TheLifeFuzzr))
+    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, () => Try.Fuzzr(TheLifeFuzzr))
     from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
     from trace in Checkr.Trace("The Universe", () => universe)
     from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())

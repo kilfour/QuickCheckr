@@ -4,7 +4,7 @@ Hence this warning.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), () => Shrink.Values(["unused"]))
+from input in Checkr.Input("Input", Fuzzr.Int(), () => Try.Values(["unused"]))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```

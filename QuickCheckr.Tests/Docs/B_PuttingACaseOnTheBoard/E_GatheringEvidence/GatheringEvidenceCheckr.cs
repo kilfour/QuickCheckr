@@ -19,7 +19,7 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Shrink.None<string>)
+        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Try.None<string>)
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach)
@@ -30,8 +30,8 @@ public class GatheringEvidenceCheckr
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
                 , () => [
-                    Shrink.Default<IEnumerable<string>>(),
-                    Shrink.Collection([[.. coach.Value.Skills]]) ]
+                    Try.Default<IEnumerable<string>>(),
+                    Try.Collection([[.. coach.Value.Skills]]) ]
                 , Reduce.Collection([[], [.. coach.Value.Skills]]))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
@@ -41,7 +41,7 @@ public class GatheringEvidenceCheckr
             select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCourse =
-        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Shrink.None<string>)
+        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Try.None<string>)
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course)

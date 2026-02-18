@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
 public class CustomClassifierDispatcher(DefaultClassifierDispatcher defaults)
-        : FirstMatchCollectionDispatcher<IShrinkOption, CustomShrinkingContext, InputShrinkingClassification>(
+        : FirstMatchCollectionDispatcher<IClassificationOption, CustomShrinkingContext, InputShrinkingClassification>(
             [ new CustomFuzzrShrinkClassifier()
             , new CustomFunctionShrinkClassifier()
             , new CustomDefaultShrinkClassifier(defaults)

@@ -57,8 +57,8 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```
 We could help the shrinker by rewriting your checkr, in order to avoid the irrelevant input being reported as relevant.  
 ```csharp
-    from everything in Checkr.Input("Everything", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
-    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, () => Shrink.Fuzzr(TheLifeFuzzr))
+    from everything in Checkr.Input("Everything", TheLifeFuzzr, () => Try.Fuzzr(TheLifeFuzzr))
+    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, () => Try.Fuzzr(TheLifeFuzzr))
     from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
     from trace in Checkr.Trace("The Universe", () => universe)
     from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())

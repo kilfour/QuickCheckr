@@ -6,7 +6,7 @@ from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
     // The lamda argument is the original Input value
-    () => Shrink.Function((Thing a) => [new Thing()]))
+    () => Try.Function((Thing a) => [new Thing()]))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```

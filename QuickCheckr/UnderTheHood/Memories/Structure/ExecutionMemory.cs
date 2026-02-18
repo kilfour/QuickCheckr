@@ -96,10 +96,10 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Shrinkers
-    private readonly TypedMemoryBank<IShrinkOption[]> shrinkers = new();
-    public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
+    private readonly TypedMemoryBank<IClassificationOption[]> shrinkers = new();
+    public void StoreShrinker(string key, Func<IClassificationOption[]> factory)
         => shrinkers.Store(key, factory);
-    public IEnumerable<IShrinkOption> GetShrinkOptions(string key, Type type)
+    public IEnumerable<IClassificationOption> GetShrinkOptions(string key, Type type)
     {
         var options = shrinkers.Get(key);
         if (options == null) return [];
@@ -131,14 +131,16 @@ public class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Reducers
-    public record TypedReducerFactory(Type TargetType, Func<Func<ReductionResult, Reduction>> ReducerFactory);
-    private readonly TypedMemoryBank<TypedReducerFactory> reducers = new();
+    private readonly TypedMemoryBank<TypeReducerFactory> reducers = new();
     public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
-        => reducers.Store(key, () => new TypedReducerFactory(typeof(T), () => // looks ugly, but is needed
+        => reducers.Store(key, () => new TypeReducerFactory(typeof(T), () =>
             {
                 Reducer<T> f = reducer();
                 return a => f(a);
             }));
+    public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
+        => reducers.Store(key, () => new TypeReducerFactory(type, reducer));
+
     public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
     {
         var typedReducerFactory = reducers.Get(key);
@@ -147,7 +149,6 @@ public class ExecutionMemory
         return typedReducerFactory.ReducerFactory;
     }
 
-    public record PathReducerFactory(string Path, Type TargetType, Func<Func<ReductionResult, Reduction>> ReducerFactory);
     private readonly TypedMemoryBank<PathReducerFactory[]> pathReducers = new();
     public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
         => pathReducers.Store(key, () =>

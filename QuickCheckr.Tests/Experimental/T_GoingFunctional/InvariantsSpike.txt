@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    TheTest
+ Location:                Experimental\T_GoingFunctional\InvariantsSpike.cs:45:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 9 shrinks)
+ Seed:                    1635924583
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, 42 ]
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+ Passed Expectations
+ - Property: 1x
+ ------------------------------------------------------------

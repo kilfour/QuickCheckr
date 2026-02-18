@@ -6,13 +6,30 @@ using QuickFuzzr;
 
 namespace QuickCheckr;
 
-
 public static partial class Checkr
 {
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr) =>
         state => HandleInput(state, key, fuzzr);
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IShrinkOption> shrinkOption)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params Shrinker[] shrinkers)
+    {
+        return state =>
+        {
+            state.Memory.StoreShrinker(key, () => [.. shrinkers.SelectMany(s => s.Classifiers())]);
+            foreach (var reducer in shrinkers.Where(a => a.Reducers is not null).SelectMany(a => a.Reducers!))
+            {
+                if (reducer is ITypeReducerOption typeReducer)
+                    state.Memory.StoreReducerByType(key, typeReducer.TargetType, typeReducer.ReducerFactory);
+
+                // if (reducer is PathReducerFactory pathReducer)
+                //     state.Memory.StoreReducerByPath(key, pathReducer.TargetType, pathReducer.Path, pathReducer.ReducerFactory);
+            }
+
+            return HandleInput(state, key, fuzzr);
+        };
+    }
+
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption> shrinkOption)
     {
         return state =>
         {
@@ -21,7 +38,7 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IShrinkOption[]> options)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption[]> options)
     {
         return state =>
         {
@@ -50,7 +67,7 @@ public static partial class Checkr
     }
 
     public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr,
-        Func<IShrinkOption> shrinkOption,
+        Func<IClassificationOption> shrinkOption,
         Func<Reducer<Y>> reducer)
     {
         return state =>
@@ -62,7 +79,7 @@ public static partial class Checkr
     }
 
     public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr,
-        Func<IShrinkOption[]> options,
+        Func<IClassificationOption[]> options,
         Func<Reducer<Y>> reducer)
     {
         return state =>

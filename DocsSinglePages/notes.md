@@ -339,8 +339,8 @@ Check this with:
 ```
 #### Custom Shrinkers
 ```csharp
-    from one in Checkr.Input("One", Fuzzr.Int(), () => Shrink.Values([0, 1]))
-    from two in Checkr.Input("Two", Fuzzr.Int(), () => Shrink.Values([0, 1]))
+    from one in Checkr.Input("One", Fuzzr.Int(), () => Try.Values([0, 1]))
+    from two in Checkr.Input("Two", Fuzzr.Int(), () => Try.Values([0, 1]))
     from traceOne in Checkr.Trace("Original One", () => one)
     from traceTwo in Checkr.Trace("Original Two", () => two)
     from expect in Checkr.Expect("One should not be 42", () => one != 42)
@@ -364,8 +364,8 @@ Check this with:
 ```
 #### Fuzzr Shrinking
 ```csharp
-    from one in Checkr.Input("One", Fuzzr.Int(), () => Shrink.Fuzzr(Fuzzr.Int(), 3))
-    from two in Checkr.Input("Two", Fuzzr.Int(), () => Shrink.Fuzzr(Fuzzr.Int(), 3))
+    from one in Checkr.Input("One", Fuzzr.Int(), () => Try.Fuzzr(Fuzzr.Int(), 3))
+    from two in Checkr.Input("Two", Fuzzr.Int(), () => Try.Fuzzr(Fuzzr.Int(), 3))
     from traceOne in Checkr.Trace("Original One", () => one)
     from traceTwo in Checkr.Trace("Original Two", () => two)
     from expect in Checkr.Expect("One should not be 42", () => one != 42)

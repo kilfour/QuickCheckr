@@ -133,9 +133,9 @@ public class Memory
     // --------------------------------------------------------------------------
     // Shrinkers
     public bool IsConfigRun { get; set; } = false;
-    public void StoreShrinker(string key, Func<IShrinkOption[]> factory)
+    public void StoreShrinker(string key, Func<IClassificationOption[]> factory)
         => ShortTermMemory.StoreShrinker(key, factory);
-    public IEnumerable<IShrinkOption> GetShrinkOptions(int executionId, string key, Type type)
+    public IEnumerable<IClassificationOption> GetShrinkOptions(int executionId, string key, Type type)
         => ShortTermMemory.GetShrinkOptions(executionId, key, type);
     public bool HasShrinker(int executionId, string key, Type type)
         => GetShrinkOptions(executionId, key, type).Any();
@@ -143,6 +143,8 @@ public class Memory
     // Reducers
     public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
         => ShortTermMemory.StoreReducerByType(key, reducer);
+    public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
+        => ShortTermMemory.StoreReducerByType(key, type, reducer);
     public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
         => ShortTermMemory.StoreReducerByPath(key, reducers);
     public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)

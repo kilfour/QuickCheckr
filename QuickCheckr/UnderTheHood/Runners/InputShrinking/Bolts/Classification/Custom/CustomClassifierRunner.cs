@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomShrinkClassifier(Func<object, IEnumerable<object>> shrinker)
+public class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
 {
     public InputShrinkingClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
@@ -15,13 +15,13 @@ public class CustomShrinkClassifier(Func<object, IEnumerable<object>> shrinker)
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
-                var clue = InputShrinkingClue.Keep<CustomShrinkClassifier>(
+                var clue = InputShrinkingClue.Keep<CustomClassifierRunner>(
                     info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
             }
         }
-        var ignore = InputShrinkingClue.Ignore<CustomShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
+        var ignore = InputShrinkingClue.Ignore<CustomClassifierRunner>(info.ExecutionId, info.Path, info.Value);
         context.State.Docket.Record(new InputShrinkingClueFound(ignore));
         return new InputAssumedIrrelevant();
     }

@@ -9,7 +9,7 @@ public class CustomFallbackClassifier : FirstMatchCollectionFallback<CustomShrin
     public override InputShrinkingClassification Handle(CustomShrinkingContext context)
     {
         var info = context.Info;
-        var clue = InputShrinkingClue.Ignore<CustomShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
+        var clue = InputShrinkingClue.Ignore<CustomClassifierRunner>(info.ExecutionId, info.Path, info.Value);
         context.Context.State.Docket.Record(new InputShrinkingClueFound(clue));
         return new InputAssumedIrrelevant();
     }

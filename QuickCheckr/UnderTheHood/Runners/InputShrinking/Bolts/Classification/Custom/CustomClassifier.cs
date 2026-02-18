@@ -4,12 +4,12 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
 public abstract class CustomClassifier<T>
-    : FirstMatchHandler<IShrinkOption, CustomShrinkingContext, InputShrinkingClassification>
+    : FirstMatchHandler<IClassificationOption, CustomShrinkingContext, InputShrinkingClassification>
 {
-    public override HandlerResult<InputShrinkingClassification> TryHandle(IShrinkOption input, CustomShrinkingContext customContext)
+    public override HandlerResult<InputShrinkingClassification> TryHandle(IClassificationOption input, CustomShrinkingContext customContext)
         => ReturnIfRelevant(input, customContext);
 
-    private HandlerResult<InputShrinkingClassification> ReturnIfRelevant(IShrinkOption input, CustomShrinkingContext ctx)
+    private HandlerResult<InputShrinkingClassification> ReturnIfRelevant(IClassificationOption input, CustomShrinkingContext ctx)
     => input is T option
         ? ReturnIfRelevant(GetClassification(option, ctx))
         : Unhandled;

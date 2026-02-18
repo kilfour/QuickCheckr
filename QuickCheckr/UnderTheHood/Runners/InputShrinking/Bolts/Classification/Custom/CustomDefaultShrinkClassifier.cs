@@ -3,8 +3,8 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomDefaultShrinkClassifier(DefaultClassifierDispatcher defaults) : CustomClassifier<IShrinkOptionDefault>
+public class CustomDefaultShrinkClassifier(DefaultClassifierDispatcher defaults) : CustomClassifier<IClassificationOptionDefault>
 {
-    protected override InputShrinkingClassification GetClassification(IShrinkOptionDefault option, CustomShrinkingContext customContext)
+    protected override InputShrinkingClassification GetClassification(IClassificationOptionDefault option, CustomShrinkingContext customContext)
         => defaults.Dispatch(customContext.Info, customContext.Context);
 }
