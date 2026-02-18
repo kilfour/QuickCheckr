@@ -93,21 +93,6 @@ public class ExecutionMemory
         => inputShrinkClassifications;
     // --------------------------------------------------------------------------
 
-    // --------------------------------------------------------------------------
-    // Redux Outcomes
-    private readonly Dictionary<string, object> reduxOutcomes = [];
-    public void StoreInputRedux(string key, object result)
-        => reduxOutcomes[key] = result;
-    public Maybe<object> GetInputReduxForKey(string key)
-    {
-        if (reduxOutcomes.TryGetValue(key, out object? value))
-        {
-            return Maybe<object>.Just(value);
-        }
-        return Maybe<object>.Nothing();
-    }
-    // --------------------------------------------------------------------------
-
 
     // --------------------------------------------------------------------------
     // Shrinkers
