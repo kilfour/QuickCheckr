@@ -22,6 +22,15 @@
     * A_TheShowrClass
 
 ### Done/Ready for Changelog after review
+* Input Shrinking Redesign : accomodating for Reducers for one
+  * A *Shrinker* now consists out of two parts 
+    1. Classifier: decides whether input is relevant
+    2. Reducer: tries to find a minimal value
+  This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine. 
+* Renamed Custom Shrinker factory class from `Shrink` to `Try`.
+* Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
+  
+   
 
 ## 0.0.10 : All Aboard
 * Do a sanity pass on the public API.

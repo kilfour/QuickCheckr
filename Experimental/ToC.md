@@ -1,4 +1,5 @@
   - [The Needler Pattern](A_TheNeedlerPattern/TheNeedlerPattern.md)
   - [Showr Use](D_ShowrUse/ShowrUse.md)
   - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
+  - [Invariants Spike](T_GoingFunctional/InvariantsSpike.md)
   - [Warehousing](W_Warehouse/Warehousing.md)

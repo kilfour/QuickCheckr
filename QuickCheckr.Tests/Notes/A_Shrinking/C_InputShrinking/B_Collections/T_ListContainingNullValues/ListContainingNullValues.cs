@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;

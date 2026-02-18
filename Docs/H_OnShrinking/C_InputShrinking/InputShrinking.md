@@ -2,7 +2,18 @@
 [On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  
   
 This is the next step in QuickCheckr shrinking and the most complex one.  
-QuickCheckr shrinking tries to remove inputs, one by one, to find a minimal failing case.  
+
+In QuickCheckr, **input shrinking is a two-step process**:
+
+1. **Classification**: decide *what is relevant* for reproducing the failure.
+2. **Reduction (Redux)**: simplify the *relevant* parts to improve human understanding, while still reproducing the failure.
+
+A key principle: the engine always keeps the **original failing input**.
+Reduction produces a **Redux view** alongside the original.
+The report can therefore show both **Original** and **Redux** without pretending the original counterexample was replaced.  
+Reduction is (by default) an opt-in feature. In this chapter we are mainly demonstrating Classification.
+Reduction will be elaborated on later.
+  
 The following simple example has one input but always fails.  
 ```csharp
     from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())

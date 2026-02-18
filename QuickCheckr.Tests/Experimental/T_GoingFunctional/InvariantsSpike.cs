@@ -34,8 +34,8 @@ public class InvariantsSpike : BaseTest
     {
         var article = TheJournalist.Exposes(() => TheTest());
         WriteAsserts(article, false);
-        WriteReport<InvariantsSpike>(article, true);
-        ExplainMe<InvariantsSpike>(true);
+        WriteReport<InvariantsSpike>(article, false);
+        ExplainMe<InvariantsSpike>(false);
         Verify(article);
     }
 

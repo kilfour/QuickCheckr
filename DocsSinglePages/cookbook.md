@@ -20,12 +20,14 @@ public class TheReverser
         => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
 }
 ```
+
 **The Fuzzr:**  
 ```csharp
 from listLength in Fuzzr.Int(0, 10)
 from enumerable in Fuzzr.Int().Many(listLength)
 select enumerable.ToList();
 ```
+
 **The Checkr:**  
 ```csharp
 from showr in Showr.ForInput()
@@ -37,6 +39,7 @@ from expect in Checkr.Expect(
     "Input == Result", () => input.SequenceEqual(result))
 select Case.Closed;
 ```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
