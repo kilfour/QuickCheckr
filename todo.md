@@ -103,8 +103,9 @@
 * Maybe retrieve line number of failed Expectation (perf ?)
   
 ## Refactoring Targets 
+* !!! InputDeposition Value => string !!!
 * PrimitiveShrinkClassifier : uses non-deterministic shrinking candidates
-  Guid.NewGuid(), DateTime.UtcNow, ...
+  instead of Guid.NewGuid(), DateTime.UtcNow, ...
 * Add tests for:
   * DuplicateKeyWriteGuardForPoolTraces
   * Deliberation

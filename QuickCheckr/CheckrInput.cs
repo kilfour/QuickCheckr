@@ -29,11 +29,11 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params IClassificationOption[] shrinkOptions)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params IClassificationOption[] classificationOptions)
     {
         return state =>
         {
-            state.Memory.StoreClassification(key, () => shrinkOptions);
+            state.Memory.StoreClassification(key, () => classificationOptions);
             return HandleInput(state, key, fuzzr);
         };
     }

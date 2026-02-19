@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                GoingFunctional.cs:27:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 7 shrinks)
+ Seed:                    2116954181
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, 6 ]
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
