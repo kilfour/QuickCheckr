@@ -8,6 +8,32 @@ During this process no further executions are performed and no new random values
 
 QuickCheckr then reports the minimal failing case, 
 together with the number of executions, relevant actions and inputs that were required to find it.  
+### Issue Maybe
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(1))
+from trace in Checkr.Trace("answers", () => answers)
+from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                IssueMaybe.cs:56:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    346495699
+ ------------------------------------------------------------
+  Executed:
+   - Input: answers = [ _ ]
+   - Trace: answers = [ 15 ]
+ ===============================================
+  !! Expectation Failed: all answers equal 42
+ ===============================================
+```
 ##### Null String
 
 **The Checkr:**  
@@ -336,56 +362,6 @@ Check this with:
  ======================================
   !! Expectation Failed: Not aged 18
  ======================================
-```
-#### Custom Shrinkers
-```csharp
-    from one in Checkr.Input("One", Fuzzr.Int(), () => Try.Values([0, 1]))
-    from two in Checkr.Input("Two", Fuzzr.Int(), () => Try.Values([0, 1]))
-    from traceOne in Checkr.Trace("Original One", () => one)
-    from traceTwo in Checkr.Trace("Original Two", () => two)
-    from expect in Checkr.Expect("One should not be 42", () => one != 42)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\CustomShrinkers.cs:19:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    2122063655
- ------------------------------------------------------------
-  Executed:
-   - Input: One          = 42
-   - Trace: Original One = 42
-   - Trace: Original Two = 90
- ===============================================
-  !! Expectation Failed: One should not be 42
- ===============================================
-```
-#### Fuzzr Shrinking
-```csharp
-    from one in Checkr.Input("One", Fuzzr.Int(), () => Try.Fuzzr(Fuzzr.Int(), 3))
-    from two in Checkr.Input("Two", Fuzzr.Int(), () => Try.Fuzzr(Fuzzr.Int(), 3))
-    from traceOne in Checkr.Trace("Original One", () => one)
-    from traceTwo in Checkr.Trace("Original Two", () => two)
-    from expect in Checkr.Expect("One should not be 42", () => one != 42)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    2122063655
- ------------------------------------------------------------
-  Executed:
-   - Input: One          = 42
-   - Trace: Original One = 42
-   - Trace: Original Two = 90
- ===============================================
-  !! Expectation Failed: One should not be 42
- ===============================================
 ```
 ## Building Blocks
 ### Checkr Act Carefully

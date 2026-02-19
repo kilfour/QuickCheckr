@@ -13,7 +13,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+            state.Memory.StoreClassification(key, () => [shrinkOption()]);
             return CheckrResult.Some(state, GetValue(key, factory, state)!);
         };
     }
@@ -22,7 +22,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, options);
+            state.Memory.StoreClassification(key, options);
             return CheckrResult.Some(state, GetValue(key, factory, state)!);
         };
     }

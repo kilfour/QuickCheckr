@@ -3,10 +3,14 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkersOld.Sub;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Including.CandidateClassifiers;
 
-[DocFile]
-public class ShrinkValues : CheckrTest<ShrinkValues>
+[DocFileHeader("Function")]
+[DocContent(
+@"This method allows you to supply dynamic candidates using a function.  
+The lambda argument of the supplied function, is the original Input value.
+")]
+public class C_TryFunction : CheckrTest<C_TryFunction>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -24,7 +28,7 @@ public class ShrinkValues : CheckrTest<ShrinkValues>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            () => Try.Values([new Thing()]))
+            Try.Function((Thing a) => [new Thing()]))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

@@ -81,11 +81,11 @@ public class ShortTermMemory
     public T? StoreVariable<T>(string key, Func<T> factory)
         => Current.StoreVariable(key, factory);
     // --------------------------------------------------------------------------
-    // Shrinkers
-    public void StoreShrinker(string key, Func<IClassificationOption[]> factory)
-        => Current.StoreShrinker(key, factory);
-    public IEnumerable<IClassificationOption> GetShrinkOptions(int executionId, string key, Type type)
-        => memories[executionId].GetShrinkOptions(key, type);
+    // Classifiers
+    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
+        => Current.StoreClassification(key, factory);
+    public IEnumerable<IClassificationOption> GetClassificationOptions(int executionId, string key, Type type)
+        => memories[executionId].GetClassificationOptions(key, type);
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)

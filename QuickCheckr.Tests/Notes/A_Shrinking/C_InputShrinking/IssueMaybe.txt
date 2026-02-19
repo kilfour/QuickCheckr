@@ -1,14 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\A_Shrinking\C_InputShrinking\T_CustomShrinkers\FuzzrShrinking.cs:19:1
+ Location:                IssueMaybe.cs:56:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    2122063655
+ Seed:                    346495699
  ------------------------------------------------------------
   Executed:
-   - Input: One          = 42
-   - Trace: Original One = 42
-   - Trace: Original Two = 90
+   - Input: answers = [ _ ]
+   - Trace: answers = [ 15 ]
  ===============================================
-  !! Expectation Failed: One should not be 42
+  !! Expectation Failed: all answers equal 42
  ===============================================

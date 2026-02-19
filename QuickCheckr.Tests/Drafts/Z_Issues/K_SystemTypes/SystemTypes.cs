@@ -69,7 +69,7 @@ public class SystemTypes : BaseTest
         return
             from thing in Checkr.Input("A thing with a type",
                 Fuzzr.Constant(new Thing()),
-                () => Try.Values([typeof(string), typeof(double)]))
+                Try.Values([typeof(string), typeof(double)]))
             from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
             select Case.Closed;
     }

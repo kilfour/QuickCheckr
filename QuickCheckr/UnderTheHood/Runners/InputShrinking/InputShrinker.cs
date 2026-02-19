@@ -45,8 +45,8 @@ public class InputShrinker(
                     //     //executionMemory.StoreInputRedux(key, step.Result!);
                     // }
                 }
-                keptAtLeastOne = keptAtLeastOne || State.Memory.HasShrinker(info.ExecutionId, info.Key, info.Type);
-                var (unused, types) = executionMemory.HasUnusedShrinkers(key);
+                keptAtLeastOne = keptAtLeastOne || State.Memory.HasClassifier(info.ExecutionId, info.Key, info.Type);
+                var (unused, types) = executionMemory.HasUnusedClassifiers(key);
                 if (unused)
                 {
                     var noun = types.Count == 1 ? "shrinker" : "shrinkers";

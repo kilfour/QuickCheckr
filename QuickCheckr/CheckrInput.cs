@@ -15,7 +15,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, () => [.. shrinkers.SelectMany(s => s.Classifiers())]);
+            state.Memory.StoreClassification(key, () => [.. shrinkers.SelectMany(s => s.Classifiers())]);
             foreach (var reducer in shrinkers.Where(a => a.Reducers is not null).SelectMany(a => a.Reducers!))
             {
                 if (reducer is ITypeReducerOption typeReducer)
@@ -29,20 +29,29 @@ public static partial class Checkr
         };
     }
 
-    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption> shrinkOption)
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params IClassificationOption[] shrinkOptions)
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+            state.Memory.StoreClassification(key, () => shrinkOptions);
             return HandleInput(state, key, fuzzr);
         };
     }
+
+    // public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption> shrinkOption)
+    // {
+    //     return state =>
+    //     {
+    //         state.Memory.StoreClassification(key, () => [shrinkOption()]);
+    //         return HandleInput(state, key, fuzzr);
+    //     };
+    // }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption[]> options)
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, options);
+            state.Memory.StoreClassification(key, options);
             return HandleInput(state, key, fuzzr);
         };
     }
@@ -72,7 +81,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, () => [shrinkOption()]);
+            state.Memory.StoreClassification(key, () => [shrinkOption()]);
             state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
@@ -84,7 +93,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreShrinker(key, options);
+            state.Memory.StoreClassification(key, options);
             state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };

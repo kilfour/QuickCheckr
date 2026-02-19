@@ -5,7 +5,7 @@
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    () => Try.None<Thing>())
+    Try.None<Thing>())
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -19,7 +19,7 @@ This is correct behavior.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkNone.cs:68:1
+ Location:                ShrinkNone.cs:73:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321

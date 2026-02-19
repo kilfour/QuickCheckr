@@ -4,6 +4,7 @@
 ### Doing
 * **Reducers**
 * ReductionNotPossible.cs => Warning
+* QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
 
 ### Todo
 * Add Reducers to Lazy Input

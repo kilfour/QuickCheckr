@@ -10,7 +10,7 @@ public class ShrinkClassifierSelector
     public InputShrinkingClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
         InputShrinkingClassification classification;
-        var shrinkOptions = context.State.Memory.GetShrinkOptions(info.ExecutionId, info.Key, info.Type);
+        var shrinkOptions = context.State.Memory.GetClassificationOptions(info.ExecutionId, info.Key, info.Type);
         if (shrinkOptions.Any())
             classification = ClassifyCustom(info, shrinkOptions, context);
         else

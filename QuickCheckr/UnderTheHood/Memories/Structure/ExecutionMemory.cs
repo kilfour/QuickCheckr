@@ -95,28 +95,28 @@ public class ExecutionMemory
 
 
     // --------------------------------------------------------------------------
-    // Shrinkers
-    private readonly TypedMemoryBank<IClassificationOption[]> shrinkers = new();
-    public void StoreShrinker(string key, Func<IClassificationOption[]> factory)
-        => shrinkers.Store(key, factory);
-    public IEnumerable<IClassificationOption> GetShrinkOptions(string key, Type type)
+    // Classifiers
+    private readonly TypedMemoryBank<IClassificationOption[]> classifiers = new();
+    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
+        => classifiers.Store(key, factory);
+    public IEnumerable<IClassificationOption> GetClassificationOptions(string key, Type type)
     {
-        var options = shrinkers.Get(key);
+        var options = classifiers.Get(key);
         if (options == null) return [];
-        StoreShrinkerUsed(key, type);
+        StoreClassificationUsed(key, type);
         return options.Where(a => a.TargetType == type);
     }
     private readonly Dictionary<string, List<Type>> shrinkersUsed = [];
-    private void StoreShrinkerUsed(string key, Type type)
+    private void StoreClassificationUsed(string key, Type type)
     {
         if (shrinkersUsed.TryGetValue(key, out List<Type>? value))
             value.Add(type);
         else
             shrinkersUsed[key] = [type];
     }
-    public (bool, List<Type>) HasUnusedShrinkers(string key)
+    public (bool, List<Type>) HasUnusedClassifiers(string key)
     {
-        var options = shrinkers.Get(key);
+        var options = classifiers.Get(key);
         if (options == null) return (false, []);
         if (shrinkersUsed.TryGetValue(key, out List<Type>? used))
         {

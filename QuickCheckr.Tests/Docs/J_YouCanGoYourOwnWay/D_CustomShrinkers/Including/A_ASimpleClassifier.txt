@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ASimpleClassifier.cs:81:1
+ Original failing run:    1 execution
+ Seed:                    1521363987
+ ------------------------------------------------------------
+  Executed:
+   - Input: answer = 63
+ =======================================
+  !! Expectation Failed: answer == 42
+ =======================================

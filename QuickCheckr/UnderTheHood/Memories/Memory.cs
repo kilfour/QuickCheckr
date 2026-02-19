@@ -131,14 +131,14 @@ public class Memory
     public T? StoreVariable<T>(string key, Func<T> factory)
         => ShortTermMemory.StoreVariable(KeyGuardian.Variables.Check(key), factory);
     // --------------------------------------------------------------------------
-    // Shrinkers
+    // Classifiers
     public bool IsConfigRun { get; set; } = false;
-    public void StoreShrinker(string key, Func<IClassificationOption[]> factory)
-        => ShortTermMemory.StoreShrinker(key, factory);
-    public IEnumerable<IClassificationOption> GetShrinkOptions(int executionId, string key, Type type)
-        => ShortTermMemory.GetShrinkOptions(executionId, key, type);
-    public bool HasShrinker(int executionId, string key, Type type)
-        => GetShrinkOptions(executionId, key, type).Any();
+    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
+        => ShortTermMemory.StoreClassification(key, factory);
+    public IEnumerable<IClassificationOption> GetClassificationOptions(int executionId, string key, Type type)
+        => ShortTermMemory.GetClassificationOptions(executionId, key, type);
+    public bool HasClassifier(int executionId, string key, Type type)
+        => GetClassificationOptions(executionId, key, type).Any();
     // --------------------------------------------------------------------------
     // Reducers
     public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
