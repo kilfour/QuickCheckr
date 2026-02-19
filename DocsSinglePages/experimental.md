@@ -211,9 +211,9 @@ Check.ForAll(
 ------------------------------------------------------------
  Test:                    TheTest
  Location:                Experimental\T_GoingFunctional\InvariantsSpike.cs:45:1
- Original failing run:    28 executions
- Minimal failing case:    1 execution (after 31 shrinks)
- Seed:                    851126371
+ Original failing run:    20 executions
+ Minimal failing case:    1 execution (after 25 shrinks)
+ Seed:                    76957488
  ------------------------------------------------------------
   Executed:
    - Input: Input = [ _, 42 ]
@@ -221,7 +221,7 @@ Check.ForAll(
   !! Expectation Failed: Property
  ===================================
  Passed Expectations
- - Property: 27x
+ - Property: 19x
  ------------------------------------------------------------
 ```
 ## Warehousing

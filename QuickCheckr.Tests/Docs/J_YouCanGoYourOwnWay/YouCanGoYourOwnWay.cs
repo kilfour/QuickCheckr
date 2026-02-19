@@ -1,7 +1,7 @@
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.A_Showr;
-using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkers;
-using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_Reducers;
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkersOld;
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.C_ReducersOld;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
@@ -10,8 +10,8 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
 [DocFile]
 [DocLink(typeof(Configuration))]
 [DocLink(typeof(A_TheShowrClass))]
-[DocLink(typeof(CustomShrinkers))]
-[DocLink(typeof(Reducers))]
+[DocLink(typeof(CustomShrinkersOld))]
+[DocLink(typeof(CustomReducersOld))]
 [DocExplanationInProgress]
 [DocContent(
 @"We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour

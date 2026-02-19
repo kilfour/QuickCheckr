@@ -2079,9 +2079,9 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [A_TheShowrClass]: #the-showr-class
 
-[CustomShrinkers]: #custom-shrinkers
+[CustomShrinkersOld]: #custom-shrinkers-old
 
-[Reducers]: #reducers
+[CustomReducersOld]: #custom-reducers-old
 ### The Showr Class
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
@@ -2260,6 +2260,23 @@ Executed:
    - Trace: AnInt = 7
 ```
 ### Custom Shrinkers
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
+As stated in OnShrinking(todo: link), a Shrinker is comprised of:
+  1. A *Classifier* : responsible for finding the relevant inputs.
+  2. A *Reducer* : responsible for finding a minimal value.
+
+QuickCheckr allows you to define either one or both of these per input.
+  
+### Custom Shrinkers Old
 
 !! WARNING: **Under Construction** !!
 
@@ -2514,7 +2531,7 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
-### Reducers
+### Custom Reducers Old
 
 !! WARNING: **Under Construction** !!
 

@@ -25,6 +25,6 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [A_TheShowrClass]: A_Showr/A_TheShowrClass.md
 
-[CustomShrinkers]: B_CustomShrinkers/CustomShrinkers.md
+[CustomShrinkersOld]: B_CustomShrinkersOld/CustomShrinkersOld.md
 
-[Reducers]: C_Reducers/Reducers.md
+[CustomReducersOld]: C_ReducersOld/CustomReducersOld.md
