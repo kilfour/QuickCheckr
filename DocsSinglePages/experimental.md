@@ -310,7 +310,7 @@ Check.ForAll(Fuzzr.Constant(7), a => a == 6, Try.Default<int>(), Try.Values(6));
 
 **The Invariant:**  
 ```csharp
-Check.ForAll(Fuzzr.Int(0, 10), a => a < 2);
+Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
 ```
 
 **The Report:**  
@@ -340,7 +340,7 @@ Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.V
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J_WithClassifiersSeededShowingReduxToo.cs:24:1
+ Location:                G_WithClassifiersSeededShowingReduxToo.cs:24:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    893841622
@@ -348,6 +348,27 @@ Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.V
   Executed:
    - Input: Input = 9
             Redux   7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### With Custom Reducer
+
+**The Invariant:**  
+```csharp
+Check.ForAll(257911700, Fuzzr.Int(0, 10), a => a != 6, Reduce.Values([0, 6]));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                H_WithCustomReducer.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    257911700
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
  ===================================
   !! Expectation Failed: Property
  ===================================

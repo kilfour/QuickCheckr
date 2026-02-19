@@ -38,14 +38,21 @@ public static partial class Checkr
         };
     }
 
-    // public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption> shrinkOption)
-    // {
-    //     return state =>
-    //     {
-    //         state.Memory.StoreClassification(key, () => [shrinkOption()]);
-    //         return HandleInput(state, key, fuzzr);
-    //     };
-    // }
+    public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, params IReducerOption[] reducerOptions)
+    {
+        return state =>
+        {
+            foreach (var reducer in reducerOptions)
+            {
+                if (reducer is ITypeReducerOption typeReducer)
+                    state.Memory.StoreReducerByType(key, typeReducer.TargetType, typeReducer.ReducerFactory);
+
+                // if (reducer is PathReducerFactory pathReducer)
+                //     state.Memory.StoreReducerByPath(key, pathReducer.TargetType, pathReducer.Path, pathReducer.ReducerFactory);
+            }
+            return HandleInput(state, key, fuzzr);
+        };
+    }
 
     public static CheckrOf<T> Input<T>(string key, FuzzrOf<T> fuzzr, Func<IClassificationOption[]> options)
     {
@@ -57,11 +64,12 @@ public static partial class Checkr
     }
 
 
-    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr, Func<Reducer<Y>> reducer)
+    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr, params Func<Reducer<Y>>[] reducers)
     {
         return state =>
         {
-            state.Memory.StoreReducerByType(key, reducer);
+            foreach (var reducer in reducers)
+                state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
     }
@@ -71,18 +79,6 @@ public static partial class Checkr
         return state =>
         {
             state.Memory.StoreReducerByPath(key, pathReducers);
-            return HandleInput(state, key, fuzzr);
-        };
-    }
-
-    public static CheckrOf<T> Input<T, Y>(string key, FuzzrOf<T> fuzzr,
-        Func<IClassificationOption> shrinkOption,
-        Func<Reducer<Y>> reducer)
-    {
-        return state =>
-        {
-            state.Memory.StoreClassification(key, () => [shrinkOption()]);
-            state.Memory.StoreReducerByType(key, reducer);
             return HandleInput(state, key, fuzzr);
         };
     }

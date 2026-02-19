@@ -62,10 +62,12 @@ from _ in Checkr.OneOfWhen(
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
         Fuzzr.Int().Many(2),
+        // Custom Shrinker
         () => [
             Try.Default<IEnumerable<int>>(),
             Try.Collection([thing.Ints])],
         Reduce.Collection([[], thing.Ints]))
+        // --
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
         select Case.Closed))
@@ -90,4 +92,25 @@ select Case.Closed;
  ================================
   !! Expectation Failed: Has 1
  ================================
+```
+## The Better Solution
+Use the built-in `Shrink.CollectionFromState` shrinker, 
+which is a convenience function that hides the plumbing required to define this type of shrinker.  
+
+**The Checkr:**  
+```csharp
+from thing in Trackr.Stashed(() => new Thing())
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints",
+        Fuzzr.Int().Many(2),
+        Shrink.CollectionFromState(thing.Ints, [])) // <= Buil-in Utility Shrinker
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
+select Case.Closed;
 ```

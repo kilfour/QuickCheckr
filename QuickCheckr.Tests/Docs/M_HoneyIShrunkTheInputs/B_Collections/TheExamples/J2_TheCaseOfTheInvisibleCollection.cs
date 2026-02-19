@@ -31,20 +31,16 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
             Checkr.Option(() => thing.Ints.Contains(1),
                 from ints in Checkr.Input("Ints",
                 Fuzzr.Int().Many(2),
-                // () => [
-                //     Try.Default<IEnumerable<int>>(),
-                //     Try.Collection([thing.Ints])],
-                // Reduce.Collection([[], thing.Ints]))
-                StateValueDerivedShrinker<IEnumerable<int>>(thing.Ints, []))
+                // Custom Shrinker
+                () => [
+                    Try.Default<IEnumerable<int>>(),
+                    Try.Collection([thing.Ints])],
+                Reduce.Collection([[], thing.Ints]))
+                // --
                 from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
                 from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
                 select Case.Closed))
         select Case.Closed;
-
-    private Shrinker StateValueDerivedShrinker<T>(T value, T redux) =>
-        Shrink.OnType(
-            [Try.Default<T>(), Try.Values(value)],
-            [Reduce.Values([redux, value])]);
 
     protected override void Verify(Article article)
     {

@@ -5,6 +5,7 @@ namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExampl
 [DocFile]
 [DocInclude(typeof(J1_TheCaseOfTheInvisibleCollection))]
 [DocInclude(typeof(J2_TheCaseOfTheInvisibleCollection))]
+[DocInclude(typeof(J3_TheCaseOfTheInvisibleCollection))]
 public class J_TheCaseOfTheInvisibleCollection
 {
 

@@ -21,7 +21,7 @@ public class F_AppliesDefaultReducers : InvariantsTest<F_AppliesDefaultReducers>
 
     [CodeSnippet]
     protected override void TheInvariant() =>
-        Check.ForAll(Fuzzr.Int(0, 10), a => a < 2);
+        Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
 
     protected override void Verify(Article article)
     {
@@ -31,6 +31,7 @@ public class F_AppliesDefaultReducers : InvariantsTest<F_AppliesDefaultReducers>
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("5", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("2", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

@@ -1491,7 +1491,7 @@ to demonstrate how to find all the different ways the invariant can be violated.
 So we're using the same model, and *almost* exactly the same Checkr.  
 Changes:
 - Added Shrink.None to the Name inputs. 
-- Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:  
+- Updated `UpdateCoachSkills` to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:  
 ```csharp
 public class GatheringEvidenceCheckr
 {
@@ -1519,10 +1519,7 @@ public class GatheringEvidenceCheckr
         coach =>
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
-                , () => [
-                    Try.Default<IEnumerable<string>>(),
-                    Try.Collection([[.. coach.Value.Skills]]) ]
-                , Reduce.Collection([[], [.. coach.Value.Skills]]))
+                , Shrink.CollectionFromState(coach.Value.Skills, []))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",
@@ -3417,11 +3414,12 @@ from _ in Checkr.OneOfWhen(
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
         Fuzzr.Int().Many(2),
-        // () => [
-        //     Try.Default<IEnumerable<int>>(),
-        //     Try.Collection([thing.Ints])],
-        // Reduce.Collection([[], thing.Ints]))
-        StateValueDerivedShrinker(thing.Ints, []))
+        // Custom Shrinker
+        () => [
+            Try.Default<IEnumerable<int>>(),
+            Try.Collection([thing.Ints])],
+        Reduce.Collection([[], thing.Ints]))
+        // --
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
         select Case.Closed))
@@ -3446,6 +3444,27 @@ select Case.Closed;
  ================================
   !! Expectation Failed: Has 1
  ================================
+```
+##### The Better Solution
+Use the built-in `Shrink.CollectionFromState` shrinker, 
+which is a convenience function that hides the plumbing required to define this type of shrinker.  
+
+**The Checkr:**  
+```csharp
+from thing in Trackr.Stashed(() => new Thing())
+from _ in Checkr.OneOfWhen(
+    Checkr.Option(() => !thing.Ints.Contains(1),
+        from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
+        from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        select Case.Closed),
+    Checkr.Option(() => thing.Ints.Contains(1),
+        from ints in Checkr.Input("Ints",
+        Fuzzr.Int().Many(2),
+        Shrink.CollectionFromState(thing.Ints, [])) // <= Buil-in Utility Shrinker
+        from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
+        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        select Case.Closed))
+select Case.Closed;
 ```
 #### A Collection Of Objects
 

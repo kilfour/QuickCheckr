@@ -2,7 +2,7 @@
 
 **The Invariant:**  
 ```csharp
-Check.ForAll(Fuzzr.Int(0, 10), a => a < 2);
+Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
 ```
 
 **The Report:**  

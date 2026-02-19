@@ -29,10 +29,7 @@ public class GatheringEvidenceCheckr
         coach =>
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
-                , () => [
-                    Try.Default<IEnumerable<string>>(),
-                    Try.Collection([[.. coach.Value.Skills]]) ]
-                , Reduce.Collection([[], [.. coach.Value.Skills]]))
+                , Shrink.CollectionFromState(coach.Value.Skills, []))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",

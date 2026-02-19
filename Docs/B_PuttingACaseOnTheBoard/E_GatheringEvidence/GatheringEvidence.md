@@ -38,7 +38,7 @@ to demonstrate how to find all the different ways the invariant can be violated.
 So we're using the same model, and *almost* exactly the same Checkr.  
 Changes:
 - Added Shrink.None to the Name inputs. 
-- Changed the `UpdateCoachSkills` a little to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:  
+- Updated `UpdateCoachSkills` to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:  
 ```csharp
 public class GatheringEvidenceCheckr
 {
@@ -66,10 +66,7 @@ public class GatheringEvidenceCheckr
         coach =>
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
-                , () => [
-                    Try.Default<IEnumerable<string>>(),
-                    Try.Collection([[.. coach.Value.Skills]]) ]
-                , Reduce.Collection([[], [.. coach.Value.Skills]]))
+                , Shrink.CollectionFromState(coach.Value.Skills, []))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",

@@ -7,5 +7,6 @@
     - [Specifying Runs](T_GoingFunctional/Sub/C_SpecifyingRuns.md)
     - [With Classifiers](T_GoingFunctional/Sub/D_WithClassifiers.md)
     - [Applies Default Reducers](T_GoingFunctional/Sub/F_AppliesDefaultReducers.md)
-    - [With Classifiers Seeded Showing Redux Too](T_GoingFunctional/Sub/J_WithClassifiersSeededShowingReduxToo.md)
+    - [With Classifiers Seeded Showing Redux Too](T_GoingFunctional/Sub/G_WithClassifiersSeededShowingReduxToo.md)
+    - [With Custom Reducer](T_GoingFunctional/Sub/H_WithCustomReducer.md)
   - [Warehousing](W_Warehouse/Warehousing.md)
