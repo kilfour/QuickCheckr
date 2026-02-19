@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickFuzzr;
 
@@ -5,31 +6,41 @@ namespace QuickCheckr.Invariants;
 
 public static class Check
 {
-    public static void ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate, params IClassificationOption[] classificationOptions)
-        => (
-            from input in Checkr.Input("Input", fuzzr, classificationOptions)
-            from expectation in Checkr.Expect("Property", () => predicate(input))
-            select Case.Closed)
-        .Run(100.Runs());
-
     public static void ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate)
         => (
             from input in Checkr.Input("Input", fuzzr)
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
-        .Run(100.Runs());
+        .Run(100.Runs(), ActivateReducers);
 
     public static void ForAll<T>(int seed, FuzzrOf<T> fuzzr, Func<T, bool> predicate)
         => (
             from input in Checkr.Input("Input", fuzzr)
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
-        .Run(seed);
+        .Run(seed, ActivateReducers);
 
     public static void ForAll<T>(CheckrOfTRun.RunCount runs, FuzzrOf<T> fuzzr, Func<T, bool> predicate)
         => (
             from input in Checkr.Input("Input", fuzzr)
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
-        .Run(runs);
+        .Run(runs, ActivateReducers);
+
+    public static void ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate, params IClassificationOption[] classificationOptions)
+        => (
+            from input in Checkr.Input("Input", fuzzr, classificationOptions)
+            from expectation in Checkr.Expect("Property", () => predicate(input))
+            select Case.Closed)
+        .Run(100.Runs(), ActivateReducers);
+
+    public static void ForAll<T>(int seed, FuzzrOf<T> fuzzr, Func<T, bool> predicate, params IClassificationOption[] classificationOptions)
+        => (
+            from input in Checkr.Input("Input", fuzzr, classificationOptions)
+            from expectation in Checkr.Expect("Property", () => predicate(input))
+            select Case.Closed)
+        .Run(seed, ActivateReducers);
+
+    private static CheckrConfig ActivateReducers(CheckrConfig config) => config with { ShrinkMode = config.ShrinkMode | ShrinkMode.Reduction };
+
 }

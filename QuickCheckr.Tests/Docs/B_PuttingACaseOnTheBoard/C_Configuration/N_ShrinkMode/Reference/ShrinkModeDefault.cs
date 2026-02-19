@@ -14,7 +14,7 @@ public class ShrinkModeDefault : CheckrTest<ShrinkModeDefault>
 
     [Fact]
     [DocConfigure]
-    [DocContent("Includes all possible ShrinkModes.")]
+    [DocContent("Includes `ShrinkMode.Executions` and `ShrinkMode.Inputs`.")]
     [DocReport]
     public void DefaultSetting()
     {

@@ -1,0 +1,29 @@
+# Irrelevant Objects
+
+**The Checkr:**  
+```csharp
+from person in Checkr.Input("Person", Fuzzr.One<Person>())
+from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
+from tracePerson in Checkr.Trace("Person", () => person)
+from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
+from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_IrrelevantObjects.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1000847613
+ ------------------------------------------------------------
+  Executed:
+   - Input: Person       = { Age: 18 }
+   - Trace: Person       = { Name: "voddj", Age: 18 }
+   - Trace: Other Person = { Name: "hdpjy", Age: 85 }
+ ======================================
+  !! Expectation Failed: Not aged 18
+ ======================================
+```

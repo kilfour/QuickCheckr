@@ -21,7 +21,7 @@ public class D_WithClassifiers : InvariantsTest<D_WithClassifiers>
 
     [CodeSnippet]
     protected override void TheInvariant() =>
-        Check.ForAll(Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.Values(6));
+        Check.ForAll(Fuzzr.Constant(7), a => a == 6, Try.Default<int>(), Try.Values(6));
 
     protected override void Verify(Article article)
     {

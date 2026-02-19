@@ -61,11 +61,11 @@ from _ in Checkr.OneOfWhen(
         select Case.Closed),
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
-    Fuzzr.Int().Many(2),
-    () => [
-        Try.Default<IEnumerable<int>>(),
-        Try.Collection([thing.Ints])],
-    Reduce.Collection([[], thing.Ints]))
+        Fuzzr.Int().Many(2),
+        () => [
+            Try.Default<IEnumerable<int>>(),
+            Try.Collection([thing.Ints])],
+        Reduce.Collection([[], thing.Ints]))
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
         select Case.Closed))

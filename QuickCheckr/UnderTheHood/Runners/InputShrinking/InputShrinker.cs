@@ -7,7 +7,8 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking;
 
 public class InputShrinker(
     CheckrState State,
-    CheckrOf<Case> Check)
+    CheckrOf<Case> Check,
+    bool useDefaultReducers)
 {
     public int Run()
     {
@@ -20,7 +21,7 @@ public class InputShrinker(
             foreach (var (key, value) in inputs)
             {
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
-                var classification = new ShrinkClassifierSelector().Classify(info, new ShrinkingContext(State, Check));
+                var classification = new ShrinkClassifierSelector().Classify(info, new ShrinkingContext(State, Check, useDefaultReducers));
                 shrinkCount += IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
                 if (classification is InputRelevant)

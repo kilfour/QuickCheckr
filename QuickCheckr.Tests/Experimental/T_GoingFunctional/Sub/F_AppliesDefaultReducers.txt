@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                F_AppliesDefaultReducers.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1429680296
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 5
+            Redux   2
+ ===================================
+  !! Expectation Failed: Property
+ ===================================

@@ -184,24 +184,25 @@ return
  - Faulty client is removed: 1x
  ------------------------------------------------------------
 ```
-## Invariants Spike
+## Going Functional
+### Spike
 
-**The SUT:**  
+**The Model:**  
 ```csharp
 public class TheReverser
 {
     public static List<int> Reverses(List<int> list)
-        => [.. HideTheAnswer(list.AsEnumerable()).Reverse()];
-    private static IEnumerable<int> HideTheAnswer(IEnumerable<int> list)
-        => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
+        => [.. FudgeIt(list.AsEnumerable()).Reverse()];
+    private static IEnumerable<int> FudgeIt(IEnumerable<int> list)
+        => list.Where(a => a != 6).Concat(list.Where(a => a == 6));
 }
 ```
 
-**The Test:**  
+**The Invariant:**  
 ```csharp
 Check.ForAll(
     from len in Fuzzr.Int(0, 10)
-    from elements in Fuzzr.Int().Many(len)
+    from elements in Fuzzr.Int(0, 10).Many(len)
     select elements.ToList(),
     list => list.SequenceEqual(TheReverser.Reverses(TheReverser.Reverses(list))));
 ```
@@ -209,20 +210,147 @@ Check.ForAll(
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    TheTest
- Location:                Experimental\T_GoingFunctional\InvariantsSpike.cs:45:1
- Original failing run:    20 executions
- Minimal failing case:    1 execution (after 25 shrinks)
- Seed:                    76957488
+ Test:                    Example
+ Location:                GoingFunctional.cs:27:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 7 shrinks)
+ Seed:                    2116954181
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ _, 42 ]
+   - Input: Input = [ _, 6 ]
  ===================================
   !! Expectation Failed: Property
  ===================================
- Passed Expectations
- - Property: 19x
+```
+### Simplest
+
+**The Invariant:**  
+```csharp
+Check.ForAll(Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Simplest.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    924452929
  ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### Seeded
+
+**The Invariant:**  
+```csharp
+Check.ForAll(1948674479, Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Seeded.cs:26:1
+ Original failing run:    1 execution
+ Seed:                    1948674479
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### Specifying Runs
+
+**The Invariant:**  
+```csharp
+Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_SpecifyingRuns.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    823515705
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### With Classifiers
+
+**The Invariant:**  
+```csharp
+Check.ForAll(Fuzzr.Constant(7), a => a == 6, Try.Default<int>(), Try.Values(6));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_WithClassifiers.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    1830629706
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### Applies Default Reducers
+
+**The Invariant:**  
+```csharp
+Check.ForAll(Fuzzr.Int(0, 10), a => a < 2);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                F_AppliesDefaultReducers.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1429680296
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 5
+            Redux   2
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### With Classifiers Seeded Showing Redux Too
+
+**The Invariant:**  
+```csharp
+Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.Values(6));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                J_WithClassifiersSeededShowingReduxToo.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    893841622
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 9
+            Redux   7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
 ```
 ## Warehousing
 > An evolving playground to examine some ideas.  

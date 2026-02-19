@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                J_WithClassifiersSeededShowingReduxToo.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    893841622
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 9
+            Redux   7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================

@@ -1396,7 +1396,7 @@ Trims inputs to find a minimal failing case.
 protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Default };
 ```
-Includes all possible ShrinkModes.  
+Includes `ShrinkMode.Executions` and `ShrinkMode.Inputs`.  
 ```text
 ------------------------------------------------------------
  Test:                    Example
@@ -2913,7 +2913,7 @@ As explained in [OnShrinking][InputShrinking], a Shrinker is comprised of:
   1. A *Classifier* : responsible for finding the relevant inputs.
   2. A *Reducer* : responsible for finding a minimal value.
 
-QuickCheckr allows you to define either one or both of these an a per-input basis.  
+QuickCheckr allows you to define either one or both of these on a per-input basis.  
 This gives you precise control over how shrinking behaves when the default strategies are insufficient for your domain.  
 
 By default, built-in classifiers and reducers are provided for common types.  
@@ -2928,7 +2928,7 @@ Classification is done by trying different *candidates* for an input and verifyi
 - If the failure goes away for at least one candidate, the input is relevant.
 
 So when supplying a custom classifier, you are basically supplying a list of candidates.  
-There are various way to do this, but here is a first example:
+There are various ways to do this, but here is a first example:
   
 
 **The Checkr:**  
@@ -2953,7 +2953,7 @@ select Case.Closed;
  =======================================
 ```
 It's a bit of a contrived example as the default classifiers handle this case just fine, but it's here for demonstration purposes.  
-#### The Various Candidate Supplying Classifiers
+#### Candidate-based Classifiers
 Here is an overview of all the different ways you can define *candidates* for classification.  
 Using a more relevant example this time (where possible), that allows you to deal with [this][E_CheckingNulls] relatively common issue.  
 ##### Values
@@ -2987,7 +2987,7 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 ##### Collection
-This is very similar too `Try.Values`.  
+This is very similar to `Try.Values`.  
 It only exists to avoid generic type soup and easily made mistakes when typing candidates supply for collections.  
 
 **The Checkr:**  
@@ -3013,7 +3013,7 @@ select Case.Closed;
 ```
 ##### Function
 This method allows you to supply dynamic candidates using a function.  
-The lamda argument of the supplied function, is the original Input value.
+The lambda argument of the supplied function, is the original Input value.
   
 
 **The Checkr:**  
@@ -3416,11 +3416,12 @@ from _ in Checkr.OneOfWhen(
         select Case.Closed),
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
-    Fuzzr.Int().Many(2),
-    () => [
-        Try.Default<IEnumerable<int>>(),
-        Try.Collection([thing.Ints])],
-    Reduce.Collection([[], thing.Ints]))
+        Fuzzr.Int().Many(2),
+        // () => [
+        //     Try.Default<IEnumerable<int>>(),
+        //     Try.Collection([thing.Ints])],
+        // Reduce.Collection([[], thing.Ints]))
+        StateValueDerivedShrinker(thing.Ints, []))
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
         select Case.Closed))

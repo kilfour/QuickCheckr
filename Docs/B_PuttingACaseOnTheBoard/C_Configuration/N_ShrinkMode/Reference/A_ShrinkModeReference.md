@@ -98,7 +98,7 @@ Trims inputs to find a minimal failing case.
 protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ShrinkMode = ShrinkMode.Default };
 ```
-Includes all possible ShrinkModes.  
+Includes `ShrinkMode.Executions` and `ShrinkMode.Inputs`.  
 ```text
 ------------------------------------------------------------
  Test:                    Example

@@ -27,11 +27,15 @@ public class ShrinkClassifierSelector
     {
         var reducerFactory = context.State.Memory.GetReducerByType(info.Key, info.Type);
         reducerFactory ??= context.State.Memory.GetReducerByPath(info.Key, info.Path, info.Type);
+        if (context.UseDefaultReducers && reducerFactory == null)
+        {
+            reducerFactory = DefaultReducersRegistry.TryGetReducerFactory(info.Type);
+        }
         if (reducerFactory == null) return (Maybe.Nothing(), Maybe<object>.Nothing());
         var reducer = reducerFactory();
         var result = new ReductionResult(true, info.Value);
         Reduction step = Reduction.Next(info.Value!);
-        bool failed = false;
+        bool failed;
         while (step.Continue)
         {
             failed = context.Verifier.RunFailed(info.ExecutionId, info.Key, step.Candidate!);
@@ -41,8 +45,8 @@ public class ShrinkClassifierSelector
                 result = new ReductionResult(false, result.Value!);
             step = reducer(result);
         }
-        // if (failed)
-        //     return (Maybe.Nothing(), Maybe<object>.Nothing());
+        if (Equals(info.Value, step.Result))
+            return (Maybe.Nothing(), Maybe<object>.Nothing());
         return (
             Maybe.Just(context.State.InputPrinter.IntroduceThis(step.Result!)),
             Maybe<object>.Just(step.Result!));

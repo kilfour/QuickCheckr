@@ -1,0 +1,20 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkModeReduction.cs:46:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 8 shrinks)
+ Seed:                    2145473476
+ ------------------------------------------------------------
+  Executed: (2 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter  = 3
+   - Input: Relevant = 66
+            Redux      42
+ ============================================
+  !! Expectation Failed: Third Time Answer
+ ============================================
+ Passed Expectations
+ - Third Time Answer: 2x
+ ------------------------------------------------------------
