@@ -3,11 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Including.CandidateClassifiers;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers.Methods;
 
-
-[DocFileHeader("Fuzzr")]
-public class D_TryFuzzr : CheckrTest<D_TryFuzzr>
+[DocFileHeader("Values")]
+public class A_TryValues : CheckrTest<A_TryValues>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -23,7 +22,9 @@ public class D_TryFuzzr : CheckrTest<D_TryFuzzr>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-        from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Try.Fuzzr(Fuzzr.One<Thing>(), 2))
+        from thing in Checkr.Input("Null Thing",
+            Fuzzr.Constant<Thing>(null!),
+            Try.Values(new Thing()))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

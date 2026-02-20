@@ -1,8 +1,11 @@
-using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Including.CandidateClassifiers;
+using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers.Methods;
+using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.C_Objects.TheExamples;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Including;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers;
 
+[DocFile]
+[DocLink(typeof(E_CheckingNulls))]
 [DocFileHeader("Candidate-based Classifiers")]
 [DocContent(
 @"Here is an overview of all the different ways you can define *candidates* for classification.  
@@ -11,7 +14,4 @@ Using a more relevant example this time (where possible), that allows you to dea
 [DocInclude(typeof(B_TryCollection))]
 [DocInclude(typeof(C_TryFunction))]
 [DocInclude(typeof(D_TryFuzzr))]
-public class B_TheVariousCandidateSupplyingClassifiers
-{
-
-}
+public class CandidateClassifiers;

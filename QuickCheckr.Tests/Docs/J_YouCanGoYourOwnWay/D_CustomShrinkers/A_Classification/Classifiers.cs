@@ -3,9 +3,9 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Including;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification;
 
-
+[DocFile]
 [DocContent(
 @"Classification is done by trying different *candidates* for an input and verifying if the test still fails.  
 
@@ -15,7 +15,7 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.Includin
 So when supplying a custom classifier, you are basically supplying a list of candidates.  
 There are various ways to do this, but here is a first example:
 ")]
-public class A_ASimpleClassifier : CheckrTest<A_ASimpleClassifier>
+public class Classifiers : CheckrTest<Classifiers>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
