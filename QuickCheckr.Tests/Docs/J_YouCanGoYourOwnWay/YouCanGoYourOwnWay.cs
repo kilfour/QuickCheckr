@@ -10,7 +10,6 @@ namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
 [DocFile]
 [DocLink(typeof(Configuration))]
 [DocLink(typeof(A_TheShowrClass))]
-[DocLink(typeof(CustomShrinkersOld))]
 [DocLink(typeof(CustomReducersOld))]
 [DocExplanationInProgress]
 [DocContent(

@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkersOld.Sub;
+namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.B_PolicyBasedClassifiers.Methods;
 
-[DocFile]
-public class ShrinkNone : CheckrTest<ShrinkNone>
+[DocFileHeader("None")]
+public class B_TryNone : CheckrTest<B_TryNone>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -15,10 +15,11 @@ public class ShrinkNone : CheckrTest<ShrinkNone>
     [DocCheckrHeader]
     [DocCheckr]
     [DocContent(
-@"Weird option this one at first glance, maybe. It does not make inputs turn up in the report.  
-We know it works because of the shrink count.
-No shrinking => no shrinking clue => not in report.
-This is correct behavior.
+@"`Try.None` is a custom classifier that explicitly marks an execution as irrelevant and therefore not worth shrinking.
+It is primarily a performance tool: when a branch is known not to influence the outcome,
+`Try.None` prevents QuickCheckr from wasting time shrinking or re-executing it. 
+This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
+It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings when that irrelevance is intentional and understood.
 ")]
     [DocReportHeader]
     [DocReport]

@@ -2076,8 +2076,6 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [A_TheShowrClass]: #the-showr-class
 
-[CustomShrinkersOld]: #custom-shrinkers-old
-
 [CustomReducersOld]: #custom-reducers-old
 ### The Showr Class
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
@@ -2256,106 +2254,6 @@ Executed:
    - Input: AnInt = 7
    - Trace: AnInt = 7
 ```
-### Custom Shrinkers Old
-
-!! WARNING: **Under Construction** !!
-
-> This feature is **actively** being worked on. And as such this notice will disappear soon.  
-> But API and semantics may change somewhat in future versions.  
-> We're ... erm ... you know, ... considering our options.
->  
-> Use with caution in production code. 
-
-  
-#### Registered But Unused
-Because custom shrinkers can be defined for *nested* types, mistakes are possible.
-Hence this warning.  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Try.Values(["unused"]))
-from expect in Checkr.Expect("Input < 2", () => input < 2)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                RegisteredButUnused.cs:59:1
- Original failing run:    1 execution
- Seed:                    1681332589
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 79
-   - WARNING: Unused shrinker found for 'String' at key 'Input'.
- ====================================
-  !! Expectation Failed: Input < 2
- ====================================
-```
-#### Shrink Default
-
-**The Checkr:**  
-```csharp
-from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing",
-    Fuzzr.Constant<Thing>(null!),
-    Try.Default<Thing>())
-from expect in Checkr.Expect("counter != 2", () => counter != 2)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ShrinkDefault.cs:68:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    161541321
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 2
-   - Input: Null Thing = null
-   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
- =======================================
-  !! Expectation Failed: counter != 2
- =======================================
- Passed Expectations
- - counter != 2: 1x
- ------------------------------------------------------------
-```
-#### Shrink Keep
-
-**The Checkr:**  
-```csharp
-from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing",
-    Fuzzr.Constant<Thing>(null!),
-    Try.Keep<Thing>())
-from expect in Checkr.Expect("counter != 2", () => counter != 2)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ShrinkKeep.cs:73:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    161541321
- ------------------------------------------------------------
-  Executed:
-   - Input: counter    = 2
-   - Input: Null Thing = null
- =======================================
-  !! Expectation Failed: counter != 2
- =======================================
- Passed Expectations
- - counter != 2: 1x
- ------------------------------------------------------------
-```
 #### Shrink Multiple
 
 **The Checkr:**  
@@ -2375,41 +2273,6 @@ select Case.Closed;
  Location:                ShrinkMultiple.cs:68:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    161541321
- ------------------------------------------------------------
-  Executed:
-   - Input: counter = 2
- =======================================
-  !! Expectation Failed: counter != 2
- =======================================
- Passed Expectations
- - counter != 2: 1x
- ------------------------------------------------------------
-```
-#### Shrink None
-
-**The Checkr:**  
-```csharp
-from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing",
-    Fuzzr.Constant<Thing>(null!),
-    Try.None<Thing>())
-from expect in Checkr.Expect("counter != 2", () => counter != 2)
-select Case.Closed;
-```
-Weird option this one at first glance, maybe. It does not make inputs turn up in the report.  
-We know it works because of the shrink count.
-No shrinking => no shrinking clue => not in report.
-This is correct behavior.
-  
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ShrinkNone.cs:73:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
@@ -2921,6 +2784,270 @@ Custom shrinkers are intended for cases where domain knowledge can guide shrinki
 [Classifiers]: #classifiers
 
 [Reducers]: #reducers
+#### Classifiers
+Classification is done by trying different *candidates* for an input and verifying if the test still fails.  
+
+- If removing/changing the input (via candidates) still reproduces the failure, the input is irrelevant.
+- If the failure goes away for at least one candidate, the input is relevant.
+
+So when supplying a custom classifier, you are basically supplying a list of candidates.  
+There are various ways to do this, but here is a first example:
+  
+
+**The Checkr:**  
+```csharp
+from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Values(0, 1, 42))
+from expect in Checkr.Expect("answer == 42", () => answer == 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Classifiers.cs:37:1
+ Original failing run:    1 execution
+ Seed:                    1521363987
+ ------------------------------------------------------------
+  Executed:
+   - Input: answer = 63
+ =======================================
+  !! Expectation Failed: answer == 42
+ =======================================
+```
+It's a bit of a contrived example as the default classifiers handle this case just fine, but it's here for demonstration purposes.  
+##### Candidate-based Classifiers
+Here is an overview of all the different ways you can define *candidates* for classification.  
+Using a more relevant example this time (where possible), that allows you to deal with [this][E_CheckingNulls] relatively common issue.  
+###### Values
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Values(new Thing()))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_TryValues.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Collection
+This is very similar to `Try.Values`.  
+It only exists to avoid generic type soup and easily made mistakes when typing candidates supply for collections.  
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5), Try.Collection([0], [1], [42]))
+from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_TryCollection.cs:56:1
+ Original failing run:    1 execution
+ Seed:                    899182715
+ ------------------------------------------------------------
+  Executed:
+   - Input: answers = [ 2, 80 ]
+ ===============================================
+  !! Expectation Failed: all answers equal 42
+ ===============================================
+```
+###### Function
+This method allows you to supply dynamic candidates using a function.  
+The lambda argument of the supplied function, is the original Input value.
+  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Function((Thing a) => [new Thing()]))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_TryFunction.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Fuzzr
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Try.Fuzzr(Fuzzr.One<Thing>(), 2))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_TryFuzzr.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+
+[E_CheckingNulls]: #checking-nulls
+##### Policy-based Classifiers
+  
+###### Keep
+`Try.Keep` explicitly marks an execution as relevant and worth preserving during shrinking.
+In most scenarios this is not strictly necessary, as QuickCheckr will naturally retain behaviour that contributes to failure.
+`Try.Keep` mainly exists for completeness and for rare performance-tuning cases where you want to prevent the shrinker from exploring removals you already know are pointless.
+It also serves as an explicit signal of intent: this step is considered essential evidence.  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Keep<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_TryKeep.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### None
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.None<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+`Try.None` is a custom classifier that explicitly marks an execution as irrelevant and therefore not worth shrinking.
+It is primarily a performance tool: when a branch is known not to influence the outcome,
+`Try.None` prevents QuickCheckr from wasting time shrinking or re-executing it. 
+This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
+It can also be used to suppress unnecessary "all inputs irrelevant" warnings when that irrelevance is intentional and understood.
+  
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_TryNone.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Default
+`Try.Keep` applies QuickCheckr's normal relevance detection as one strategy within a classifier chain.
+Classifiers are executed in succession, so Try.Default can be placed anywhere in the sequence.
+If it finds a relevant candidate, the chain stops. Otherwise, the next classifier is attempted.
+This makes it possible to combine engine-driven relevance detection with more opinionated strategies such as Try.Values(...)
+without hard-coding one as the global default.  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Default<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_TryDefault.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+#### Reducers
 ## Honey I Shrunk the Inputs
 This is a collection of simple shrinking examples organized per type.  
 They serve both as an accurate description of input shrinking behaviour, and as regression tests.  

@@ -1,3 +1,4 @@
+- [Registered But Unused](RegisteredButUnused.md)
   - [All Inputs Shrunk](A_AllInputsShrunk/AllInputsShrunk.md)
   - [Checkrs Court](K_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](K_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)

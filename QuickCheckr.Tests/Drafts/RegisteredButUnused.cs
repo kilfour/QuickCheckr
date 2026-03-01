@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.B_CustomShrinkersOld.Sub;
+namespace QuickCheckr.Tests.Drafts;
 
 [DocFile]
 [DocContent(
