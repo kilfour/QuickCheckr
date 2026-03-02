@@ -11,6 +11,7 @@
     * Structural Collapse
     * Input Classification
     * Input Reduction (Redux)
+* check what happens when collection is null
 
 ### Todo
 * Add Reducers to Lazy Input

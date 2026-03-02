@@ -1,18 +1,18 @@
  ------------------------------------------------------------
  Test:                    Example
  Location:                A_UsingLinq.cs:72:1
- Original failing run:    20 executions
- Minimal failing case:    4 executions (after 19 shrinks)
- Seed:                    604753633
+ Original failing run:    11 executions
+ Minimal failing case:    4 executions (after 10 shrinks)
+ Seed:                    1092659221
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Trace: Observation = Model: 0, Sut: 159.
+   - Trace: Observation = Model: 0, Sut: 124.
  ==================================
   !! Expectation Failed: Observe
  ==================================
  Passed Expectations
- - Observe: 19x
+ - Observe: 10x
  ------------------------------------------------------------

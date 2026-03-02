@@ -1,16 +1,18 @@
 
 using System.Collections;
+using System.Reflection.Metadata.Ecma335;
 using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.StructuralCollapse;
 
-public class EnumerableCollapser : Classifier
+public class EnumerableCollapser : FirstMatchHandler<ShrinkingInfo, ShrinkingContext, int>
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override HandlerResult<int> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
         return HandlerResult.Handled(Handle(info, context));
@@ -23,8 +25,9 @@ public class EnumerableCollapser : Classifier
     private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
 
     private static bool CanHandle(ShrinkingInfo info) => typeof(IEnumerable).IsAssignableFrom(info.Type);
+    private int Handle(ShrinkingInfo info, ShrinkingContext context) => 0;
 
-    private InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private InputClassification Handles(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var theList = CloneList.AsOriginalType(info.Value!);
