@@ -94,6 +94,8 @@
   * statefull list, ... maybe
 
 ## Ideas
+* Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
+  Or maybe an object with an OnFail tracing method
 * `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
     Still feel uneasy having these on Trackr, but let's see how it feels after a while.
 * Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations

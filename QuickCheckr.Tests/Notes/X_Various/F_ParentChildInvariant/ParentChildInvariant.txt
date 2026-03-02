@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ParentChildInvariant.cs:54:1
+ Original failing run:    1 execution
+ Seed:                    483645165
+ ------------------------------------------------------------
+  Executed:
+   - Input: pair = { Balance: -100, CreditLimit: 50 }
+ ==============================================================================
+  !! Expectation Failed: Balance >= -CreditLimit (i.e. never exceeds credit)
+ ==============================================================================

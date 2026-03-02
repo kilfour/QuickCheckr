@@ -20,7 +20,7 @@ public record CheckrRunnerConfig
         DeliberationTarget = config.DeliberationTarget;
         Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
-                Pulse.Prime(() => Please.AllowMe().ToUseNonLinearTime())
+                Pulse.Prime(() => Please.AllowMe().ToUseNonLinearTime().ToInline<List<int>>())
                     .Then(a.Procedure))
                 .SetArtery(a.Officer()))];
 

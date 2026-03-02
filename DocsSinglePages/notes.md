@@ -1021,6 +1021,168 @@ public sealed class Ledger
   !! Expectation Failed: Checked total greater or equal than all entries
  ==========================================================================
 ```
+### Trace Reports Original
+
+**The Checkr:**  
+```csharp
+from x in Checkr.Input("x", Fuzzr.Int(-100, 100), Reduce.TowardsZero)
+from trace in Checkr.Trace("x (trace)", () => x)
+from expect in Checkr.Expect("x must be negative", () => x >= 0)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                TraceReportsOriginal.cs:37:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1468295090
+ ------------------------------------------------------------
+  Executed:
+   - Input: x         = -12
+            Redux       -1
+   - Trace: x (trace) = -12
+ =============================================
+  !! Expectation Failed: x must be negative
+ =============================================
+```
+### Shallow Object Copy
+
+**The Model:**  
+```csharp
+public sealed class Box { public int Value { get; set; } }
+```
+
+**The Checkr:**  
+```csharp
+from box in Checkr.Input("box",
+    from v in Fuzzr.Int(-10, 10)
+    select new Box { Value = v }, Reduce.TowardsZero)
+from expect in Checkr.Expect("Value must be >= 0", () => box.Value >= 0)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShallowObjectCopy.cs:54:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    458149048
+ ------------------------------------------------------------
+  Executed:
+   - Input: box   = { Value: -9 }
+            Redux   { Value: -1 }
+ =============================================
+  !! Expectation Failed: Value must be >= 0
+ =============================================
+```
+### Coupled Predicate
+
+**The Model:**  
+```csharp
+record Pair(int A, int B);
+[CodeSnippet]
+protected override CheckrOf<Case> TheCheckr() =>
+    from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(9, 9)))
+    from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
+    select Case.Closed;
+```
+
+**The Checkr:**  
+```csharp
+from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(9, 9)))
+from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_CoupledPredicate.cs:37:1
+ Original failing run:    1 execution
+ Seed:                    2017105380
+ ------------------------------------------------------------
+  Executed:
+   - Input: pair = { A: 9, B: 9 }
+ ======================================
+  !! Expectation Failed: A + B <= 10
+ ======================================
+```
+### Coupled Predicate
+
+**The Model:**  
+```csharp
+record Pair(int A, int B);
+[CodeSnippet]
+protected override CheckrOf<Case> TheCheckr() =>
+    from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)), Reduce.TowardsZero)
+    from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
+    select Case.Closed;
+```
+
+**The Checkr:**  
+```csharp
+from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)), Reduce.TowardsZero)
+from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_CoupledPredicate.cs:37:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    2017105380
+ ------------------------------------------------------------
+  Executed:
+   - Input: pair  = { A: 11, B: 11 }
+            Redux   { A: 0, B: 0 }
+ ======================================
+  !! Expectation Failed: A + B <= 10
+ ======================================
+```
+### Parent Child Invariant
+
+**The Model:**  
+```csharp
+record Account(int Balance, int CreditLimit);
+[CodeSnippet]
+protected override CheckrOf<Case> TheCheckr() =>
+    from account in Checkr.Input("pair", Fuzzr.Constant(new Account(-100, 50)))
+    from expect in Checkr.Expect("Balance >= -CreditLimit (i.e. never exceeds credit)",
+         () => account.Balance >= -account.CreditLimit)
+    select Case.Closed;
+```
+
+**The Checkr:**  
+```csharp
+from account in Checkr.Input("pair", Fuzzr.Constant(new Account(-100, 50)))
+from expect in Checkr.Expect("Balance >= -CreditLimit (i.e. never exceeds credit)",
+     () => account.Balance >= -account.CreditLimit)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ParentChildInvariant.cs:54:1
+ Original failing run:    1 execution
+ Seed:                    483645165
+ ------------------------------------------------------------
+  Executed:
+   - Input: pair = { Balance: -100, CreditLimit: 50 }
+ ==============================================================================
+  !! Expectation Failed: Balance >= -CreditLimit (i.e. never exceeds credit)
+ ==============================================================================
+```
 ## Acting Out Of Sync
 ```csharp
 public class Eventually

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J3_TheCaseOfTheInvisibleCollection.cs:46:1
+ Location:                J3_TheCaseOfTheInvisibleCollection.cs:55:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180

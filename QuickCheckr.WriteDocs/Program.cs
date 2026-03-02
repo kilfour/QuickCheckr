@@ -1,5 +1,4 @@
-﻿using QuickCheckr.Tests;
-using QuickCheckr.Tests.Docs;
+﻿using QuickCheckr.Tests.Docs;
 using QuickCheckr.Tests.Drafts;
 using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;

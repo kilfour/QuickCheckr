@@ -39,6 +39,15 @@ public abstract class CheckrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
+        CheckrOfTRun.ExecutionCount executionCount,
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Exposes(
+            () => TheCheckr().Run(executionCount, Configure))
+            , callerPath);
+
+
+    [StackTraceHidden]
+    protected void Run(
         int seed,
         CheckrOfTRun.ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")

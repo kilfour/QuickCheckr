@@ -1,3 +1,4 @@
+- [Shrinking Bug](ShrinkingBug.md)
   - [The Needler Pattern](A_TheNeedlerPattern/TheNeedlerPattern.md)
   - [Showr Use](D_ShowrUse/ShowrUse.md)
   - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
@@ -9,4 +10,7 @@
     - [Applies Default Reducers](T_GoingFunctional/Sub/F_AppliesDefaultReducers.md)
     - [With Classifiers Seeded Showing Redux Too](T_GoingFunctional/Sub/G_WithClassifiersSeededShowingReduxToo.md)
     - [With Custom Reducer](T_GoingFunctional/Sub/H_WithCustomReducer.md)
+  - [Using Linq](U_ModelBasedTesting/A_UsingLinq.md)
+  - [Using Dsl](U_ModelBasedTesting/B_UsingDsl.md)
   - [Warehousing](W_Warehouse/Warehousing.md)
+    - [Nested Lists](Z_Challenges/K_NestedLists/NestedLists.md)

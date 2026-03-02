@@ -1,3 +1,31 @@
+# Shrinking Bug
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Nested List", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "The sum of lengths of the element lists is at most 10",
+    () => input.Sum(a => a.Count) <= 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkingBug.cs:63:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1740746306
+ ------------------------------------------------------------
+  Executed:
+   - Input: Nested List = [ [ _ ], [ _ ] ]
+   - Trace: Original    = [ [ 56, 50 ], [ 13, 52 ] ]
+ ================================================================================
+  !! Expectation Failed: The sum of lengths of the element lists is at most 10
+ ================================================================================
+```
 ## The Needler Pattern
 **Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.  
 ### The SUT:
@@ -373,6 +401,161 @@ Check.ForAll(257911700, Fuzzr.Int(0, 10), a => a != 6, Reduce.Values([0, 6]));
   !! Expectation Failed: Property
  ===================================
 ```
+## Using Linq
+
+**The Model:**  
+```csharp
+public class Model
+{
+    public int Result { get; private set; } = 0;
+    public void Add(int a) => Result += a;
+    public void Subtract(int a) => Result -= a;
+    public void Clear() => Result = 0;
+}
+```
+
+**SUT:**  
+```csharp
+public class Sut
+{
+    public int Result { get; private set; } = 0;
+    private int counter = 0;
+    public void Add(int a)
+    {
+        counter++;
+        Result += a;
+    }
+    public void Subtract(int a) => Result -= a;
+    public void Clear()
+    {
+        if (counter != 3)
+            Result = 0;
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+from model in Trackr.Stashed(() => new Model())
+from sut in Trackr.Stashed(() => new Sut())
+from ops in Checkr.OneOf(
+    from input in Checkr.Input("Input", Fuzzr.Int())
+    from add in Checkr.Act("Add", () =>
+    {
+        model.Add(input);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_UsingLinq.cs:72:1
+ Original failing run:    7 executions
+ Minimal failing case:    4 executions (after 6 shrinks)
+ Seed:                    268786672
+ ------------------------------------------------------------
+  Executed: Add
+   - Trace: Observation = Model: 54, Sut: 54.
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Add
+   - Trace: Observation = Model: 114, Sut: 114.
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Add
+   - Trace: Observation = Model: 210, Sut: 210.
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+ ==================================
+  !! Expectation Failed: Observe
+ ==================================
+ Passed Expectations
+ - Observe: 6x
+ ------------------------------------------------------------
+```
+## Using Dsl
+
+**The Model:**  
+```csharp
+public class Model
+{
+    public int Result { get; private set; } = 0;
+    public void Add(int a) => Result += a;
+    public void Subtract(int a) => Result -= a;
+    public void Clear() => Result = 0;
+}
+```
+
+**SUT:**  
+```csharp
+public class Sut
+{
+    public int Result { get; private set; } = 0;
+    private int counter = 0;
+    public void Add(int a)
+    {
+        counter++;
+        Result += a;
+    }
+    public void Subtract(int a) => Result -= a;
+    public void Clear()
+    {
+        if (counter != 3)
+            Result = 0;
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+ Check
+    .Model(() => new Model())
+    .Sut(() => new Sut())
+    .Operation("Add", Fuzzr.Int(),
+        (model, sut, a) =>
+        {
+            model.Add(a);
+            sut.Add(a);
+        })
+    .Operation("Subtract", Fuzzr.Int(),
+        (model, sut, a) =>
+        {
+            model.Subtract(a);
+            sut.Subtract(a);
+        })
+    .Operation("Clear",
+        (model, sut) =>
+        {
+            model.Clear();
+            sut.Clear();
+        })
+    .Observe(
+        (model, sut) => model.Result == sut.Result,
+        (model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.");
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_UsingDsl.cs:131:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 12 shrinks)
+ Seed:                    321964063
+ ------------------------------------------------------------
+  Executed: Add (3 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+   - Trace: Observation = Model: 0, Sut: 122.
+ ==================================
+  !! Expectation Failed: Observe
+ ==================================
+ Passed Expectations
+ - Observe: 12x
+ ------------------------------------------------------------
+```
 ## Warehousing
 > An evolving playground to examine some ideas.  
 **High level ideas**:  
@@ -683,3 +866,31 @@ private static readonly CheckrOf<Case> PlaceOrder =
 ```
 
 [ShowrUse]: #showr-use
+### Nested Lists
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Nested List", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "The sum of lengths of the element lists is at most 10",
+    () => input.Sum(a => a.Count) <= 10)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedLists.cs:63:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 16 shrinks)
+ Seed:                    893891090
+ ------------------------------------------------------------
+  Executed:
+   - Input: Nested List = [ [ _, _ ], [ _, _, _, _ ] ]
+   - Trace: Original    = [ [ 47, 43, 25, 52, 69, 11, 17 ], [ 95, 84, 95, 19, 1, 74, 27, 26, 83 ] ]
+ ================================================================================
+  !! Expectation Failed: The sum of lengths of the element lists is at most 10
+ ================================================================================
+```
