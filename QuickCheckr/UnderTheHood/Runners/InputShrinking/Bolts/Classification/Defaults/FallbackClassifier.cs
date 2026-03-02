@@ -5,9 +5,9 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingContext, InputShrinkingClassification>
+public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingContext, InputClassification>
 {
-    public override InputShrinkingClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    public override InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
         var clue = InputShrinkingClue.Keep<NoShrinkerFound>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
         context.State.Docket.Record(new InputShrinkingClueFound(clue));

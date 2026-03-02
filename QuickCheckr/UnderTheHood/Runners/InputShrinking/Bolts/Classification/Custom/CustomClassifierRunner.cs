@@ -7,7 +7,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 public class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
 {
-    public InputShrinkingClassification Classify(ShrinkingInfo info, ShrinkingContext context)
+    public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var values = shrinker(info.Value!);

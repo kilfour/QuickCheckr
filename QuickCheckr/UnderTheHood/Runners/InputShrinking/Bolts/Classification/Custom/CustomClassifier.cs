@@ -4,20 +4,20 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
 public abstract class CustomClassifier<T>
-    : FirstMatchHandler<IClassificationOption, CustomShrinkingContext, InputShrinkingClassification>
+    : FirstMatchHandler<IClassificationOption, CustomShrinkingContext, InputClassification>
 {
-    public override HandlerResult<InputShrinkingClassification> TryHandle(IClassificationOption input, CustomShrinkingContext customContext)
+    public override HandlerResult<InputClassification> TryHandle(IClassificationOption input, CustomShrinkingContext customContext)
         => ReturnIfRelevant(input, customContext);
 
-    private HandlerResult<InputShrinkingClassification> ReturnIfRelevant(IClassificationOption input, CustomShrinkingContext ctx)
+    private HandlerResult<InputClassification> ReturnIfRelevant(IClassificationOption input, CustomShrinkingContext ctx)
     => input is T option
         ? ReturnIfRelevant(GetClassification(option, ctx))
         : Unhandled;
 
-    private HandlerResult<InputShrinkingClassification> ReturnIfRelevant(InputShrinkingClassification classification)
+    private HandlerResult<InputClassification> ReturnIfRelevant(InputClassification classification)
         => classification is InputAssumedIrrelevant
             ? Unhandled
             : HandlerResult.Handled(classification);
 
-    protected abstract InputShrinkingClassification GetClassification(T input, CustomShrinkingContext customContext);
+    protected abstract InputClassification GetClassification(T input, CustomShrinkingContext customContext);
 }

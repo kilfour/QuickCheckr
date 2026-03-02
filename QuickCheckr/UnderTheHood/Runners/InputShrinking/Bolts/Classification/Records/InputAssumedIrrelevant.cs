@@ -1,3 +1,3 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record InputAssumedIrrelevant() : InputShrinkingClassification;
+public record InputAssumedIrrelevant() : InputClassification;

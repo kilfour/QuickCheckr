@@ -2,10 +2,10 @@ using QuickCheckr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record CollectionRelevant(IEnumerable<InputShrinkingClassification> Elements)
+public record CollectionRelevant(IEnumerable<InputClassification> Elements)
     : InputRelevant(GetReport(Elements))
 {
-    private static string GetReport(IEnumerable<InputShrinkingClassification> elements) =>
+    private static string GetReport(IEnumerable<InputClassification> elements) =>
         !elements.Any() ? "[ ]" :
         $"[ {string.Join(", ",
             elements.Where(a => a is not ElementAssumedIrrelevant)

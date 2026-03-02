@@ -5,11 +5,11 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public class ShrinkClassifierSelector
+public class ClassifierSelector
 {
-    public InputShrinkingClassification Classify(ShrinkingInfo info, ShrinkingContext context)
+    public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
-        InputShrinkingClassification classification;
+        InputClassification classification;
         var shrinkOptions = context.State.Memory.GetClassificationOptions(info.ExecutionId, info.Key, info.Type);
         if (shrinkOptions.Any())
             classification = ClassifyCustom(info, shrinkOptions, context);
@@ -52,11 +52,11 @@ public class ShrinkClassifierSelector
             Maybe<object>.Just(step.Result!));
     }
 
-    private InputShrinkingClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
+    private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
         => new CustomClassifierDispatcher(new DefaultClassifierDispatcher()).Dispatch(options, new CustomShrinkingContext(info, context));
 
     // TODO: private readonly DefaultClassifier defaultClassifier = new();
 
-    public InputShrinkingClassification ClassifyDefault(ShrinkingInfo info, ShrinkingContext context)
+    public InputClassification ClassifyDefault(ShrinkingInfo info, ShrinkingContext context)
         => new DefaultClassifierDispatcher().Dispatch(info, context);
 }

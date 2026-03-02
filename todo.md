@@ -5,6 +5,12 @@
 * **Reducers**
 * ReductionNotPossible.cs => Warning
 * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
+* Shrinking Redesign again ;-):
+  * Execution Shrinking
+  * Input Shrinking
+    * Structural Collapse
+    * Input Classification
+    * Input Reduction (Redux)
 
 ### Todo
 * Add Reducers to Lazy Input

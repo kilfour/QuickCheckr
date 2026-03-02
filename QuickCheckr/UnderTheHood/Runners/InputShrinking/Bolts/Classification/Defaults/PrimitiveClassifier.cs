@@ -4,9 +4,9 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class PrimitiveShrinkClassifier : Classifier
+public class PrimitiveClassifier : Classifier
 {
-    public override HandlerResult<InputShrinkingClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
         return HandlerResult.Handled(Handle(info, context));
@@ -15,7 +15,7 @@ public class PrimitiveShrinkClassifier : Classifier
     private static bool CanHandle(ShrinkingInfo info) =>
         PrimitiveValues.Keys.Any(k => k.IsAssignableFrom(info.NormalizedType));
 
-    private static InputShrinkingClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.NormalizedType));
@@ -25,13 +25,13 @@ public class PrimitiveShrinkClassifier : Classifier
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
                 // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<PrimitiveShrinkClassifier>(
+                var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
                     info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveShrinkClassifier>(info.ExecutionId, info.Path, info.Value);
+        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveClassifier>(info.ExecutionId, info.Path, info.Value);
         context.State.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         return new InputAssumedIrrelevant();
     }

@@ -4,6 +4,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 public class CustomFunctionShrinkClassifier : CustomClassifier<IClassificationOptionFunction>
 {
-    protected override InputShrinkingClassification GetClassification(IClassificationOptionFunction option, CustomShrinkingContext customContext)
+    protected override InputClassification GetClassification(IClassificationOptionFunction option, CustomShrinkingContext customContext)
         => new CustomClassifierRunner(option.GetFunction()).Classify(customContext.Info, customContext.Context);
 }

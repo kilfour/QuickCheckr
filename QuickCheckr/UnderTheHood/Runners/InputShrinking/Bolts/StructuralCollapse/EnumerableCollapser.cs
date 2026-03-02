@@ -8,15 +8,15 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class EnumerableShrinkClassifier : Classifier
+public class EnumerableCollapser : Classifier
 {
-    public override HandlerResult<InputShrinkingClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
         return HandlerResult.Handled(Handle(info, context));
     }
 
-    private ShrinkClassifierSelector selector = new();
+    private ClassifierSelector selector = new();
 
     public Dictionary<int, int>? Mapper { get; set; }
 
@@ -24,11 +24,11 @@ public class EnumerableShrinkClassifier : Classifier
 
     private static bool CanHandle(ShrinkingInfo info) => typeof(IEnumerable).IsAssignableFrom(info.Type);
 
-    private InputShrinkingClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var theList = CloneList.AsOriginalType(info.Value!);
-        var values = new List<InputShrinkingClassification>();
+        var values = new List<InputClassification>();
         var elementCount = theList.Count;
         var elementType = GetElementType(info.Type);
         int index = 0;

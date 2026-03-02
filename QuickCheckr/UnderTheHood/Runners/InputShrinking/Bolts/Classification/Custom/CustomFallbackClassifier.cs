@@ -4,9 +4,9 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomFallbackClassifier : FirstMatchCollectionFallback<CustomShrinkingContext, InputShrinkingClassification>
+public class CustomFallbackClassifier : FirstMatchCollectionFallback<CustomShrinkingContext, InputClassification>
 {
-    public override InputShrinkingClassification Handle(CustomShrinkingContext context)
+    public override InputClassification Handle(CustomShrinkingContext context)
     {
         var info = context.Info;
         var clue = InputShrinkingClue.Ignore<CustomClassifierRunner>(info.ExecutionId, info.Path, info.Value);

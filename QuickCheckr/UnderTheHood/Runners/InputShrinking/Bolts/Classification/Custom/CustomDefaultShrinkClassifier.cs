@@ -5,6 +5,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 public class CustomDefaultShrinkClassifier(DefaultClassifierDispatcher defaults) : CustomClassifier<IClassificationOptionDefault>
 {
-    protected override InputShrinkingClassification GetClassification(IClassificationOptionDefault option, CustomShrinkingContext customContext)
+    protected override InputClassification GetClassification(IClassificationOptionDefault option, CustomShrinkingContext customContext)
         => defaults.Dispatch(customContext.Info, customContext.Context);
 }

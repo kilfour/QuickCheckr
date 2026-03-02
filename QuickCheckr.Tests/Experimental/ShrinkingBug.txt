@@ -3,11 +3,11 @@
  Location:                ShrinkingBug.cs:63:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1740746306
+ Seed:                    1286447577
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _ ] ]
-   - Trace: Original    = [ [ 56, 50 ], [ 13, 52 ] ]
+   - Trace: Original    = [ [ 33, 46 ], [ 47, 44 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

@@ -3,4 +3,4 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public abstract class Classifier : FirstMatchHandler<ShrinkingInfo, ShrinkingContext, InputShrinkingClassification>;
+public abstract class Classifier : FirstMatchHandler<ShrinkingInfo, ShrinkingContext, InputClassification>;
