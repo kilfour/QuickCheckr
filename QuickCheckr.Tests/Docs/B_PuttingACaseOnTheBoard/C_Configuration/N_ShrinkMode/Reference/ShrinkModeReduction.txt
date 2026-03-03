@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeReduction.cs:46:1
+ Location:                ShrinkModeReduction.cs:55:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    2145473476

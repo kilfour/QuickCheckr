@@ -2,12 +2,12 @@
  Test:                    Example
  Location:                NestedLists.cs:63:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 15 shrinks)
- Seed:                    852990189
+ Minimal failing case:    1 execution (after 16 shrinks)
+ Seed:                    1395068066
  ------------------------------------------------------------
   Executed:
-   - Input: Nested List = [ [ _, _, _, _, _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 87, 26, 70, 84, 7, 2, 64, 74, 56 ], [ 25, 92, 2, 40, 55, 16 ] ]
+   - Input: Nested List = [ [ _, _, _ ], [ _, _, _, _, _, _, _, _ ] ]
+   - Trace: Original    = [ [ 80, 93 ], [ ], [ 47, 2, 95, 89, 7, 60 ], [ 78, 95, 99, 87, 11, 21, 75, 60 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

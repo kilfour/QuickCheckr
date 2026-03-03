@@ -41,6 +41,14 @@ public class OverlayMemoryBank
     public IDisposable ScopedSwap(string key, object value)
     {
         Func<object> getValue = () => Get<object>(key);
+        var setSteps = GetSetSteps(ref getValue);
+        var oldValue = getValue();
+        Set(key, SetValue(value, setSteps));
+        return new DisposableAction(() => Set(key, SetValue(oldValue, setSteps)));
+    }
+
+    private Stack<(MemoryLens lens, object container)> GetSetSteps(ref Func<object> getValue)
+    {
         var setSteps = new Stack<(MemoryLens lens, object container)>();
         foreach (var lens in swappers.Reverse())
         {
@@ -49,15 +57,22 @@ public class OverlayMemoryBank
             var container = currentGet();
             setSteps.Push((lens, container));
         }
-        var oldValue = getValue();
-        object setValue(object newLeaf)
-        {
-            var updated = newLeaf;
-            foreach (var (lens, container) in setSteps)
-                updated = lens.Set(container, updated);
-            return updated;
-        }
-        Set(key, setValue(value));
-        return new DisposableAction(() => Set(key, setValue(oldValue)));
+
+        return setSteps;
+    }
+
+    private static object SetValue(object newLeaf, Stack<(MemoryLens lens, object container)> setSteps)
+    {
+        var updated = newLeaf;
+        foreach (var (lens, container) in setSteps)
+            updated = lens.Set(container, updated);
+        return updated;
+    }
+
+    public void Commit(string key, object value)
+    {
+        Func<object> getValue = () => Get<object>(key);
+        var setSteps = GetSetSteps(ref getValue);
+        Set(key, SetValue(value, setSteps));
     }
 }

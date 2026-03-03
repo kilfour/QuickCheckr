@@ -16,12 +16,12 @@ select Case.Closed;
  Test:                    Example
  Location:                NestedLists.cs:63:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 16 shrinks)
- Seed:                    893891090
+ Minimal failing case:    1 execution (after 14 shrinks)
+ Seed:                    468879457
  ------------------------------------------------------------
   Executed:
-   - Input: Nested List = [ [ _, _ ], [ _, _, _, _ ] ]
-   - Trace: Original    = [ [ 47, 43, 25, 52, 69, 11, 17 ], [ 95, 84, 95, 19, 1, 74, 27, 26, 83 ] ]
+   - Input: Nested List = [ [ _, _, _, _, _, _, _ ], [ _, _, _, _ ] ]
+   - Trace: Original    = [ [ 20, 95, 71, 63, 97, 82, 29, 70, 19 ], [ 82, 62, 30, 77, 42, 80 ], [ 33, 63, 38, 48, 24, 42, 23, 30 ], [ 13, 66, 22, 18 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
@@ -12,8 +13,16 @@ public record ObjectRelevant(Dictionary<string, InputClassification> Members)
     public override Maybe GetRedux()
     {
         if (Redux.HasValue) return Redux;
-        var childRedux = Members.Where(a => a.Value.GetRedux().HasValue).ToList();
-        if (childRedux.Count == 0) return Maybe.Nothing();
-        return Maybe.Just($"{{ {string.Join(", ", childRedux.Select(kvp => $"{kvp.Key}: {kvp.Value.Redux.Value}"))} }}");
+        if (!Members.Any(a => a.Value.GetRedux().HasValue)) return Maybe.Nothing();
+        var values = Members.Where(a => a.Value is InputRelevant)
+                .Select(kvp => GetReduxString(kvp.Key, (kvp.Value as InputRelevant)!));
+        return Maybe.Just($"{{ {string.Join(", ", values)} }}");
+    }
+
+    private string GetReduxString(string key, InputRelevant classification)
+    {
+        var reduxValue = classification.GetRedux();
+        var value = reduxValue.HasValue ? reduxValue.Value : classification.Report;
+        return $"{key}: {value}";
     }
 }

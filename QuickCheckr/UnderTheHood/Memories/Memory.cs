@@ -50,7 +50,8 @@ public class Memory
         => ShortTermMemory.ScopedSwap(executionId, key, value);
     public IDisposable NestedValue(int executionId, MemoryLens swapper)
         => ShortTermMemory.NestedValue(executionId, swapper);
-
+    public void Commit(int executionId, string key, object value)
+        => ShortTermMemory.Commit(executionId, key, value);
 
     // ==========================================================================
     // Long Term

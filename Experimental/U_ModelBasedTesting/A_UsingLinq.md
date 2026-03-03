@@ -49,21 +49,13 @@ from ops in Checkr.OneOf(
  Location:                A_UsingLinq.cs:72:1
  Original failing run:    7 executions
  Minimal failing case:    4 executions (after 6 shrinks)
- Seed:                    268786672
+ Seed:                    473612495
  ------------------------------------------------------------
-  Executed: Add
-   - Trace: Observation = Model: 54, Sut: 54.
-   - WARNING: All inputs were considered irrelevant.
- ------------------------------------------------------------
-  Executed: Add
-   - Trace: Observation = Model: 114, Sut: 114.
-   - WARNING: All inputs were considered irrelevant.
- ------------------------------------------------------------
-  Executed: Add
-   - Trace: Observation = Model: 210, Sut: 210.
+  Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
+   - Trace: Observation = Model: 0, Sut: 86.
  ==================================
   !! Expectation Failed: Observe
  ==================================

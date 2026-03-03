@@ -18,10 +18,6 @@ public class EnumerableClassifier : Classifier
 
     private ClassifierSelector selector = new();
 
-    public Dictionary<int, int>? Mapper { get; set; }
-
-    private int GetMappedIndex(int index) => Mapper == null ? index : Mapper[index];
-
     private static bool CanHandle(ShrinkingInfo info) => typeof(IEnumerable).IsAssignableFrom(info.Type);
 
     private InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
@@ -54,12 +50,13 @@ public class EnumerableClassifier : Classifier
                 var swapper = new ListLens(elementType, ix);
                 using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                 {
-                    var childInfo = info with { Value = before, Path = $"{info.Path}.{GetMappedIndex(index)}", Type = elementType };
+                    var childInfo = info with { Value = before, Path = $"{info.Path}.{index}", Type = elementType };
                     values.Add(selector.Classify(childInfo, context));
                 }
             }
             index++;
         }
+        context.State.Memory.Commit(info.ExecutionId, info.Key, CloneList.GetSubstituteForType(info.Type, theList));
         if (elementCount == 0 || values.Any(a => a is not ElementAssumedIrrelevant))
         {
             return new CollectionRelevant(values);

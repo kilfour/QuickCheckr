@@ -47,6 +47,7 @@ public class ClassifierSelector
         }
         if (Equals(info.Value, step.Result))
             return (Maybe.Nothing(), Maybe<object>.Nothing());
+        context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);
         return (
             Maybe.Just(context.State.InputPrinter.IntroduceThis(step.Result!)),
             Maybe<object>.Just(step.Result!));

@@ -23,6 +23,8 @@ public class ExecutionMemory
         => inputs.ScopedSwap(key, value);
     public IDisposable NestedValue(MemoryLens swapper)
         => inputs.NestedValue(swapper);
+    public void Commit(string key, object value)
+        => inputs.Commit(key, value);
     // --------------------------------------------------------------------------
 
 
