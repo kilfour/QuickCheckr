@@ -2076,7 +2076,7 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 [A_TheShowrClass]: #the-showr-class
 
-[CustomReducersOld]: #custom-reducers-old
+[CustomShrinkers]: #custom-shrinkers
 ### The Showr Class
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
@@ -2781,6 +2781,8 @@ Custom shrinkers are intended for cases where domain knowledge can guide shrinki
 
   
 
+[InputShrinking]: #input-shrinking
+
 [Classifiers]: #classifiers
 
 [Reducers]: #reducers
@@ -2791,12 +2793,16 @@ Classification is done by trying different *candidates* for an input and verifyi
 - If the failure goes away for at least one candidate, the input is relevant.
 
 So when supplying a custom classifier, you are basically supplying a list of candidates.  
-There are various ways to do this, but here is a first example:
+There are various ways to do this :
+- [Candidate-based Classifiers][CandidateClassifiers]
+- [Policy-based Classifiers][PolicyBasedClassifiers]
   
+The following example demonstrates how the various classifiers can be used chained.    
+It is a bit of a contrived example as the default classifiers handle this case just fine.  
 
 **The Checkr:**  
 ```csharp
-from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Values(0, 1, 42))
+from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Default<int>(), Try.Values(0, 1, 42))
 from expect in Checkr.Expect("answer == 42", () => answer == 42)
 select Case.Closed;
 ```
@@ -2815,7 +2821,10 @@ select Case.Closed;
   !! Expectation Failed: answer == 42
  =======================================
 ```
-It's a bit of a contrived example as the default classifiers handle this case just fine, but it's here for demonstration purposes.  
+
+[CandidateClassifiers]: #candidate-based-classifiers
+
+[PolicyBasedClassifiers]: #policy-based-classifiers
 ##### Candidate-based Classifiers
 Here is an overview of all the different ways you can define *candidates* for classification.  
 Using a more relevant example this time (where possible), that allows you to deal with [this][E_CheckingNulls] relatively common issue.  

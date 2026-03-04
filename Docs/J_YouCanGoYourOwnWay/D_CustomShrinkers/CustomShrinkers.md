@@ -21,6 +21,8 @@ Custom shrinkers are intended for cases where domain knowledge can guide shrinki
 
   
 
+[InputShrinking]: ../../H_OnShrinking/C_InputShrinking/InputShrinking.md
+
 [Classifiers]: A_Classification/Classifiers.md
 
 [Reducers]: B_Reduction/Reducers.md

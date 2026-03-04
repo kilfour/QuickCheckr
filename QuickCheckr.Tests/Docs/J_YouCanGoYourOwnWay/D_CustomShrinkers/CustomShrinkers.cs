@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
 using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification;
 using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction;
 using QuickCheckr.Tests.Tools;
@@ -6,6 +7,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers;
 
 [DocFile]
+[DocLink(typeof(InputShrinking))]
 [DocLink(typeof(Classifiers))]
 [DocLink(typeof(Reducers))]
 [DocUnderConstruction]

@@ -47,19 +47,19 @@ from ops in Checkr.OneOf(
 ------------------------------------------------------------
  Test:                    Example
  Location:                A_UsingLinq.cs:72:1
- Original failing run:    7 executions
- Minimal failing case:    4 executions (after 6 shrinks)
- Seed:                    473612495
+ Original failing run:    14 executions
+ Minimal failing case:    4 executions (after 13 shrinks)
+ Seed:                    1299945702
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Trace: Observation = Model: 0, Sut: 86.
+   - Trace: Observation = Model: 0, Sut: 196.
  ==================================
   !! Expectation Failed: Observe
  ==================================
  Passed Expectations
- - Observe: 6x
+ - Observe: 13x
  ------------------------------------------------------------
 ```
