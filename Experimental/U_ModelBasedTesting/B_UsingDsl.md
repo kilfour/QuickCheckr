@@ -64,19 +64,19 @@ public class Sut
 ------------------------------------------------------------
  Test:                    Example
  Location:                B_UsingDsl.cs:72:1
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    1156276310
+ Original failing run:    8 executions
+ Minimal failing case:    4 executions (after 7 shrinks)
+ Seed:                    765677575
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Trace: Observation = Model: 0, Sut: 145.
+   - Trace: Observation = Model: 0, Sut: 97.
  ==================================
   !! Expectation Failed: Observe
  ==================================
  Passed Expectations
- - Observe: 8x
+ - Observe: 7x
  ------------------------------------------------------------
 ```

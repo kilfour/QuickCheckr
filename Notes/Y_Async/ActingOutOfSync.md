@@ -10,7 +10,7 @@ public class Eventually
 ```
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int())
-    from result in Checkr.Act("Eventually.AddOne", Eventually.AddOne(input))
+    from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
     from expect in Checkr.Expect("Is not 42", () => result != 42)
     select Case.Closed;
 ```

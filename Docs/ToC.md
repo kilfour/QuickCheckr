@@ -21,7 +21,6 @@
     - [The Showr Class](J_YouCanGoYourOwnWay/A_Showr/A_TheShowrClass.md)
       - [Showr Reference](J_YouCanGoYourOwnWay/A_Showr/Reference/A_ShowrReference.md)
       - [None](J_YouCanGoYourOwnWay/A_Showr/Reference/F_None.md)
-      - [Shrink Multiple](J_YouCanGoYourOwnWay/B_CustomShrinkersOld/Sub/ShrinkMultiple.md)
     - [Custom Reducers Old](J_YouCanGoYourOwnWay/C_ReducersOld/CustomReducersOld.md)
       - [Values Stop On First Passed](J_YouCanGoYourOwnWay/C_ReducersOld/A_Values/A_ValuesStopOnFirstPassed.md)
       - [Values Stop On First Passed Alternative](J_YouCanGoYourOwnWay/C_ReducersOld/A_Values/B_ValuesStopOnFirstPassedAlternative.md)

@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Experimental.Z_Challenges.K_NestedLists;
 public class NestedLists : CheckrTest<NestedLists>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

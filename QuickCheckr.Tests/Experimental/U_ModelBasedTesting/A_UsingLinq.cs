@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Experimental.U_ModelBasedTesting;
 public class A_UsingLinq : CheckrTest<A_UsingLinq>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocModelHeader]

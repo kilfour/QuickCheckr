@@ -38,9 +38,10 @@
 * Renamed Custom Shrinker factory class from `Shrink` to `Try`.
 * Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
   
-   
+## 0.0.10 : Wait for Me !
+* Check/Test/Doc Simple Async testing => initial web-api example
 
-## 0.0.10 : All Aboard
+## 0.0.11 : All Aboard
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:

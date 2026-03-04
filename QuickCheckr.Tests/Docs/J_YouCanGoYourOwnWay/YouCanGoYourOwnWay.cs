@@ -20,7 +20,6 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 @"
 - [Showr][A_TheShowrClass]
 - [Custom Shrinkers][CustomShrinkers]
-- [Reducers][Reducers]
 ")]
 
 public class YouCanGoYourOwnWay { }

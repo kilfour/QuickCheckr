@@ -20,7 +20,7 @@ public class ConditionalResult<T>
     public static CheckrResult<ConditionalResult<T>> AsCheckrResult(
         CheckrState state,
         Func<bool> predicate,
-        T? value) => predicate()
-            ? CheckrResult.Some(state, new ConditionalResult<T>(value))
+        Func<T?> factory) => predicate()
+            ? CheckrResult.Some(state, new ConditionalResult<T>(factory()))
             : CheckrResult.Some(state, ConditionalResult<T>.NotExecuted());
 }

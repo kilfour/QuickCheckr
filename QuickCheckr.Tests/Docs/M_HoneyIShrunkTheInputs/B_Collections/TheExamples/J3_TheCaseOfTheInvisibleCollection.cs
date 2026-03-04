@@ -12,7 +12,7 @@ which is a convenience function that hides the plumbing required to define this 
 public class J3_TheCaseOfTheInvisibleCollection : CheckrTest<J3_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

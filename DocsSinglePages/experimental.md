@@ -17,11 +17,11 @@ select Case.Closed;
  Location:                ShrinkingBug.cs:63:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    2042586657
+ Seed:                    1835073882
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 77, 3 ], [ 52, 60 ] ]
+   - Trace: Original    = [ [ 9, 45 ], [ 92, 77 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================
@@ -532,20 +532,20 @@ public class Sut
 ------------------------------------------------------------
  Test:                    Example
  Location:                B_UsingDsl.cs:72:1
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    1156276310
+ Original failing run:    8 executions
+ Minimal failing case:    4 executions (after 7 shrinks)
+ Seed:                    765677575
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Trace: Observation = Model: 0, Sut: 145.
+   - Trace: Observation = Model: 0, Sut: 97.
  ==================================
   !! Expectation Failed: Observe
  ==================================
  Passed Expectations
- - Observe: 8x
+ - Observe: 7x
  ------------------------------------------------------------
 ```
 ## Warehousing

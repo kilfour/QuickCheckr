@@ -11,14 +11,14 @@ public static partial class Checkr
     /// </summary>
     public static CheckrOf<ConditionalResult<T>> ActWhen<T>(this string key, Func<bool> predicate, Func<T> func) =>
         //state => predicate() ? Act(key, func)(state) : CheckrResult.Default<T>(state);
-        state => ConditionalResult<T>.AsCheckrResult(state, predicate, Act(key, func)(state).Value);
+        state => ConditionalResult<T>.AsCheckrResult(state, predicate, () => Act(key, func)(state).Value);
 
     /// <summary>
     /// Adds a named asynchronous action step that only executes when a condition holds, capturing its result for later expectations and traces.
     /// Use when an async operation is optional but should still appear as a proper step whenever it runs.
-    /// </summary>
-    public static CheckrOf<ConditionalResult<T>> ActWhen<T>(this string key, Func<bool> predicate, Task<T> func) =>
-        state => ConditionalResult<T>.AsCheckrResult(state, predicate, Act(key, func)(state).Value);
+    /// </summary>s
+    public static CheckrOf<ConditionalResult<T>> ActWhen<T>(this string key, Func<bool> predicate, Func<Task<T>> func) =>
+        state => ConditionalResult<T>.AsCheckrResult(state, predicate, () => Act(key, func)(state).Value);
 
     /// <summary>
     /// Adds a named action step that only executes when a condition holds, for side-effect-only operations.
@@ -31,6 +31,6 @@ public static partial class Checkr
     /// Adds a named asynchronous action step that only executes when a condition holds, for side-effect-only operations.
     /// Use when an async operation is optional and the case should continue unchanged when it is skipped.
     /// </summary>
-    public static CheckrOf<Case> ActWhen(this string key, Func<bool> predicate, Task func) =>
+    public static CheckrOf<Case> ActWhen(this string key, Func<bool> predicate, Func<Task> func) =>
         state => predicate() ? Act(key, func)(state) : CheckrResult.CaseOnly(state);
 }

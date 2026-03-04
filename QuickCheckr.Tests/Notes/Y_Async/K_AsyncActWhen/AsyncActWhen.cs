@@ -1,0 +1,52 @@
+using QuickCheckr.Tests.Experimental.U_ModelBasedTesting;
+using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickFuzzr;
+using QuickPulse.Bolts;
+using QuickPulse.Explains;
+
+namespace QuickCheckr.Tests.Notes.Y_Async.K_AsyncActWhen;
+
+[DocFile]
+public class AsyncActWhen : CheckrTest<AsyncActWhen>
+{
+    protected override bool Asserts => false;
+    protected override bool Report => true;
+
+    protected override bool Explanation => true;
+    [Fact]
+    [DocModelHeader]
+    [DocExample(typeof(Flip))]
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport]
+    public override void Example() =>
+        Run();
+
+    [CodeSnippet]
+    [CodeRemove("return")]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from flag in Trackr.Stashed(() => new Cell<bool>(false))
+        from act in Checkr.ActWhen("Add", () => false, () => Flip.ThisFlag(flag))
+        from expect in Checkr.Expect("Fails when flag == False", () => flag.Value)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
+    {
+
+    }
+
+    [CodeExample]
+    public class Flip
+    {
+        public static Task<bool> ThisFlag(Cell<bool> flag)
+        {
+            return Task.Run(() =>
+            {
+                flag.Value = !flag.Value;
+                return flag.Value;
+            });
+        }
+    }
+}

@@ -76,7 +76,7 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from name in Checkr.Input("Coach Name",
             from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-        from coach in Checkr.Act("Create Coach", service.CreateCoachAsync(name))
+        from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
         from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
         select Case.Closed;
 
@@ -95,7 +95,7 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from name in Checkr.Input("Course Name",
             from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-        from course in Checkr.Act("Create Course", service.CreateCourseAsync(name))
+        from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
         from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
         select Case.Closed;
 
@@ -105,7 +105,7 @@ public class LockTheStableDoors : BaseTest
         from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
             from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
             from updateSkills in Checkr.Act("Update Course Skills",
-                service.UpdateCourseSkillsAsync(course.Value.Name, skills))
+                () => service.UpdateCourseSkillsAsync(course.Value.Name, skills))
             select Case.Closed)
         select Case.Closed;
 
@@ -118,7 +118,7 @@ public class LockTheStableDoors : BaseTest
             from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
             from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
             from valid in Checkr.When(() => dbCoach.IsSuitableFor(dbCourse), // we can do better than this, i'm sure ;-)
-                from assign in Checkr.Act("Assign Coach to Course", service.AssignCoachToCourseAsync(coach.Name, course.Name))
+                from assign in Checkr.Act("Assign Coach to Course", () => service.AssignCoachToCourseAsync(coach.Name, course.Name))
                 select Case.Closed)
             select Case.Closed)
         select Case.Closed;

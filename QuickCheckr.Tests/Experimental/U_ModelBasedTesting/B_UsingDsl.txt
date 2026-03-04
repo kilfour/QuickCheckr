@@ -1,18 +1,18 @@
  ------------------------------------------------------------
  Test:                    Example
  Location:                B_UsingDsl.cs:72:1
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    1156276310
+ Original failing run:    16 executions
+ Minimal failing case:    4 executions (after 15 shrinks)
+ Seed:                    956626872
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Trace: Observation = Model: 0, Sut: 145.
+   - Trace: Observation = Model: 0, Sut: 178.
  ==================================
   !! Expectation Failed: Observe
  ==================================
  Passed Expectations
- - Observe: 8x
+ - Observe: 15x
  ------------------------------------------------------------

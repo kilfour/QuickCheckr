@@ -1190,7 +1190,7 @@ public class Eventually
 ```
 ```csharp
     from input in Checkr.Input("Input", Fuzzr.Int())
-    from result in Checkr.Act("Eventually.AddOne", Eventually.AddOne(input))
+    from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
     from expect in Checkr.Expect("Is not 42", () => result != 42)
     select Case.Closed;
 ```
@@ -1230,7 +1230,7 @@ private static readonly CheckrOf<Case> CreateCoach =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Coach Name",
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-    from coach in Checkr.Act("Create Coach", service.CreateCoachAsync(name))
+    from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
     from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
     select Case.Closed;
 ```
@@ -1251,7 +1251,7 @@ private static readonly CheckrOf<Case> CreateCourse =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Course Name",
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-    from course in Checkr.Act("Create Course", service.CreateCourseAsync(name))
+    from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
     from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
     select Case.Closed;
 ```
@@ -1262,7 +1262,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from updateSkills in Checkr.Act("Update Course Skills",
-            service.UpdateCourseSkillsAsync(course.Value.Name, skills))
+            () => service.UpdateCourseSkillsAsync(course.Value.Name, skills))
         select Case.Closed)
     select Case.Closed;
 ```
@@ -1305,4 +1305,42 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  Passed Expectations
  - Assigned Coaches Must Be Suitable: 5x
  ------------------------------------------------------------
+```
+### Async Act When
+
+**The Model:**  
+```csharp
+public class Flip
+{
+    public static Task<bool> ThisFlag(Cell<bool> flag)
+    {
+        return Task.Run(() =>
+        {
+            flag.Value = !flag.Value;
+            return flag.Value;
+        });
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+from flag in Trackr.Stashed(() => new Cell<bool>(false))
+from act in Checkr.ActWhen("Add", () => false, () => Flip.ThisFlag(flag))
+from expect in Checkr.Expect("Fails when flag == False", () => flag.Value)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                AsyncActWhen.cs:29:1
+ Original failing run:    1 execution
+ Seed:                    1796543523
+ ------------------------------------------------------------
+  Executed
+ ===================================================
+  !! Expectation Failed: Fails when flag == False
+ ===================================================
 ```

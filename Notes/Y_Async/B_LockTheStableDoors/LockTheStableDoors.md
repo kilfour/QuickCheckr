@@ -21,7 +21,7 @@ private static readonly CheckrOf<Case> CreateCoach =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Coach Name",
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-    from coach in Checkr.Act("Create Coach", service.CreateCoachAsync(name))
+    from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
     from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
     select Case.Closed;
 ```
@@ -42,7 +42,7 @@ private static readonly CheckrOf<Case> CreateCourse =
     from service in Trackr.GetStashed<InMemoryCoachCourseService>()
     from name in Checkr.Input("Course Name",
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-    from course in Checkr.Act("Create Course", service.CreateCourseAsync(name))
+    from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
     from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
     select Case.Closed;
 ```
@@ -53,7 +53,7 @@ private static readonly CheckrOf<Case> UpdateCourseSkills =
     from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
         from updateSkills in Checkr.Act("Update Course Skills",
-            service.UpdateCourseSkillsAsync(course.Value.Name, skills))
+            () => service.UpdateCourseSkillsAsync(course.Value.Name, skills))
         select Case.Closed)
     select Case.Closed;
 ```
