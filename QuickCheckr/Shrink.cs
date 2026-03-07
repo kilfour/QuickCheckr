@@ -5,7 +5,6 @@ namespace QuickCheckr;
 
 public static class Shrink
 {
-
     public static Shrinker OnType<T>(Func<ClassificationOption<T>> classifier)
         => new(() => [classifier()], []);
 
