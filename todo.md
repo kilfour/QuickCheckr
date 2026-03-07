@@ -1,6 +1,7 @@
 ## Next version: 0.0.9 : Reduce, Reuse, Recycle
 * *Nested* Reducers, first on type, later by path.
-
+// run: dotnet test --no-build --verbosity normal
+      
 ### Doing
 * **Reducers**
 * ReductionNotPossible.cs => Warning
@@ -37,6 +38,7 @@
   This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine. 
 * Renamed Custom Shrinker factory class from `Shrink` to `Try`.
 * Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
+* Added some missing PoolWhen overload.
   
 ## 0.0.10 : Wait for Me !
 * Check/Test/Doc Simple Async testing => initial web-api example
