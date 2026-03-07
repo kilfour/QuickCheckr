@@ -1,7 +1,5 @@
-using QuickCheckr.Tests.Experimental.U_ModelBasedTesting;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickFuzzr;
 using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
@@ -11,9 +9,9 @@ namespace QuickCheckr.Tests.Notes.Y_Async.K_AsyncActWhen;
 public class AsyncActWhen : CheckrTest<AsyncActWhen>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
+    protected override bool Explanation => false;
 
-    protected override bool Explanation => true;
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Flip))]
@@ -34,7 +32,10 @@ public class AsyncActWhen : CheckrTest<AsyncActWhen>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("Fails when flag == False", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
     [CodeExample]

@@ -58,5 +58,6 @@ temp*.md
 
 .quickpulse/
 .quickcheckr/
+.test-results/
 
 nuget.md

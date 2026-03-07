@@ -1,6 +1,5 @@
 ## Next version: 0.0.9 : Reduce, Reuse, Recycle
 * *Nested* Reducers, first on type, later by path.
-// run: dotnet test --no-build --verbosity normal
       
 ### Doing
 * **Reducers**

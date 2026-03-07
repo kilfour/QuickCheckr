@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Experimental;
 public class ShrinkingBug : CheckrTest<ShrinkingBug>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]
