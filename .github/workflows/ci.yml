@@ -24,10 +24,20 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --logger "trx;LogFileName=test-results.trx"
-    - uses: dorny/test-reporter@v1
+    - uses: dorny/test-reporter@v2
+      if: always()
       with:
-        name: TestReport
+        name: Tests
         path: "**/*.trx"
         reporter: dotnet-trx
+        list-suites: failed
+        list-tests: failed
+        max-annotations: 50
+    - name: Upload raw test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: trx-results
+        path: "**/*.trx"
 
           

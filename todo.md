@@ -39,6 +39,7 @@
 * Renamed Custom Shrinker factory class from `Shrink` to `Try`.
 * Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
 * Added some missing PoolWhen overload.
+* Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
   
 ## 0.0.10 : Wait for Me !
 * Check/Test/Doc Simple Async testing => initial web-api example
