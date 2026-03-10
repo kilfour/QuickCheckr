@@ -13,6 +13,7 @@
     - [Using Linq](D_DslBuilding/U_ModelBasedTesting/A_UsingLinq.md)
     - [Using Dsl](D_DslBuilding/U_ModelBasedTesting/B_UsingDsl.md)
     - [Model Based Testing](D_DslBuilding/U_ModelBasedTesting/ModelBasedTesting.md)
+    - [Web APIs](D_DslBuilding/W_WebAPIs/WebAPIs.md)
   - [Checkrs Court](K_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](K_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
       - [Input](K_CheckrsCourt/A_TheCheckrClass/A_Input/InputTests.md)
