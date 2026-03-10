@@ -7,18 +7,22 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
 
-public abstract class QCTest<T>
+public abstract class QCTest
+{
+    protected class DocBoldHeaderAttribute(string header) :
+        DocContentAttribute($"\n**{header}:**");
+
+    protected class DocModelHeaderAttribute() :
+        DocBoldHeaderAttribute("The Model");
+}
+public abstract class QCTest<T> : QCTest
 {
     protected readonly bool writeAllReportsToDisk = false;
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
 
-    protected class DocBoldHeaderAttribute(string header) :
-        DocContentAttribute($"\n**{header}:**");
 
-    protected class DocModelHeaderAttribute() :
-        DocBoldHeaderAttribute("The Model");
 
     protected class DocReportHeaderAttribute() :
         DocBoldHeaderAttribute("The Report");
