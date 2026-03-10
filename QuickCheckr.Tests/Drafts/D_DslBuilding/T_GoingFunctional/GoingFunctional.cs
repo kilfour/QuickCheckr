@@ -1,10 +1,11 @@
+using QuickCheckr;
 using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.T_GoingFunctional;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.T_GoingFunctional;
 
 [DocFile]
 [DocHeader("Spike")]

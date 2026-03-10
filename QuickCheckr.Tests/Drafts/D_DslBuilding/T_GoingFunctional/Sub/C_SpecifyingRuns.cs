@@ -4,10 +4,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.T_GoingFunctional.Sub;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.T_GoingFunctional.Sub;
 
 [DocFile]
-public class B_Seeded : InvariantsTest<B_Seeded>
+public class C_SpecifyingRuns : InvariantsTest<C_SpecifyingRuns>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -19,14 +19,12 @@ public class B_Seeded : InvariantsTest<B_Seeded>
     [DocReport]
     public override void Example() => Run();
 
-
     [CodeSnippet]
     protected override void TheInvariant() =>
-        Check.ForAll(1948674479, Fuzzr.Int(0, 10), a => a != 6);
+        Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
 
     protected override void Verify(Article article)
     {
-        Assert.Equal(1948674479, article.Seed());
         Assert.Equal("Property", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());

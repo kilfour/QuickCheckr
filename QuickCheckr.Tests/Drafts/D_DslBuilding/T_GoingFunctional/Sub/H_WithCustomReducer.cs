@@ -4,10 +4,10 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.T_GoingFunctional.Sub;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.T_GoingFunctional.Sub;
 
 [DocFile]
-public class C_SpecifyingRuns : InvariantsTest<C_SpecifyingRuns>
+public class H_WithCustomReducer : InvariantsTest<H_WithCustomReducer>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -21,7 +21,7 @@ public class C_SpecifyingRuns : InvariantsTest<C_SpecifyingRuns>
 
     [CodeSnippet]
     protected override void TheInvariant() =>
-        Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
+        Check.ForAll(257911700, Fuzzr.Int(0, 10), a => a != 6, Reduce.Values([0, 6]));
 
     protected override void Verify(Article article)
     {

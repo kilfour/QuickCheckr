@@ -4,7 +4,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.T_GoingFunctional.Sub;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.T_GoingFunctional.Sub;
 
 [DocFile]
 public class F_AppliesDefaultReducers : InvariantsTest<F_AppliesDefaultReducers>
