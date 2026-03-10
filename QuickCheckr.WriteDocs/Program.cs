@@ -4,8 +4,7 @@ using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
 using QuickCheckr.Tests.Notes;
 using QuickCheckr.Tests.CookBook;
-using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay.D_CustomShrinkers;
-using QuickCheckr.Tests.Docs.J_YouCanGoYourOwnWay;
+using QuickCheckr.Tests.Drafts.D_DslBuilding;
 
 
 // Explain.OnlyThis<CreateReadMe>("README.md");
@@ -28,3 +27,5 @@ Explain.This<Notes>("DocsSinglePages/notes.md");
 // Explain.This<GoingFunctional>("temp-invariants.md");
 
 // Explain.This<YouCanGoYourOwnWay>("temp-ycgyow.md");
+
+Explain.This<DslBuilding>("temp-dsls.md");

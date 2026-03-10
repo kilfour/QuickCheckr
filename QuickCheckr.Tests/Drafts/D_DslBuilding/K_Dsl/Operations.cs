@@ -1,9 +1,9 @@
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
-using QuickCheckr.Tests.Experimental.K_Dsl.Dsl;
+using QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.K_Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl;
 
 
 [CodeExample]

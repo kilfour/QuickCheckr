@@ -1,6 +1,7 @@
+using QuickCheckr;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Experimental.U_ModelBasedTesting;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.U_ModelBasedTesting;
 
 public static class Check
 {

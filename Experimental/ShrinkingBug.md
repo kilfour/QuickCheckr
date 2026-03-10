@@ -17,11 +17,11 @@ select Case.Closed;
  Location:                ShrinkingBug.cs:63:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1835073882
+ Seed:                    1569458913
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 9, 45 ], [ 92, 77 ] ]
+   - Trace: Original    = [ [ 46, 43 ], [ 50, 38 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

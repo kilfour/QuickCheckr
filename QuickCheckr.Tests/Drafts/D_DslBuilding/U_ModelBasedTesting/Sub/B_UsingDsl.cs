@@ -1,9 +1,10 @@
+using QuickCheckr.Tests.Drafts.D_DslBuilding.U_ModelBasedTesting;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.U_ModelBasedTesting;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.U_ModelBasedTesting;
 
 [DocFile]
 public class B_UsingDsl : CheckrTest<B_UsingDsl>

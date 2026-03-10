@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Experimental.K_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
 
 public class CreateBuilder<TPoolElement>(string label)
 {

@@ -50,6 +50,453 @@ select Case.Closed;
 ```
   
   
+## Building a Testing DSL with QuickCheckr
+### Bolting Horses Dsl
+
+**The Invariant:**  
+```csharp
+SystemCheckr
+    .Named("Bolting Horses")
+    .DisableWarnings()
+    .PoolOf<Coach>()
+    .PoolOf<Course>()
+    .Operations(
+        new CreateCoach(),
+        new UpdateCoachSkills(),
+        new CreateCourse(),
+        new UpdateCourseSkills(),
+        new AssignCoachToCourse())
+    .ForAll<Coach>("All Assigned Coaches Must Be Suitable",
+        coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
+    .Run(1473455315, 20.ExecutionsPerRun());
+```
+```csharp
+public class CreateCoach : Operation
+{
+    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+        system.Create<Coach>()
+            .When(coaches => coaches.Count <= 10)
+            .With(from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
+            .Perform(input => new Coach(input))
+            .Expect(("Name", (coach, input) => coach.Name == input));
+}
+```
+```csharp
+public class UpdateCoachSkills : Operation
+{
+    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+        system.Update<Coach>("Skills")
+            .When(coaches => coaches.Count != 0)
+            .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
+            .Perform((coach, input) => coach.UpdateSkills(input))
+            .Expect(("Skills", (coach, input) =>
+                coach.Skills.Count == input.Count() && coach.Skills.All(input.Contains)));
+}
+```
+```csharp
+public class CreateCourse : Operation
+{
+    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+        system.Create<Course>()
+            .When(courses => courses.Count <= 5)
+            .With(from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
+            .Perform(input => new Course(input))
+            .Expect(("Name", (course, input) => course.Name == input));
+}
+```
+```csharp
+public class UpdateCourseSkills : Operation
+{
+    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+        system.Update<Course>("Skills")
+            .When(courses => courses.Count != 0)
+            .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
+            .Perform((course, input) => course.UpdateRequiredSkills(input))
+            .Expect(("Skills", (course, input) =>
+                course.RequiredSkills.Count == input.Count() && course.RequiredSkills.All(input.Contains)));
+}
+```
+```csharp
+public class AssignCoachToCourse : Operation
+{
+    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+        system.Update<Coach, Course>("Assign")
+            .When((coach, course) => coach.IsSuitableFor(course))
+            .Perform((coach, course) => course.AssignCoach(coach))
+            .Expect(("Assigned", (coach, course) => course.AssignedCoach == coach));
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                BoltingHorsesDsl.cs:53:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
+ Seed:                    1473455315
+ ------------------------------------------------------------
+  Executed: Create Course
+   -  Pool: 'Create Course' to Pool = Course-1
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: 'Create Coach' to Pool = Coach-1
+ ------------------------------------------------------------
+  Executed: Update (Coach, Course) Assign
+   -  Pool: Update (Coach, Course) Assign = ( Coach-1, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Update Course Skills         = Course-1
+   - Input: 'Update Course Skills' Input = [ _ ]
+ ================================================================
+  !! Expectation Failed: All Assigned Coaches Must Be Suitable
+ ================================================================
+ Passed Expectations
+ - 'Create Course' Name: 4x
+ - All Assigned Coaches Must Be Suitable: 12x
+ - 'Create Coach' Name: 4x
+ - 'Update Coach Skills' Skills: 2x
+ - 'Update (Coach, Course) Assign' Assigned: 2x
+ - 'Update Course Skills' Skills: 1x
+ ------------------------------------------------------------
+```
+### Going Functional
+#### Spike
+
+**The Model:**  
+```csharp
+public class TheReverser
+{
+    public static List<int> Reverses(List<int> list)
+        => [.. FudgeIt(list.AsEnumerable()).Reverse()];
+    private static IEnumerable<int> FudgeIt(IEnumerable<int> list)
+        => list.Where(a => a != 6).Concat(list.Where(a => a == 6));
+}
+```
+
+**The Invariant:**  
+```csharp
+Check.ForAll(
+    from len in Fuzzr.Int(0, 10)
+    from elements in Fuzzr.Int(0, 10).Many(len)
+    select elements.ToList(),
+    list => list.SequenceEqual(TheReverser.Reverses(TheReverser.Reverses(list))));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                GoingFunctional.cs:27:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 7 shrinks)
+ Seed:                    2116954181
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, 6 ]
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### Simplest
+
+**The Invariant:**  
+```csharp
+Check.ForAll(Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Simplest.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    924452929
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### Seeded
+
+**The Invariant:**  
+```csharp
+Check.ForAll(1948674479, Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Seeded.cs:26:1
+ Original failing run:    1 execution
+ Seed:                    1948674479
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### Specifying Runs
+
+**The Invariant:**  
+```csharp
+Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_SpecifyingRuns.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    823515705
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### With Classifiers
+
+**The Invariant:**  
+```csharp
+Check.ForAll(Fuzzr.Constant(7), a => a == 6, Try.Default<int>(), Try.Values(6));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_WithClassifiers.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    1830629706
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### Applies Default Reducers
+
+**The Invariant:**  
+```csharp
+Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                F_AppliesDefaultReducers.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1429680296
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 5
+            Redux   2
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### With Classifiers Seeded Showing Redux Too
+
+**The Invariant:**  
+```csharp
+Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.Values(6));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                G_WithClassifiersSeededShowingReduxToo.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    893841622
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 9
+            Redux   7
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+#### With Custom Reducer
+
+**The Invariant:**  
+```csharp
+Check.ForAll(257911700, Fuzzr.Int(0, 10), a => a != 6, Reduce.Values([0, 6]));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                H_WithCustomReducer.cs:24:1
+ Original failing run:    1 execution
+ Seed:                    257911700
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 6
+ ===================================
+  !! Expectation Failed: Property
+ ===================================
+```
+### Using Linq
+
+**The Model:**  
+```csharp
+public class Model
+{
+    public int Result { get; private set; } = 0;
+    public void Add(int a) => Result += a;
+    public void Subtract(int a) => Result -= a;
+    public void Clear() => Result = 0;
+}
+```
+
+**SUT:**  
+```csharp
+public class Sut
+{
+    public int Result { get; private set; } = 0;
+    private int counter = 0;
+    public void Add(int a)
+    {
+        counter++;
+        Result += a;
+    }
+    public void Subtract(int a) => Result -= a;
+    public void Clear()
+    {
+        if (counter != 3)
+            Result = 0;
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+from model in Trackr.Stashed(() => new Model())
+from sut in Trackr.Stashed(() => new Sut())
+from ops in Checkr.OneOf(
+    from input in Checkr.Input("Input", Fuzzr.Int())
+    from add in Checkr.Act("Add", () =>
+    {
+        model.Add(input);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_UsingLinq.cs:72:1
+ Original failing run:    14 executions
+ Minimal failing case:    4 executions (after 13 shrinks)
+ Seed:                    1299945702
+ ------------------------------------------------------------
+  Executed: Add (3 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+   - Trace: Observation = Model: 0, Sut: 196.
+ ==================================
+  !! Expectation Failed: Observe
+ ==================================
+ Passed Expectations
+ - Observe: 13x
+ ------------------------------------------------------------
+```
+### Using Dsl
+
+**The Model:**  
+```csharp
+public class Model
+{
+    public int Result { get; private set; } = 0;
+    public void Add(int a) => Result += a;
+    public void Subtract(int a) => Result -= a;
+    public void Clear() => Result = 0;
+}
+```
+
+**SUT:**  
+```csharp
+public class Sut
+{
+    public int Result { get; private set; } = 0;
+    private int counter = 0;
+    public void Add(int a)
+    {
+        counter++;
+        Result += a;
+    }
+    public void Subtract(int a) => Result -= a;
+    public void Clear()
+    {
+        if (counter != 3)
+            Result = 0;
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+ Check
+    .Model(() => new Model())
+    .Sut(() => new Sut())
+    .Operation("Add", Fuzzr.Int(),
+        (model, sut, a) =>
+        {
+            model.Add(a);
+            sut.Add(a);
+        })
+    .Operation("Subtract", Fuzzr.Int(),
+        (model, sut, a) =>
+        {
+            model.Subtract(a);
+            sut.Subtract(a);
+        })
+    .Operation("Clear",
+        (model, sut) =>
+        {
+            model.Clear();
+            sut.Clear();
+        })
+    .Observe(
+        (model, sut) => model.Result == sut.Result,
+        (model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.");
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_UsingDsl.cs:72:1
+ Original failing run:    7 executions
+ Minimal failing case:    4 executions (after 6 shrinks)
+ Seed:                    1879928073
+ ------------------------------------------------------------
+  Executed: Add (3 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+   - Trace: Observation = Model: 0, Sut: 193.
+ ==================================
+  !! Expectation Failed: Observe
+ ==================================
+ Passed Expectations
+ - Observe: 6x
+ ------------------------------------------------------------
+```
+### Model Based Testing
 ## Checkrs Court
 The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
 

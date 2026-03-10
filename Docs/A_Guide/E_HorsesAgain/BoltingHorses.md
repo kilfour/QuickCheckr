@@ -117,6 +117,14 @@ private static readonly CheckrOf<Case> CreateCourse =
     from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
     select Case.Closed;
 ```
+**Assign Coach to Course Checkr:**  
+```csharp
+private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
+    (coach, course) =>
+        from assign in Checkr.Act("Assign Coach to Course", () => course.Value.AssignCoach(coach.Value))
+        from isAssigned in Checkr.Expect("Coach is assigned", () => course.Value.AssignedCoach == coach.Value)
+        select Case.Closed;
+```
 **Update Course Skills Checkr:**  
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
