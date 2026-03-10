@@ -1,4 +1,4 @@
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 
 public class SystemUnderTest
 {

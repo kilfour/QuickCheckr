@@ -1,7 +1,7 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 
 
 public class SystemCheckr

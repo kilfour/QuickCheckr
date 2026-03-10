@@ -1,12 +1,23 @@
-using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
-using QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
-using QuickFuzzr;
-using QuickPulse.Explains;
+# Bolting Horses Dsl
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl;
-
-
-[CodeExample]
+**The Invariant:**  
+```csharp
+SystemCheckr
+    .Named("Bolting Horses")
+    .DisableWarnings()
+    .PoolOf<Coach>()
+    .PoolOf<Course>()
+    .Operations(
+        new CreateCoach(),
+        new UpdateCoachSkills(),
+        new CreateCourse(),
+        new UpdateCourseSkills(),
+        new AssignCoachToCourse())
+    .ForAll<Coach>("All Assigned Coaches Must Be Suitable",
+        coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
+    .Run(1473455315, 20.ExecutionsPerRun());
+```
+```csharp
 public class CreateCoach : Operation
 {
     public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
@@ -16,8 +27,8 @@ public class CreateCoach : Operation
             .Perform(input => new Coach(input))
             .Expect(("Name", (coach, input) => coach.Name == input));
 }
-
-[CodeExample]
+```
+```csharp
 public class UpdateCoachSkills : Operation
 {
     public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
@@ -28,8 +39,8 @@ public class UpdateCoachSkills : Operation
             .Expect(("Skills", (coach, input) =>
                 coach.Skills.Count == input.Count() && coach.Skills.All(input.Contains)));
 }
-
-[CodeExample]
+```
+```csharp
 public class CreateCourse : Operation
 {
     public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
@@ -39,8 +50,8 @@ public class CreateCourse : Operation
             .Perform(input => new Course(input))
             .Expect(("Name", (course, input) => course.Name == input));
 }
-
-[CodeExample]
+```
+```csharp
 public class UpdateCourseSkills : Operation
 {
     public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
@@ -51,8 +62,8 @@ public class UpdateCourseSkills : Operation
             .Expect(("Skills", (course, input) =>
                 course.RequiredSkills.Count == input.Count() && course.RequiredSkills.All(input.Contains)));
 }
-
-[CodeExample]
+```
+```csharp
 public class AssignCoachToCourse : Operation
 {
     public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
@@ -61,13 +72,38 @@ public class AssignCoachToCourse : Operation
             .Perform((coach, course) => course.AssignCoach(coach))
             .Expect(("Assigned", (coach, course) => course.AssignedCoach == coach));
 }
+```
 
-public class Skills
-{
-    public static readonly string[] Pool =
-    [
-        "TDD", "Refactoring", "C#", "ASP.NET", "EF Core", "SQL",
-        "DomainDrivenDesign", "UnitTesting", "Git", "CI/CD",
-        "JavaScript", "React", "Elm", "Architecture"
-    ];
-}
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                BoltingHorsesDsl.cs:53:1
+ Original failing run:    13 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
+ Seed:                    1473455315
+ ------------------------------------------------------------
+  Executed: Create Course
+   -  Pool: 'Create Course' to Pool = Course-1
+ ------------------------------------------------------------
+  Executed: Create Coach
+   -  Pool: 'Create Coach' to Pool = Coach-1
+ ------------------------------------------------------------
+  Executed: Update (Coach, Course) Assign
+   -  Pool: Update (Coach, Course) Assign = ( Coach-1, Course-1 )
+ ------------------------------------------------------------
+  Executed: Update Course Skills
+   -  Pool: Update Course Skills         = Course-1
+   - Input: 'Update Course Skills' Input = [ _ ]
+ ================================================================
+  !! Expectation Failed: All Assigned Coaches Must Be Suitable
+ ================================================================
+ Passed Expectations
+ - 'Create Course' Name: 4x
+ - All Assigned Coaches Must Be Suitable: 12x
+ - 'Create Coach' Name: 4x
+ - 'Update Coach Skills' Skills: 2x
+ - 'Update (Coach, Course) Assign' Assigned: 2x
+ - 'Update Course Skills' Skills: 1x
+ ------------------------------------------------------------
+```

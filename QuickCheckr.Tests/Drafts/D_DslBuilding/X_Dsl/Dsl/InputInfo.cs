@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.K_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 
 public record InputInfo<TInput>(
     FuzzrOf<TInput> Fuzzr,
