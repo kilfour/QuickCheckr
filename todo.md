@@ -5,24 +5,28 @@
 * **Reducers**
     * ReductionNotPossible.cs => Warning
     * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
-    * Shrinking Redesign again ;-):
-    * Execution Shrinking
-    * Input Shrinking
+    * Shrinking Redesign again ;-): design settled and implemented, need to fill some API holes.
+      * Execution Shrinking
+      * Input Shrinking
         * Structural Collapse
         * Input Classification
         * Input Reduction (Redux)
 * DSL Experiments
   * QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Spike:  
-    Something wrong with DelayedResult shrinking ?
+    * DelayedResult issue: Executions not Shrinking  
+      During shrinking, an exception in a carefully-acted result causes the expectation reevaluation guard to skip a failing expectation, preventing execution shrink candidates from being recognized as still failing.
+  * CSI:
+    * Create an `Operation` with Evil Input.
+    * Add `Example`s for the failures, take the example input out of the fuzzr.
 
 ### Todo
-* Add Reducers to Lazy Input.
+* Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
-* doc/test/improve `Reduce.Towards()`.
-* figure out which Reducer warnings are needed/useful.
+* Doc/test/improve `Reduce.Towards()`.
+* Figure out which Reducer warnings are needed/useful.
 * Investigate/Harden `DelayedResult`.
-* check what happens when collection is null.
-* add unchecked expectations WARNING.
+* Check what happens when collection is null.
+* Add unchecked expectations WARNING.
 * DelayedResultNullValueAccessed : Doc & Test.
 
 ### Wish List
