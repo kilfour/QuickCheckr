@@ -7,33 +7,30 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.K_ConditionalExecution.Methods;
 
 [DocFile]
-public class CheckrActCarefullyWhen : BaseTest
+public class CheckrActCarefullyWhen : CheckrTest<CheckrActCarefullyWhen>
 {
+    protected override bool Asserts => false;
+    protected override bool Report => true;
+
     [Fact]
-    [DocExample(typeof(CheckrActCarefullyWhen), nameof(GetCheckr))]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(625676917, 3.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<CheckrActCarefullyWhen>(article, false);
-        Verify(article);
-    }
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport]
+    public override void Example() =>
+        Run(625676917, 3.ExecutionsPerRun());
 
     [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckr()
-    {
-        return
-            from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-            from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-            from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-            select Case.Closed;
-    }
+    protected override CheckrOf<Case> TheCheckr() =>
+        from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+        from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+        from notNull in Checkr.Expect("Not Null", () => thing.HasValue)
+        select Case.Closed;
+
 
     public class Thing();
 
-    private static void Verify(Article article)
+    protected override void Verify(Article article)
     {
         Assert.Equal("Not Null", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());

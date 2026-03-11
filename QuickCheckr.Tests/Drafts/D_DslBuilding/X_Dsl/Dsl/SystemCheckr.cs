@@ -58,4 +58,18 @@ public class SystemCheckr
         from _ in api.Operations(operations)
         from invariants in Combine.Checkrs(invariants)
         select Case.Closed;
+
+    public void RunExamples() =>
+        TheExamples().Run();
+
+    private CheckrOf<Case> TheExamples()
+    {
+
+        return
+            from pools in Combine.Checkrs(pools)
+            from api in Trackr.Stashed(() => new SystemUnderTest())
+            from specifications in Checkr.Capture(() => operations.Select(a => a.Define(api)))
+            from invariants in Combine.Checkrs(invariants)
+            select Case.Closed;
+    }
 }

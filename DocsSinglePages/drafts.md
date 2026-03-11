@@ -606,7 +606,7 @@ SystemCheckr
 ```csharp
 public class CreateCoach : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Create<Coach>()
             .When(coaches => coaches.Count <= 10)
             .With(from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
@@ -617,7 +617,7 @@ public class CreateCoach : Operation
 ```csharp
 public class UpdateCoachSkills : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Coach>("Skills")
             .When(coaches => coaches.Count != 0)
             .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
@@ -629,7 +629,7 @@ public class UpdateCoachSkills : Operation
 ```csharp
 public class CreateCourse : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Create<Course>()
             .When(courses => courses.Count <= 5)
             .With(from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
@@ -640,7 +640,7 @@ public class CreateCourse : Operation
 ```csharp
 public class UpdateCourseSkills : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Course>("Skills")
             .When(courses => courses.Count != 0)
             .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
@@ -652,7 +652,7 @@ public class UpdateCourseSkills : Operation
 ```csharp
 public class AssignCoachToCourse : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Coach, Course>("Assign")
             .When((coach, course) => coach.IsSuitableFor(course))
             .Perform((coach, course) => course.AssignCoach(coach))
@@ -694,6 +694,57 @@ public class AssignCoachToCourse : Operation
  ------------------------------------------------------------
 ```
 #### A Simple Scenario
+##### Introduction
+  
+##### Spike
+
+**The Model:**  
+```csharp
+public class Appointment
+{
+    public Appointment(string title)
+    {
+        EditTitle(title);
+    }
+    public string Title { get; private set; } = string.Empty;
+    public void EditTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentNullException(nameof(title), "Title cannot be null or whitespace");
+        Title = title;
+    }
+}
+```
+
+**The Checkr:**  
+```csharp
+from _i1 in Checkr.Input("Input, Create Appointment, Empty String", EvilString)
+from _a1 in Checkr.ActCarefully("Act, Create Appointment, Empty String", () => new Appointment(_i1))
+from _e1 in Checkr.Expect("Expect, Create Appointment, Empty String", () => _a1.Value.Title == _i1)
+    //from _e1 in Checkr.Expect("Create Appointment, Empty String", () => _a1.ThrewExactly<ArgumentNullException>())
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Spike.cs:55:1
+ Original failing run:    2 executions
+ Seed:                    720678568
+ ------------------------------------------------------------
+  Executed: Act, Create Appointment, Empty String
+   - Input, Create Appointment, Empty String = "udplclmhev"
+ ------------------------------------------------------------
+  Executed: Act, Create Appointment, Empty String
+   - Input, Create Appointment, Empty String = ""
+ ===========================================================================
+  !! DelayedResultNullValueAccessed: Exception of type 'QuickCheckr.UnderTheHood.DelayedResultNullValueAccessed' was thrown.
+ ===========================================================================
+ Passed Expectations
+ - Expect, Create Appointment, Empty String: 1x
+ ------------------------------------------------------------
+```
 ## Checkrs Court
 The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
 
@@ -761,11 +812,32 @@ Possible solutions:
 ### The Tracker Class
 ## Conditional Execution
 ### Checkr Act Carefully When
+
+**The Checkr:**  
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+from notNull in Checkr.Expect("Not Null", () => thing.HasValue)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                CheckrActCarefullyWhen.cs:55:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    625676917
+ ------------------------------------------------------------
+  Executed: Act
+   - Input: Counter = 3
+ ===================================
+  !! Expectation Failed: Not Null
+ ===================================
+ Passed Expectations
+ - Not Null: 1x
+ ------------------------------------------------------------
 ```
 ### Checkr Act When
 ```csharp

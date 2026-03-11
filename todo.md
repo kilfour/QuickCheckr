@@ -3,21 +3,27 @@
       
 ### Doing
 * **Reducers**
-* ReductionNotPossible.cs => Warning
-* QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
-* Shrinking Redesign again ;-):
-  * Execution Shrinking
-  * Input Shrinking
-    * Structural Collapse
-    * Input Classification
-    * Input Reduction (Redux)
-* check what happens when collection is null
+    * ReductionNotPossible.cs => Warning
+    * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
+    * Shrinking Redesign again ;-):
+    * Execution Shrinking
+    * Input Shrinking
+        * Structural Collapse
+        * Input Classification
+        * Input Reduction (Redux)
+* DSL Experiments
+  * QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Spike:  
+    Something wrong with DelayedResult shrinking ?
 
 ### Todo
-* Add Reducers to Lazy Input
+* Add Reducers to Lazy Input.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
-* doc/test Reduce.Towards
-* figure out which Reducer warnings are needed/useful
+* doc/test/improve `Reduce.Towards()`.
+* figure out which Reducer warnings are needed/useful.
+* Investigate/Harden `DelayedResult`.
+* check what happens when collection is null.
+* add unchecked expectations WARNING.
+* DelayedResultNullValueAccessed : Doc & Test.
 
 ### Wish List
 

@@ -20,7 +20,7 @@ SystemCheckr
 ```csharp
 public class CreateCoach : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Create<Coach>()
             .When(coaches => coaches.Count <= 10)
             .With(from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
@@ -31,7 +31,7 @@ public class CreateCoach : Operation
 ```csharp
 public class UpdateCoachSkills : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Coach>("Skills")
             .When(coaches => coaches.Count != 0)
             .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
@@ -43,7 +43,7 @@ public class UpdateCoachSkills : Operation
 ```csharp
 public class CreateCourse : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Create<Course>()
             .When(courses => courses.Count <= 5)
             .With(from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
@@ -54,7 +54,7 @@ public class CreateCourse : Operation
 ```csharp
 public class UpdateCourseSkills : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Course>("Skills")
             .When(courses => courses.Count != 0)
             .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
@@ -66,7 +66,7 @@ public class UpdateCourseSkills : Operation
 ```csharp
 public class AssignCoachToCourse : Operation
 {
-    public override CheckrOf<(Func<bool>, CheckrOf<Case>)> Definition(SystemUnderTest system) =>
+    public override OperationSpecification Define(SystemUnderTest system) =>
         system.Update<Coach, Course>("Assign")
             .When((coach, course) => coach.IsSuitableFor(course))
             .Perform((coach, course) => course.AssignCoach(coach))

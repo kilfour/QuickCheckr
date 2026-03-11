@@ -32,12 +32,12 @@ public class UpdateBuilder3<TPoolElement, TInput>(
     InputInfo<TPoolElement, TInput> inputInfo,
     Action<TPoolElement, TInput> update)
 {
-    public CheckrOf<(Func<bool>, CheckrOf<Case>)> Expect(
+    public OperationSpecification Expect(
         params (string label, Func<TPoolElement, TInput, bool> expectation)[] expectations) =>
-        poolCondition.GetCheckr(label, element =>
+        new(poolCondition.GetCheckr(label, element =>
             from input in Checkr.Input($"'{label}' Input", inputInfo.Fuzzr, inputInfo.GetShrinkers(element.Value))
             from updated in Checkr.Act(label, () => update(element.Value, input))
             from checks in Combine.Checkrs(expectations.Select(a =>
                 Checkr.Expect($"'{label}' {a.label}", () => a.expectation(element.Value, input))))
-            select Case.Closed);
+            select Case.Closed));
 }

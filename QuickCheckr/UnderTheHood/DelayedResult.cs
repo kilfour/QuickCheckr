@@ -44,7 +44,19 @@ public class DelayedResult<T> : DelayedResult
         {
             if (isNone)
                 throw new CheckrWasNotExecuted();
+            if (value == null)
+                throw new DelayedResultNullValueAccessed();
             return value;
+        }
+    }
+
+    public bool HasValue
+    {
+        get
+        {
+            if (isNone)
+                throw new CheckrWasNotExecuted();
+            return value != null;
         }
     }
 

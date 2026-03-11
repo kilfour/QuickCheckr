@@ -1,0 +1,17 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Spike.cs:55:1
+ Original failing run:    2 executions
+ Seed:                    720678568
+ ------------------------------------------------------------
+  Executed: Act, Create Appointment, Empty String
+   - Input, Create Appointment, Empty String = "udplclmhev"
+ ------------------------------------------------------------
+  Executed: Act, Create Appointment, Empty String
+   - Input, Create Appointment, Empty String = ""
+ ===========================================================================
+  !! DelayedResultNullValueAccessed: Exception of type 'QuickCheckr.UnderTheHood.DelayedResultNullValueAccessed' was thrown.
+ ===========================================================================
+ Passed Expectations
+ - Expect, Create Appointment, Empty String: 1x
+ ------------------------------------------------------------

@@ -16,6 +16,8 @@
     - [Explore and Exemplify](D_DslBuilding/X_Dsl/ExploreAndExemplify.md)
       - [Bolting Horses Dsl](D_DslBuilding/X_Dsl/A_BoltingHorsesDsl/BoltingHorsesDsl.md)
       - [A Simple Scenario](D_DslBuilding/X_Dsl/B_ASimpleScenario/ASimpleScenario.md)
+        - [Introduction](D_DslBuilding/X_Dsl/B_ASimpleScenario/Sub/A_Introduction.md)
+        - [Spike](D_DslBuilding/X_Dsl/B_ASimpleScenario/Sub/Spike.md)
   - [Checkrs Court](K_CheckrsCourt/CheckrsCourt.md)
     - [The Checkr Class](K_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
       - [Input](K_CheckrsCourt/A_TheCheckrClass/A_Input/InputTests.md)
