@@ -537,7 +537,8 @@ public class AssignCoachToCourse : ApiMethod
 **The Invariant:**  
 ```csharp
 SystemCheckr
-    .Named("Bolting Horses")
+    .Define()
+    // Using `.Named("Bolting Horses")` instead of `.Define()` persists the report.
     .DisableWarnings()
     .PoolOf<Coach>()
     .PoolOf<Course>()
@@ -642,55 +643,188 @@ public class AssignCoachToCourse : Operation
  ------------------------------------------------------------
 ```
 #### A Simple Scenario
-##### Introduction
-  
-##### Spike
+##### Step One
 
-**The Model:**  
+**The Invariant:**  
 ```csharp
-public class Appointment
-{
-    public Appointment(string title)
-    {
-        EditTitle(title);
-    }
-    public string Title { get; private set; } = string.Empty;
-    public void EditTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentNullException(nameof(title), "Title cannot be null or whitespace");
-        Title = title;
-    }
-}
+SystemCheckr
+    .Define()
+    .PoolOf<Appointment>()
+    .Operations(
+        new CreateAppointment())
+    .Run(100.Runs(), 10.ExecutionsPerRun());
 ```
 
-**The Checkr:**  
+**The Fuzzr:**  
 ```csharp
-from _i1 in Checkr.Input("Input, Create Appointment, Empty String", EvilString)
-from _a1 in Checkr.ActCarefully("Act, Create Appointment, Empty String", () => new Appointment(_i1))
-from _e1 in Checkr.Expect("Expect, Create Appointment, Empty String", () => _a1.Value.Title == _i1)
-    //from _e1 in Checkr.Expect("Create Appointment, Empty String", () => _a1.ThrewExactly<ArgumentNullException>())
-select Case.Closed;
+// Todo: use QuickFuzzr.Evil, maybe add .Remove() or something somehow
+Fuzzr.OneOf(
+    Fuzzr.String(),
+    Fuzzr.Constant(string.Empty),
+    Fuzzr.Constant<string>(null!),
+    Fuzzr.Constant("  "));
+```
+
+**The Operation:**  
+```csharp
+public class CreateAppointment : Operation
+{
+    public override OperationSpecification Define(SystemUnderTest system) =>
+        system.Create<Appointment>()
+            .When(coaches => coaches.Count <= 10)
+            .With(EvilString())
+            .Perform(input => new Appointment(input))
+            .Expect(("Name", (appointment, input) => appointment.Title == input));
+}
 ```
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Spike.cs:55:1
- Original failing run:    2 executions
- Seed:                    720678568
+ Location:                A_StepOne.cs:51:1
+ Original failing run:    1 execution
+ Seed:                    1279955743
  ------------------------------------------------------------
-  Executed: Act, Create Appointment, Empty String
-   - Input, Create Appointment, Empty String = "udplclmhev"
- ------------------------------------------------------------
-  Executed: Act, Create Appointment, Empty String
-   - Input, Create Appointment, Empty String = ""
+  Executed: Create Appointment
+   -  Pool: 'Create Appointment' to Pool = Appointment-1
+   - Input: 'Create Appointment' Input   = null
  ===========================================================================
-  !! DelayedResultNullValueAccessed: Exception of type 'QuickCheckr.UnderTheHood.DelayedResultNullValueAccessed' was thrown.
+  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.A_StepOne.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\A_StepOne.cs:line 52
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+```
+##### Step Two
+
+**The Fuzzr:**  
+```csharp
+Fuzzr.OneOf(
+    Fuzzr.String(),
+    Fuzzr.Constant(string.Empty),
+    Fuzzr.Constant("  "));
+```
+
+**The Operation:**  
+```csharp
+public class CreateAppointment : Operation
+{
+    public override OperationSpecification Define(SystemUnderTest system) =>
+        system.Create<Appointment>()
+            .When(coaches => coaches.Count <= 10)
+            .With(EvilString())
+            .Perform(input => new Appointment(input))
+            .Example("Empty string", string.Empty, result => result.ThrewExactly<ArgumentNullException>())
+            .Expect(("Name", (appointment, input) => appointment.Title == input));
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_StepTwo.cs:48:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1941262939
+ ------------------------------------------------------------
+  Executed: 'Create Appointment' Empty string, Create Appointment
+   -  Pool: 'Create Appointment' to Pool = Appointment-1
+   - Input: 'Create Appointment' Input   = "  "
+ ===========================================================================
+  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.B_StepTwo.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\B_StepTwo.cs:line 50
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
  ===========================================================================
  Passed Expectations
- - Expect, Create Appointment, Empty String: 1x
+ - 'Create Appointment' Empty string: 1x
+ ------------------------------------------------------------
+```
+##### Step Three
+
+**The Fuzzr:**  
+```csharp
+Fuzzr.OneOf(
+    Fuzzr.String(),
+    Fuzzr.Constant(string.Empty));
+```
+
+**The Operation:**  
+```csharp
+public class CreateAppointment : Operation
+{
+    public override OperationSpecification Define(SystemUnderTest system) =>
+        system.Create<Appointment>()
+            .When(coaches => coaches.Count <= 10)
+            .With(EvilString())
+            .Perform(input => new Appointment(input))
+            .Example("Null string", null!, result => result.ThrewExactly<ArgumentNullException>())
+            .Example("Whitespace string", " ", result => result.ThrewExactly<ArgumentNullException>())
+            .Expect(("Name", (appointment, input) => appointment.Title == input));
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_StepThree.cs:48:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1493980658
+ ------------------------------------------------------------
+  Executed: 'Create Appointment' Null string, 'Create Appointment' Whitespace string, Create Appointment
+   -  Pool: 'Create Appointment' to Pool = Appointment-2
+   - Input: 'Create Appointment' Input   = ""
+ ===========================================================================
+  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.C_StepThree.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\C_StepThree.cs:line 49
+   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+ Passed Expectations
+ - 'Create Appointment' Name: 1x
+ - 'Create Appointment' Null string: 1x
+ - 'Create Appointment' Whitespace string: 1x
+ ------------------------------------------------------------
+```
+##### Step Four
+
+**The Operation:**  
+```csharp
+public class CreateAppointment : Operation
+{
+    public override OperationSpecification Define(SystemUnderTest system) =>
+        system.Create<Appointment>()
+            .When(coaches => coaches.Count <= 10)
+            .With(Fuzzr.String())
+            .Perform(input => new Appointment(input))
+            .Example("Empty string", string.Empty, result => result.ThrewExactly<ArgumentNullException>())
+            .Example("Null string", null!, result => result.ThrewExactly<ArgumentNullException>())
+            .Example("Whitespace string", " ", result => result.ThrewExactly<ArgumentNullException>())
+            .Expect(("Name", (appointment, input) => appointment.Title == input));
+}
+```
+
+**The Report:**  
+```text
+1 Run
+ Passed Expectations
+ - 'Create Appointment' Name: 10x
+ - 'Create Appointment' Empty string: 1x
+ - 'Create Appointment' Null string: 1x
+ - 'Create Appointment' Whitespace string: 1x
  ------------------------------------------------------------
 ```
 ## You Can Go Your Own Way
@@ -1670,4 +1804,3 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 #### Reducers
-### The Tracker Class

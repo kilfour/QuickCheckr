@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+
 namespace QuickCheckr.UnderTheHood;
 
 public class DelayedResult
@@ -45,7 +47,7 @@ public class DelayedResult<T> : DelayedResult
             if (isNone)
                 throw new CheckrWasNotExecuted();
             if (value == null)
-                throw new DelayedResultNullValueAccessed();
+                throw new DelayedResultNullValueAccessedException();
             return value;
         }
     }

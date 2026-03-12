@@ -15,18 +15,10 @@ public static class Evaluate
 
     private static CheckrResult<Case> InnerExpect(string key, Func<bool> condition, CheckrState state)
     {
-        try
-        {
-            if (condition())
-                state.EvidenceRecorder.ExpectationPassed(key);
-            else
-                state.EvidenceRecorder.ExpectationFailed(key, state.Memory.ShortTermMemory.CurrentExecutionNumber);
-        }
-        catch (DelayedResultNullValueAccessed ex)
-        {
-            state.EvidenceRecorder.RecordFailure(ex);
-        }
-
+        if (condition())
+            state.EvidenceRecorder.ExpectationPassed(key);
+        else
+            state.EvidenceRecorder.ExpectationFailed(key, state.Memory.ShortTermMemory.CurrentExecutionNumber);
         return CheckrResult.CaseOnly(state);
     }
 }

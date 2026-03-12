@@ -1,6 +1,7 @@
+using QuickCheckr;
 using QuickCheckr.UnderTheHood;
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders;
 
 public class CombinedUpdateBuilder<TPoolElement1, TPoolElement2>(string label)
 {

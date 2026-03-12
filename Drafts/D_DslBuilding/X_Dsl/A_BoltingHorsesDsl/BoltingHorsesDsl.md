@@ -3,7 +3,8 @@
 **The Invariant:**  
 ```csharp
 SystemCheckr
-    .Named("Bolting Horses")
+    .Define()
+    // Using `.Named("Bolting Horses")` instead of `.Define()` persists the report.
     .DisableWarnings()
     .PoolOf<Coach>()
     .PoolOf<Course>()

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
@@ -20,5 +21,11 @@ public abstract class InvariantsTest<T> : QCTest<T>
             () => TheInvariant())
             , callerPath);
 
-    protected abstract void TheInvariant();
+    [StackTraceHidden]
+    protected void RunWithoutFailure(
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Unearths(TheInvariant())
+            , callerPath);
+
+    protected abstract CaseFile TheInvariant();
 }

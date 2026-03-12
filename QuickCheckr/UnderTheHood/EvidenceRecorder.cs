@@ -44,7 +44,8 @@ public class EvidenceRecorder
             currentFailed = true;
             return;
         }
-        throw new ExpectationThrowsException(key, exception);
+        if (Exception == null) // Action already crashed
+            throw new ExpectationThrowsException(key, exception);
     }
 
     private bool IsExceptionMismatch(Exception actual)

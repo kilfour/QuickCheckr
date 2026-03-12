@@ -3,11 +3,11 @@
  Location:                ListElementRemoval.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    2084402890
+ Seed:                    1722429225
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 43, 30 ], [ 20, 92 ] ]
+   - Trace: Original    = [ [ 76, 91 ], [ 49, 7 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

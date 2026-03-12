@@ -1,7 +1,10 @@
+using System.Reflection.Metadata.Ecma335;
+using QuickCheckr;
+using QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.Bolts;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders;
 
 public class CreateBuilder<TPoolElement>(string label)
 {
@@ -30,39 +33,29 @@ public class CreateBuilder3<TPoolElement, TInput>(
     InputInfo<TInput> inputInfo,
     Func<TInput, TPoolElement> create)
 {
+    private readonly List<IOperationExample> examples = [];
+
     public OperationSpecification Expect(
         params (string label, Func<TPoolElement, TInput, bool> expectation)[] expectations) =>
-        new(Trackr.PoolWhen(predicate,
+        new(GetCheckr(expectations));
+
+    private CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> GetCheckr(
+        (string label, Func<TPoolElement, TInput, bool> expectation)[] expectations) =>
+        Trackr.PoolWhen(predicate,
             from input in Checkr.Input($"'{label}' Input", inputInfo.Fuzzr, inputInfo.GetShrinkers())
             from created in Checkr.Act(label, () => create(input))
             from checks in Combine.Checkrs(expectations.Select(a =>
                 Checkr.Expect($"'{label}' {a.label}", () => a.expectation(created, input))))
+            from checkExamples in Combine.Checkrs(examples.Select(e => e.GetCheckr()))
             from store in Trackr.ToPool($"'{label}' to Pool", created)
-            select Case.Closed), examples);
+            select Case.Closed);
 
-    private readonly List<IOperationExample> examples = [];
     public CreateBuilder3<TPoolElement, TInput> Example(
         string exampleLabel,
         TInput inputValue,
         Func<DelayedResult<TPoolElement>, bool> expectation)
     {
-        var checkr =
-            Trackr.PoolWhen(predicate,
-            from input in Checkr.Input($"'{label} {exampleLabel}' Input", Fuzzr.Constant(inputValue))
-            from created in Checkr.ActCarefully($"{label} {exampleLabel}", () => create(input))
-            from checks in Checkr.Expect($"{label} {exampleLabel}", () => expectation(created))
-            select Case.Closed);
-        examples.Add(new OperationExample<TPoolElement, TInput>(exampleLabel, inputValue, expectation));
+        examples.Add(new OperationExample<TPoolElement, TInput>($"'{label}' {exampleLabel}", inputValue, create, expectation));
         return this;
     }
-}
-public interface IOperationExample;
-
-public record OperationExample<TPoolElement, TInput>(
-    string Label,
-    TInput Input,
-    Func<DelayedResult<TPoolElement>, bool> Expectation) : IOperationExample
-{
-    //public CheckrOf<Case> GetCheckr() =>
-
 }

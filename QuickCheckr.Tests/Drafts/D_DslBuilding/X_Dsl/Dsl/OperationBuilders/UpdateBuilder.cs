@@ -1,8 +1,9 @@
 using QuickCheckr;
+using QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.Bolts;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders;
 
 
 public class UpdateBuilder<TPoolElement>(string label)

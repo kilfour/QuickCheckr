@@ -16,6 +16,6 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
 
 [TheCheckrClass]: A_TheCheckrClass/TheCheckrClass.md
 
-[TheTrackerClass]: ../../../Drafts/K_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md
+[TheTrackerClass]: B_TheTrackerClass/TheTrackerClass.md
 
 [A_TheShowrClass]: ../../../Drafts/J_YouCanGoYourOwnWay/A_Showr/A_TheShowrClass.md

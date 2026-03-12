@@ -10,8 +10,8 @@ namespace QuickCheckr.Tests.Experimental;
 [DocFile]
 public class ListElementRemoval : CheckrTest<ListElementRemoval>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -3,6 +3,7 @@ using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -28,9 +29,10 @@ public class BoltingHorsesDsl : InvariantsTest<BoltingHorsesDsl>
     public override void Example() => Run();
 
     [CodeSnippet]
-    protected override void TheInvariant() =>
+    protected override CaseFile TheInvariant() =>
         SystemCheckr
-            .Named("Bolting Horses")
+            .Define()
+            // Using `.Named("Bolting Horses")` instead of `.Define()` persists the report.
             .DisableWarnings()
             .PoolOf<Coach>()
             .PoolOf<Course>()

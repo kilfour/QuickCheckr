@@ -15,15 +15,15 @@ public class A_ExpectationThrows : BaseTest
     [DocCheckrHeader]
     [DocExample(typeof(A_ExpectationThrows), nameof(GetCheckr))]
     [DocBoldHeader("Message:")]
-    [DocExample(typeof(A_ExpectationThrows), nameof(message))]
+    [DocExample(typeof(A_ExpectationThrows), nameof(Message))]
     public void RunTest()
     {
         var exception = Assert.Throws<ExpectationThrowsException>(() => GetCheckr().Run());
-        Assert.Equal(message, exception.Message);
+        Assert.Equal(Message(), exception.Message);
     }
 
     [CodeSnippet]
-    private static readonly string message =
+    private static string Message() =>
         "The expectation 'Expect Throws' threw a 'InvalidOperationException'.";
 
     [CodeSnippet]

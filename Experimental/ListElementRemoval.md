@@ -17,11 +17,11 @@ select Case.Closed;
  Location:                ListElementRemoval.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1609250252
+ Seed:                    1722429225
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 24, 12 ], [ 59, 39 ] ]
+   - Trace: Original    = [ [ 76, 91 ], [ 49, 7 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

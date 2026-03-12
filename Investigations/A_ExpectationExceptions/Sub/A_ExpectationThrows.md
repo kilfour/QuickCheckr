@@ -12,9 +12,5 @@ It is wrapped in an ExpectationThrowsException through InnerException and the ex
 
 **Message::**  
 ```csharp
-return
-    from input in Checkr.Input("Input", Fuzzr.Int())
-    from act in Checkr.Act("Act", () => (int?)null)
-    from expect in Checkr.Expect("Expect Throws", () => act.Value == 5)
-    select Case.Closed;
+"The expectation 'Expect Throws' threw a 'InvalidOperationException'.";
 ```

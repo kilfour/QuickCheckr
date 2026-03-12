@@ -1,6 +1,7 @@
 using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -20,7 +21,7 @@ public class C_SpecifyingRuns : InvariantsTest<C_SpecifyingRuns>
     public override void Example() => Run();
 
     [CodeSnippet]
-    protected override void TheInvariant() =>
+    protected override CaseFile TheInvariant() =>
         Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
 
     protected override void Verify(Article article)

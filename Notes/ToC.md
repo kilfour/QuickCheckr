@@ -42,6 +42,7 @@
     - [Checkrs Court](Z_ToBeLookedAt/K_CheckrsCourt/CheckrsCourt.md)
       - [The Checkr Class](Z_ToBeLookedAt/K_CheckrsCourt/A_TheCheckrClass/TheCheckrClass.md)
         - [Input](Z_ToBeLookedAt/K_CheckrsCourt/A_TheCheckrClass/A_Input/InputTests.md)
+      - [The Tracker Class](Z_ToBeLookedAt/K_CheckrsCourt/B_TheTrackerClass/TheTrackerClass.md)
     - [Conditional Execution](Z_ToBeLookedAt/K_ConditionalExecution/ConditionalExecution.md)
       - [Checkr Act Carefully When](Z_ToBeLookedAt/K_ConditionalExecution/Methods/CheckrActCarefullyWhen.md)
       - [Checkr Act When](Z_ToBeLookedAt/K_ConditionalExecution/Methods/CheckrActWhen.md)

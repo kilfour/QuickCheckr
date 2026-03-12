@@ -1,4 +1,4 @@
-namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
+namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.Bolts;
 
 public record PoolCondition<TPoolElement>(
     Func<IReadOnlyCollection<TPoolElement>, bool>? OnCollection,

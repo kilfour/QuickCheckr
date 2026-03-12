@@ -1,5 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 
@@ -7,15 +8,12 @@ namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 public class SystemCheckr
 {
     public static SystemCheckr Named(string name) => new(name);
+    public static SystemCheckr Define() => new();
 
-    private Func<CheckrConfig, CheckrConfig> configure;
+    private Func<CheckrConfig, CheckrConfig> configure = a => a;
 
-    private SystemCheckr(
-        string name
-    )
-    {
-        configure = cfg => cfg with { FileAs = name };
-    }
+    private SystemCheckr() { }
+    private SystemCheckr(string name) { configure = cfg => cfg with { FileAs = name }; }
 
     private Operation[] operations = [];
     public SystemCheckr Operations(params Operation[] operations) { this.operations = operations; return this; }
@@ -46,10 +44,10 @@ public class SystemCheckr
         return this;
     }
 
-    public void Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun) =>
+    public CaseFile Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun) =>
         TheCheckr().Run(runs, executionsPerRun, configure);
 
-    public void Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun) =>
+    public CaseFile Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun) =>
         TheCheckr().Run(seed, executionsPerRun, configure);
 
     private CheckrOf<Case> TheCheckr() =>
@@ -58,18 +56,4 @@ public class SystemCheckr
         from _ in api.Operations(operations)
         from invariants in Combine.Checkrs(invariants)
         select Case.Closed;
-
-    public void RunExamples() =>
-        TheExamples().Run();
-
-    private CheckrOf<Case> TheExamples()
-    {
-
-        return
-            from pools in Combine.Checkrs(pools)
-            from api in Trackr.Stashed(() => new SystemUnderTest())
-            from specifications in Checkr.Capture(() => operations.Select(a => a.Define(api)))
-            from invariants in Combine.Checkrs(invariants)
-            select Case.Closed;
-    }
 }

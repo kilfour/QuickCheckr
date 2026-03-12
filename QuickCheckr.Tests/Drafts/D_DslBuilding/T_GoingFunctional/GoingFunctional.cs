@@ -2,6 +2,7 @@ using QuickCheckr;
 using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -24,7 +25,7 @@ public class GoingFunctional : InvariantsTest<GoingFunctional>
     public override void Example() => Run();
 
     [CodeSnippet]
-    protected override void TheInvariant() =>
+    protected override CaseFile TheInvariant() =>
         Check.ForAll(
             from len in Fuzzr.Int(0, 10)
             from elements in Fuzzr.Int(0, 10).Many(len)
