@@ -47,9 +47,11 @@
   This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine. 
 * Renamed Custom Shrinker factory class from `Shrink` to `Try`.
 * Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
-* Added some missing PoolWhen overload.
+* Added some missing PoolWhen overloads.
+* Added some missing Pool operation reporting in the .qr file.
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
-  
+* In case an expectation throws it is rethrown as `ExpectationThrowsException(string key, Exception InnerException)
+`.
 ## 0.0.10 : Wait for Me !
 * Check/Test/Doc Simple Async testing => initial web-api example
 

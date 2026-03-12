@@ -1,5 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -9,10 +8,10 @@ namespace QuickCheckr.Tests.Experimental;
 
 
 [DocFile]
-public class ShrinkingBug : CheckrTest<ShrinkingBug>
+public class ListElementRemoval : CheckrTest<ListElementRemoval>
 {
-    protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Asserts => true;
+    protected override bool Report => true;
 
     [Fact]
     [DocCheckrHeader]
@@ -22,14 +21,6 @@ public class ShrinkingBug : CheckrTest<ShrinkingBug>
     public override void Example() =>
         Run(100.Runs());
 
-    protected override CheckrConfig Configure(CheckrConfig config)
-        => config with
-        {
-            // InternalAffairs = [InternalAffairs.InputShrinking],
-            // DeliberationPolicy = caseFile => caseFile.InputsNamed<List<List<int>>>("Nested List", a => 0 - a.Sum(a => a.Count)),
-        };
-
-
     [CodeSnippet]
     private static readonly FuzzrOf<List<int>> InnerFuzzr =
          from list in Fuzzr.Int().Many(2)
@@ -38,7 +29,6 @@ public class ShrinkingBug : CheckrTest<ShrinkingBug>
     private static readonly FuzzrOf<List<List<int>>> TheFuzzr =
          from list in InnerFuzzr.Many(2)
          select list.ToList();
-
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

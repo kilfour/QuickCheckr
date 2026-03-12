@@ -11,10 +11,18 @@ public abstract class QCTest
 {
     protected class DocBoldHeaderAttribute(string header) :
         DocContentAttribute($"\n**{header}:**");
-
     protected class DocModelHeaderAttribute() :
         DocBoldHeaderAttribute("The Model");
+    protected class DocReportHeaderAttribute() :
+        DocBoldHeaderAttribute("The Report");
+    protected class DocReportExcerptHeaderAttribute() :
+        DocBoldHeaderAttribute("Report Excerpt");
+    protected class DocConfigureHeaderAttribute() :
+        DocBoldHeaderAttribute("The Configuration");
+    protected class DocCheckrHeaderAttribute() :
+        DocBoldHeaderAttribute("The Checkr");
 }
+
 public abstract class QCTest<T> : QCTest
 {
     protected readonly bool writeAllReportsToDisk = false;
@@ -22,15 +30,9 @@ public abstract class QCTest<T> : QCTest
     protected virtual bool Report => false;
     protected virtual bool Explanation => false;
 
-
-
-    protected class DocReportHeaderAttribute() :
-        DocBoldHeaderAttribute("The Report");
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
 
-    protected class DocReportExcerptHeaderAttribute() :
-        DocBoldHeaderAttribute("Report Excerpt");
     protected class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", skiplines, numberOfLines, path);
 

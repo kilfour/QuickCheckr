@@ -10,7 +10,7 @@ public static class Evaluate
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"Spec: {key}",
                 () => InnerExpect(key, condition, state),
-                (ex) => state.EvidenceRecorder.ExpectationCrashed(ex));
+                (ex) => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };
 
     private static CheckrResult<Case> InnerExpect(string key, Func<bool> condition, CheckrState state)

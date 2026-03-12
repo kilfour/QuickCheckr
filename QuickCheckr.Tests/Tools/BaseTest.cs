@@ -6,10 +6,9 @@ using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 
-
 namespace QuickCheckr.Tests.Tools;
 
-public abstract class BaseTest
+public abstract class BaseTest : QCTest
 {
     private const string basePath = @"C:\Code\";
     private readonly bool writeAllToDisk = false;

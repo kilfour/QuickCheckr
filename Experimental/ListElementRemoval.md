@@ -1,4 +1,4 @@
-# Shrinking Bug
+# List Element Removal
 
 **The Checkr:**  
 ```csharp
@@ -14,14 +14,14 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkingBug.cs:63:1
+ Location:                ListElementRemoval.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1569458913
+ Seed:                    1609250252
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 46, 43 ], [ 50, 38 ] ]
+   - Trace: Original    = [ [ 24, 12 ], [ 59, 39 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

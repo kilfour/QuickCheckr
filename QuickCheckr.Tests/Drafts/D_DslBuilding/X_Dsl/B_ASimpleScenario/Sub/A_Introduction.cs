@@ -1,11 +1,7 @@
-using System.Security.Cryptography.X509Certificates;
-using QuickCheckr;
-using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
-using QuickFuzzr.UnderTheHood;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub;

@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
+
 namespace QuickCheckr.UnderTheHood;
 
 public class EvidenceRecorder
@@ -35,14 +37,14 @@ public class EvidenceRecorder
         runFailed = true;
     }
 
-    public void ExpectationCrashed(Exception exception) // This is needed, see NullString Test
+    public void ExpectationCrashed(string key, Exception exception)
     {
         if (IsReplay)
         {
             currentFailed = true;
             return;
         }
-        throw exception;
+        throw new ExpectationThrowsException(key, exception);
     }
 
     private bool IsExceptionMismatch(Exception actual)

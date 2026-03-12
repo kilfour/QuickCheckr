@@ -34,30 +34,6 @@ select Case.Closed;
   !! Expectation Failed: all answers equal 42
  ===============================================
 ```
-##### Null String
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.String())
-from expect in Checkr.Expect("Fails", () => input.Length > 0 && false)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest
- Location:                Notes\A_Shrinking\C_InputShrinking\A_Primitives\A_NullString\NullString.cs:31:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    393010076
- ------------------------------------------------------------
-  Executed:
-   - WARNING: All inputs were considered irrelevant.
- ================================
-  !! Expectation Failed: Fails
- ================================
-```
 ##### Nullable Types
 
 **The Checkr:**  
@@ -1475,7 +1451,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                CheckrActCarefullyWhen.cs:55:1
+ Location:                CheckrActCarefullyWhen.cs:50:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    625676917

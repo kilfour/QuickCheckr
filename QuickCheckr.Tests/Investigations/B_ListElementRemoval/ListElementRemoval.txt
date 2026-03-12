@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkingBug.cs:63:1
+ Location:                ListElementRemoval.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1569458913
+ Seed:                    2084402890
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 46, 43 ], [ 50, 38 ] ]
+   - Trace: Original    = [ [ 43, 30 ], [ 20, 92 ] ]
  ================================================================================
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================

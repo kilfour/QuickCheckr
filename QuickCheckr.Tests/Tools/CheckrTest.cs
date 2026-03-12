@@ -8,14 +8,9 @@ namespace QuickCheckr.Tests.Tools;
 
 public abstract class CheckrTest<T> : QCTest<T>
 {
-    protected class DocConfigureHeaderAttribute() :
-        DocBoldHeaderAttribute("The Configuration");
-
     protected class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");
 
-    protected class DocCheckrHeaderAttribute() :
-        DocBoldHeaderAttribute("The Checkr");
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
 
@@ -71,6 +66,4 @@ public abstract class CheckrTest<T> : QCTest<T>
         => ProcessArticle(TheJournalist.Exposes(
             () => TheCheckr().Run(runCount, executionCount, Configure))
             , callerPath);
-
-
 }

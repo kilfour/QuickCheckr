@@ -3,6 +3,7 @@ using QuickCheckr.Tests.Drafts;
 using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
 using QuickCheckr.Tests.Notes;
+using QuickCheckr.Tests.Investigations;
 using QuickCheckr.Tests.CookBook;
 using QuickCheckr.Tests.Drafts.D_DslBuilding;
 
@@ -14,11 +15,13 @@ Explain.These<Documentation>("Docs/");
 Explain.These<Drafts>("Drafts/");
 Explain.These<Experimental>("Experimental/");
 Explain.These<Notes>("Notes/");
+Explain.These<Investigations>("Investigations/");
 
 Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 Explain.This<Documentation>("DocsSinglePages/doc.md");
 Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Experimental>("DocsSinglePages/experimental.md");
+Explain.This<Investigations>("DocsSinglePages/investigations.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
 
 // Explain.This<OnShrinking>("temp-on-shrinking.md");
