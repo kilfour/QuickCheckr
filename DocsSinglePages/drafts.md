@@ -1,55 +1,3 @@
-# Registered But Unused
-Because custom shrinkers can be defined for *nested* types, mistakes are possible.
-Hence this warning.  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Try.Values(["unused"]))
-from expect in Checkr.Expect("Input < 2", () => input < 2)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                RegisteredButUnused.cs:59:1
- Original failing run:    1 execution
- Seed:                    1681332589
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 79
-   - WARNING: Unused shrinker found for 'String' at key 'Input'.
- ====================================
-  !! Expectation Failed: Input < 2
- ====================================
-```
-## All Inputs Shrunk
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("An Input", Fuzzr.Int())
-from expect in Checkr.Expect("Always fails", () => false)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                AllInputsShrunk.cs:59:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1098916919
- ------------------------------------------------------------
-  Executed:
-   - WARNING: All inputs were considered irrelevant.
- =======================================
-  !! Expectation Failed: Always fails
- =======================================
-```
-  
-  
 ## Building a Testing DSL with QuickCheckr
 ### Model Based Testing
 
@@ -745,79 +693,235 @@ select Case.Closed;
  - Expect, Create Appointment, Empty String: 1x
  ------------------------------------------------------------
 ```
-## Checkrs Court
-The basic building block of QuickCheckr is a `CheckrOf<T>` (also, informally, called a *Checkr* throughout these docs). 
+## You Can Go Your Own Way
 
-Multiple Checkrs can be combined into a composite Checkr using `LINQ` chains, as many of the examples show.  
+!! WARNING: **Unfinished Documentation** !!
 
-The *atomic* Checkrs are created through a couple of static Factory classes :
+> This feature is finished, the tests are there.  
+>  
+> But ..., we're working on writing down the explanation.  
+> Depending on how far we are in this process, you could just see some scaffolding files here.  
+> Or the raw output from the Unit Tests.  
+> Or an unfinished, unpolished version of the docs.
+>
+> Come back soon.
+  
+We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
+and/or reporting globally.  
+But there are ways to obtain more fine-grained control. That is what this chapter is about.  
+### Contents
 
-- [The Checkr Class][TheCheckrClass]
-  - Provides methods to create the *basic* Checkrs.
-  - All of the Checkrs created by this class are *execution-scoped*.
-- [The Tracker Class][TheTrackerClass]
-  - Provides methods to create the Checkrs that deal with state-mutation, and/or Checkrs that are *run-scoped*.  
-- [The Tracker Class][TheShowrClass]
-  - Allows for customization of the QuickChecker value printer.  
+- [Showr][A_TheShowrClass]
+- [Custom Shrinkers][CustomShrinkers]
   
 
-[TheCheckrClass]: #the-checkr-class
-
-[TheTrackerClass]: #the-tracker-class
+[Configuration]: #configuration
 
 [A_TheShowrClass]: #the-showr-class
-### The Checkr Class
-#### Input
-`Checkr.Input()` is the only way an *input* can be defined inside a Checkr.  
-Inputs serve as shrinkable parameters that in all likelyhood will be consumed by an Act Checkr down the line.  
 
-**Usage**  
-```csharp
-Checkr.Input("AnInt", Fuzzr.Int());
-```
-###### Exception Handling
-The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
-```csharp
-    from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
-```
-Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
-```csharp
-Input 'AnInt' threw a 'OneOfEmptyOptionsException', see InnerException.
-This might mean something is wrong with the way you wrote the Fuzzr.
-But it might also mean that the fuzzr is depending on state.
-And as 'Input' is eagerly evaluated, this can cause problems.
-In the latter case please try using the 'lazy' version. 
-Example: 'Checkr.Input(() => Fuzzr.Int()).
-```
-As you can gather from the exception message, this is done in order to inform the user of a rare, but real,
-issue when a Fuzzr depends on external state.  
-The solution is also supplied in said message:   
-```csharp
-Checkr.Input("AnInt", () => Fuzzr.Int());
-```
-If the *lazy* version throws:  
-```csharp
-    from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
-```
-The Exception is **not** wrapped.  
-```csharp
-Fuzzr.OneOf<Int32> cannot select from an empty sequence.
-Possible solutions:
-- Provide at least one option (ensure the sequence is non-empty).
-- Use a fallback: Fuzzr.OneOf(values).WithDefault()
-- Guard upstream: values.Any() ? Fuzzr.OneOf(values) : Fuzzr.Constant(default!).
-```
-### The Tracker Class
-## Conditional Execution
-### Checkr Act Carefully When
+[CustomShrinkers]: #custom-shrinkers
+### The Showr Class
+This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
+
+It is implemented as such, instead of as an option on the configuration object,
+because this allows for two useful things:  
+> You can change configuration anywhere in the `LINQ chain`, multiple times.  
 
 **The Checkr:**  
 ```csharp
-from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-from thing in Checkr.ActCarefullyWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-from notNull in Checkr.Expect("Not Null", () => thing.HasValue)
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from showrOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from traceOne in Checkr.Trace("One", () => anInt)
+from showrTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"OTHER {a}"))
+from traceTwo in Checkr.Trace("Two", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: One   = PREFIXED 7
+   - Trace: Two   = OTHER 7
+```
+> Configuration can depend on context.  
+
+**The Model:**  
+```csharp
+public class Product
+{
+    public Guid Id { get; init; } = Guid.Empty;
+    public string Name { get; init; } = string.Empty;
+    public int AmountInStock { get; set; }
+}
+
+public record OrderRequest(Guid ProductId, int Amount);
+
+public class Warehouse(List<Product> productsForSale)
+{
+    public List<Product> ProductsForSale => productsForSale;
+
+    public void PlaceOrder(OrderRequest request) =>
+        productsForSale.First(a => a.Id == request.ProductId).AmountInStock -= request.Amount;
+}
+```
+
+**The Checkr:**  
+```csharp
+from warehouse in Trackr.Stashed(() => new Warehouse(ProductsForSale()))
+from showr in Showr.ForInput(() =>
+    Please.AllowMe().ToReplace<OrderRequest>(a =>
+        $"Ordered {a.Amount} pieces of {warehouse.ProductsForSale.Single(b => a.ProductId == b.Id).Name}."))
+from request in Checkr.Input("Order request", RequestFuzzr(warehouse))
+from placeOrder in Checkr.Act("Place order", () => warehouse.PlaceOrder(request))
+from noNegativeStock in Checkr.Expect("No negative stock",
+    () => warehouse.ProductsForSale.Select(a => a.AmountInStock).All(a => a >= 0))
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed: Place order
+   - Input: Order request = { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 53 }
+                            Ordered 53 pieces of Product One.
+```
+A full reference to the available options can be found [here][A_ShowrReference].  
+
+[A_ShowrReference]: #showr-reference
+#### Showr Reference
+##### For Trace
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = PREFIXED 7
+```
+##### For Input
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForInput(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    PREFIXED 7
+   - Trace: AnInt = 7
+```
+##### For Input Without Configuration
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForInput()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    7
+   - Trace: AnInt = 7
+```
+##### For All
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+                    PREFIXED 7
+   - Trace: AnInt = PREFIXED 7
+```
+##### None
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from showrNone in Showr.None()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = 7
+```
+#### None
+
+**The Checkr:**  
+```csharp
+from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
+from showrNone in Showr.None()
+from anInt in Checkr.Input("AnInt", Fuzzr.Int())
+from trace in Checkr.Trace("AnInt", () => anInt)
+from fail in Checkr.Expect("not 7", () => anInt != 7)
+select Case.Closed;
+```
+
+**Report Excerpt:**  
+```text
+Executed:
+   - Input: AnInt = 7
+   - Trace: AnInt = 7
+```
+### Custom Reducers Old
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
+Reducers are a relatively new addition to the QuickCheckr arsenal.  
+And you could, rightfully so, point out that they violate it's core philosophy
+of not rewriting what actually happened.  
+
+But once again, it is a feature born out of necessity.  
+ 
+With that caveat out of the way, let's dig in.  
+  
+#### Values Stop On First Passed
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 2, 1, 0]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
 
@@ -825,401 +929,745 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                CheckrActCarefullyWhen.cs:55:1
- Original failing run:    3 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    625676917
- ------------------------------------------------------------
-  Executed: Act
-   - Input: Counter = 3
- ===================================
-  !! Expectation Failed: Not Null
- ===================================
- Passed Expectations
- - Not Null: 1x
- ------------------------------------------------------------
-```
-### Checkr Act When
-```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from never in Checkr.ActWhen("Never", () => false, () => { })
-    from neverAgain in Checkr.ActWhen("Never Again", () => false, () => true)
-    from thing in Checkr.ActWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
-```
-```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from never in Checkr.ActWhen("Never", () => false, () => Task.CompletedTask)
-    from neverAgain in Checkr.ActWhen("Never Again", () => false, () => Task.FromResult(true))
-    from thing in Checkr.ActWhen("Act", () => counter != 2, () => Task.FromResult(counter == 3 ? null : new Thing()))
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
-```
-### Checkr When
-```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from thing in Checkr.When(() => counter != 2, Checkr.Act("Act", () => counter == 3 ? null : new Thing()))
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
-```
-## When Things Go Wrong
-### Everything Means Less Than Null
-#### Trackr To Pool
-```csharp
-    from one in Trackr.ToPool("answer", 42)
-    select Case.Closed;
-```
-  Throws:  
-```text
-A storage attempt was made for a 'Pool' of 'System.Int32' using key 'answer', but no such pool was found.
-Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
-```
-### It Is Written, ... But Only Once
-In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
-are not just pretty captions in a report.
-
-They function as **stable identifiers**.
-
-QuickCheckr uses each key for two distinct purposes:
-
-1. **Reporting:** The key appears in execution traces, minimal fail-cases, and summaries.
-2. **Book-keeping:** Internally, the engine uses the same key to label stored values, look up decisions, and coordinate shrinking.
-
-Because of this dual role, **each key may only be written once per relevant scope**.  
-
-If you try to write the same key in the same scope twice or more, using the same Checkr, an exception is thrown.
-  
-#### Checkr Act
-```csharp
-    from one in Checkr.Act("reused", () => { })
-    from two in Checkr.Act("reused", () => { })
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Act'
-- 'Checkr.ActCarefully'
-```
-#### Checkr Act Carefully
-```csharp
-    from one in Checkr.ActCarefully("reused", () => { })
-    from two in Checkr.ActCarefully("reused", () => { })
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Act'
-- 'Checkr.ActCarefully'
-```
-#### Checkr Expect
-```csharp
-    from one in Checkr.Expect("reused", () => true)
-    from two in Checkr.Expect("reused", () => true)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Expect'
-- 'Trackr.Expect'
-- 'Trackr.Verify'
-- 'Trackr.StopWhenProven'
-```
-#### Checkr Input
-```csharp
-    from one in Checkr.Input("reused", Fuzzr.Int())
-    from two in Checkr.Input("reused", Fuzzr.Int())
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Input'
-```
-#### Checkr One Of
-```csharp
-    from one in Checkr.OneOf(Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'Checkr|OneOf|Default|QuickCheckr|Key' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.OneOf'
-- 'Checkr.OneOfWhen'
-```
-```csharp
-    from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.OneOf'
-- 'Checkr.OneOfWhen'
-```
-#### Checkr One Of When
-```csharp
-    from one in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("Two", () => { })))
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'Checkr|OneOfWhen|Default|QuickCheckr|Key' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.OneOf'
-- 'Checkr.OneOfWhen'
-```
-```csharp
-    from one in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("Two", () => { })))
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.OneOf'
-- 'Checkr.OneOfWhen'
-```
-#### Checkr Trace
-```csharp
-    from one in Checkr.Trace("reused", () => "")
-    from two in Checkr.Trace("reused", () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Trace'
-- 'Checkr.TraceWhen'
-```
-#### Checkr Trace When
-```csharp
-    from one in Checkr.TraceWhen("reused", () => true, () => "")
-    from two in Checkr.TraceWhen("reused", () => true, () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Trace'
-- 'Checkr.TraceWhen'
-```
-#### Trackr Expect
-```csharp
-    from one in Trackr.Expect("reused", () => true)
-    from two in Trackr.Expect("reused", () => true)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Expect'
-- 'Trackr.Expect'
-- 'Trackr.Verify'
-- 'Trackr.StopWhenProven'
-```
-#### Trackr Pool For
-```csharp
-    from one in Trackr.PoolFor<int>()
-    from two in Trackr.PoolFor<int>()
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'System.Int32' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Trackr.PoolFor'
-```
-#### Trackr Stashed
-```csharp
-    from one in Trackr.Stashed(() => 42)
-    from two in Trackr.Stashed(() => 666)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'System.Int32' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Trackr.Stashed'
-```
-```csharp
-    from one in Trackr.Stashed("reused", () => 42)
-    from two in Trackr.Stashed("reused", () => 666)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Trackr.Stashed'
-```
-#### Trackr Stop When Proven
-```csharp
-    from one in Trackr.StopWhenProven("reused", () => false)
-    from two in Trackr.StopWhenProven("reused", () => false)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Expect'
-- 'Trackr.Expect'
-- 'Trackr.Verify'
-- 'Trackr.StopWhenProven'
-```
-#### Trackr Verify
-```csharp
-    from one in Trackr.Verify("reused", () => true)
-    from two in Trackr.Verify("reused", () => true)
-    select Case.Closed;
-```
-  Throws:  
-```text
-Key 'reused' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Checkr.Expect'
-- 'Trackr.Expect'
-- 'Trackr.Verify'
-- 'Trackr.StopWhenProven'
-```
-## Issues
-### The Unshrinkables
-#### Unknown Primitives
-```csharp
-    from unkown in Checkr.Input("Half", Fuzzr.Half())
-    from fail in Checkr.Expect("Fails", () => false)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Drafts\Z_Issues\A_TheUnshrinkables\B_UnknownPrimitives\UnknownPrimitives.cs:19:1
- Original failing run:    1 execution
- Seed:                    746257211
- ------------------------------------------------------------
-  Executed:
-   - Input: Half = 65,25
-   - WARNING: Can't shrink type 'Half' at input 'Half'.
- ================================
-  !! Expectation Failed: Fails
- ================================
-```
-### System Types
-```csharp
-public class Thing
-{
-    public int Irrelevant { get; set; }
-    public Type Type { get; set; } = typeof(int);
-    public Type OtherType { get; set; } = typeof(int);
-}
-```
-```csharp
-    from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:20:1
+ Location:                A_ValuesStopOnFirstPassed.cs:59:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1487819190
+ Seed:                    1681332589
  ------------------------------------------------------------
   Executed:
-   - Input: A thing with a type = { Type: Int32, OtherType: Int32 }
-   - WARNING: Object of type 'Type' has no shrinkable properties at input 'A thing with a type.Type'.
-   - WARNING: Object of type 'Type' has no shrinkable properties at input 'A thing with a type.OtherType'.
- ================================
-  !! Expectation Failed: Fails
- ================================
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
 ```
-##### Workaround
+#### Values Stop On First Passed Alternative
+
+**The Checkr:**  
 ```csharp
-    from thing in Checkr.Input("A thing with a type",
-        Fuzzr.Constant(new Thing()),
-        Try.Values([typeof(string), typeof(double)]))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
 ```
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    RunTestSolution
- Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:58:1
+ Test:                    Example
+ Location:                B_ValuesStopOnFirstPassedAlternative.cs:59:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    350297528
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
  ------------------------------------------------------------
   Executed:
-   - Input: A thing with a type = { Type: Int32 }
- ================================
-  !! Expectation Failed: Fails
- ================================
+   - Input: Input = 79
+            Redux   3
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
 ```
+#### Values Report Last Failure
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2], true))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_ValuesReportLastFailure.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+#### Collection
+Helper function in order to avoid generic type confusion.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.Collection([[3], [2], [1], [0]]))
+from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_Collection.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ 94 ]
+            Redux   [ 2 ]
+ ==================================
+  !! Expectation Failed: All < 2
+ ==================================
+```
+#### Collection Of
+Helper function in order to avoid generic type confusion.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))
+from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_CollectionOf.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ 94 ]
+            Redux   [ 2 ]
+ ==================================
+  !! Expectation Failed: All < 2
+ ==================================
+```
+#### Function Stop On First Passed
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 2, 1, 0]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_FunctionStopOnFirstPassed.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+#### Function Stop On First Passed Alternative
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2]))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_FunctionStopOnFirstPassedAlternative.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   3
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+#### Function Report Last Failure
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2], true))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_FunctionReportLastFailure.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+#### Reduce Towards Zero
+
+**The Checkr:**  
+```csharp
+//from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
+from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ReduceTowardsZero.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   42
+ ==========================================================
+  !! Expectation Failed: Input should be smaller than 42
+ ==========================================================
+```
+#### Reduce Minimize String
+
+**The Checkr:**  
+```csharp
+from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
+from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_ReduceMinimizeString.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1834440365
+ ------------------------------------------------------------
+  Executed:
+   - Input: Text  = "tdblaulb"
+            Redux   "ab"
+ =====================================
+  !! Expectation Failed: no a and b
+ =====================================
+```
+#### Nested In Object
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int Answer { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from answer in Checkr.Input("Answer", Fuzzr.Int(), Reduce.TowardsZero)
+from universe in Checkr.Capture(() => new TheUniverse { Answer = answer })
+from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedInObject.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1930190827
+ ------------------------------------------------------------
+  Executed:
+   - Input: Answer = 96
+            Redux    43
+ =======================================
+  !! Expectation Failed: answer <= 42
+ =======================================
+```
+  
+  
+#### Nested Reducer In Object
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int Answer { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Reduce.TowardsZero)
+from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedReducerInObject.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    686899245
+ ------------------------------------------------------------
+  Executed:
+   - Input: Universe = { Answer: 61 }
+            Redux      { Answer: 43 }
+ =======================================
+  !! Expectation Failed: answer <= 42
+ =======================================
+```
+  
+  
+#### Nested Reducer In Object On Path
+
+**The Model:**  
+```csharp
+public class TheUniverse
+{
+    public int AnswerOne { get; set; }
+    public int AnswerTwo { get; set; }
+    public int AnswerThree { get; set; }
+}
+```
+
+**The Checkr:**  
+```csharp
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(),
+    [("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
+from trace in Checkr.Trace("Universe", () => universe)
+from justRight in Checkr.Expect("just right", () => universe.AnswerOne <= 42 || universe.AnswerTwo >= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedReducerInObjectOnPath.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1118829238
+ ------------------------------------------------------------
+  Executed:
+   - Input: Universe = { AnswerOne: 91, AnswerTwo: 15 }
+            Redux      { AnswerOne: 43, AnswerTwo: 41 }
+   - Trace: Universe = { AnswerOne: 91, AnswerTwo: 15, AnswerThree: 52 }
+ =====================================
+  !! Expectation Failed: just right
+ =====================================
+```
+#### Custom
+
+!! WARNING: **Experimental Feature** !!
+
+> This feature is **experimental**.  
+> Its API, behaviour, or semantics may change substantially in future versions.  
+>  
+> Use with caution in production code.  
+> It is included for users who want to experiment and help shape the future of QuickCheckr.
+
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), CustomTowardsZero.Reducer())
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**Reducer:**  
+```csharp
+public class CustomTowardsZero
+{
+    /// <summary>
+    /// Returns a reducer which tries to reduce the input to zero.
+    /// </summary>
+    /// <remarks>
+    /// The reducer will try to reduce the value by one if it is greater than zero,
+    /// and increase the value by one if it is less than zero.
+    /// </remarks>
+    public static Func<Reducer<int>> Reducer() =>
+        () => new CustomTowardsZero().Reduce;
+    private int lastFailed = 0;
+    public Reduction Reduce(ReductionResult result)
+    {
+        var value = result.ValueAs<int>();
+        if (result.Failed)
+            lastFailed = value;
+        else
+            return Reduction.Stop(lastFailed);
+        if (value == 0)
+            return Reduction.Stop(lastFailed);
+        if (value > 0)
+            value--;
+        else
+            value++;
+        return Reduction.Next(value);
+    }
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Custom.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    211010750
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 10
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+#### Reduction Not Possible
+What to do if all reduction values fail ?  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReductionNotPossible.cs:64:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1373577700
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 21
+            Redux   0
+ ==========================================================
+  !! Expectation Failed: Input should be greater than 42
+ ==========================================================
+```
+### Custom Shrinkers
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
+As explained in [OnShrinking][InputShrinking], a Shrinker is comprised of:
+  1. A *[Classifier][Classifiers]* : responsible for finding the relevant inputs.
+  2. A *[Reducer][Reducers]* : responsible for finding a minimal value.
+
+QuickCheckr allows you to define either one or both of these on a per-input basis.  
+This gives you precise control over how shrinking behaves when the default strategies are insufficient for your domain.  
+
+By default, built-in classifiers and reducers are provided for common types.  
+Custom shrinkers are intended for cases where domain knowledge can guide shrinking more effectively.  
+
+  
+
+[InputShrinking]: #input-shrinking
+
+[Classifiers]: #classifiers
+
+[Reducers]: #reducers
+#### Classifiers
+Classification is done by trying different *candidates* for an input and verifying if the test still fails.  
+
+- If removing/changing the input (via candidates) still reproduces the failure, the input is irrelevant.
+- If the failure goes away for at least one candidate, the input is relevant.
+
+So when supplying a custom classifier, you are basically supplying a list of candidates.  
+There are various ways to do this :
+- [Candidate-based Classifiers][CandidateClassifiers]
+- [Policy-based Classifiers][PolicyBasedClassifiers]
+  
+The following example demonstrates how the various classifiers can be used chained.    
+It is a bit of a contrived example as the default classifiers handle this case just fine.  
+
+**The Checkr:**  
+```csharp
+from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Default<int>(), Try.Values(0, 1, 42))
+from expect in Checkr.Expect("answer == 42", () => answer == 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Classifiers.cs:37:1
+ Original failing run:    1 execution
+ Seed:                    1521363987
+ ------------------------------------------------------------
+  Executed:
+   - Input: answer = 63
+ =======================================
+  !! Expectation Failed: answer == 42
+ =======================================
+```
+
+[CandidateClassifiers]: #candidate-based-classifiers
+
+[PolicyBasedClassifiers]: #policy-based-classifiers
+##### Candidate-based Classifiers
+Here is an overview of all the different ways you can define *candidates* for classification.  
+Using a more relevant example this time (where possible), that allows you to deal with [this][E_CheckingNulls] relatively common issue.  
+###### Values
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Values(new Thing()))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_TryValues.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Collection
+This is very similar to `Try.Values`.  
+It only exists to avoid generic type soup and easily made mistakes when typing candidates supply for collections.  
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5), Try.Collection([0], [1], [42]))
+from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_TryCollection.cs:56:1
+ Original failing run:    1 execution
+ Seed:                    899182715
+ ------------------------------------------------------------
+  Executed:
+   - Input: answers = [ 2, 80 ]
+ ===============================================
+  !! Expectation Failed: all answers equal 42
+ ===============================================
+```
+###### Function
+This method allows you to supply dynamic candidates using a function.  
+The lambda argument of the supplied function, is the original Input value.
+  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Function((Thing a) => [new Thing()]))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_TryFunction.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Fuzzr
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Try.Fuzzr(Fuzzr.One<Thing>(), 2))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_TryFuzzr.cs:73:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+
+[E_CheckingNulls]: #checking-nulls
+##### Policy-based Classifiers
+  
+###### Keep
+`Try.Keep` explicitly marks an execution as relevant and worth preserving during shrinking.
+In most scenarios this is not strictly necessary, as QuickCheckr will naturally retain behaviour that contributes to failure.
+`Try.Keep` mainly exists for completeness and for rare performance-tuning cases where you want to prevent the shrinker from exploring removals you already know are pointless.
+It also serves as an explicit signal of intent: this step is considered essential evidence.  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Keep<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_TryKeep.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### None
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.None<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+`Try.None` is a custom classifier that explicitly marks an execution as irrelevant and therefore not worth shrinking.
+It is primarily a performance tool: when a branch is known not to influence the outcome,
+`Try.None` prevents QuickCheckr from wasting time shrinking or re-executing it. 
+This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
+It can also be used to suppress unnecessary "all inputs irrelevant" warnings when that irrelevance is intentional and understood.
+  
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_TryNone.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Default
+`Try.Keep` applies QuickCheckr's normal relevance detection as one strategy within a classifier chain.
+Classifiers are executed in succession, so Try.Default can be placed anywhere in the sequence.
+If it finds a relevant candidate, the chain stops. Otherwise, the next classifier is attempted.
+This makes it possible to combine engine-driven relevance detection with more opinionated strategies such as Try.Values(...)
+without hard-coding one as the global default.  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Try.Default<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_TryDefault.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+#### Reducers
+### The Tracker Class
