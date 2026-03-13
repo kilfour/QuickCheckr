@@ -11,7 +11,7 @@ public class C_ValuesReportLastFailure : CheckrTest<C_ValuesReportLastFailure>
     protected override bool Asserts => false;
     protected override bool Report => false;
 
-    [Fact(Skip = "Wip")]
+    [Fact]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]

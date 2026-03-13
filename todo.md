@@ -2,34 +2,31 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
+* FIX CAPTURE THROWS EXCEPTION WEIRDNESS
 * **Reducers**
     * ReductionNotPossible.cs => Warning
     * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
-    * Shrinking Redesign again ;-): design settled and implemented, need to fill some API holes.
+      not *really* an issue, a single value version of 'The Case of the Invisible List'
+    * Shrinking Redesign again
+      > Design settled and implemented, just need to fill some API holes.
       * Execution Shrinking
       * Input Shrinking
         * Structural Collapse
         * Input Classification
-        * Input Reduction (Redux)
+        * Input Reduction (Redux)  
 * DSL Experiments
-  * QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Spike:  
-    * DelayedResult issue: Executions not Shrinking  
-      During shrinking, an exception in a carefully-acted result causes the expectation reevaluation guard to skip a failing expectation, preventing execution shrink candidates from being recognized as still failing.
-  * CSI:
-    * Create an `Operation` with Evil Input.
-    * Add `Example`s for the failures, take the example input out of the fuzzr.
 
 ### Todo
-* FIX CAPTURE THROWS EXCEPTION WEIRDNESS
 * Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
 * Check what happens when collection is null.
-* Add unchecked expectations WARNING.
+
 
 ### Wish List
-
+* Add unchecked expectations WARNING.
+  This would be very good for the dsl bit (F.i. Example)
 
 ### Doc
 
@@ -50,15 +47,13 @@
 * Added some missing PoolWhen overloads.
 * Added some missing Pool operation reporting in the .qr file.
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
-* In case an expectation throws it is rethrown as `ExpectationThrowsException(string key, Exception InnerException)
-`.
+* In case an expectation throws it is rethrown as `ExpectationThrowsException`.
 
 ## 0.0.10 : "Insert clever play on Dsl thingy here"
 
-## 0.0.11 : Wait for Me !
-* Check/Test/Doc Simple Async testing => initial web-api example
-
-## 0.0.12 : All Aboard
+## 0.0.11 : All Aboard
+* Stabilize + Doc InternalAffairs
+  * Shrink Log
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:
@@ -75,44 +70,29 @@
   * You Can Go Your Own Way is very much unfinished.
   * Consider splitting of Honey I Shrunk the Inputs.  
     This makes cross referencing impossible though.
-  * Meet the Team: Clerk, Custodian, etc ...
-    Glossary kind of thing.  
-    Reiterate scopes.  
-    Trackr vs Checkr.
   * Maybe add When Things Go Wrong.
 * dotnet new checkr templates
   * minimal
   * for newbies
   * web api
-* Shrink Log, i.e.: polish InternalAffairs
-
-## 0.0.9+
-* Play more pool. Not really needed I reckon, but you know, making sure ...
-  * Warehousing
-    * Step 5 : dynamically populate WareHouse 
-    * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
-* keyed overload for PoolFor, GetPool, ... 
-    * maybe not, looks tricky in impl and yucky in usage
-    * alternative: example in cookbook using subclasses or composition <= THIS
-* Stabilize + Doc InternalAffairs
-  * not using these anymore: only need them when there's a shrinking bug, so maybe hide them completely
 
 ## 0.1.0
 * update xml summaries
-* Checkr's Court
+* make some noise
 
-## 0.1.0++
+## 0.1.1 : Wait for Me !
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
+  => initial web-api example (QuickWebr ?)
 
 ## Skipped Tests (5)
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
   Might get removed.
 * 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
+* QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.C_ReducersOld.A_Values;
 
 ## Future Doc Work
 * Checkrs Court: Tricky one
-* Prepare demo talk(s)
 * Build HorsesForCourses.Api for testing example
   * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
@@ -120,14 +100,17 @@
 
 ## Ideas
 * Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
-  Or maybe an object with an OnFail tracing method
-* `Trackr.PoolWhen`, `Trackr.PoolExpect`, `Trackr.PoolExpectEach`, `Trackr.PoolExpectEachWhen`
-    Still feel uneasy having these on Trackr, but let's see how it feels after a while.
-* Make OneOf(-When) return T instead of Case ? let's see what comes up during explorations
+  Or maybe an object with an OnFail tracing method 
 * QuickPulse.Show config could use another look 
-* QuickPulse.Show turn manofwealth and taste into composable config
-  => for reporting inputs : ShrinkingClue.Ignore property => ignore in QPS config => print full object
 * Maybe retrieve line number of failed Expectation (perf ?)
+* Play more pool. Not really needed I reckon, but you know, making sure ...
+  * Warehousing
+    * Step 5 : dynamically populate WareHouse 
+    * Step 6 : new invariant: Warehouse product amount always contains atleast Max(20, highest amount ever ordered) 
+* keyed overload for PoolFor, GetPool, ... 
+    * maybe not, looks tricky in impl and yucky in usage
+    * alternative: example in cookbook using subclasses or composition <= !! THIS !!
+
   
 ## Refactoring Targets 
 * !!! InputDeposition Value => string !!!
