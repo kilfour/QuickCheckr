@@ -18,17 +18,17 @@ public class DieSix
 ```
 And we want to ensure that it rolls the numbers 1-6.  For which use the following Checkr:  
 ```csharp
-    from die in Trackr.Stashed(() => new DieSix())
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from verify in Trackr.Verify("Rolls",
-        ("Contains 1", () => observer.Contains(1)),
-        ("Contains 2", () => observer.Contains(2)),
-        ("Contains 3", () => observer.Contains(3)),
-        ("Contains 4", () => observer.Contains(4)),
-        ("Contains 5", () => observer.Contains(5)),
-        ("Contains 6", () => observer.Contains(6)))
-    select Case.Closed;
+from die in Trackr.Stashed(() => new DieSix())
+from observer in Trackr.Stashed(() => new HashSet<int>())
+from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
+from verify in Trackr.Verify("Rolls",
+    ("Contains 1", () => observer.Contains(1)),
+    ("Contains 2", () => observer.Contains(2)),
+    ("Contains 3", () => observer.Contains(3)),
+    ("Contains 4", () => observer.Contains(4)),
+    ("Contains 5", () => observer.Contains(5)),
+    ("Contains 6", () => observer.Contains(6)))
+select Case.Closed;
 ```
 `Trackr.Verify` is the tool you reach for when the correctness of a test depends on the accumulated state at the end of a run,
 rather than the outcome of any single execution.
@@ -66,19 +66,19 @@ Bit of a waste to continue running the Checkr, no ?
 
 Let's use `Trackr.StopWhenProven`:  
 ```csharp
-    from die in Trackr.Stashed(() => new DieSixFixed())
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
-    from proven in Trackr.StopWhenProven("All sides rolled",
-        () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
-    from verify in Trackr.Verify("Rolls",
-        ("Contains 1", () => observer.Contains(1)),
-        ("Contains 2", () => observer.Contains(2)),
-        ("Contains 3", () => observer.Contains(3)),
-        ("Contains 4", () => observer.Contains(4)),
-        ("Contains 5", () => observer.Contains(5)),
-        ("Contains 6", () => observer.Contains(6)))
-    select Case.Closed;
+from die in Trackr.Stashed(() => new DieSixFixed())
+from observer in Trackr.Stashed(() => new HashSet<int>())
+from roll in Checkr.Act("Roll", () => observer.Add(die.Roll()))
+from proven in Trackr.StopWhenProven("All sides rolled",
+    () => observer.Order().SequenceEqual([1, 2, 3, 4, 5, 6])) // <=
+from verify in Trackr.Verify("Rolls",
+    ("Contains 1", () => observer.Contains(1)),
+    ("Contains 2", () => observer.Contains(2)),
+    ("Contains 3", () => observer.Contains(3)),
+    ("Contains 4", () => observer.Contains(4)),
+    ("Contains 5", () => observer.Contains(5)),
+    ("Contains 6", () => observer.Contains(6)))
+select Case.Closed;
 ```
 Whenever the predicate passed into `Trackr.StopWhenProven` returns true,
 the Checkr is considered proven and it concludes immediately, ... no more executions.  

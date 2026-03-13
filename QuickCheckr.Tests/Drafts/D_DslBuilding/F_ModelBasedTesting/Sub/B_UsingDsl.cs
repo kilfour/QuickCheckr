@@ -20,7 +20,7 @@ public class B_UsingDsl : CheckrTest<B_UsingDsl>
         Run(1879928073, 100.ExecutionsPerRun());
 
     [CodeSnippet]
-    [CodeRemove("return")]
+    [CodeRemove("return ")]
     protected override CheckrOf<Case> TheCheckr()
     {
         return Check

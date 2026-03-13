@@ -3,12 +3,12 @@
 public record Person(string Name, int Age);
 ```
 ```csharp
-    from person in Checkr.Input("Person",
-        from name in Fuzzr.String()
-        from age in Fuzzr.Int()
-        select new Person(name, age))
-    from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
-    select Case.Closed;
+from person in Checkr.Input("Person",
+    from name in Fuzzr.String()
+    from age in Fuzzr.Int()
+    select new Person(name, age))
+from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

@@ -1,14 +1,14 @@
 # Nested Objects
 ```csharp
-    from input in Checkr.Input("Universe",
-        from _ in Configr.Primitive(Fuzzr.Constant("Answer me"))
-        from __ in Configr.Primitive(Fuzzr.Int())
-        from thing in Fuzzr.One<TheUniverse>()
-        select thing)
-    from expect in Checkr.ExpectWhen("It's not 42",
-        () => input.Everything != null,
-        () => input.Everything!.Answer != 42)
-    select Case.Closed;
+from input in Checkr.Input("Universe",
+    from _ in Configr.Primitive(Fuzzr.Constant("Answer me"))
+    from __ in Configr.Primitive(Fuzzr.Int())
+    from thing in Fuzzr.One<TheUniverse>()
+    select thing)
+from expect in Checkr.ExpectWhen("It's not 42",
+    () => input.Everything != null,
+    () => input.Everything!.Answer != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

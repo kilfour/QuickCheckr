@@ -16,16 +16,16 @@ public sealed class Ledger
 ```
 ## The Checkr:
 ```csharp
-    from ledger in Trackr.Stashed(() => new Ledger())
-    from entry in Checkr.Input("Entry", Fuzzr.OneOf(
-            (80, Fuzzr.Int(int.MaxValue / 2, int.MaxValue)),
-            (20, Fuzzr.Int(1, 10))
-        ))
-    from add in Checkr.Act("Add", () => ledger.Add(entry))
-    from expect in Trackr.Expect(
-            "Checked total greater or equal than all entries", () =>
-                ledger.Entries.All(a => ledger.TotalChecked() >= a))
-    select Case.Closed;
+from ledger in Trackr.Stashed(() => new Ledger())
+from entry in Checkr.Input("Entry", Fuzzr.OneOf(
+        (80, Fuzzr.Int(int.MaxValue / 2, int.MaxValue)),
+        (20, Fuzzr.Int(1, 10))
+    ))
+from add in Checkr.Act("Add", () => ledger.Add(entry))
+from expect in Trackr.Expect(
+        "Checked total greater or equal than all entries", () =>
+            ledger.Entries.All(a => ledger.TotalChecked() >= a))
+select Case.Closed;
 ```
 ## The Report:
 ```text

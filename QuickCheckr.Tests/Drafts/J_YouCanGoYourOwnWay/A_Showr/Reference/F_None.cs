@@ -6,7 +6,6 @@ using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.A_Showr.Reference;
 
-[DocFile]
 public class F_None : CheckrTest<F_None>
 {
     protected override bool Asserts => false;

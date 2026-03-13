@@ -4,17 +4,17 @@ Can't shrink/remove 'Other Turtle' because of the null property, see top of Obje
 Check this with: 
 * `InternalAffairs = [InternalAffairs.NullIssues]`  
 ```csharp
-    from turtle in Checkr.Input("Turtle",
-        from depth in Configr<Turtle>.Depth(1, 3)
-        from turtle in Fuzzr.One<Turtle>()
-        select turtle)
-    from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
-    from traceTurtle in Checkr.Trace("Turtle", () => turtle)
-    from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
-    from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
-        () => turtle.Down?.Down != null,
-        () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
-    select Case.Closed;
+from turtle in Checkr.Input("Turtle",
+    from depth in Configr<Turtle>.Depth(1, 3)
+    from turtle in Fuzzr.One<Turtle>()
+    select turtle)
+from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
+from traceTurtle in Checkr.Trace("Turtle", () => turtle)
+from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
+from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
+    () => turtle.Down?.Down != null,
+    () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

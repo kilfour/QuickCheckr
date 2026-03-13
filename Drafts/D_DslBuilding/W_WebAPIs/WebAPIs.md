@@ -23,6 +23,9 @@ Webr.Named("WebrTest")
         (api, coachInfo) =>
         {
             var coach = api.Query(db => db.Find<Coach>(Id<Coach>.From(coachInfo.Id))!);
+            return coach.AssignedCourses.All(course => coach.IsSuitableFor(course));
+        })
+    .Run(20.Runs(), 50.ExecutionsPerRun());
 ```
 ## Coach Methods
 ```csharp
@@ -223,4 +226,5 @@ public class AssignCoachToCourse : ApiMethod
  - '/courses/{id}/assign-coach' Status Code is Success: 1x
  - '/courses/{id}/assign-coach' Coach is assigned: 1x
  ------------------------------------------------------------
-```  
+```
+  

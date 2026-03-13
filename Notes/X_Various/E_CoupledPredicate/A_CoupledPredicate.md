@@ -3,11 +3,6 @@
 **The Model:**  
 ```csharp
 record Pair(int A, int B);
-[CodeSnippet]
-protected override CheckrOf<Case> TheCheckr() =>
-    from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(9, 9)))
-    from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
-    select Case.Closed;
 ```
 
 **The Checkr:**  

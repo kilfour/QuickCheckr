@@ -17,7 +17,7 @@ public class Model
     public void Add(int a) => Result += a;
     public void Subtract(int a) => Result -= a;
     public void Clear() => Result = 0;
-};
+}
 
 [CodeExample]
 public class Sut
@@ -36,4 +36,4 @@ public class Sut
         if (counter != 3)
             Result = 0;
     }
-};
+}

@@ -38,7 +38,6 @@ Let's start by having a look at the simplest possible Checkr:
 ```csharp
 public class MinimalCheckr
 {
-    [Fact]
     public void RunTest()
         => Checkr.Expect("Always true", () => true).Run();
 }
@@ -511,7 +510,7 @@ Which is a Pool for the following type:
 public record Contact(string Name)
 {
     public string Name { get; set; } = Name;
-}
+};
 ```
 #### Storing elements in the Pool
 ```csharp
@@ -568,30 +567,30 @@ public class Rolodex
 ```
 ##### The Checkr
 ```csharp
-    from contactBook in Trackr.Stashed(() => new Rolodex())
-    // Create a Pool.
-    from createContactPool in Trackr.PoolFor<Contact>()
-        // Pick one of two operations.
-    from operations in Checkr.OneOfWhen(
-        // 1. Add a (Contact-) name to the Rolodex
-        Trackr.PoolWhen<Contact>(a => a.Count < 10,
-            from name in Checkr.Input("Name", NameFuzzr)
-            from add in Checkr.Act("Add", () => contactBook.Add(name))
-                // Store the Contact in the Pool.
-            from storeName in Trackr.ToPool("Store", new Contact(name))
-            select Case.Closed),
-        // 2. Update a (Contact-) name in the Rolodex
-        Trackr.PoolWhen<Contact>("Contact to update",
-            a => a.Count != 0, // <= Can not pick from an empty selection.
-            contact => // Pick a random Contact to update 
-                from newName in Checkr.Input("New Name", NameFuzzr)
-                from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
-                    // Update the contact in the pool, keeping model and test data in sync.
-                from updatePool in contact.Replace(new Contact(newName))
-                select Case.Closed))
-        // This expectation implicitely verifies that duplicates are not introduced. 
-    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new Rolodex())
+// Create a Pool.
+from createContactPool in Trackr.PoolFor<Contact>()
+    // Pick one of two operations.
+from operations in Checkr.OneOfWhen(
+    // 1. Add a (Contact-) name to the Rolodex
+    Trackr.PoolWhen<Contact>(a => a.Count < 10,
+        from name in Checkr.Input("Name", NameFuzzr)
+        from add in Checkr.Act("Add", () => contactBook.Add(name))
+            // Store the Contact in the Pool.
+        from storeName in Trackr.ToPool("Store", new Contact(name))
+        select Case.Closed),
+    // 2. Update a (Contact-) name in the Rolodex
+    Trackr.PoolWhen<Contact>("Contact to update",
+        a => a.Count != 0, // <= Can not pick from an empty selection.
+        contact => // Pick a random Contact to update 
+            from newName in Checkr.Input("New Name", NameFuzzr)
+            from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
+                // Update the contact in the pool, keeping model and test data in sync.
+            from updatePool in contact.Replace(new Contact(newName))
+            select Case.Closed))
+    // This expectation implicitely verifies that duplicates are not introduced. 
+from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
+select Case.Closed;
 ```
 ##### The Report
 ```text
@@ -1026,14 +1025,14 @@ public class Account
 It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.  
 We can verify this with the following Checkr:  
 ```csharp
-    from account in Trackr.Stashed(() => new Account())
-    from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
-    from operations in Checkr.OneOf(
-        Checkr.Act("Deposit", () => account.Deposit(amount)),
-        Checkr.Act("Withdraw", () => account.WithDraw(amount))
-    )
-    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
-    select Case.Closed;
+from account in Trackr.Stashed(() => new Account())
+from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
+from operations in Checkr.OneOf(
+    Checkr.Act("Deposit", () => account.Deposit(amount)),
+    Checkr.Act("Withdraw", () => account.WithDraw(amount))
+)
+from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
+select Case.Closed;
 ```
 Now if we run this we might get something like this:  
 ```text
@@ -1180,12 +1179,12 @@ It might evolve into something that is *open to the public*, or it might get rem
 ##### ReportMode Reference
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
-    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
-    from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
-    from trace in Checkr.Trace("Irrelevant", () => irrelevant)
-    from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
+from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
+from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
+from trace in Checkr.Trace("Irrelevant", () => irrelevant)
+from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
+select Case.Closed;
 ```
 ###### ReportMode.Default
 ```csharp
@@ -1307,11 +1306,11 @@ config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
 ##### ShrinkMode Reference
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
-    from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-    from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Reduce.TowardsZero)
-    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
-    from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
-    select Case.Closed;
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Reduce.TowardsZero)
+from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
+from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
+select Case.Closed;
 ```
 ###### ShrinkMode.None
 ```csharp
@@ -1820,9 +1819,9 @@ Reduction will be elaborated on later.
   
 The following simple example has one input but always fails.  
 ```csharp
-    from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from expect in Checkr.Expect("Always Fails", () => false)
-    select Case.Closed;
+from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+from expect in Checkr.Expect("Always Fails", () => false)
+select Case.Closed;
 ```
 Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
 
@@ -1844,12 +1843,12 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```
 Another example, slightly trickier.  
 ```csharp
-    from one in Checkr.Input("Input One", Fuzzr.Int())
-    from two in Checkr.Input("Input Two", Fuzzr.Int())
-    from three in Checkr.Input("Input Three", Fuzzr.Int())
-    from result in Checkr.Act("Result", () => one + three)
-    from expect in Checkr.Expect("Should not be 42", () => result != 42)
-    select Case.Closed;
+from one in Checkr.Input("Input One", Fuzzr.Int())
+from two in Checkr.Input("Input Two", Fuzzr.Int())
+from three in Checkr.Input("Input Three", Fuzzr.Int())
+from result in Checkr.Act("Result", () => one + three)
+from expect in Checkr.Expect("Should not be 42", () => result != 42)
+select Case.Closed;
 ```
 As you can see from the test definition, two inputs are involved in a possible failure.
 
@@ -1978,12 +1977,12 @@ But here are some more use cases.
 Under some rare circumstances, the Shrinker gets *greedy*.  
 One currently identified case where this happens is if more than one input triggers the same failure.  
 ```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-    from trace in Checkr.Trace("List", () => input)
-    from expect in Checkr.ExpectWhen("Does not contain 1",
-        () => input.Count() > 2,
-        () => !input.Contains(1))
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
+from trace in Checkr.Trace("List", () => input)
+from expect in Checkr.ExpectWhen("Does not contain 1",
+    () => input.Count() > 2,
+    () => !input.Contains(1))
+select Case.Closed;
 ```
 Now when the list contains multiple elements `1`, we might get:  
 ```text
@@ -2026,14 +2025,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```
 A similar thing can happen when shrinking objects, and the solution is exactly the same  
 ```csharp
-    from obj in Checkr.Input("BaggyInters",
-        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-        from result in Fuzzr.One<BaggyInters>()
-        select result)
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
+from obj in Checkr.Input("BaggyInters",
+    from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+    from result in Fuzzr.One<BaggyInters>()
+    select result)
+from trace in Checkr.Trace("Original", () => obj)
+from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+    () => obj.IntOne != 1 && obj.IntThree != 1)
+select Case.Closed;
 ```
 **With Deliberation Policy:**  
 ```text
@@ -2507,10 +2506,10 @@ public class TheUniverse
 ```
 **The Checkr:**  
 ```csharp
-    from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
-    from trace in Checkr.Trace("The Universe", () => universe)
-    from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
-    select Case.Closed;
+from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
+from trace in Checkr.Trace("The Universe", () => universe)
+from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+select Case.Closed;
 ```
 **The Report:**  
 ```text
@@ -2553,12 +2552,12 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```
 We could help the shrinker by rewriting your checkr, in order to avoid the irrelevant input being reported as relevant.  
 ```csharp
-    from everything in Checkr.Input("Everything", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
-    from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
-    from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
-    from trace in Checkr.Trace("The Universe", () => universe)
-    from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
-    select Case.Closed;
+from everything in Checkr.Input("Everything", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
+from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
+from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
+from trace in Checkr.Trace("The Universe", () => universe)
+from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

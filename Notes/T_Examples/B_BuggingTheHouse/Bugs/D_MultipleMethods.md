@@ -20,20 +20,20 @@ public class BugHouse
 Exception occurs only from a specific interleaving of RunInt and RunString calls, each appending different markers to state.
 Demonstrates multi-method state interaction.  
 ```csharp
-    from bughouse in Trackr.Stashed(() => new BugHouse())
-    from operations in Checkr.OneOf(
-        // --
-        from i in Checkr.Input("Int", Fuzzr.Int())
-        from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
-        from expect in Checkr.Expect("RunInt s true", () => output)
-        select Case.Closed,
-        // --
-        from str in Checkr.Input("String", Fuzzr.String())
-        from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
-        from expect in Checkr.Expect("RunString s true", () => output)
-        select Case.Closed)
-        //--
-    select Case.Closed;
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from operations in Checkr.OneOf(
+    // --
+    from i in Checkr.Input("Int", Fuzzr.Int())
+    from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
+    from expect in Checkr.Expect("RunInt s true", () => output)
+    select Case.Closed,
+    // --
+    from str in Checkr.Input("String", Fuzzr.String())
+    from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
+    from expect in Checkr.Expect("RunString s true", () => output)
+    select Case.Closed)
+    //--
+select Case.Closed;
 ```
 ## Minimal Fail Case (one example):
 - **Length:** 4 executions.

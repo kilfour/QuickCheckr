@@ -9,7 +9,6 @@ Let's start by having a look at the simplest possible Checkr:
 ```csharp
 public class MinimalCheckr
 {
-    [Fact]
     public void RunTest()
         => Checkr.Expect("Always true", () => true).Run();
 }

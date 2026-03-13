@@ -179,9 +179,9 @@ public class BaggyInters
 }
 ```
 ```csharp
-    from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
-    from expect in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
-    select Case.Closed;
+from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
+from expect in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -199,15 +199,15 @@ public class BaggyInters
 ```
 ##### Nested Objects
 ```csharp
-    from input in Checkr.Input("Universe",
-        from _ in Configr.Primitive(Fuzzr.Constant("Answer me"))
-        from __ in Configr.Primitive(Fuzzr.Int())
-        from thing in Fuzzr.One<TheUniverse>()
-        select thing)
-    from expect in Checkr.ExpectWhen("It's not 42",
-        () => input.Everything != null,
-        () => input.Everything!.Answer != 42)
-    select Case.Closed;
+from input in Checkr.Input("Universe",
+    from _ in Configr.Primitive(Fuzzr.Constant("Answer me"))
+    from __ in Configr.Primitive(Fuzzr.Int())
+    from thing in Fuzzr.One<TheUniverse>()
+    select thing)
+from expect in Checkr.ExpectWhen("It's not 42",
+    () => input.Everything != null,
+    () => input.Everything!.Answer != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -228,12 +228,12 @@ public class BaggyInters
 public record Person(string Name, int Age);
 ```
 ```csharp
-    from person in Checkr.Input("Person",
-        from name in Fuzzr.String()
-        from age in Fuzzr.Int()
-        select new Person(name, age))
-    from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
-    select Case.Closed;
+from person in Checkr.Input("Person",
+    from name in Fuzzr.String()
+    from age in Fuzzr.Int()
+    select new Person(name, age))
+from isNotUnderage in Checkr.Expect("Is not underage", () => person.Age >= 18)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -284,17 +284,17 @@ Can't shrink/remove 'Other Turtle' because of the null property, see top of Obje
 Check this with: 
 * `InternalAffairs = [InternalAffairs.NullIssues]`  
 ```csharp
-    from turtle in Checkr.Input("Turtle",
-        from depth in Configr<Turtle>.Depth(1, 3)
-        from turtle in Fuzzr.One<Turtle>()
-        select turtle)
-    from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
-    from traceTurtle in Checkr.Trace("Turtle", () => turtle)
-    from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
-    from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
-        () => turtle.Down?.Down != null,
-        () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
-    select Case.Closed;
+from turtle in Checkr.Input("Turtle",
+    from depth in Configr<Turtle>.Depth(1, 3)
+    from turtle in Fuzzr.One<Turtle>()
+    select turtle)
+from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
+from traceTurtle in Checkr.Trace("Turtle", () => turtle)
+from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
+from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
+    () => turtle.Down?.Down != null,
+    () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -316,13 +316,13 @@ Check this with:
 ```
 ##### Shrinking Records
 ```csharp
-    from person in Checkr.Input("Person",
-        from ctor in Configr<PersonRecord>.Construct(Fuzzr.String(), Fuzzr.Int())
-        from personRecord in Fuzzr.One<PersonRecord>()
-        select personRecord)
-    from tracePerson in Checkr.Trace("Person", () => person)
-    from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
-    select Case.Closed;
+from person in Checkr.Input("Person",
+    from ctor in Configr<PersonRecord>.Construct(Fuzzr.String(), Fuzzr.Int())
+    from personRecord in Fuzzr.One<PersonRecord>()
+    select personRecord)
+from tracePerson in Checkr.Trace("Person", () => person)
+from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -342,10 +342,10 @@ Check this with:
 ## Building Blocks
 ### Checkr Act Carefully
 ```csharp
-    from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
-    from throws in Checkr.Expect("Throws", () => result.Threw)
-    from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
-    select Case.Closed;
+from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
+from throws in Checkr.Expect("Throws", () => result.Threw)
+from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -364,11 +364,11 @@ Check this with:
 ```
 ### Trackr Verify
 ```csharp
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    // using quickfuzzr below, but really it's a SUT
-    from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from verify in Trackr.Verify("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
-    select Case.Closed;
+from observer in Trackr.Stashed(() => new HashSet<int>())
+// using quickfuzzr below, but really it's a SUT
+from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
+from verify in Trackr.Verify("Contains 3", () => observer.Contains(3)) // <= gen = [1, 3) : fails
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -383,14 +383,14 @@ Check this with:
  ==========================================
 ```
 ```csharp
-    from observer in Trackr.Stashed(() => new HashSet<int>())
-    from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
-    from verify in Trackr.Verify("Rolls",
-        ("Contains 1", () => observer.Contains(1)),
-        ("Contains 2", () => observer.Contains(2)),
-        ("Contains 3", () => observer.Contains(3)),
-        ("Contains 4", () => observer.Contains(4)))
-    select Case.Closed;
+from observer in Trackr.Stashed(() => new HashSet<int>())
+from roll in Checkr.Act("Roll", () => observer.Add(Fuzzr.Int(1, 3).Generate()))
+from verify in Trackr.Verify("Rolls",
+    ("Contains 1", () => observer.Contains(1)),
+    ("Contains 2", () => observer.Contains(2)),
+    ("Contains 3", () => observer.Contains(3)),
+    ("Contains 4", () => observer.Contains(4)))
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -406,10 +406,10 @@ Check this with:
 ```
 ### Trackr Stop When Proven
 ```csharp
-    from counter in Checkr.Act("hack for asserting execution count", () => ++executionCount)
-    from stop in Trackr.StopWhenProven("Counter equals 3", () => counter == 3)
-    from shouldNeverFail in Checkr.Expect("Should never fail, because of StopWhenProven", () => counter <= 3)
-    select Case.Closed;
+from counter in Checkr.Act("hack for asserting execution count", () => ++executionCount)
+from stop in Trackr.StopWhenProven("Counter equals 3", () => counter == 3)
+from shouldNeverFail in Checkr.Expect("Should never fail, because of StopWhenProven", () => counter <= 3)
+select Case.Closed;
 ```
 ## Examples
 ### The Element Remover
@@ -428,15 +428,15 @@ public static class ElementRemover
 Using one input, one action, and one expectation,
 the test captures the minimal failing case where the list contains multiple copies of the target element.  
 ```csharp
-    from list in Checkr.Input("List", GetFuzzr())
-    from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
-    from output in Checkr.Act("Delete from List",
-        () => ElementRemover.Remove([.. list], element))
-    from listDoesNotContainElement in Checkr.Expect(
-        "List Does Not Contain Element",
-        () => !output.Contains(element))
-    from traceList in Checkr.Trace("List Before Shrinking", () => list)
-    select Case.Closed;
+from list in Checkr.Input("List", GetFuzzr())
+from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
+from output in Checkr.Act("Delete from List",
+    () => ElementRemover.Remove([.. list], element))
+from listDoesNotContainElement in Checkr.Expect(
+    "List Does Not Contain Element",
+    () => !output.Contains(element))
+from traceList in Checkr.Trace("List Before Shrinking", () => list)
+select Case.Closed;
 ```
 QuickCheckr reduces the failing run to a list like `[ 5, 5 ]` with `5` as the element to remove,
 exposing the bug clearly: the output still contains `5`.  
@@ -475,11 +475,11 @@ public class BugHouse
 Throws only after exactly three total runs when the input value is 1.  
 Demonstrates a simple stateful failure triggered by run count.  
 ```csharp
-    from a in Checkr.Input("a", Fuzzr.Int())
-    from bughouse in Trackr.Stashed(() => new BugHouse())
-    from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-    from expect in Checkr.Expect("Returns true", () => output)
-    select Case.Closed;
+from a in Checkr.Input("a", Fuzzr.Int())
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
+from expect in Checkr.Expect("Returns true", () => output)
+select Case.Closed;
 ```
 ##### Minimal Fail Case:
 - **Length:** 3 executions.
@@ -526,11 +526,11 @@ public class BugHouse
 Throws as soon as the value 6 has been seen three times.  
 A straightforward counter-based failure condition.  
 ```csharp
-    from a in Checkr.Input("a", Fuzzr.Int())
-    from bughouse in Trackr.Stashed(() => new BugHouse())
-    from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-    from expect in Checkr.Expect("Returns true", () => output)
-    select Case.Closed;
+from a in Checkr.Input("a", Fuzzr.Int())
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
+from expect in Checkr.Expect("Returns true", () => output)
+select Case.Closed;
 ```
 ##### Minimal Fail Case:
 - **Length:** 3 executions.
@@ -631,20 +631,20 @@ public class BugHouse
 Exception occurs only from a specific interleaving of RunInt and RunString calls, each appending different markers to state.
 Demonstrates multi-method state interaction.  
 ```csharp
-    from bughouse in Trackr.Stashed(() => new BugHouse())
-    from operations in Checkr.OneOf(
-        // --
-        from i in Checkr.Input("Int", Fuzzr.Int())
-        from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
-        from expect in Checkr.Expect("RunInt s true", () => output)
-        select Case.Closed,
-        // --
-        from str in Checkr.Input("String", Fuzzr.String())
-        from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
-        from expect in Checkr.Expect("RunString s true", () => output)
-        select Case.Closed)
-        //--
-    select Case.Closed;
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from operations in Checkr.OneOf(
+    // --
+    from i in Checkr.Input("Int", Fuzzr.Int())
+    from output in Checkr.Act("BugHouse.RunInt", () => bughouse.RunInt(i))
+    from expect in Checkr.Expect("RunInt s true", () => output)
+    select Case.Closed,
+    // --
+    from str in Checkr.Input("String", Fuzzr.String())
+    from output in Checkr.Act("BugHouse.RunString", () => bughouse.RunString(str))
+    from expect in Checkr.Expect("RunString s true", () => output)
+    select Case.Closed)
+    //--
+select Case.Closed;
 ```
 ##### Minimal Fail Case (one example):
 - **Length:** 4 executions.
@@ -693,20 +693,20 @@ public class ListWrap
 ```
 **The Checkr:**  
 ```csharp
-    from listWrap in Trackr.Stashed(() => new ListWrap())
-    from item in Checkr.Input("Item", Fuzzr.Int(0, 10))
-    from traceBefore in Checkr.Trace("Before", () => listWrap.List)
-    from operations in Checkr.OneOf(
-        from add in Checkr.Act("Add", () => listWrap.Add(item))
-        from listContainsItem in Checkr.Expect("List Contains Item",
-            () => listWrap.List.Contains(item))
-        select Case.Closed,
-        from remove in Checkr.Act("Remove", () => listWrap.Remove(item))
-        from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
-            () => !listWrap.List.Contains(item))
-        select Case.Closed)
-    from traceAfter in Checkr.Trace("After", () => listWrap.List)
-    select Case.Closed;
+from listWrap in Trackr.Stashed(() => new ListWrap())
+from item in Checkr.Input("Item", Fuzzr.Int(0, 10))
+from traceBefore in Checkr.Trace("Before", () => listWrap.List)
+from operations in Checkr.OneOf(
+    from add in Checkr.Act("Add", () => listWrap.Add(item))
+    from listContainsItem in Checkr.Expect("List Contains Item",
+        () => listWrap.List.Contains(item))
+    select Case.Closed,
+    from remove in Checkr.Act("Remove", () => listWrap.Remove(item))
+    from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
+        () => !listWrap.List.Contains(item))
+    select Case.Closed)
+from traceAfter in Checkr.Trace("After", () => listWrap.List)
+select Case.Closed;
 ```
 **The Report:**  
 ```text
@@ -757,36 +757,36 @@ public class ContactBook
 ```
 #### The Checkr
 ```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from stringPool in Trackr.PoolFor<string>()
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
-    from operations in Checkr.OneOfWhen(
-            Checkr.Option(() => counter == 1, // add AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
-                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                    from update in nameToUpdate.Replace(newName)
-                    select Case.Closed)
-                select Case.Closed),
-            Checkr.Option(() => counter == 3, // add a new AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 4, // add BBB, initial run fails here
-                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed))
-    from traceSut in Checkr.Trace("Sut", () => contactBook)
-    from count in Trackr.PoolExpect<string>("Count matches",
-        a => a.Count() == contactBook.Contacts.Count)
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new ContactBook())
+from stringPool in Trackr.PoolFor<string>()
+from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+from operations in Checkr.OneOfWhen(
+        Checkr.Option(() => counter == 1, // add AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                from update in nameToUpdate.Replace(newName)
+                select Case.Closed)
+            select Case.Closed),
+        Checkr.Option(() => counter == 3, // add a new AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 4, // add BBB, initial run fails here
+            from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed))
+from traceSut in Checkr.Trace("Sut", () => contactBook)
+from count in Trackr.PoolExpect<string>("Count matches",
+    a => a.Count() == contactBook.Contacts.Count)
+select Case.Closed;
 ```
 #### The Report (ShrinkMode.None)
 ```text
@@ -891,33 +891,33 @@ public class ContactBook
 }
 ```
 ```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from stringPool in Trackr.PoolFor<string>()
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
-    from operations in Checkr.OneOfWhen(
-            Checkr.Option(() => counter == 1, // add AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
-                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                    from update in nameToUpdate.Replace(newName)
-                    select Case.Closed)
-                select Case.Closed),
-            Checkr.Option(() => counter == 3, // add a new AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 4, // add BBB
-                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed))
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new ContactBook())
+from stringPool in Trackr.PoolFor<string>()
+from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+from operations in Checkr.OneOfWhen(
+        Checkr.Option(() => counter == 1, // add AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                from update in nameToUpdate.Replace(newName)
+                select Case.Closed)
+            select Case.Closed),
+        Checkr.Option(() => counter == 3, // add a new AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 4, // add BBB
+            from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed))
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -968,16 +968,16 @@ public sealed class Ledger
 ```
 #### The Checkr:
 ```csharp
-    from ledger in Trackr.Stashed(() => new Ledger())
-    from entry in Checkr.Input("Entry", Fuzzr.OneOf(
-            (80, Fuzzr.Int(int.MaxValue / 2, int.MaxValue)),
-            (20, Fuzzr.Int(1, 10))
-        ))
-    from add in Checkr.Act("Add", () => ledger.Add(entry))
-    from expect in Trackr.Expect(
-            "Checked total greater or equal than all entries", () =>
-                ledger.Entries.All(a => ledger.TotalChecked() >= a))
-    select Case.Closed;
+from ledger in Trackr.Stashed(() => new Ledger())
+from entry in Checkr.Input("Entry", Fuzzr.OneOf(
+        (80, Fuzzr.Int(int.MaxValue / 2, int.MaxValue)),
+        (20, Fuzzr.Int(1, 10))
+    ))
+from add in Checkr.Act("Add", () => ledger.Add(entry))
+from expect in Trackr.Expect(
+        "Checked total greater or equal than all entries", () =>
+            ledger.Entries.All(a => ledger.TotalChecked() >= a))
+select Case.Closed;
 ```
 #### The Report:
 ```text
@@ -1061,11 +1061,6 @@ select Case.Closed;
 **The Model:**  
 ```csharp
 record Pair(int A, int B);
-[CodeSnippet]
-protected override CheckrOf<Case> TheCheckr() =>
-    from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(9, 9)))
-    from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
-    select Case.Closed;
 ```
 
 **The Checkr:**  
@@ -1124,12 +1119,6 @@ select Case.Closed;
 **The Model:**  
 ```csharp
 record Account(int Balance, int CreditLimit);
-[CodeSnippet]
-protected override CheckrOf<Case> TheCheckr() =>
-    from account in Checkr.Input("pair", Fuzzr.Constant(new Account(-100, 50)))
-    from expect in Checkr.Expect("Balance >= -CreditLimit (i.e. never exceeds credit)",
-         () => account.Balance >= -account.CreditLimit)
-    select Case.Closed;
 ```
 
 **The Checkr:**  
@@ -1165,10 +1154,10 @@ public class Eventually
 }
 ```
 ```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int())
-    from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
-    from expect in Checkr.Expect("Is not 42", () => result != 42)
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int())
+from result in Checkr.Act("Eventually.AddOne", () => Eventually.AddOne(input))
+from expect in Checkr.Expect("Is not 42", () => result != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -1405,8 +1394,8 @@ Checkr.Input("AnInt", Fuzzr.Int());
 ####### Exception Handling
 The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
 ```csharp
-    from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
+from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
 ```
 Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
 ```csharp
@@ -1425,8 +1414,8 @@ Checkr.Input("AnInt", () => Fuzzr.Int());
 ```
 If the *lazy* version throws:  
 ```csharp
-    from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
+from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
 ```
 The Exception is **not** wrapped.  
 ```csharp
@@ -1468,34 +1457,34 @@ select Case.Closed;
 ```
 #### Checkr Act When
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from never in Checkr.ActWhen("Never", () => false, () => { })
-    from neverAgain in Checkr.ActWhen("Never Again", () => false, () => true)
-    from thing in Checkr.ActWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+from never in Checkr.ActWhen("Never", () => false, () => { })
+from neverAgain in Checkr.ActWhen("Never Again", () => false, () => true)
+from thing in Checkr.ActWhen("Act", () => counter != 2, () => counter == 3 ? null : new Thing())
+from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+select Case.Closed;
 ```
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from never in Checkr.ActWhen("Never", () => false, () => Task.CompletedTask)
-    from neverAgain in Checkr.ActWhen("Never Again", () => false, () => Task.FromResult(true))
-    from thing in Checkr.ActWhen("Act", () => counter != 2, () => Task.FromResult(counter == 3 ? null : new Thing()))
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+from never in Checkr.ActWhen("Never", () => false, () => Task.CompletedTask)
+from neverAgain in Checkr.ActWhen("Never Again", () => false, () => Task.FromResult(true))
+from thing in Checkr.ActWhen("Act", () => counter != 2, () => Task.FromResult(counter == 3 ? null : new Thing()))
+from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+select Case.Closed;
 ```
 #### Checkr When
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
-    from thing in Checkr.When(() => counter != 2, Checkr.Act("Act", () => counter == 3 ? null : new Thing()))
-    from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("key"))
+from thing in Checkr.When(() => counter != 2, Checkr.Act("Act", () => counter == 3 ? null : new Thing()))
+from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
+select Case.Closed;
 ```
 ### When Things Go Wrong
 #### Everything Means Less Than Null
 ##### Trackr To Pool
 ```csharp
-    from one in Trackr.ToPool("answer", 42)
-    select Case.Closed;
+from one in Trackr.ToPool("answer", 42)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1519,9 +1508,9 @@ If you try to write the same key in the same scope twice or more, using the same
   
 ##### Checkr Act
 ```csharp
-    from one in Checkr.Act("reused", () => { })
-    from two in Checkr.Act("reused", () => { })
-    select Case.Closed;
+from one in Checkr.Act("reused", () => { })
+from two in Checkr.Act("reused", () => { })
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1535,9 +1524,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr Act Carefully
 ```csharp
-    from one in Checkr.ActCarefully("reused", () => { })
-    from two in Checkr.ActCarefully("reused", () => { })
-    select Case.Closed;
+from one in Checkr.ActCarefully("reused", () => { })
+from two in Checkr.ActCarefully("reused", () => { })
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1551,9 +1540,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr Expect
 ```csharp
-    from one in Checkr.Expect("reused", () => true)
-    from two in Checkr.Expect("reused", () => true)
-    select Case.Closed;
+from one in Checkr.Expect("reused", () => true)
+from two in Checkr.Expect("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1569,9 +1558,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr Input
 ```csharp
-    from one in Checkr.Input("reused", Fuzzr.Int())
-    from two in Checkr.Input("reused", Fuzzr.Int())
-    select Case.Closed;
+from one in Checkr.Input("reused", Fuzzr.Int())
+from two in Checkr.Input("reused", Fuzzr.Int())
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1584,9 +1573,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr One Of
 ```csharp
-    from one in Checkr.OneOf(Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
-    select Case.Closed;
+from one in Checkr.OneOf(Checkr.Act("One", () => { }))
+from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1599,9 +1588,9 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOfWhen'
 ```
 ```csharp
-    from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
-    select Case.Closed;
+from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
+from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1615,9 +1604,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr One Of When
 ```csharp
-    from one in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("Two", () => { })))
-    select Case.Closed;
+from one in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("One", () => { })))
+from two in Checkr.OneOfWhen(Checkr.Option(() => true, Checkr.Act("Two", () => { })))
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1630,9 +1619,9 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOfWhen'
 ```
 ```csharp
-    from one in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("One", () => { })))
-    from two in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("Two", () => { })))
-    select Case.Closed;
+from one in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("One", () => { })))
+from two in Checkr.OneOfWhen("reused", Checkr.Option(() => true, Checkr.Act("Two", () => { })))
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1646,10 +1635,10 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr Trace
 ```csharp
-    from one in Checkr.Trace("reused", () => "")
-    from two in Checkr.Trace("reused", () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
+from one in Checkr.Trace("reused", () => "")
+from two in Checkr.Trace("reused", () => "")
+from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1663,10 +1652,10 @@ The following Checkrs write to the this bank:
 ```
 ##### Checkr Trace When
 ```csharp
-    from one in Checkr.TraceWhen("reused", () => true, () => "")
-    from two in Checkr.TraceWhen("reused", () => true, () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
+from one in Checkr.TraceWhen("reused", () => true, () => "")
+from two in Checkr.TraceWhen("reused", () => true, () => "")
+from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1680,9 +1669,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Trackr Expect
 ```csharp
-    from one in Trackr.Expect("reused", () => true)
-    from two in Trackr.Expect("reused", () => true)
-    select Case.Closed;
+from one in Trackr.Expect("reused", () => true)
+from two in Trackr.Expect("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1698,9 +1687,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Trackr Pool For
 ```csharp
-    from one in Trackr.PoolFor<int>()
-    from two in Trackr.PoolFor<int>()
-    select Case.Closed;
+from one in Trackr.PoolFor<int>()
+from two in Trackr.PoolFor<int>()
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1713,9 +1702,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Trackr Stashed
 ```csharp
-    from one in Trackr.Stashed(() => 42)
-    from two in Trackr.Stashed(() => 666)
-    select Case.Closed;
+from one in Trackr.Stashed(() => 42)
+from two in Trackr.Stashed(() => 666)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1727,9 +1716,9 @@ The following Checkrs write to the this bank:
 - 'Trackr.Stashed'
 ```
 ```csharp
-    from one in Trackr.Stashed("reused", () => 42)
-    from two in Trackr.Stashed("reused", () => 666)
-    select Case.Closed;
+from one in Trackr.Stashed("reused", () => 42)
+from two in Trackr.Stashed("reused", () => 666)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1742,9 +1731,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Trackr Stop When Proven
 ```csharp
-    from one in Trackr.StopWhenProven("reused", () => false)
-    from two in Trackr.StopWhenProven("reused", () => false)
-    select Case.Closed;
+from one in Trackr.StopWhenProven("reused", () => false)
+from two in Trackr.StopWhenProven("reused", () => false)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1760,9 +1749,9 @@ The following Checkrs write to the this bank:
 ```
 ##### Trackr Verify
 ```csharp
-    from one in Trackr.Verify("reused", () => true)
-    from two in Trackr.Verify("reused", () => true)
-    select Case.Closed;
+from one in Trackr.Verify("reused", () => true)
+from two in Trackr.Verify("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -1780,9 +1769,9 @@ The following Checkrs write to the this bank:
 #### The Unshrinkables
 ##### Unknown Primitives
 ```csharp
-    from unkown in Checkr.Input("Half", Fuzzr.Half())
-    from fail in Checkr.Expect("Fails", () => false)
-    select Case.Closed;
+from unkown in Checkr.Input("Half", Fuzzr.Half())
+from fail in Checkr.Expect("Fails", () => false)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -1808,9 +1797,9 @@ public class Thing
 }
 ```
 ```csharp
-    from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
+from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
+from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -1830,11 +1819,11 @@ public class Thing
 ```
 ###### Workaround
 ```csharp
-    from thing in Checkr.Input("A thing with a type",
-        Fuzzr.Constant(new Thing()),
-        Try.Values([typeof(string), typeof(double)]))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
+from thing in Checkr.Input("A thing with a type",
+    Fuzzr.Constant(new Thing()),
+    Try.Values([typeof(string), typeof(double)]))
+from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

@@ -1,8 +1,8 @@
 # Trackr Stop When Proven
 ```csharp
-    from one in Trackr.StopWhenProven("reused", () => false)
-    from two in Trackr.StopWhenProven("reused", () => false)
-    select Case.Closed;
+from one in Trackr.StopWhenProven("reused", () => false)
+from two in Trackr.StopWhenProven("reused", () => false)
+select Case.Closed;
 ```
   Throws:  
 ```text

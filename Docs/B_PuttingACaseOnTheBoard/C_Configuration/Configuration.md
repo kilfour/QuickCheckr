@@ -123,14 +123,14 @@ public class Account
 It's a simple bank account with a no-overdraft invariant and a fee applied on each transaction.  
 We can verify this with the following Checkr:  
 ```csharp
-    from account in Trackr.Stashed(() => new Account())
-    from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
-    from operations in Checkr.OneOf(
-        Checkr.Act("Deposit", () => account.Deposit(amount)),
-        Checkr.Act("Withdraw", () => account.WithDraw(amount))
-    )
-    from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
-    select Case.Closed;
+from account in Trackr.Stashed(() => new Account())
+from amount in Checkr.Input("Amount", Fuzzr.Int(1, 10))
+from operations in Checkr.OneOf(
+    Checkr.Act("Deposit", () => account.Deposit(amount)),
+    Checkr.Act("Withdraw", () => account.WithDraw(amount))
+)
+from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
+select Case.Closed;
 ```
 Now if we run this we might get something like this:  
 ```text

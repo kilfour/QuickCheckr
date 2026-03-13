@@ -42,6 +42,25 @@ from ops in Checkr.OneOf(
     from add in Checkr.Act("Add", () =>
     {
         model.Add(input);
+        sut.Add(input);
+    })
+    select Case.Closed,
+    from input in Checkr.Input("Input", Fuzzr.Int())
+    from add in Checkr.Act("Subtract", () =>
+    {
+        model.Subtract(input);
+        sut.Subtract(input);
+    })
+    select Case.Closed,
+    Checkr.Act("Clear", () =>
+    {
+        model.Clear();
+        sut.Clear();
+    })
+)
+from observe in Checkr.Expect("Observe", () => model.Result == sut.Result)
+from trace in Checkr.TraceWhen("Observation", () => model.Result != sut.Result, () => $"Model: {model.Result}, Sut: {sut.Result}.")
+select Case.Closed;
 ```
 
 **The Report:**  
@@ -69,7 +88,7 @@ from ops in Checkr.OneOf(
 
 **The Checkr:**  
 ```csharp
- Check
+Check
     .Model(() => new Model())
     .Sut(() => new Sut())
     .Operation("Add", Fuzzr.Int(),
@@ -330,6 +349,9 @@ Webr.Named("WebrTest")
         (api, coachInfo) =>
         {
             var coach = api.Query(db => db.Find<Coach>(Id<Coach>.From(coachInfo.Id))!);
+            return coach.AssignedCourses.All(course => coach.IsSuitableFor(course));
+        })
+    .Run(20.Runs(), 50.ExecutionsPerRun());
 ```
 ## Coach Methods
 ```csharp
@@ -530,7 +552,8 @@ public class AssignCoachToCourse : ApiMethod
  - '/courses/{id}/assign-coach' Status Code is Success: 1x
  - '/courses/{id}/assign-coach' Coach is assigned: 1x
  ------------------------------------------------------------
-```  
+```
+  
 ### Explore and Exemplify
 #### Bolting Horses Dsl
 
@@ -996,24 +1019,6 @@ Executed:
    - Trace: AnInt = PREFIXED 7
 ```
 ##### None
-
-**The Checkr:**  
-```csharp
-from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
-from showrNone in Showr.None()
-from anInt in Checkr.Input("AnInt", Fuzzr.Int())
-from trace in Checkr.Trace("AnInt", () => anInt)
-from fail in Checkr.Expect("not 7", () => anInt != 7)
-select Case.Closed;
-```
-
-**Report Excerpt:**  
-```text
-Executed:
-   - Input: AnInt = 7
-   - Trace: AnInt = 7
-```
-#### None
 
 **The Checkr:**  
 ```csharp

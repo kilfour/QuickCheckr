@@ -1,8 +1,8 @@
 # Trackr Expect
 ```csharp
-    from one in Trackr.Expect("reused", () => true)
-    from two in Trackr.Expect("reused", () => true)
-    select Case.Closed;
+from one in Trackr.Expect("reused", () => true)
+from two in Trackr.Expect("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text

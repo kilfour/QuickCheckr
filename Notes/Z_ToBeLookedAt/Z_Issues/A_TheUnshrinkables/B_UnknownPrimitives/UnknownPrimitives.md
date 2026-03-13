@@ -1,8 +1,8 @@
 # Unknown Primitives
 ```csharp
-    from unkown in Checkr.Input("Half", Fuzzr.Half())
-    from fail in Checkr.Expect("Fails", () => false)
-    select Case.Closed;
+from unkown in Checkr.Input("Half", Fuzzr.Half())
+from fail in Checkr.Expect("Fails", () => false)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

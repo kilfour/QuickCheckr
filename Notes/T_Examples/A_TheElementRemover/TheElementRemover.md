@@ -14,15 +14,15 @@ public static class ElementRemover
 Using one input, one action, and one expectation,
 the test captures the minimal failing case where the list contains multiple copies of the target element.  
 ```csharp
-    from list in Checkr.Input("List", GetFuzzr())
-    from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
-    from output in Checkr.Act("Delete from List",
-        () => ElementRemover.Remove([.. list], element))
-    from listDoesNotContainElement in Checkr.Expect(
-        "List Does Not Contain Element",
-        () => !output.Contains(element))
-    from traceList in Checkr.Trace("List Before Shrinking", () => list)
-    select Case.Closed;
+from list in Checkr.Input("List", GetFuzzr())
+from element in Checkr.Input("Item to Remove", Fuzzr.Int(0, 10))
+from output in Checkr.Act("Delete from List",
+    () => ElementRemover.Remove([.. list], element))
+from listDoesNotContainElement in Checkr.Expect(
+    "List Does Not Contain Element",
+    () => !output.Contains(element))
+from traceList in Checkr.Trace("List Before Shrinking", () => list)
+select Case.Closed;
 ```
 QuickCheckr reduces the failing run to a list like `[ 5, 5 ]` with `5` as the element to remove,
 exposing the bug clearly: the output still contains `5`.  

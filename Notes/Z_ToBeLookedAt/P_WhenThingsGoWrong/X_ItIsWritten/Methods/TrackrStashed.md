@@ -1,8 +1,8 @@
 # Trackr Stashed
 ```csharp
-    from one in Trackr.Stashed(() => 42)
-    from two in Trackr.Stashed(() => 666)
-    select Case.Closed;
+from one in Trackr.Stashed(() => 42)
+from two in Trackr.Stashed(() => 666)
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -14,9 +14,9 @@ The following Checkrs write to the this bank:
 - 'Trackr.Stashed'
 ```
 ```csharp
-    from one in Trackr.Stashed("reused", () => 42)
-    from two in Trackr.Stashed("reused", () => 666)
-    select Case.Closed;
+from one in Trackr.Stashed("reused", () => 42)
+from two in Trackr.Stashed("reused", () => 666)
+select Case.Closed;
 ```
   Throws:  
 ```text

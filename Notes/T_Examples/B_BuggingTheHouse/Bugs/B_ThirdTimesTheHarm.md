@@ -13,11 +13,11 @@ public class BugHouse
 Throws as soon as the value 6 has been seen three times.  
 A straightforward counter-based failure condition.  
 ```csharp
-    from a in Checkr.Input("a", Fuzzr.Int())
-    from bughouse in Trackr.Stashed(() => new BugHouse())
-    from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
-    from expect in Checkr.Expect("Returns true", () => output)
-    select Case.Closed;
+from a in Checkr.Input("a", Fuzzr.Int())
+from bughouse in Trackr.Stashed(() => new BugHouse())
+from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(a))
+from expect in Checkr.Expect("Returns true", () => output)
+select Case.Closed;
 ```
 ## Minimal Fail Case:
 - **Length:** 3 executions.

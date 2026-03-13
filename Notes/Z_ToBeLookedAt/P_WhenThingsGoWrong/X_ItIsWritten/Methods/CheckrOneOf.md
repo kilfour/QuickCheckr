@@ -1,8 +1,8 @@
 # Checkr One Of
 ```csharp
-    from one in Checkr.OneOf(Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
-    select Case.Closed;
+from one in Checkr.OneOf(Checkr.Act("One", () => { }))
+from two in Checkr.OneOf(Checkr.Act("Two", () => { }))
+select Case.Closed;
 ```
   Throws:  
 ```text
@@ -15,9 +15,9 @@ The following Checkrs write to the this bank:
 - 'Checkr.OneOfWhen'
 ```
 ```csharp
-    from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
-    from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
-    select Case.Closed;
+from one in Checkr.OneOf("reused", Checkr.Act("One", () => { }))
+from two in Checkr.OneOf("reused", Checkr.Act("Two", () => { }))
+select Case.Closed;
 ```
   Throws:  
 ```text

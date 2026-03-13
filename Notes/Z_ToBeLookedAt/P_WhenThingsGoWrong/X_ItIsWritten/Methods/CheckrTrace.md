@@ -1,9 +1,9 @@
 # Checkr Trace
 ```csharp
-    from one in Checkr.Trace("reused", () => "")
-    from two in Checkr.Trace("reused", () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
+from one in Checkr.Trace("reused", () => "")
+from two in Checkr.Trace("reused", () => "")
+from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+select Case.Closed;
 ```
   Throws:  
 ```text

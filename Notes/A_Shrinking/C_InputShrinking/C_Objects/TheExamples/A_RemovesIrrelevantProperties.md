@@ -8,9 +8,9 @@ public class BaggyInters
 }
 ```
 ```csharp
-    from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
-    from expect in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
-    select Case.Closed;
+from obj in Checkr.Input("Object", Fuzzr.One<BaggyInters>())
+from expect in Checkr.Expect("IntOne /= 42", () => obj.IntOne != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

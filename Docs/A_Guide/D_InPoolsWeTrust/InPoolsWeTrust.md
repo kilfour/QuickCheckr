@@ -21,7 +21,7 @@ Which is a Pool for the following type:
 public record Contact(string Name)
 {
     public string Name { get; set; } = Name;
-}
+};
 ```
 ## Storing elements in the Pool
 ```csharp
@@ -78,30 +78,30 @@ public class Rolodex
 ```
 ### The Checkr
 ```csharp
-    from contactBook in Trackr.Stashed(() => new Rolodex())
-    // Create a Pool.
-    from createContactPool in Trackr.PoolFor<Contact>()
-        // Pick one of two operations.
-    from operations in Checkr.OneOfWhen(
-        // 1. Add a (Contact-) name to the Rolodex
-        Trackr.PoolWhen<Contact>(a => a.Count < 10,
-            from name in Checkr.Input("Name", NameFuzzr)
-            from add in Checkr.Act("Add", () => contactBook.Add(name))
-                // Store the Contact in the Pool.
-            from storeName in Trackr.ToPool("Store", new Contact(name))
-            select Case.Closed),
-        // 2. Update a (Contact-) name in the Rolodex
-        Trackr.PoolWhen<Contact>("Contact to update",
-            a => a.Count != 0, // <= Can not pick from an empty selection.
-            contact => // Pick a random Contact to update 
-                from newName in Checkr.Input("New Name", NameFuzzr)
-                from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
-                    // Update the contact in the pool, keeping model and test data in sync.
-                from updatePool in contact.Replace(new Contact(newName))
-                select Case.Closed))
-        // This expectation implicitely verifies that duplicates are not introduced. 
-    from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new Rolodex())
+// Create a Pool.
+from createContactPool in Trackr.PoolFor<Contact>()
+    // Pick one of two operations.
+from operations in Checkr.OneOfWhen(
+    // 1. Add a (Contact-) name to the Rolodex
+    Trackr.PoolWhen<Contact>(a => a.Count < 10,
+        from name in Checkr.Input("Name", NameFuzzr)
+        from add in Checkr.Act("Add", () => contactBook.Add(name))
+            // Store the Contact in the Pool.
+        from storeName in Trackr.ToPool("Store", new Contact(name))
+        select Case.Closed),
+    // 2. Update a (Contact-) name in the Rolodex
+    Trackr.PoolWhen<Contact>("Contact to update",
+        a => a.Count != 0, // <= Can not pick from an empty selection.
+        contact => // Pick a random Contact to update 
+            from newName in Checkr.Input("New Name", NameFuzzr)
+            from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
+                // Update the contact in the pool, keeping model and test data in sync.
+            from updatePool in contact.Replace(new Contact(newName))
+            select Case.Closed))
+    // This expectation implicitely verifies that duplicates are not introduced. 
+from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
+select Case.Closed;
 ```
 ### The Report
 ```text

@@ -2,7 +2,7 @@
 
 **The Checkr:**  
 ```csharp
- Check
+Check
     .Model(() => new Model())
     .Sut(() => new Sut())
     .Operation("Add", Fuzzr.Int(),

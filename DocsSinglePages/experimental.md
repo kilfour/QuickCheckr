@@ -41,11 +41,11 @@ public class Eventually
 ```
 ### The Checkr:
 ```csharp
-    from tasks in Taskr.PoolFor<int>()
-    from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
-    from task in Taskr.Start("start", ct => Eventually.AddOne(input))
-    from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
-    select Case.Closed;
+from tasks in Taskr.PoolFor<int>()
+from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
+from task in Taskr.Start("start", ct => Eventually.AddOne(input))
+from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
+select Case.Closed;
 ```
 ### The Report:
 ```text
@@ -113,16 +113,17 @@ Make pooling tasks feel as native as Trackr pooling.
 **Add/Align:**
 * `Taskr.PoolFor<T>(key?)`
 * `Taskr.Pool("label", task)` (explicit store)
-* `Taskr.ClearPool()` per run  
+* `Taskr.ClearPool()` per run
+  
 ## Showr Use
 ```csharp
-    from input in Checkr.Input("int", Fuzzr.Int())
-    from showOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
-    from traceOne in Checkr.Trace("int One", () => input)
-    from showTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
-    from traceTwo in Checkr.Trace("int Two", () => input)
-    from noAnswer in Checkr.Expect("no answer", () => input != 42)
-    select Case.Closed;
+from input in Checkr.Input("int", Fuzzr.Int())
+from showOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
+from traceOne in Checkr.Trace("int One", () => input)
+from showTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
+from traceTwo in Checkr.Trace("int Two", () => input)
+from noAnswer in Checkr.Expect("no answer", () => input != 42)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

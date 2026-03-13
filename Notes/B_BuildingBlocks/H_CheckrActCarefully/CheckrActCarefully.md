@@ -1,9 +1,9 @@
 # Checkr Act Carefully
 ```csharp
-    from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
-    from throws in Checkr.Expect("Throws", () => result.Threw)
-    from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
-    select Case.Closed;
+from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
+from throws in Checkr.Expect("Throws", () => result.Threw)
+from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

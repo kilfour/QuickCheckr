@@ -8,9 +8,9 @@ public class Thing
 }
 ```
 ```csharp
-    from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
+from thing in Checkr.Input("A thing with a type", Fuzzr.Constant(new Thing()))
+from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------
@@ -30,11 +30,11 @@ public class Thing
 ```
 ### Workaround
 ```csharp
-    from thing in Checkr.Input("A thing with a type",
-        Fuzzr.Constant(new Thing()),
-        Try.Values([typeof(string), typeof(double)]))
-    from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
-    select Case.Closed;
+from thing in Checkr.Input("A thing with a type",
+    Fuzzr.Constant(new Thing()),
+    Try.Values([typeof(string), typeof(double)]))
+from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

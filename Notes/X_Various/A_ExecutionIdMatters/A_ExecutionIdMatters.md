@@ -15,36 +15,36 @@ public class ContactBook
 ```
 ## The Checkr
 ```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from stringPool in Trackr.PoolFor<string>()
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
-    from operations in Checkr.OneOfWhen(
-            Checkr.Option(() => counter == 1, // add AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
-                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                    from update in nameToUpdate.Replace(newName)
-                    select Case.Closed)
-                select Case.Closed),
-            Checkr.Option(() => counter == 3, // add a new AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 4, // add BBB, initial run fails here
-                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed))
-    from traceSut in Checkr.Trace("Sut", () => contactBook)
-    from count in Trackr.PoolExpect<string>("Count matches",
-        a => a.Count() == contactBook.Contacts.Count)
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new ContactBook())
+from stringPool in Trackr.PoolFor<string>()
+from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+from operations in Checkr.OneOfWhen(
+        Checkr.Option(() => counter == 1, // add AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                from update in nameToUpdate.Replace(newName)
+                select Case.Closed)
+            select Case.Closed),
+        Checkr.Option(() => counter == 3, // add a new AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 4, // add BBB, initial run fails here
+            from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed))
+from traceSut in Checkr.Trace("Sut", () => contactBook)
+from count in Trackr.PoolExpect<string>("Count matches",
+    a => a.Count() == contactBook.Contacts.Count)
+select Case.Closed;
 ```
 ## The Report (ShrinkMode.None)
 ```text
@@ -149,33 +149,33 @@ public class ContactBook
 }
 ```
 ```csharp
-    from contactBook in Trackr.Stashed(() => new ContactBook())
-    from stringPool in Trackr.PoolFor<string>()
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
-    from operations in Checkr.OneOfWhen(
-            Checkr.Option(() => counter == 1, // add AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
-                from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                    from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                    from update in nameToUpdate.Replace(newName)
-                    select Case.Closed)
-                select Case.Closed),
-            Checkr.Option(() => counter == 3, // add a new AAA
-                from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed),
-            Checkr.Option(() => counter == 4, // add BBB
-                from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                from act in Checkr.Act("Add", () => contactBook.Add(name))
-                from storeName in Trackr.ToPool("Name", name)
-                select Case.Closed))
-    select Case.Closed;
+from contactBook in Trackr.Stashed(() => new ContactBook())
+from stringPool in Trackr.PoolFor<string>()
+from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
+from operations in Checkr.OneOfWhen(
+        Checkr.Option(() => counter == 1, // add AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
+            from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
+                from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
+                from update in nameToUpdate.Replace(newName)
+                select Case.Closed)
+            select Case.Closed),
+        Checkr.Option(() => counter == 3, // add a new AAA
+            from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed),
+        Checkr.Option(() => counter == 4, // add BBB
+            from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
+            from act in Checkr.Act("Add", () => contactBook.Add(name))
+            from storeName in Trackr.ToPool("Name", name)
+            select Case.Closed))
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

@@ -1,9 +1,9 @@
 # Checkr Trace When
 ```csharp
-    from one in Checkr.TraceWhen("reused", () => true, () => "")
-    from two in Checkr.TraceWhen("reused", () => true, () => "")
-    from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
-    select Case.Closed;
+from one in Checkr.TraceWhen("reused", () => true, () => "")
+from two in Checkr.TraceWhen("reused", () => true, () => "")
+from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
+select Case.Closed;
 ```
   Throws:  
 ```text

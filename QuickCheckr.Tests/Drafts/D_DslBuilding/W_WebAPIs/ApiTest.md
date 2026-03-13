@@ -21,6 +21,9 @@ Webr.Named("WebrTest")
         (api, coachInfo) =>
         {
             var coach = api.Query(db => db.Find<Coach>(Id<Coach>.From(coachInfo.Id))!);
+            return coach.AssignedCourses.All(course => coach.IsSuitableFor(course));
+        })
+    .Run(20.Runs(), 50.ExecutionsPerRun());
 ```
 ## Coach Methods
 ```csharp

@@ -1,12 +1,12 @@
 # ReportMode Reference
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
-    from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
-    from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
-    from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
-    from trace in Checkr.Trace("Irrelevant", () => irrelevant)
-    from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
-    select Case.Closed;
+from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
+from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int())
+from nullThing in Checkr.Input("Null Thing", Fuzzr.Constant((Thing)null!))
+from trace in Checkr.Trace("Irrelevant", () => irrelevant)
+from boom in Checkr.Act("Blows up on 2", () => counter != 2 || ComputerSays.No<bool>("Only one is available"))
+select Case.Closed;
 ```
 ## ReportMode.Default
 ```csharp

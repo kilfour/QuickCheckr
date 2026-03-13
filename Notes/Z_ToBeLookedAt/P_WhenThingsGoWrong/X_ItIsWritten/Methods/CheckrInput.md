@@ -1,8 +1,8 @@
 # Checkr Input
 ```csharp
-    from one in Checkr.Input("reused", Fuzzr.Int())
-    from two in Checkr.Input("reused", Fuzzr.Int())
-    select Case.Closed;
+from one in Checkr.Input("reused", Fuzzr.Int())
+from two in Checkr.Input("reused", Fuzzr.Int())
+select Case.Closed;
 ```
   Throws:  
 ```text

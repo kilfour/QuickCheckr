@@ -1,8 +1,8 @@
 # Checkr Expect
 ```csharp
-    from one in Checkr.Expect("reused", () => true)
-    from two in Checkr.Expect("reused", () => true)
-    select Case.Closed;
+from one in Checkr.Expect("reused", () => true)
+from two in Checkr.Expect("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text

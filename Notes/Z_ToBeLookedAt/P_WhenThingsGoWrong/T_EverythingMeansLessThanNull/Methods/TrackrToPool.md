@@ -1,7 +1,7 @@
 # Trackr To Pool
 ```csharp
-    from one in Trackr.ToPool("answer", 42)
-    select Case.Closed;
+from one in Trackr.ToPool("answer", 42)
+select Case.Closed;
 ```
   Throws:  
 ```text

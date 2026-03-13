@@ -1,12 +1,12 @@
 # Shrinking Records
 ```csharp
-    from person in Checkr.Input("Person",
-        from ctor in Configr<PersonRecord>.Construct(Fuzzr.String(), Fuzzr.Int())
-        from personRecord in Fuzzr.One<PersonRecord>()
-        select personRecord)
-    from tracePerson in Checkr.Trace("Person", () => person)
-    from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
-    select Case.Closed;
+from person in Checkr.Input("Person",
+    from ctor in Configr<PersonRecord>.Construct(Fuzzr.String(), Fuzzr.Int())
+    from personRecord in Fuzzr.One<PersonRecord>()
+    select personRecord)
+from tracePerson in Checkr.Trace("Person", () => person)
+from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
+select Case.Closed;
 ```
 ```text
 ------------------------------------------------------------

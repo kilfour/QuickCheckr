@@ -3,12 +3,6 @@
 **The Model:**  
 ```csharp
 record Account(int Balance, int CreditLimit);
-[CodeSnippet]
-protected override CheckrOf<Case> TheCheckr() =>
-    from account in Checkr.Input("pair", Fuzzr.Constant(new Account(-100, 50)))
-    from expect in Checkr.Expect("Balance >= -CreditLimit (i.e. never exceeds credit)",
-         () => account.Balance >= -account.CreditLimit)
-    select Case.Closed;
 ```
 
 **The Checkr:**  

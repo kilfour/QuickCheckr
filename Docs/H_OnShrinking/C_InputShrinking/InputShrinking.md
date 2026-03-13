@@ -16,9 +16,9 @@ Reduction will be elaborated on later.
   
 The following simple example has one input but always fails.  
 ```csharp
-    from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from expect in Checkr.Expect("Always Fails", () => false)
-    select Case.Closed;
+from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+from expect in Checkr.Expect("Always Fails", () => false)
+select Case.Closed;
 ```
 Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
 
@@ -40,12 +40,12 @@ So, in the previous example, after *Input Shrinking*, the result is:
 ```
 Another example, slightly trickier.  
 ```csharp
-    from one in Checkr.Input("Input One", Fuzzr.Int())
-    from two in Checkr.Input("Input Two", Fuzzr.Int())
-    from three in Checkr.Input("Input Three", Fuzzr.Int())
-    from result in Checkr.Act("Result", () => one + three)
-    from expect in Checkr.Expect("Should not be 42", () => result != 42)
-    select Case.Closed;
+from one in Checkr.Input("Input One", Fuzzr.Int())
+from two in Checkr.Input("Input Two", Fuzzr.Int())
+from three in Checkr.Input("Input Three", Fuzzr.Int())
+from result in Checkr.Act("Result", () => one + three)
+from expect in Checkr.Expect("Should not be 42", () => result != 42)
+select Case.Closed;
 ```
 As you can see from the test definition, two inputs are involved in a possible failure.
 

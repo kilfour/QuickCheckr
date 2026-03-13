@@ -1,8 +1,8 @@
 # Trackr Verify
 ```csharp
-    from one in Trackr.Verify("reused", () => true)
-    from two in Trackr.Verify("reused", () => true)
-    select Case.Closed;
+from one in Trackr.Verify("reused", () => true)
+from two in Trackr.Verify("reused", () => true)
+select Case.Closed;
 ```
   Throws:  
 ```text

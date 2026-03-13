@@ -9,8 +9,8 @@ Checkr.Input("AnInt", Fuzzr.Int());
 ### Exception Handling
 The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
 ```csharp
-    from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
+from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
 ```
 Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
 ```csharp
@@ -29,8 +29,8 @@ Checkr.Input("AnInt", () => Fuzzr.Int());
 ```
 If the *lazy* version throws:  
 ```csharp
-    from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
-    select Case.Closed;
+from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
 ```
 The Exception is **not** wrapped.  
 ```csharp

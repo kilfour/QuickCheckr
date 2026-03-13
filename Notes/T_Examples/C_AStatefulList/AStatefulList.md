@@ -11,20 +11,20 @@ public class ListWrap
 ```
 **The Checkr:**  
 ```csharp
-    from listWrap in Trackr.Stashed(() => new ListWrap())
-    from item in Checkr.Input("Item", Fuzzr.Int(0, 10))
-    from traceBefore in Checkr.Trace("Before", () => listWrap.List)
-    from operations in Checkr.OneOf(
-        from add in Checkr.Act("Add", () => listWrap.Add(item))
-        from listContainsItem in Checkr.Expect("List Contains Item",
-            () => listWrap.List.Contains(item))
-        select Case.Closed,
-        from remove in Checkr.Act("Remove", () => listWrap.Remove(item))
-        from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
-            () => !listWrap.List.Contains(item))
-        select Case.Closed)
-    from traceAfter in Checkr.Trace("After", () => listWrap.List)
-    select Case.Closed;
+from listWrap in Trackr.Stashed(() => new ListWrap())
+from item in Checkr.Input("Item", Fuzzr.Int(0, 10))
+from traceBefore in Checkr.Trace("Before", () => listWrap.List)
+from operations in Checkr.OneOf(
+    from add in Checkr.Act("Add", () => listWrap.Add(item))
+    from listContainsItem in Checkr.Expect("List Contains Item",
+        () => listWrap.List.Contains(item))
+    select Case.Closed,
+    from remove in Checkr.Act("Remove", () => listWrap.Remove(item))
+    from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
+        () => !listWrap.List.Contains(item))
+    select Case.Closed)
+from traceAfter in Checkr.Trace("After", () => listWrap.List)
+select Case.Closed;
 ```
 **The Report:**  
 ```text

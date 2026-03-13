@@ -11,12 +11,12 @@ But here are some more use cases.
 Under some rare circumstances, the Shrinker gets *greedy*.  
 One currently identified case where this happens is if more than one input triggers the same failure.  
 ```csharp
-    from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-    from trace in Checkr.Trace("List", () => input)
-    from expect in Checkr.ExpectWhen("Does not contain 1",
-        () => input.Count() > 2,
-        () => !input.Contains(1))
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
+from trace in Checkr.Trace("List", () => input)
+from expect in Checkr.ExpectWhen("Does not contain 1",
+    () => input.Count() > 2,
+    () => !input.Contains(1))
+select Case.Closed;
 ```
 Now when the list contains multiple elements `1`, we might get:  
 ```text
@@ -59,14 +59,14 @@ private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
 ```
 A similar thing can happen when shrinking objects, and the solution is exactly the same  
 ```csharp
-    from obj in Checkr.Input("BaggyInters",
-        from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-        from result in Fuzzr.One<BaggyInters>()
-        select result)
-    from trace in Checkr.Trace("Original", () => obj)
-    from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-        () => obj.IntOne != 1 && obj.IntThree != 1)
-    select Case.Closed;
+from obj in Checkr.Input("BaggyInters",
+    from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+    from result in Fuzzr.One<BaggyInters>()
+    select result)
+from trace in Checkr.Trace("Original", () => obj)
+from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+    () => obj.IntOne != 1 && obj.IntThree != 1)
+select Case.Closed;
 ```
 **With Deliberation Policy:**  
 ```text

@@ -9,6 +9,25 @@ from ops in Checkr.OneOf(
     from add in Checkr.Act("Add", () =>
     {
         model.Add(input);
+        sut.Add(input);
+    })
+    select Case.Closed,
+    from input in Checkr.Input("Input", Fuzzr.Int())
+    from add in Checkr.Act("Subtract", () =>
+    {
+        model.Subtract(input);
+        sut.Subtract(input);
+    })
+    select Case.Closed,
+    Checkr.Act("Clear", () =>
+    {
+        model.Clear();
+        sut.Clear();
+    })
+)
+from observe in Checkr.Expect("Observe", () => model.Result == sut.Result)
+from trace in Checkr.TraceWhen("Observation", () => model.Result != sut.Result, () => $"Model: {model.Result}, Sut: {sut.Result}.")
+select Case.Closed;
 ```
 
 **The Report:**  

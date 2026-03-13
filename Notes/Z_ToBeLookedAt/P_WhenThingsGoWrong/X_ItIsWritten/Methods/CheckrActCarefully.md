@@ -1,8 +1,8 @@
 # Checkr Act Carefully
 ```csharp
-    from one in Checkr.ActCarefully("reused", () => { })
-    from two in Checkr.ActCarefully("reused", () => { })
-    select Case.Closed;
+from one in Checkr.ActCarefully("reused", () => { })
+from two in Checkr.ActCarefully("reused", () => { })
+select Case.Closed;
 ```
   Throws:  
 ```text
