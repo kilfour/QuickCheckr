@@ -1,7 +1,4 @@
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 using QuickPulse.Explains;
