@@ -44,7 +44,7 @@ public class EvidenceRecorder
             currentFailed = true;
             return;
         }
-        if (Exception == null) // Action already crashed
+        if (!runFailed) // Action already crashed or previous expectation failed
             throw new ExpectationThrowsException(key, exception);
     }
 

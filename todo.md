@@ -20,16 +20,16 @@
     * Add `Example`s for the failures, take the example input out of the fuzzr.
 
 ### Todo
+* FIX CAPTURE THROWS EXCEPTION WEIRDNESS
 * Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
-* Investigate/Harden `DelayedResult`.
 * Check what happens when collection is null.
 * Add unchecked expectations WARNING.
-* DelayedResultNullValueAccessed : Doc & Test.
 
 ### Wish List
+
 
 ### Doc
 
@@ -52,10 +52,13 @@
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
 * In case an expectation throws it is rethrown as `ExpectationThrowsException(string key, Exception InnerException)
 `.
-## 0.0.10 : Wait for Me !
+
+## 0.0.10 : "Insert clever play on Dsl thingy here"
+
+## 0.0.11 : Wait for Me !
 * Check/Test/Doc Simple Async testing => initial web-api example
 
-## 0.0.11 : All Aboard
+## 0.0.12 : All Aboard
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * Look into different types of collection shrinking:
