@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                NestedLists.cs:58:1
+ Location:                NestedLists.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 29 shrinks)
- Seed:                    1023940145
+ Minimal failing case:    1 execution (after 30 shrinks)
+ Seed:                    1716272349
  ------------------------------------------------------------
   Executed:
    - Input: Nested List = [ [ _, _, _, _, _, _, _, _, _, _, _ ] ]

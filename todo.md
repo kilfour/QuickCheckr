@@ -22,6 +22,7 @@
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
 * Check what happens when collection is null.
+* Reducers, maybe report passing candidate
 
 
 ### Wish List

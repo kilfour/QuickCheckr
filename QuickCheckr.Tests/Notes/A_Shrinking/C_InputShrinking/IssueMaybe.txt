@@ -1,12 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                IssueMaybe.cs:56:1
+ Location:                IssueMaybe.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    346495699
  ------------------------------------------------------------
   Executed:
-   - Input: answers = [ _ ]
+   - Input: answers = [ 15 ]
+            Redux     [ 41 ]
    - Trace: answers = [ 15 ]
  ===============================================
   !! Expectation Failed: all answers equal 42

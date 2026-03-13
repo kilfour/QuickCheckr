@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Notes.Z_ToBeLookedAt.K_ConditionalExecution.Methods;
 public class CheckrActCarefullyWhen : CheckrTest<CheckrActCarefullyWhen>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

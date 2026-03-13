@@ -9,6 +9,7 @@ public record ObjectRelevant(Dictionary<string, InputClassification> Members)
         $"{{ {string.Join(", ",
             members.Where(a => a.Value is InputRelevant)
                 .Select(kvp => $"{kvp.Key}: {(kvp.Value as InputRelevant)!.Report}"))} }}";
+
     public override Maybe GetRedux()
     {
         if (Redux.HasValue) return Redux;

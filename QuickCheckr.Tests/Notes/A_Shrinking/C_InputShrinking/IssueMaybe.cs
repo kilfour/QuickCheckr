@@ -1,5 +1,6 @@
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -21,7 +22,10 @@ public class IssueMaybe : CheckrTest<IssueMaybe>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from answers in Checkr.Input("answers", Fuzzr.Int().Many(1))
+        from answers in Checkr.Input("answers", Fuzzr.Int().Many(1),
+            Shrink.OnType(
+                [Try.Values(42)], // <= 42 is the required passing candidate
+                [Reduce.Towards(100)]))
         from trace in Checkr.Trace("answers", () => answers)
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;
@@ -35,8 +39,9 @@ public class IssueMaybe : CheckrTest<IssueMaybe>
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("answers", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ _ ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ 15 ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ 41 ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("answers", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 15 ]", article.Execution(1).Trace(1).Read().Value); // <= incorrect
+        Assert.Equal("[ 15 ]", article.Execution(1).Trace(1).Read().Value);
     }
 }
