@@ -27,6 +27,7 @@ public class PrimitiveClassifier : Classifier
                 // Mark input as relevant, because we found a candidate that makes the run pass.
                 var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
                     info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
+                // context.State.Memory.Commit(info.ExecutionId, info.Key, candidate);
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(context.PrintInput(info.Value));
             }

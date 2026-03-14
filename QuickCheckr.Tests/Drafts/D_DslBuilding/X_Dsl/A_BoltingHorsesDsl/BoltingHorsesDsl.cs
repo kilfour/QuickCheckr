@@ -14,7 +14,7 @@ public class BoltingHorsesDsl : InvariantsTest<BoltingHorsesDsl>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocInvariantHeader]

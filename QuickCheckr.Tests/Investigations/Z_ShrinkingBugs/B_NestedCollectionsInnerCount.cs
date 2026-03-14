@@ -1,0 +1,47 @@
+using QuickCheckr.Tests.Tools;
+using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickFuzzr;
+using QuickPulse.Explains;
+
+namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
+
+[DocFile]
+[DocContent(
+@"Not necessarily a bug, but not a helpful report either. 
+
+There is a real bug in the shrink count though.  
+Only the outer list shrink (being deemed irrelevant) is counted, minor issue.
+")]
+public class B_NestedCollectionsInnerCount : CheckrTest<B_NestedCollectionsInnerCount>
+{
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explain => false;
+
+    [Fact]
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport] public override void Example() => Run(1427464097);
+
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
+        from input in Checkr.Input("List", Fuzzr.Int().Many(1, 5).Many(3, 10))
+        from trace in Checkr.Trace("Original", () => input)
+        from expect in Checkr.Expect("List count >= 4", () => input.Count() >= 4)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
+    {
+        Assert.Equal("List count >= 4", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(2, article.Total().Warnings());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ [ 41, 73, 3, 5, 14 ], [ 2, 88, 10 ], [ 59, 61, 21, 32, 34 ] ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(2).Read().Value);
+    }
+}

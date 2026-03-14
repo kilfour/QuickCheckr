@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Bound5.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1053663876
+ ------------------------------------------------------------
+  Executed:
+   - Trace: Original = [ [ -8906 ], [ -14533, -5130, -30738, -29657, -2193, -5669, -4364, -337 ], [ -24159 ], [ ], [ ] ]
+   - WARNING: All inputs were considered irrelevant.
+   - WARNING: Empty collection deemed irrelevant at input 'Bound5'.
+ ======================================================================
+  !! Expectation Failed: The sum of all values is less than 5 * 256.
+ ======================================================================

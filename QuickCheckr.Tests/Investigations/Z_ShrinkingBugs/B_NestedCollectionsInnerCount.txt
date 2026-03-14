@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_NestedCollectionsInnerCount.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1427464097
+ ------------------------------------------------------------
+  Executed:
+   - Trace: Original = [ [ 41, 73, 3, 5, 14 ], [ 2, 88, 10 ], [ 59, 61, 21, 32, 34 ] ]
+   - WARNING: All inputs were considered irrelevant.
+   - WARNING: Empty collection deemed irrelevant at input 'List'.
+ ==========================================
+  !! Expectation Failed: List count >= 4
+ ==========================================

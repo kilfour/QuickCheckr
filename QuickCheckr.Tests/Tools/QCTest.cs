@@ -28,7 +28,7 @@ public abstract class QCTest<T> : QCTest
     protected readonly bool writeAllReportsToDisk = false;
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
-    protected virtual bool Explanation => false;
+    protected virtual bool Explain => false;
 
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
@@ -81,7 +81,7 @@ public abstract class QCTest<T> : QCTest
 
     private void ExplainMe()
     {
-        if (!Explanation) return;
-        Explain.OnlyThis<T>("temp-" + typeof(T).Name + ".md");
+        if (!Explain) return;
+        QuickPulse.Explains.Explain.OnlyThis<T>("temp-" + typeof(T).Name + ".md");
     }
 }

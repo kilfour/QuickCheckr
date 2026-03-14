@@ -10,7 +10,7 @@ public class AsyncActWhen : CheckrTest<AsyncActWhen>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explanation => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocModelHeader]

@@ -55,7 +55,7 @@ but the element values are considered irrelevant (*wrong*).")]
         return
             from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
             from trace in Checkr.Trace("List", () => input)
-            from expect in Checkr.ExpectWhen("Does not contain 1",
+            from expect in Checkr.ExpectWhen("List count > 2 and does not contain 1",
                 () => input.Count() > 2,
                 () => !input.Contains(1))
             select Case.Closed;
@@ -63,7 +63,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     private static void Verify_DeliberatedGreedy(Article article)
     {
-        Assert.Equal("Does not contain 1", article.FailureDescription());
+        Assert.Equal("List count > 2 and does not contain 1", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
