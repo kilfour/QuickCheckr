@@ -13,7 +13,7 @@ One currently identified case where this happens is if more than one input trigg
 ```csharp
 from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
 from trace in Checkr.Trace("List", () => input)
-from expect in Checkr.ExpectWhen("Does not contain 1",
+from expect in Checkr.ExpectWhen("List count > 2 and does not contain 1",
     () => input.Count() > 2,
     () => !input.Contains(1))
 select Case.Closed;
@@ -22,7 +22,7 @@ Now when the list contains multiple elements `1`, we might get:
 ```text
 ------------------------------------------------------------
  Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:41:1
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:45:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    227109555
@@ -30,9 +30,9 @@ Now when the list contains multiple elements `1`, we might get:
   Executed:
    - Input: Input = [ _, _, _ ]
    - Trace: List  = [ 1, 2, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
+ ================================================================
+  !! Expectation Failed: List count > 2 and does not contain 1
+ ================================================================
 ```
 It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
 but the element values are considered irrelevant (*wrong*).  

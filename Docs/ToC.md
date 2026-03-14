@@ -28,6 +28,7 @@
       - [Multiple Relevant Elements](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/F_MultipleRelevantElements.md)
       - [Relevant Element And Size](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/G_RelevantElementAndSize.md)
       - [Nested Collections](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/H_NestedCollections.md)
+      - [Nested Collections Inner Count](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/H1_NestedCollectionsInnerCount.md)
       - [When An Empty Collection Is The Culprit](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/I_WhenAnEmptyCollectionIsTheCulprit.md)
       - [The Case Of The Invisible Collection](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/J_TheCaseOfTheInvisibleCollection.md)
       - [A Collection Of Objects](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/K_ACollectionOfObjects.md)

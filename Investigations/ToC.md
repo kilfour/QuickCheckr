@@ -1,3 +1,5 @@
   - [Expectation Exceptions](A_ExpectationExceptions/ExpectationExceptions.md)
     - [Expectation Throws](A_ExpectationExceptions/Sub/A_ExpectationThrows.md)
     - [Caused By Delayed Result](A_ExpectationExceptions/Sub/B_CausedByDelayedResult.md)
+  - [Nested Collections Inner Count](Z_ShrinkingBugs/B_NestedCollectionsInnerCount.md)
+  - [Nested Collections Inner Count](Z_ShrinkingBugs/B1_NestedCollectionsInnerCount.md)
