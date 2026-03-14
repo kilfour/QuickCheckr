@@ -1,4 +1,4 @@
-using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.A_Showr;
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr;
 using QuickCheckr.Tests.Notes.Z_ToBeLookedAt.K_CheckrsCourt.A_TheCheckrClass;
 using QuickCheckr.Tests.Notes.Z_ToBeLookedAt.K_CheckrsCourt.B_TheTrackerClass;
 using QuickPulse.Explains;

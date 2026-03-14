@@ -2,8 +2,8 @@ using QuickCheckr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record CollectionRelevant(IEnumerable<InputClassification> Elements)
-    : InputRelevant(GetReport(Elements))
+public record CollectionRelevant(IEnumerable<InputClassification> Elements, string Witness = "")
+    : InputRelevant(GetReport(Elements), Witness)
 {
     private static string GetReport(IEnumerable<InputClassification> elements) =>
         !elements.Any() ? "[ ]" :

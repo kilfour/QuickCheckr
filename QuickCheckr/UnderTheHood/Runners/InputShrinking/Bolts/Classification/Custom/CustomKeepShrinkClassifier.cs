@@ -5,7 +5,9 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 public class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOptionKeep>
 {
-    protected override InputClassification GetClassification(IClassificationOptionKeep option, CustomShrinkingContext customContext)
+    protected override InputClassification GetClassification(
+            IClassificationOptionKeep option,
+            CustomShrinkingContext customContext)
     {
         var info = customContext.Info;
         var keep = InputShrinkingClue.Keep<CustomClassifierRunner>(

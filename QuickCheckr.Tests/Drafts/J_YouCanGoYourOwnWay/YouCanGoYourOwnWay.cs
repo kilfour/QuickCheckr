@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
-using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.A_Showr;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers;
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
@@ -10,7 +10,6 @@ namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay;
 [DocLink(typeof(Configuration))]
 [DocLink(typeof(A_TheShowrClass))]
 [DocLink(typeof(CustomShrinkers))]
-[DocExplanationInProgress]
 [DocContent(
 @"We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
 and/or reporting globally.  
@@ -18,8 +17,12 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 [DocHeader("Contents")]
 [DocContent(
 @"
-- [Showr][A_TheShowrClass]
 - [Custom Shrinkers][CustomShrinkers]
+- [Showr][A_TheShowrClass]
 ")]
 
-public class YouCanGoYourOwnWay { }
+public class YouCanGoYourOwnWay : BaseTest
+{
+    [Fact]
+    public void Doc() => ExplainMe<YouCanGoYourOwnWay>(true);
+}

@@ -18,4 +18,4 @@ The *atomic* Checkrs are created through a couple of static Factory classes :
 
 [TheTrackerClass]: B_TheTrackerClass/TheTrackerClass.md
 
-[A_TheShowrClass]: ../../../Drafts/J_YouCanGoYourOwnWay/A_Showr/A_TheShowrClass.md
+[A_TheShowrClass]: ../../../Drafts/J_YouCanGoYourOwnWay/N_Showr/A_TheShowrClass.md

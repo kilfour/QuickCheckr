@@ -54,6 +54,6 @@ public abstract class BaseTest : QCTest
     protected static void ExplainMe<T>(bool writeToDisk = false)
     {
         if (!writeToDisk) return;
-        Explain.OnlyThis<T>("temp-" + typeof(T).Name + ".md");
+        Explain.This<T>("temp-" + typeof(T).Name + ".md");
     }
 }

@@ -92,7 +92,7 @@
   Might get removed.
 * 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
-* QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.C_ReducersOld.A_Values;
+* QuickCheckr.Tests.Notes.C_ReducersOld.A_Values;
 
 ## Future Doc Work
 * Checkrs Court: Tricky one
