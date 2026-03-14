@@ -31,7 +31,7 @@ It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings w
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            Shrink.OnType(Try.None<Thing>()))
+            Shrink.OnType<Thing>(s => s.Classify(Try.None<Thing>())))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

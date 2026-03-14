@@ -21,7 +21,8 @@ public class D_CollectionOf : CheckrTest<D_CollectionOf>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Shrink.OnType(Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]])))
+         from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5),
+            Shrink.OnType<IEnumerable<int>>(s => s.Simplify(Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))))
          from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
          select Case.Closed;
 

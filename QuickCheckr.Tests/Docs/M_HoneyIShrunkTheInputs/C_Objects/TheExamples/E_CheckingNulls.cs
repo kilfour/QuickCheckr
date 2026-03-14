@@ -144,8 +144,10 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     private static CheckrOf<Case> GetCheckr_Alternative()
     {
         return
-            from everything in Checkr.Input("Everything", TheLifeFuzzr, Shrink.OnType(Try.Fuzzr(TheLifeFuzzr)))
-            from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, Shrink.OnType(Try.Fuzzr(TheLifeFuzzr)))
+            from everything in Checkr.Input("Everything", TheLifeFuzzr,
+                Shrink.OnType<TheUniverse.Life?>(s => s.Classify(Try.Fuzzr(TheLifeFuzzr))))
+            from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr,
+                Shrink.OnType<TheUniverse.Life?>(s => s.Classify(Try.Fuzzr(TheLifeFuzzr))))
             from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
             from trace in Checkr.Trace("The Universe", () => universe)
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())

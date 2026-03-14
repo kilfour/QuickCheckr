@@ -24,6 +24,5 @@
         - [Candidate-based Classifiers](J_YouCanGoYourOwnWay/D_CustomShrinkers/A_Classification/A_CandidateClassifiers/CandidateClassifiers.md)
         - [Policy-based Classifiers](J_YouCanGoYourOwnWay/D_CustomShrinkers/A_Classification/B_PolicyBasedClassifiers/PolicyBasedClassifiers.md)
       - [Reducers](J_YouCanGoYourOwnWay/D_CustomShrinkers/B_Reduction/Reducers.md)
-      - [First Shrinker](J_YouCanGoYourOwnWay/D_CustomShrinkers/CustomShrinkersIncludes/A_FirstShrinker.md)
     - [The Showr Class](J_YouCanGoYourOwnWay/N_Showr/A_TheShowrClass.md)
       - [Showr Reference](J_YouCanGoYourOwnWay/N_Showr/Reference/A_ShowrReference.md)

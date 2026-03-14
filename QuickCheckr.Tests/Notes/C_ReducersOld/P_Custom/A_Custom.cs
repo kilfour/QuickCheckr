@@ -24,7 +24,7 @@ public class A_Custom : CheckrTest<A_Custom>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(CustomTowardsZero.Reducer()))
+        from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(CustomTowardsZero.Reducer())))
         from expect in Checkr.Expect("Input < 2", () => input < 2)
         select Case.Closed;
 

@@ -32,7 +32,7 @@ select Case.Closed;
 ```csharp
 from thing in Checkr.Input("A thing with a type",
     Fuzzr.Constant(new Thing()),
-    Shrink.OnType(Try.Values([typeof(string), typeof(double)])))
+    Shrink.OnType<Type>(s => s.Classify(Try.Values([typeof(string), typeof(double)]))))
 from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
 select Case.Closed;
 ```

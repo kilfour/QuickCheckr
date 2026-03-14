@@ -20,7 +20,7 @@ public class B_ValuesStopOnFirstPassedAlternative : CheckrTest<B_ValuesStopOnFir
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Values([3, 0, 1, 2])))
+         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 0, 1, 2]))))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

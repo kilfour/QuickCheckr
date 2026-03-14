@@ -9,7 +9,7 @@ public sealed class Box { public int Value { get; set; } }
 ```csharp
 from box in Checkr.Input("box",
     from v in Fuzzr.Int(-10, 10)
-    select new Box { Value = v }, Shrink.OnType(Reduce.TowardsZero))
+    select new Box { Value = v }, Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
 from expect in Checkr.Expect("Value must be >= 0", () => box.Value >= 0)
 select Case.Closed;
 ```

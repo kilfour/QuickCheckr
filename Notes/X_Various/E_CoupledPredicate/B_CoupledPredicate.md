@@ -7,7 +7,8 @@ public record Pair(int A, int B) { }
 
 **The Checkr:**  
 ```csharp
-from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)), Shrink.OnType(Reduce.TowardsZero))
+from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
 from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
 select Case.Closed;
 ```

@@ -879,7 +879,93 @@ Custom shrinkers are intended for cases where domain knowledge can guide shrinki
 They are registered on a per-input basis using an overload on the `Checkr.Input)()` method.  
 Contruction of a shrinker is done using factory methods on the `Shrink` static class.
 
-Let's have a look at a simple example:  
+Let's have a look at ...  
+#### A Simple Example
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("Answer", Fuzzr.Int(),
+    Shrink.OnType<int>(
+        s => s.Classify(Try.Values(42)),
+        s => s.Simplify(Reduce.TowardsZero)))
+from expect in Checkr.Expect("Answer equals 42", () => answers == 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_FirstShrinker.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1895340861
+ ------------------------------------------------------------
+  Executed:
+   - Input: Answer = 53
+            Redux    43
+ ===========================================
+  !! Expectation Failed: Answer equals 42
+ ===========================================
+```
+##### Explaining the Example
+The example above is intentionally simple. The expectation only passes for the value `42`,
+which makes it easy to see how the custom shrinker influences the reported case.
+
+QuickCheckr already provides built-in classifiers and reducers for common types such as `int`.
+These default strategies work well in most situations, but they are necessarily generic: 
+they do not know which values are meaningful in the context of a specific check.
+
+By adding:
+
+```csharp
+s => s.Classify(Try.Values(42))
+```
+
+we tell QuickCheckr that `42` is a value worth trying explicitly during shrinking.
+
+The reducer then continues simplifying the remaining failing value:
+
+```csharp
+s => s.Simplify(Reduce.TowardsZero)
+```
+
+In the report, the original failing value is `53`, while the final reported value becomes `43`.
+This is useful because `43` is the closest failing value above the only passing value (`42`).
+
+Although the expectation itself is artificial, the example illustrates the purpose of custom shrinkers:
+they allow shrinking to be guided by values that are semantically meaningful for the domain, not just structurally smaller.
+  
+#### A Second Example
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(1, 5),
+    Shrink.OnType<int>(
+        s => s.Classify(Try.Values(42)),
+        s => s.Simplify(Reduce.Towards(100))))
+from trace in Checkr.Trace("original", () => answers)
+from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_SecondShrinker.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    960262083
+ ------------------------------------------------------------
+  Executed:
+   - Input: answers  = [ 73 ]
+            Redux      [ 100 ]
+   - Trace: original = [ 73 ]
+ ===============================================
+  !! Expectation Failed: all answers equal 42
+ ===============================================
+```
 
 [InputShrinking]: #input-shrinking
 
@@ -902,7 +988,8 @@ It is a bit of a contrived example as the default classifiers handle this case j
 
 **The Checkr:**  
 ```csharp
-from answer in Checkr.Input("answer", Fuzzr.Int(), Shrink.OnType(Try.Default<int>(), Try.Values(0, 1, 42)))
+from answer in Checkr.Input("answer", Fuzzr.Int(),
+    Shrink.OnType<int>(s => s.Classify(Try.Default<int>(), Try.Values(0, 1, 42))))
 from expect in Checkr.Expect("answer == 42", () => answer == 42)
 select Case.Closed;
 ```
@@ -935,7 +1022,8 @@ Using a more relevant example this time (where possible), that allows you to dea
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.Values(new Thing())))
+    Shrink.OnType<Thing>(
+        s => s.Classify(Try.Values(new Thing()))))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -965,7 +1053,7 @@ It only exists to avoid generic type soup and easily made mistakes when typing c
 **The Checkr:**  
 ```csharp
 from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
-    Shrink.OnType(Try.Collection([0], [1], [42])))
+    Shrink.OnType<IEnumerable<int>>(s => s.Classify(Try.Collection([0], [1], [42]))))
 from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
 select Case.Closed;
 ```
@@ -994,7 +1082,7 @@ The lambda argument of the supplied function, is the original Input value.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.Function((Thing a) => [new Thing()])))
+    Shrink.OnType<Thing>(s => s.Classify(Try.Function((Thing a) => [new Thing()]))))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1023,7 +1111,7 @@ select Case.Closed;
 ```csharp
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
+    Shrink.OnType<Thing>(s => s.Classify(Try.Fuzzr(Fuzzr.One<Thing>(), 2))))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1061,7 +1149,7 @@ It also serves as an explicit signal of intent: this step is considered essentia
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.Keep<Thing>()))
+    Shrink.OnType<Thing>(s => s.Classify(Try.Keep<Thing>())))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1092,7 +1180,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.None<Thing>()))
+    Shrink.OnType<Thing>(s => s.Classify(Try.None<Thing>())))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1133,7 +1221,7 @@ without hard-coding one as the global default.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType(Try.Default<Thing>()))
+    Shrink.OnType<Thing>(s => s.Classify(Try.Default<Thing>())))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1159,36 +1247,6 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 #### Reducers
-#### First Shrinker
-
-**The Checkr:**  
-```csharp
-from answers in Checkr.Input("answer", Fuzzr.Int(),
-    Shrink.OnType<int>(
-        s => s.Classify(Try.Values(42)),
-        s => s.Simplify(Reduce.Towards(100))))
-from trace in Checkr.Trace("original", () => answers)
-from expect in Checkr.Expect("all answers equal 42", () => answers == 42)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                A_FirstShrinker.cs:32:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1895340861
- ------------------------------------------------------------
-  Executed:
-   - Input: answer   = 53
-            Redux      100
-   - Trace: original = 53
- ===============================================
-  !! Expectation Failed: all answers equal 42
- ===============================================
-```
 ### The Showr Class
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 

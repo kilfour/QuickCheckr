@@ -20,7 +20,8 @@ public class B_FunctionStopOnFirstPassedAlternative : CheckrTest<B_FunctionStopO
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Function<int>(a => [3, 0, 1, 2])))
+         from input in Checkr.Input("Input", Fuzzr.Int(),
+            Shrink.OnType<int>(s => s.Simplify(Reduce.Function<int>(a => [3, 0, 1, 2]))))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

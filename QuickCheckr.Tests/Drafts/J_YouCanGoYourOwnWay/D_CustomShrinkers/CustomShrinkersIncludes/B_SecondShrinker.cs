@@ -5,6 +5,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.CustomShrinkersIncludes;
 
+[DocFileHeader("A Second Example")]
 public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
 {
     protected override bool Asserts => false;

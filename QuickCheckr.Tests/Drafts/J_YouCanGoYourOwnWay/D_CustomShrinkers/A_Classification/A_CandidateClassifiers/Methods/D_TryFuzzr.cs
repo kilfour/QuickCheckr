@@ -24,7 +24,7 @@ public class D_TryFuzzr : CheckrTest<D_TryFuzzr>
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
-            Shrink.OnType(Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
+            Shrink.OnType<Thing>(s => s.Classify(Try.Fuzzr(Fuzzr.One<Thing>(), 2))))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

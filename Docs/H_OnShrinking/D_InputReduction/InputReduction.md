@@ -39,7 +39,8 @@ We're running the same checkr, with the same seed.
 The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
 ```csharp
 from account in Trackr.Stashed(() => new Account())
-from amount in Checkr.Input("Amount", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero)) // <=
+from amount in Checkr.Input("Amount", Fuzzr.Int(),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
 from operations in Checkr.OneOf(
     Checkr.Act("Deposit", () => account.Deposit(amount)),
     Checkr.Act("Withdraw", () => account.WithDraw(amount)))

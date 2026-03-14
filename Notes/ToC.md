@@ -1,6 +1,5 @@
 - [Notes](Notes.md)
   - [Shrinking](A_Shrinking/Shrinking.md)
-    - [Issue Maybe](A_Shrinking/C_InputShrinking/IssueMaybe.md)
         - [Nullable Types](A_Shrinking/C_InputShrinking/A_Primitives/B_NullableTypes/NullableTypes.md)
       - [Relevant Item Is Default](A_Shrinking/C_InputShrinking/B_Collections/D_RelevantItemIsDefault.md)
       - [Relevant Item Is All But Default](A_Shrinking/C_InputShrinking/B_Collections/E_RelevantItemIsAllButDefault.md)

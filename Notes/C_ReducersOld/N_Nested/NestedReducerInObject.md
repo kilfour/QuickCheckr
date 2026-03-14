@@ -10,7 +10,7 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Shrink.OnType(Reduce.TowardsZero))
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
 from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
 select Case.Closed;
 ```

@@ -12,7 +12,7 @@
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(CustomTowardsZero.Reducer()))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(CustomTowardsZero.Reducer())))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```

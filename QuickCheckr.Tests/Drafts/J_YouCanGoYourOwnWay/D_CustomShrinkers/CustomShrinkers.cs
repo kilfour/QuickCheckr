@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction;
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.CustomShrinkersIncludes;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers;
@@ -23,5 +24,7 @@ Custom shrinkers are intended for cases where domain knowledge can guide shrinki
 They are registered on a per-input basis using an overload on the `Checkr.Input)()` method.  
 Contruction of a shrinker is done using factory methods on the `Shrink` static class.
 
-Let's have a look at a simple example:")]
+Let's have a look at ...")]
+[DocInclude(typeof(A_FirstShrinker))]
+[DocInclude(typeof(B_SecondShrinker))]
 public class CustomShrinkers;

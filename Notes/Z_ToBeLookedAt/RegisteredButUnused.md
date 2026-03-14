@@ -4,7 +4,8 @@ Hence this warning.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Try.Values(["unused"])))
+from input in Checkr.Input("Input", Fuzzr.Int(),
+    Shrink.OnType<string>(s => s.Classify(Try.Values(["unused"]))))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
