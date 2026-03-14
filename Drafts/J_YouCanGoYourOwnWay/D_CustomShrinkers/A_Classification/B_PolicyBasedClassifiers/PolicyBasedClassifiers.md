@@ -11,7 +11,7 @@ It also serves as an explicit signal of intent: this step is considered essentia
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Keep<Thing>())
+    Shrink.OnType(Try.Keep<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -42,7 +42,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.None<Thing>())
+    Shrink.OnType(Try.None<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -83,7 +83,7 @@ without hard-coding one as the global default.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Default<Thing>())
+    Shrink.OnType(Try.Default<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```

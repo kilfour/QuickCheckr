@@ -61,7 +61,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Expression",
                 ParseFuzzr.Expression(),
-                Reduce.Function<string>(ParseReducer.Reducer, true))
+                Shrink.OnType(Reduce.Function<string>(ParseReducer.Reducer, true)))
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
         from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")

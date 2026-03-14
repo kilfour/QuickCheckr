@@ -23,7 +23,7 @@ public class A_ShrinkModeReference : BaseTest
     {
         return
             from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-            from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Reduce.TowardsZero)
+            from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
             from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
             select Case.Closed;

@@ -3,7 +3,7 @@ What to do if all reduction values fail ?
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
 select Case.Closed;
 ```

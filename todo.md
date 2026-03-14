@@ -2,6 +2,8 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
+* NestedReducerInObjectOnPath
+* Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX CAPTURE THROWS EXCEPTION WEIRDNESS
 * **Reducers**
     * ReductionNotPossible.cs => Warning

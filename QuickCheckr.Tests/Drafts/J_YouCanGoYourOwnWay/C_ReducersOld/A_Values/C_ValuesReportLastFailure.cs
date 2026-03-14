@@ -20,7 +20,7 @@ public class C_ValuesReportLastFailure : CheckrTest<C_ValuesReportLastFailure>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2], true))
+         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Values([3, 0, 1, 2], true)))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

@@ -10,7 +10,7 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from answer in Checkr.Input("Answer", Fuzzr.Int(), Reduce.TowardsZero)
+from answer in Checkr.Input("Answer", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from universe in Checkr.Capture(() => new TheUniverse { Answer = answer })
 from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
 select Case.Closed;

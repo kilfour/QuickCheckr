@@ -24,7 +24,8 @@ public class B_TryCollection : CheckrTest<B_TryCollection>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5), Try.Collection([0], [1], [42]))
+        from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
+            Shrink.OnType(Try.Collection([0], [1], [42])))
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;
 

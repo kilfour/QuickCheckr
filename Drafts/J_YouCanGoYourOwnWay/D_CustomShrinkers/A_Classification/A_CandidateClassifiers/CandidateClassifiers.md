@@ -8,7 +8,7 @@ Using a more relevant example this time (where possible), that allows you to dea
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Values(new Thing()))
+    Shrink.OnType(Try.Values(new Thing())))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -37,7 +37,8 @@ It only exists to avoid generic type soup and easily made mistakes when typing c
 
 **The Checkr:**  
 ```csharp
-from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5), Try.Collection([0], [1], [42]))
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
+    Shrink.OnType(Try.Collection([0], [1], [42])))
 from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
 select Case.Closed;
 ```
@@ -66,7 +67,7 @@ The lambda argument of the supplied function, is the original Input value.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Function((Thing a) => [new Thing()]))
+    Shrink.OnType(Try.Function((Thing a) => [new Thing()])))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -94,7 +95,8 @@ select Case.Closed;
 **The Checkr:**  
 ```csharp
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Try.Fuzzr(Fuzzr.One<Thing>(), 2))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
+    Shrink.OnType(Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```

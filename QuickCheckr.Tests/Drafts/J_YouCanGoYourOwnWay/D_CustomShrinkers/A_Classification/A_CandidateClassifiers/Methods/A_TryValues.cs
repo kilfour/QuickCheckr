@@ -24,7 +24,7 @@ public class A_TryValues : CheckrTest<A_TryValues>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            Try.Values(new Thing()))
+            Shrink.OnType(Try.Values(new Thing())))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

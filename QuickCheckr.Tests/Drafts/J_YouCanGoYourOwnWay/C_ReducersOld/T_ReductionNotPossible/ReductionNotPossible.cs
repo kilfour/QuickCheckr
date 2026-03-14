@@ -21,7 +21,7 @@ public class ReductionNotPossible : CheckrTest<ReductionNotPossible>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
          from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
          select Case.Closed;
 

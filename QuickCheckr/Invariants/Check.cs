@@ -29,30 +29,30 @@ public static class Check
             select Case.Closed)
         .Run(runs, ActivateReducers);
 
-    public static CaseFile ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate, params IClassificationOption[] classificationOptions)
+    public static CaseFile ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate, params ClassificationOption<T>[] classificationOptions)
         => (
-            from input in Checkr.Input("Input", fuzzr, classificationOptions)
+            from input in Checkr.Input("Input", fuzzr, Shrink.OnType(classificationOptions))
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
         .Run(100.Runs(), ActivateReducers);
 
-    public static CaseFile ForAll<T>(int seed, FuzzrOf<T> fuzzr, Func<T, bool> predicate, params IClassificationOption[] classificationOptions)
+    public static CaseFile ForAll<T>(int seed, FuzzrOf<T> fuzzr, Func<T, bool> predicate, params ClassificationOption<T>[] classificationOptions)
         => (
-            from input in Checkr.Input("Input", fuzzr, classificationOptions)
+            from input in Checkr.Input("Input", fuzzr, Shrink.OnType(classificationOptions))
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
         .Run(seed, ActivateReducers);
 
     public static CaseFile ForAll<T>(int seed, FuzzrOf<T> fuzzr, Func<T, bool> predicate, params Func<Reducer<T>>[] reducers)
         => (
-            from input in Checkr.Input("Input", fuzzr, reducers)
+            from input in Checkr.Input("Input", fuzzr, Shrink.OnType(reducers))
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
         .Run(seed, ActivateReducers);
 
     public static CaseFile ForAll<T>(FuzzrOf<T> fuzzr, Func<T, bool> predicate, params Func<Reducer<T>>[] reducers)
         => (
-            from input in Checkr.Input("Input", fuzzr, reducers)
+            from input in Checkr.Input("Input", fuzzr, Shrink.OnType(reducers))
             from expectation in Checkr.Expect("Property", () => predicate(input))
             select Case.Closed)
         .Run(100.Runs(), ActivateReducers);

@@ -12,8 +12,8 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(),
-    [("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>())//,
+    //[("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
 from trace in Checkr.Trace("Universe", () => universe)
 from justRight in Checkr.Expect("just right", () => universe.AnswerOne <= 42 || universe.AnswerTwo >= 42)
 select Case.Closed;

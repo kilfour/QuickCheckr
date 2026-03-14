@@ -2,7 +2,7 @@
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
+from text in Checkr.Input("Text", Fuzzr.String(), Shrink.OnType(Reduce.MinimizeString))
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
 ```

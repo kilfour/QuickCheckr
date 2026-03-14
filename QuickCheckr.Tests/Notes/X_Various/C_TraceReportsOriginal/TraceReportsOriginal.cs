@@ -21,7 +21,7 @@ public class TraceReportsOriginal : CheckrTest<TraceReportsOriginal>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from x in Checkr.Input("x", Fuzzr.Int(-100, 100), Reduce.TowardsZero)
+        from x in Checkr.Input("x", Fuzzr.Int(-100, 100), Shrink.OnType(Reduce.TowardsZero))
         from trace in Checkr.Trace("x (trace)", () => x)
         from expect in Checkr.Expect("x must be negative", () => x >= 0)
         select Case.Closed;

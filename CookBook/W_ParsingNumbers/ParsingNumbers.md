@@ -19,7 +19,7 @@ The Reducer is far from perfect, but by adding a deliberation policy, this test 
 ```csharp
 from input in Checkr.Input("Expression",
         ParseFuzzr.Expression(),
-        Reduce.Function<string>(ParseReducer.Reducer, true))
+        Shrink.OnType(Reduce.Function<string>(ParseReducer.Reducer, true)))
 from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
 from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
 from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")

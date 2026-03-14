@@ -39,7 +39,7 @@ It is a bit of a contrived example as the default classifiers handle this case j
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Default<int>(), Try.Values(0, 1, 42))
+        from answer in Checkr.Input("answer", Fuzzr.Int(), Shrink.OnType(Try.Default<int>(), Try.Values(0, 1, 42)))
         from expect in Checkr.Expect("answer == 42", () => answer == 42)
         select Case.Closed;
 

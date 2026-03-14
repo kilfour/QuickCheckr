@@ -1005,7 +1005,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from x in Checkr.Input("x", Fuzzr.Int(-100, 100), Reduce.TowardsZero)
+from x in Checkr.Input("x", Fuzzr.Int(-100, 100), Shrink.OnType(Reduce.TowardsZero))
 from trace in Checkr.Trace("x (trace)", () => x)
 from expect in Checkr.Expect("x must be negative", () => x >= 0)
 select Case.Closed;
@@ -1039,7 +1039,7 @@ public sealed class Box { public int Value { get; set; } }
 ```csharp
 from box in Checkr.Input("box",
     from v in Fuzzr.Int(-10, 10)
-    select new Box { Value = v }, Reduce.TowardsZero)
+    select new Box { Value = v }, Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("Value must be >= 0", () => box.Value >= 0)
 select Case.Closed;
 ```
@@ -1097,7 +1097,7 @@ public record Pair(int A, int B) { }
 
 **The Checkr:**  
 ```csharp
-from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)), Reduce.TowardsZero)
+from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)), Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
 select Case.Closed;
 ```
@@ -1319,7 +1319,7 @@ Hence this warning.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Try.Values(["unused"]))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Try.Values(["unused"])))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1825,7 +1825,7 @@ select Case.Closed;
 ```csharp
 from thing in Checkr.Input("A thing with a type",
     Fuzzr.Constant(new Thing()),
-    Try.Values([typeof(string), typeof(double)]))
+    Shrink.OnType(Try.Values([typeof(string), typeof(double)])))
 from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
 select Case.Closed;
 ```

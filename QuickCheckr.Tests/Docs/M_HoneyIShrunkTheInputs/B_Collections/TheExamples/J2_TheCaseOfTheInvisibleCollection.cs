@@ -31,10 +31,10 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
                 from ints in Checkr.Input("Ints",
                 Fuzzr.Int().Many(2),
                 // Custom Shrinker
-                () => [
-                    Try.Default<IEnumerable<int>>(),
-                    Try.Collection([thing.Ints])],
-                Reduce.Collection([[], thing.Ints]))
+                Shrink.OnType(
+                    [ Try.Default<IEnumerable<int>>()
+                    , Try.Collection([thing.Ints])],
+                    [Reduce.Collection([[], thing.Ints])]))
                 // --
                 from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
                 from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))

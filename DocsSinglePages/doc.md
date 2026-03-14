@@ -1307,7 +1307,7 @@ config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Reduce.TowardsZero)
+from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
 from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
 select Case.Closed;
@@ -1516,7 +1516,7 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Try.None<string>())
+        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"), Shrink.OnType(Try.None<string>()))
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach)
@@ -1535,7 +1535,7 @@ public class GatheringEvidenceCheckr
             select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCourse =
-        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Try.None<string>())
+        from name in Checkr.Input("Course Name", NameFuzzr.For("Course"), Shrink.OnType(Try.None<string>()))
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course)
@@ -1921,7 +1921,7 @@ We're running the same checkr, with the same seed.
 The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
 ```csharp
 from account in Trackr.Stashed(() => new Account())
-from amount in Checkr.Input("Amount", Fuzzr.Int(), Reduce.TowardsZero) // <=
+from amount in Checkr.Input("Amount", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero)) // <=
 from operations in Checkr.OneOf(
     Checkr.Act("Deposit", () => account.Deposit(amount)),
     Checkr.Act("Withdraw", () => account.WithDraw(amount)))
@@ -2398,10 +2398,10 @@ from _ in Checkr.OneOfWhen(
         from ints in Checkr.Input("Ints",
         Fuzzr.Int().Many(2),
         // Custom Shrinker
-        () => [
-            Try.Default<IEnumerable<int>>(),
-            Try.Collection([thing.Ints])],
-        Reduce.Collection([[], thing.Ints]))
+        Shrink.OnType(
+            [ Try.Default<IEnumerable<int>>()
+            , Try.Collection([thing.Ints])],
+            [Reduce.Collection([[], thing.Ints])]))
         // --
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
@@ -2552,8 +2552,8 @@ But when both `Everything` *and* `Irrelevant` are `null`, QuickCheckr cannot shr
 ```
 We could help the shrinker by rewriting your checkr, in order to avoid the irrelevant input being reported as relevant.  
 ```csharp
-from everything in Checkr.Input("Everything", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
-from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, Try.Fuzzr(TheLifeFuzzr))
+from everything in Checkr.Input("Everything", TheLifeFuzzr, Shrink.OnType(Try.Fuzzr(TheLifeFuzzr)))
+from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr, Shrink.OnType(Try.Fuzzr(TheLifeFuzzr)))
 from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
 from trace in Checkr.Trace("The Universe", () => universe)
 from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())

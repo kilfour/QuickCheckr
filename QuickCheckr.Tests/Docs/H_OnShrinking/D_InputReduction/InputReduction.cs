@@ -65,7 +65,7 @@ Depending on demand, the library of reducers might grow fast.
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from account in Trackr.Stashed(() => new Account())
-        from amount in Checkr.Input("Amount", Fuzzr.Int(), Reduce.TowardsZero) // <=
+        from amount in Checkr.Input("Amount", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero)) // <=
         from operations in Checkr.OneOf(
             Checkr.Act("Deposit", () => account.Deposit(amount)),
             Checkr.Act("Withdraw", () => account.WithDraw(amount)))

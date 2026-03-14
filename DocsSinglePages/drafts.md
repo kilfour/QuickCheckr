@@ -1059,7 +1059,7 @@ With that caveat out of the way, let's dig in.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 2, 1, 0]))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Values([3, 2, 1, 0])))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1084,7 +1084,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2]))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Values([3, 0, 1, 2])))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1109,7 +1109,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Values([3, 0, 1, 2], true))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Values([3, 0, 1, 2], true)))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1135,7 +1135,7 @@ Helper function in order to avoid generic type confusion.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.Collection([[3], [2], [1], [0]]))
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Shrink.OnType(Reduce.Collection([[3], [2], [1], [0]])))
 from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
 select Case.Closed;
 ```
@@ -1161,7 +1161,7 @@ Helper function in order to avoid generic type confusion.
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5), Shrink.OnType(Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]])))
 from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
 select Case.Closed;
 ```
@@ -1186,7 +1186,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 2, 1, 0]))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Function<int>(a => [3, 2, 1, 0])))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1211,7 +1211,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2]))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Function<int>(a => [3, 0, 1, 2])))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1236,7 +1236,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.Function<int>(a => [3, 0, 1, 2], true))
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.Function<int>(a => [3, 0, 1, 2], true)))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1261,7 +1261,6 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-//from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
 from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
 select Case.Closed;
@@ -1287,7 +1286,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from text in Checkr.Input("Text", Fuzzr.String(), Reduce.MinimizeString)
+from text in Checkr.Input("Text", Fuzzr.String(), Shrink.OnType(Reduce.MinimizeString))
 from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
 select Case.Closed;
 ```
@@ -1320,7 +1319,7 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from answer in Checkr.Input("Answer", Fuzzr.Int(), Reduce.TowardsZero)
+from answer in Checkr.Input("Answer", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from universe in Checkr.Capture(() => new TheUniverse { Answer = answer })
 from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
 select Case.Closed;
@@ -1356,7 +1355,7 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Reduce.TowardsZero)
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(), Shrink.OnType(Reduce.TowardsZero))
 from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
 select Case.Closed;
 ```
@@ -1393,8 +1392,8 @@ public class TheUniverse
 
 **The Checkr:**  
 ```csharp
-from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>(),
-    [("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
+from universe in Checkr.Input("Universe", Fuzzr.One<TheUniverse>())//,
+    //[("Universe.AnswerOne", Reduce.TowardsZero), ("Universe.AnswerTwo", Reduce.Towards(100))])
 from trace in Checkr.Trace("Universe", () => universe)
 from justRight in Checkr.Expect("just right", () => universe.AnswerOne <= 42 || universe.AnswerTwo >= 42)
 select Case.Closed;
@@ -1431,7 +1430,7 @@ select Case.Closed;
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), CustomTowardsZero.Reducer())
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(CustomTowardsZero.Reducer()))
 from expect in Checkr.Expect("Input < 2", () => input < 2)
 select Case.Closed;
 ```
@@ -1489,7 +1488,7 @@ What to do if all reduction values fail ?
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(), Reduce.TowardsZero)
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType(Reduce.TowardsZero))
 from expect in Checkr.Expect("Input should be greater than 42", () => input > 42)
 select Case.Closed;
 ```
@@ -1554,7 +1553,7 @@ It is a bit of a contrived example as the default classifiers handle this case j
 
 **The Checkr:**  
 ```csharp
-from answer in Checkr.Input("answer", Fuzzr.Int(), Try.Default<int>(), Try.Values(0, 1, 42))
+from answer in Checkr.Input("answer", Fuzzr.Int(), Shrink.OnType(Try.Default<int>(), Try.Values(0, 1, 42)))
 from expect in Checkr.Expect("answer == 42", () => answer == 42)
 select Case.Closed;
 ```
@@ -1587,7 +1586,7 @@ Using a more relevant example this time (where possible), that allows you to dea
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Values(new Thing()))
+    Shrink.OnType(Try.Values(new Thing())))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1616,7 +1615,8 @@ It only exists to avoid generic type soup and easily made mistakes when typing c
 
 **The Checkr:**  
 ```csharp
-from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5), Try.Collection([0], [1], [42]))
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
+    Shrink.OnType(Try.Collection([0], [1], [42])))
 from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
 select Case.Closed;
 ```
@@ -1645,7 +1645,7 @@ The lambda argument of the supplied function, is the original Input value.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Function((Thing a) => [new Thing()]))
+    Shrink.OnType(Try.Function((Thing a) => [new Thing()])))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1673,7 +1673,8 @@ select Case.Closed;
 **The Checkr:**  
 ```csharp
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!), Try.Fuzzr(Fuzzr.One<Thing>(), 2))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
+    Shrink.OnType(Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1711,7 +1712,7 @@ It also serves as an explicit signal of intent: this step is considered essentia
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Keep<Thing>())
+    Shrink.OnType(Try.Keep<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1742,7 +1743,7 @@ select Case.Closed;
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.None<Thing>())
+    Shrink.OnType(Try.None<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
@@ -1783,7 +1784,7 @@ without hard-coding one as the global default.
 from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
 from thing in Checkr.Input("Null Thing",
     Fuzzr.Constant<Thing>(null!),
-    Try.Default<Thing>())
+    Shrink.OnType(Try.Default<Thing>()))
 from expect in Checkr.Expect("counter != 2", () => counter != 2)
 select Case.Closed;
 ```
