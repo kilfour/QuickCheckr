@@ -16,9 +16,9 @@ public class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
                 var clue = InputShrinkingClue.Keep<CustomClassifierRunner>(
-                    info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
+                return new InputRelevant(context.PrintInput(info.Value));
             }
         }
         var ignore = InputShrinkingClue.Ignore<CustomClassifierRunner>(info.ExecutionId, info.Path, info.Value);

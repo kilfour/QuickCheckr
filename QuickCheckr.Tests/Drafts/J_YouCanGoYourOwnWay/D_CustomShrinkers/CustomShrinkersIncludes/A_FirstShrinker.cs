@@ -11,7 +11,7 @@ public class A_FirstShrinker : CheckrTest<A_FirstShrinker>
 {
     protected override bool Asserts => true;
     protected override bool Report => true;
-    protected override bool Explanation => true;
+    protected override bool Explanation => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -24,10 +24,10 @@ public class ObjectClassifier : Classifier
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
             context.State.Docket.Record(new InputShrinkingClueFound(clue));
             context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
-            return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
+            return new InputRelevant(context.PrintInput(info.Value));
         }
         return HandleProperties(context, info);
     }
@@ -49,10 +49,10 @@ public class ObjectClassifier : Classifier
             .ToList();
         if (properties.Count == 0)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
             context.State.Docket.Record(new InputShrinkingClueFound(clue));
             context.State.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
-            return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
+            return new InputRelevant(context.PrintInput(info.Value));
         }
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)

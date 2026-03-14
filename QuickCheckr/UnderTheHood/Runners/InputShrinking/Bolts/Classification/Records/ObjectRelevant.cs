@@ -2,8 +2,8 @@ using QuickCheckr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record ObjectRelevant(Dictionary<string, InputClassification> Members, string Witness = "")
-    : InputRelevant(GetReport(Members), Witness)
+public record ObjectRelevant(Dictionary<string, InputClassification> Members)
+    : InputRelevant(GetReport(Members))
 {
     private static string GetReport(Dictionary<string, InputClassification> members) =>
         $"{{ {string.Join(", ",

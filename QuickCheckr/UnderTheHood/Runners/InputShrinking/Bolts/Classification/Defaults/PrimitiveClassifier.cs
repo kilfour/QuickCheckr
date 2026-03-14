@@ -26,9 +26,9 @@ public class PrimitiveClassifier : Classifier
             {
                 // Mark input as relevant, because we found a candidate that makes the run pass.
                 var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
-                    info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
+                return new InputRelevant(context.PrintInput(info.Value));
             }
         }
         var ignoreClue = InputShrinkingClue.Ignore<PrimitiveClassifier>(info.ExecutionId, info.Path, info.Value);

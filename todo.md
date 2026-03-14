@@ -30,7 +30,12 @@
 ### Wish List
 * Add unchecked expectations WARNING.
   This would be very good for the dsl bit (F.i. Example)
-
+* Add 'Witness'(candidate that made the run pass) to Input & Redux 
+* more stats:
+  * total runs(including shrinking candidates)
+  * candidates tried
+  * ...
+     
 ### Doc
 
 ### Ongoing

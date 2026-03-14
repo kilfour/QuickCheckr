@@ -49,7 +49,7 @@ public class ClassifierSelector
             return (Maybe.Nothing(), Maybe<object>.Nothing());
         context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);
         return (
-            Maybe.Just(context.State.InputPrinter.IntroduceThis(step.Result!)),
+            Maybe.Just(context.PrintInput(step.Result!)),
             Maybe<object>.Just(step.Result!));
     }
 

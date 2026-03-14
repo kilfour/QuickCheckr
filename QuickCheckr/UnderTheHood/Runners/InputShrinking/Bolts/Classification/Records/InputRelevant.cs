@@ -1,3 +1,3 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record InputRelevant(string Report, string Witness = "") : InputClassification;
+public record InputRelevant(string Report) : InputClassification;

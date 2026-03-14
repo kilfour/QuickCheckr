@@ -24,9 +24,9 @@ public class EnumClassifier : Classifier
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
                 // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<EnumClassifier>(info.ExecutionId, info.Path, info.Value, context.State.InputPrinter.IntroduceThis(info.Value));
+                var clue = InputShrinkingClue.Keep<EnumClassifier>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.State.InputPrinter.IntroduceThis(info.Value));
+                return new InputRelevant(context.PrintInput(info.Value));
             }
         }
         var ignoreClue = InputShrinkingClue.Ignore<EnumClassifier>(info.ExecutionId, info.Path, info.Value);
