@@ -2,6 +2,20 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
+* Improve shrinking once more:
+    [1, 1] : length == 2 & does not contain one
+
+    current shrinking : 
+    - try [0, 1] => fails => irrelevant, report [_, 1]
+    - restore original value [1, 1]
+    - try [1, 0] => fails => irrelevant, report [_, _]
+
+    desired shrinking : 
+    - try [0, 1] => fails => irrelevant, report [_, 1], store [0, 1]
+    - restore original value [1, 1]
+    - try [1, 0] => fails => 
+        - restore [0, 1]
+            try [0, 0] => passes => relevant
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX CAPTURE THROWS EXCEPTION WEIRDNESS
