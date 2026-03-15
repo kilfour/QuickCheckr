@@ -39,7 +39,7 @@ public class ObjectClassifier : Classifier
 
     private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
     {
-        var properties = info.Type
+        var properties = (info.Value == null ? info.Type : info.Value.GetType())
             .GetProperties(MyBinding.Flags)
             .Where(p =>
                 p.CanRead &&

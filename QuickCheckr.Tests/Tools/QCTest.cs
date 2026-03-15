@@ -21,6 +21,8 @@ public abstract class QCTest
         DocBoldHeaderAttribute("The Configuration");
     protected class DocCheckrHeaderAttribute() :
         DocBoldHeaderAttribute("The Checkr");
+    protected class DocFuzzrHeaderAttribute() :
+        DocBoldHeaderAttribute("The Fuzzr");
 }
 
 public abstract class QCTest<T> : QCTest

@@ -1,0 +1,19 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Calculator.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 14 shrinks)
+ Seed:                    767678629
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Calculator = { Right: { Right: { Right: { Left: { Value: 4 }, Right: { Value: 7 } } } } }
+   - Trace: Original   = { Operation: Divide, Left: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 9 } }, Right: { Operation: Divide, Left: { Value: 3 }, Right: { Operation: Divide, Left: { Value: 5 }, Right: { Operation: Divide, Left: { Value: 4 }, Right: { Value: 7 } } } } }
+ ===========================================================================
+  !! System.DivideByZeroException: Attempted to divide by zero.
+   at QuickCheckr.Tests.Experimental.Z_Challenges.D_Calculator.Calculator.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Experimental\Z_Challenges\D_Calculator\Calculator.cs:line 61
+   at QuickCheckr.Tests.Experimental.Z_Challenges.D_Calculator.Calculator.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Experimental\Z_Challenges\D_Calculator\Calculator.cs:line 61
+   at QuickCheckr.Tests.Experimental.Z_Challenges.D_Calculator.Calculator.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Experimental\Z_Challenges\D_Calculator\Calculator.cs:line 61
+   at QuickCheckr.Tests.Experimental.Z_Challenges.D_Calculator.Calculator.<>c__DisplayClass12_1.<TheCheckr>b__5() in C:\Code\QuickCheckr\QuickCheckr.Tests\Experimental\Z_Challenges\D_Calculator\Calculator.cs:line 99
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
