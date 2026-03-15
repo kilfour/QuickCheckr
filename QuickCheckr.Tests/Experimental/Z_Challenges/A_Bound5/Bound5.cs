@@ -1,10 +1,8 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Experimental.Z_Challenges.K_NestedLists;
 

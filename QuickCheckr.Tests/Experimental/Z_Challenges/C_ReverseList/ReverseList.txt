@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ReverseList.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    767678629
+ ------------------------------------------------------------
+  Executed: Reverse List
+   - Input: ReverseList = [ _, 92 ]
+   - Trace: Original    = [ 68, 89, 98, 88, 92 ]
+ ================================================================================
+  !! Expectation Failed: Reversing a list of integers results in the same list
+ ================================================================================

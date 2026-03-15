@@ -56,6 +56,7 @@
 * Added some missing Pool operation reporting in the .qr file.
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
 * In case an expectation throws it is rethrown as `ExpectationThrowsException`.
+* Major improvements to shrinking behaviour as a side effect of introducing reducers.
 
 ## 0.0.10 : Excuse My Domain Specific Language
 
