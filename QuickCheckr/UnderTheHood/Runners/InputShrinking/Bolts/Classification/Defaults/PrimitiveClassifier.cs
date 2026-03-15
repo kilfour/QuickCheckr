@@ -27,13 +27,30 @@ public class PrimitiveClassifier : Classifier
                 // Mark input as relevant, because we found a candidate that makes the run pass.
                 var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
                     info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-                // context.State.Memory.Commit(info.ExecutionId, info.Key, candidate);
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 return new InputRelevant(context.PrintInput(info.Value));
             }
         }
+        var witness = primitiveVals.First();
+        if (verifier.TestimonyPassed(info.ExecutionId, info.Key, witness))
+        {
+            // Mark input as relevant, because we found a candidate that makes the run pass.
+            var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
+                info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
+            context.State.Docket.Record(new InputShrinkingClueFound(clue));
+            return new InputRelevant(context.PrintInput(info.Value));
+        }
         var ignoreClue = InputShrinkingClue.Ignore<PrimitiveClassifier>(info.ExecutionId, info.Path, info.Value);
         context.State.Docket.Record(new InputShrinkingClueFound(ignoreClue));
+        // -----------------------------------------------
+        // TESTIFY 
+        // - try [0, 1] => fails => irrelevant, report [_, 1], store [0, 1]
+        // - restore original value [1, 1]
+        // - try [1, 0] => fails => 
+        //     - restore [0, 1]
+        //         try [0, 0] => passes => relevant
+        context.State.Memory.Testify(info.ExecutionId, info.Key, primitiveVals.First());
+        // -----------------------------------------------
         return new InputAssumedIrrelevant();
     }
 
@@ -43,7 +60,7 @@ public class PrimitiveClassifier : Classifier
             { typeof(bool),     new object[] { true, false } },
             { typeof(byte),     new object[] { (byte)0, (byte)1, byte.MaxValue } },
             { typeof(sbyte),    new object[] { sbyte.MinValue, -1, 0, 1, sbyte.MaxValue } },
-            { typeof(short),    new object[] { short.MinValue, -1, 0, 1, short.MaxValue } },
+            { typeof(short),    new object[] { (short)0, short.MinValue, (short)-1, (short)1, short.MaxValue } },
             { typeof(ushort),   new object[] { (ushort)0, (ushort)1, ushort.MaxValue } },
             { typeof(int),      new object[] { -10000, -1000, -1, 0, 1, 1000, 10000 } },
             { typeof(uint),     new object[] { 0u, 1u, 1000u, uint.MaxValue } },
