@@ -25,6 +25,36 @@ public class ExecutionMemory
         => inputs.NestedValue(swapper);
     public void Commit(string key, object value)
         => inputs.Commit(key, value);
+    public record Testimony(Stack<MemoryLens> Lenses, object? Witness);
+    public Dictionary<string, List<Testimony>> lenses = [];
+    public void Testify(string key, object value)
+    {
+        if (!lenses.ContainsKey(key)) lenses[key] = [];
+        lenses[key].Add(new Testimony(inputs.GetCurrentSwappers(), value));
+    }
+
+    public IDisposable WithTestimony(string key, object value)
+    {
+        var disposables = new List<IDisposable>();
+        foreach (var item in lenses)
+        {
+            foreach (var lens in item.Value)
+                disposables.Add(inputs.ScopedSwap(lens.Lenses, key, lens.Witness!));
+        }
+        // if (lenses.TryGetValue(key, out List<Testimony>? testimonies))
+        // {
+        //     foreach (var item in testimonies)
+        //     {
+        //         disposables.Add(inputs.ScopedSwap(item.Lenses, key, item.Witness!));
+        //     }
+        // }
+        disposables.Add(inputs.ScopedSwap(key, value));
+        return new DisposableAction(() =>
+        {
+            foreach (var disposable in disposables)
+                disposable.Dispose();
+        });
+    }
     // --------------------------------------------------------------------------
 
 

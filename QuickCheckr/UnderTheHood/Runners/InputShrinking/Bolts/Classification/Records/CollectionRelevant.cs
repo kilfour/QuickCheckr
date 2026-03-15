@@ -15,8 +15,9 @@ public record CollectionRelevant(IEnumerable<InputClassification> Elements, stri
     {
         if (Redux.HasValue) return Redux;
         if (!Elements.Any(a => a.GetRedux().HasValue)) return Maybe.Nothing();
-        var values = Elements.Where(a => a is InputRelevant)
-                .Select(a => GetReduxString((a as InputRelevant)!));
+        var values = Elements.Where(a => a is not ElementAssumedIrrelevant)
+                .Select(a =>
+                    a is InputRelevant ? GetReduxString((a as InputRelevant)!) : "_");
         return Maybe.Just($"[ {string.Join(", ", values)} ]");
     }
 

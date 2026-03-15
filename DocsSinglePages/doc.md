@@ -2475,7 +2475,7 @@ from _ in Checkr.OneOfWhen(
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
         Fuzzr.Int().Many(2),
-        Shrink.CollectionFromState(thing.Ints, [])) // <= Buil-in Utility Shrinker
+        Shrink.CollectionFromState(thing.Ints, [])) // <= Built-in Utility Shrinker
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
         from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
         select Case.Closed))

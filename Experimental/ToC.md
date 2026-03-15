@@ -3,5 +3,7 @@
   - [Showr Use](D_ShowrUse/ShowrUse.md)
   - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
   - [Warehousing](W_Warehouse/Warehousing.md)
+  - [Challenges](Z_Challenges/Challenges.md)
     - [Bound5](Z_Challenges/K_NestedLists/Bound5.md)
+    - [Large Union List](Z_Challenges/K_NestedLists/LargeUnionList.md)
     - [Nested Lists](Z_Challenges/K_NestedLists/NestedLists.md)

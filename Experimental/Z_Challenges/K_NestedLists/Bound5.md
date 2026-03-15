@@ -11,27 +11,39 @@ which would look somethink like ([-32768], [-1], [], [], []).
 
 **The Checkr:**  
 ```csharp
-from input in Checkr.Input("Bound5", TheFuzzr) // ,Shrink.OnType<short>(s => s.Simplify(() => new ReduceShort().TowardsZero)))
+from input in Checkr.Input("Bound5", TheFuzzr)
 from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.Expect(
+from expect in Checkr.ExpectWhen(
     "The sum of all values is less than 5 * 256.",
-    () => input.Count == 5 && Sum(input) < 5 * 256)
+    () => input.Count == 5,
+    () => Sum(input) < (5 * 256))
 select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<List<List<short>>>("Bound5", a => a.Sum(b => b.Count)),
+    DeliberationTarget = 2
+};
 ```
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Bound5.cs:58:1
+ Location:                Bound5.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1053663876
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    2021488303
  ------------------------------------------------------------
   Executed:
-   - Trace: Original = [ [ -8906 ], [ -14533, -5130, -30738, -29657, -2193, -5669, -4364, -337 ], [ -24159 ], [ ], [ ] ]
-   - WARNING: All inputs were considered irrelevant.
-   - WARNING: Empty collection deemed irrelevant at input 'Bound5'.
+   - Input: Bound5   = [ _, [ -20241 ], _, _, [ -13889 ] ]
+   - Trace: Original = [ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]
+   - WARNING: Empty collection deemed irrelevant at:
+       Bound5: 0, 2, 3
  ======================================================================
   !! Expectation Failed: The sum of all values is less than 5 * 256.
  ======================================================================

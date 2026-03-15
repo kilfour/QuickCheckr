@@ -52,6 +52,10 @@ public class Memory
         => ShortTermMemory.NestedValue(executionId, swapper);
     public void Commit(int executionId, string key, object value)
         => ShortTermMemory.Commit(executionId, key, value);
+    public void Testify(int executionId, string key, object value)
+        => ShortTermMemory.Testify(executionId, key, value);
+    public IDisposable WithTestimony(int executionId, string key, object value)
+        => ShortTermMemory.WithTestimony(executionId, key, value);
 
     // ==========================================================================
     // Long Term

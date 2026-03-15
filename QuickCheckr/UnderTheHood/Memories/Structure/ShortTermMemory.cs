@@ -48,6 +48,10 @@ public class ShortTermMemory
         => memories[executionId].NestedValue(swapper);
     public void Commit(int executionId, string key, object value)
         => memories[executionId].Commit(key, value);
+    public void Testify(int executionId, string key, object value)
+        => memories[executionId].Testify(key, value);
+    public IDisposable WithTestimony(int executionId, string key, object value)
+        => memories[executionId].WithTestimony(key, value);
 
 
     public ExecutionMemory GetMemory(int executionNumber)

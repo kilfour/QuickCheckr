@@ -27,7 +27,7 @@ But here are some more use cases.")]
 public class DeliberationShrinking : BaseTest
 {
 
-    [Fact]
+    [Fact(Skip = "Fixed this behaviour")]
     [DocHeader("An Eager Shrinker")]
     [DocContent(
 @"Under some rare circumstances, the Shrinker gets *greedy*.  

@@ -2,23 +2,9 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
-* Improve shrinking once more:
-    [1, 1] : length == 2 & does not contain one
-
-    current shrinking : 
-    - try [0, 1] => fails => irrelevant, report [_, 1]
-    - restore original value [1, 1]
-    - try [1, 0] => fails => irrelevant, report [_, _]
-
-    desired shrinking : 
-    - try [0, 1] => fails => irrelevant, report [_, 1], store [0, 1]
-    - restore original value [1, 1]
-    - try [1, 0] => fails => 
-        - restore [0, 1]
-            try [0, 0] => passes => relevant
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
-* FIX CAPTURE THROWS EXCEPTION WEIRDNESS
+* FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
 * **Reducers**
     * ReductionNotPossible.cs => Warning
     * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
@@ -71,7 +57,7 @@
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
 * In case an expectation throws it is rethrown as `ExpectationThrowsException`.
 
-## 0.0.10 : "Insert clever play on Dsl thingy here"
+## 0.0.10 : Excuse My Domain Specific Language
 
 ## 0.0.11 : All Aboard
 * Stabilize + Doc InternalAffairs
@@ -106,12 +92,14 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
   => initial web-api example (QuickWebr ?)
 
-## Skipped Tests (5)
+## Skipped Tests
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
   Might get removed.
 * 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
 * QuickCheckr.Tests.Notes.C_ReducersOld.A_Values;
+* QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking.DeliberationShrinking.RunTest_DeliberatedGreedy()
+  Fixed the wrong outcome, this now documents a no longer existing issue
 
 ## Future Doc Work
 * Checkrs Court: Tricky one

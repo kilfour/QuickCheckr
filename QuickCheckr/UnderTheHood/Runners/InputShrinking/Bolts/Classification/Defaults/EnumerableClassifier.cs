@@ -38,7 +38,7 @@ public class EnumerableClassifier : Classifier
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
             if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
             {
-                var clue = InputShrinkingClue.Remove<int>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
+                var clue = InputShrinkingClue.Remove<EnumerableClassifier>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
                 context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 values.Add(new ElementAssumedIrrelevant());
                 continue;

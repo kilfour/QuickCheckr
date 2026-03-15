@@ -9,5 +9,7 @@ public class ListLens(Type elementType, int ix)
         {
             if (element == null || elementType.IsAssignableFrom(element.GetType()))
                 ((IList)list)[ix] = element;
+            else
+                throw new InvalidCastException();
             return list;
         });

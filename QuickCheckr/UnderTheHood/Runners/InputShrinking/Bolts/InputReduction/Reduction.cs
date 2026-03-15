@@ -10,4 +10,4 @@ public record Reduction
         => new() { Continue = true, Candidate = candidate };
     public static Reduction Stop(object result)
         => new() { Continue = false, Result = result };
-};
+}

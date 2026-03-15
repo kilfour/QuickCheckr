@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_GreedIsNotGood.cs:40:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    2130064221
+ ------------------------------------------------------------
+  Executed:
+   - Input: List = [ _, 1 ]
+ =============================================
+  !! Expectation Failed: does not contain 1
+ =============================================
+ Passed Expectations
+ - input.Count == 2: 1x
+ ------------------------------------------------------------

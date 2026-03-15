@@ -31,15 +31,20 @@ public class PrimitiveClassifier : Classifier
                 return new InputRelevant(context.PrintInput(info.Value));
             }
         }
-        var witness = primitiveVals.First();
-        if (verifier.TestimonyPassed(info.ExecutionId, info.Key, witness))
+
+        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
         {
-            // Mark input as relevant, because we found a candidate that makes the run pass.
-            var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
-                info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
-            return new InputRelevant(context.PrintInput(info.Value));
+            //var witness = primitiveVals.First();
+            if (verifier.TestimonyPassed(info.ExecutionId, info.Key, candidate))
+            {
+                // Mark input as relevant, because we found a candidate that makes the run pass.
+                var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
+                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
+                context.State.Docket.Record(new InputShrinkingClueFound(clue));
+                return new InputRelevant(context.PrintInput(info.Value));
+            }
         }
+
         var ignoreClue = InputShrinkingClue.Ignore<PrimitiveClassifier>(info.ExecutionId, info.Path, info.Value);
         context.State.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         // -----------------------------------------------
