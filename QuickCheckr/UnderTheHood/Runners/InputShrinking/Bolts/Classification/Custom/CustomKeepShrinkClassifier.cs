@@ -11,8 +11,8 @@ public class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOption
     {
         var info = customContext.Info;
         var keep = InputShrinkingClue.Keep<CustomClassifierRunner>(
-            info.ExecutionId, info.Path, info.Value, customContext.Context.State.InputPrinter.IntroduceThis(info.Value));
+            info.ExecutionId, info.Path, info.Value, customContext.PrintInput(info.Value));
         customContext.Context.State.Docket.Record(new InputShrinkingClueFound(keep));
-        return new InputRelevant(customContext.Context.State.InputPrinter.IntroduceThis(info.Value));
+        return new InputRelevant(customContext.PrintInput(info.Value));
     }
 }

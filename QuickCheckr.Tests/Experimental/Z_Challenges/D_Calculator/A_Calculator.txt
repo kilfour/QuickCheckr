@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_Calculator.cs:32:1
+ Location:                A_Calculator.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 14 shrinks)
- Seed:                    767678629
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1264796639
  ------------------------------------------------------------
   Executed: Evaluate
-   - Input: Calculator = { Right: { Right: { Right: { Left: { Value: 4 }, Right: { Value: 7 } } } } }
-   - Trace: Original   = { Operation: Divide, Left: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 9 } }, Right: { Operation: Divide, Left: { Value: 3 }, Right: { Operation: Divide, Left: { Value: 5 }, Right: { Operation: Divide, Left: { Value: 4 }, Right: { Value: 7 } } } } }
+   - Input: Calculator = { Op: Div, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }
+   - Trace: Original   = { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }
  ===========================================================================
   !! DivideByZeroException: Attempted to divide by zero.
  ===========================================================================

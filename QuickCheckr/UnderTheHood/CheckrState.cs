@@ -20,6 +20,8 @@ public class CheckrState(
         Please.AllowMe().ToUseNonLinearTime();
     public ManOfWealthAndTaste InputPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
+    public ManOfWealthAndTaste ReductionPrinter { get; set; } =
+        Please.AllowMe().ToUseNonLinearTime();
 
     public int StartReplay()
     {

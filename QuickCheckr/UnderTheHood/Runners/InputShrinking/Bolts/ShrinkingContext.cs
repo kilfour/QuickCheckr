@@ -4,4 +4,5 @@ public record ShrinkingContext(CheckrState State, CheckrOf<Case> Check, bool Use
 {
     public Verifier Verifier => new(State, Check);
     public string PrintInput(object? input) => State.InputPrinter.IntroduceThis(input)!;
+    public string PrintRedux(object? input) => State.ReductionPrinter.IntroduceThis(input)!;
 }

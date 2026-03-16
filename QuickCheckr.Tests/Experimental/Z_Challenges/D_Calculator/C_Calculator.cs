@@ -26,7 +26,7 @@ public class C_Calculator : CheckrTest<C_Calculator>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(100.Runs());
+        Run(1000.Runs());
 
     [CodeSnippet]
     [CodeRemove("CalculatorFuzzr.")]
@@ -35,13 +35,62 @@ public class C_Calculator : CheckrTest<C_Calculator>
         from input in Checkr.Input("Calculator", CalculatorFuzzr.TheFuzzr,
             Shrink.OnType<Expr>(
                 s => s.Classify(Try.Keep<Expr>()),
-                s => s.Simplify(Reduce.Function<Expr>(a => Prune(a), true))),
+                s => s.Simplify(Reduce.Function<Expr>(a => Prune(a)))),
             Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
-        from trace in Checkr.Trace("Original", () => input)
         from eval in Checkr.Act("Evaluate", () => input.Evaluate())
         select Case.Closed;
 
+    [CodeExample]
+    private class ExprReducer
+    {
+        public static Func<Reducer<Expr>> Minimize = () => new ExprReducer().Reduce;
 
+        private enum Phase { Both, A, B }
+        private Phase phase = Phase.Both;
+        public Reduction Reduce(ReductionResult result)
+        {
+            var current = result.ValueAs<Expr>();
+            // if (result.Passed)
+            // {
+            //     if (phase == Phase.Both)
+            //         phase = Phase.A;
+            //     else if (phase == Phase.A)
+            //         phase = Phase.B;
+            //     if (phase == Phase.B)
+            //         return Reduction.Stop(current);
+            // }
+            // switch (phase)
+            // {
+            //     case Phase.Both:
+            //         if (current.A <= 0 || current.B == 0)
+            //             return Reduction.Stop(current);
+            //         return Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
+            //     case Phase.A:
+            //         if (current.A <= 0)
+            //             return Reduction.Stop(current);
+            //         return Reduction.Next(current with { B = current.B - 1 });
+            //     case Phase.B:
+            //         if (current.B <= 0)
+            //             return Reduction.Stop(current);
+            //         return Reduction.Next(current with { A = current.A - 1 });
+            // }
+            return Reduction.Stop(current);
+        }
+    }
+    // public static IEnumerable<Expr> Prune(Expr expression)
+    // {
+    //     if (expression is Term term)
+    //     {
+    //         yield return term.Left;
+    //         yield return term.Right;
+    //         foreach (var item in Prune(term.Left))
+    //             yield return item;
+    //         foreach (var item in Prune(term.Right))
+    //             yield return item;
+    //     }
+    // }
+
+    [CodeExample]
     public static IEnumerable<Expr> Prune(Expr expression)
     {
         var queue = new Queue<Expr>();
@@ -53,11 +102,11 @@ public class C_Calculator : CheckrTest<C_Calculator>
 
             if (current is Term term)
             {
-                yield return term.Left;
-                yield return term.Right;
+                yield return term.L;
+                yield return term.R;
 
-                queue.Enqueue(term.Left);
-                queue.Enqueue(term.Right);
+                queue.Enqueue(term.L);
+                queue.Enqueue(term.R);
             }
         }
     }

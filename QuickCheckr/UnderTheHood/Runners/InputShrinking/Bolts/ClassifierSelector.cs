@@ -39,7 +39,7 @@ public class ClassifierSelector
         context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);
         context.State.Memory.Testify(info.ExecutionId, info.Key, step.Result!);
         return (
-            Maybe.Just(context.PrintInput(step.Result!)),
+            Maybe.Just(context.PrintRedux(step.Result!)),
             Maybe<object>.Just(step.Result!));
     }
 

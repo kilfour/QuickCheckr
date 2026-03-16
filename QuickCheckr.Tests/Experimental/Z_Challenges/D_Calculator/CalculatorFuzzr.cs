@@ -13,12 +13,12 @@ public static class CalculatorFuzzr
             {
                 // rewrite division by zero terms
                 if (a is Term t)
-                    if (t.Operation == Operation.Divide && t.Right is Scalar { Value: 0 })
-                        t.Right = new Scalar { Value = 1 };
+                    if (t.Op == Operation.Div && t.R is Num { Value: 0 })
+                        t.R = new Num { Value = 1 };
             })
-        from depth in Configr<Expr>.Depth(3, 10)
-        from inheritance in Configr<Expr>.AsOneOf(typeof(Term), typeof(Scalar))
-        from terminator in Configr<Expr>.EndOn<Scalar>()
+        from depth in Configr<Expr>.Depth(0, 10)
+        from inheritance in Configr<Expr>.AsOneOf(typeof(Term), typeof(Num))
+        from terminator in Configr<Expr>.EndOn<Num>()
         from expr in Fuzzr.One<Expr>()
         select expr;
 }

@@ -35,7 +35,7 @@ public class A_Calculator : CheckrTest<A_Calculator>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(767678629);
+        Run(1264796639);
 
     [CodeSnippet]
     protected override CheckrConfig Configure(CheckrConfig config) =>
@@ -56,12 +56,12 @@ public class A_Calculator : CheckrTest<A_Calculator>
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(14, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Evaluate", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Calculator", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ Right: { Right: { Right: { Left: { Value: 4 }, Right: { Value: 7 } } } } }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Op: Div, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Operation: Divide, Left: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 9 } }, Right: { Operation: Divide, Left: { Value: 3 }, Right: { Operation: Divide, Left: { Value: 5 }, Right: { Operation: Divide, Left: { Value: 4 }, Right: { Value: 7 } } } } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("{ Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }", article.Execution(1).Trace(1).Read().Value);
     }
 }

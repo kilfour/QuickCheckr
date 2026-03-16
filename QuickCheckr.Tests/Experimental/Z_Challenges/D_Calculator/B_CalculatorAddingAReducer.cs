@@ -24,7 +24,7 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1628290528);
+        Run(1301314441);
 
     [CodeSnippet]
     protected override CheckrConfig Configure(CheckrConfig config) =>
@@ -39,7 +39,7 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
     private static int DepthOf(Expr a, int depth = 0)
     {
         if (a is Term term)
-            return Math.Max(DepthOf(term.Left, depth + 1), DepthOf(term.Right, depth + 1));
+            return Math.Max(DepthOf(term.L, depth + 1), DepthOf(term.R, depth + 1));
         return depth;
     }
 
@@ -59,13 +59,13 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(8, article.ShrinkCount);
+        Assert.Equal(10, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Evaluate", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Calculator", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ Operation: Divide, Right: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 8 } } }", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("{ Operation: Divide, Right: { Operation: Divide, Left: { Value: 1 }, Right: { Value: 2 } } }", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("{ Op: Div, R: { Op: Div, L: { L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Op: Div, R: { Op: Div, L: { L: { Value: 1 }, R: { Value: 1 } }, R: { Value: 3 } } }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Operation: Divide, Left: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 5 } }, Right: { Operation: Divide, Left: { Value: 6 }, Right: { Value: 8 } } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("{ Op: Div, L: { Op: Add, L: { Value: 6 }, R: { Value: 7 } }, R: { Op: Div, L: { Op: Add, L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }", article.Execution(1).Trace(1).Read().Value);
     }
 }
