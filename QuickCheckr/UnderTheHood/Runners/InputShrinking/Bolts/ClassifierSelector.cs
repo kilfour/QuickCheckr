@@ -33,7 +33,7 @@ public class ClassifierSelector
         }
         if (reducerFactory == null) return (Maybe.Nothing(), Maybe<object>.Nothing());
         var reducer = reducerFactory();
-        Reduction step = RunTheReducer(reducer, info.Value, a => context.Verifier.RunFailed(info.ExecutionId, info.Key, a));
+        var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.RunFailed(info.ExecutionId, info.Key, a));
         if (Equals(info.Value, step.Result))
             return (Maybe.Nothing(), Maybe<object>.Nothing());
         context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);
@@ -41,25 +41,6 @@ public class ClassifierSelector
         return (
             Maybe.Just(context.PrintInput(step.Result!)),
             Maybe<object>.Just(step.Result!));
-    }
-
-    public static Reduction RunTheReducer(Func<ReductionResult, Reduction> reducer, object? value, Func<object, bool> failTest)
-    {
-        // var result = new ReductionResult(true, value);
-        // Reduction step = Reduction.Next(value!);
-        var result = new ReductionResult(true, value);
-        var step = reducer(result);
-        bool failed;
-        while (step.Continue)
-        {
-            failed = failTest(step.Candidate!);
-            if (failed)
-                result = new ReductionResult(true, step.Candidate!);
-            else
-                result = new ReductionResult(false, result.Value!);
-            step = reducer(result);
-        }
-        return step;
     }
 
     private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
