@@ -46,7 +46,6 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
     [CodeSnippet]
     [CodeRemove("CalculatorFuzzr.")]
     protected override CheckrOf<Case> TheCheckr() =>
-        from show in Showr.ForAll(() => Please.AllowMe().ToReplace<Term>(a => a.ToString()))
         from input in Checkr.Input("Calculator", CalculatorFuzzr.TheFuzzr,
             Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
         from trace in Checkr.Trace("Original", () => input)
