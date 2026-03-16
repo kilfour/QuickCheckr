@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_CalculatorAddingAReducer.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 30 shrinks)
+ Seed:                    655362160
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Trace: Original = ((7 / (((0 / 4) / 8) / 1)) / (5 / (9 + 9)))
+   - WARNING: All inputs were considered irrelevant.
+ ===========================================================================
+  !! DivideByZeroException: Attempted to divide by zero.
+ ===========================================================================
