@@ -40,43 +40,6 @@ public class C_Calculator : CheckrTest<C_Calculator>
         from eval in Checkr.Act("Evaluate", () => input.Evaluate())
         select Case.Closed;
 
-    [CodeExample]
-    private class ExprReducer
-    {
-        public static Func<Reducer<Expr>> Minimize = () => new ExprReducer().Reduce;
-
-        private enum Phase { Both, A, B }
-        private Phase phase = Phase.Both;
-        public Reduction Reduce(ReductionResult result)
-        {
-            var current = result.ValueAs<Expr>();
-            // if (result.Passed)
-            // {
-            //     if (phase == Phase.Both)
-            //         phase = Phase.A;
-            //     else if (phase == Phase.A)
-            //         phase = Phase.B;
-            //     if (phase == Phase.B)
-            //         return Reduction.Stop(current);
-            // }
-            // switch (phase)
-            // {
-            //     case Phase.Both:
-            //         if (current.A <= 0 || current.B == 0)
-            //             return Reduction.Stop(current);
-            //         return Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
-            //     case Phase.A:
-            //         if (current.A <= 0)
-            //             return Reduction.Stop(current);
-            //         return Reduction.Next(current with { B = current.B - 1 });
-            //     case Phase.B:
-            //         if (current.B <= 0)
-            //             return Reduction.Stop(current);
-            //         return Reduction.Next(current with { A = current.A - 1 });
-            // }
-            return Reduction.Stop(current);
-        }
-    }
     // public static IEnumerable<Expr> Prune(Expr expression)
     // {
     //     if (expression is Term term)

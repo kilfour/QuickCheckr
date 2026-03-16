@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Experimental.D_ShowrUse;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne;
 using QuickCheckr.Tests.Experimental.W_Warehouse.B_StepTwo;
 using QuickCheckr.Tests.Experimental.W_Warehouse.C_StepThree;
@@ -16,7 +15,6 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse;
   *RESTy*, they get products => use it to place order f.i., client object keeps track of what happened
   Could be used to verify concurrency issues et al, client asks data, places order, another client snatched last item ...
 ")]
-[DocLink(typeof(ShowrUse))]
 [DocInclude(typeof(WarehouseStepOne))]
 [DocInclude(typeof(WarehouseStepTwo))]
 [DocInclude(typeof(WarehouseStepThree))]
