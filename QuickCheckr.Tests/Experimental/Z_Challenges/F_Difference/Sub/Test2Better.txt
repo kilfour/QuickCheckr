@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Test2Better.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    737468544
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 53, B: 51 }
+            Redux      { A: 10, B: 6 }
+   - Trace: Original = { A: 53, B: 51 }
+ ========================================================
+  !! Expectation Failed: Difference must not be small.
+ ========================================================

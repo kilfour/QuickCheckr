@@ -146,8 +146,6 @@ public class Memory
         => GetClassificationOptions(executionId, key, type).Any();
     // --------------------------------------------------------------------------
     // Reducers
-    public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
-        => ShortTermMemory.StoreReducerByType(key, reducer);
     public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
         => ShortTermMemory.StoreReducerByType(key, type, reducer);
     public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)

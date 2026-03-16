@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Test3.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1238621164
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 49, B: 48 }
+            Redux      { A: 10, B: 9 }
+   - Trace: Original = { A: 49, B: 48 }
+ =======================================================
+  !! Expectation Failed: Difference is not exactly 1.
+ =======================================================

@@ -23,8 +23,8 @@ One of the possible difficulties that might come up is the shrinking of recursiv
     public class Calculator : CheckrTest<Calculator>
     {
         protected override bool Asserts => false;
-        protected override bool Report => true;
-        protected override bool Explain => true;
+        protected override bool Report => false;
+        protected override bool Explain => false;
 
         [Fact(Skip = "wip")]
         [DocCheckrHeader]
