@@ -469,6 +469,105 @@ private static readonly CheckrOf<Case> PlaceOrder =
  ------------------------------------------------------------
 ```
 ## Challenges
+### Bound5
+Given a 5-tuple of lists of 16-bit integers, we want to test the property that if each list sums to less than 256,
+then the sum of all the values in the lists is less than 5 * 256.
+This is false because of overflow. e.g. ([-20000], [-20000], [], [], []) is a counter-example.
+
+The interesting thing about this example is the interdependence between separate parts of the sample data.
+A single list in the tuple will never break the invariant, but you need at least two lists together.
+This prevents most of trivial shrinking algorithms from getting close to a minimum example,
+which would look somethink like ([-32768], [-1], [], [], []).
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Bound5", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen(
+    "The sum of all values is less than 5 * 256.",
+    () => input.Count == 5,
+    () => Sum(input) < (5 * 256))
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<List<List<short>>>("Bound5", a => a.Sum(b => b.Count)),
+    DeliberationTarget = 2
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Bound5.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    2021488303
+ ------------------------------------------------------------
+  Executed:
+   - Input: Bound5   = [ _, [ -20241 ], _, _, [ -13889 ] ]
+   - Trace: Original = [ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]
+   - WARNING: Empty collection deemed irrelevant at:
+       Bound5: 0, 2, 3
+ ======================================================================
+  !! Expectation Failed: The sum of all values is less than 5 * 256.
+ ======================================================================
+```
+### Large Union List
+
+Given a list of lists of arbitrary sized integers, 
+we want to test the property that there are no more than four distinct integers across all the lists.
+This is trivially false, and this example is an artificial one to stress test a shrinker's ability to normalise
+(always produce the same output regardless of starting point).
+
+In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
+For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("LargeUnionList", TheFuzzr,
+        Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "No more than four distinct integers.",
+    () => input.SelectMany(a => a).Distinct().Count() <= 4)
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<List<List<int>>>("LargeUnionList", a => 0 - a.Count),
+    DeliberationTarget = -5
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                LargeUnionList.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 25 shrinks)
+ Seed:                    1284201255
+ ------------------------------------------------------------
+  Executed:
+   - Input: LargeUnionList = [ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]
+            Redux            [ [ _ ], [ 74 ], [ 0 ], [ 1 ], [ 2 ] ]
+   - Trace: Original       = [ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]
+ ===============================================================
+  !! Expectation Failed: No more than four distinct integers.
+ ===============================================================
+```
 ### Reverse List
 
 This tests the (wrong) property that reversing a list of integers results in the same list. 
@@ -894,105 +993,6 @@ public static IEnumerable<Pair> TowardsZero(Pair input)
  =======================================================
 ```
 This one sometimes produces 10, 11  
-### Bound5
-Given a 5-tuple of lists of 16-bit integers, we want to test the property that if each list sums to less than 256,
-then the sum of all the values in the lists is less than 5 * 256.
-This is false because of overflow. e.g. ([-20000], [-20000], [], [], []) is a counter-example.
-
-The interesting thing about this example is the interdependence between separate parts of the sample data.
-A single list in the tuple will never break the invariant, but you need at least two lists together.
-This prevents most of trivial shrinking algorithms from getting close to a minimum example,
-which would look somethink like ([-32768], [-1], [], [], []).
-  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Bound5", TheFuzzr)
-from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.ExpectWhen(
-    "The sum of all values is less than 5 * 256.",
-    () => input.Count == 5,
-    () => Sum(input) < (5 * 256))
-select Case.Closed;
-```
-
-**The Configuration:**  
-```csharp
-config with
-{
-    DeliberationPolicy = caseFile =>
-        caseFile.InputsNamed<List<List<short>>>("Bound5", a => a.Sum(b => b.Count)),
-    DeliberationTarget = 2
-};
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Bound5.cs:32:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    2021488303
- ------------------------------------------------------------
-  Executed:
-   - Input: Bound5   = [ _, [ -20241 ], _, _, [ -13889 ] ]
-   - Trace: Original = [ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]
-   - WARNING: Empty collection deemed irrelevant at:
-       Bound5: 0, 2, 3
- ======================================================================
-  !! Expectation Failed: The sum of all values is less than 5 * 256.
- ======================================================================
-```
-### Large Union List
-
-Given a list of lists of arbitrary sized integers, 
-we want to test the property that there are no more than four distinct integers across all the lists.
-This is trivially false, and this example is an artificial one to stress test a shrinker's ability to normalise
-(always produce the same output regardless of starting point).
-
-In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
-For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
-  
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("LargeUnionList", TheFuzzr,
-        Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
-from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.Expect(
-    "No more than four distinct integers.",
-    () => input.SelectMany(a => a).Distinct().Count() <= 4)
-select Case.Closed;
-```
-
-**The Configuration:**  
-```csharp
-config with
-{
-    DeliberationPolicy = caseFile =>
-        caseFile.InputsNamed<List<List<int>>>("LargeUnionList", a => 0 - a.Count),
-    DeliberationTarget = -5
-};
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                LargeUnionList.cs:32:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 25 shrinks)
- Seed:                    1284201255
- ------------------------------------------------------------
-  Executed:
-   - Input: LargeUnionList = [ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]
-            Redux            [ [ _ ], [ 74 ], [ 0 ], [ 1 ], [ 2 ] ]
-   - Trace: Original       = [ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]
- ===============================================================
-  !! Expectation Failed: No more than four distinct integers.
- ===============================================================
-```
 ### Nested Lists
 
 **The Checkr:**  

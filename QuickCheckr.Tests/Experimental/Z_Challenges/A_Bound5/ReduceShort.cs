@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-namespace QuickCheckr.Tests.Experimental.Z_Challenges.K_NestedLists;
+namespace QuickCheckr.Tests.Experimental.Z_Challenges.A_Bound5;
 
 public class ReduceShort
 {

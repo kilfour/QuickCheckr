@@ -1,10 +1,11 @@
+using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.Z_Challenges.K_NestedLists;
+namespace QuickCheckr.Tests.Experimental.Z_Challenges.B_LargeUnionList;
 
 [DocFile]
 [DocContent(
