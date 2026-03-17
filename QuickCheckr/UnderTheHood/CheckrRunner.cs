@@ -62,6 +62,6 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
                 ReportMode: config.ReportMode
             );
-        return Compile.TheCaseFile(dossier, State.Memory, State.InputPrinter);
+        return Compile.TheCaseFile(dossier, State.Memory, State.ClassificationFormatter.InputPrinter);
     }
 }

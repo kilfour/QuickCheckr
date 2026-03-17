@@ -18,10 +18,9 @@ public class CheckrState(
     public Docket Docket { get; init; } = new(signals);
     public ManOfWealthAndTaste Editor { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
-    public ManOfWealthAndTaste InputPrinter { get; set; } =
-        Please.AllowMe().ToUseNonLinearTime();
     public ManOfWealthAndTaste ReductionPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
+    public ClassificationFormatter ClassificationFormatter { get; set; } = new();
 
     public int StartReplay()
     {

@@ -2,6 +2,7 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
+* Classified Input & Redux custom report Formatting
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
@@ -17,7 +18,7 @@
         * Input Classification
         * Input Reduction (Redux)  
 * DSL Experiments
-
+ 
 ### Todo
 * Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
@@ -25,7 +26,18 @@
 * Figure out which Reducer warnings are needed/useful.
 * Check what happens when collection is null.
 * Reducers, maybe report passing candidate
+* Consolidate first run only combinators
+  * Encapsulate : if (state.EvidenceRecorder.IsReplay) return CheckrResult.CaseOnly(state);
+* **DOC**  
+  DocsSinglePages/doc.md (line 2611) RunTest_WithDeliberationPolicy is effectively a duplicate of the first null-handling example at DocsSinglePages/doc.md (line 2546). Publicly, both reports show the same outcome: The Universe = { Everything: null }, one relevant warning, same failure. The surrounding text claims the policy removed irrelevant warning noise, but that is already what the first example visibly shows, so this test adds little narrative value.
 
+  DocsSinglePages/doc.md (line 2068) Built In Enumerations and DocsSinglePages/doc.md (line 2097) Custom Enumerations are near-duplicates. They demonstrate the same shrinking behavior and differ mainly by enum type. For public docs, one example plus a sentence saying custom enums behave the same would read cleaner.
+
+  The ReportMode Reference block at DocsSinglePages/doc.md (line 1178) is intentionally exhaustive, but from a public-doc perspective it is repetitive: Default, None, Trace, Warning, and Labels all reuse the same failing checkr and mostly restate formatting deltas. If doc.md is meant to be narrative documentation rather than a full reference dump, this is the densest cluster to trim or move elsewhere.
+
+  The same applies to ShrinkMode Reference at DocsSinglePages/doc.md (line 1306). The tests are not exact duplicates, but they are repetitive variants of one scenario. For public-facing docs, a shorter comparison would likely carry the idea better than four rendered test reports.
+
+  DocsSinglePages/investigations.md (line 60) and DocsSinglePages/investigations.md (line 92) reuse the same heading, Nested Collections Inner Count. The second is really a “with custom shrinker” follow-up, so the narrative purpose exists, but the duplicated heading makes it look like accidental duplication.
 
 ### Wish List
 * Add unchecked expectations WARNING.
@@ -57,6 +69,9 @@
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
 * In case an expectation throws it is rethrown as `ExpectationThrowsException`.
 * Major improvements to shrinking behaviour as a side effect of introducing reducers.
+* Added intial version allowing for customized reporting of:
+  * Classified Input
+  * Redux
 
 ## 0.0.10 : Excuse My Domain Specific Language
 

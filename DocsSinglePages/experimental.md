@@ -1,31 +1,3 @@
-# List Element Removal
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Nested List", TheFuzzr)
-from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.Expect(
-    "The sum of lengths of the element lists is at most 10",
-    () => input.Sum(a => a.Count) <= 2)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ListElementRemoval.cs:58:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1722429225
- ------------------------------------------------------------
-  Executed:
-   - Input: Nested List = [ [ _ ], [ _, _ ] ]
-   - Trace: Original    = [ [ 76, 91 ], [ 49, 7 ] ]
- ================================================================================
-  !! Expectation Failed: The sum of lengths of the element lists is at most 10
- ================================================================================
-```
 ## The Needler Pattern
 **Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.  
 ### The SUT:
@@ -115,31 +87,6 @@ Make pooling tasks feel as native as Trackr pooling.
 * `Taskr.Pool("label", task)` (explicit store)
 * `Taskr.ClearPool()` per run
   
-## Showr Use
-```csharp
-from input in Checkr.Input("int", Fuzzr.Int())
-from showOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"One: {a}"))
-from traceOne in Checkr.Trace("int One", () => input)
-from showTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"Two: {a}"))
-from traceTwo in Checkr.Trace("int Two", () => input)
-from noAnswer in Checkr.Expect("no answer", () => input != 42)
-select Case.Closed;
-```
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Experimental\D_ShowrUse\ShowrUse.cs:20:1
- Original failing run:    1 execution
- Seed:                    553690512
- ------------------------------------------------------------
-  Executed:
-   - Input: int     = 42
-   - Trace: int One = One: 42
-   - Trace: int Two = Two: 42
- ====================================
-  !! Expectation Failed: no answer
- ====================================
-```
 ## The Broadcaster
 **Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.  
 ### The Checkr:
@@ -521,8 +468,6 @@ private static readonly CheckrOf<Case> PlaceOrder =
  - Insufficient Stock means no stock change: 5x
  ------------------------------------------------------------
 ```
-
-[ShowrUse]: #showr-use
 ## Challenges
 ### Reverse List
 
@@ -625,6 +570,23 @@ The result presented here is ok, but in reality, this sometimes produces non-exp
 
 **The Checkr:**  
 ```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
 from input in Checkr.Input("Calculator", TheFuzzr,
     Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
 from trace in Checkr.Trace("Original", () => input)
@@ -637,8 +599,9 @@ select Case.Closed;
 config with
 {
     DeliberationPolicy = caseFile =>
+        (caseFile.InputCount == 0 ? 100 : 0) +
         caseFile.InputsNamed<Expr>("Calculator", a => DepthOf(a)),
-    DeliberationTarget = 1,
+    DeliberationTarget = 2,
     ReportMode = config.ReportMode & ~ReportMode.StackTrace
 };
 ```
@@ -649,13 +612,13 @@ config with
  Test:                    Example
  Location:                B_CalculatorAddingAReducer.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 10 shrinks)
- Seed:                    1301314441
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    48165483
  ------------------------------------------------------------
   Executed: Evaluate
-   - Input: Calculator = { Op: Div, R: { Op: Div, L: { L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }
-            Redux        { Op: Div, R: { Op: Div, L: { L: { Value: 1 }, R: { Value: 1 } }, R: { Value: 3 } } }
-   - Trace: Original   = { Op: Div, L: { Op: Add, L: { Value: 6 }, R: { Value: 7 } }, R: { Op: Div, L: { Op: Add, L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }
+   - Input: Calculator = ( _ / ( 0 / 9 ) )
+            Redux        { Op: /, R: { Op: /, L: { Value: 1 }, R: { Value: 2 } } }
+   - Trace: Original   = { Op: Div, L: { Value: 5 }, R: { Op: Div, L: { Value: 0 }, R: { Value: 9 } } }
  ===========================================================================
   !! DivideByZeroException: Attempted to divide by zero.
  ===========================================================================

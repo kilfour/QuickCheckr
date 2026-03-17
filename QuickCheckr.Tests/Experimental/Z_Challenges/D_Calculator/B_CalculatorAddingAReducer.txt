@@ -2,13 +2,13 @@
  Test:                    Example
  Location:                B_CalculatorAddingAReducer.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 10 shrinks)
- Seed:                    1301314441
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    48165483
  ------------------------------------------------------------
   Executed: Evaluate
-   - Input: Calculator = { Op: Div, R: { Op: Div, L: { L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }
-            Redux        { Op: Div, R: { Op: Div, L: { L: { Value: 1 }, R: { Value: 1 } }, R: { Value: 3 } } }
-   - Trace: Original   = { Op: Div, L: { Op: Add, L: { Value: 6 }, R: { Value: 7 } }, R: { Op: Div, L: { Op: Add, L: { Value: 3 }, R: { Value: 2 } }, R: { Value: 7 } } }
+   - Input: Calculator = ( _ / ( 0 / 9 ) )
+            Redux        { Op: /, R: { Op: /, L: { Value: 1 }, R: { Value: 2 } } }
+   - Trace: Original   = { Op: Div, L: { Value: 5 }, R: { Op: Div, L: { Value: 0 }, R: { Value: 9 } } }
  ===========================================================================
   !! DivideByZeroException: Attempted to divide by zero.
  ===========================================================================

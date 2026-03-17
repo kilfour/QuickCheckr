@@ -2,14 +2,9 @@ using QuickCheckr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record ObjectRelevant(Dictionary<string, InputClassification> Members)
-    : InputRelevant(GetReport(Members))
+public record ObjectRelevant(Dictionary<string, InputClassification> Members, string Report)
+    : InputRelevant(Report)
 {
-    private static string GetReport(Dictionary<string, InputClassification> members) =>
-        $"{{ {string.Join(", ",
-            members.Where(a => a.Value is InputRelevant)
-                .Select(kvp => $"{kvp.Key}: {(kvp.Value as InputRelevant)!.Report}"))} }}";
-
     public override Maybe GetRedux()
     {
         if (Redux.HasValue) return Redux;

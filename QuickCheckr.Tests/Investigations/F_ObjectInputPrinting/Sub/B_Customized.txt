@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Customized.cs:32:1
+ Original failing run:    1 execution
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = ( 84 / 2 )
+   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Value: 2 } }
+ =================================
+  !! Expectation Failed: Not 42
+ =================================

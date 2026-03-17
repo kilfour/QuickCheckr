@@ -306,5 +306,3 @@ private static readonly CheckrOf<Case> PlaceOrder =
  - Insufficient Stock means no stock change: 5x
  ------------------------------------------------------------
 ```
-
-[ShowrUse]: ../D_ShowrUse/ShowrUse.md
