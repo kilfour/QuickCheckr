@@ -20,6 +20,7 @@
 * DSL Experiments
  
 ### Todo
+* Conditional Shrinkers based on context : `Shrink.When(a => a.Parent<Term>(t => t.Op == Operator.Div), ...)`
 * Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
