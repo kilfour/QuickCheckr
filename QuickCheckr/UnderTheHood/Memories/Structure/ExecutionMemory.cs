@@ -127,17 +127,16 @@ public class ExecutionMemory
 
 
     // --------------------------------------------------------------------------
-    // Classifiers
-    private readonly TypedMemoryBank<IClassificationOption[]> classifiers = new();
-    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
-        => classifiers.Store(key, factory);
-    public IEnumerable<IClassificationOption> GetClassificationOptions(string key, Type type)
+    // Shrinkers
+    private readonly TypedMemoryBank<Shrinker[]> conditionalShrinkers = new();
+    public void StoreShrinkers(string key, Shrinker[] shrinkers)
+        => conditionalShrinkers.Store(key, () => shrinkers);
+    public Shrinker[]? GetShrinkers(string key, Type type)
     {
-        var options = classifiers.Get(key);
-        if (options == null) return [];
         StoreClassificationUsed(key, type);
-        return options.Where(a => a.TargetType == type);
+        return conditionalShrinkers.Get(key);
     }
+
     private readonly Dictionary<string, List<Type>> shrinkersUsed = [];
     private void StoreClassificationUsed(string key, Type type)
     {
@@ -146,15 +145,19 @@ public class ExecutionMemory
         else
             shrinkersUsed[key] = [type];
     }
+
     public (bool, List<Type>) HasUnusedClassifiers(string key)
     {
-        var options = classifiers.Get(key);
+        var shrinkers = conditionalShrinkers.Get(key);
+        if (shrinkers is null) return (false, []);
+
+        var options = shrinkers.SelectMany(a => a.Classifiers).ToList();
         if (options == null) return (false, []);
         if (shrinkersUsed.TryGetValue(key, out List<Type>? used))
         {
             options = [.. options.Where(a => !used.Contains(a.TargetType))];
         }
-        if (options.Length != 0)
+        if (options.Count != 0)
             return (true, [.. options.Select(a => a.TargetType)]);
         return (false, []);
     }

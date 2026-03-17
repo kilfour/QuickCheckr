@@ -9,7 +9,7 @@ Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                F_AppliesDefaultReducers.cs:24:1
+ Location:                F_AppliesDefaultReducers.cs:25:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1429680296

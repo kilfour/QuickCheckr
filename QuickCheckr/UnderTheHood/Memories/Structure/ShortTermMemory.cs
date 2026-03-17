@@ -87,23 +87,14 @@ public class ShortTermMemory
     public T? StoreVariable<T>(string key, Func<T> factory)
         => Current.StoreVariable(key, factory);
     // --------------------------------------------------------------------------
-    // Classifiers
-    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
-        => Current.StoreClassification(key, factory);
-    public IEnumerable<IClassificationOption> GetClassificationOptions(int executionId, string key, Type type)
-        => memories[executionId].GetClassificationOptions(key, type);
+    // Shrinkers
+    public void StoreShrinkers(string key, Shrinker[] shrinkers)
+        => Current.StoreShrinkers(key, shrinkers);
+    public Shrinker[]? GetShrinkers(int executionId, string key, Type type)
+        => memories[executionId].GetShrinkers(key, type);
     // --------------------------------------------------------------------------
-    // Reducers
-    public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
-        => Current.StoreReducerByType(key, reducer);
-    public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
-        => Current.StoreReducerByType(key, type, reducer);
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
-        => Current.GetReducerByType(key, type);
-    public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
-        => Current.StoreReducerByPath(key, reducers);
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByPath(string key, string path, Type type)
-        => Current.GetReducerByPath(key, path, type);
+
+
     // --------------------------------------------------------------------------
     // Warnings
     public Warning? StoreWarning(string key, Func<Warning> factory)

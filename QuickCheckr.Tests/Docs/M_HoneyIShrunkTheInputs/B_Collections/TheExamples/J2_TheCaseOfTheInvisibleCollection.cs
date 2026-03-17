@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExampl
 public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
 
     [Fact]
     [DocCheckrHeader]
@@ -26,21 +26,24 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
             Checkr.Option(() => !thing.Ints.Contains(1),
                 from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
                 from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+                from check in Checkr.Expect("Has 1", () => NewMethod(thing))
                 select Case.Closed),
             Checkr.Option(() => thing.Ints.Contains(1),
                 from ints in Checkr.Input("Ints",
                 Fuzzr.Int().Many(2),
-                // Custom Shrinker
-                Shrink.OnType<IEnumerable<int>>(
-                    s => s.Classify(
-                        Try.Default<IEnumerable<int>>(),
-                        Try.Collection([thing.Ints])),
-                    s => s.Simplify(Reduce.Collection([[], thing.Ints]))))
-                // --
+                Shrink.OnType<List<int>>(
+                    s => s.Classify(Try.Default<List<int>>(), Try.Values(thing.Ints)),
+                    s => s.Simplify(Reduce.Values([[], thing.Ints]))))
                 from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
-                from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+                from trace in Checkr.Trace("Original", () => thing.Ints)
+                from check in Checkr.Expect("Has 1", () => NewMethod(thing))
                 select Case.Closed))
         select Case.Closed;
+
+    private static bool NewMethod(Thing thing)
+    {
+        return thing.Ints.Contains(1);
+    }
 
     protected override void Verify(Article article)
     {
@@ -61,5 +64,5 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
     }
 
     [CodeExample]
-    public class Thing { public List<int> Ints = []; }
+    public class Thing { public List<int> Ints { get; set; } = []; }
 }

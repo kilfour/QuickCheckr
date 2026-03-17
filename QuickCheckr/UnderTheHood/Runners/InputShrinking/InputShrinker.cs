@@ -28,7 +28,7 @@ public class InputShrinker(
                 {
                     keptAtLeastOne = true;
                 }
-                keptAtLeastOne = keptAtLeastOne || State.Memory.HasClassifier(info.ExecutionId, info.Key, info.Type);
+                keptAtLeastOne = keptAtLeastOne || State.Memory.HasClassifier(info);
                 var (unused, types) = executionMemory.HasUnusedClassifiers(key);
                 if (unused)
                 {

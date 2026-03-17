@@ -113,7 +113,7 @@
   Might get removed.
 * 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
-* QuickCheckr.Tests.Notes.C_ReducersOld.A_Values;
+* QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.A_Values;
 * QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking.DeliberationShrinking.RunTest_DeliberatedGreedy()
   Fixed the wrong outcome, this now documents a no longer existing issue
 
@@ -143,6 +143,7 @@
 
   
 ## Refactoring Targets 
+* Get rid of the dispatching thing, not worth it, annoying to debug, hides intent.
 * !!! InputDeposition Value => string !!!
 * PrimitiveShrinkClassifier : uses non-deterministic shrinking candidates
   instead of Guid.NewGuid(), DateTime.UtcNow, ...

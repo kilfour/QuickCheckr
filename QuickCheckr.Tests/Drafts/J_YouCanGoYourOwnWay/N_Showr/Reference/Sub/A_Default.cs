@@ -1,11 +1,12 @@
 using QuickCheckr;
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Investigations.F_ObjectInputPrinting.Sub;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Sub;
 
 [DocFile]
 public class A_Default : CheckrTest<A_Default>

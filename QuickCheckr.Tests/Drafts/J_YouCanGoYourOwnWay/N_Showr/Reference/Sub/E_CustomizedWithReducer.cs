@@ -1,12 +1,13 @@
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.F_ObjectInputPrinting.Sub;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Sub;
 
 [DocFile]
-public class D_CustomizedWithIrrelevant : CheckrTest<D_CustomizedWithIrrelevant>
+public class E_CustomizedWithReducer : CheckrTest<E_CustomizedWithReducer>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -40,13 +41,21 @@ public class D_CustomizedWithIrrelevant : CheckrTest<D_CustomizedWithIrrelevant>
             .Delimiter("")
             .HidePropertyNames())
         from expr in Checkr.Input("Expr", Fuzzr.Constant(
-            new Term { L = new Num { Value = 84 }, R = new Num { Value = 0 }, Op = Operation.Div }))
+            new Term
+            {
+                L = new Num { Value = 84 },
+                R = new Term { L = new Num { Value = 10 }, R = new Num { Value = 20 }, Op = Operation.Div },
+                Op = Operation.Div
+            }),
+            Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
         from trace in Checkr.Trace("Original", () => expr)
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
+        from expect in Checkr.Expect("Not 42", () => eval != 42)
         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("( _ / 0 )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _ / ( 10 / 20 ) )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _ / ( 1 / 2 ) )", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

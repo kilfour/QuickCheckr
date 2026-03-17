@@ -24,13 +24,23 @@ public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
         from answers in Checkr.Input("answers", Fuzzr.Int().Many(1, 5),
             Shrink.OnType<int>(
                 s => s.Classify(Try.Values(42)),
-                s => s.Simplify(Reduce.Towards(100))))
+                s => s.Simplify(Reduce.Towards(0))))
         from trace in Checkr.Trace("original", () => answers)
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("all answers equal 42", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("answers", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("[ 73 ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ 43 ]", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ 73 ]", article.Execution(1).Trace(1).Read().Value);
     }
 }

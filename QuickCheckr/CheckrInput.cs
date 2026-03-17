@@ -14,19 +14,7 @@ public static partial class Checkr
     {
         return state =>
         {
-            state.Memory.StoreClassification(key, () => [.. shrinkers.SelectMany(s => s.Classifiers())]);
-            foreach (var reducer in shrinkers.Where(a => a.Reducers is not null).SelectMany(a => a.Reducers!))
-            {
-                if (reducer is ITypeReducerOption typeReducer)
-                    state.Memory.StoreReducerByType(key, typeReducer.TargetType, typeReducer.ReducerFactory);
-
-                // Existing call : state.Memory.StoreReducerByPath(key, pathReducers);
-                // see NestedReducerInObjectOnPath
-                // if (reducer is PathReducerFactory pathReducer)
-                //       Code below => new shape
-                //     state.Memory.StoreReducerByPath(key, pathReducer.TargetType, pathReducer.Path, pathReducer.ReducerFactory);
-            }
-
+            state.Memory.StoreShrinkers(key, shrinkers);
             return HandleInput(state, key, fuzzr);
         };
     }

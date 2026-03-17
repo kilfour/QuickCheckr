@@ -63,7 +63,7 @@ public class EnumerableClassifier : Classifier
         }
         if (elementCount != 0)
         {
-            if (!context.State.Memory.HasClassifier(info.ExecutionId, info.Key, info.Type))
+            if (!context.State.Memory.HasClassifier(info))
                 context.State.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         }
         return new InputAssumedIrrelevant();

@@ -58,19 +58,17 @@ from _ in Checkr.OneOfWhen(
     Checkr.Option(() => !thing.Ints.Contains(1),
         from anInt in Checkr.Input("Int", Fuzzr.Int(1, 10))
         from act in Checkr.Act("Add", () => thing.Ints.Add(anInt))
+        from check in Checkr.Expect("Has 1", () => NewMethod(thing))
         select Case.Closed),
     Checkr.Option(() => thing.Ints.Contains(1),
         from ints in Checkr.Input("Ints",
         Fuzzr.Int().Many(2),
-        // Custom Shrinker
-        Shrink.OnType<IEnumerable<int>>(
-            s => s.Classify(
-                Try.Default<IEnumerable<int>>(),
-                Try.Collection([thing.Ints])),
-            s => s.Simplify(Reduce.Collection([[], thing.Ints]))))
-        // --
+        Shrink.OnType<List<int>>(
+            s => s.Classify(Try.Default<List<int>>(), Try.Values(thing.Ints)),
+            s => s.Simplify(Reduce.Values([[], thing.Ints]))))
         from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
-        from check in Checkr.Expect("Has 1", () => thing.Ints.Contains(1))
+        from trace in Checkr.Trace("Original", () => thing.Ints)
+        from check in Checkr.Expect("Has 1", () => NewMethod(thing))
         select Case.Closed))
 select Case.Closed;
 ```
@@ -79,7 +77,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleCollection.cs:68:1
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:50:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -88,11 +86,16 @@ select Case.Closed;
    - Input: Int = 1
  ------------------------------------------------------------
   Executed: Update
-   - Input: Ints  = [ 57, 70 ]
-            Redux   [ ]
+   - Input: Ints     = [ 57, 70 ]
+            Redux      [ ]
+   - Trace: Original = [ 57, 70 ]
+   - WARNING: Unused shrinkers found for 'List`1,List`1' at key 'Ints'.
  ================================
   !! Expectation Failed: Has 1
  ================================
+ Passed Expectations
+ - Has 1: 1x
+ ------------------------------------------------------------
 ```
 ## The Better Solution
 Use the built-in `Shrink.CollectionFromState` shrinker, 

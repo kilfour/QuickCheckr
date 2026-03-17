@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Spike.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1645367809
+ ------------------------------------------------------------
+  Executed:
+   - Input: Inter    = { B: 5 }
+            Redux      { B: 1 }
+   - Trace: Original = { A: 42, B: 5 }
+ ===================================================
+  !! Expectation Failed: All ints smaller than 1.
+ ===================================================

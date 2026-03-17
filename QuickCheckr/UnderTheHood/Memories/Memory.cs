@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -92,6 +93,7 @@ public class Memory
     // Short Term
     // == 
     public ShortTermMemory ShortTermMemory { get; } = new();
+    public bool IsConfigRun { get; set; } = false;
     // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
@@ -136,25 +138,27 @@ public class Memory
     public T? StoreVariable<T>(string key, Func<T> factory)
         => ShortTermMemory.StoreVariable(KeyGuardian.Variables.Check(key), factory);
     // --------------------------------------------------------------------------
-    // Classifiers
-    public bool IsConfigRun { get; set; } = false;
-    public void StoreClassification(string key, Func<IClassificationOption[]> factory)
-        => ShortTermMemory.StoreClassification(key, factory);
-    public IEnumerable<IClassificationOption> GetClassificationOptions(int executionId, string key, Type type)
-        => ShortTermMemory.GetClassificationOptions(executionId, key, type);
-    public bool HasClassifier(int executionId, string key, Type type)
-        => GetClassificationOptions(executionId, key, type).Any();
+
     // --------------------------------------------------------------------------
-    // Reducers
-    public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
-        => ShortTermMemory.StoreReducerByType(key, type, reducer);
-    public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
-        => ShortTermMemory.StoreReducerByPath(key, reducers);
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
-        => ShortTermMemory.GetReducerByType(key, type);
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByPath(string key, string path, Type type)
-        => ShortTermMemory.GetReducerByPath(key, path, type);
+    // Shrinkers
+    public void StoreShrinkers(string key, Shrinker[] shrinkers)
+        => ShortTermMemory.StoreShrinkers(key, shrinkers);
+    public Shrinker[]? GetShrinkers(int executionId, string key, Type type)
+        => ShortTermMemory.GetShrinkers(executionId, key, type);
+    public bool HasClassifier(ShrinkingInfo info)
+    {
+        var shrinkers = GetShrinkers(info.ExecutionId, info.Key, info.Type);
+        if (shrinkers is not null)
+        {
+            var shrinker = shrinkers.Where(a => a.Classifiers.Length != 0).FirstOrDefault(x => x.Condition(info));
+            if (shrinker is not null)
+                return true;
+        }
+        return false;
+    }
+
     // --------------------------------------------------------------------------
+
 
     // --------------------------------------------------------------------------
     // Warnings

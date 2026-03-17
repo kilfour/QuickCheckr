@@ -1,12 +1,13 @@
+using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.F_ObjectInputPrinting.Sub;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Sub;
 
 [DocFile]
-public class B_Customized : CheckrTest<B_Customized>
+public class D_CustomizedWithIrrelevant : CheckrTest<D_CustomizedWithIrrelevant>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -40,14 +41,13 @@ public class B_Customized : CheckrTest<B_Customized>
             .Delimiter("")
             .HidePropertyNames())
         from expr in Checkr.Input("Expr", Fuzzr.Constant(
-            new Term { L = new Num { Value = 84 }, R = new Num { Value = 2 }, Op = Operation.Div }))
+            new Term { L = new Num { Value = 84 }, R = new Num { Value = 0 }, Op = Operation.Div }))
         from trace in Checkr.Trace("Original", () => expr)
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
-        from expect in Checkr.Expect("Not 42", () => eval != 42)
         select Case.Closed;
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("( 84 / 2 )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _ / 0 )", article.Execution(1).Input(1).Read().Value);
     }
 }

@@ -76,7 +76,7 @@ they allow shrinking to be guided by values that are semantically meaningful for
 from answers in Checkr.Input("answers", Fuzzr.Int().Many(1, 5),
     Shrink.OnType<int>(
         s => s.Classify(Try.Values(42)),
-        s => s.Simplify(Reduce.Towards(100))))
+        s => s.Simplify(Reduce.Towards(0))))
 from trace in Checkr.Trace("original", () => answers)
 from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
 select Case.Closed;
@@ -86,14 +86,14 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_SecondShrinker.cs:58:1
+ Location:                B_SecondShrinker.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    960262083
  ------------------------------------------------------------
   Executed:
    - Input: answers  = [ 73 ]
-            Redux      [ 100 ]
+            Redux      [ 43 ]
    - Trace: original = [ 73 ]
  ===============================================
   !! Expectation Failed: all answers equal 42

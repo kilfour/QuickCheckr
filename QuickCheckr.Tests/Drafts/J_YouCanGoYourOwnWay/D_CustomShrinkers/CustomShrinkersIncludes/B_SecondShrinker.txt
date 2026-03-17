@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_SecondShrinker.cs:58:1
+ Location:                B_SecondShrinker.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    960262083
  ------------------------------------------------------------
   Executed:
    - Input: answers  = [ 73 ]
-            Redux      [ 100 ]
+            Redux      [ 43 ]
    - Trace: original = [ 73 ]
  ===============================================
   !! Expectation Failed: all answers equal 42

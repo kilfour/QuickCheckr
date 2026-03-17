@@ -5,7 +5,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Notes.C_ReducersOld.N_Nested;
 
-[DocFile]
+// [DocFile]
 public class NestedReducerInObjectOnPath : CheckrTest<NestedReducerInObjectOnPath>
 {
     protected override bool Asserts => false;

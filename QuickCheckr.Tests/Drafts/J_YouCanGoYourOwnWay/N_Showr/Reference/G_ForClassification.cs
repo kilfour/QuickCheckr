@@ -1,11 +1,9 @@
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.F_ObjectInputPrinting;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 
 [DocFile]
-public class ObjectInputPrinting { }
-
-
+public class G_ForClassification { }
 
 public enum Operation { Add, Div }
 

@@ -268,7 +268,7 @@ Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                F_AppliesDefaultReducers.cs:24:1
+ Location:                F_AppliesDefaultReducers.cs:25:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1429680296
@@ -291,7 +291,7 @@ Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.V
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                G_WithClassifiersSeededShowingReduxToo.cs:24:1
+ Location:                G_WithClassifiersSeededShowingReduxToo.cs:25:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    893841622
@@ -943,7 +943,7 @@ they allow shrinking to be guided by values that are semantically meaningful for
 from answers in Checkr.Input("answers", Fuzzr.Int().Many(1, 5),
     Shrink.OnType<int>(
         s => s.Classify(Try.Values(42)),
-        s => s.Simplify(Reduce.Towards(100))))
+        s => s.Simplify(Reduce.Towards(0))))
 from trace in Checkr.Trace("original", () => answers)
 from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
 select Case.Closed;
@@ -953,14 +953,14 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_SecondShrinker.cs:58:1
+ Location:                B_SecondShrinker.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    960262083
  ------------------------------------------------------------
   Executed:
    - Input: answers  = [ 73 ]
-            Redux      [ 100 ]
+            Redux      [ 43 ]
    - Trace: original = [ 73 ]
  ===============================================
   !! Expectation Failed: all answers equal 42
@@ -1247,6 +1247,167 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 #### Reducers
+###### Values Stop On First Passed
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 2, 1, 0]))))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ValuesStopOnFirstPassed.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+###### Values Stop On First Passed Alternative
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 0, 1, 2]))))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_ValuesStopOnFirstPassedAlternative.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   3
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+###### Values Report Last Failure
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(),
+   Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 0, 1, 2], true))))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_ValuesReportLastFailure.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
+###### Collection
+Helper function in order to avoid generic type confusion.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5),
+   Shrink.OnType<IEnumerable<int>>(s => s.Simplify(Reduce.Collection([[3], [2], [1], [0]]))))
+from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_Collection.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ 94 ]
+            Redux   [ 2 ]
+ ==================================
+  !! Expectation Failed: All < 2
+ ==================================
+```
+###### Collection Of
+Helper function in order to avoid generic type confusion.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int().Many(1, 5),
+   Shrink.OnType<IEnumerable<int>>(s => s.Simplify(Reduce.CollectionOf<int>(a => [[3], [2], [1], [0]]))))
+from expect in Checkr.Expect("All < 2", () => input.All(a => a < 2))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_CollectionOf.cs:59:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ 94 ]
+            Redux   [ 2 ]
+ ==================================
+  !! Expectation Failed: All < 2
+ ==================================
+```
+##### Spike
+
+**The Checkr:**  
+```csharp
+from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 5)),
+    Shrink.When<int>(
+        s => s.Value(a => a == 5),
+        s => s.Classify(),
+        s => s.Simplify(Reduce.Towards(0))))
+from trace in Checkr.Trace("Original", () => inter)
+from expect in Checkr.Expect("All ints smaller than 1.", () => inter.A < 1 && inter.B < 1)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Spike.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1645367809
+ ------------------------------------------------------------
+  Executed:
+   - Input: Inter    = { B: 5 }
+            Redux      { B: 1 }
+   - Trace: Original = { A: 42, B: 5 }
+ ===================================================
+  !! Expectation Failed: All ints smaller than 1.
+ ===================================================
+```
 ### The Showr Class
 This static factory class produces a CheckrOf<Case> which allows one to configure the pretty-printer used in the report.
 
@@ -1405,4 +1566,233 @@ select Case.Closed;
 Executed:
    - Input: AnInt = 7
    - Trace: AnInt = 7
+```
+#### For Classification
+##### Default
+
+**The Checkr:**  
+```csharp
+from expr in Checkr.Input("Expr", Fuzzr.Constant(
+    new Term { L = new Num { Value = 42 }, R = new Num { Value = 0 }, Op = Operation.Div }))
+from trace in Checkr.Trace("Original", () => expr)
+from eval in Checkr.Act("Evaluate", expr.Evaluate)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Default.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    844205832
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = { Op: Div, R: { Value: 0 } }
+   - Trace: Original = { Op: Div, L: { Value: 42 }, R: { Value: 0 } }
+ ===========================================================================
+  !! System.DivideByZeroException: Attempted to divide by zero.
+   at QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Investigations\F_ObjectInputPrinting\ObjectInputPrinting.cs:line 33
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+```
+##### Customized
+
+**The Checkr:**  
+```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
+from expr in Checkr.Input("Expr", Fuzzr.Constant(
+    new Term { L = new Num { Value = 84 }, R = new Num { Value = 2 }, Op = Operation.Div }))
+from trace in Checkr.Trace("Original", () => expr)
+from eval in Checkr.Act("Evaluate", expr.Evaluate)
+from expect in Checkr.Expect("Not 42", () => eval != 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Customized.cs:32:1
+ Original failing run:    1 execution
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = ( 84 / 2 )
+   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Value: 2 } }
+ =================================
+  !! Expectation Failed: Not 42
+ =================================
+```
+##### Customized Nested
+
+**The Checkr:**  
+```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
+from expr in Checkr.Input("Expr", Fuzzr.Constant(
+    new Term
+    {
+        L = new Num { Value = 84 },
+        R = new Term { L = new Num { Value = 1 }, R = new Num { Value = 1 }, Op = Operation.Add },
+        Op = Operation.Div
+    }))
+from trace in Checkr.Trace("Original", () => expr)
+from eval in Checkr.Act("Evaluate", expr.Evaluate)
+from expect in Checkr.Expect("Not 42", () => eval != 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_CustomizedNested.cs:32:1
+ Original failing run:    1 execution
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = ( 84 / ( 1 + 1 ) )
+   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Op: Add, L: { Value: 1 }, R: { Value: 1 } } }
+ =================================
+  !! Expectation Failed: Not 42
+ =================================
+```
+##### Customized With Irrelevant
+
+**The Checkr:**  
+```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
+from expr in Checkr.Input("Expr", Fuzzr.Constant(
+    new Term { L = new Num { Value = 84 }, R = new Num { Value = 0 }, Op = Operation.Div }))
+from trace in Checkr.Trace("Original", () => expr)
+from eval in Checkr.Act("Evaluate", expr.Evaluate)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D_CustomizedWithIrrelevant.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = ( _ / 0 )
+   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Value: 0 } }
+ ===========================================================================
+  !! System.DivideByZeroException: Attempted to divide by zero.
+   at QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Investigations\F_ObjectInputPrinting\ObjectInputPrinting.cs:line 33
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+```
+##### Customized With Reducer
+
+**The Checkr:**  
+```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
+from expr in Checkr.Input("Expr", Fuzzr.Constant(
+    new Term
+    {
+        L = new Num { Value = 84 },
+        R = new Term { L = new Num { Value = 10 }, R = new Num { Value = 20 }, Op = Operation.Div },
+        Op = Operation.Div
+    }),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
+from trace in Checkr.Trace("Original", () => expr)
+from eval in Checkr.Act("Evaluate", expr.Evaluate)
+from expect in Checkr.Expect("Not 42", () => eval != 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                E_CustomizedWithReducer.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Expr     = ( _ / ( 10 / 20 ) )
+            Redux      ( _ / ( 1 / 2 ) )
+   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Op: Div, L: { Value: 10 }, R: { Value: 20 } } }
+ ===========================================================================
+  !! System.DivideByZeroException: Attempted to divide by zero.
+   at QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference.Term.Evaluate() in C:\Code\QuickCheckr\QuickCheckr.Tests\Investigations\F_ObjectInputPrinting\ObjectInputPrinting.cs:line 33
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
+ ===========================================================================
+ Passed Expectations
+ - Not 42: 1x
+ ------------------------------------------------------------
 ```

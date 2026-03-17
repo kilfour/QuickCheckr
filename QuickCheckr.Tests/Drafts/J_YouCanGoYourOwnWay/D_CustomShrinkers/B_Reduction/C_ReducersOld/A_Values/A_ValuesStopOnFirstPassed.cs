@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.C_ReducersOld.A_Values;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.A_Values;
 
 [DocFile]
 public class A_ValuesStopOnFirstPassed : CheckrTest<A_ValuesStopOnFirstPassed>
