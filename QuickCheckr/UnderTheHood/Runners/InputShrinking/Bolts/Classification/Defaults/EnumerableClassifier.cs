@@ -50,7 +50,7 @@ public class EnumerableClassifier : Classifier
                 var swapper = new ListLens(elementType, ix);
                 using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                 {
-                    var childInfo = info with { Value = before, Path = $"{info.Path}.{index}", Type = elementType };
+                    var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
                     values.Add(selector.Classify(childInfo, context));
                 }
             }

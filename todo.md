@@ -2,6 +2,8 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
+* Conditional Shrinkers based on context : 
+  `Shrink.When(a => a.Parent<Term>(t => t.Op == Operator.Div), ...)`
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
@@ -19,7 +21,6 @@
 * DSL Experiments
  
 ### Todo
-* Conditional Shrinkers based on context : `Shrink.When(a => a.Parent<Term>(t => t.Op == Operator.Div), ...)`
 * Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
@@ -72,6 +73,7 @@
 * Added initial version allowing for customized reporting of:
   * Classified Input
   * Redux
+* Added `Shrink.When` enabling domain-aware shrinking. 
 
 ## 0.0.10 : Excuse My Domain Specific Language
 

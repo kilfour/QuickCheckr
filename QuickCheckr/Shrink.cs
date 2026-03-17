@@ -5,64 +5,50 @@ using QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
 namespace QuickCheckr;
 
-public interface IShrinkerCondition<T>
-{
-    ShrinkerConditionBuilder<T> Value(Func<T, bool> predicate);
-}
-
-public class ShrinkerConditionBuilder<T> : IShrinkerCondition<T>
-{
-    public List<Func<ShrinkingInfo, bool>> predicates = [];
-
-    public ShrinkerConditionBuilder<T> Value(Func<T, bool> predicate)
-    {
-        predicates.Add(a => predicate((T)a.Value!));
-        return this;
-    }
-
-    public Func<ShrinkingInfo, bool> GetCondition()
-    {
-        if (predicates.Count == 0) return a => typeof(T).IsAssignableFrom(a.ActualType);
-        return a => predicates.Prepend(a => typeof(T).IsAssignableFrom(a.ActualType)).All(p => p(a));
-    }
-}
-
 public static class Shrink
 {
     public static Shrinker When<T>(
-        Func<ShrinkerConditionBuilder<T>, ShrinkerConditionBuilder<T>> condition,
+        Action<IShrinkerConditionBuilder<T>> condition,
         Func<ClassificationBuilder<T>, ClassificationOption<T>[]> classifiersFactory,
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
-        => new(condition(new ShrinkerConditionBuilder<T>()).GetCondition(),
+        => new(GetCondition(condition),
             classifiersFactory(new ClassificationBuilder<T>()),
             [.. reducersFactory(new ReducerBuilder<T>()).Select(a => new TypeReducerOption<T>(a))]);
 
+    private static Func<ShrinkingInfo, bool> GetCondition<T>(
+        Action<IShrinkerConditionBuilder<T>> condition)
+    {
+        var builder = new ShrinkerConditionBuilder<T>();
+        condition(builder);
+        return builder.GetCondition();
+    }
+
     public static Shrinker When<T>(
-        Func<ShrinkerConditionBuilder<T>, ShrinkerConditionBuilder<T>> condition,
+        Action<IShrinkerConditionBuilder<T>> condition,
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
-        => new(condition(new ShrinkerConditionBuilder<T>()).GetCondition(),
+        => new(GetCondition(condition),
             [],
             [.. reducersFactory(new ReducerBuilder<T>()).Select(a => new TypeReducerOption<T>(a))]);
 
     public static Shrinker When<T>(
-        Func<ShrinkerConditionBuilder<T>, ShrinkerConditionBuilder<T>> condition,
+        Action<IShrinkerConditionBuilder<T>> condition,
         Func<ClassificationBuilder<T>, ClassificationOption<T>[]> classifiersFactory)
-        => new(condition(new ShrinkerConditionBuilder<T>()).GetCondition(),
+        => new(GetCondition(condition),
             classifiersFactory(new ClassificationBuilder<T>()),
             []);
 
     public static Shrinker OnType<T>(
         Func<ClassificationBuilder<T>, ClassificationOption<T>[]> classifiersFactory,
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
-        => When(s => s, classifiersFactory, reducersFactory);
+        => When(s => { }, classifiersFactory, reducersFactory);
 
     public static Shrinker OnType<T>(
         Func<ClassificationBuilder<T>, ClassificationOption<T>[]> classifiersFactory)
-        => When(s => s, classifiersFactory);
+        => When(s => { }, classifiersFactory);
 
     public static Shrinker OnType<T>(
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
-        => When(s => s, reducersFactory);
+        => When(s => { }, reducersFactory);
 
     public static Shrinker ValueFromState<T>(T current, T redux) =>
         OnType<T>(

@@ -63,7 +63,12 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
             .Delimiter("")
             .HidePropertyNames())
         from input in Checkr.Input("Calculator", CalculatorFuzzr.TheFuzzr,
-            Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
+            Shrink.When<int>(s => s
+                    .As<Num>(a => a.Value)
+                    .As<Term, Expr>(a => a.R)
+                    .Value(t => t.Op == Operation.Div),
+                s => s.Simplify(Reduce.Towards(1))),
+            Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(0))))
         from trace in Checkr.Trace("Original", () => input)
         from eval in Checkr.Act("Evaluate", input.Evaluate)
         select Case.Closed;
@@ -79,9 +84,10 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Evaluate", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Calculator", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("( _ / ( 8 / 9 ) )", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("( _ / ( 1 / 2 ) )", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("( _ / ( 8 / _ ) )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _ / ( 0 / _ ) )", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ Op: Div, L: { Op: Add, L: { Value: 4 }, R: { Value: 6 } }, R: { Op: Div, L: { Value: 8 }, R: { Value: 9 } } }", article.Execution(1).Trace(1).Read().Value);
+
     }
 }

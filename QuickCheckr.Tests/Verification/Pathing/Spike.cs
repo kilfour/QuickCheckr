@@ -1,6 +1,7 @@
 
 using System.Linq.Expressions;
 using System.Reflection;
+using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr.Tests.Verification.Pathing;
 
@@ -55,16 +56,7 @@ public class PathOf<T>(string? value = null)
     public override string ToString() => value ?? typeof(T).Name;
 
     public PathOf<TProp> Member<TProp>(Expression<Func<T, TProp>> expr)
-        => new(ToString() + "." + AsMemberInfo(expr).Name);
-
-    private static MemberInfo AsMemberInfo<TTarget, TMember>(Expression<Func<TTarget, TMember>> expression)
-    {
-        if (expression.Body is MemberExpression memberExpr)
-            return memberExpr.Member;
-        if (expression.Body is UnaryExpression unary && unary.Operand is MemberExpression unaryMember)
-            return unaryMember.Member;
-        throw new ArgumentException($"Expression '{expression}' does not refer to a field or property.");
-    }
+        => new(ToString() + "." + expr.AsMemberInfo().Name);
 }
 
 public static class GetPath

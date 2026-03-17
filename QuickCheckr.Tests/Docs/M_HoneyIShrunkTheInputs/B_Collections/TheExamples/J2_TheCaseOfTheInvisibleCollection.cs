@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExampl
 public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvisibleCollection>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -52,7 +52,7 @@ public class ObjectClassificationFormatter<T>(
         format.Properties.Add(
             new PropertyClassificationFormat
             {
-                Name = AsMemberInfo(expression).Name
+                Name = expression.AsMemberInfo().Name
             });
         return this;
     }
@@ -65,19 +65,10 @@ public class ObjectClassificationFormatter<T>(
         format.Properties.Add(
             new PropertyClassificationFormat
             {
-                Name = AsMemberInfo(expression).Name,
+                Name = expression.AsMemberInfo().Name,
                 //Formatter = value => formatter((TProperty)value)
             });
         return this;
-    }
-
-    private static MemberInfo AsMemberInfo<TTarget, TMember>(Expression<Func<TTarget, TMember>> expression)
-    {
-        if (expression.Body is MemberExpression memberExpr)
-            return memberExpr.Member;
-        if (expression.Body is UnaryExpression unary && unary.Operand is MemberExpression unaryMember)
-            return unaryMember.Member;
-        throw new ArgumentException($"Expression '{expression}' does not refer to a field or property.");
     }
 }
 

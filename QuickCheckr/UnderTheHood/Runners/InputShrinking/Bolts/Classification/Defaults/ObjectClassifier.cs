@@ -90,7 +90,7 @@ public class ObjectClassifier : Classifier
         var swapper = new ObjectLens(propertyInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
-            var childInfo = info with { Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
+            var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
             return new ClassifierSelector().Classify(childInfo, context);
         }
     }

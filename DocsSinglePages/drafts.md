@@ -1384,7 +1384,6 @@ select Case.Closed;
 from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 5)),
     Shrink.When<int>(
         s => s.Value(a => a == 5),
-        s => s.Classify(),
         s => s.Simplify(Reduce.Towards(0))))
 from trace in Checkr.Trace("Original", () => inter)
 from expect in Checkr.Expect("All ints smaller than 1.", () => inter.A < 1 && inter.B < 1)
