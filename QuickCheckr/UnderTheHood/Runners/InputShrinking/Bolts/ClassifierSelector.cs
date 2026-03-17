@@ -20,6 +20,14 @@ public class ClassifierSelector
             var (redux, reduxValue) = GetRedux(info, context);
             classification = classification with { Redux = redux, ReduxValue = reduxValue };
         }
+        if (classification is ObjectRelevant objectRelevant)
+        {
+            if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(info.ActualType, out var format))
+            {
+                var redux = CustomizedPrinting.GetReduxReport(format, objectRelevant.Members);
+                classification = classification with { Redux = Maybe.Just(redux) };
+            }
+        }
         return classification;
     }
 

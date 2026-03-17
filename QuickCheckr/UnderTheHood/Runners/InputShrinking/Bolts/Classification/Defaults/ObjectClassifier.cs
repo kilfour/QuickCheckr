@@ -39,7 +39,7 @@ public class ObjectClassifier : Classifier
 
     private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
     {
-        var actualType = info.Value == null ? info.Type : info.Value.GetType();
+        var actualType = info.ActualType;
         var properties = actualType
             .GetProperties(MyBinding.Flags)
             .Where(p =>
@@ -68,20 +68,7 @@ public class ObjectClassifier : Classifier
                     $"{{ {string.Join(", ", values.Select(a => $"{a.Key}: {a.Value}"))} }}");
             context.State.Docket.Record(new InputShrinkingClueFound(clue));
             if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(actualType, out var format))
-            {
-                var keys = format.Properties.Select(a => a.Name).ToList();
-                var keySet = new HashSet<string>(keys);
-                var ordered =
-                    keys
-                        .Where(values.ContainsKey)
-                        .Select(k => KeyValuePair.Create(k, values[k]))
-                        .Concat(
-                            values
-                                .Where(kvp => !keySet.Contains(kvp.Key))
-                                .Select(kvp => kvp))
-                        .ToDictionary();
-                return new ObjectRelevant(values, GetCustomReport(format, ordered));
-            }
+                return new ObjectRelevant(values, CustomizedPrinting.GetReport(format, values));
             return new ObjectRelevant(values, GetReport(values));
         }
         else
@@ -90,27 +77,6 @@ public class ObjectClassifier : Classifier
             context.State.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectAssumedIrrelevant(values);
         }
-    }
-
-    private static string GetCustomReport(
-        ObjectClassificationFormat objectFormat,
-        Dictionary<string, InputClassification> members) =>
-        $"{objectFormat.LeftBound}{string.Join(objectFormat.Delimiter,
-            members
-                .Select(a => CustomPropertyReport(objectFormat, a)))}{objectFormat.RightBound}";
-
-    private static string CustomPropertyReport(
-        ObjectClassificationFormat objectFormat,
-        KeyValuePair<string, InputClassification> kvp) =>
-        objectFormat.HidePropertyNames
-            ? GetCustomClassificationReport(kvp.Value)
-            : $"{kvp.Key}: {GetCustomClassificationReport(kvp.Value)}";
-
-    private static string GetCustomClassificationReport(InputClassification classification)
-    {
-        if (classification is InputRelevant relevant)
-            return relevant.Report;
-        return "_";
     }
 
     private static string GetReport(Dictionary<string, InputClassification> members) =>

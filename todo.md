@@ -2,7 +2,6 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
-* Classified Input & Redux custom report Formatting
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
