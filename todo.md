@@ -57,19 +57,19 @@
     * A_TheShowrClass
 
 ### Done/Ready for Changelog after review
-* Input Shrinking Redesign : accomodating for Reducers for one
-  * A *Shrinker* now consists out of two parts 
+* Input Shrinking Redesign : accommodating for Reducers for one
+  * A *Shrinker* now consists of two parts 
     1. Classifier: decides whether input is relevant
     2. Reducer: tries to find a minimal value
-  This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine. 
+  This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine.  
+  But importantly, resulted in significantly better shrinking and explanation quality.
 * Renamed Custom Shrinker factory class from `Shrink` to `Try`.
 * Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
 * Added some missing PoolWhen overloads.
 * Added some missing Pool operation reporting in the .qr file.
 * Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
 * In case an expectation throws it is rethrown as `ExpectationThrowsException`.
-* Major improvements to shrinking behaviour as a side effect of introducing reducers.
-* Added intial version allowing for customized reporting of:
+* Added initial version allowing for customized reporting of:
   * Classified Input
   * Redux
 
@@ -125,6 +125,10 @@
   * statefull list, ... maybe
 
 ## Ideas
+* *Shrinker*
+    1. Classifier: decides whether input is relevant
+    2. Reducer: tries to find a minimal value
+    3. NEW : Collapser: simplifies structure
 * Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
   Or maybe an object with an OnFail tracing method 
 * QuickPulse.Show config could use another look 

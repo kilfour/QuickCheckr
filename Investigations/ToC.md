@@ -6,6 +6,7 @@
     - [Customized](F_ObjectInputPrinting/Sub/B_Customized.md)
     - [Customized Nested](F_ObjectInputPrinting/Sub/C_CustomizedNested.md)
     - [Customized With Irrelevant](F_ObjectInputPrinting/Sub/D_CustomizedWithIrrelevant.md)
+    - [Customized With Reducer](F_ObjectInputPrinting/Sub/E_CustomizedWithReducer.md)
   - [Greed Is Not Good](Z_ShrinkingBugs/A_GreedIsNotGood.md)
   - [Nested Collections Inner Count](Z_ShrinkingBugs/B_NestedCollectionsInnerCount.md)
   - [Nested Collections Inner Count](Z_ShrinkingBugs/B1_NestedCollectionsInnerCount.md)

@@ -7,15 +7,14 @@ namespace QuickCheckr.Tests.Experimental.Z_Challenges.D_Calculator;
 
 [DocFile]
 [DocContent(
-@"And a DeliberationPolicy.  
-The result presented here is ok, but in reality, this sometimes produces non-explanatory results.")]
+@"And a DeliberationPolicy.")]
 public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
-    [Fact(Skip = "wip")]
+    [Fact]
     [DocCheckrHeader]
     [DocCheckr]
     [DocConfigureHeader]
@@ -23,7 +22,7 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1000.Runs());
+        Run(376086434);
 
     [CodeSnippet]
     protected override CheckrConfig Configure(CheckrConfig config) =>
@@ -71,6 +70,18 @@ public class B_CalculatorAddingAReducer : CheckrTest<B_CalculatorAddingAReducer>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("DivideByZeroException: Attempted to divide by zero.", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(12, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Evaluate", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Calculator", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("( _ / ( 8 / 9 ) )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _ / ( 1 / 2 ) )", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ Op: Div, L: { Op: Add, L: { Value: 4 }, R: { Value: 6 } }, R: { Op: Div, L: { Value: 8 }, R: { Value: 9 } } }", article.Execution(1).Trace(1).Read().Value);
     }
 }

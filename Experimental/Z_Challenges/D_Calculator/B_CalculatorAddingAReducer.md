@@ -1,6 +1,5 @@
 # Calculator Adding A Reducer
 And a DeliberationPolicy.  
-The result presented here is ok, but in reality, this sometimes produces non-explanatory results.  
 
 **The Checkr:**  
 ```csharp
@@ -46,13 +45,13 @@ config with
  Test:                    Example
  Location:                B_CalculatorAddingAReducer.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    48165483
+ Minimal failing case:    1 execution (after 12 shrinks)
+ Seed:                    376086434
  ------------------------------------------------------------
   Executed: Evaluate
-   - Input: Calculator = ( _ / ( 0 / 9 ) )
-            Redux        { Op: /, R: { Op: /, L: { Value: 1 }, R: { Value: 2 } } }
-   - Trace: Original   = { Op: Div, L: { Value: 5 }, R: { Op: Div, L: { Value: 0 }, R: { Value: 9 } } }
+   - Input: Calculator = ( _ / ( 8 / 9 ) )
+            Redux        ( _ / ( 1 / 2 ) )
+   - Trace: Original   = { Op: Div, L: { Op: Add, L: { Value: 4 }, R: { Value: 6 } }, R: { Op: Div, L: { Value: 8 }, R: { Value: 9 } } }
  ===========================================================================
   !! DivideByZeroException: Attempted to divide by zero.
  ===========================================================================
