@@ -39,7 +39,7 @@
           - [Nested Reducer In Object](J_YouCanGoYourOwnWay/D_CustomShrinkers/B_Reduction/C_ReducersOld/N_Nested/NestedReducerInObject.md)
           - [Custom](J_YouCanGoYourOwnWay/D_CustomShrinkers/B_Reduction/C_ReducersOld/P_Custom/A_Custom.md)
           - [Reduction Not Possible](J_YouCanGoYourOwnWay/D_CustomShrinkers/B_Reduction/C_ReducersOld/T_ReductionNotPossible/ReductionNotPossible.md)
-        - [Spike](J_YouCanGoYourOwnWay/D_CustomShrinkers/CustomShrinkersIncludes/ConditionalShrinkers/Spike.md)
+        - [On Specific Value](J_YouCanGoYourOwnWay/D_CustomShrinkers/CustomShrinkersIncludes/ConditionalShrinkers/OnSpecificValue.md)
     - [The Showr Class](J_YouCanGoYourOwnWay/N_Showr/A_TheShowrClass.md)
       - [Showr Reference](J_YouCanGoYourOwnWay/N_Showr/Reference/A_ShowrReference.md)
       - [For Classification](J_YouCanGoYourOwnWay/N_Showr/Reference/G_ForClassification.md)

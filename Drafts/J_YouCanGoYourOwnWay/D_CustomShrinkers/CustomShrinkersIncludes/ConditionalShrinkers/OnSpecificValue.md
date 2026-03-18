@@ -1,4 +1,4 @@
-# Spike
+# On Specific Value
 
 **The Checkr:**  
 ```csharp
@@ -15,10 +15,10 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Spike.cs:58:1
+ Location:                OnSpecificValue.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1645367809
+ Seed:                    1329962298
  ------------------------------------------------------------
   Executed:
    - Input: Inter    = { B: 5 }

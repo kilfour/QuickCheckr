@@ -21,13 +21,6 @@ select Case.Closed;
 ```csharp
 public class CustomTowardsZero
 {
-    /// <summary>
-    /// Returns a reducer which tries to reduce the input to zero.
-    /// </summary>
-    /// <remarks>
-    /// The reducer will try to reduce the value by one if it is greater than zero,
-    /// and increase the value by one if it is less than zero.
-    /// </remarks>
     public static Func<Reducer<int>> Reducer() =>
         () => new CustomTowardsZero().Reduce;
     private int lastFailed = 0;

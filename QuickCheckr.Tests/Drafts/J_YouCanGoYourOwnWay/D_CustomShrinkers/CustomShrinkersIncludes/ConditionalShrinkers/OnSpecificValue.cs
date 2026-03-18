@@ -7,7 +7,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.CustomShrinkersIncludes.ConditionalShrinkers;
 
 [DocFile]
-public class Spike : CheckrTest<Spike>
+public class OnSpecificValue : CheckrTest<OnSpecificValue>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

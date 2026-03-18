@@ -20,7 +20,7 @@ public class GatheringEvidenceCheckr
 
     private static readonly CheckrOf<Case> CreateCoach =
         from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"),
-            Shrink.OnType<string>(s => s.Classify(Try.None<string>())))
+            Shrink.None<string>())
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", coach)
@@ -40,7 +40,7 @@ public class GatheringEvidenceCheckr
 
     private static readonly CheckrOf<Case> CreateCourse =
         from name in Checkr.Input("Course Name", NameFuzzr.For("Course"),
-            Shrink.OnType<string>(s => s.Classify(Try.None<string>())))
+            Shrink.None<string>())
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Trackr.ToPool("Store Course", course)

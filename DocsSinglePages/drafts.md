@@ -1173,42 +1173,6 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
-###### None
-
-**The Checkr:**  
-```csharp
-from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from thing in Checkr.Input("Null Thing",
-    Fuzzr.Constant<Thing>(null!),
-    Shrink.OnType<Thing>(s => s.Classify(Try.None<Thing>())))
-from expect in Checkr.Expect("counter != 2", () => counter != 2)
-select Case.Closed;
-```
-`Try.None` is a custom classifier that explicitly marks an execution as irrelevant and therefore not worth shrinking.
-It is primarily a performance tool: when a branch is known not to influence the outcome,
-`Try.None` prevents QuickCheckr from wasting time shrinking or re-executing it. 
-This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
-It can also be used to suppress unnecessary "all inputs irrelevant" warnings when that irrelevance is intentional and understood.
-  
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                B_TryNone.cs:46:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    161541321
- ------------------------------------------------------------
-  Executed:
-   - Input: counter = 2
- =======================================
-  !! Expectation Failed: counter != 2
- =======================================
- Passed Expectations
- - counter != 2: 1x
- ------------------------------------------------------------
-```
 ###### Default
 `Try.Keep` applies QuickCheckr's normal relevance detection as one strategy within a classifier chain.
 Classifiers are executed in succession, so Try.Default can be placed anywhere in the sequence.
@@ -1621,13 +1585,6 @@ select Case.Closed;
 ```csharp
 public class CustomTowardsZero
 {
-    /// <summary>
-    /// Returns a reducer which tries to reduce the input to zero.
-    /// </summary>
-    /// <remarks>
-    /// The reducer will try to reduce the value by one if it is greater than zero,
-    /// and increase the value by one if it is less than zero.
-    /// </remarks>
     public static Func<Reducer<int>> Reducer() =>
         () => new CustomTowardsZero().Reduce;
     private int lastFailed = 0;
@@ -1692,7 +1649,7 @@ select Case.Closed;
   !! Expectation Failed: Input should be greater than 42
  ==========================================================
 ```
-##### Spike
+##### On Specific Value
 
 **The Checkr:**  
 ```csharp
@@ -1709,10 +1666,10 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Spike.cs:58:1
+ Location:                OnSpecificValue.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1645367809
+ Seed:                    1329962298
  ------------------------------------------------------------
   Executed:
    - Input: Inter    = { B: 5 }
