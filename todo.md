@@ -2,6 +2,8 @@
       
 ### Doing
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
+* What to do if all reduction values fail ?
+  * Add 'Witness' (candidate that made the run pass) to Redux 
 
 ### Todo
 * Add *Deposition Tests* for collapsed Empty collections warnings.
@@ -49,7 +51,7 @@
 
 ## 0.0.10 : Excuse My Domain Specific Language
 * Add unchecked expectations WARNING.
-* Add 'Witness'(candidate that made the run pass) to Input & Redux 
+
 
 
 ## 0.0.11 : All Aboard
