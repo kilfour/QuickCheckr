@@ -1,33 +1,18 @@
 ## Next version: 0.0.9 : Reduce, Reuse, Recycle
-* *Nested* Reducers, first on type, later by path.
       
 ### Doing
-* NestedReducerInObjectOnPath
-* Shrink.OnType(Try.None<Thing>()) =>   
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
-* **Reducers**
-    * ReductionNotPossible.cs => Warning
-    * QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.IssueMaybe.cs
-      not *really* an issue, a single value version of 'The Case of the Invisible List'
-    * Shrinking Redesign again
-      > Design settled and implemented, just need to fill some API holes.
-      * Execution Shrinking
-      * Input Shrinking
-        * Structural Collapse
-        * Input Classification
-        * Input Reduction (Redux)  
-* DSL Experiments
- 
+
 ### Todo
-* Add Shrinkers to Lazy `.Input`s.
 * Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
 * Check what happens when collection is null.
-* Reducers, maybe report passing candidate
-* Consolidate first run only combinators
-  * Encapsulate : if (state.EvidenceRecorder.IsReplay) return CheckrResult.CaseOnly(state);
-* **DOC**  
+
+### Wish List
+
+     
+### Doc
   DocsSinglePages/doc.md (line 2611) RunTest_WithDeliberationPolicy is effectively a duplicate of the first null-handling example at DocsSinglePages/doc.md (line 2546). Publicly, both reports show the same outcome: The Universe = { Everything: null }, one relevant warning, same failure. The surrounding text claims the policy removed irrelevant warning noise, but that is already what the first example visibly shows, so this test adds little narrative value.
 
   DocsSinglePages/doc.md (line 2068) Built In Enumerations and DocsSinglePages/doc.md (line 2097) Custom Enumerations are near-duplicates. They demonstrate the same shrinking behavior and differ mainly by enum type. For public docs, one example plus a sentence saying custom enums behave the same would read cleaner.
@@ -37,17 +22,6 @@
   The same applies to ShrinkMode Reference at DocsSinglePages/doc.md (line 1306). The tests are not exact duplicates, but they are repetitive variants of one scenario. For public-facing docs, a shorter comparison would likely carry the idea better than four rendered test reports.
 
   DocsSinglePages/investigations.md (line 60) and DocsSinglePages/investigations.md (line 92) reuse the same heading, Nested Collections Inner Count. The second is really a “with custom shrinker” follow-up, so the narrative purpose exists, but the duplicated heading makes it look like accidental duplication.
-
-### Wish List
-* Add unchecked expectations WARNING.
-  This would be very good for the dsl bit (F.i. Example)
-* Add 'Witness'(candidate that made the run pass) to Input & Redux 
-* more stats:
-  * total runs(including shrinking candidates)
-  * candidates tried
-  * ...
-     
-### Doc
 
 ### Ongoing
 * Refactor the Tests:
@@ -74,12 +48,19 @@
 * Added `Shrink.When` enabling domain-aware shrinking. 
 
 ## 0.0.10 : Excuse My Domain Specific Language
+* Add unchecked expectations WARNING.
+* Add 'Witness'(candidate that made the run pass) to Input & Redux 
+
 
 ## 0.0.11 : All Aboard
 * Stabilize + Doc InternalAffairs
   * Shrink Log
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
+* more stats:
+  * total runs(including shrinking candidates)
+  * candidates tried
+  * ...
 * Look into different types of collection shrinking:
   * Limitations.
   * Known issues
@@ -143,6 +124,8 @@
 
   
 ## Refactoring Targets 
+* Consolidate first run only combinators
+  * Encapsulate : if (state.EvidenceRecorder.IsReplay) return CheckrResult.CaseOnly(state);
 * Get rid of the dispatching thing, not worth it, annoying to debug, hides intent.
 * !!! InputDeposition Value => string !!!
 * PrimitiveShrinkClassifier : uses non-deterministic shrinking candidates

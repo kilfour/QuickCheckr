@@ -5,11 +5,11 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.D_Chained;
 
-// [DocFile]
+[DocFile]
 public class A_Chained : CheckrTest<A_Chained>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]
