@@ -42,8 +42,7 @@ public class ClassifierSelector
             var shrinker = shrinkers.Where(a => a.Reducers.Length != 0).FirstOrDefault(x => x.Condition(info));
             if (shrinker is not null)
             {
-                var reducerFactory = shrinker.Reducers.First().ReducerFactory;
-                return Reduce(info, context, reducerFactory);
+                return Reduce(info, context, shrinker.Reducers.Select(a => a.ReducerFactory));
             }
         }
         if (context.UseDefaultReducers)
@@ -55,10 +54,30 @@ public class ClassifierSelector
         return (Maybe.Nothing(), Maybe<object>.Nothing());
     }
 
+    private static (Maybe, Maybe<object>) Reduce(
+        ShrinkingInfo info,
+        ShrinkingContext context,
+        IEnumerable<Func<Func<ReductionResult, Reduction>>> reducerFactories)
+    {
+        var reducer = reducerFactories.First()();
+        var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+        foreach (var reducerFactory in reducerFactories.Skip(1))
+        {
+            reducer = reducerFactory();
+            step = ReductionRunner.ForReducer(reducer, step.Result, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+        }
+        return ReduxFromStep(info, context, step);
+    }
+
     private static (Maybe, Maybe<object>) Reduce(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
     {
         var reducer = reducerFactory();
         var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+        return ReduxFromStep(info, context, step);
+    }
+
+    private static (Maybe, Maybe<object>) ReduxFromStep(ShrinkingInfo info, ShrinkingContext context, Reduction step)
+    {
         if (Equals(info.Value, step.Result))
             return (Maybe.Nothing(), Maybe<object>.Nothing());
         context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);

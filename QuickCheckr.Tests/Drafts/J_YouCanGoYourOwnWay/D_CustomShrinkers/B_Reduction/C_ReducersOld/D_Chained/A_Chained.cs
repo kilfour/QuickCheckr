@@ -11,7 +11,7 @@ public class A_Chained : CheckrTest<A_Chained>
     protected override bool Asserts => false;
     protected override bool Report => true;
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
