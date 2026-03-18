@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Notes.C_ReducersOld.T_ReductionNotPossible;
+namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.T_ReductionNotPossible;
 
 [DocFile]
 [DocContent("What to do if all reduction values fail ?")]

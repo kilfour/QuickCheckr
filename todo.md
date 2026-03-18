@@ -2,8 +2,6 @@
 * *Nested* Reducers, first on type, later by path.
       
 ### Doing
-* Conditional Shrinkers based on context : 
-  `Shrink.When(a => a.Parent<Term>(t => t.Op == Operator.Div), ...)`
 * NestedReducerInObjectOnPath
 * Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
