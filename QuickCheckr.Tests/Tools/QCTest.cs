@@ -23,6 +23,8 @@ public abstract class QCTest
         DocBoldHeaderAttribute("The Checkr");
     protected class DocFuzzrHeaderAttribute() :
         DocBoldHeaderAttribute("The Fuzzr");
+    protected class DocFileCodeHeaderAttribute(string code)
+    : DocFileHeaderAttribute(code.Replace("<", "&lt;").Replace(">", "&gt;"));
 }
 
 public abstract class QCTest<T> : QCTest

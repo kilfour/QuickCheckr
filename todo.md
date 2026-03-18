@@ -3,7 +3,7 @@
       
 ### Doing
 * NestedReducerInObjectOnPath
-* Shrink.OnType(Try.None<Thing>()) => Shrink.None<T>()  
+* Shrink.OnType(Try.None<Thing>()) =>   
 * FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
 * **Reducers**
     * ReductionNotPossible.cs => Warning

@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
 namespace QuickCheckr;
 
-public static class Shrink
+public static partial class Shrink
 {
     public static Shrinker When<T>(
         Action<IShrinkerConditionBuilder<T>> condition,
