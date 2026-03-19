@@ -4,18 +4,18 @@ public static class ReductionRunner
 {
     public static Reduction ForReducer(Func<ReductionResult, Reduction> reducer, object? value, Func<object, bool> failTest)
     {
-        var result = new ReductionResult(true, value);
-        var step = reducer(result);
+        var first = new ReductionResult(true, value);
+        var reduction = reducer(first);
         bool failed;
-        while (step.Continue)
+        while (reduction is Reduction.Next next)
         {
-            failed = failTest(step.Candidate!);
+            failed = failTest(next.Candidate!);
             if (failed)
-                result = new ReductionResult(true, step.Candidate!);
+                first = new ReductionResult(true, next.Candidate!);
             else
-                result = new ReductionResult(false, result.Value!);
-            step = reducer(result);
+                first = new ReductionResult(false, first.Value!);
+            reduction = reducer(first);
         }
-        return step;
+        return reduction;
     }
 }

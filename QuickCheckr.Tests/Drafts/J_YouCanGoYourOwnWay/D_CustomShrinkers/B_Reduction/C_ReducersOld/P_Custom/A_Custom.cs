@@ -54,14 +54,14 @@ public class A_Custom : CheckrTest<A_Custom>
             if (result.Failed)
                 lastFailed = value;
             else
-                return Reduction.Stop(lastFailed);
+                return new Reduction.Stop(lastFailed);
             if (value == 0)
-                return Reduction.Stop(lastFailed);
+                return new Reduction.Stop(lastFailed);
             if (value > 0)
                 value--;
             else
                 value++;
-            return Reduction.Next(value);
+            return new Reduction.Next(value);
         }
     }
 }

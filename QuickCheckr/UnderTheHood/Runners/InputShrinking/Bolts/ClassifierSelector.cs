@@ -64,7 +64,10 @@ public class ClassifierSelector
         foreach (var reducerFactory in reducerFactories.Skip(1))
         {
             reducer = reducerFactory();
-            step = ReductionRunner.ForReducer(reducer, step.Result, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+            var value = step is Reduction.Next next
+                ? next.Candidate
+                : step is Reduction.Stop stop ? stop.Result : info.Value;
+            step = ReductionRunner.ForReducer(reducer, value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
         }
         return ReduxFromStep(info, context, step);
     }
@@ -78,13 +81,19 @@ public class ClassifierSelector
 
     private static (Maybe, Maybe<object>) ReduxFromStep(ShrinkingInfo info, ShrinkingContext context, Reduction step)
     {
-        if (Equals(info.Value, step.Result))
-            return (Maybe.Nothing(), Maybe<object>.Nothing());
-        context.State.Memory.Commit(info.ExecutionId, info.Key, step.Result!);
-        context.State.Memory.Testify(info.ExecutionId, info.Key, step.Result!);
-        return (
-            Maybe.Just(context.PrintRedux(step.Result!)),
-            Maybe<object>.Just(step.Result!));
+        // if (step is Reduction.Next next)
+        //     return (Maybe.Nothing(), Maybe<object>.Nothing());
+        if (step is Reduction.Stop stop)
+        {
+            if (Equals(info.Value, stop.Result))
+                return (Maybe.Nothing(), Maybe<object>.Nothing());
+            context.State.Memory.Commit(info.ExecutionId, info.Key, stop.Result!);
+            context.State.Memory.Testify(info.ExecutionId, info.Key, stop.Result!);
+            return (
+                Maybe.Just(context.PrintRedux(stop.Result!)),
+                Maybe<object>.Just(stop.Result!));
+        }
+        return (Maybe.Nothing(), Maybe<object>.Nothing());
     }
 
     private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)

@@ -16,8 +16,8 @@ public static partial class Reduce
             if (result.Passed)
                 index++;
             if (index >= str.Length)
-                return Reduction.Stop(str);
-            return Reduction.Next(str.Remove(index, 1));
+                return new Reduction.Stop(str);
+            return new Reduction.Next(str.Remove(index, 1));
         }
     }
 }

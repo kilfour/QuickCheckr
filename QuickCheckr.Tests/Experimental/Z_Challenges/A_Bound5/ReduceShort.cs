@@ -19,7 +19,7 @@ public class ReduceShort
             initialized = true;
 
             if (currentFailing == 0)
-                return Reduction.Stop(currentFailing);
+                return new Reduction.Stop(currentFailing);
 
             positive = currentFailing > 0;
 
@@ -36,8 +36,8 @@ public class ReduceShort
 
             probe = Mid(left, right);
             return probe == currentFailing
-                ? Reduction.Stop(currentFailing)
-                : Reduction.Next(probe);
+                ? new Reduction.Stop(currentFailing)
+                : new Reduction.Next(probe);
         }
 
         if (positive)
@@ -48,7 +48,7 @@ public class ReduceShort
                 left = probe;  // probe passed, so it is the new passing boundary
 
             if (right - left <= 1)
-                return Reduction.Stop(right);
+                return new Reduction.Stop(right);
         }
         else
         {
@@ -58,15 +58,15 @@ public class ReduceShort
                 right = probe; // probe passed, so it is the new passing boundary
 
             if (right - left <= 1)
-                return Reduction.Stop(left);
+                return new Reduction.Stop(left);
         }
 
         probe = Mid(left, right);
 
         var currentBest = result.ValueAs<short>();
         return probe == currentBest
-            ? Reduction.Stop(currentBest)
-            : Reduction.Next(probe);
+            ? new Reduction.Stop(currentBest)
+            : new Reduction.Next(probe);
     }
 
     private static short Mid(short a, short b)

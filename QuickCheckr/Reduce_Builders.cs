@@ -42,12 +42,12 @@ public static partial class Reduce
             if (reductionResult.Failed)
                 lastFailure = reductionResult.ValueAs<T>();
             else
-                return Reduction.Stop(lastFailure!);
+                return new Reduction.Stop(lastFailure!, reductionResult.Value);
             if (exhausted)
-                return Reduction.Stop(lastFailure!);
+                return new Reduction.Stop(lastFailure!);
             var next = enumerator.Current;
             exhausted = !enumerator.MoveNext();
-            return Reduction.Next(next!);
+            return new Reduction.Next(next!);
         }
     }
 
@@ -89,10 +89,10 @@ public static partial class Reduce
             if (reductionResult.Failed)
                 lastFailure = reductionResult.ValueAs<T>();
             if (exhausted)
-                return Reduction.Stop(lastFailure!);
+                return new Reduction.Stop(lastFailure!);
             var next = enumerator.Current;
             exhausted = !enumerator.MoveNext();
-            return Reduction.Next(next!);
+            return new Reduction.Next(next!);
         }
     }
 }
