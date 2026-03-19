@@ -850,6 +850,327 @@ public class CreateAppointment : Operation
  - 'Create Appointment' Whitespace string: 1x
  ------------------------------------------------------------
 ```
+## On Shrinking
+### Philosophy
+
+QuickCheckr keeps shrinking simple and predictable.  
+It never tries to *outsmart* your domain with clever global algorithms.  
+Shrinking is purely local and irrelevance-based: if removing a value (or execution) still makes the property fail,
+QuickCheckr marks it as *irrelevant*.  
+This avoids surprising or *magical* shrink results.  
+### Contents
+
+- [Execution Shrinking][ExecutionShrinking]
+- [Input Shrinking][InputShrinking]
+- [Input Reduction][InputReduction]
+- [Deliberation Shrinking][DeliberationShrinking]
+  
+
+[ExecutionShrinking]: #execution-shrinking
+
+[InputShrinking]: #input-shrinking
+
+[InputReduction]: #input-reduction
+
+[DeliberationShrinking]: #deliberation-shrinking
+### Execution Shrinking
+[On Shrinking][OnShrinking] | [Next][InputShrinking]  
+  
+This is the first step in QuickCheckr shrinking.  
+The following simple example fails on the third execution.  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
+select Case.Closed;
+```
+
+Execution 1: counter = 1  
+Execution 2: counter = 2  
+Execution 3: counter = 3  (Fails)  
+
+During execution shrinking the values from counter are not regenerated, but retrieved from the previous run.
+So the ExecutionShrinker retries the run with the same values, but tries to remove executions, one by one.  
+If the run still fails, the execution is not deemed relevant for the failure and is removed.  
+
+So after *Execution Shrinking*, the result is:
+  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ExecutionShrinking.cs:68:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    669391953
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 3
+ ===================================================
+  !! Expectation Failed: Counter does not equal 3
+ ===================================================
+ Passed Expectations
+ - Counter does not equal 3: 2x
+ ------------------------------------------------------------
+```
+
+[OnShrinking]: #on-shrinking
+
+[InputShrinking]: #input-shrinking
+### Input Shrinking
+[On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  
+  
+This is the next step in QuickCheckr shrinking and the most complex one.  
+
+In QuickCheckr, **input shrinking is a two-step process**:
+
+1. **Classification**: decide *what is relevant* for reproducing the failure.
+2. **Reduction (Redux)**: simplify the *relevant* parts to improve human understanding, while still reproducing the failure.
+
+A key principle: the engine always keeps the **original failing input**.
+Reduction produces a **Redux view** alongside the original.
+The report can therefore show both **Original** and **Redux** without pretending the original counterexample was replaced.  
+Reduction is (by default) an opt-in feature. In this chapter we are mainly demonstrating Classification.
+Reduction will be elaborated on later.
+  
+The following simple example has one input but always fails.  
+```csharp
+from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+from expect in Checkr.Expect("Always Fails", () => false)
+select Case.Closed;
+```
+Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
+
+So, in the previous example, after *Input Shrinking*, the result is:
+  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:39:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    165641598
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always Fails
+ =======================================
+```
+Another example, slightly trickier.  
+```csharp
+from one in Checkr.Input("Input One", Fuzzr.Int())
+from two in Checkr.Input("Input Two", Fuzzr.Int())
+from three in Checkr.Input("Input Three", Fuzzr.Int())
+from result in Checkr.Act("Result", () => one + three)
+from expect in Checkr.Expect("Should not be 42", () => result != 42)
+select Case.Closed;
+```
+As you can see from the test definition, two inputs are involved in a possible failure.
+
+QuickCheckr correctly identifies the relevant inputs.
+
+Result:
+  
+```text
+------------------------------------------------------------
+ Test:                    Example_Two
+ Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:81:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    231122398
+ ------------------------------------------------------------
+  Executed: Result
+   - Input: Input One   = 12
+   - Input: Input Three = 30
+ ===========================================
+  !! Expectation Failed: Should not be 42
+ ===========================================
+```
+Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
+
+[HoneyIShrunkTheInputs]: #honey-i-shrunk-the-inputs
+
+[OnShrinking]: #on-shrinking
+
+[ExecutionShrinking]: #execution-shrinking
+
+[InputReduction]: #input-reduction
+### Input Reduction
+[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  
+  
+
+!! WARNING: **Under Construction** !!
+
+> This feature is **actively** being worked on. And as such this notice will disappear soon.  
+> But API and semantics may change somewhat in future versions.  
+> We're ... erm ... you know, ... considering our options.
+>  
+> Use with caution in production code. 
+
+  
+After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
+are run on a relevant input (example below).  
+
+Note the use of the word *registered*. Staying true to it's shrinking philosophy,
+QuickChecker does not try and guess how to reduce input values. It's up to the user to supply that information.  
+
+Most of the time, even in the example here I think, reducers are not needed to figure out what went wrong from the report.  
+But in some cases it is a must.  
+
+So what is a reducer ?  
+
+Well let me show you:  
+
+**The Model:**  
+```csharp
+public class Account
+{
+    public int Balance { get; private set; }
+    public void Deposit(int amount) => Balance += amount;
+    public void WithDraw(int amount) => Balance -= amount;
+}
+```
+
+**The Checkr:**  
+We're running the same checkr, with the same seed.
+The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
+```csharp
+from account in Trackr.Stashed(() => new Account())
+from amount in Checkr.Input("Amount", Fuzzr.Int(),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from operations in Checkr.OneOf(
+    Checkr.Act("Deposit", () => account.Deposit(amount)),
+    Checkr.Act("Withdraw", () => account.WithDraw(amount)))
+from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                InputReduction.cs:68:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1684147193
+ ------------------------------------------------------------
+  Executed: Withdraw
+   - Input: Amount = 87
+            Redux    1
+ =======================================
+  !! Expectation Failed: No Overdraft
+ =======================================
+ Passed Expectations
+ - No Overdraft: 1x
+ ------------------------------------------------------------
+```
+And as you can see it does exactly what it says on the tin. 
+It *reduces* the original value using a user supplied algorithm.  
+This one just decrements the input until (and including) it reaches zero, and checks if the run still fails.
+If the run passes, the value last tried is reported as the *reduced* input.  
+
+In the example here, `0` was tried, but it made the test pass, so the previously tried candidate `1` is reported.  
+
+QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
+Depending on demand, the library of reducers might grow fast.
+  
+
+[OnShrinking]: #on-shrinking
+
+[InputShrinking]: #input-shrinking
+
+[DeliberationShrinking]: #deliberation-shrinking
+### Deliberation Shrinking
+[On Shrinking][OnShrinking] | [Previous][InputReduction]  
+  
+This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
+
+A first example, as well as how to enable this feature,
+can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
+
+But here are some more use cases.  
+#### An Eager Shrinker
+Under some rare circumstances, the Shrinker gets *greedy*.  
+One currently identified case where this happens is if more than one input triggers the same failure.  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
+from trace in Checkr.Trace("List", () => input)
+from expect in Checkr.ExpectWhen("List count > 2 and does not contain 1",
+    () => input.Count() > 2,
+    () => !input.Contains(1))
+select Case.Closed;
+```
+Now when the list contains multiple elements `1`, we might get:  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedy
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:45:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    227109555
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, _ ]
+   - Trace: List  = [ 1, 2, 1 ]
+ ================================================================
+  !! Expectation Failed: List count > 2 and does not contain 1
+ ================================================================
+```
+It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
+but the element values are considered irrelevant (*wrong*).  
+For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
+```csharp
+private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
+    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
+```
+**Report:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyFixed
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1133636239
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = [ _, _, 1 ]
+   - Trace: List  = [ 0, 4, 1 ]
+ =============================================
+  !! Expectation Failed: Does not contain 1
+ =============================================
+```
+A similar thing can happen when shrinking objects, and the solution is exactly the same  
+```csharp
+from obj in Checkr.Input("BaggyInters",
+    from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
+    from result in Fuzzr.One<BaggyInters>()
+    select result)
+from trace in Checkr.Trace("Original", () => obj)
+from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
+    () => obj.IntOne != 1 && obj.IntThree != 1)
+select Case.Closed;
+```
+**With Deliberation Policy:**  
+```text
+------------------------------------------------------------
+ Test:                    RunTest_DeliberatedGreedyObjects
+ Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:105:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    149961996
+ ------------------------------------------------------------
+  Executed:
+   - Input: BaggyInters = { IntThree: 1 }
+   - Trace: Original    = { IntOne: 3, IntTwo: 2, IntThree: 1 }
+ ===============================================================
+  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
+ ===============================================================
+```
+
+[Configuration]: #configuration
+
+[OnShrinking]: #on-shrinking
+
+[InputReduction]: #input-reduction
 ## You Can Go Your Own Way
 We already saw in the chapter on [Configuration][Configuration] how you can turn some knobs to customize QuickCheckr's behaviour
 and/or reporting globally.  

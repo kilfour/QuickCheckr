@@ -35,7 +35,7 @@ The report shows a run summary containing :
 * Test: Name of the test executing the Checkr.
 * Location: Source code Location of the test executing the Checkr.
 * Original failing run: Number of executions executed during the run.
-* The minimal fail-case: In this toyest of examples it *only* specifies that an execution happened.
+* The minimal fail-case: In this simplest of examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
 * Seed: The seed used to generate the failing run.  
   You can use this to reproduce the failing run reliably, by calling run with the seed passed in.")]
@@ -70,10 +70,8 @@ The report shows a run summary containing :
     [DocExample(typeof(CheckringThingsOut), nameof(AddingAnInput_Checkr))]
     [DocContent(
 @"
-*Note:* `Case.Closed` marks the end of the Checkr script.
-A Checkr is just a LINQ expression that evaluates step by step,
-and the final select clause must return a value representing the completed case.
-`Case.Closed` simply signals ""this case finished successfully, there are no more steps"".
+*Note:* `Case.Closed` signals the end of the Checkr script.
+A Checkr is evaluated step by step, and `Case.Closed` is the final marker to indicate the scenario is complete.
 
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
@@ -125,7 +123,11 @@ this is because QuickCheckr judged the input to be relevant to the failure.")]
     [DocExample(typeof(CheckringThingsOut), nameof(AddingAnotherInput_Checkr))]
     [DocContent("The following happens:")]
     [DocCodeFile("AddingAnotherInput.txt", "text")]
-    [DocContent("That's basically the same thing as before, because QuickCheckr does not report irrelevant inputs.")]
+    [DocContent(
+@"That's basically the same thing as before, because **QuickCheckr does not report irrelevant inputs**.
+> This behaviour is key. 
+> QuickCheckr actively removes noise from the failing case.  
+> => Less cognitive load. More signal.")]
     public void AddingAnotherInput()
     {
         var article = TheJournalist.Exposes(() =>
@@ -202,7 +204,6 @@ QuickCheckr is built with transparency and discoverability as a first class conc
     [DocContent("And here's the report:")]
     [DocCodeFile("TimeToAct.txt", "text")]
     [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.")]
-    [DocContent("\n[Guide][Guide] | [Next][TheStashRunsAndExecutions]")]
     public void TimeToAct()
     {
         var article = TheJournalist.Exposes(() =>

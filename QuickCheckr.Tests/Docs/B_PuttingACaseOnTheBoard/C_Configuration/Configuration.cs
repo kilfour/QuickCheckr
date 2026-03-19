@@ -8,9 +8,7 @@ using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMo
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.Z_InternalAffairs;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
-using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
 using QuickPulse.Explains;
 
 
@@ -22,7 +20,6 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 [DocLink(typeof(TheEvidenceVault))]
 [DocLink(typeof(A_ReportModeReference))]
 [DocLink(typeof(A_ShrinkModeReference))]
-[DocLink(typeof(DeliberationShrinking))]
 [DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  \n")]
 [DocContent(
 @"QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
@@ -37,8 +34,7 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 [DocInclude(typeof(ReportModeTests))]
 [DocInclude(typeof(ShrinkModeTests))]
 [DocInclude(typeof(Hint))]
-[DocInclude(typeof(InternalAffairsTests))]
-[DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]")]
+//[DocInclude(typeof(InternalAffairsTests))]
 public class Configuration
 {
     [CodeSnippet]

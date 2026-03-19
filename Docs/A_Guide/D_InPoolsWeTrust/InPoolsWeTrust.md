@@ -5,7 +5,7 @@
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
 
-Pools exist to model systems where the set of things you can act upon change over time.  
+A Pool is like a growing set of *things in the world* your test can act on.
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
@@ -99,7 +99,7 @@ from operations in Checkr.OneOfWhen(
                 // Update the contact in the pool, keeping model and test data in sync.
             from updatePool in contact.Replace(new Contact(newName))
             select Case.Closed))
-    // This expectation implicitely verifies that duplicates are not introduced. 
+    // This expectation implicitly verifies that duplicates are not introduced. 
 from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
 select Case.Closed;
 ```
@@ -130,8 +130,6 @@ select Case.Closed;
  - Count matches: 9x
  ------------------------------------------------------------
 ```
-
-[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
 
 [Guide]: ../Guide.md
 

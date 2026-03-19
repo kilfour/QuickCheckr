@@ -1,11 +1,11 @@
-using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
-using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
+namespace QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
 
 [DocFile]
 [DocLink(typeof(OnShrinking))]

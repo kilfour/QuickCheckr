@@ -1,10 +1,10 @@
-using QuickCheckr.Tests.Docs.H_OnShrinking.A_ExecutionShrinking;
-using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
-using QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
-using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.A_ExecutionShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking;
+namespace QuickCheckr.Tests.Drafts.H_OnShrinking;
 
 [DocFile]
 [DocHeader("Philosophy")]

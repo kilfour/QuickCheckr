@@ -1,5 +1,5 @@
 # Test Framework Integration
-[The Board][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][GatheringEvidence]  
   
 QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
@@ -11,4 +11,4 @@ Because the failure is surfaced as a standard exception, any test framework can 
 
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
 
-[RunningACheckr]: ../B_RunningACheckr/RunningACheckr.md
+[GatheringEvidence]: ../E_GatheringEvidence/GatheringEvidence.md

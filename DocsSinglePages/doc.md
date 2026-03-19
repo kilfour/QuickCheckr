@@ -1,9 +1,16 @@
 ## Guide
 **Welcome to the QuickCheckr Guide.**  
+
 This document walks through the core ideas of QuickCheckr,
 from the basics of building a Checkr, to stateful testing, branching behaviour, pools, shrinking,
 leading up to a real-world scenario.  
-Each chapter builds on the previous one, introducing new concepts through executable examples.  
+Each chapter builds on the previous one, introducing new concepts through executable examples.
+
+QuickCheckr is mainly designed to test behaviour that unfolds over time.
+It can check individual function calls,
+but it also explores sequences of actions and reduces failures to the smallest scenario that still breaks.
+
+  
 ### Contents
 
 - [Checkr-ing Things Out (a quick tour)][CheckringThingsOut]
@@ -66,7 +73,7 @@ The report shows a run summary containing :
 * Test: Name of the test executing the Checkr.
 * Location: Source code Location of the test executing the Checkr.
 * Original failing run: Number of executions executed during the run.
-* The minimal fail-case: In this toyest of examples it *only* specifies that an execution happened.
+* The minimal fail-case: In this simplest of examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
 * Seed: The seed used to generate the failing run.  
   You can use this to reproduce the failing run reliably, by calling run with the seed passed in.  
@@ -82,10 +89,8 @@ var check =
     select Case.Closed;
 ```
 
-*Note:* `Case.Closed` marks the end of the Checkr script.
-A Checkr is just a LINQ expression that evaluates step by step,
-and the final select clause must return a value representing the completed case.
-`Case.Closed` simply signals "this case finished successfully, there are no more steps".
+*Note:* `Case.Closed` signals the end of the Checkr script.
+A Checkr is evaluated step by step, and `Case.Closed` is the final marker to indicate the scenario is complete.
 
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
@@ -133,7 +138,10 @@ The following happens:
   !! Expectation Failed: Input /= 42
  ======================================
 ```
-That's basically the same thing as before, because QuickCheckr does not report irrelevant inputs.  
+That's basically the same thing as before, because **QuickCheckr does not report irrelevant inputs**.
+> This behaviour is key. 
+> QuickCheckr actively removes noise from the failing case.  
+> => Less cognitive load. More signal.  
 #### Not Without a Trace
 QuickCheckr's *shrinking* can sometimes seem magical. Not a problem in this simple test,
 but when you are writing a more complex test, it is always helpful to see what's really going on.
@@ -193,8 +201,6 @@ And here's the report:
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
-[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
-
 [Guide]: #guide
 
 [TheStashRunsAndExecutions]: #the-stash-runs-and-executions
@@ -210,7 +216,7 @@ public class BugHouse
     private int count;
     public bool DelayedDetonation(int a)
     {
-        if (count++ == 2 && a == 1) ComputerSays.No("I'm sorry, Dave, I'm afraid I can't do that.");
+        if (count++ == 2 && a == 1) throw new Exception("I'm sorry, Dave, I'm afraid I can't do that.");
         return true;
     }
 }
@@ -259,7 +265,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1
  ===========================================================================
-  !! ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+  !! Exception: I'm sorry, Dave, I'm afraid I can't do that.
  ===========================================================================
  Passed Expectations
  - Returns true: 2x
@@ -308,6 +314,13 @@ Meanwhile, the following *are fresh each execution*:
 * Every `Checkr.Act`, `Checkr.Expect`, and `Checkr.Trace` is evaluated anew.
 * The shrinking engine can re-run isolated executions to evaluate relevance.
 
+```text
+RUN 1: [Execution 1] => [Execution 2] => [Execution 3] (fails)  
+       ↑_________________same stash__________________↑
+       
+RUN 2: Fresh stash, fresh start.
+```
+
 This means:
 
 * **Runs give you independence.**
@@ -317,8 +330,6 @@ And together, they let QuickCheckr explore both *pure input variation* and *mult
 which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
-
-[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
 
 [InPoolsWeTrust]: #in-pools-we-trust
 
@@ -340,6 +351,8 @@ We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool t
 It is the foundational building block for introducing randomness into *what happens next*.
 Instead of describing one action, you describe a *set* of alternative next moves,
 and QuickCheckr picks one at random during each execution.
+
+`OneOf` turns your Checkr into a **state machine explorer**.
 
 Let's keep the model simple:  
 ```csharp
@@ -494,7 +507,7 @@ select Case.Closed;
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
 
-Pools exist to model systems where the set of things you can act upon change over time.  
+A Pool is like a growing set of *things in the world* your test can act on.
 
 Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
@@ -588,7 +601,7 @@ from operations in Checkr.OneOfWhen(
                 // Update the contact in the pool, keeping model and test data in sync.
             from updatePool in contact.Replace(new Contact(newName))
             select Case.Closed))
-    // This expectation implicitely verifies that duplicates are not introduced. 
+    // This expectation implicitly verifies that duplicates are not introduced. 
 from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
 select Case.Closed;
 ```
@@ -620,8 +633,6 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 
-[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
-
 [Guide]: #guide
 
 [ChoosingTheNextMove]: #choosing-the-next-move
@@ -632,6 +643,8 @@ select Case.Closed;
   
 Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
+
+> This is the kind of bug QuickCheckr is built to find.
 
 *So, here we go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
@@ -816,8 +829,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
 **Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
 Let me redirect said readers to [Gathering Evidence][GatheringEvidence].  
 
-[Guide][Guide] | [Previous][InPoolsWeTrust]  
-
 [Guide]: #guide
 
 [InPoolsWeTrust]: #in-pools-we-trust
@@ -829,14 +840,12 @@ It also explains the *Evidence Vault* system and how to gather evidence.
   
 ### Contents
 
-- [Test Framework Integration][TestFrameworkIntegration]
 - [Running a Checkr][RunningACheckr]
 - [Configuration][Configuration]
 - [The Evidence Vault][TheEvidenceVault]
 - [Gathering Evidence][GatheringEvidence]
+- [Test Framework Integration][TestFrameworkIntegration]
   
-
-[TestFrameworkIntegration]: #test-framework-integration
 
 [RunningACheckr]: #running-a-checkr
 
@@ -845,22 +854,10 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 [TheEvidenceVault]: #the-evidence-vault
 
 [GatheringEvidence]: #gathering-evidence
-### Test Framework Integration
-[The Board][PuttingACaseOnTheBoard] | [Next][RunningACheckr]  
-  
-QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
-A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
-
-If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
-
-Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
-
-[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
-
-[RunningACheckr]: #running-a-checkr
+[TestFrameworkIntegration]: #test-framework-integration
 ### Running a Checkr
-[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Next][Configuration]  
   
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
@@ -896,10 +893,6 @@ which allows for controlling specific aspects of the Checkr run.
 [Configuration]: #configuration
 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
-
-[TestFrameworkIntegration]: #test-framework-integration
-
-[Configuration]: #configuration
 ### Configuration
 [The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
   
@@ -1093,10 +1086,6 @@ The following predefined policies are available
 - `DeliberationPolicy.MinimumWarnings`  
 - `DeliberationPolicy.MaximumExecutionsShrunk`  
 - `DeliberationPolicy.MaximumDistinctPassedExpectations`  
-
-See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
-
-It is also possible to define a custom policy, but this is an ...  
 #### ReportMode
 You can use this to customize report formatting somewhat.  
 I personally almost always disable the *Labels* ('Input:', 'Pool:', etc...), but your milage may vary.  
@@ -1149,21 +1138,6 @@ public static void Investigate(
         cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
 ```
 You get the idea.  
-#### Internal Affairs
-The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
-It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
-
-[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
 
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
@@ -1174,8 +1148,6 @@ It might evolve into something that is *open to the public*, or it might get rem
 [A_ReportModeReference]: #reportmode-reference
 
 [A_ShrinkModeReference]: #shrinkmode-reference
-
-[DeliberationShrinking]: #deliberation-shrinking
 ##### ReportMode Reference
 The following Checkr will be used to generate the reports throughout this chapter:  
 ```csharp
@@ -1451,15 +1423,13 @@ If however a run for a given seed no longer fails, the seed is removed from the 
 and no report is generated for the passing run.  
 Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
 
-[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  
-
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
 [Configuration]: #configuration
 
 [GatheringEvidence]: #gathering-evidence
 ### Gathering Evidence
-[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] | [Next][TestFrameworkIntegration] 
   
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 #### Running Investigations
@@ -1727,335 +1697,28 @@ The Shrinker however managed to collapse that one down to only four executions, 
  ------------------------------------------------------------
 ```
 
-[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
-
 [PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
 [TheEvidenceVault]: #the-evidence-vault
+
+[TestFrameworkIntegration]: #test-framework-integration
 
 [Guide]: #guide
 
 [BoltingHorses]: #bolting-horses
 
 [J_TheCaseOfTheInvisibleCollection]: #the-case-of-the-invisible-collection
-## On Shrinking
-### Philosophy
-
-QuickCheckr keeps shrinking simple and predictable.  
-It never tries to *outsmart* your domain with clever global algorithms.  
-Shrinking is purely local and irrelevance-based: if removing a value (or execution) still makes the property fail,
-QuickCheckr marks it as *irrelevant*.  
-This avoids surprising or *magical* shrink results.  
-### Contents
-
-- [Execution Shrinking][ExecutionShrinking]
-- [Input Shrinking][InputShrinking]
-- [Input Reduction][InputReduction]
-- [Deliberation Shrinking][DeliberationShrinking]
+### Test Framework Integration
+[The Board][PuttingACaseOnTheBoard] | [Previous][GatheringEvidence]  
   
+QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
 
-[ExecutionShrinking]: #execution-shrinking
+A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
 
-[InputShrinking]: #input-shrinking
+If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
 
-[InputReduction]: #input-reduction
+Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
 
-[DeliberationShrinking]: #deliberation-shrinking
-### Execution Shrinking
-[On Shrinking][OnShrinking] | [Next][InputShrinking]  
-  
-This is the first step in QuickCheckr shrinking.  
-The following simple example fails on the third execution.  
-```csharp
-from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-from expect in Checkr.Expect("Counter does not equal 3", () => counter != 3)
-select Case.Closed;
-```
+[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
 
-Execution 1: counter = 1  
-Execution 2: counter = 2  
-Execution 3: counter = 3  (Fails)  
-
-During execution shrinking the values from counter are not regenerated, but retrieved from the previous run.
-So the ExecutionShrinker retries the run with the same values, but tries to remove executions, one by one.  
-If the run still fails, the execution is not deemed relevant for the failure and is removed.  
-
-So after *Execution Shrinking*, the result is:
-  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                ExecutionShrinking.cs:68:1
- Original failing run:    3 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    669391953
- ------------------------------------------------------------
-  Executed:
-   - Input: counter = 3
- ===================================================
-  !! Expectation Failed: Counter does not equal 3
- ===================================================
- Passed Expectations
- - Counter does not equal 3: 2x
- ------------------------------------------------------------
-```
-
-[OnShrinking]: #on-shrinking
-
-[InputShrinking]: #input-shrinking
-### Input Shrinking
-[On Shrinking][OnShrinking] | [Previous][ExecutionShrinking] | [Next][InputReduction]  
-  
-This is the next step in QuickCheckr shrinking and the most complex one.  
-
-In QuickCheckr, **input shrinking is a two-step process**:
-
-1. **Classification**: decide *what is relevant* for reproducing the failure.
-2. **Reduction (Redux)**: simplify the *relevant* parts to improve human understanding, while still reproducing the failure.
-
-A key principle: the engine always keeps the **original failing input**.
-Reduction produces a **Redux view** alongside the original.
-The report can therefore show both **Original** and **Redux** without pretending the original counterexample was replaced.  
-Reduction is (by default) an opt-in feature. In this chapter we are mainly demonstrating Classification.
-Reduction will be elaborated on later.
-  
-The following simple example has one input but always fails.  
-```csharp
-from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-from expect in Checkr.Expect("Always Fails", () => false)
-select Case.Closed;
-```
-Input shrinking reruns the failing execution and prunes inputs whose values don't affect the failure.
-
-So, in the previous example, after *Input Shrinking*, the result is:
-  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:39:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    165641598
- ------------------------------------------------------------
-  Executed:
-   - WARNING: All inputs were considered irrelevant.
- =======================================
-  !! Expectation Failed: Always Fails
- =======================================
-```
-Another example, slightly trickier.  
-```csharp
-from one in Checkr.Input("Input One", Fuzzr.Int())
-from two in Checkr.Input("Input Two", Fuzzr.Int())
-from three in Checkr.Input("Input Three", Fuzzr.Int())
-from result in Checkr.Act("Result", () => one + three)
-from expect in Checkr.Expect("Should not be 42", () => result != 42)
-select Case.Closed;
-```
-As you can see from the test definition, two inputs are involved in a possible failure.
-
-QuickCheckr correctly identifies the relevant inputs.
-
-Result:
-  
-```text
-------------------------------------------------------------
- Test:                    Example_Two
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:81:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    231122398
- ------------------------------------------------------------
-  Executed: Result
-   - Input: Input One   = 12
-   - Input: Input Three = 30
- ===========================================
-  !! Expectation Failed: Should not be 42
- ===========================================
-```
-Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
-
-[HoneyIShrunkTheInputs]: #honey-i-shrunk-the-inputs
-
-[OnShrinking]: #on-shrinking
-
-[ExecutionShrinking]: #execution-shrinking
-
-[InputReduction]: #input-reduction
-### Input Reduction
-[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  
-  
-
-!! WARNING: **Under Construction** !!
-
-> This feature is **actively** being worked on. And as such this notice will disappear soon.  
-> But API and semantics may change somewhat in future versions.  
-> We're ... erm ... you know, ... considering our options.
->  
-> Use with caution in production code. 
-
-  
-After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
-are run on a relevant input (example below).  
-
-Note the use of the word *registered*. Staying true to it's shrinking philosophy,
-QuickChecker does not try and guess how to reduce input values. It's up to the user to supply that information.  
-
-Most of the time, even in the example here I think, reducers are not needed to figure out what went wrong from the report.  
-But in some cases it is a must.  
-
-So what is a reducer ?  
-
-Well let me show you:  
-
-**The Model:**  
-```csharp
-public class Account
-{
-    public int Balance { get; private set; }
-    public void Deposit(int amount) => Balance += amount;
-    public void WithDraw(int amount) => Balance -= amount;
-}
-```
-
-**The Checkr:**  
-We're running the same checkr, with the same seed.
-The only difference is the addition of `Reduce.TowardsZero` in the `Checkr.Input` argument list.  
-```csharp
-from account in Trackr.Stashed(() => new Account())
-from amount in Checkr.Input("Amount", Fuzzr.Int(),
-    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
-from operations in Checkr.OneOf(
-    Checkr.Act("Deposit", () => account.Deposit(amount)),
-    Checkr.Act("Withdraw", () => account.WithDraw(amount)))
-from noOverdraft in Checkr.Expect("No Overdraft", () => account.Balance >= 0)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                InputReduction.cs:68:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1684147193
- ------------------------------------------------------------
-  Executed: Withdraw
-   - Input: Amount = 87
-            Redux    1
- =======================================
-  !! Expectation Failed: No Overdraft
- =======================================
- Passed Expectations
- - No Overdraft: 1x
- ------------------------------------------------------------
-```
-And as you can see it does exactly what it says on the tin. 
-It *reduces* the original value using a user supplied algorithm.  
-This one just decrements the input until (and including) it reaches zero, and checks if the run still fails.
-If the run passes, the value last tried is reported as the *reduced* input.  
-
-In the example here, `0` was tried, but it made the test pass, so the previously tried candidate `1` is reported.  
-
-QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
-Depending on demand, the library of reducers might grow fast.
-  
-
-[OnShrinking]: #on-shrinking
-
-[InputShrinking]: #input-shrinking
-
-[DeliberationShrinking]: #deliberation-shrinking
-### Deliberation Shrinking
-[On Shrinking][OnShrinking] | [Previous][InputReduction]  
-  
-This next step, which is disabled by default, allows the shrinker to find *global* minimal failcases instead of *local* ones.  
-
-A first example, as well as how to enable this feature,
-can be found in the entry on Deliberation Policies in the [Configuration][Configuration] chapter.
-
-But here are some more use cases.  
-#### An Eager Shrinker
-Under some rare circumstances, the Shrinker gets *greedy*.  
-One currently identified case where this happens is if more than one input triggers the same failure.  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.Int(0, 5).Many(3))
-from trace in Checkr.Trace("List", () => input)
-from expect in Checkr.ExpectWhen("List count > 2 and does not contain 1",
-    () => input.Count() > 2,
-    () => !input.Contains(1))
-select Case.Closed;
-```
-Now when the list contains multiple elements `1`, we might get:  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedy
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:45:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    227109555
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, _ ]
-   - Trace: List  = [ 1, 2, 1 ]
- ================================================================
-  !! Expectation Failed: List count > 2 and does not contain 1
- ================================================================
-```
-It seems QuickCheckr thinks that the minimal fail-case is a list with atleast 3 elements (*correct*),
-but the element values are considered irrelevant (*wrong*).  
-For this rare case we  add a DeliberationPolicy, allowing a more explanatory fail-case to surface:  
-```csharp
-private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-    => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
-```
-**Report:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyFixed
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:82:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1133636239
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, _, 1 ]
-   - Trace: List  = [ 0, 4, 1 ]
- =============================================
-  !! Expectation Failed: Does not contain 1
- =============================================
-```
-A similar thing can happen when shrinking objects, and the solution is exactly the same  
-```csharp
-from obj in Checkr.Input("BaggyInters",
-    from cfg in Configr.Primitive(Fuzzr.Int(1, 5))
-    from result in Fuzzr.One<BaggyInters>()
-    select result)
-from trace in Checkr.Trace("Original", () => obj)
-from expect in Checkr.Expect("obj.IntOne == 1 || obj.IntThree == 1",
-    () => obj.IntOne != 1 && obj.IntThree != 1)
-select Case.Closed;
-```
-**With Deliberation Policy:**  
-```text
-------------------------------------------------------------
- Test:                    RunTest_DeliberatedGreedyObjects
- Location:                Docs\H_OnShrinking\F_DeliberationShrinking\DeliberationShrinking.cs:105:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    149961996
- ------------------------------------------------------------
-  Executed:
-   - Input: BaggyInters = { IntThree: 1 }
-   - Trace: Original    = { IntOne: 3, IntTwo: 2, IntThree: 1 }
- ===============================================================
-  !! Expectation Failed: obj.IntOne == 1 || obj.IntThree == 1
- ===============================================================
-```
-
-[Configuration]: #configuration
-
-[OnShrinking]: #on-shrinking
-
-[InputReduction]: #input-reduction
+[GatheringEvidence]: #gathering-evidence

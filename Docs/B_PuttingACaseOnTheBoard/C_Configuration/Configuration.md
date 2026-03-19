@@ -191,10 +191,6 @@ The following predefined policies are available
 - `DeliberationPolicy.MinimumWarnings`  
 - `DeliberationPolicy.MaximumExecutionsShrunk`  
 - `DeliberationPolicy.MaximumDistinctPassedExpectations`  
-
-See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
-
-It is also possible to define a custom policy, but this is an ...  
 ## ReportMode
 You can use this to customize report formatting somewhat.  
 I personally almost always disable the *Labels* ('Input:', 'Pool:', etc...), but your milage may vary.  
@@ -247,21 +243,6 @@ public static void Investigate(
         cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
 ```
 You get the idea.  
-## Internal Affairs
-The *clue* is in the name. This is used to debug QuickCheckr itself when things go awry, and as such it is an ...  
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
-It might evolve into something that is *open to the public*, or it might get removed entirely, ... not sure.  
-
-[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  
 
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
 
@@ -272,5 +253,3 @@ It might evolve into something that is *open to the public*, or it might get rem
 [A_ReportModeReference]: J_ReportMode/Reference/A_ReportModeReference.md
 
 [A_ShrinkModeReference]: N_ShrinkMode/Reference/A_ShrinkModeReference.md
-
-[DeliberationShrinking]: ../../H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md

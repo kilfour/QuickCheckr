@@ -1,5 +1,5 @@
-using QuickCheckr.Tests.Docs.H_OnShrinking.A_ExecutionShrinking;
-using QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.A_ExecutionShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -7,7 +7,7 @@ using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
+namespace QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
 
 [DocFile]
 [DocLink(typeof(HoneyIShrunkTheInputs))]

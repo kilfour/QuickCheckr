@@ -152,7 +152,6 @@ In this case we use:")]
 @"If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
 and no report is generated for the passing run.  
 Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.")]
-    [DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]")]
     public void ClosingColdCasesNowPass()
     {
         var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);

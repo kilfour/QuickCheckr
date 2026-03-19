@@ -1,6 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;

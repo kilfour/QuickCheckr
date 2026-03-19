@@ -85,7 +85,7 @@ select Case.Closed;
  ===============================================================
 ```
 
-[Configuration]: ../../B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md
+[Configuration]: ../../../Docs/B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md
 
 [OnShrinking]: ../OnShrinking.md
 

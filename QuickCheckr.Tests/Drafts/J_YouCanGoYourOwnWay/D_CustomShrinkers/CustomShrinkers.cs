@@ -1,4 +1,4 @@
-using QuickCheckr.Tests.Docs.H_OnShrinking.C_InputShrinking;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.CustomShrinkersIncludes;

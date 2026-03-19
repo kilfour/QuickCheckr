@@ -1,9 +1,16 @@
 # Guide
 **Welcome to the QuickCheckr Guide.**  
+
 This document walks through the core ideas of QuickCheckr,
 from the basics of building a Checkr, to stateful testing, branching behaviour, pools, shrinking,
 leading up to a real-world scenario.  
-Each chapter builds on the previous one, introducing new concepts through executable examples.  
+Each chapter builds on the previous one, introducing new concepts through executable examples.
+
+QuickCheckr is mainly designed to test behaviour that unfolds over time.
+It can check individual function calls,
+but it also explores sequences of actions and reduces failures to the smallest scenario that still breaks.
+
+  
 ## Contents
 
 - [Checkr-ing Things Out (a quick tour)][CheckringThingsOut]

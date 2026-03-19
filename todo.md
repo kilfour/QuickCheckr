@@ -82,7 +82,7 @@
 * 2 for GatheringEvidence: Touches the file system.
 * TheBroadcasterTests: Explicit experimental.
 * QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.A_Values;
-* QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking.DeliberationShrinking.RunTest_DeliberatedGreedy()
+* QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking.DeliberationShrinking.RunTest_DeliberatedGreedy()
   Fixed the wrong outcome, this now documents a no longer existing issue
 
 ## Future Doc Work

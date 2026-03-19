@@ -100,7 +100,7 @@ select Case.Closed;
  ===============================================
 ```
 
-[InputShrinking]: ../../../Docs/H_OnShrinking/C_InputShrinking/InputShrinking.md
+[InputShrinking]: ../../H_OnShrinking/C_InputShrinking/InputShrinking.md
 
 [Classifiers]: A_Classification/Classifiers.md
 

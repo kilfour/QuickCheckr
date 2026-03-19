@@ -4,14 +4,12 @@ It also explains the *Evidence Vault* system and how to gather evidence.
   
 ## Contents
 
-- [Test Framework Integration][TestFrameworkIntegration]
 - [Running a Checkr][RunningACheckr]
 - [Configuration][Configuration]
 - [The Evidence Vault][TheEvidenceVault]
 - [Gathering Evidence][GatheringEvidence]
+- [Test Framework Integration][TestFrameworkIntegration]
   
-
-[TestFrameworkIntegration]: A_TestFrameworkIntegration/TestFrameworkIntegration.md
 
 [RunningACheckr]: B_RunningACheckr/RunningACheckr.md
 
@@ -20,3 +18,5 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 [TheEvidenceVault]: D_TheEvidenceVault/TheEvidenceVault.md
 
 [GatheringEvidence]: E_GatheringEvidence/GatheringEvidence.md
+
+[TestFrameworkIntegration]: F_TestFrameworkIntegration/TestFrameworkIntegration.md

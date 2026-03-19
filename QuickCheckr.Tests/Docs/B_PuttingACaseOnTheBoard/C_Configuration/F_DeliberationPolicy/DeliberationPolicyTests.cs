@@ -208,11 +208,6 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
 
     [Fact]
     [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MaximumDistinctPassedExpectations)}`")]
-    [DocContent(
-@"
-See the documentation for [*Deliberation Shrinking*][DeliberationShrinking] for more examples and usage of these policies.
-
-It is also possible to define a custom policy, but this is an ...")]
     public void PolicyMaximumDistinctPassedExpectations()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 3, Seed: 1))

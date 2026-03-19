@@ -10,7 +10,7 @@ public class BugHouse
     private int count;
     public bool DelayedDetonation(int a)
     {
-        if (count++ == 2 && a == 1) ComputerSays.No("I'm sorry, Dave, I'm afraid I can't do that.");
+        if (count++ == 2 && a == 1) throw new Exception("I'm sorry, Dave, I'm afraid I can't do that.");
         return true;
     }
 }
@@ -59,7 +59,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
   Executed: BugHouse.DelayedDetonation
    - Input: Int = 1
  ===========================================================================
-  !! ComputerSaysNo: I'm sorry, Dave, I'm afraid I can't do that.
+  !! Exception: I'm sorry, Dave, I'm afraid I can't do that.
  ===========================================================================
  Passed Expectations
  - Returns true: 2x
@@ -108,6 +108,13 @@ Meanwhile, the following *are fresh each execution*:
 * Every `Checkr.Act`, `Checkr.Expect`, and `Checkr.Trace` is evaluated anew.
 * The shrinking engine can re-run isolated executions to evaluate relevance.
 
+```text
+RUN 1: [Execution 1] => [Execution 2] => [Execution 3] (fails)  
+       ↑_________________same stash__________________↑
+       
+RUN 2: Fresh stash, fresh start.
+```
+
 This means:
 
 * **Runs give you independence.**
@@ -117,8 +124,6 @@ And together, they let QuickCheckr explore both *pure input variation* and *mult
 which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
-
-[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
 

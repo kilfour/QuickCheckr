@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.A_TestFrameworkIntegration;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -9,12 +8,10 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 
 [DocFile]
-[DocLink(typeof(Configuration))]
 [DocFileHeader("Running a Checkr")]
-[DocLink(typeof(PuttingACaseOnTheBoard))]
-[DocLink(typeof(TestFrameworkIntegration))]
 [DocLink(typeof(Configuration))]
-[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  \n")]
+[DocLink(typeof(PuttingACaseOnTheBoard))]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Next][Configuration]  \n")]
 [DocContent(
 @"This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:")]

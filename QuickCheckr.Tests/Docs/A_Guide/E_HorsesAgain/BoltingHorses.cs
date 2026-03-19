@@ -19,6 +19,8 @@ namespace QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 @"Up to this point we have seen a few examples of how to use QuickCheckr to test a system, but the bugs have been relatively trivial.
 For this one, we're going to look at a real bug found in the wild, which is demonstrative for a whole category: *Invariants drifting over time*.
 
+> This is the kind of bug QuickCheckr is built to find.
+
 *So, here we go:*  
 We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
@@ -78,7 +80,6 @@ A coach was assigned while suitable, then a course's required skills changed, in
 **Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
 Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     )]
-    [DocContent("\n[Guide][Guide] | [Previous][InPoolsWeTrust]")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(),

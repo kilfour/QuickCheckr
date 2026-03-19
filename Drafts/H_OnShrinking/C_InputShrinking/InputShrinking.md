@@ -70,7 +70,7 @@ Result:
 ```
 Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].  
 
-[HoneyIShrunkTheInputs]: ../../../Drafts/M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md
+[HoneyIShrunkTheInputs]: ../../M_HoneyIShrunkTheInputs/HoneyIShrunkTheInputs.md
 
 [OnShrinking]: ../OnShrinking.md
 

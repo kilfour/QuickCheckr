@@ -1,5 +1,5 @@
 # Gathering Evidence
-[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
+[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] | [Next][TestFrameworkIntegration] 
   
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 ## Running Investigations
@@ -267,11 +267,11 @@ The Shrinker however managed to collapse that one down to only four executions, 
  ------------------------------------------------------------
 ```
 
-[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault]  
-
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
 
 [TheEvidenceVault]: ../D_TheEvidenceVault/TheEvidenceVault.md
+
+[TestFrameworkIntegration]: ../F_TestFrameworkIntegration/TestFrameworkIntegration.md
 
 [Guide]: ../../A_Guide/Guide.md
 

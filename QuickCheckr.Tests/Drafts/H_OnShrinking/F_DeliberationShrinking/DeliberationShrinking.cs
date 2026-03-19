@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
-using QuickCheckr.Tests.Docs.H_OnShrinking.D_InputReduction;
+using QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
 using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress;
@@ -10,7 +10,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.H_OnShrinking.F_DeliberationShrinking;
+namespace QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 
 [DocFile]
 [DocLink(typeof(Configuration))]

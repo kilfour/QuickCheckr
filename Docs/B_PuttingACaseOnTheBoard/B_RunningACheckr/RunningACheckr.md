@@ -1,5 +1,5 @@
 # Running a Checkr
-[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]  
+[The Board][PuttingACaseOnTheBoard] | [Next][Configuration]  
   
 This is done by calling `Run` on the Checkr instance.  
 Several overloads are available:  
@@ -35,7 +35,3 @@ which allows for controlling specific aspects of the Checkr run.
 [Configuration]: ../C_Configuration/Configuration.md
 
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
-
-[TestFrameworkIntegration]: ../A_TestFrameworkIntegration/TestFrameworkIntegration.md
-
-[Configuration]: ../C_Configuration/Configuration.md

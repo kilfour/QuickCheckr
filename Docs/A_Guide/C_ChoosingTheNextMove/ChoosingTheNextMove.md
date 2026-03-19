@@ -12,6 +12,8 @@ It is the foundational building block for introducing randomness into *what happ
 Instead of describing one action, you describe a *set* of alternative next moves,
 and QuickCheckr picks one at random during each execution.
 
+`OneOf` turns your Checkr into a **state machine explorer**.
+
 Let's keep the model simple:  
 ```csharp
 public class Account

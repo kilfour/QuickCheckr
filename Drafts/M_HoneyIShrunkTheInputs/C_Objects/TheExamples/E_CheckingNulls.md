@@ -106,4 +106,4 @@ As you can see the warning is still there for `Universe.Everything` but this is 
 so the warning can be ignored.  
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.  
 
-[DeliberationShrinking]: ../../../../Docs/H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
+[DeliberationShrinking]: ../../../H_OnShrinking/F_DeliberationShrinking/DeliberationShrinking.md
