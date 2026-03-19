@@ -2,7 +2,7 @@
       
 ### Doing
 * What to do if all reduction values fail ?
-  * Add 'Witness' (candidate that made the run pass) to Redux 
+  
 
 ### Todo
 * Doc/test/improve `Reduce.Towards()`.
@@ -97,6 +97,7 @@
     3. NEW : Collapser: simplifies structure
 * Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
   Or maybe an object with an OnFail tracing method 
+* Add 'Witness' (candidate that made the run pass) to Redux 
 * QuickPulse.Show config could use another look 
 * Maybe retrieve line number of failed Expectation (perf ?)
 * Play more pool. Not really needed I reckon, but you know, making sure ...

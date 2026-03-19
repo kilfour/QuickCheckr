@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr;
@@ -42,9 +43,9 @@ public static partial class Reduce
             if (reductionResult.Failed)
                 lastFailure = reductionResult.ValueAs<T>();
             else
-                return new Reduction.Stop(lastFailure!, reductionResult.Value);
-            if (exhausted)
                 return new Reduction.Stop(lastFailure!);
+            if (exhausted)
+                return new Reduction.Unbounded(lastFailure!);
             var next = enumerator.Current;
             exhausted = !enumerator.MoveNext();
             return new Reduction.Next(next!);
@@ -78,6 +79,8 @@ public static partial class Reduce
         private IEnumerator<T>? enumerator = null;
         private bool exhausted = false;
         private T? lastFailure = default;
+        private Maybe<object> witness = Maybe<object>.Nothing();
+
 
         public Reduction Reduce(ReductionResult reductionResult)
         {
@@ -88,8 +91,15 @@ public static partial class Reduce
             }
             if (reductionResult.Failed)
                 lastFailure = reductionResult.ValueAs<T>();
+            else
+                witness = Maybe<object>.Just(reductionResult.Value);
             if (exhausted)
-                return new Reduction.Stop(lastFailure!);
+            {
+                if (witness.HasValue)
+                    return new Reduction.Stop(lastFailure!);
+                return new Reduction.Unbounded(lastFailure!);
+            }
+
             var next = enumerator.Current;
             exhausted = !enumerator.MoveNext();
             return new Reduction.Next(next!);

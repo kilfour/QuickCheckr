@@ -2,6 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custo
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
+using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
@@ -64,9 +65,13 @@ public class ClassifierSelector
         foreach (var reducerFactory in reducerFactories.Skip(1))
         {
             reducer = reducerFactory();
-            var value = step is Reduction.Next next
-                ? next.Candidate
-                : step is Reduction.Stop stop ? stop.Result : info.Value;
+            var value = step switch
+            {
+                Reduction.Next next => next.Candidate,
+                Reduction.Stop stop => stop.Result,
+                Reduction.Unbounded unbounded => unbounded.Result,
+                _ => info.Value
+            };
             step = ReductionRunner.ForReducer(reducer, value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
         }
         return ReduxFromStep(info, context, step);
@@ -81,19 +86,28 @@ public class ClassifierSelector
 
     private static (Maybe, Maybe<object>) ReduxFromStep(ShrinkingInfo info, ShrinkingContext context, Reduction step)
     {
-        // if (step is Reduction.Next next)
-        //     return (Maybe.Nothing(), Maybe<object>.Nothing());
-        if (step is Reduction.Stop stop)
+        if (step is Reduction.Unbounded)
         {
-            if (Equals(info.Value, stop.Result))
-                return (Maybe.Nothing(), Maybe<object>.Nothing());
-            context.State.Memory.Commit(info.ExecutionId, info.Key, stop.Result!);
-            context.State.Memory.Testify(info.ExecutionId, info.Key, stop.Result!);
-            return (
-                Maybe.Just(context.PrintRedux(stop.Result!)),
-                Maybe<object>.Just(stop.Result!));
+            context.State.Memory.StoreWarning(info.Path, () => new NoWitnessForReducerWarning(info.Path));
         }
-        return (Maybe.Nothing(), Maybe<object>.Nothing());
+        return step switch
+        {
+            Reduction.Stop stop => ReduxFromValue(info, context, stop.Result),
+            Reduction.Unbounded unbounded => ReduxFromValue(info, context, unbounded.Result),
+            Reduction.Next _ => throw new InvalidOperationException("Reduction.Next should not be the end result of a reduction."),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
+    private static (Maybe, Maybe<object>) ReduxFromValue(ShrinkingInfo info, ShrinkingContext context, object? value)
+    {
+        if (Equals(info.Value, value))
+            return (Maybe.Nothing(), Maybe<object>.Nothing());
+        context.State.Memory.Commit(info.ExecutionId, info.Key, value!);
+        context.State.Memory.Testify(info.ExecutionId, info.Key, value!);
+        return (
+            Maybe.Just(context.PrintRedux(value!)),
+            Maybe<object>.Just(value!));
     }
 
     private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)

@@ -9,6 +9,7 @@ public static partial class Reduce
 
     private class MinimizeStringFactory
     {
+
         private int index = 0;
         public Reduction Reduce(ReductionResult result)
         {

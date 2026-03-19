@@ -6,11 +6,11 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.T_ReductionNotPossible;
 
 [DocFile]
-[DocContent("What to do if all reduction values fail ?")]
 public class ReductionNotPossible : CheckrTest<ReductionNotPossible>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]
@@ -31,10 +31,12 @@ public class ReductionNotPossible : CheckrTest<ReductionNotPossible>
         Assert.Equal("Input should be greater than 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("21", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("0", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("No witness for reducer at 'Input'.", article.Execution(1).Warning(1).Read().Value);
     }
 }

@@ -38,11 +38,13 @@ public class OnPath : CheckrTest<OnPath>
         Assert.Equal("Sum smaller than 11.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Inter", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ A: 42, B: 21 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ A: 3, B: 8 }", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("No witness for reducer at 'Inter.A'.", article.Execution(1).Warning(1).Read().Value);
     }
 
     public record Inter(int A, int B);
