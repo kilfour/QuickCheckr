@@ -21,9 +21,6 @@ public class OnSpecificValue : CheckrTest<OnSpecificValue>
     public override void Example() =>
         Run(1.Runs());
 
-    protected override CheckrConfig Configure(CheckrConfig config)
-        => config with { InternalAffairs = [InternalAffairs.InputShrinking] };
-
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 5)),

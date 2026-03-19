@@ -6,11 +6,11 @@
   * Add 'Witness' (candidate that made the run pass) to Redux 
 
 ### Todo
-* Add *Deposition Tests* for collapsed Empty collections warnings.
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
 * Check what happens when collection is null.
-
+* WarningDepositionsTests EmptyCollections_Nested 
+  "Empty collection deemed ..." should be "collection**s**"
 ### Wish List
 
      
