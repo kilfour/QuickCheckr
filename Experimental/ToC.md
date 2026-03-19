@@ -13,4 +13,8 @@
       - [Test2](Z_Challenges/F_Difference/Sub/Test2.md)
       - [Test2 Better](Z_Challenges/F_Difference/Sub/Test2Better.md)
       - [Test3](Z_Challenges/F_Difference/Sub/Test3.md)
+    - [Bin Heap](Z_Challenges/G_BinHeap/BinHeap.md)
+    - [Coupling](Z_Challenges/H_Coupling/Coupling.md)
+    - [Deletion](Z_Challenges/I_Deletion/Deletion.md)
+    - [Distinct](Z_Challenges/J_Distinct/Distinct.md)
     - [Nested Lists](Z_Challenges/K_NestedLists/NestedLists.md)

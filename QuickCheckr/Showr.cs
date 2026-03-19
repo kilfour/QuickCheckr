@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using System.Reflection;
 using QuickCheckr.UnderTheHood;
 using QuickPulse.Show;
 using QuickPulse.Show.Bolts;

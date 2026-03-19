@@ -1,5 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickFuzzr;
 

@@ -34,24 +34,24 @@ private class PairReducer
             else if (phase == Phase.A)
                 phase = Phase.B;
             if (phase == Phase.B)
-                return Reduction.Stop(current);
+                return new Reduction.Stop(current);
         }
         switch (phase)
         {
             case Phase.Both:
                 if (current.A <= 0 || current.B == 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
             case Phase.A:
                 if (current.A <= 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { B = current.B - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { B = current.B - 1 });
             case Phase.B:
                 if (current.B <= 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { A = current.A - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1 });
         }
-        return Reduction.Stop(current);
+        return new Reduction.Stop(current);
     }
 }
 ```

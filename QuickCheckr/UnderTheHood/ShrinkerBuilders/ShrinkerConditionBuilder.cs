@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Microsoft.VisualBasic;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.ShrinkerBuilders;

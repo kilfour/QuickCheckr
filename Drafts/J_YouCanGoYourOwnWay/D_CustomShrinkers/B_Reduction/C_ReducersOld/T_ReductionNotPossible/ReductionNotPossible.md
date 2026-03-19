@@ -1,5 +1,4 @@
 # Reduction Not Possible
-What to do if all reduction values fail ?  
 
 **The Checkr:**  
 ```csharp
@@ -13,7 +12,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ReductionNotPossible.cs:64:1
+ Location:                ReductionNotPossible.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1373577700
@@ -21,6 +20,7 @@ select Case.Closed;
   Executed:
    - Input: Input = 21
             Redux   0
+   - WARNING: No witness for reducer at 'Input'.
  ==========================================================
   !! Expectation Failed: Input should be greater than 42
  ==========================================================

@@ -20,11 +20,12 @@ select Case.Closed;
  Location:                OnPath.cs:58:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1048432276
+ Seed:                    776489069
  ------------------------------------------------------------
   Executed:
    - Input: Inter = { A: 42, B: 21 }
             Redux   { A: 3, B: 8 }
+   - WARNING: No witness for reducer at 'Inter.A'.
  ===============================================
   !! Expectation Failed: Sum smaller than 11.
  ===============================================

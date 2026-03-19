@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;

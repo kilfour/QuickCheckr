@@ -469,6 +469,13 @@ private static readonly CheckrOf<Case> PlaceOrder =
  ------------------------------------------------------------
 ```
 ## Challenges
+
+Currently these challenges use a seeded state, because they are part of a regression test suite.
+
+At the time of writing however, this was not the case.
+The seeded report *is* representing the actual behaviour of QuickCheckr,
+but for performance reasons we do not run deliberation policies everytime for instance.
+  
 ### Bound5
 Given a 5-tuple of lists of 16-bit integers, we want to test the property that if each list sums to less than 256,
 then the sum of all the values in the lists is less than 5 * 256.
@@ -904,24 +911,24 @@ private class PairReducer
             else if (phase == Phase.A)
                 phase = Phase.B;
             if (phase == Phase.B)
-                return Reduction.Stop(current);
+                return new Reduction.Stop(current);
         }
         switch (phase)
         {
             case Phase.Both:
                 if (current.A <= 0 || current.B == 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
             case Phase.A:
                 if (current.A <= 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { B = current.B - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { B = current.B - 1 });
             case Phase.B:
                 if (current.B <= 0)
-                    return Reduction.Stop(current);
-                return Reduction.Next(current with { A = current.A - 1 });
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1 });
         }
-        return Reduction.Stop(current);
+        return new Reduction.Stop(current);
     }
 }
 ```
@@ -993,6 +1000,208 @@ public static IEnumerable<Pair> TowardsZero(Pair input)
  =======================================================
 ```
 This one sometimes produces 10, 11  
+### Bin Heap
+
+This is based on an example from QuickCheck's test suite (via the SmartCheck paper). 
+It generates binary heaps, and then uses a wrong implementation of a function 
+that converts the binary heap to a sorted list and asserts that the result is sorted.
+
+Interestingly most libraries seem to never find the smallest example here, 
+which is the four valued heap (0, None, (0, (0, None, None), (1, None, None))). 
+This is essentially because small examples are "too sparse", so it's very hard to find one by luck.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Heap", TheFuzzr)
+from correct in Checkr.Act("Correct", () => Flatten(input).OrderBy(x => x).ToList())
+from buggy in Checkr.Act("Buggy", () => Flatten(input).ToList())
+from expect in Checkr.Expect("Heap sort is correct", () => correct.SequenceEqual(buggy))
+from trace in Checkr.Trace("Original", () => input)
+select Case.Closed;
+```
+
+**The Fuzzr:**  
+```csharp
+from depth in Configr<Heap>.Depth(3, 20)
+from inheritance in Configr<Heap>.AsOneOf(typeof(Empty), typeof(Node))
+from terminator in Configr<Heap>.EndOn<Empty>()
+from ctor in Configr<Node>.Construct(Fuzzr.Int(), Fuzzr.One<Heap>(), Fuzzr.One<Heap>())
+from value in Configr<Node>.Property(a => a.Value,
+    from cnt in Fuzzr.Counter("heap") select 1000 - cnt)
+from heap in Fuzzr.One<Heap>()
+select heap
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+       (caseFile.InputCount == 0 ? 100 : 0) +
+       caseFile.InputsNamed<Heap>("Heap", a => Flatten(a).Count()),
+    ReportMode = config.ReportMode & ~ReportMode.Warning
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                BinHeap.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    195567586
+ ------------------------------------------------------------
+  Executed: Buggy, Correct
+   - Input: Heap     = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+   - Trace: Original = { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+ ===============================================
+  !! Expectation Failed: Heap sort is correct
+ ===============================================
+```
+### Coupling
+
+In this example the elements of a list of integers are coupled to their position in an unusual way.
+
+The expected smallest falsified sample is [1, 0].
+  
+
+**The Checkr:**  
+```csharp
+from length in Checkr.Input("Length", Fuzzr.Int(1, 100))
+from list in Checkr.Input("List", () =>
+    from enumerable in Fuzzr.Int(0, length - 1).Many(length)
+    select enumerable.ToList())
+from trace in Checkr.Trace("Original", () => list)
+from expect in Checkr.ExpectWhen("No two different indexes point to each other.",
+    () => list.All(element => element < list.Count),
+    () => list.All(element =>
+    {
+        int index = list[element];
+        if (index != element && list[index] == element)
+            return false;
+        return true;
+    }))
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        (caseFile.InputCount == 0 ? 100 : 0) +
+        caseFile.InputsNamed<List<int>>("List", a => a.Count),
+    DeliberationTarget = 2,
+    ReportMode = config.ReportMode & ~ReportMode.StackTrace
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Coupling.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    124252565
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 0 ]
+   - Trace: Original = [ 2, 1, 0, 1 ]
+ ========================================================================
+  !! Expectation Failed: No two different indexes point to each other.
+ ========================================================================
+```
+### Deletion
+
+This tests the property "if we remove an element from a list, the element is
+no longer in the list". The remove function we use however only actually
+removes the _first_ instance of the element, so this fails whenever the list
+contains a duplicate and we try to remove one of those elements.
+
+This example is interesting for a couple of reasons:
+
+1. It's a nice easy to explain example of property-based testing.
+2. Shrinking duplicates simultaneously is something that most property-based
+   testing libraries can't do.
+
+The expected smallest falsified sample is `([0, 0], 0)`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Deletion", Fuzzr.Int(1, 10).Many(3, 20))
+from toRemove in Checkr.Input("Element To Remove", () => Fuzzr.OneOf(input))
+from removed in Checkr.Act("Remove Element", () =>
+{
+    var list = input.ToList();
+    list.Remove(toRemove);
+    return list;
+})
+from expect in Checkr.Expect("Element is no longer in the list", () => !removed.Contains(toRemove))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Deletion.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 16 shrinks)
+ Seed:                    613616447
+ ------------------------------------------------------------
+  Executed: Remove Element
+   - Input: Deletion          = [ 3, 3 ]
+   - Input: Element To Remove = 3
+ ===========================================================
+  !! Expectation Failed: Element is no longer in the list
+ ===========================================================
+```
+### Distinct
+
+This tests the example provided for the property "a list of integers containing at least three distinct elements".
+
+This is interesting because:
+
+1. Most property-based testing libraries will not successfully normalize (i.e. always return the same answer) this property,
+because it requires reordering examples to do so.
+2. Hypothesis and test.check both provide a built in generator for "a list of distinct elements",
+so the "example of size at least N" provides a sort of lower bound for how well they can shrink those built in generators.
+
+The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Distinct", Fuzzr.Int(1, 10).Many(3, 20),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen(
+    "Contains at least three distinct elements.",
+    () => input.Count() >= 3,
+    () => input.ToHashSet().Count >= 3)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Distinct.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    767903368
+ ------------------------------------------------------------
+  Executed:
+   - Input: Distinct = [ _, 8, 8 ]
+   - Trace: Original = [ 5, 8, 8 ]
+ =====================================================================
+  !! Expectation Failed: Contains at least three distinct elements.
+ =====================================================================
+```
 ### Nested Lists
 
 **The Checkr:**  

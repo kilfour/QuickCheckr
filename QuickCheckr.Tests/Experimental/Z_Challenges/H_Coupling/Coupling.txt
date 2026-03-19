@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Coupling.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    124252565
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 0 ]
+   - Trace: Original = [ 2, 1, 0, 1 ]
+ ========================================================================
+  !! Expectation Failed: No two different indexes point to each other.
+ ========================================================================

@@ -1,6 +1,5 @@
 
 using System.Linq.Expressions;
-using System.Reflection;
 using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr.Tests.Verification.Pathing;

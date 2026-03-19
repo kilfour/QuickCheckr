@@ -82,6 +82,19 @@ public class Bound5 : CheckrTest<Bound5>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("The sum of all values is less than 5 * 256.", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(3, article.Total().Warnings());
+        Assert.Equal(5, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Bound5", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("[ _, [ -20241 ], _, _, [ -13889 ] ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("[ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(2).Read().Value);
+        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(3).Read().Value);
     }
 }

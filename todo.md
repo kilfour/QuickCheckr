@@ -1,11 +1,11 @@
 ## Next version: 0.0.9 : Reduce, Reuse, Recycle
       
 ### Doing
-* What to do if all reduction values fail ?
   
 
 ### Todo
 * Doc/test/improve `Reduce.Towards()`.
+
 
 ### Wish List
 
