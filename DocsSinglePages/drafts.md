@@ -1438,6 +1438,32 @@ select Case.Closed;
   !! Expectation Failed: Input < 2
  ====================================
 ```
+###### Chained
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(),
+   Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(5), Reduce.Towards(0))))
+from expect in Checkr.Expect("Input < 2", () => input < 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Chained.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1681332589
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 79
+            Redux   2
+ ====================================
+  !! Expectation Failed: Input < 2
+ ====================================
+```
 ###### Reduce Towards Zero
 
 **The Checkr:**  
@@ -1648,6 +1674,37 @@ select Case.Closed;
  ==========================================================
   !! Expectation Failed: Input should be greater than 42
  ==========================================================
+```
+##### On Path
+
+**The Checkr:**  
+```csharp
+from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 21)),
+    Shrink.When<int>(
+        s => s.As<Inter>(a => a.A).Target(),
+        s => s.Simplify(Reduce.Towards(3))),
+    Shrink.When<int>(
+        s => s.As<Inter>(a => a.B).Target(),
+        s => s.Simplify(Reduce.Towards(0))))
+from expect in Checkr.Expect("Sum smaller than 11.", () => inter.A + inter.B < 11)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                OnPath.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1048432276
+ ------------------------------------------------------------
+  Executed:
+   - Input: Inter = { A: 42, B: 21 }
+            Redux   { A: 3, B: 8 }
+ ===============================================
+  !! Expectation Failed: Sum smaller than 11.
+ ===============================================
 ```
 ##### On Specific Value
 

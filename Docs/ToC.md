@@ -32,5 +32,6 @@
       - [When An Empty Collection Is The Culprit](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/I_WhenAnEmptyCollectionIsTheCulprit.md)
       - [The Case Of The Invisible Collection](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/J_TheCaseOfTheInvisibleCollection.md)
       - [A Collection Of Objects](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/K_ACollectionOfObjects.md)
+      - [Collection Is Null](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/P_CollectionIsNull.md)
     - [Objects](M_HoneyIShrunkTheInputs/C_Objects/Objects.md)
       - [Checking Nulls](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md)

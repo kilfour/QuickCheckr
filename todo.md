@@ -12,7 +12,7 @@
 * WarningDepositionsTests EmptyCollections_Nested 
   "Empty collection deemed ..." should be "collection**s**"
 ### Wish List
-
+* Generic types in warnings show `IEnumerable``1` => meh
      
 ### Doc
   DocsSinglePages/doc.md (line 2611) RunTest_WithDeliberationPolicy is effectively a duplicate of the first null-handling example at DocsSinglePages/doc.md (line 2546). Publicly, both reports show the same outcome: The Universe = { Everything: null }, one relevant warning, same failure. The surrounding text claims the policy removed irrelevant warning noise, but that is already what the first example visibly shows, so this test adds little narrative value.
