@@ -4,7 +4,7 @@
   
 
 ### Todo
-* Doc/test/improve `Reduce.Towards()`.
+
 
 
 ### Wish List
@@ -34,6 +34,8 @@
 
 
 ## 0.0.11 : All Aboard
+* Doc/test/improve `Reduce.Towards()`.
+* More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
   "Empty collection deemed ..." should be "collection**s**"

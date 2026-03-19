@@ -23,12 +23,3 @@ Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Experimental>("DocsSinglePages/experimental.md");
 Explain.This<Investigations>("DocsSinglePages/investigations.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
-
-// Explain.This<OnShrinking>("temp-on-shrinking.md");
-// Explain.This<Reducers>("temp-reducers.md");
-// Explain.This<CustomShrinkers>("temp-shrinkers.md");
-// Explain.This<GoingFunctional>("temp-invariants.md");
-
-// Explain.This<YouCanGoYourOwnWay>("temp-ycgyow.md");
-
-Explain.This<DslBuilding>("temp-dsls.md");

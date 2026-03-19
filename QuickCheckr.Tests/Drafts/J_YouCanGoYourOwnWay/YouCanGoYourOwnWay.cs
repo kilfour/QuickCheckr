@@ -23,6 +23,6 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 
 public class YouCanGoYourOwnWay : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "Doc")]
     public void Doc() => ExplainMe<YouCanGoYourOwnWay>(true);
 }

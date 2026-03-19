@@ -21,8 +21,8 @@ This is essentially because small examples are ""too sparse"", so it's very hard
 public class BinHeap : CheckrTest<BinHeap>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]
