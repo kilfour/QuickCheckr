@@ -1,18 +1,17 @@
 ## Next version: 0.0.9 : Reduce, Reuse, Recycle
       
 ### Doing
-* FIX .CAPTURE THROWS => EXCEPTION WEIRDNESS
 * What to do if all reduction values fail ?
   * Add 'Witness' (candidate that made the run pass) to Redux 
 
 ### Todo
 * Doc/test/improve `Reduce.Towards()`.
 * Figure out which Reducer warnings are needed/useful.
-* Check what happens when collection is null.
-* WarningDepositionsTests EmptyCollections_Nested 
-  "Empty collection deemed ..." should be "collection**s**"
+
 ### Wish List
 * Generic types in warnings show `IEnumerable``1` => meh
+* WarningDepositionsTests EmptyCollections_Nested 
+  "Empty collection deemed ..." should be "collection**s**"
      
 ### Doc
   DocsSinglePages/doc.md (line 2611) RunTest_WithDeliberationPolicy is effectively a duplicate of the first null-handling example at DocsSinglePages/doc.md (line 2546). Publicly, both reports show the same outcome: The Universe = { Everything: null }, one relevant warning, same failure. The surrounding text claims the policy removed irrelevant warning noise, but that is already what the first example visibly shows, so this test adds little narrative value.
