@@ -62,3 +62,26 @@
 * Custodians now takes a `CaseFile` and `VaultEntry` objects instead of already stringified ones. 
 * Better formatting for *Empty collection deemed irrelevant* WARNING.
 * new Custom Shrinker: `Shrink.Keep<T>()`
+
+### 0.0.9 : Reduce, Reuse, Recycle
+* Input Shrinking Redesign
+  * A *Shrinker* now consists of two explicit parts:
+    1. Classifier: decides whether input is relevant
+    2. Reducer: tries to find a minimal value
+  This introduces a clearer mental model for shrinking and enables
+  better explainability, extensibility, and domain-aware control.
+  Result: significantly improved shrinking and explanation quality.
+  * Added `Shrink.When` enabling domain-aware shrinking.
+* Renamed Custom Shrinker factory class from `Shrink` to `Try`
+  to better reflect classification semantics.
+* Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
+* Added initial support for customized reporting of:
+  * Classified Input
+  * Redux
+  (making shrinking behaviour more transparent)
+* Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
+* In case an expectation throws, it is rethrown as `ExpectationThrowsException`
+  to improve diagnostics.
+* Added some missing PoolWhen overloads.
+* Added more complete Pool operation reporting in the `.qr` file.
+* Added warning when a reducer does not encounter a value that makes the run pass.

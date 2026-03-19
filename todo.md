@@ -1,36 +1,15 @@
-## Next version: 0.0.9 : Reduce, Reuse, Recycle
+## Next version: ## 0.0.10 : Excuse My Domain Specific Language
+* Add unchecked expectations WARNING.
       
 ### Doing
-  
 
 ### Todo
-
-
 
 ### Wish List
 
 ### Doc
 
 ### Done/Ready for Changelog after review
-* Input Shrinking Redesign : accommodating for Reducers for one
-  * A *Shrinker* now consists of two parts 
-    1. Classifier: decides whether input is relevant
-    2. Reducer: tries to find a minimal value
-  This change is mostly visible in the Customizable part of the Api, but has been implemented throughout the engine.  
-  But importantly, resulted in significantly better shrinking and explanation quality.
-* Renamed Custom Shrinker factory class from `Shrink` to `Try`.
-* Renamed all ShrinkOption classes and interfaces to use ClassificationOption instead.
-* Added some missing PoolWhen overloads.
-* Added some missing Pool operation reporting in the .qr file.
-* Added `Combine.Checkrs` which is very useful for *QuickCheckr as a DSL builder*.
-* In case an expectation throws it is rethrown as `ExpectationThrowsException`.
-* Added initial version allowing for customized reporting of:
-  * Classified Input
-  * Redux
-* Added `Shrink.When` enabling domain-aware shrinking. 
-
-## 0.0.10 : Excuse My Domain Specific Language
-* Add unchecked expectations WARNING.
 
 
 ## 0.0.11 : All Aboard
