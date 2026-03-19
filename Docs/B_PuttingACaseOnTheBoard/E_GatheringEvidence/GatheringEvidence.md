@@ -277,4 +277,4 @@ The Shrinker however managed to collapse that one down to only four executions, 
 
 [BoltingHorses]: ../../A_Guide/E_HorsesAgain/BoltingHorses.md
 
-[J_TheCaseOfTheInvisibleCollection]: ../../M_HoneyIShrunkTheInputs/B_Collections/TheExamples/J_TheCaseOfTheInvisibleCollection.md
+[J_TheCaseOfTheInvisibleCollection]: ../../../Drafts/M_HoneyIShrunkTheInputs/B_Collections/TheExamples/J_TheCaseOfTheInvisibleCollection.md

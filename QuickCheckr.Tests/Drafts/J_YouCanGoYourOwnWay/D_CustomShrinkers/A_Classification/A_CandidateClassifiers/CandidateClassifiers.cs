@@ -1,5 +1,5 @@
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers.Methods;
-using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.C_Objects.TheExamples;
+using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.C_Objects.TheExamples;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers;

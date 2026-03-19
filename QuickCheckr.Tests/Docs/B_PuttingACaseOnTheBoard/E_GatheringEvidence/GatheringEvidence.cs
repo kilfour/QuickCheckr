@@ -1,7 +1,7 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
-using QuickCheckr.Tests.Docs.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
+using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.E_GatheringEvidence;

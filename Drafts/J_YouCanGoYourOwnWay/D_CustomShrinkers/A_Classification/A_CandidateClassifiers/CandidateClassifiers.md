@@ -121,4 +121,4 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 
-[E_CheckingNulls]: ../../../../../Docs/M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md
+[E_CheckingNulls]: ../../../../M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md
