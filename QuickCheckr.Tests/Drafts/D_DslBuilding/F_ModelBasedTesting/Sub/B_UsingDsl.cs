@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
@@ -10,6 +11,7 @@ public class B_UsingDsl : CheckrTest<B_UsingDsl>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]
@@ -17,36 +19,26 @@ public class B_UsingDsl : CheckrTest<B_UsingDsl>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1879928073, 100.ExecutionsPerRun());
+        Run(1879928073, 20.ExecutionsPerRun());
 
     [CodeSnippet]
     [CodeRemove("return ")]
     protected override CheckrOf<Case> TheCheckr()
     {
         return Check
-            .Model(() => new Model())
-            .Sut(() => new Sut())
+            .Model(() => new CalculatorModel())
+            .Sut(() => new Calculator())
             .Operation("Add", Fuzzr.Int(),
-                (model, sut, a) =>
-                {
-                    model.Add(a);
-                    sut.Add(a);
-                })
+                (model, a) => model.Add(a),
+                (sut, a) => sut.Add(a))
             .Operation("Subtract", Fuzzr.Int(),
-                (model, sut, a) =>
-                {
-                    model.Subtract(a);
-                    sut.Subtract(a);
-                })
+                (model, a) => model.Subtract(a),
+                (sut, a) => sut.Subtract(a))
             .Operation("Clear",
-                (model, sut) =>
-                {
-                    model.Clear();
-                    sut.Clear();
-                })
-            .Observe(
-                (model, sut) => model.Result == sut.Result,
-                (model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.");
+                model => model.Clear(),
+                sut => sut.Clear())
+            .Report((model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.")
+            .Observe((model, sut) => model.Result == sut.Result);
     }
 
     protected override void Verify(Article article)

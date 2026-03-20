@@ -2,8 +2,8 @@
 
 **The Checkr:**  
 ```csharp
-from model in Trackr.Stashed(() => new Model())
-from sut in Trackr.Stashed(() => new Sut())
+from model in Trackr.Stashed(() => new CalculatorModel())
+from sut in Trackr.Stashed(() => new Calculator())
 from ops in Checkr.OneOf(
     from input in Checkr.Input("Input", Fuzzr.Int())
     from add in Checkr.Act("Add", () =>

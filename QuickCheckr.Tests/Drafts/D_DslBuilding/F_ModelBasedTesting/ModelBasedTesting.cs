@@ -5,13 +5,13 @@ namespace QuickCheckr.Tests.Drafts.D_DslBuilding.F_ModelBasedTesting;
 
 [DocFile]
 [DocModelHeader]
-[DocExample(typeof(Model))]
+[DocExample(typeof(CalculatorModel))]
 [DocBoldHeader("SUT")]
-[DocExample(typeof(Sut))]
+[DocExample(typeof(Calculator))]
 public class ModelBasedTesting : QCTest;
 
 [CodeExample]
-public class Model
+public class CalculatorModel
 {
     public int Result { get; private set; } = 0;
     public void Add(int a) => Result += a;
@@ -20,7 +20,7 @@ public class Model
 }
 
 [CodeExample]
-public class Sut
+public class Calculator
 {
     public int Result { get; private set; } = 0;
     private int counter = 0;

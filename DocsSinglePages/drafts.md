@@ -3,7 +3,7 @@
 
 **The Model:**  
 ```csharp
-public class Model
+public class CalculatorModel
 {
     public int Result { get; private set; } = 0;
     public void Add(int a) => Result += a;
@@ -14,7 +14,7 @@ public class Model
 
 **SUT:**  
 ```csharp
-public class Sut
+public class Calculator
 {
     public int Result { get; private set; } = 0;
     private int counter = 0;
@@ -35,8 +35,8 @@ public class Sut
 
 **The Checkr:**  
 ```csharp
-from model in Trackr.Stashed(() => new Model())
-from sut in Trackr.Stashed(() => new Sut())
+from model in Trackr.Stashed(() => new CalculatorModel())
+from sut in Trackr.Stashed(() => new Calculator())
 from ops in Checkr.OneOf(
     from input in Checkr.Input("Input", Fuzzr.Int())
     from add in Checkr.Act("Add", () =>
@@ -89,36 +89,26 @@ select Case.Closed;
 **The Checkr:**  
 ```csharp
 Check
-    .Model(() => new Model())
-    .Sut(() => new Sut())
+    .Model(() => new CalculatorModel())
+    .Sut(() => new Calculator())
     .Operation("Add", Fuzzr.Int(),
-        (model, sut, a) =>
-        {
-            model.Add(a);
-            sut.Add(a);
-        })
+        (model, a) => model.Add(a),
+        (sut, a) => sut.Add(a))
     .Operation("Subtract", Fuzzr.Int(),
-        (model, sut, a) =>
-        {
-            model.Subtract(a);
-            sut.Subtract(a);
-        })
+        (model, a) => model.Subtract(a),
+        (sut, a) => sut.Subtract(a))
     .Operation("Clear",
-        (model, sut) =>
-        {
-            model.Clear();
-            sut.Clear();
-        })
-    .Observe(
-        (model, sut) => model.Result == sut.Result,
-        (model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.");
+        model => model.Clear(),
+        sut => sut.Clear())
+    .Report((model, sut) => $"Model: {model.Result}, Sut: {sut.Result}.")
+    .Observe((model, sut) => model.Result == sut.Result);
 ```
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_UsingDsl.cs:72:1
+ Location:                B_UsingDsl.cs:50:1
  Original failing run:    7 executions
  Minimal failing case:    4 executions (after 6 shrinks)
  Seed:                    1879928073

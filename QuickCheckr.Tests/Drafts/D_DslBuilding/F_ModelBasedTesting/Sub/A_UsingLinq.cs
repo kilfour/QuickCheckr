@@ -22,8 +22,8 @@ public class A_UsingLinq : CheckrTest<A_UsingLinq>
     [CodeSnippet]
 
     protected override CheckrOf<Case> TheCheckr() =>
-        from model in Trackr.Stashed(() => new Model())
-        from sut in Trackr.Stashed(() => new Sut())
+        from model in Trackr.Stashed(() => new CalculatorModel())
+        from sut in Trackr.Stashed(() => new Calculator())
         from ops in Checkr.OneOf(
             from input in Checkr.Input("Input", Fuzzr.Int())
             from add in Checkr.Act("Add", () =>

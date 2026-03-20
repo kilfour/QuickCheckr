@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_UsingDsl.cs:72:1
+ Location:                B_UsingDsl.cs:50:1
  Original failing run:    7 executions
  Minimal failing case:    4 executions (after 6 shrinks)
  Seed:                    1879928073

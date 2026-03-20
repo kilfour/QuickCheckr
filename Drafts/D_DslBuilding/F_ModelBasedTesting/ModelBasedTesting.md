@@ -2,7 +2,7 @@
 
 **The Model:**  
 ```csharp
-public class Model
+public class CalculatorModel
 {
     public int Result { get; private set; } = 0;
     public void Add(int a) => Result += a;
@@ -13,7 +13,7 @@ public class Model
 
 **SUT:**  
 ```csharp
-public class Sut
+public class Calculator
 {
     public int Result { get; private set; } = 0;
     private int counter = 0;
