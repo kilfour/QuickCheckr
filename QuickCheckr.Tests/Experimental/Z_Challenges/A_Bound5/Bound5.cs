@@ -32,7 +32,7 @@ public class Bound5 : CheckrTest<Bound5>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(2021488303);
+        Run(2021488303); // needs about 1000.Runs()
 
     [CodeSnippet]
     protected override CheckrConfig Configure(CheckrConfig config) =>
@@ -63,18 +63,18 @@ public class Bound5 : CheckrTest<Bound5>
             () => Sum(input) < (5 * 256))
         select Case.Closed;
 
-    private static int Sum(List<List<short>> list)
+    private static short Sum(List<List<short>> list)
     {
-        int sum = 0;
+        short sum = 0;
         foreach (var inner in list)
             foreach (var value in inner)
                 sum = (short)(sum + value);
         return sum;
     }
 
-    private static int Sum(IEnumerable<short> list)
+    private static short Sum(IEnumerable<short> list)
     {
-        int sum = 0;
+        short sum = 0;
         foreach (var value in list)
             sum = (short)(sum + value);
         return sum;
