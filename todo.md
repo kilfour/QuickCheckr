@@ -1,9 +1,17 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
+* QuickInvariants : FsCheck-style DSL
+* QuickSystemCheckr : System/Domain checking DSL
+* QuickWebr: web-api DSL
 * Add unchecked expectations WARNING.
+* Add shrinking support for Tuples
+* Add shrinking support for Fields
+* Add shrinking(reducing) multiple values together
       
 ### Doing
 
+
 ### Todo
+
 
 ### Wish List
 
