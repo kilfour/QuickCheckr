@@ -1,15 +1,14 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
+* Add unchecked expectations WARNING.
 * QuickInvariants : FsCheck-style DSL
 * QuickSystemCheckr : System/Domain checking DSL
 * QuickWebr: web-api DSL
-* Add unchecked expectations WARNING.
+* Doc/test/improve `Reduce.Towards()`.
 * Add shrinking(reducing) multiple values together
-      
+ 
 ### Doing
 
-
 ### Todo
-
 
 ### Wish List
 
@@ -20,7 +19,6 @@
 * Added shrinking support for Fields
 
 ## 0.0.11 : All Aboard
-* Doc/test/improve `Reduce.Towards()`.
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
