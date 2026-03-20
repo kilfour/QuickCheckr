@@ -57,6 +57,13 @@ public static class Check
             select Case.Closed)
         .Run(100.Runs(), ActivateReducers);
 
+    public static CaseFile ForAll<T>(CheckrOfTRun.RunCount runs, FuzzrOf<T> fuzzr, Func<T, bool> predicate, params Func<Reducer<T>>[] reducers)
+        => (
+            from input in Checkr.Input("Input", fuzzr, Shrink.OnType<T>(s => s.Simplify(reducers)))
+            from expectation in Checkr.Expect("Property", () => predicate(input))
+            select Case.Closed)
+        .Run(runs, ActivateReducers);
+
     private static CheckrConfig ActivateReducers(CheckrConfig config) => config with { ShrinkMode = config.ShrinkMode | ShrinkMode.Reduction };
 
 }
