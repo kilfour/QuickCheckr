@@ -87,7 +87,7 @@ public class ObjectClassifier : Classifier
     private static InputClassification HandleProperty(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
     {
         var propertyValue = propertyInfo.GetValue(info.Value);
-        var swapper = new ObjectLens(propertyInfo);
+        var swapper = new ObjectPropertyLens(propertyInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };

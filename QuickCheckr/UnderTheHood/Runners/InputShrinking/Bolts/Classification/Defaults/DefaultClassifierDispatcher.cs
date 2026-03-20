@@ -8,5 +8,6 @@ public class DefaultClassifierDispatcher()
             [ new PrimitiveClassifier()
             , new EnumClassifier()
             , new EnumerableClassifier()
+            , new TupleClassifier()
             , new ObjectClassifier() ],
             new FallbackClassifier());

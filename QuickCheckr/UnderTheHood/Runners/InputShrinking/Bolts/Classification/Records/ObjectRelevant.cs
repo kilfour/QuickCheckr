@@ -14,7 +14,7 @@ public record ObjectRelevant(Dictionary<string, InputClassification> Members, st
         return Maybe.Just($"{{ {string.Join(", ", values)} }}");
     }
 
-    private string GetReduxString(string key, InputRelevant classification)
+    private static string GetReduxString(string key, InputRelevant classification)
     {
         var reduxValue = classification.GetRedux();
         var value = reduxValue.HasValue ? reduxValue.Value : classification.Report;

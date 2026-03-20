@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
-public class ObjectLens(PropertyInfo propertyInfo)
+public class ObjectPropertyLens(PropertyInfo propertyInfo)
     : MemoryLens(
         obj => propertyInfo.GetValue(obj)!,
         (val, propValue) => { SetPropertyValue(propertyInfo, val!, propValue); return val; }

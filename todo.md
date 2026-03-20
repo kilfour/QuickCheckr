@@ -3,8 +3,6 @@
 * QuickSystemCheckr : System/Domain checking DSL
 * QuickWebr: web-api DSL
 * Add unchecked expectations WARNING.
-* Add shrinking support for Tuples
-* Add shrinking support for Fields
 * Add shrinking(reducing) multiple values together
       
 ### Doing
@@ -18,7 +16,8 @@
 ### Doc
 
 ### Done/Ready for Changelog after review
-
+* Added shrinking support for Tuples
+* Added shrinking support for Fields
 
 ## 0.0.11 : All Aboard
 * Doc/test/improve `Reduce.Towards()`.

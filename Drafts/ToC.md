@@ -73,3 +73,4 @@
       - [Collection Is Null](M_HoneyIShrunkTheInputs/B_Collections/TheExamples/P_CollectionIsNull.md)
     - [Objects](M_HoneyIShrunkTheInputs/C_Objects/Objects.md)
       - [Checking Nulls](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md)
+      - [Tuples](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/J_Tuples.md)
