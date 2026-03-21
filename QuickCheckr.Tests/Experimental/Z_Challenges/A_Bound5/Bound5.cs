@@ -32,45 +32,41 @@ public class Bound5 : CheckrTest<Bound5>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(2021488303); // needs about 1000.Runs()
+        Run(1866106578); // needs about 1000.Runs()
 
     [CodeSnippet]
     protected override CheckrConfig Configure(CheckrConfig config) =>
         config with
         {
             DeliberationPolicy = caseFile =>
-                caseFile.InputsNamed<List<List<short>>>("Bound5", a => a.Sum(b => b.Count)),
+                caseFile.InputsNamed<(List<short>, List<short>, List<short>, List<short>, List<short>)>(
+                    "Bound5", a => ElementCount(a)),
             DeliberationTarget = 2
         };
 
-    [CodeSnippet]
-    private static readonly FuzzrOf<List<short>> InnerFuzzr =
-         from list in Fuzzr.Short(short.MinValue, 100).Many(2).Where(a => Sum(a) < 256)
-         select list.ToList();
+    private static readonly FuzzrOf<List<short>> ShortList =
+        Fuzzr.Short(short.MinValue, 256)
+            .Many(0, 10)
+            .Where(a => Sum(a) < 256)
+            .ToList();
 
-    [CodeSnippet]
-    private static readonly FuzzrOf<List<List<short>>> TheFuzzr =
-         from list in InnerFuzzr.Many(5)
-         select list.ToList();
+    private static readonly FuzzrOf<(List<short>, List<short>, List<short>, List<short>, List<short>)> TheFuzzr =
+         Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Bound5", TheFuzzr)
         from trace in Checkr.Trace("Original", () => input)
-        from expect in Checkr.ExpectWhen(
+        from expect in Checkr.Expect(
             "The sum of all values is less than 5 * 256.",
-            () => input.Count == 5,
             () => Sum(input) < (5 * 256))
         select Case.Closed;
 
-    private static short Sum(List<List<short>> list)
-    {
-        short sum = 0;
-        foreach (var inner in list)
-            foreach (var value in inner)
-                sum = (short)(sum + value);
-        return sum;
-    }
+    private static int ElementCount((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => a.Item1.Count + a.Item2.Count + a.Item3.Count + a.Item4.Count + a.Item5.Count;
+
+    private static short Sum((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => (short)(Sum(a.Item1) + Sum(a.Item2) + Sum(a.Item3) + Sum(a.Item4) + Sum(a.Item5));
 
     private static short Sum(IEnumerable<short> list)
     {
@@ -86,15 +82,11 @@ public class Bound5 : CheckrTest<Bound5>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(3, article.Total().Warnings());
-        Assert.Equal(5, article.ShrinkCount);
+        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Bound5", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ _, [ -20241 ], _, _, [ -13889 ] ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( [ ], [ -21169 ], [ ], [ -13193 ], [ ] )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(2).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'Bound5'.", article.Execution(1).Warning(3).Read().Value);
+        Assert.Equal("( [ ], [ -8290, -21169 ], [ ], [ -13193 ], [ ] )", article.Execution(1).Trace(1).Read().Value);
     }
 }

@@ -2,14 +2,11 @@
  Test:                    Example
  Location:                Bound5.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    2021488303
+ Seed:                    1866106578
  ------------------------------------------------------------
   Executed:
-   - Input: Bound5   = [ _, [ -20241 ], _, _, [ -13889 ] ]
-   - Trace: Original = [ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]
-   - WARNING: Empty collection deemed irrelevant at:
-       Bound5: 0, 2, 3
+   - Input: Bound5   = ( [ ], [ -21169 ], [ ], [ -13193 ], [ ] )
+   - Trace: Original = ( [ ], [ -8290, -21169 ], [ ], [ -13193 ], [ ] )
  ======================================================================
   !! Expectation Failed: The sum of all values is less than 5 * 256.
  ======================================================================

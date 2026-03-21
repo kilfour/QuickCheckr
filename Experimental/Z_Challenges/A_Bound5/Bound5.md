@@ -13,9 +13,8 @@ which would look somethink like ([-32768], [-1], [], [], []).
 ```csharp
 from input in Checkr.Input("Bound5", TheFuzzr)
 from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.ExpectWhen(
+from expect in Checkr.Expect(
     "The sum of all values is less than 5 * 256.",
-    () => input.Count == 5,
     () => Sum(input) < (5 * 256))
 select Case.Closed;
 ```
@@ -25,7 +24,8 @@ select Case.Closed;
 config with
 {
     DeliberationPolicy = caseFile =>
-        caseFile.InputsNamed<List<List<short>>>("Bound5", a => a.Sum(b => b.Count)),
+        caseFile.InputsNamed<(List<short>, List<short>, List<short>, List<short>, List<short>)>(
+            "Bound5", a => ElementCount(a)),
     DeliberationTarget = 2
 };
 ```
@@ -36,14 +36,11 @@ config with
  Test:                    Example
  Location:                Bound5.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    2021488303
+ Seed:                    1866106578
  ------------------------------------------------------------
   Executed:
-   - Input: Bound5   = [ _, [ -20241 ], _, _, [ -13889 ] ]
-   - Trace: Original = [ [ -8106, -3980 ], [ -275, -20241 ], [ -252, -4786 ], [ -884, -4282 ], [ -13889, -6739 ] ]
-   - WARNING: Empty collection deemed irrelevant at:
-       Bound5: 0, 2, 3
+   - Input: Bound5   = ( [ ], [ -21169 ], [ ], [ -13193 ], [ ] )
+   - Trace: Original = ( [ ], [ -8290, -21169 ], [ ], [ -13193 ], [ ] )
  ======================================================================
   !! Expectation Failed: The sum of all values is less than 5 * 256.
  ======================================================================

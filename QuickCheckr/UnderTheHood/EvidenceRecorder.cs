@@ -41,7 +41,7 @@ public class EvidenceRecorder
     {
         if (IsReplay)
         {
-            currentFailed = true;
+            // currentFailed = true;
             return;
         }
         if (!runFailed) // Action already crashed or previous expectation failed

@@ -9,6 +9,7 @@
 ### Doing
 
 ### Todo
+* Check Lists in Objects and Tuples (empty should be '_' ?)
 
 ### Wish List
 

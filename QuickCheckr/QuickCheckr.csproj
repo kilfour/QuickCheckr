@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="QuickFuzzr" Version="0.1.8" />
+    <PackageReference Include="QuickFuzzr" Version="0.1.9" />
     <PackageReference Include="QuickPulse.Show" Version="0.1.14" />
   </ItemGroup>
 

@@ -126,194 +126,8 @@ Check
  ------------------------------------------------------------
 ```
 ### Going Functional
-#### Spike
-
-**The Model:**  
-```csharp
-public class TheReverser
-{
-    public static List<int> Reverses(List<int> list)
-        => [.. FudgeIt(list.AsEnumerable()).Reverse()];
-    private static IEnumerable<int> FudgeIt(IEnumerable<int> list)
-        => list.Where(a => a != 6).Concat(list.Where(a => a == 6));
-}
-```
-
-**The Invariant:**  
-```csharp
-Check.ForAll(
-    from len in Fuzzr.Int(0, 10)
-    from elements in Fuzzr.Int(0, 10).Many(len)
-    select elements.ToList(),
-    list => list.SequenceEqual(TheReverser.Reverses(TheReverser.Reverses(list))));
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                GoingFunctional.cs:27:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 7 shrinks)
- Seed:                    2116954181
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = [ _, 6 ]
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### Simplest
-
-**The Invariant:**  
-```csharp
-Check.ForAll(Fuzzr.Int(0, 10), a => a != 6);
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                A_Simplest.cs:24:1
- Original failing run:    1 execution
- Seed:                    924452929
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 6
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### Seeded
-
-**The Invariant:**  
-```csharp
-Check.ForAll(1948674479, Fuzzr.Int(0, 10), a => a != 6);
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                B_Seeded.cs:26:1
- Original failing run:    1 execution
- Seed:                    1948674479
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 6
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### Specifying Runs
-
-**The Invariant:**  
-```csharp
-Check.ForAll(200.Runs(), Fuzzr.Int(0, 10), a => a != 6);
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                C_SpecifyingRuns.cs:24:1
- Original failing run:    1 execution
- Seed:                    823515705
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 6
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### With Classifiers
-
-**The Invariant:**  
-```csharp
-Check.ForAll(Fuzzr.Constant(7), a => a == 6, Try.Default<int>(), Try.Values(6));
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                D_WithClassifiers.cs:24:1
- Original failing run:    1 execution
- Seed:                    1830629706
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 7
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### Applies Default Reducers
-
-**The Invariant:**  
-```csharp
-Check.ForAll(1429680296, Fuzzr.Int(0, 10), a => a < 2);
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                F_AppliesDefaultReducers.cs:25:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1429680296
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 5
-            Redux   2
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### With Classifiers Seeded Showing Redux Too
-
-**The Invariant:**  
-```csharp
-Check.ForAll(893841622, Fuzzr.Int(0, 10), a => a == 6, Try.Default<int>(), Try.Values(6));
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                G_WithClassifiersSeededShowingReduxToo.cs:25:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    893841622
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 9
-            Redux   7
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
-#### With Custom Reducer
-
-**The Invariant:**  
-```csharp
-Check.ForAll(257911700, Fuzzr.Int(0, 10), a => a != 6, Reduce.Values([0, 6]));
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                H_WithCustomReducer.cs:24:1
- Original failing run:    1 execution
- Seed:                    257911700
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = 6
- ===================================
-  !! Expectation Failed: Property
- ===================================
-```
+The `Check.` spike version has been removed.  
+Currently in the progress of writing a new DSL 'Testr' by adapting the jqwik challenges from LINQ to Testr.  
 ### Web APIs
 This is an example from an external lib : 'QuickWebr'.  
 # Api
@@ -356,7 +170,7 @@ public class CreateCoach : ApiMethod
             .Returns<int>(a => a > 0)
             .When<CoachInfo>(a => a.Count <= 3)
             .Store(a => new CoachInfo(a))
-            .Load((db, id) => db.Find<Coach>(Id<Coach>.From(id)))
+            .Load((db, info) => db.Find<Coach>(Id<Coach>.From(info.Id)))
             .Expect(
                 ("Name", (request, coach) => coach.Name.Value == request.Name),
                 ("Email", (request, coach) => coach.Email.Value == request.Email));
@@ -393,7 +207,7 @@ public class CreateCourse : ApiMethod
             .Returns<int>(a => a > 0)
             .When<CourseInfo>(a => a.Count < 3)
             .Store(a => new CourseInfo(a))
-            .Load((db, id) => db.Find<Course>(Id<Course>.From(id)))
+            .Load((db, info) => db.Find<Course>(Id<Course>.From(info.Id)))
             .Expect(
                 ("Name", (request, course) => course.Name.Value == request.Name),
                 ("Start Date", (request, course) => course.Period.Start == request.StartDate),
@@ -484,38 +298,38 @@ public class AssignCoachToCourse : ApiMethod
 ## Report
 ```
 ------------------------------------------------------------
- Original failing run:    35 executions
+ Original failing run:    32 executions
  Minimal failing case:    8 executions (after 39 shrinks)
- Seed:                    1337846571
+ Seed:                    1854160474
  ------------------------------------------------------------
-  Executed: Route: /courses
-   -  Pool: '/courses' to Pool = CourseInfo-3
-   - Input: '/courses' Request = { Name: "fntkpukp", StartDate: 9.August(2026), EndDate: 25.September(2026) }
+  Executed: Auth, Route: /courses
+   -  Pool: '/courses' to Pool = CourseInfo-1
+   - Input: '/courses' Request = { Name: "nxlarowge", StartDate: 15.March(2026), EndDate: 23.April(2026) }
+ ------------------------------------------------------------
+  Executed: Route: /coaches
+   -  Pool: '/coaches' to Pool = CoachInfo-1
  ------------------------------------------------------------
   Executed: Route: /courses/{id}/skills
-   -  Pool: /courses/{id}/skills           = CourseInfo-3
-   - Input: '/courses/{id}/skills' Request = [ "UnitTesting" ]
+   -  Pool: /courses/{id}/skills           = CourseInfo-1
+   - Input: '/courses/{id}/skills' Request = [ "JavaScript" ]
  ------------------------------------------------------------
   Executed: Route: /courses/{id}/timeslots
-   -  Pool: /courses/{id}/timeslots           = CourseInfo-3
+   -  Pool: /courses/{id}/timeslots           = CourseInfo-1
    - Input: '/courses/{id}/timeslots' Request = [ _ ]
  ------------------------------------------------------------
   Executed: Route: /courses/{id}/confirm
-   -  Pool: /courses/{id}/confirm = CourseInfo-3
- ------------------------------------------------------------
-  Executed: Route: /coaches
-   -  Pool: '/coaches' to Pool = CoachInfo-3
+   -  Pool: /courses/{id}/confirm = CourseInfo-1
  ------------------------------------------------------------
   Executed: Route: /coaches/{id}/skills
-   -  Pool: /coaches/{id}/skills           = CoachInfo-3
-   - Input: '/coaches/{id}/skills' Request = { Skills: [ "UnitTesting" ] }
+   -  Pool: /coaches/{id}/skills           = CoachInfo-1
+   - Input: '/coaches/{id}/skills' Request = { Skills: [ "JavaScript" ] }
  ------------------------------------------------------------
   Executed: Route: /courses/{id}/assign-coach
-   -  Pool: /courses/{id}/assign-coach from Pool = ( CourseInfo-3, CoachInfo-3 )
+   -  Pool: /courses/{id}/assign-coach from Pool = ( CourseInfo-1, CoachInfo-1 )
  ------------------------------------------------------------
   Executed: Route: /coaches/{id}/skills
-   -  Pool: /coaches/{id}/skills           = CoachInfo-3
-   - Input: '/coaches/{id}/skills' Request = { Skills: [ "Architecture", "EF Core", "ASP.NET", "Elm", "C#" ] }
+   -  Pool: /coaches/{id}/skills           = CoachInfo-1
+   - Input: '/coaches/{id}/skills' Request = { Skills: [ "C#", "React", "CI/CD", "DomainDrivenDesign", "EF Core" ] }
             Redux                            { Skills: [ ] }
  ================================================================
   !! Expectation Failed: All Assigned Coaches Must Be Suitable
@@ -526,21 +340,21 @@ public class AssignCoachToCourse : ApiMethod
  - '/courses' Name: 3x
  - '/courses' Start Date: 3x
  - '/courses' End Date: 3x
- - All Assigned Coaches Must Be Suitable: 34x
+ - All Assigned Coaches Must Be Suitable: 31x
  - '/coaches' Status Code is Success: 4x
  - '/coaches' Response: 4x
  - '/coaches' Name: 4x
  - '/coaches' Email: 4x
- - '/courses/{id}/skills' Status Code is Success: 5x
- - '/courses/{id}/skills' Skills: 5x
- - '/courses/{id}/timeslots' Status Code is Success: 3x
- - '/courses/{id}/timeslots' Timeslots: 3x
- - '/coaches/{id}/skills' Status Code is Success: 16x
- - '/coaches/{id}/skills' Skills: 16x
+ - '/courses/{id}/timeslots' Status Code is Success: 6x
+ - '/courses/{id}/timeslots' Timeslots: 6x
+ - '/courses/{id}/skills' Status Code is Success: 3x
+ - '/courses/{id}/skills' Skills: 3x
+ - '/coaches/{id}/skills' Status Code is Success: 11x
+ - '/coaches/{id}/skills' Skills: 11x
  - '/courses/{id}/confirm' Status Code is Success: 3x
  - '/courses/{id}/confirm' Confirmed: 3x
- - '/courses/{id}/assign-coach' Status Code is Success: 1x
- - '/courses/{id}/assign-coach' Coach is assigned: 1x
+ - '/courses/{id}/assign-coach' Status Code is Success: 2x
+ - '/courses/{id}/assign-coach' Coach is assigned: 2x
  ------------------------------------------------------------
 ```
   
