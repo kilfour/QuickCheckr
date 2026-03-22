@@ -1,0 +1,1 @@
+dotnet test .\QuickCheckr.Tests\QuickCheckr.Tests.csproj

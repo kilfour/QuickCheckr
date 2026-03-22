@@ -3,10 +3,12 @@
 * QuickInvariants : FsCheck-style DSL
 * QuickSystemCheckr : System/Domain checking DSL
 * QuickWebr: web-api DSL
-* Doc/test/improve `Reduce.Towards()`.
+
 * Add shrinking(reducing) multiple values together
  
 ### Doing
+* Added max steps to ReductionRunner => throws, just warn instead
+* Doc/test/improve `Reduce.Towards()`.
 
 ### Todo
 * Check Lists in Objects and Tuples (empty should be '_' ?)
@@ -18,6 +20,7 @@
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples
 * Added shrinking support for Fields
+
 
 ## 0.0.11 : All Aboard
 * More in-built reducers
