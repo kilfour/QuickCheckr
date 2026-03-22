@@ -1,24 +1,15 @@
+using QuickCheckr;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-public class ClassifierSelector
+public class ReducerSelector
 {
-    public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
+    public static InputClassification Reduce(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
     {
-        InputClassification? classification = null;
-        var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
-        if (shrinkers is not null)
-        {
-            var shrinker = shrinkers.Where(a => a.Classifiers.Length != 0).FirstOrDefault(x => x.Condition(info));
-            if (shrinker is not null)
-                classification = ClassifyCustom(info, shrinker.Classifiers, context);
-        }
-        classification ??= ClassifyDefault(info, context);
         if (classification is InputRelevant)
         {
             var (redux, reduxValue) = GetRedux(info, context);
