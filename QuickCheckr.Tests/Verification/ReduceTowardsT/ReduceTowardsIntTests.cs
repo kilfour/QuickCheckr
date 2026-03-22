@@ -25,7 +25,7 @@ public class ReduceTowardsIntTests : BaseTest
         Assert.Equal(0, step.Result);
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     public void ToZeroStopped()
     {
         var result = ReductionRunner.ForReducer(new ReduceTowards<int>(0).Step, 1, a => (int)a != 0);
@@ -49,15 +49,15 @@ public class ReduceTowardsIntTests : BaseTest
         Assert.Equal(89, step.Result);
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     public void Checking()
     {
         var result = ReductionRunner.ForReducer(new ReduceTowards<int>(5).Step, 72, a => (int)a >= 2);
-        var step = Assert.IsType<Reduction.Stop>(result);
-        Assert.Equal(0, step.Result);
+        var step = Assert.IsType<Reduction.Unbounded>(result);
+        Assert.Equal(5, step.Result);
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact(Skip = "wip")]
     public void Oracle()
     {
         var checkr =
@@ -72,7 +72,26 @@ public class ReduceTowardsIntTests : BaseTest
                 from trace in Checkr.Trace("Results", () => GetTrace(model, sut.Value!))
                 select Case.Closed)
             select Case.Closed;
-        checkr.Run(100.Runs(), a => a with { FileAs = "ReduceTowardsInt" });
+        // checkr.Run(100.Runs(), a => a with { FileAs = "ReduceTowardsInt" });
+        checkr.GatherEvidence(
+            1000.Investigations(),
+            10.Runs(),
+            1.ExecutionsPerRun(),
+            a => a with { FileAs = "ReduceTowardsInt" });
+    }
+
+    [Fact(Skip = "wip")]
+    public void OracleTestr()
+    {
+        Testr.Named("ReduceTowardsInt")
+            .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int(), Fuzzr.Int()))
+            .DisableValueReduction()
+            .Assert(t =>
+            {
+                var (start, target, stop) = t;
+                return Equals(RunModel(start, target, stop), RunSut(start, target, stop));
+            })
+            .Run();
     }
 
     private static string GetTrace(Reduction model, Reduction sut) =>
@@ -89,10 +108,10 @@ public class ReduceTowardsIntTests : BaseTest
     private static Reduction RunSut(int start, int target, int stop) =>
         ReductionRunner.ForReducer(
             new ReduceTowards<int>(target).Step,
-                start, a => (int)a == stop);
+                start, a => (int)a != stop);
 
     private static Reduction RunModel(int start, int target, int stop) =>
         ReductionRunner.ForReducer(
             new TypeReducerOption<int>(Reduce.Towards(target)).ReducerFactory(),
-                start, a => (int)a == stop);
+                start, a => (int)a != stop);
 }
