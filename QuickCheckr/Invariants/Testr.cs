@@ -12,46 +12,46 @@ public static class Testr
     public static TestrBuilder1<T> For<T>(FuzzrOf<T> fuzzr) => new(fuzzr);
 }
 
-public record TestrBuilder0(string TestName)
+public class TestrBuilder0(string testName)
 {
-    public TestrBuilder1<T> For<T>(FuzzrOf<T> fuzzr) => new(fuzzr, TestName);
+    public TestrBuilder1<T> For<T>(FuzzrOf<T> fuzzr) => new(fuzzr, testName);
 }
 
-public record TestrBuilder1<T>(FuzzrOf<T> Fuzzr, string TestName = "Invariant")
+public class TestrBuilder1<T>(FuzzrOf<T> fuzzr, string testName = "Invariant")
 {
     private bool useBuiltInReducers = true;
     public TestrBuilder1<T> DisableValueReduction() { useBuiltInReducers = false; return this; }
     public TestrBuilder2<T> Deliberate(Func<T, int> deliberation)
-        => new(Fuzzr, deliberation, null, TestName, useBuiltInReducers);
+        => new(fuzzr, deliberation, null, testName, useBuiltInReducers);
     public TestrBuilder2<T> Deliberate(Func<T, int> deliberation, int deliberationTarget)
-        => new(Fuzzr, deliberation, deliberationTarget, TestName, useBuiltInReducers);
-    public TestrBuilder3<T> Assert(Func<T, bool> invariant) =>
-        new(Fuzzr, invariant, null, null, TestName, useBuiltInReducers);
+        => new(fuzzr, deliberation, deliberationTarget, testName, useBuiltInReducers);
+    public TestrRunner<T> Assert(Func<T, bool> invariant) =>
+        new(fuzzr, invariant, null, null, testName, useBuiltInReducers);
 }
 
-public record TestrBuilder2<T>(
-    FuzzrOf<T> Fuzzr,
-    Func<T, int>? Deliberation,
-    int? DeliberationTarget,
-    string TestName,
-    bool UseBuiltInReducers)
+public class TestrBuilder2<T>(
+    FuzzrOf<T> fuzzr,
+    Func<T, int>? deliberation,
+    int? deliberationTarget,
+    string testName,
+    bool useBuiltInReducers)
 {
-    public TestrBuilder3<T> Assert(Func<T, bool> invariant) =>
-        new(Fuzzr, invariant, Deliberation, DeliberationTarget, TestName, UseBuiltInReducers);
+    public TestrRunner<T> Assert(Func<T, bool> invariant) =>
+        new(fuzzr, invariant, deliberation, deliberationTarget, testName, useBuiltInReducers);
 }
 
-public record TestrBuilder3<T>(
-    FuzzrOf<T> Fuzzr,
+public class TestrRunner<T>(
+    FuzzrOf<T> fuzzr,
     Func<T, bool> Invariant,
     Func<T, int>? Deliberation,
     int? DeliberationTarget,
-    string TestName,
+    string testName,
     bool UseBuiltInReducers)
 {
     private CheckrOf<Case> GetCheckr() =>
-        from input in Checkr.Input("Input", Fuzzr)
+        from input in Checkr.Input("Input", fuzzr)
         from trace in Checkr.Trace("Original", () => input)
-        from expectation in Checkr.Expect(TestName, () => Invariant(input))
+        from expectation in Checkr.Expect(testName, () => Invariant(input))
         select Case.Closed;
 
     [StackTraceHidden]

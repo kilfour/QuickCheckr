@@ -1,7 +1,6 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
 * Add unchecked expectations WARNING.
 * QuickTestr : FsCheck-style DSL
-* QuickSystemCheckr : System/Domain checking DSL
 * QuickWebr: web-api DSL
  
 ### Doing
@@ -14,6 +13,9 @@
 ### Wish List
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
+* Testr: derive default deliberation policy from input type
+* SystemCheckr : System/Domain checking DSL, needs time in the oven
+* Modelr : use as How to build your own example
 
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples
@@ -25,6 +27,7 @@
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
   "Empty collection deemed ..." should be "collection**s**"
+* DuplicateKeyWriteException check wording (Input as example)
 * Figure out which Reducer warnings are needed/useful.
 * Stabilize + Doc InternalAffairs
   * Shrink Log

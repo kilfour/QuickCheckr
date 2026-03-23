@@ -32,7 +32,6 @@ public class InputShrinker(
                 var (unused, types) = executionMemory.HasUnusedClassifiers(key);
                 if (unused)
                 {
-                    var noun = types.Count == 1 ? "shrinker" : "shrinkers";
                     executionMemory.StoreWarning($"UnusedShrinkers-{executionId}", () => new UnusedShrinkerWarning(types, key));
                 }
             }
