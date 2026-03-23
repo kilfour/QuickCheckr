@@ -5,7 +5,8 @@ namespace QuickCheckr;
 public static partial class Reduce
 {
     public static Func<Reducer<int>> TowardsZero
-        => () => new StopOnFirstPassedBuilder<int>(TowardsZeroFactory).Reduce;
+        // => () => new ReportLastFailureBuilder<int>(TowardsZeroFactory).Reduce;
+        => () => new ReportLastFailureBuilder<int>(TowardsZeroFactory).Reduce;
 
     private static IEnumerable<int> TowardsZeroFactory(int input)
     {

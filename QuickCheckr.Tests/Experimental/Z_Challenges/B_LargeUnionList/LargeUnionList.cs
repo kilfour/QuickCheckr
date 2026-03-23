@@ -73,7 +73,7 @@ public class LargeUnionList : CheckrTest<LargeUnionList>
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("LargeUnionList", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("[ [ _ ], [ 74 ], [ 0 ], [ 1 ], [ 2 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("[ [ _ ], [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]", article.Execution(1).Trace(1).Read().Value);
     }

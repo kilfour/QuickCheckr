@@ -22,7 +22,7 @@ For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] an
 public class Z_LargeUnionListTestr : InvariantsTest<Z_LargeUnionListTestr>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -52,7 +52,7 @@ public class Z_LargeUnionListTestr : InvariantsTest<Z_LargeUnionListTestr>
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _, 66, 42, 89, 25 ] ]", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("[ [ _, 43, 26, 44, 0 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("[ [ _, 0, 1, 2, 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ [ ], [ 31, 86, 93, 91, 95 ], [ 19, 41, 94 ], [ ], [ 6, 48, 40, 26, 99, 87, 45, 68 ], [ 20, 29, 66, 42, 89, 25 ] ]", article.Execution(1).Trace(1).Read().Value);

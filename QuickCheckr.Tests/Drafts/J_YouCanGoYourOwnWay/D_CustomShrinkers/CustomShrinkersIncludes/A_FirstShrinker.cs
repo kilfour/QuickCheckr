@@ -16,7 +16,7 @@ public class A_FirstShrinker : CheckrTest<A_FirstShrinker>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    [DocHeader("Explaining the Example")]
+    [DocHeader("Explaining the Example, TODO: REVIEW THIS TEST/DOC")]
     [DocContent(
 @"The example above is intentionally simple. The expectation only passes for the value `42`,
 which makes it easy to see how the custom shrinker influences the reported case.
@@ -67,6 +67,6 @@ they allow shrinking to be guided by values that are semantically meaningful for
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Answer", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("53", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("43", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("0", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

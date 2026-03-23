@@ -1,0 +1,1 @@
+dotnet test .\QuickCheckr.Ouroboros\QuickCheckr.Ouroboros.csproj

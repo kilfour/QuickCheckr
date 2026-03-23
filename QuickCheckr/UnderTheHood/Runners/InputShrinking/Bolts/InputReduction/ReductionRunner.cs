@@ -2,6 +2,8 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 public static class ReductionRunner
 {
+    private static int MaxStepsPerReducer = 1024;
+
     public static Reduction ForReducer(Func<ReductionResult, Reduction> reducer, object? value, Func<object, bool> failTest)
     {
         var first = new ReductionResult(true, value);
@@ -17,7 +19,7 @@ public static class ReductionRunner
                 first = new ReductionResult(false, first.Value!);
             reduction = reducer(first);
             cnt++;
-            if (cnt > 500)
+            if (cnt > MaxStepsPerReducer)
                 throw new Exception($"Too many reductions: {cnt}");
 
         }

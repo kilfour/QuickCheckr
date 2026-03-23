@@ -1,21 +1,19 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
 * Add unchecked expectations WARNING.
-* QuickInvariants : FsCheck-style DSL
+* QuickTestr : FsCheck-style DSL
 * QuickSystemCheckr : System/Domain checking DSL
 * QuickWebr: web-api DSL
-
-* Add shrinking(reducing) multiple values together
  
 ### Doing
-* Added max steps to ReductionRunner => throws, just warn instead
+* Added max steps to ReductionRunner => throws, just stop and warn instead
 * Doc/test/improve `Reduce.Towards()`.
 
 ### Todo
 * Check Lists in Objects and Tuples (empty should be '_' ?)
 
 ### Wish List
-
-### Doc
+* Add shrinking(reducing) multiple values together
+* Add reuse fuzzr reducer with predicate (input, candidate) => score
 
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples
@@ -48,8 +46,6 @@
     * Maybe consolidate Test Framework Integration into this one
     * Needs a story
   * You Can Go Your Own Way is very much unfinished.
-  * Consider splitting of Honey I Shrunk the Inputs.  
-    This makes cross referencing impossible though.
   * Maybe add When Things Go Wrong.
 * dotnet new checkr templates
   * minimal
@@ -75,8 +71,6 @@
 
 ## Future Doc Work
 * Checkrs Court: Tricky one
-* Build HorsesForCourses.Api for testing example
-  * Initial Version Ready (auth is hardcoded admin for now)
 * Cookbook Additions
   * statefull list, ... maybe
 
@@ -131,7 +125,6 @@
 
         Probably not now though.
 * Try to remove multiple execution shrinking passes.
-* ShrinkingInfo.Strategy: Change from string to Type.
 * Duplicate code in CheckrOfTGatherEvidence and Vault
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
