@@ -13,7 +13,7 @@ but for performance reasons we do not run deliberation policies everytime for in
 ")]
 public class TestrChallenges
 {
-    [Fact]// (Skip = "Doc")
+    [Fact(Skip = "Doc")]// (Skip = "Doc")
     public void Doc()
         => Explain.This<TestrChallenges>("temp-testr-challenges.md");
 }
