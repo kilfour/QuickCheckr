@@ -30,7 +30,7 @@ public class TestrRunner<T>(
         from trace in Checkr.Trace("Original", () => input)
         from run in Checkr.ActCarefully("Run", () => Invariant(input))
         from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input)))
-        from expectation in Checkr.ExpectWhen(testName, () => !run.Threw, () => Invariant(input))
+        from expectation in Checkr.ExpectWhen(testName, () => !run.Threw, () => run.Value)
         select Case.Closed;
 
     [StackTraceHidden]
