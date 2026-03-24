@@ -1,12 +1,11 @@
 using QuickCheckr;
 using QuickCheckr.Invariants;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimsental.Z_Challenges.B_LargeUnionList;
+namespace QuickCheckr.Tests.Experimental.Y_TestrChallenges.B_LargeUnionList;
 
 [DocFile]
 [DocContent(
@@ -33,6 +32,7 @@ public class LargeUnionList : TestrTest<LargeUnionList>
     public override void Example() =>
         Run(1575924946);
 
+    [CodeSnippet]
     protected override ITestrRunner TheTestr() =>
         Testr.Named("No more than four distinct integers.")
             .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())

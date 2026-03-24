@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using QuickCheckr.Protocol;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickFuzzr;
 
 namespace QuickCheckr.Invariants;
@@ -14,6 +16,8 @@ public interface ITestrRunner
 
 public class TestrRunner<T>(
     FuzzrOf<T> fuzzr,
+    Shrinker[] shrinkers,
+    CheckrOf<Case>[] formatters,
     Func<T, bool> Invariant,
     Func<T, int>? Deliberation,
     int? DeliberationTarget,
@@ -21,9 +25,12 @@ public class TestrRunner<T>(
     bool UseBuiltInReducers) : ITestrRunner
 {
     private CheckrOf<Case> GetCheckr() =>
-        from input in Checkr.Input("Input", fuzzr)
+        from format in Combine.Checkrs(formatters)
+        from input in Checkr.Input("Input", fuzzr, shrinkers)
         from trace in Checkr.Trace("Original", () => input)
-        from expectation in Checkr.Expect(testName, () => Invariant(input))
+        from run in Checkr.ActCarefully("Run", () => Invariant(input))
+        from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input)))
+        from expectation in Checkr.ExpectWhen(testName, () => !run.Threw, () => Invariant(input))
         select Case.Closed;
 
     [StackTraceHidden]
@@ -46,7 +53,7 @@ public class TestrRunner<T>(
                 a => a.InputsNamed<T>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
-            ReportMode = a.ReportMode & ~ReportMode.Warning & ~ReportMode.Labels
+            ReportMode = a.ReportMode & ~ReportMode.Warning & ~ReportMode.Labels & ~ReportMode.StackTrace
         };
     }
 }

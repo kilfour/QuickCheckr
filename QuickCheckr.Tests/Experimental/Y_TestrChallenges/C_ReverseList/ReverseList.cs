@@ -1,11 +1,10 @@
-using QuickCheckr;
 using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Expersimental.Z_Challenges.C_ReverseList;
+namespace QuickCheckr.Tests.Experimental.Y_TestrChallenges.C_ReverseList;
 
 [DocFile]
 [DocContent(
@@ -27,6 +26,7 @@ public class ReverseList : TestrTest<ReverseList>
     public override void Example() =>
         Run(12901993);
 
+    [CodeSnippet]
     protected override ITestrRunner TheTestr() =>
         Testr
             .Named("Reversing a list of integers results in the same list")
