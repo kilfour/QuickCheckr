@@ -17,6 +17,32 @@ Testr.Named("The sum of all values is less than 5 * 256.")
     .Assert(a => H.Sum(a) < (5 * 256));
 ```
 
+**The Short List Fuzzr:**  
+```csharp
+Fuzzr.Short(short.MinValue, 256)
+    .Many(0, 10)
+    .Where(a => H.Sum(a) < 256)
+    .ToList()
+```
+
+**The Helpers:**  
+```csharp
+public class H
+{
+    public static int ElementCount((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => a.Item1.Count + a.Item2.Count + a.Item3.Count + a.Item4.Count + a.Item5.Count;
+    public static short Sum((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => (short)(Sum(a.Item1) + Sum(a.Item2) + Sum(a.Item3) + Sum(a.Item4) + Sum(a.Item5));
+    public static short Sum(IEnumerable<short> list)
+    {
+        short sum = 0;
+        foreach (var value in list)
+            sum = (short)(sum + value);
+        return sum;
+    }
+}
+```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------

@@ -495,6 +495,32 @@ Testr.Named("The sum of all values is less than 5 * 256.")
     .Assert(a => H.Sum(a) < (5 * 256));
 ```
 
+**The Short List Fuzzr:**  
+```csharp
+Fuzzr.Short(short.MinValue, 256)
+    .Many(0, 10)
+    .Where(a => H.Sum(a) < 256)
+    .ToList()
+```
+
+**The Helpers:**  
+```csharp
+public class H
+{
+    public static int ElementCount((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => a.Item1.Count + a.Item2.Count + a.Item3.Count + a.Item4.Count + a.Item5.Count;
+    public static short Sum((List<short>, List<short>, List<short>, List<short>, List<short>) a)
+        => (short)(Sum(a.Item1) + Sum(a.Item2) + Sum(a.Item3) + Sum(a.Item4) + Sum(a.Item5));
+    public static short Sum(IEnumerable<short> list)
+    {
+        short sum = 0;
+        foreach (var value in list)
+            sum = (short)(sum + value);
+        return sum;
+    }
+}
+```
+
 **The Report:**  
 ```text
 ------------------------------------------------------------
@@ -510,6 +536,342 @@ Testr.Named("The sum of all values is less than 5 * 256.")
  ======================================================================
   !! Expectation Failed: The sum of all values is less than 5 * 256.
  ======================================================================
+```
+### Large Union List
+
+Given a list of lists of arbitrary sized integers, 
+we want to test the property that there are no more than four distinct integers across all the lists.
+This is trivially false, and this example is an artificial one to stress test a shrinker's ability to normalise
+(always produce the same output regardless of starting point).
+
+In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
+For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("No more than four distinct integers.")
+    .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
+    .Deliberate(a => 0 - a.Count, -5)
+    .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                LargeUnionList.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 20 shrinks)
+ Seed:                    1575924946
+ ------------------------------------------------------------
+  Executed:
+   - Input    = [ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
+     Redux      [ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+   - Original = [ [ 91, 42, 27, 37, 85, 85, 40, 91, 75 ], [ 43, 58, 67 ], [ 78, 1, 82, 71, 59, 69, 81, 5 ], [ 56, 7, 12, 35 ], [ 74, 37, 40, 98, 14, 28 ], [ 26, 71, 93, 9, 98, 27 ], [ ], [ 78, 39, 94, 60 ], [ 52, 60 ], [ 30, 10, 9, 9, 87, 99 ], [ 30, 74, 50, 82, 18, 38, 93 ], [ 45, 40, 18, 52 ], [ 89, 62, 60 ], [ 79, 61, 63, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
+ ===============================================================
+  !! Expectation Failed: No more than four distinct integers.
+ ===============================================================
+```
+### Reverse List
+
+This tests the (wrong) property that reversing a list of integers results in the same list. 
+It is a basic example to validate that a library can reliably normalize simple sample data.
+  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("Reversing a list of integers results in the same list")
+    .For(Fuzzr.Int().Many(0, 10).ToList())
+    .Assert(a =>
+    {
+        var reversed = new List<int>(a);
+        reversed.Reverse();
+        return reversed.SequenceEqual(a);
+    });
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReverseList.cs:28:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    12901993
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = [ _, 94 ]
+     Redux      [ _, 0 ]
+   - Original = [ 76, 92, 75, 6, 94 ]
+ ================================================================================
+  !! Expectation Failed: Reversing a list of integers results in the same list
+ ================================================================================
+```
+### Calculator
+
+The challenge involves a simple calculator language representing expressions consisting of integers,
+their additions and divisions only, like 1 + (2 / 3).
+
+The property being tested is that
+
+- if we have no subterms of the form x / 0,  
+- then we can evaluate the expression without a zero division error.
+This property is false, because we might have a term like 1 / (3 + -3), in which the divisor is not literally 0 but evaluates to 0.
+
+One of the possible difficulties that might come up is the shrinking of recursive expressions.
+  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("No division by zero")
+    .For(TheFuzzr, TheShrinkr)
+    .Format(TheFormatr)
+    .Deliberate(a => DepthOf(a))
+    .Assert(a => { a.Evaluate(); return true; });
+```
+
+**The Fuzzr:**  
+```csharp
+from i in Configr.Primitive(Fuzzr.Int(0, 10))
+from noZeroDiv in Configr<Expr>.Apply(
+    a =>
+    {
+        // rewrite division by zero terms
+        if (a is Term t)
+            if (t.Op == Operation.Div && t.R is Num { Value: 0 })
+                t.R = new Num { Value = 1 };
+    })
+from depth in Configr<Expr>.Depth(0, 10)
+from inheritance in Configr<Expr>.AsOneOf(typeof(Term), typeof(Num))
+from terminator in Configr<Expr>.EndOn<Num>()
+from expr in Fuzzr.One<Expr>()
+select expr
+```
+
+**The Shrinkr:**  
+```csharp
+Shrink.When<int>(s => s
+    .As<Num>(a => a.Value)
+    .As<Term, Expr>(a => a.R)
+    .Value(t => t.Op == Operation.Div),
+s => s.Simplify(Reduce.Towards(1)))
+```
+
+**The Formatter:**  
+```csharp
+[ Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+, Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())]
+```
+
+**The Helper:**  
+```csharp
+private static int DepthOf(Expr a, int depth = 0)
+{
+    if (a is Term term)
+        return Math.Max(DepthOf(term.L, depth + 1), DepthOf(term.R, depth + 1));
+    return depth;
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Calculator.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 8 shrinks)
+ Seed:                    729093046
+ ------------------------------------------------------------
+  Executed: Rethrow, Run
+   - Input    = ( _ / ( 2 / _ ) )
+     Redux      ( _ / ( 0 / _ ) )
+   - Original = { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }
+ ===========================================================================
+  !! DivideByZeroException: Attempted to divide by zero.
+ ===========================================================================
+```
+### Length List
+
+A list should be generated first by picking a length between 1 and 100,
+then by generating a list of precisely that length whose elements are integers between 0 and 1000.
+The test should fail if the maximum value of the list is 900 or larger.
+
+This list should specifically be generated using monadic combinators (bind) or some equivalent,
+and this is a test that is only interesting for integrated shrinking.
+This is only interesting as a test of a problem
+[some property-based testing libraries have with monadic bind](https://clojure.github.io/test.check/growth-and-shrinking.html#unnecessary-bind).
+In particular the use of the length parameter is critical,
+and the challenge is to shrink this example to `[900]` reliably when using a PBT library's built in generator for lists.
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("The maximum value of the list is smaller than 900.")
+    .For(
+        from length in Fuzzr.Int(1, 100)
+        from list in Fuzzr.Int(0, 1000).Many(length)
+        select list.ToList())
+    .Assert(a => a.Max() < 900);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                LengthList.cs:21:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 14 shrinks)
+ Seed:                    357470573
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = [ 905 ]
+     Redux      [ 900 ]
+   - Original = [ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]
+ =============================================================================
+  !! Expectation Failed: The maximum value of the list is smaller than 900.
+ =============================================================================
+```
+### Difference
+
+**The Fuzzr:**  
+```csharp
+from _ in Configr<Pair>.Construct(Fuzzr.Int(), Fuzzr.Int())
+from pair in Fuzzr.One<Pair>()
+select pair
+```
+
+**The Shrinkr:**  
+```csharp
+public class The
+{
+    public static Shrinker Shrinkr =
+        Shrink.OnType<Pair>(
+            s => s.Simplify(
+                Reduce.Function<Pair>(a => TowardsZero(a))));
+    private static IEnumerable<Pair> TowardsZero(Pair input)
+    {
+        var local = input;
+        while (local.A >= 0)
+        {
+            local = local with { A = local.A - 1, B = local.B - 1 };
+            yield return local;
+        }
+    }
+}
+```
+#### Test1
+
+Test 1 ('difference must not be zero') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not zero.
+The smallest falsified sample is `[10, 10]`
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("Difference must not be zero.")
+    .For(TheFuzzr, Shrinkr)
+    .Assert(a => a.A < 10 || a.A != a.B);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test1.cs:21:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1485535450
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = { A: 93, B: 93 }
+     Redux      { A: 10, B: 10 }
+   - Original = { A: 93, B: 93 }
+ =======================================================
+  !! Expectation Failed: Difference must not be zero.
+ =======================================================
+```
+#### Test2
+
+Test 2 ('difference must not be small') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not between 1 and 4.
+The smallest falsified sample is `[10, 6]`.
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("Difference must not be small.")
+    .For(TheFuzzr, Shrinkr)
+    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) > 4 || a.A == a.B);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test2.cs:28:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1449083695
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = { A: 37, B: 38 }
+     Redux      { A: 10, B: 6 }
+   - Original = { A: 37, B: 38 }
+ ========================================================
+  !! Expectation Failed: Difference must not be small.
+ ========================================================
+```
+#### Test3
+
+Test 3 ('difference must not be one') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not exactly 1.
+The smallest falsified sample is `[10, 9]`.
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("Difference is not exactly 1.")
+    .For(TheFuzzr, Shrinkr)
+    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test3.cs:21:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1231462692
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = { A: 51, B: 52 }
+     Redux      { A: 10, B: 9 }
+   - Original = { A: 51, B: 52 }
+ =======================================================
+  !! Expectation Failed: Difference is not exactly 1.
+ =======================================================
 ```
 ## Challenges
 
@@ -611,44 +973,6 @@ config with
    - Input: LargeUnionList = [ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]
             Redux            [ [ _ ], [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
    - Trace: Original       = [ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]
- ===============================================================
-  !! Expectation Failed: No more than four distinct integers.
- ===============================================================
-```
-### Large Union List Testr
-
-Given a list of lists of arbitrary sized integers, 
-we want to test the property that there are no more than four distinct integers across all the lists.
-This is trivially false, and this example is an artificial one to stress test a shrinker's ability to normalise
-(always produce the same output regardless of starting point).
-
-In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
-For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
-  
-
-**The Invariant:**  
-```csharp
-Testr.Named("No more than four distinct integers.")
-    .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
-    // Prefer less lists, stop at 1
-    .Deliberate(a => a.Count, 1)
-    .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
-    .Run(1_000.Runs());
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Z_LargeUnionListTestr.cs:38:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 11 shrinks)
- Seed:                    664059097
- ------------------------------------------------------------
-  Executed:
-   - Input    = [ [ _, 66, 42, 89, 25 ] ]
-     Redux      [ [ _, 0, 1, 2, 3 ] ]
-   - Original = [ [ ], [ 31, 86, 93, 91, 95 ], [ 19, 41, 94 ], [ ], [ 6, 48, 40, 26, 99, 87, 45, 68 ], [ 20, 29, 66, 42, 89, 25 ] ]
  ===============================================================
   !! Expectation Failed: No more than four distinct integers.
  ===============================================================

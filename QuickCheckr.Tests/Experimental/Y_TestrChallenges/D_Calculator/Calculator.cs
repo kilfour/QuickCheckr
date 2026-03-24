@@ -25,7 +25,7 @@ public class Calculator : TestrTest<Calculator>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explain => true;
+    protected override bool Explain => false;
 
     [Fact]
     [DocTestrHeader]

@@ -15,7 +15,7 @@ It is a basic example to validate that a library can reliably normalize simple s
 public class ReverseList : TestrTest<ReverseList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
