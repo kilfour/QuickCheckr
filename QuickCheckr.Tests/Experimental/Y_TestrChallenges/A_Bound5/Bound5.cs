@@ -26,11 +26,16 @@ public class Bound5 : TestrTest<Bound5>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
+    [DocBoldHeader("The Short List Fuzzr")]
+    [DocExample(typeof(Bound5), nameof(ShortList))]
+    [DocBoldHeader("The Helpers")]
+    [DocExample(typeof(H))]
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Run(472166887);
 
+    [CodeSnippet]
     private static readonly FuzzrOf<List<short>> ShortList =
         Fuzzr.Short(short.MinValue, 256)
             .Many(0, 10)

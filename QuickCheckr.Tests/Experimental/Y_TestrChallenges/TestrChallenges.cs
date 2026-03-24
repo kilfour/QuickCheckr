@@ -1,4 +1,3 @@
-using QuickCheckr.Tests.Experimental.Z_Challenges;
 using QuickPulse.Explains;
 
 
@@ -14,7 +13,7 @@ but for performance reasons we do not run deliberation policies everytime for in
 ")]
 public class TestrChallenges
 {
-    [Fact(Skip = "Doc")]// (Skip = "Doc")
+    [Fact]// (Skip = "Doc")
     public void Doc()
-        => Explain.This<Challenges>("temp-testr-challenges.md");
+        => Explain.This<TestrChallenges>("temp-testr-challenges.md");
 }

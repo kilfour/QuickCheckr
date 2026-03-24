@@ -1,12 +1,12 @@
 using QuickCheckr;
 using QuickCheckr.Invariants;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Experimental.Z_Challenges.B_LargeUnionList;
+namespace QuickCheckr.Tests.Experimsental.Z_Challenges.B_LargeUnionList;
 
 [DocFile]
 [DocContent(
@@ -19,28 +19,25 @@ This is trivially false, and this example is an artificial one to stress test a 
 In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
 For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
 ")]
-public class Z_LargeUnionListTestr : InvariantsTest<Z_LargeUnionListTestr>
+public class LargeUnionList : TestrTest<LargeUnionList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    [DocInvariantHeader]
-    [DocInvariant]
+    [DocTestrHeader]
+    [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run();
+    public override void Example() =>
+        Run(1575924946);
 
-    [CodeSnippet]
-    [CodeReplace("664059097", "1_000.Runs()")]
-    protected override CaseFile TheInvariant() =>
+    protected override ITestrRunner TheTestr() =>
         Testr.Named("No more than four distinct integers.")
             .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
-            // Prefer less lists, stop at 1
-            .Deliberate(a => a.Count, 1)
-            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
-            .Run(664059097);
+            .Deliberate(a => 0 - a.Count, -5)
+            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4);
 
     protected override void Verify(Article article)
     {
@@ -48,14 +45,14 @@ public class Z_LargeUnionListTestr : InvariantsTest<Z_LargeUnionListTestr>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(11, article.ShrinkCount);
+        Assert.Equal(20, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ [ _, 66, 42, 89, 25 ] ]", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("[ [ _, 0, 1, 2, 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("[ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("[ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ [ ], [ 31, 86, 93, 91, 95 ], [ 19, 41, 94 ], [ ], [ 6, 48, 40, 26, 99, 87, 45, 68 ], [ 20, 29, 66, 42, 89, 25 ] ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("[ [ 91, 42, 27, 37, 85, 85, 40, 91, 75 ], [ 43, 58, 67 ], [ 78, 1, 82, 71, 59, 69, 81, 5 ], [ 56, 7, 12, 35 ], [ 74, 37, 40, 98, 14, 28 ], [ 26, 71, 93, 9, 98, 27 ], [ ], [ 78, 39, 94, 60 ], [ 52, 60 ], [ 30, 10, 9, 9, 87, 99 ], [ 30, 74, 50, 82, 18, 38, 93 ], [ 45, 40, 18, 52 ], [ 89, 62, 60 ], [ 79, 61, 63, 17 ], [ 51 ], [ 6 ], [ 74 ] ]", article.Execution(1).Trace(1).Read().Value);
         Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }
