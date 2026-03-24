@@ -1,9 +1,3 @@
-using QuickCheckr;
-using QuickCheckr.Invariants;
-using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings;
-using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.D_DslBuilding.T_GoingFunctional;

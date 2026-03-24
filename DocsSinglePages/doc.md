@@ -254,7 +254,7 @@ BugHouseCheckr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    RunBugHouseCheckr
- Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:75:1
+ Location:                Docs\A_Guide\B_TheStashRunsAndExecutions\TheStashRunsAndExecutions.cs:74:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642

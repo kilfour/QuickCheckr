@@ -8,14 +8,53 @@
 * Doc/test/improve `Reduce.Towards()`.
 
 ### Todo
-* Check Lists in Objects and Tuples (empty should be '_' ?)
+* Check Lists in Objects and Tuples (empty should be '_' ?) 
+* Auto DeliberationPolicy for Testr
+* Different report for Testr:  
+```text
+------------------------------------------------------------
+ Test:       Example
+ Location:   LargeUnionList.cs:39:1
+ Seed:       611616888
+ Shrinks:    22
+------------------------------------------------------------
+ Counterexample:
+   Input    = [ [ _, 21, 94, 58, 73 ] ]
+   Redux    = [ [ _, 0, 1, 2, 3 ] ]
+
+ Original:
+   [ [ 26, 53, 34, 51, 93, 65 ], [ 6, 9, 84 ], [ 22, 19, 12, 19, 97, 14, 51, 91, 32 ], [ 58, 18, 80, 50, 77 ], [ 67, 64, 28, 24, 72, 74 ], [ 84, 59, 96, 88, 67, 68 ], [ 24, 76, 6, 12 ], [ 57, 64, 9 ], [ 59, 42, 58, 29, 11, 67, 35, 54, 2, 16 ], [ ], [ 42, 81, 60, 19, 47, 56 ], [ 59, 1 ], [ 83, 23 ], [ 25, 81, 13, 68, 19, 21, 94, 58, 73 ] ]
+
+------------------------------------------------------------
+ Expectation Failed:
+   No more than four distinct integers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+ Test:       Example
+ Seed:       611616888
+ Shrinks:    22
+------------------------------------------------------------
+ Falsified:
+   Input = [ [ _, 21, 94, 58, 73 ] ]
+   Redux = [ [ _, 0, 1, 2, 3 ] ]
+
+ Expectation:
+   No more than four distinct integers.
+------------------------------------------------------------
+```
 
 ### Wish List
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
 * Testr: derive default deliberation policy from input type
-* SystemCheckr : System/Domain checking DSL, needs time in the oven
-* Modelr : use as How to build your own example
+* SystemCheckr : System/Domain checking DSL, needs time in the oven  
+  => Modelr : use a Application Service in stash + GetEntities method  
+  similar approach as QuickWebr
+* MBT : use as How to build your own example
+* Ouroboros Testing : We need a better `InputDeposition`
+* Depostions project: Challenges in CsCheck, FsCheck and QuickCheckr
+* Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
 
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples

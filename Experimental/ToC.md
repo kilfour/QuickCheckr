@@ -1,6 +1,8 @@
   - [The Needler Pattern](A_TheNeedlerPattern/TheNeedlerPattern.md)
   - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
   - [Warehousing](W_Warehouse/Warehousing.md)
+  - [Testr Challenges](Y_TestrChallenges/TestrChallenges.md)
+    - [Bound5](Y_TestrChallenges/A_Bound5/Bound5.md)
   - [Challenges](Z_Challenges/Challenges.md)
     - [Bound5](Z_Challenges/A_Bound5/Bound5.md)
     - [Large Union List](Z_Challenges/B_LargeUnionList/LargeUnionList.md)

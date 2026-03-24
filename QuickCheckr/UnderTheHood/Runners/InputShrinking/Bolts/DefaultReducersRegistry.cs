@@ -7,7 +7,8 @@ public static class DefaultReducersRegistry
     public static readonly Dictionary<Type, Func<Func<ReductionResult, Reduction>>> ReducerFactories =
         new()
         {
-            {typeof(int), () => Convert(Reduce.TowardsZero)}
+            {typeof(int), () => Convert(Reduce.TowardsZero)},
+            {typeof(short), () => Convert(Reduce.ShortTowardsZero)}
         };
 
     public static Func<Func<ReductionResult, Reduction>>? TryGetReducerFactory(Type type)

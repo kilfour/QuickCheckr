@@ -1,7 +1,5 @@
 using QuickCheckr.Invariants;
-using QuickCheckr.Tests.Drafts.D_DslBuilding.F_ModelBasedTesting;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
 

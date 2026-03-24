@@ -1,6 +1,5 @@
 using QuickCheckr;
 using QuickCheckr.Invariants;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;

@@ -7,7 +7,6 @@ using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Instruments;
 
 
 namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;

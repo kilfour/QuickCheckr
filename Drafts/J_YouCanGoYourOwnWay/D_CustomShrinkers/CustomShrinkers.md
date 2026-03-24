@@ -41,7 +41,7 @@ select Case.Closed;
   !! Expectation Failed: Answer equals 42
  ===========================================
 ```
-### Explaining the Example
+### Explaining the Example, TODO: REVIEW THIS TEST/DOC
 The example above is intentionally simple. The expectation only passes for the value `42`,
 which makes it easy to see how the custom shrinker influences the reported case.
 

@@ -468,6 +468,49 @@ private static readonly CheckrOf<Case> PlaceOrder =
  - Insufficient Stock means no stock change: 5x
  ------------------------------------------------------------
 ```
+## Testr Challenges
+
+Currently these challenges use a seeded state, because they are part of a regression test suite.
+
+At the time of writing however, this was not the case.
+The seeded report *is* representing the actual behaviour of QuickCheckr,
+but for performance reasons we do not run deliberation policies everytime for instance.
+  
+### Bound5
+Given a 5-tuple of lists of 16-bit integers, we want to test the property that if each list sums to less than 256,
+then the sum of all the values in the lists is less than 5 * 256.
+This is false because of overflow. e.g. ([-20000], [-20000], [], [], []) is a counter-example.
+
+The interesting thing about this example is the interdependence between separate parts of the sample data.
+A single list in the tuple will never break the invariant, but you need at least two lists together.
+This prevents most of trivial shrinking algorithms from getting close to a minimum example,
+which would look somethink like ([-32768], [-1], [], [], []).
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("The sum of all values is less than 5 * 256.")
+    .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
+    .Deliberate(H.ElementCount, 2)
+    .Assert(a => H.Sum(a) < (5 * 256));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Bound5.cs:30:1
+ Original failing run:    1 execution
+ Seed:                    472166887
+ ------------------------------------------------------------
+  Executed:
+   - Input    = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
+     Redux      ( [ ], [ ], [ ], [ -7527 ], [ -25242 ] )
+   - Original = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
+ ======================================================================
+  !! Expectation Failed: The sum of all values is less than 5 * 256.
+ ======================================================================
+```
 ## Challenges
 
 Currently these challenges use a seeded state, because they are part of a regression test suite.
@@ -566,7 +609,7 @@ config with
  ------------------------------------------------------------
   Executed:
    - Input: LargeUnionList = [ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]
-            Redux            [ [ _ ], [ 74 ], [ 0 ], [ 1 ], [ 2 ] ]
+            Redux            [ [ _ ], [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
    - Trace: Original       = [ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]
  ===============================================================
   !! Expectation Failed: No more than four distinct integers.
@@ -604,8 +647,8 @@ Testr.Named("No more than four distinct integers.")
  ------------------------------------------------------------
   Executed:
    - Input    = [ [ _, 66, 42, 89, 25 ] ]
-     Redux      [ [ _, 43, 26, 44, 0 ] ]
-   - original = [ [ ], [ 31, 86, 93, 91, 95 ], [ 19, 41, 94 ], [ ], [ 6, 48, 40, 26, 99, 87, 45, 68 ], [ 20, 29, 66, 42, 89, 25 ] ]
+     Redux      [ [ _, 0, 1, 2, 3 ] ]
+   - Original = [ [ ], [ 31, 86, 93, 91, 95 ], [ 19, 41, 94 ], [ ], [ 6, 48, 40, 26, 99, 87, 45, 68 ], [ 20, 29, 66, 42, 89, 25 ] ]
  ===============================================================
   !! Expectation Failed: No more than four distinct integers.
  ===============================================================
