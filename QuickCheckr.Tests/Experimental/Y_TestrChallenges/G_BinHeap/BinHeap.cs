@@ -36,10 +36,8 @@ public class BinHeap : TestrTest<BinHeap>
         Run(2136249593);
 
     [CodeSnippet]
-    [CodeRemove("Difference.")]
-    [CodeRemove("The.")]
     protected override ITestrRunner TheTestr() =>
-        Testr.Named("Difference is not exactly 1.")
+        Testr.Named("Heap sort is correct.")
             .For(TheFuzzr)
             .Deliberate(a => Flatten(a).Count())
             .Assert(a =>
@@ -62,7 +60,7 @@ public class BinHeap : TestrTest<BinHeap>
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("Difference is not exactly 1.", article.FailureDescription());
+        Assert.Equal("Heap sort is correct.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
