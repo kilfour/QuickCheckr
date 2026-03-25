@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickFuzzr;
 
 namespace QuickCheckr;
