@@ -3,13 +3,14 @@
 * QuickWebr: web-api DSL
  
 ### Doing
-* Added max steps to ReductionRunner => throws, just stop and warn instead
-* Doc/test/improve `Reduce.Towards()`.
+
 
 ### Todo
+* Added max steps to ReductionRunner => throws, just stop and warn instead
 * Check Lists in Objects and Tuples (empty should be '_' ?) 
+* Doc/test/improve `Reduce.Towards()`.
 * Auto DeliberationPolicy for Testr
-* Testr: derive default deliberation policy from input type
+  Derive default deliberation policy from input type
 
 
 ### Wish List
@@ -28,7 +29,8 @@
 * Added shrinking support for Fields.
 * Added a warning when conditional expectations are never exercised during a run.
 * Introduced pluggable report rendering via `Flow<CaseFile>`.
-* IAdded simplified report flow for Testr.
+* Added simplified report flow for Testr.
+
 
 
 ## 0.0.11 : All Aboard
