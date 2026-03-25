@@ -28,16 +28,14 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Coupling.cs:58:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    124252565
+  No two different indexes point to each other.
+  Seed: 1934478623
  ------------------------------------------------------------
-  Executed:
-   - Input: List     = [ 1, 0 ]
-   - Trace: Original = [ 2, 1, 0, 1 ]
- ========================================================================
-  !! Expectation Failed: No two different indexes point to each other.
- ========================================================================
+  Falsified:
+    Input = [ 1, 0 ]
+
+
+  Original:
+    [ 1, 1, 0, 4, 3, 3, 2, 3, 11, 6, 4, 4, 4, 12 ]
+ ------------------------------------------------------------
 ```

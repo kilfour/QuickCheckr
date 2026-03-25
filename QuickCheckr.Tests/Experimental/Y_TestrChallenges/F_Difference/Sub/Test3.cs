@@ -18,7 +18,7 @@ The smallest falsified sample is `[10, 9]`.
 public class Test3 : TestrTest<Test3>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -32,7 +32,7 @@ public class Test3 : TestrTest<Test3>
     [CodeSnippet]
     [CodeRemove("Difference.")]
     [CodeRemove("The.")]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr.Named("Difference is not exactly 1.")
             .For(Difference.TheFuzzr, Difference.The.Shrinkr)
             .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);

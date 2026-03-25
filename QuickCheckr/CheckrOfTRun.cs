@@ -59,10 +59,10 @@ public static class CheckrOfTRun
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
             var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-            config.Custodian.StoreCaseFile(fileName, caseFile);
+            config.Custodian.StoreCaseFile(fileName, caseFile, config.StyleGuide);
             Vault.From(config).AddSeed(caseFile.Seed, executionsPerRun.NumberOfExecutions);
         }
-        throw new FalsifiableException(caseFile);
+        throw new FalsifiableException(caseFile, config.StyleGuide);
     }
 
     private static void ReportCaseFileSummary(CheckrRunnerConfig config, List<CaseFile> caseFiles)
@@ -71,7 +71,7 @@ public static class CheckrOfTRun
         {
             var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
             var summary = CaseSummary.FromCaseFiles(caseFiles);
-            config.Custodian.StoreCaseFile(fileName, summary);
+            config.Custodian.StoreCaseFile(fileName, summary, config.StyleGuide);
         }
     }
 

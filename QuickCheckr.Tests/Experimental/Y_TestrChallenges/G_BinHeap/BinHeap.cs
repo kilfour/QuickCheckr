@@ -22,7 +22,7 @@ This is essentially because small examples are ""too sparse"", so it's very hard
 public class BinHeap : TestrTest<BinHeap>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -36,7 +36,7 @@ public class BinHeap : TestrTest<BinHeap>
         Run(2136249593);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr.Named("Heap sort is correct.")
             .For(TheFuzzr)
             .Deliberate(a => Flatten(a).Count())

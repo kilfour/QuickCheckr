@@ -18,7 +18,7 @@ The expected smallest falsified sample is [1, 0].
 public class Coupling : TestrTest<Coupling>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -30,7 +30,7 @@ public class Coupling : TestrTest<Coupling>
         Run(1934478623);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr
             .Named("No two different indexes point to each other.")
             .For(

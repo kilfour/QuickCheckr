@@ -16,17 +16,14 @@ Testr.Named("Difference is not exactly 1.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test3.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1231462692
+  Difference is not exactly 1.
+  Seed: 1231462692
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 51, B: 52 }
-     Redux      { A: 10, B: 9 }
-   - Original = { A: 51, B: 52 }
- =======================================================
-  !! Expectation Failed: Difference is not exactly 1.
- =======================================================
+  Falsified:
+    Input = { A: 51, B: 52 }
+    Redux = { A: 10, B: 9 }
+
+  Original:
+    { A: 51, B: 52 }
+ ------------------------------------------------------------
 ```

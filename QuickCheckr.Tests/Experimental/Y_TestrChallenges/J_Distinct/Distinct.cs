@@ -23,7 +23,7 @@ The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
 public class Distinct : TestrTest<Distinct>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -35,7 +35,7 @@ public class Distinct : TestrTest<Distinct>
         Run(1943621438);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr
             .Named("Contains at least three distinct elements.")
             .For(Fuzzr.Int(1, 10).Many(3, 20))

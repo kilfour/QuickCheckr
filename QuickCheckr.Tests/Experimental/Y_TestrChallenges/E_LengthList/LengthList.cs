@@ -24,7 +24,7 @@ and the challenge is to shrink this example to `[900]` reliably when using a PBT
 public class LengthList : TestrTest<LengthList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -36,7 +36,7 @@ public class LengthList : TestrTest<LengthList>
         Run(357470573);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr.Named("The maximum value of the list is smaller than 900.")
             .For(
                 from length in Fuzzr.Int(1, 100)

@@ -16,17 +16,14 @@ Testr.Named("Difference must not be zero.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test1.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1485535450
+  Difference must not be zero.
+  Seed: 1485535450
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 93, B: 93 }
-     Redux      { A: 10, B: 10 }
-   - Original = { A: 93, B: 93 }
- =======================================================
-  !! Expectation Failed: Difference must not be zero.
- =======================================================
+  Falsified:
+    Input = { A: 93, B: 93 }
+    Redux = { A: 10, B: 10 }
+
+  Original:
+    { A: 93, B: 93 }
+ ------------------------------------------------------------
 ```

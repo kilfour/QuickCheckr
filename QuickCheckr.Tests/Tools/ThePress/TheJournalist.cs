@@ -18,7 +18,7 @@ public static class TheJournalist
     public static Article Exposes(Action run)
     {
         var ex = Assert.Throws<FalsifiableException>(run);
-        return Unearths(ex.CaseFile);
+        return Unearths(ex.TheCaseFile);
     }
 
     [StackTraceHidden]
@@ -30,7 +30,7 @@ public static class TheJournalist
         }
         catch (FalsifiableException ex)
         {
-            return Unearths(ex.CaseFile);
+            return Unearths(ex.TheCaseFile);
         }
     }
 

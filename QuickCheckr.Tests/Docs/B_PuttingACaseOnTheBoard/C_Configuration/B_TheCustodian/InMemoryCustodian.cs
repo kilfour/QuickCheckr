@@ -1,6 +1,7 @@
 using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickPulse;
 
 namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 
@@ -8,7 +9,7 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
 {
     public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
 
-    public void StoreCaseFile(string path, CaseFile caseFile)
+    public void StoreCaseFile(string path, CaseFile caseFile, Flow<CaseFile> styleGuide)
         => CaseFiles[path] = caseFile;
 
     public string RemoveFileCalledWith { get; private set; } = string.Empty;

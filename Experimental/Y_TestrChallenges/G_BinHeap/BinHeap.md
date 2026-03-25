@@ -37,17 +37,14 @@ select heap
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                BinHeap.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2136249593
+  Heap sort is correct.
+  Seed: 2136249593
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
-     Redux      { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }
-   - Original = { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
- =======================================================
-  !! Expectation Failed: Difference is not exactly 1.
- =======================================================
+  Falsified:
+    Input = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+    Redux = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }
+
+  Original:
+    { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+ ------------------------------------------------------------
 ```

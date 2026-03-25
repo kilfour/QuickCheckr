@@ -58,11 +58,13 @@ This one stores everything in a '.quickcheckr' directory in the same directory a
 ### Custom Custodians
 You can also supply your own implementation:  
 ```csharp
+namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
+
 public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodian
 {
     public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
 
-    public void StoreCaseFile(string path, CaseFile caseFile)
+    public void StoreCaseFile(string path, CaseFile caseFile, Flow<CaseFile> styleGuide)
         => CaseFiles[path] = caseFile;
 
     public string RemoveFileCalledWith { get; private set; } = string.Empty;

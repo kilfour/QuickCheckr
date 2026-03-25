@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Experimental.Y_TestrChallenges.K_NestedLists;
 public class NestedLists : TestrTest<NestedLists>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -22,7 +22,7 @@ public class NestedLists : TestrTest<NestedLists>
         Run(1959968277);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr
             .Named("The sum of lengths of the element lists is at most 10.")
             .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())

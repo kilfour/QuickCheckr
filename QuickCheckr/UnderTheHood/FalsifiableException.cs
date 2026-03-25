@@ -2,24 +2,25 @@
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickPulse;
 
 
 namespace QuickCheckr.UnderTheHood;
 
 public class FalsifiableException : Exception
 {
-    public CaseFile CaseFile { get; private set; }
+    public CaseFile TheCaseFile { get; private set; }
 
-    public FalsifiableException(CaseFile caseFile)
-        : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile)))
+    public FalsifiableException(CaseFile caseFile, Flow<CaseFile> styleGuide)
+        : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide))
     {
-        CaseFile = caseFile;
+        TheCaseFile = caseFile;
     }
 
-    public FalsifiableException(CaseFile caseFile, Exception? exception)
-        : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile)), exception)
+    public FalsifiableException(CaseFile caseFile, Flow<CaseFile> styleGuide, Exception? exception)
+        : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide), exception)
     {
-        CaseFile = caseFile;
+        TheCaseFile = caseFile;
     }
 
     private static CaseFile AddTestMethodInfo(CaseFile caseFile)

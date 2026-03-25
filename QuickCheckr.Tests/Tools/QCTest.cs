@@ -1,7 +1,9 @@
 using System.Runtime.CompilerServices;
 using QuickCheckr.Tests.Tools.ThePress;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickPulse;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 
@@ -33,6 +35,8 @@ public abstract class QCTest<T> : QCTest
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
+
+    protected virtual Flow<CaseFile> StyleGuide => The.CourtStyleGuide;
 
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
@@ -73,7 +77,7 @@ public abstract class QCTest<T> : QCTest
                     SourceFile = $"{typeof(T).Name}.cs"
                 });
         }
-        var report = TheClerk.Transcribes(article.CaseFile);
+        var report = TheClerk.Transcribes(article.CaseFile, StyleGuide);
         FileLog.Write(fullPath).Absorb(report);
     }
 

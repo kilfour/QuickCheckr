@@ -2,30 +2,34 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.UnderTheHood.Proceedings;
+using QuickPulse;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
 
 public abstract class TestrTest<T> : QCTest<T>
 {
+    protected override Flow<CaseFile> StyleGuide => TheTestr.StyleGuide;
+
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");
 
     public class DocTestrAttribute() :
-        DocExampleAttribute(typeof(T), "TheTestr");
+        DocExampleAttribute(typeof(T), nameof(GetTestr));
 
     [StackTraceHidden]
     protected void Run(
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
-            () => TheTestr().Run())
+            () => GetTestr().Run())
             , callerPath);
 
     protected void Run(
         int seed,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
-            () => TheTestr().Run(seed))
+            () => GetTestr().Run(seed))
             , callerPath);
 
     [StackTraceHidden]
@@ -33,7 +37,7 @@ public abstract class TestrTest<T> : QCTest<T>
         CheckrOfTRun.RunCount runCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
-            () => TheTestr().Run(runCount))
+            () => GetTestr().Run(runCount))
             , callerPath);
 
 
@@ -43,5 +47,5 @@ public abstract class TestrTest<T> : QCTest<T>
     //     => ProcessArticle(TheJournalist.Unearths(TheInvariant())
     //         , callerPath);
 
-    protected abstract ITestrRunner TheTestr();
+    protected abstract ITestrRunner GetTestr();
 }

@@ -25,17 +25,14 @@ Testr.Named("The maximum value of the list is smaller than 900.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                LengthList.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 14 shrinks)
- Seed:                    357470573
+  The maximum value of the list is smaller than 900.
+  Seed: 357470573
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ 905 ]
-     Redux      [ 900 ]
-   - Original = [ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]
- =============================================================================
-  !! Expectation Failed: The maximum value of the list is smaller than 900.
- =============================================================================
+  Falsified:
+    Input = [ 905 ]
+    Redux = [ 900 ]
+
+  Original:
+    [ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]
+ ------------------------------------------------------------
 ```

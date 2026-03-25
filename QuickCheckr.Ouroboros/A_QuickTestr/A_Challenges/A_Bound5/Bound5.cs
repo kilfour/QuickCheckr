@@ -49,7 +49,7 @@ public class Bound5 : OuroborosTest<Bound5>
     }
 
     private static UnderTheHood.Proceedings.CaseFile GetCaseFile(DelayedResult<UnderTheHood.Proceedings.CaseFile> caseFile)
-        => ((FalsifiableException)caseFile.Exception!).CaseFile;
+        => ((FalsifiableException)caseFile.Exception!).TheCaseFile;
 
     private static Tuple5ShortLists GetInputValue(Article article)
         => (Tuple5ShortLists)article.Execution(1).Input(1).Read().InputValue!;

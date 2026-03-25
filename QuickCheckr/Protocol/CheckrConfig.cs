@@ -1,5 +1,7 @@
 using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickPulse;
 
 namespace QuickCheckr.Protocol;
 
@@ -24,6 +26,7 @@ public record CheckrConfig
                 ReportMode = ReportMode.Default,
                 DeliberationPolicy = null,
                 DeliberationTarget = null,
+                // StyleGuide = The.CourtStyleGuide,
                 InternalAffairs = []
             };
     }
@@ -52,4 +55,5 @@ public record CheckrConfig
     /// Use to surface additional diagnostics such as shrinking clues or exception traces.
     /// </summary>
     public required InternalAffair[] InternalAffairs { get; init; }
+    public Flow<CaseFile> StyleGuide { get; init; } = The.CourtStyleGuide;
 }

@@ -10,20 +10,7 @@
 * Check Lists in Objects and Tuples (empty should be '_' ?) 
 * Auto DeliberationPolicy for Testr
 * Testr: derive default deliberation policy from input type
-* Different report for Testr:  
-```text
-------------------------------------------------------------
- No more than four distinct integers.
- Seed: 611616888
-------------------------------------------------------------
- Falsified:
-   Input = [ [ _, 21, 94, 58, 73 ] ]
-   Redux = [ [ _, 0, 1, 2, 3 ] ]
-   
- Original:
-   [ [ 26, 53, 34, 51, 93, 65 ], [ 6, 9, 84 ], [ 22, 19, 12, 19, 97, 14, 51, 91, 32 ], [ 58, 18, 80, 50, 77 ], [ 67, 64, 28, 24, 72, 74 ], [ 84, 59, 96, 88, 67, 68 ], [ 24, 76, 6, 12 ], [ 57, 64, 9 ], [ 59, 42, 58, 29, 11, 67, 35, 54, 2, 16 ], [ ], [ 42, 81, 60, 19, 47, 56 ], [ 59, 1 ], [ 83, 23 ], [ 25, 81, 13, 68, 19, 21, 94, 58, 73 ] ]
-------------------------------------------------------------
-```
+
 
 ### Wish List
 * Add shrinking(reducing) multiple values together
@@ -37,9 +24,11 @@
 * Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
 
 ### Done/Ready for Changelog after review
-* Added shrinking support for Tuples
-* Added shrinking support for Fields
-* Added unchecked expectations WARNING.
+* Added shrinking support for Tuples.
+* Added shrinking support for Fields.
+* Added a warning when conditional expectations are never exercised during a run.
+* Introduced pluggable report rendering via `Flow<CaseFile>`.
+* IAdded simplified report flow for Testr.
 
 
 ## 0.0.11 : All Aboard

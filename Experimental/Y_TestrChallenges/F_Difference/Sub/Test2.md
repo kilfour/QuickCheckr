@@ -16,17 +16,14 @@ Testr.Named("Difference must not be small.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test2.cs:28:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1449083695
+  Difference must not be small.
+  Seed: 1449083695
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 37, B: 38 }
-     Redux      { A: 10, B: 6 }
-   - Original = { A: 37, B: 38 }
- ========================================================
-  !! Expectation Failed: Difference must not be small.
- ========================================================
+  Falsified:
+    Input = { A: 37, B: 38 }
+    Redux = { A: 10, B: 6 }
+
+  Original:
+    { A: 37, B: 38 }
+ ------------------------------------------------------------
 ```

@@ -28,16 +28,14 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Distinct.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1943621438
+  Contains at least three distinct elements.
+  Seed: 1943621438
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ 3, _, 3 ]
-   - Original = [ 3, 9, 3, 9, 3 ]
- =====================================================================
-  !! Expectation Failed: Contains at least three distinct elements.
- =====================================================================
+  Falsified:
+    Input = [ 3, _, 3 ]
+
+
+  Original:
+    [ 3, 9, 3, 9, 3 ]
+ ------------------------------------------------------------
 ```

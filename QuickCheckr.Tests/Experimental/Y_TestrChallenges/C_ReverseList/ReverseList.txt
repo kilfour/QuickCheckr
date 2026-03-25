@@ -1,14 +1,11 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                ReverseList.cs:28:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    12901993
+  Reversing a list of integers results in the same list
+  Seed: 12901993
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ _, 94 ]
-     Redux      [ _, 0 ]
-   - Original = [ 76, 92, 75, 6, 94 ]
- ================================================================================
-  !! Expectation Failed: Reversing a list of integers results in the same list
- ================================================================================
+  Falsified:
+    Input = [ _, 94 ]
+    Redux = [ _, 0 ]
+
+  Original:
+    [ 76, 92, 75, 6, 94 ]
+ ------------------------------------------------------------

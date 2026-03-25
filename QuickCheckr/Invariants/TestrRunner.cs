@@ -25,6 +25,7 @@ public class TestrRunner<T>(
     bool UseBuiltInReducers) : ITestrRunner
 {
     private CheckrOf<Case> GetCheckr() =>
+        from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
         from trace in Checkr.Trace("Original", () => input)
@@ -49,6 +50,7 @@ public class TestrRunner<T>(
     {
         return a => a with
         {
+            StyleGuide = TheTestr.StyleGuide,
             DeliberationPolicy = Deliberation == null ? null :
                 a => a.InputsNamed<T>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,

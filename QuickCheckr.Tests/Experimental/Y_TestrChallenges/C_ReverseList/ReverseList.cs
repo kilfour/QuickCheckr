@@ -15,7 +15,7 @@ It is a basic example to validate that a library can reliably normalize simple s
 public class ReverseList : TestrTest<ReverseList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -27,7 +27,7 @@ public class ReverseList : TestrTest<ReverseList>
         Run(12901993);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr
             .Named("Reversing a list of integers results in the same list")
             .For(Fuzzr.Int().Many(0, 10).ToList())

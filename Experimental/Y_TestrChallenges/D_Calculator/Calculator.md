@@ -83,17 +83,14 @@ private static int DepthOf(Expr a, int depth = 0)
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Calculator.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    729093046
+  DivideByZeroException: Attempted to divide by zero.
+  Seed: 729093046
  ------------------------------------------------------------
-  Executed: Rethrow, Run
-   - Input    = ( _ / ( 2 / _ ) )
-     Redux      ( _ / ( 0 / _ ) )
-   - Original = { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }
- ===========================================================================
-  !! DivideByZeroException: Attempted to divide by zero.
- ===========================================================================
+  Falsified:
+    Input = ( _ / ( 2 / _ ) )
+    Redux = ( _ / ( 0 / _ ) )
+
+  Original:
+    { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }
+ ------------------------------------------------------------
 ```

@@ -43,7 +43,7 @@ public class Bound5 : TestrTest<Bound5>
             .ToList();
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr.Named("The sum of all values is less than 5 * 256.")
             .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
             .Deliberate(H.ElementCount, 2)

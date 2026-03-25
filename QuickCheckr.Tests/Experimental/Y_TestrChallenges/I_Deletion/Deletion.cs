@@ -25,7 +25,7 @@ The expected smallest falsified sample is `([0, 0], 0)`.
 public class Deletion : TestrTest<Deletion>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -37,7 +37,7 @@ public class Deletion : TestrTest<Deletion>
         Run(712389878);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr
             .Named("Element is no longer in the list.")
             .For(Fuzzr.Tuple(Fuzzr.Int(1, 10).Many(3, 20), Fuzzr.Int(1, 10)))

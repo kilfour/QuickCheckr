@@ -4,6 +4,7 @@ using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
+using QuickPulse.Bolts;
 using QuickPulse.Show;
 
 namespace QuickCheckr.UnderTheHood;
@@ -18,6 +19,7 @@ public record CheckrRunnerConfig
         ReportMode = config.ReportMode;
         DeliberationPolicy = config.DeliberationPolicy;
         DeliberationTarget = config.DeliberationTarget;
+        StyleGuide = config.StyleGuide;
         Signals = [.. config.InternalAffairs.Select(a =>
             Signal.From(
                 Pulse.Prime(() => Please.AllowMe().ToUseNonLinearTime().ToInline<List<int>>())
@@ -33,5 +35,6 @@ public record CheckrRunnerConfig
     public ReportMode ReportMode { get; init; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; init; }
     public int? DeliberationTarget { get; init; }
+    public Flow<CaseFile> StyleGuide { get; init; }
     public Signal<IFiling>[] Signals { get; init; }
 }

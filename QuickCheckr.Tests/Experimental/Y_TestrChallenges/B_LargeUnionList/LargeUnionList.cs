@@ -21,7 +21,7 @@ For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] an
 public class LargeUnionList : TestrTest<LargeUnionList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -33,7 +33,7 @@ public class LargeUnionList : TestrTest<LargeUnionList>
         Run(1575924946);
 
     [CodeSnippet]
-    protected override ITestrRunner TheTestr() =>
+    protected override ITestrRunner GetTestr() =>
         Testr.Named("No more than four distinct integers.")
             .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
             .Deliberate(a => 0 - a.Count, -5)

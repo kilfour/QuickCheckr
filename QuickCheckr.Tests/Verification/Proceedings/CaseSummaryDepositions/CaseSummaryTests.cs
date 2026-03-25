@@ -18,7 +18,7 @@ public class CaseSummaryTests
                 .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 3))
                 ]);
 
-        var result = TheClerk.Transcribes(summary);
+        var result = TheClerk.Transcribes(summary, The.CourtStyleGuide);
         var reader = LinesReader.FromText(result);
         Assert.Equal(" 2 Runs", reader.NextLine());
         Assert.Equal(" Passed Expectations", reader.NextLine());

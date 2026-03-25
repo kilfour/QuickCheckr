@@ -524,18 +524,16 @@ public class H
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Bound5.cs:30:1
- Original failing run:    1 execution
- Seed:                    472166887
+  The sum of all values is less than 5 * 256.
+  Seed: 472166887
  ------------------------------------------------------------
-  Executed:
-   - Input    = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
-     Redux      ( [ ], [ ], [ ], [ -7527 ], [ -25242 ] )
-   - Original = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
- ======================================================================
-  !! Expectation Failed: The sum of all values is less than 5 * 256.
- ======================================================================
+  Falsified:
+    Input = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
+    Redux = ( [ ], [ ], [ ], [ -7527 ], [ -25242 ] )
+
+  Original:
+    ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
+ ------------------------------------------------------------
 ```
 ### Large Union List
 
@@ -559,19 +557,16 @@ Testr.Named("No more than four distinct integers.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                LargeUnionList.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 20 shrinks)
- Seed:                    1575924946
+  No more than four distinct integers.
+  Seed: 1575924946
  ------------------------------------------------------------
-  Executed:
-   - Input    = [ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
-     Redux      [ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]
-   - Original = [ [ 91, 42, 27, 37, 85, 85, 40, 91, 75 ], [ 43, 58, 67 ], [ 78, 1, 82, 71, 59, 69, 81, 5 ], [ 56, 7, 12, 35 ], [ 74, 37, 40, 98, 14, 28 ], [ 26, 71, 93, 9, 98, 27 ], [ ], [ 78, 39, 94, 60 ], [ 52, 60 ], [ 30, 10, 9, 9, 87, 99 ], [ 30, 74, 50, 82, 18, 38, 93 ], [ 45, 40, 18, 52 ], [ 89, 62, 60 ], [ 79, 61, 63, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
- ===============================================================
-  !! Expectation Failed: No more than four distinct integers.
- ===============================================================
+  Falsified:
+    Input = [ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
+    Redux = [ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+
+  Original:
+    [ [ 91, 42, 27, 37, 85, 85, 40, 91, 75 ], [ 43, 58, 67 ], [ 78, 1, 82, 71, 59, 69, 81, 5 ], [ 56, 7, 12, 35 ], [ 74, 37, 40, 98, 14, 28 ], [ 26, 71, 93, 9, 98, 27 ], [ ], [ 78, 39, 94, 60 ], [ 52, 60 ], [ 30, 10, 9, 9, 87, 99 ], [ 30, 74, 50, 82, 18, 38, 93 ], [ 45, 40, 18, 52 ], [ 89, 62, 60 ], [ 79, 61, 63, 17 ], [ 51 ], [ 6 ], [ 74 ] ]
+ ------------------------------------------------------------
 ```
 ### Reverse List
 
@@ -595,19 +590,16 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                ReverseList.cs:28:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    12901993
+  Reversing a list of integers results in the same list
+  Seed: 12901993
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ _, 94 ]
-     Redux      [ _, 0 ]
-   - Original = [ 76, 92, 75, 6, 94 ]
- ================================================================================
-  !! Expectation Failed: Reversing a list of integers results in the same list
- ================================================================================
+  Falsified:
+    Input = [ _, 94 ]
+    Redux = [ _, 0 ]
+
+  Original:
+    [ 76, 92, 75, 6, 94 ]
+ ------------------------------------------------------------
 ```
 ### Calculator
 
@@ -694,19 +686,16 @@ private static int DepthOf(Expr a, int depth = 0)
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Calculator.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 8 shrinks)
- Seed:                    729093046
+  DivideByZeroException: Attempted to divide by zero.
+  Seed: 729093046
  ------------------------------------------------------------
-  Executed: Rethrow, Run
-   - Input    = ( _ / ( 2 / _ ) )
-     Redux      ( _ / ( 0 / _ ) )
-   - Original = { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }
- ===========================================================================
-  !! DivideByZeroException: Attempted to divide by zero.
- ===========================================================================
+  Falsified:
+    Input = ( _ / ( 2 / _ ) )
+    Redux = ( _ / ( 0 / _ ) )
+
+  Original:
+    { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }
+ ------------------------------------------------------------
 ```
 ### Length List
 
@@ -735,19 +724,16 @@ Testr.Named("The maximum value of the list is smaller than 900.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                LengthList.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 14 shrinks)
- Seed:                    357470573
+  The maximum value of the list is smaller than 900.
+  Seed: 357470573
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ 905 ]
-     Redux      [ 900 ]
-   - Original = [ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]
- =============================================================================
-  !! Expectation Failed: The maximum value of the list is smaller than 900.
- =============================================================================
+  Falsified:
+    Input = [ 905 ]
+    Redux = [ 900 ]
+
+  Original:
+    [ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]
+ ------------------------------------------------------------
 ```
 ### Difference
 
@@ -795,19 +781,16 @@ Testr.Named("Difference must not be zero.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test1.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1485535450
+  Difference must not be zero.
+  Seed: 1485535450
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 93, B: 93 }
-     Redux      { A: 10, B: 10 }
-   - Original = { A: 93, B: 93 }
- =======================================================
-  !! Expectation Failed: Difference must not be zero.
- =======================================================
+  Falsified:
+    Input = { A: 93, B: 93 }
+    Redux = { A: 10, B: 10 }
+
+  Original:
+    { A: 93, B: 93 }
+ ------------------------------------------------------------
 ```
 #### Test2
 
@@ -827,19 +810,16 @@ Testr.Named("Difference must not be small.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test2.cs:28:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1449083695
+  Difference must not be small.
+  Seed: 1449083695
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 37, B: 38 }
-     Redux      { A: 10, B: 6 }
-   - Original = { A: 37, B: 38 }
- ========================================================
-  !! Expectation Failed: Difference must not be small.
- ========================================================
+  Falsified:
+    Input = { A: 37, B: 38 }
+    Redux = { A: 10, B: 6 }
+
+  Original:
+    { A: 37, B: 38 }
+ ------------------------------------------------------------
 ```
 #### Test3
 
@@ -859,19 +839,16 @@ Testr.Named("Difference is not exactly 1.")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Test3.cs:21:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1231462692
+  Difference is not exactly 1.
+  Seed: 1231462692
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { A: 51, B: 52 }
-     Redux      { A: 10, B: 9 }
-   - Original = { A: 51, B: 52 }
- =======================================================
-  !! Expectation Failed: Difference is not exactly 1.
- =======================================================
+  Falsified:
+    Input = { A: 51, B: 52 }
+    Redux = { A: 10, B: 9 }
+
+  Original:
+    { A: 51, B: 52 }
+ ------------------------------------------------------------
 ```
 ### Bin Heap
 
@@ -912,19 +889,16 @@ select heap
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                BinHeap.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    2136249593
+  Heap sort is correct.
+  Seed: 2136249593
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
-     Redux      { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }
-   - Original = { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
- =======================================================
-  !! Expectation Failed: Difference is not exactly 1.
- =======================================================
+  Falsified:
+    Input = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+    Redux = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }
+
+  Original:
+    { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+ ------------------------------------------------------------
 ```
 ### Coupling
 
@@ -956,18 +930,16 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Coupling.cs:58:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    124252565
+  No two different indexes point to each other.
+  Seed: 1934478623
  ------------------------------------------------------------
-  Executed:
-   - Input: List     = [ 1, 0 ]
-   - Trace: Original = [ 2, 1, 0, 1 ]
- ========================================================================
-  !! Expectation Failed: No two different indexes point to each other.
- ========================================================================
+  Falsified:
+    Input = [ 1, 0 ]
+
+
+  Original:
+    [ 1, 1, 0, 4, 3, 3, 2, 3, 11, 6, 4, 4, 4, 12 ]
+ ------------------------------------------------------------
 ```
 ### Deletion
 
@@ -1001,17 +973,16 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Deletion.cs:21:1
- Original failing run:    1 execution
- Seed:                    712389878
+  Element is no longer in the list.
+  Seed: 712389878
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = ( [ 1, 1 ], 1 )
-   - Original = ( [ 1, 1, 8, 3, 5, 1, 9, 1, 7, 2, 8, 6, 3 ], 1 )
- ============================================================
-  !! Expectation Failed: Element is no longer in the list.
- ============================================================
+  Falsified:
+    Input = ( [ 1, 1 ], 1 )
+
+
+  Original:
+    ( [ 1, 1, 8, 3, 5, 1, 9, 1, 7, 2, 8, 6, 3 ], 1 )
+ ------------------------------------------------------------
 ```
 ### Distinct
 
@@ -1043,18 +1014,16 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                Distinct.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1943621438
+  Contains at least three distinct elements.
+  Seed: 1943621438
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ 3, _, 3 ]
-   - Original = [ 3, 9, 3, 9, 3 ]
- =====================================================================
-  !! Expectation Failed: Contains at least three distinct elements.
- =====================================================================
+  Falsified:
+    Input = [ 3, _, 3 ]
+
+
+  Original:
+    [ 3, 9, 3, 9, 3 ]
+ ------------------------------------------------------------
 ```
 ### Nested Lists
 
@@ -1070,18 +1039,16 @@ Testr
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                NestedLists.cs:36:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 31 shrinks)
- Seed:                    1959968277
+  The sum of lengths of the element lists is at most 10.
+  Seed: 1959968277
  ------------------------------------------------------------
-  Executed: Run
-   - Input    = [ [ _, _, _, _, _, _, _, _, _, _, _ ] ]
-   - Original = [ [ 11, 46, 66 ], [ 48, 3, 13, 76, 75, 42, 97, 16, 59, 9, 29, 78, 17, 52, 68, 23, 94, 22, 8, 34 ], [ 87, 40, 45, 37, 74, 94, 74, 84, 54, 40, 38, 27, 59 ], [ 2, 23, 80, 49 ], [ 93, 39, 12, 70, 49, 30 ], [ 21, 84, 41, 23, 89, 38, 32, 36, 61, 62, 68, 39, 2, 47, 23 ], [ 6, 69, 91, 51, 58, 30 ], [ 1, 14, 72, 76, 41, 25, 75, 70, 96, 7, 99, 74, 89, 44 ], [ 50, 99, 94, 23, 61, 39 ], [ 41, 48, 84, 70, 8, 7, 1, 57, 78, 17, 90 ], [ 41, 10, 18 ], [ 91, 12, 85, 92, 72, 32, 2, 73, 33, 87, 74, 20 ], [ 56, 35, 69, 28, 45, 72, 24, 92, 70, 17, 69, 69, 39, 29, 83, 84, 72, 4, 22 ] ]
- =================================================================================
-  !! Expectation Failed: The sum of lengths of the element lists is at most 10.
- =================================================================================
+  Falsified:
+    Input = [ [ _, _, _, _, _, _, _, _, _, _, _ ] ]
+
+
+  Original:
+    [ [ 11, 46, 66 ], [ 48, 3, 13, 76, 75, 42, 97, 16, 59, 9, 29, 78, 17, 52, 68, 23, 94, 22, 8, 34 ], [ 87, 40, 45, 37, 74, 94, 74, 84, 54, 40, 38, 27, 59 ], [ 2, 23, 80, 49 ], [ 93, 39, 12, 70, 49, 30 ], [ 21, 84, 41, 23, 89, 38, 32, 36, 61, 62, 68, 39, 2, 47, 23 ], [ 6, 69, 91, 51, 58, 30 ], [ 1, 14, 72, 76, 41, 25, 75, 70, 96, 7, 99, 74, 89, 44 ], [ 50, 99, 94, 23, 61, 39 ], [ 41, 48, 84, 70, 8, 7, 1, 57, 78, 17, 90 ], [ 41, 10, 18 ], [ 91, 12, 85, 92, 72, 32, 2, 73, 33, 87, 74, 20 ], [ 56, 35, 69, 28, 45, 72, 24, 92, 70, 17, 69, 69, 39, 29, 83, 84, 72, 4, 22 ] ]
+ ------------------------------------------------------------
 ```
 ## Challenges
 

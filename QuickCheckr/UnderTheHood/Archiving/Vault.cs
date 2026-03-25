@@ -43,7 +43,7 @@ public class EvidenceVault : Vault
                 custodian.LogVaultAction(logPath, $"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile);
+                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
                 }
             }
             else
@@ -56,7 +56,7 @@ public class EvidenceVault : Vault
                 }
                 else if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile);
+                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
                 }
             }
         }

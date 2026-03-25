@@ -50,7 +50,7 @@ public static class CheckrOfTGatherEvidence
             config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile);
+                config.Custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.StyleGuide);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
             // ---------------------------------------------------------------------------------------------
