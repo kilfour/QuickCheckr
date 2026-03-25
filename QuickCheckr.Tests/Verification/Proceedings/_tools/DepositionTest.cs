@@ -15,6 +15,7 @@ public abstract class DepositionTest
                 FailureInfo: new FailureInfo(FailingExpectation: "Some Invariant"),
                 RunInfo: new RunInfo(10, 1, 12345678),
                 PassedExpectations: new Dictionary<string, int>(),
+                UncheckedExpectations: [],
                 UseMemoryForInputReporting: false,
                 ReportMode: ReportMode.Default & ~ReportMode.StackTrace
             );

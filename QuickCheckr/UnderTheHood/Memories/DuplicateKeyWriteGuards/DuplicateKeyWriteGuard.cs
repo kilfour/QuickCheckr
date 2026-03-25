@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
@@ -5,6 +6,8 @@ namespace QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 public class DuplicateKeyWriteGuard(IEnumerable<string> checkrs)
 {
     private readonly List<string> keysWritten = [];
+    public IReadOnlyCollection<string> KeysWritten => keysWritten;
+
     public string Check(string key)
     {
         if (keysWritten.Contains(key))

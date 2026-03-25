@@ -873,6 +873,216 @@ Testr.Named("Difference is not exactly 1.")
   !! Expectation Failed: Difference is not exactly 1.
  =======================================================
 ```
+### Bin Heap
+
+This is based on an example from QuickCheck's test suite (via the SmartCheck paper). 
+It generates binary heaps, and then uses a wrong implementation of a function 
+that converts the binary heap to a sorted list and asserts that the result is sorted.
+
+Interestingly most libraries seem to never find the smallest example here, 
+which is the four valued heap (0, None, (0, (0, None, None), (1, None, None))). 
+This is essentially because small examples are "too sparse", so it's very hard to find one by luck.
+  
+
+**The Testr:**  
+```csharp
+Testr.Named("Heap sort is correct.")
+    .For(TheFuzzr)
+    .Deliberate(a => Flatten(a).Count())
+    .Assert(a =>
+    {
+        var correct = Flatten(a).OrderBy(x => x).ToList();
+        var buggy = Flatten(a).ToList();
+        return correct.SequenceEqual(buggy);
+    });
+```
+
+**The Fuzzr:**  
+```csharp
+from depth in Configr<Heap>.Depth(3, 20)
+from inheritance in Configr<Heap>.AsOneOf(typeof(Empty), typeof(Node))
+from terminator in Configr<Heap>.EndOn<Empty>()
+from ctor in Configr<Node>.Construct(Fuzzr.Int(), Fuzzr.One<Heap>(), Fuzzr.One<Heap>())
+from value in Configr<Node>.Property(a => a.Value,
+    from cnt in Fuzzr.Counter("heap") select 1000 - cnt)
+from heap in Fuzzr.One<Heap>()
+select heap
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                BinHeap.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    2136249593
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+     Redux      { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }
+   - Original = { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+ =======================================================
+  !! Expectation Failed: Difference is not exactly 1.
+ =======================================================
+```
+### Coupling
+
+In this example the elements of a list of integers are coupled to their position in an unusual way.
+
+The expected smallest falsified sample is [1, 0].
+  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("No two different indexes point to each other.")
+    .For(
+        from length in Fuzzr.Int()
+        from enumerable in Fuzzr.Int(0, length - 1).Many(length)
+        select enumerable.ToList())
+    .DisableValueReduction()
+    .Deliberate(a => a.Count, 2)
+    .Assert(list => list.All(
+        element =>
+        {
+            int index = list[element];
+            if (index != element && list[index] == element)
+                return false;
+            return true;
+        }));
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Coupling.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    124252565
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 0 ]
+   - Trace: Original = [ 2, 1, 0, 1 ]
+ ========================================================================
+  !! Expectation Failed: No two different indexes point to each other.
+ ========================================================================
+```
+### Deletion
+
+This tests the property "if we remove an element from a list, the element is
+no longer in the list". The remove function we use however only actually
+removes the _first_ instance of the element, so this fails whenever the list
+contains a duplicate and we try to remove one of those elements.
+
+This example is interesting for a couple of reasons:
+
+1. It's a nice easy to explain example of property-based testing.
+2. Shrinking duplicates simultaneously is something that most property-based
+   testing libraries can't do.
+
+The expected smallest falsified sample is `([0, 0], 0)`.
+  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("Element is no longer in the list.")
+    .For(Fuzzr.Tuple(Fuzzr.Int(1, 10).Many(3, 20), Fuzzr.Int(1, 10)))
+    .Assert(a =>
+    {
+        var list = a.Item1.ToList();
+        list.Remove(a.Item2);
+        return !list.Contains(a.Item2);
+    });
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Deletion.cs:21:1
+ Original failing run:    1 execution
+ Seed:                    712389878
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = ( [ 1, 1 ], 1 )
+   - Original = ( [ 1, 1, 8, 3, 5, 1, 9, 1, 7, 2, 8, 6, 3 ], 1 )
+ ============================================================
+  !! Expectation Failed: Element is no longer in the list.
+ ============================================================
+```
+### Distinct
+
+This tests the example provided for the property "a list of integers containing at least three distinct elements".
+
+This is interesting because:
+
+1. Most property-based testing libraries will not successfully normalize (i.e. always return the same answer) this property,
+because it requires reordering examples to do so.
+2. Hypothesis and test.check both provide a built in generator for "a list of distinct elements",
+so the "example of size at least N" provides a sort of lower bound for how well they can shrink those built in generators.
+
+The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
+  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("Contains at least three distinct elements.")
+    .For(Fuzzr.Int(1, 10).Many(3, 20))
+    .Assert(a =>
+    {
+        if (a.Count() >= 3)
+            return a.ToHashSet().Count >= 3;
+        return true;
+    });
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Distinct.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1943621438
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = [ 3, _, 3 ]
+   - Original = [ 3, 9, 3, 9, 3 ]
+ =====================================================================
+  !! Expectation Failed: Contains at least three distinct elements.
+ =====================================================================
+```
+### Nested Lists
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("The sum of lengths of the element lists is at most 10.")
+    .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
+    .Deliberate(a => a.Count)
+    .Assert(a => a.Sum(a => a.Count) <= 10);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedLists.cs:36:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 31 shrinks)
+ Seed:                    1959968277
+ ------------------------------------------------------------
+  Executed: Run
+   - Input    = [ [ _, _, _, _, _, _, _, _, _, _, _ ] ]
+   - Original = [ [ 11, 46, 66 ], [ 48, 3, 13, 76, 75, 42, 97, 16, 59, 9, 29, 78, 17, 52, 68, 23, 94, 22, 8, 34 ], [ 87, 40, 45, 37, 74, 94, 74, 84, 54, 40, 38, 27, 59 ], [ 2, 23, 80, 49 ], [ 93, 39, 12, 70, 49, 30 ], [ 21, 84, 41, 23, 89, 38, 32, 36, 61, 62, 68, 39, 2, 47, 23 ], [ 6, 69, 91, 51, 58, 30 ], [ 1, 14, 72, 76, 41, 25, 75, 70, 96, 7, 99, 74, 89, 44 ], [ 50, 99, 94, 23, 61, 39 ], [ 41, 48, 84, 70, 8, 7, 1, 57, 78, 17, 90 ], [ 41, 10, 18 ], [ 91, 12, 85, 92, 72, 32, 2, 73, 33, 87, 74, 20 ], [ 56, 35, 69, 28, 45, 72, 24, 92, 70, 17, 69, 69, 39, 29, 83, 84, 72, 4, 22 ] ]
+ =================================================================================
+  !! Expectation Failed: The sum of lengths of the element lists is at most 10.
+ =================================================================================
+```
 ## Challenges
 
 Currently these challenges use a seeded state, because they are part of a regression test suite.
@@ -1007,43 +1217,6 @@ select Case.Closed;
   Executed: Reverse List
    - Input: ReverseList = [ _, 92 ]
    - Trace: Original    = [ 68, 89, 98, 88, 92 ]
- ================================================================================
-  !! Expectation Failed: Reversing a list of integers results in the same list
- ================================================================================
-```
-### Reverse List Testr
-
-This tests the (wrong) property that reversing a list of integers results in the same list. 
-It is a basic example to validate that a library can reliably normalize simple sample data.
-  
-
-**The Invariant:**  
-```csharp
-Testr
-    .Named("Reversing a list of integers results in the same list")
-    .For(Fuzzr.Int().Many(0, 10).ToList())
-    .Assert(a =>
-    {
-        var reversed = new List<int>(a);
-        reversed.Reverse();
-        return reversed.SequenceEqual(a);
-    })
-    .Run(100.Runs());
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Z_ReverseListTestr.cs:32:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    12901993
- ------------------------------------------------------------
-  Executed:
-   - Input    = [ _, 94 ]
-     Redux      [ _, 0 ]
-   - Original = [ 76, 92, 75, 6, 94 ]
  ================================================================================
   !! Expectation Failed: Reversing a list of integers results in the same list
  ================================================================================
@@ -1549,50 +1722,6 @@ config with
   Executed:
    - Input: List     = [ 1, 0 ]
    - Trace: Original = [ 2, 1, 0, 1 ]
- ========================================================================
-  !! Expectation Failed: No two different indexes point to each other.
- ========================================================================
-```
-### Coupling
-
-In this example the elements of a list of integers are coupled to their position in an unusual way.
-
-The expected smallest falsified sample is [1, 0].
-  
-
-**The Invariant:**  
-```csharp
-Testr
-    .Named("No two different indexes point to each other.")
-    .For(
-        from length in Fuzzr.Int()
-        from enumerable in Fuzzr.Int(0, length - 1).Many(length)
-        select enumerable.ToList())
-    .DisableValueReduction()
-    .Deliberate(a => a.Count, 2)
-    .Assert(list => list.All(
-        element =>
-        {
-            int index = list[element];
-            if (index != element && list[index] == element)
-                return false;
-            return true;
-        }))
-    .Run(5000.Runs());
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                Z_Coupling.cs:35:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 12 shrinks)
- Seed:                    1934478623
- ------------------------------------------------------------
-  Executed:
-   - Input    = [ 1, 0 ]
-   - Original = [ 1, 1, 0, 4, 3, 3, 2, 3, 11, 6, 4, 4, 4, 12 ]
  ========================================================================
   !! Expectation Failed: No two different indexes point to each other.
  ========================================================================

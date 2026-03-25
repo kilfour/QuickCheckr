@@ -59,6 +59,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                         shrinkCount,
                         State.FuzzrState.Seed),
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
+                UncheckedExpectations: State.Memory.KeyGuardian.Expects.KeysWritten
+                    .Where(a => !State.EvidenceRecorder.PassedExpectations.ContainsKey(a)).ToList(),
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
                 ReportMode: config.ReportMode
             );

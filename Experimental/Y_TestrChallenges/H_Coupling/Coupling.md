@@ -5,7 +5,7 @@ In this example the elements of a list of integers are coupled to their position
 The expected smallest falsified sample is [1, 0].
   
 
-**The Invariant:**  
+**The Testr:**  
 ```csharp
 Testr
     .Named("No two different indexes point to each other.")
@@ -22,22 +22,21 @@ Testr
             if (index != element && list[index] == element)
                 return false;
             return true;
-        }))
-    .Run(5000.Runs());
+        }));
 ```
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Z_Coupling.cs:35:1
+ Location:                Coupling.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 12 shrinks)
- Seed:                    1934478623
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    124252565
  ------------------------------------------------------------
   Executed:
-   - Input    = [ 1, 0 ]
-   - Original = [ 1, 1, 0, 4, 3, 3, 2, 3, 11, 6, 4, 4, 4, 12 ]
+   - Input: List     = [ 1, 0 ]
+   - Trace: Original = [ 2, 1, 0, 1 ]
  ========================================================================
   !! Expectation Failed: No two different indexes point to each other.
  ========================================================================

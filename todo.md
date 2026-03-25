@@ -1,15 +1,18 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
-* Add unchecked expectations WARNING.
 * QuickTestr : FsCheck-style DSL
 * QuickWebr: web-api DSL
  
 ### Doing
+* Add Deposition tests for 
+  * Passed Expectations
+* Add unchecked expectations WARNING.
 * Added max steps to ReductionRunner => throws, just stop and warn instead
 * Doc/test/improve `Reduce.Towards()`.
 
 ### Todo
 * Check Lists in Objects and Tuples (empty should be '_' ?) 
 * Auto DeliberationPolicy for Testr
+* Testr: derive default deliberation policy from input type
 * Different report for Testr:  
 ```text
 ------------------------------------------------------------
@@ -28,13 +31,12 @@
 ### Wish List
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
-* Testr: derive default deliberation policy from input type
 * SystemCheckr : System/Domain checking DSL, needs time in the oven  
   => Modelr : use a Application Service in stash + GetEntities method  
   similar approach as QuickWebr
 * MBT : use as How to build your own example
 * Ouroboros Testing : We need a better `InputDeposition`
-* Depostions project: Challenges in CsCheck, FsCheck and QuickCheckr
+* Depositions project: Challenges in CsCheck, FsCheck and QuickCheckr
 * Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
 
 ### Done/Ready for Changelog after review
