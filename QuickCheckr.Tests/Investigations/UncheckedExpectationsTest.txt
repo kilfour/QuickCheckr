@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                UncheckedExpectationsTest.cs:40:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    96544855
+ ------------------------------------------------------------
+  Executed:
+   - Input: input = 2
+ ==================================
+  !! Expectation Failed: checked
+ ==================================
+ ! Warning: Unchecked Expectations !
+ - unchecked
+ ------------------------------------------------------------

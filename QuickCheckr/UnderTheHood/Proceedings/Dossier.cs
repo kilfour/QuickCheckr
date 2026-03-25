@@ -14,7 +14,7 @@ public record Dossier(
         new(FailureInfo: new FailureInfo(),
             RunInfo: new RunInfo(),
             PassedExpectations: new Dictionary<string, int>(),
-            UncheckedExpectations: new List<string>(),
+            UncheckedExpectations: [],
             UseMemoryForInputReporting: false,
             ReportMode: ReportMode.None);
 }

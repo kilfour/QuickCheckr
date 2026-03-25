@@ -177,6 +177,12 @@ public static class The
         from _4 in Pulse.ToFlow(executionDeposition, caseFile.CollapseExecutions())
         from _5 in Pulse.ToFlow(failureDeposition, caseFile.FailureDeposition)
         select caseFile;
+    private readonly static Flow<IEnumerable<UncheckedExpectationDeposition>> uncheckedExpectationDepositions =
+        from input in Pulse.Start<IEnumerable<UncheckedExpectationDeposition>>()
+        from _ in Pulse.Trace(" ! Warning: Unchecked Expectations !")
+        from __ in Pulse.ToFlow(a => Pulse.Trace($"{Environment.NewLine} - {a.Label}"), input)
+        from ___ in Pulse.When(input.Any(), newLine.Then(space).Then(LineOf(60)))
+        select input;
 
     private readonly static Flow<IEnumerable<PassedExpectationDeposition>> passedExpectationDepositions =
         from input in Pulse.Start<IEnumerable<PassedExpectationDeposition>>()
@@ -197,9 +203,17 @@ public static class The
         from _2 in Pulse.Prime(() => new MaxLabel(0))
         from _3 in Pulse.ToFlowIf(input.HasEvidence, evidence, () => input)
         from summary in Pulse.OnType(Summary, () => input)
-        let needsBreak = input.HasEvidence && input.PassedExpectationDepositions.Count > 0
+        let needsBreak = input.HasEvidence && input.UncheckedExpectationDepositions.Count > 0
         from nl in Pulse.TraceIf(needsBreak, () => Environment.NewLine)
-        from _4 in Pulse.ToFlowIf(
+        from _ in Pulse.ToFlowIf(
+            input.UncheckedExpectationDepositions.Count > 0,
+            uncheckedExpectationDepositions,
+            () => input.UncheckedExpectationDepositions)
+        let needsBreak_ =
+            (input.HasEvidence || input.UncheckedExpectationDepositions.Count > 0)
+            && input.PassedExpectationDepositions.Count > 0
+        from nl_ in Pulse.TraceIf(needsBreak_, () => Environment.NewLine)
+        from __ in Pulse.ToFlowIf(
             input.PassedExpectationDepositions.Count > 0,
             passedExpectationDepositions,
             () => input.PassedExpectationDepositions)

@@ -2,10 +2,11 @@ namespace QuickCheckr.UnderTheHood;
 
 public static class Evaluate
 {
-    public static CheckrOf<Case> Expect(string key, Func<bool> condition) =>
+    public static CheckrOf<Case> Expect(string key, Func<bool> condition, bool register = true) =>
         state =>
         {
-            state.Memory.KeyGuardian.Expects.Check(key);
+            if (register)
+                state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             return TheCatcher.InTheCheckr(state, $"Spec: {key}",

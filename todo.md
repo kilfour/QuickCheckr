@@ -3,9 +3,6 @@
 * QuickWebr: web-api DSL
  
 ### Doing
-* Add Deposition tests for 
-  * Passed Expectations
-* Add unchecked expectations WARNING.
 * Added max steps to ReductionRunner => throws, just stop and warn instead
 * Doc/test/improve `Reduce.Towards()`.
 
@@ -42,6 +39,7 @@
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples
 * Added shrinking support for Fields
+* Added unchecked expectations WARNING.
 
 
 ## 0.0.11 : All Aboard

@@ -59,11 +59,19 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                         shrinkCount,
                         State.FuzzrState.Seed),
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
-                UncheckedExpectations: State.Memory.KeyGuardian.Expects.KeysWritten
-                    .Where(a => !State.EvidenceRecorder.PassedExpectations.ContainsKey(a)).ToList(),
+                UncheckedExpectations: GetUncheckedExpectations(),
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
                 ReportMode: config.ReportMode
             );
         return Compile.TheCaseFile(dossier, State.Memory, State.ClassificationFormatter.InputPrinter);
+    }
+
+    private List<string> GetUncheckedExpectations()
+    {
+        return [.. State.Memory.KeyGuardian.Expects.KeysWritten
+            .Where(a =>
+                a != State.EvidenceRecorder.FailingExpectation &&
+                a != State.EvidenceRecorder.FailingVerify &&
+                !State.EvidenceRecorder.PassedExpectations.ContainsKey(a))];
     }
 }
