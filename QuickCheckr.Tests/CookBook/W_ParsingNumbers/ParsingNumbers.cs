@@ -43,7 +43,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     [DocBoldHeader("The Reducer")]
     [DocExample(typeof(ParseReducer))]
     public override void Example() =>
-        Run(250.Runs());
+        Run(1166603196);
 
     [CodeExample]
     protected override CheckrConfig Configure(CheckrConfig config)

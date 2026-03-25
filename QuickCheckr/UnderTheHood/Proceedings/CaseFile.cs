@@ -48,7 +48,6 @@ public class CaseFile : ICaseFileSummary
             .Sum(a => calculateScore((T)a));
     }
 
-
     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning
     {
         if (!HasEvidence) return int.MaxValue;

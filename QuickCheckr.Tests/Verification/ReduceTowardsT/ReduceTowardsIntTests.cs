@@ -1,4 +1,3 @@
-using QuickCheckr.Invariants;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
@@ -76,20 +75,6 @@ public class ReduceTowardsIntTests : BaseTest
             10.Runs(),
             1.ExecutionsPerRun(),
             a => a with { FileAs = "ReduceTowardsInt" });
-    }
-
-    [Fact(Skip = "wip")]
-    public void OracleTestr()
-    {
-        Testr.Named("ReduceTowardsInt")
-            .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int(), Fuzzr.Int()))
-            .DisableValueReduction()
-            .Assert(t =>
-            {
-                var (start, target, stop) = t;
-                return Equals(RunModel(start, target, stop), RunSut(start, target, stop));
-            })
-            .Run();
     }
 
     private static string GetTrace(Reduction model, Reduction sut) =>

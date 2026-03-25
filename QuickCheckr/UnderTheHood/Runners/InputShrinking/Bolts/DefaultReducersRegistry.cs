@@ -8,7 +8,8 @@ public static class DefaultReducersRegistry
         new()
         {
             {typeof(int), () => Convert(Reduce.TowardsZero)},
-            {typeof(short), () => Convert(Reduce.ShortTowardsZero)}
+            {typeof(short), () => Convert(Reduce.ShortTowardsZero)},
+            {typeof(string), () => Convert(Reduce.MinimizeString)}
         };
 
     public static Func<Func<ReductionResult, Reduction>>? TryGetReducerFactory(Type type)
