@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Formatters;
 using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
@@ -11,19 +12,6 @@ public static class CustomizedPrinting
         Dictionary<string, InputClassification> values)
             => Report(format, values, true);
 
-    // methods below should be here maybe
-    // public static string GetReport(Dictionary<string, InputClassification> values) =>
-    //     $"( {string.Join(", ",
-    //         values
-    //             .Select(kvp => $"{GetValue(kvp)}"))} )";
-
-    // private static string GetValue(KeyValuePair<string, InputClassification> kvp) =>
-    //     kvp.Value switch
-    //     {
-    //         InputRelevant => (kvp.Value as InputRelevant)!.Report,
-    //         _ => "_"
-    //     };
-
     public static string GetReport(
         ObjectClassificationFormat format,
         Dictionary<string, InputClassification> values)
@@ -34,10 +22,9 @@ public static class CustomizedPrinting
         Dictionary<string, InputClassification> values,
         bool useRedux)
     {
-        var keys = format.Properties.Select(a => a.Name).ToList();
-        var keySet = new HashSet<string>(keys);
+        var keySet = new HashSet<string>(format.Properties);
         var ordered =
-            keys
+            format.Properties
                 .Where(values.ContainsKey)
                 .Select(k => KeyValuePair.Create(k, values[k]))
                 .Concat(

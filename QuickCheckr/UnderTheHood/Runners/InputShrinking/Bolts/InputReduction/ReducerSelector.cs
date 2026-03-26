@@ -152,7 +152,7 @@ public class ReducerSelector
     {
         if (step is Reduction.Unbounded)
         {
-            context.State.Memory.StoreWarning(info.Path, () => new NoWitnessForReducerWarning(info.Path));
+            context.Warn(info.Path, () => new NoWitnessForReducerWarning(info.Path));
         }
         return step switch
         {

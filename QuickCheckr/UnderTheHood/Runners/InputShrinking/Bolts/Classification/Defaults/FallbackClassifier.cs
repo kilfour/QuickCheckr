@@ -8,7 +8,7 @@ public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingCon
 {
     public override InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {
-        context.State.Memory.StoreWarning(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
+        context.Warn(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
         return InputRelevant.Create(context.PrintInput(info.Value));
     }
     public class NoShrinkerFound { }

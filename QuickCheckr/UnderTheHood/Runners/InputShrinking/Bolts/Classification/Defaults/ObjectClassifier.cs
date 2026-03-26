@@ -23,7 +23,7 @@ public class ObjectClassifier : Classifier
     {
         if (info.Value == null)
         {
-            context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
+            context.Warn(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
         return HandleProperties(context, info);
@@ -47,7 +47,7 @@ public class ObjectClassifier : Classifier
             .ToList();
         if (properties.Count == 0)
         {
-            context.State.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
+            context.Warn(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
         var values = new Dictionary<string, InputClassification>();

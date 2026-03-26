@@ -23,7 +23,7 @@ public class EnumerableClassifier : Classifier
     {
         if (info.Value == null)
         {
-            context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
+            context.Warn(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
         var verifier = new Verifier(context.State, context.Check);
@@ -66,7 +66,7 @@ public class EnumerableClassifier : Classifier
         if (elementCount != 0)
         {
             if (!context.State.Memory.HasClassifier(info))
-                context.State.Memory.StoreWarning(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
+                context.Warn(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         }
         return new InputAssumedIrrelevant();
     }
