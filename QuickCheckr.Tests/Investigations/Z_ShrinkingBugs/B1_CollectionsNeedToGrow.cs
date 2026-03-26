@@ -7,8 +7,10 @@ namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
 
 [DocFile]
 [DocContent(
-@"Not necessarily a bug, but not a helpful report either.")]
-public class B_NestedCollectionsInnerCount : CheckrTest<B_NestedCollectionsInnerCount>
+@"Adding the custom shrinker solves the problem in the report,
+but really coming up with that solution is not something you want the user to do.
+")]
+public class B1_CollectionsNeedToGrow : CheckrTest<B1_CollectionsNeedToGrow>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -18,11 +20,15 @@ public class B_NestedCollectionsInnerCount : CheckrTest<B_NestedCollectionsInner
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(1427464097);
+    [DocReport] public override void Example() => Run(1134566081);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from input in Checkr.Input("List", Fuzzr.Int().Many(1, 5).Many(3, 10))
+        from fuzzr in Checkr.Capture(() => Fuzzr.Int().Many(3, 10))
+        from input in Checkr.Input("List", fuzzr,
+            // Refuzzing can grow the list.
+            // Supplying values *manually* also.
+            Shrink.OnType<IEnumerable<int>>(s => s.Classify(Try.Fuzzr(fuzzr, 100))))
         from trace in Checkr.Trace("Original", () => input)
         from expect in Checkr.Expect("List count >= 4", () => input.Count() >= 4)
         select Case.Closed;
@@ -31,13 +37,13 @@ public class B_NestedCollectionsInnerCount : CheckrTest<B_NestedCollectionsInner
     {
         Assert.Equal("List count >= 4", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(2, article.Total().Warnings());
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("[ 87, 79, 83 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ [ 41, 73, 3, 5, 14 ], [ 2, 88, 10 ], [ 59, 61, 21, 32, 34 ] ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(2).Read().Value);
+        Assert.Equal("[ 87, 79, 83 ]", article.Execution(1).Trace(1).Read().Value);
     }
 }

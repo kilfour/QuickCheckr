@@ -1,14 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B1_NestedCollectionsInnerCount.cs:32:1
+ Location:                B1_CollectionsNeedToGrow.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1134566081
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ [ 79, 83, 60, 28, 36 ], [ 92, 99 ], [ 91 ] ]
-            Redux      [ ]
-   - Trace: Original = [ [ 79, 83, 60, 28, 36 ], [ 92, 99 ], [ 91 ] ]
+   - Input: List     = [ 87, 79, 83 ]
+   - Trace: Original = [ 87, 79, 83 ]
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================
