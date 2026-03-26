@@ -165,45 +165,6 @@ public class ExecutionMemory
 
 
     // --------------------------------------------------------------------------
-    // Reducers
-    private readonly TypedMemoryBank<TypeReducerFactory> reducers = new();
-    public void StoreReducerByType<T>(string key, Func<Reducer<T>> reducer)
-        => reducers.Store(key, () => new TypeReducerFactory(typeof(T), () =>
-            {
-                Reducer<T> f = reducer();
-                return a => f(a);
-            }));
-    public void StoreReducerByType(string key, Type type, Func<Func<ReductionResult, Reduction>> reducer)
-        => reducers.Store(key, () => new TypeReducerFactory(type, reducer));
-
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByType(string key, Type type)
-    {
-        var typedReducerFactory = reducers.Get(key);
-        if (typedReducerFactory == null) return null;
-        if (typedReducerFactory.TargetType != type) return null;
-        return typedReducerFactory.ReducerFactory;
-    }
-
-    private readonly TypedMemoryBank<PathReducerFactory[]> pathReducers = new();
-    public void StoreReducerByPath<T>(string key, (string Path, Func<Reducer<T>> Reducer)[] reducers)
-        => pathReducers.Store(key, () =>
-            [.. reducers.Select(a =>
-                new PathReducerFactory(a.Path, typeof(T), () =>
-                {
-                    Reducer<T> f = a.Reducer();
-                    return b => f(b);
-                }))
-            ]);
-    public Func<Func<ReductionResult, Reduction>>? GetReducerByPath(string key, string path, Type type)
-    {
-        var pathReducerFactory = pathReducers.Get(key);
-        if (pathReducerFactory == null) return null;
-        return pathReducerFactory.FirstOrDefault(a => a.Path == path && a.TargetType == type)?.ReducerFactory;
-    }
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
     // Warnings
     private readonly TypedMemoryBank<Warning> warnings = new();
     public Warning? StoreWarning(string key, Func<Warning> factory)
