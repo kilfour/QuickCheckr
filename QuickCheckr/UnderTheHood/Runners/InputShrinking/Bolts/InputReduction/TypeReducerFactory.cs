@@ -1,7 +1,5 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-public record TypeReducerFactory(Type TargetType, Func<Func<ReductionResult, Reduction>> ReducerFactory);
-
 public interface ITypeReducerOption : IReducerOption
 {
     Type TargetType { get; }

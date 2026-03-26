@@ -11,5 +11,4 @@ public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingCon
         context.Warn(info.Path, () => new CantShrinkWarning(info.Type, info.Path));
         return InputRelevant.Create(context.PrintInput(info.Value));
     }
-    public class NoShrinkerFound { }
 }

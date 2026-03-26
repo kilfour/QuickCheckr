@@ -29,11 +29,6 @@ public class TupleClassifier : Classifier
         return HandleProperties(context, info);
     }
 
-    public record CantShrinkNull;
-
-    public record CantShrinkObjectWithNoProperties;
-
-
     private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
     {
         var actualType = info.ActualType;
