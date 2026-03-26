@@ -9,7 +9,8 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExam
 public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyCollectionIsTheCulprit>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -64,7 +64,8 @@ public class ReducerSelector
             var redux = GetRedux(info, context);
             if (!redux.HasValue)
                 redux = Maybe<Redux>.Just(new Redux(GetCollectionReport(collectionRelevant.Elements), info.Value!));
-            classification = collectionRelevant with { Redux = redux };
+            if (redux.HasValue && collectionRelevant.Report != redux.Value!.Report)
+                classification = collectionRelevant with { Redux = redux };
             return classification;
         }
 
@@ -73,7 +74,8 @@ public class ReducerSelector
             var redux = GetRedux(info, context);
             if (!redux.HasValue)
                 redux = Maybe<Redux>.Just(new Redux(GetTupleReport(tupleRelevant.Members), info.Value!));
-            classification = tupleRelevant with { Redux = redux };
+            if (redux.HasValue && tupleRelevant.Report != redux.Value!.Report)
+                classification = tupleRelevant with { Redux = redux };
             return classification;
         }
 
@@ -89,7 +91,8 @@ public class ReducerSelector
                     report = GetObjectReport(objectRelevant.Members);
                 redux = Maybe<Redux>.Just(new Redux(report, info.Value!));
             }
-            classification = objectRelevant with { Redux = redux };
+            if (redux.HasValue && objectRelevant.Report != redux.Value!.Report)
+                classification = objectRelevant with { Redux = redux };
             return classification;
         }
         if (classification is InputRelevant inputRelevant)

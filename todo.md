@@ -3,7 +3,8 @@
 * QuickWebr: web-api DSL
  
 ### Doing
-* Check Lists in Objects and Tuples (empty should be '_' ?) 
+* Check Lists in Objects and Tuples (empty should be '_' ?)  
+  K_TupleOfLists & Q_ObjectOfLists
 
 ### Todo
 * Added max steps to ReductionRunner => throws, just stop and warn instead

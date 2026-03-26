@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Q_ObjectOfLists.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    2082252864
+ ------------------------------------------------------------
+  Executed:
+   - Input: Museum   = { A: [ 42 ], C: [ ] }
+   - Trace: Original = { A: [ 42, 64 ], B: [ 84, 7 ], C: [ ] }
+   - WARNING: Empty collection deemed irrelevant at input 'Museum'.
+ ==========================================================
+  !! Expectation Failed: First list does not contain 42.
+ ==========================================================

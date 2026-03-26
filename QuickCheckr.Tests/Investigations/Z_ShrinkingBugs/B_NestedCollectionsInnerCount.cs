@@ -7,11 +7,7 @@ namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
 
 [DocFile]
 [DocContent(
-@"Not necessarily a bug, but not a helpful report either. 
-
-There is a real bug in the shrink count though.  
-Only the outer list shrink (being deemed irrelevant) is counted, minor issue.
-")]
+@"Not necessarily a bug, but not a helpful report either.")]
 public class B_NestedCollectionsInnerCount : CheckrTest<B_NestedCollectionsInnerCount>
 {
     protected override bool Asserts => false;

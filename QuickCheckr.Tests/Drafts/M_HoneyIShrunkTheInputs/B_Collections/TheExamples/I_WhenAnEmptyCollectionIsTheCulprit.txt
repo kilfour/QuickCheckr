@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:59:1
+ Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:32:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------

@@ -8,14 +8,16 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExam
 [DocFile]
 public class H1_NestedCollectionsInnerCount : CheckrTest<H1_NestedCollectionsInnerCount>
 {
-    protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Asserts => true;
+    protected override bool Report => true;
 
     [Fact]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(1860909202);
+    [DocReport]
+    public override void Example()
+        => Run(1860909202);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
