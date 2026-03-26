@@ -21,7 +21,7 @@
   similar approach as QuickWebr
 * MBT : use as How to build your own example
 * Ouroboros Testing : We need a better `InputDeposition`
-* Depositions project: Challenges in CsCheck, FsCheck and QuickCheckr
+* Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
 * Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
 
 ### Done/Ready for Changelog after review

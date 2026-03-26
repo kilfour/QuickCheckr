@@ -53,21 +53,25 @@ public class ReducerSelector
 
     public static InputClassification Reduce(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
     {
+
+        if (classification is CollectionRelevant collectionRelevant)
+        {
+            var redux = GetRedux(info, context);
+            if (!redux.HasValue)
+                redux = Maybe<Redux>.Just(new Redux(GetCollectionReport(collectionRelevant.Elements), info.Value!));
+            classification = collectionRelevant with { Redux = redux };
+            return classification;
+        }
+
         if (classification is TupleRelevant tupleRelevant)
         {
             var redux = GetRedux(info, context);
             if (!redux.HasValue)
-            {
-                string report;
-                if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(info.ActualType, out var format))
-                    report = CustomizedPrinting.GetReduxReport(format, tupleRelevant.Members);
-                else
-                    report = GetTupleReport(tupleRelevant.Members);
-                redux = Maybe<Redux>.Just(new Redux(report, info.Value!));
-            }
+                redux = Maybe<Redux>.Just(new Redux(GetTupleReport(tupleRelevant.Members), info.Value!));
             classification = tupleRelevant with { Redux = redux };
             return classification;
         }
+
         if (classification is ObjectRelevant objectRelevant)
         {
             var redux = GetRedux(info, context);
@@ -81,14 +85,6 @@ public class ReducerSelector
                 redux = Maybe<Redux>.Just(new Redux(report, info.Value!));
             }
             classification = objectRelevant with { Redux = redux };
-            return classification;
-        }
-        if (classification is CollectionRelevant collectionRelevant)
-        {
-            var redux = GetRedux(info, context);
-            if (!redux.HasValue)
-                redux = Maybe<Redux>.Just(new Redux(GetCollectionReport(collectionRelevant.Elements), info.Value!));
-            classification = collectionRelevant with { Redux = redux };
             return classification;
         }
         if (classification is InputRelevant inputRelevant)

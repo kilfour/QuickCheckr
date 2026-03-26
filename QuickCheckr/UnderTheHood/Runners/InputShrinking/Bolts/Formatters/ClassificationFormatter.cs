@@ -7,7 +7,6 @@ public class ClassificationFormatter
 {
     public ManOfWealthAndTaste InputPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
-
     public Dictionary<Type, ObjectClassificationFormat> ObjectClassificationFormats { get; } = [];
 
     public ObjectClassificationFormatter<T> For<T>()
