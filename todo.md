@@ -4,15 +4,15 @@
  
 ### Doing
 * Check Lists in Objects and Tuples (empty should be '_' ?)  
+  Done, but these tests expose a flaw in some collection shrinking edge cases.  
+  ... Investigating.    
   K_TupleOfLists & Q_ObjectOfLists
 
 ### Todo
 * Added max steps to ReductionRunner => throws, just stop and warn instead
-* Check Lists in Objects and Tuples (empty should be '_' ?) 
 * Doc/test/improve `Reduce.Towards()`.
 * Auto DeliberationPolicy for Testr
   Derive default deliberation policy from input type
-
 
 ### Wish List
 * Add shrinking(reducing) multiple values together
@@ -32,7 +32,6 @@
 * Introduced pluggable report rendering via `Flow<CaseFile>`.
 * Added simplified report flow for Testr.
 * Removed Internal Affairs, it has served it's purpose.
-
 
 
 ## 0.0.11 : All Aboard
@@ -68,13 +67,16 @@
   * for newbies
   * web api
 
+
 ## 0.1.0
 * update xml summaries
 * make some noise
 
+
 ## 0.1.1 : Wait for Me !
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
   => initial web-api example (QuickWebr ?)
+
 
 ## Skipped Tests
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
@@ -85,10 +87,12 @@
 * QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking.DeliberationShrinking.RunTest_DeliberatedGreedy()
   Fixed the wrong outcome, this now documents a no longer existing issue
 
+
 ## Future Doc Work
 * Checkrs Court: Tricky one
 * Cookbook Additions
   * statefull list, ... maybe
+
 
 ## Ideas
 * *Shrinker*
@@ -150,13 +154,8 @@
 > Looked at these and not deemed needed (now).  
 > Just keeping this list in order to avoid me doing the same thing twice.  
 
-* Nested InputShrinkingClue ? probably not, had a better idea, but forgot, something to do with QP.S
-  * The QP.S thing, might not be the right direction, but the InputShrinkingClues do deserve another look. 
-* GetFromPool (bool, T?) => Result. Also not needed, a tuple will do in this case.
-* unify ConditionalResult and DelayedResult ... maybe
+* GetFromPool (bool, T?) => Result. Not needed, a tuple will do in this case.
+* Unify ConditionalResult and DelayedResult
+
 
 ## Other
-* QuickAcid Feedback shrinking: which amounts to combining similar executions.
-  F.i. Withdraw(5), Withdraw(10) becomes Withdraw(15).
-  DeliberationPolicy and Reducers solve this better I think.
-* Scour QuickAcid for any interesting tests left behind.
