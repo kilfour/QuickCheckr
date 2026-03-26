@@ -18,7 +18,9 @@ public class B_CollectionsNeedToGrow : CheckrTest<B_CollectionsNeedToGrow>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(100.Runs());
+    [DocReport]
+    public override void Example()
+        => Run(482835926);
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
