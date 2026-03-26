@@ -909,8 +909,7 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
     ShrinkMode = ShrinkMode.Default,
     ReportMode = ReportMode.Default,
     DeliberationPolicy = null,
-    DeliberationTarget = null,
-    InternalAffairs = []
+    DeliberationTarget = null
 }
 ```
 #### Filing Evidence

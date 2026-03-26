@@ -67,3 +67,5 @@
     - [Objects](M_HoneyIShrunkTheInputs/C_Objects/Objects.md)
       - [Checking Nulls](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/E_CheckingNulls.md)
       - [Tuples](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/J_Tuples.md)
+      - [Tuple Of Lists](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/K_TupleOfLists.md)
+      - [Object Of Lists](M_HoneyIShrunkTheInputs/C_Objects/TheExamples/Q_ObjectOfLists.md)

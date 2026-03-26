@@ -21,9 +21,9 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J_Tuples.cs:58:1
+ Location:                J_Tuples.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
+ Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    751254928
  ------------------------------------------------------------
   Executed:
