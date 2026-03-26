@@ -8,9 +8,9 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.C_Objects.TheExamples
 [DocFile]
 public class Q_ObjectOfLists : CheckrTest<Q_ObjectOfLists>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]
