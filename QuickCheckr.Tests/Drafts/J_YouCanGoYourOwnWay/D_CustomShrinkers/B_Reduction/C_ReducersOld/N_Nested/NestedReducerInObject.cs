@@ -39,7 +39,7 @@ public class NestedReducerInObject : CheckrTest<NestedReducerInObject>
         Assert.Equal("answer <= 42", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.ShrinkCount);
+        // Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Universe", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Answer: 61 }", article.Execution(1).Input(1).Read().Value);

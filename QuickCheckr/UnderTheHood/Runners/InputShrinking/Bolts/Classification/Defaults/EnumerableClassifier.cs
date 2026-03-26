@@ -1,11 +1,9 @@
 
 using System.Collections;
 using QuickCheckr.UnderTheHood.Dispatching;
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
-using static QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults.ObjectClassifier;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
@@ -25,10 +23,8 @@ public class EnumerableClassifier : Classifier
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
-            return new InputRelevant(context.PrintInput(info.Value));
+            return InputRelevant.Create(context.PrintInput(info.Value));
         }
         var verifier = new Verifier(context.State, context.Check);
         var theList = CloneList.AsOriginalType(info.Value!);
@@ -46,8 +42,6 @@ public class EnumerableClassifier : Classifier
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
             if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
             {
-                var clue = InputShrinkingClue.Remove<EnumerableClassifier>(info.ExecutionId, $"{info.Path}.{indexKey}", info.Value, theList);
-                context.State.Docket.Record(new InputShrinkingClueFound(clue));
                 values.Add(new ElementAssumedIrrelevant());
                 continue;
             }

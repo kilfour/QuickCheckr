@@ -11,6 +11,19 @@ public static class CustomizedPrinting
         Dictionary<string, InputClassification> values)
             => Report(format, values, true);
 
+    // methods below should be here maybe
+    // public static string GetReport(Dictionary<string, InputClassification> values) =>
+    //     $"( {string.Join(", ",
+    //         values
+    //             .Select(kvp => $"{GetValue(kvp)}"))} )";
+
+    // private static string GetValue(KeyValuePair<string, InputClassification> kvp) =>
+    //     kvp.Value switch
+    //     {
+    //         InputRelevant => (kvp.Value as InputRelevant)!.Report,
+    //         _ => "_"
+    //     };
+
     public static string GetReport(
         ObjectClassificationFormat format,
         Dictionary<string, InputClassification> values)
@@ -50,7 +63,7 @@ public static class CustomizedPrinting
         if (classification is InputRelevant relevant)
         {
             if (useRedux && relevant.Redux.HasValue)
-                return relevant.Redux.Value!;
+                return relevant.Redux.Value!.Report;
             return relevant.Report;
         }
         return "_";

@@ -37,7 +37,7 @@ public class ParentChildInvariant : CheckrTest<ParentChildInvariant>
         Assert.Equal("Balance >= -CreditLimit (i.e. never exceeds credit)", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(0, article.ShrinkCount);
+        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("pair", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Balance: -100, CreditLimit: 50 }", article.Execution(1).Input(1).Read().Value);

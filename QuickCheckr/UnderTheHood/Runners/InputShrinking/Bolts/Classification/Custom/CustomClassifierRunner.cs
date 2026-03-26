@@ -1,6 +1,3 @@
-
-
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
@@ -15,14 +12,9 @@ public class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate!))
             {
-                var clue = InputShrinkingClue.Keep<CustomClassifierRunner>(
-                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-                context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.PrintInput(info.Value));
+                return InputRelevant.Create(context.PrintInput(info.Value));
             }
         }
-        var ignore = InputShrinkingClue.Ignore<CustomClassifierRunner>(info.ExecutionId, info.Path, info.Value);
-        context.State.Docket.Record(new InputShrinkingClueFound(ignore));
         return new InputAssumedIrrelevant();
     }
 }

@@ -27,7 +27,6 @@ public record CheckrConfig
                 DeliberationPolicy = null,
                 DeliberationTarget = null,
                 // StyleGuide = The.CourtStyleGuide,
-                InternalAffairs = []
             };
     }
 
@@ -50,10 +49,5 @@ public record CheckrConfig
 
     public required ICustodian Custodian { get; init; }
 
-    /// <summary>
-    /// The set of enabled InternalAffair modes.  
-    /// Use to surface additional diagnostics such as shrinking clues or exception traces.
-    /// </summary>
-    public required InternalAffair[] InternalAffairs { get; init; }
     public Flow<CaseFile> StyleGuide { get; init; } = The.CourtStyleGuide;
 }

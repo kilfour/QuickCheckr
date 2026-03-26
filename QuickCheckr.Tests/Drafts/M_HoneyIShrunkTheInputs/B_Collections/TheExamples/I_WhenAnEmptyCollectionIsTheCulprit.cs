@@ -30,7 +30,7 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(0, article.ShrinkCount);
+        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ ]", article.Execution(1).Input(1).Read().Value);

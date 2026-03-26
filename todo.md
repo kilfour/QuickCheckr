@@ -3,7 +3,7 @@
 * QuickWebr: web-api DSL
  
 ### Doing
-
+* Check Lists in Objects and Tuples (empty should be '_' ?) 
 
 ### Todo
 * Added max steps to ReductionRunner => throws, just stop and warn instead
@@ -30,6 +30,7 @@
 * Added a warning when conditional expectations are never exercised during a run.
 * Introduced pluggable report rendering via `Flow<CaseFile>`.
 * Added simplified report flow for Testr.
+* Removed Internal Affairs, it has served it's purpose.
 
 
 

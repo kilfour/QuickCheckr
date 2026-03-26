@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Redu
 public class D_Collection : CheckrTest<D_Collection>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
 
     [Fact]
     [DocCheckrHeader]

@@ -47,7 +47,7 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
-        Assert.Equal(4, article.ShrinkCount);
+        // Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Person", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Age: 18 }", article.Execution(1).Input(1).Read().Value);

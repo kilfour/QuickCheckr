@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Dispatching;
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
@@ -24,38 +23,18 @@ public class PrimitiveClassifier : Classifier
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
-                // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
-                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-                context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.PrintInput(info.Value));
+                return InputRelevant.Create(context.PrintInput(info.Value));
             }
         }
-
         foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
         {
             //var witness = primitiveVals.First();
             if (verifier.TestimonyPassed(info.ExecutionId, info.Key, candidate))
             {
-                // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<PrimitiveClassifier>(
-                    info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-                context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.PrintInput(info.Value));
+                return InputRelevant.Create(context.PrintInput(info.Value));
             }
         }
-
-        var ignoreClue = InputShrinkingClue.Ignore<PrimitiveClassifier>(info.ExecutionId, info.Path, info.Value);
-        context.State.Docket.Record(new InputShrinkingClueFound(ignoreClue));
-        // -----------------------------------------------
-        // TESTIFY 
-        // - try [0, 1] => fails => irrelevant, report [_, 1], store [0, 1]
-        // - restore original value [1, 1]
-        // - try [1, 0] => fails => 
-        //     - restore [0, 1]
-        //         try [0, 0] => passes => relevant
         context.State.Memory.Testify(info.ExecutionId, info.Key, primitiveVals.First());
-        // -----------------------------------------------
         return new InputAssumedIrrelevant();
     }
 

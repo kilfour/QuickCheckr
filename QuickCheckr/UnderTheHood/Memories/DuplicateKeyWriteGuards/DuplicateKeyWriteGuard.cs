@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;

@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood.Dispatching;
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
@@ -23,14 +22,9 @@ public class EnumClassifier : Classifier
         {
             if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
             {
-                // Mark input as relevant, because we found a candidate that makes the run pass.
-                var clue = InputShrinkingClue.Keep<EnumClassifier>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-                context.State.Docket.Record(new InputShrinkingClueFound(clue));
-                return new InputRelevant(context.PrintInput(info.Value));
+                return InputRelevant.Create(context.PrintInput(info.Value));
             }
         }
-        var ignoreClue = InputShrinkingClue.Ignore<EnumClassifier>(info.ExecutionId, info.Path, info.Value);
-        context.State.Docket.Record(new InputShrinkingClueFound(ignoreClue));
         return new InputAssumedIrrelevant();
     }
 

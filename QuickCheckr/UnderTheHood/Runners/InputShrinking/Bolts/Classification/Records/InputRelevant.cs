@@ -1,3 +1,8 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record InputRelevant(string Report) : InputClassification;
+public record InputRelevant(string Report, Maybe<Redux> Redux)
+    : InputClassification
+{
+    public static InputRelevant Create(string report)
+        => new(report, Maybe<Redux>.Nothing());
+}

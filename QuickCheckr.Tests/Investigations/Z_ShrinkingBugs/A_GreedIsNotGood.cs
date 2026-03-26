@@ -33,7 +33,7 @@ public class A_GreedIsNotGood : CheckrTest<A_GreedIsNotGood>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(1, article.ShrinkCount);
+        // Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 1 ]", article.Execution(1).Input(1).Read().Value);

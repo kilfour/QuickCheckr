@@ -34,7 +34,6 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 [DocInclude(typeof(ReportModeTests))]
 [DocInclude(typeof(ShrinkModeTests))]
 [DocInclude(typeof(Hint))]
-//[DocInclude(typeof(InternalAffairsTests))]
 public class Configuration
 {
     [CodeSnippet]
@@ -49,8 +48,7 @@ public class Configuration
             ShrinkMode = ShrinkMode.Default,
             ReportMode = ReportMode.Default,
             DeliberationPolicy = null,
-            DeliberationTarget = null,
-            InternalAffairs = []
+            DeliberationTarget = null
         };
     }
 
@@ -66,9 +64,6 @@ public class Configuration
         Assert.Equal(expected.ShrinkMode, actual.ShrinkMode);
         Assert.Equal(expected.ReportMode, actual.ReportMode);
         Assert.Equal(expected.DeliberationPolicy, actual.DeliberationPolicy);
-
-
-        Assert.Equal(expected.InternalAffairs, actual.InternalAffairs);
         // more ?
     }
 }

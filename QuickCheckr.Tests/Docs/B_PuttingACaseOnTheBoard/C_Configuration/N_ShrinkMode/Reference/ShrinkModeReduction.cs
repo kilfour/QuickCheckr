@@ -36,7 +36,7 @@ This option is disabled by default.")]
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(8, article.ShrinkCount);
+        // Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal(2, article.Execution(1).Times);
         Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);

@@ -5,7 +5,9 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification;
 public static class IrrelevantCount
 {
     public static int From(InputClassification classification) =>
-        (classification.Redux.HasValue ? 1 : 0)
+        ((classification is InputRelevant inputRelevant)
+            ? inputRelevant.Redux.HasValue ? 1 : 0
+            : 0)
         + classification switch
         {
             InputAssumedIrrelevant => 1,

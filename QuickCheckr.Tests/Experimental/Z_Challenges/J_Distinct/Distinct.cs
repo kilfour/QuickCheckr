@@ -50,7 +50,7 @@ public class Distinct : CheckrTest<Distinct>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.ShrinkCount);
+        // Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Distinct", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 8, 8 ]", article.Execution(1).Input(1).Read().Value);

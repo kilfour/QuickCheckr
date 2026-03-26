@@ -1,7 +1,6 @@
 using System.Reflection;
 using QuickCheckr;
 using QuickCheckr.UnderTheHood.Dispatching;
-using QuickCheckr.UnderTheHood.Docketing;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -24,10 +23,8 @@ public class ObjectClassifier : Classifier
     {
         if (info.Value == null)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkNull>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             context.State.Memory.StoreWarning(info.Path, () => new NullValueWarning(info.Type, info.Path));
-            return new InputRelevant(context.PrintInput(info.Value));
+            return InputRelevant.Create(context.PrintInput(info.Value));
         }
         return HandleProperties(context, info);
     }
@@ -50,10 +47,8 @@ public class ObjectClassifier : Classifier
             .ToList();
         if (properties.Count == 0)
         {
-            var clue = InputShrinkingClue.Keep<CantShrinkObjectWithNoProperties>(info.ExecutionId, info.Path, info.Value, context.PrintInput(info.Value));
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             context.State.Memory.StoreWarning(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
-            return new InputRelevant(context.PrintInput(info.Value));
+            return InputRelevant.Create(context.PrintInput(info.Value));
         }
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)
@@ -63,18 +58,13 @@ public class ObjectClassifier : Classifier
 
         if (values.Any(a => a.Value is InputRelevant))
         {
-            var clue = InputShrinkingClue
-                .Keep<ObjectClassifier>(info.ExecutionId, info.Path, info.Value,
-                    $"{{ {string.Join(", ", values.Select(a => $"{a.Key}: {a.Value}"))} }}");
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
+
             if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(actualType, out var format))
                 return new ObjectRelevant(values, CustomizedPrinting.GetReport(format, values));
             return new ObjectRelevant(values, GetReport(values));
         }
         else
         {
-            var clue = InputShrinkingClue.Ignore<ObjectClassifier>(info.ExecutionId, info.Path, info.Value);
-            context.State.Docket.Record(new InputShrinkingClueFound(clue));
             return new ObjectAssumedIrrelevant(values);
         }
     }

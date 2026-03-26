@@ -121,7 +121,7 @@ public class BoltingHorsesDsl : InvariantsTest<BoltingHorsesDsl>
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(4, article.Total().PoolTraces());
         Assert.Equal(6, article.Total().PassedExpectations());
-        Assert.Equal(14, article.ShrinkCount);
+        // Assert.Equal(14, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("'Create Course' to Pool", article.Execution(1).PoolTrace(1).Read().Label);

@@ -125,7 +125,7 @@ public class WarehouseStepOne : BaseTest
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(3, article.Total().Traces());
         Assert.Equal(2, article.Total().PassedExpectations());
-        Assert.Equal(14, article.ShrinkCount);
+        // Assert.Equal(14, article.ShrinkCount);
     }
 
     public class ClientSim

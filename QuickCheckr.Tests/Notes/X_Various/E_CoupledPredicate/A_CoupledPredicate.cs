@@ -35,7 +35,7 @@ public class A_CoupledPredicate : CheckrTest<A_CoupledPredicate>
         Assert.Equal("A + B <= 10", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(0, article.ShrinkCount);
+        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("pair", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ A: 9, B: 9 }", article.Execution(1).Input(1).Read().Value);

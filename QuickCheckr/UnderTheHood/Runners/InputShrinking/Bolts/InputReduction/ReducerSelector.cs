@@ -1,5 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -8,25 +7,99 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 public class ReducerSelector
 {
+    private static string GetCollectionReport(IEnumerable<InputClassification> elements) =>
+         $"[ {string.Join(", ",
+            elements.Where(a => a is not ElementAssumedIrrelevant)
+                .Select(a => GetReportValue(a)))} ]";
+
+    private static string GetObjectReport(Dictionary<string, InputClassification> members) =>
+         $"{{ {string.Join(", ",
+            members.Where(a => a.Value is InputRelevant)
+                .Select(kvp => $"{kvp.Key}: {GetValue(kvp)}"))} }}";
+
+    private static string GetTupleReport(Dictionary<string, InputClassification> members) =>
+        $"( {string.Join(", ",
+            members
+                .Select(kvp => $"{GetValue(kvp)}"))} )";
+
+    private static string GetValue(KeyValuePair<string, InputClassification> kvp) =>
+        kvp.Value switch
+        {
+            InputRelevant => GetReport(kvp),
+            _ => "_"
+        };
+
+    private static string GetReport(KeyValuePair<string, InputClassification> kvp)
+    {
+        if (kvp.Value is InputRelevant inputRelevant)
+        {
+            if (inputRelevant.Redux.HasValue)
+                return inputRelevant.Redux.Value!.Report;
+            return inputRelevant.Report;
+        }
+        return "_";
+    }
+
+    private static string GetReportValue(InputClassification classification)
+    {
+        if (classification is InputRelevant inputRelevant)
+        {
+            if (inputRelevant.Redux.HasValue)
+                return inputRelevant.Redux.Value!.Report;
+            return inputRelevant.Report;
+        }
+        return "_";
+    }
+
     public static InputClassification Reduce(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
     {
-        if (classification is InputRelevant)
+        if (classification is TupleRelevant tupleRelevant)
         {
-            var (redux, reduxValue) = GetRedux(info, context);
-            classification = classification with { Redux = redux, ReduxValue = reduxValue };
+            var redux = GetRedux(info, context);
+            if (!redux.HasValue)
+            {
+                string report;
+                if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(info.ActualType, out var format))
+                    report = CustomizedPrinting.GetReduxReport(format, tupleRelevant.Members);
+                else
+                    report = GetTupleReport(tupleRelevant.Members);
+                redux = Maybe<Redux>.Just(new Redux(report, info.Value!));
+            }
+            classification = tupleRelevant with { Redux = redux };
+            return classification;
         }
         if (classification is ObjectRelevant objectRelevant)
         {
-            if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(info.ActualType, out var format))
+            var redux = GetRedux(info, context);
+            if (!redux.HasValue)
             {
-                var redux = CustomizedPrinting.GetReduxReport(format, objectRelevant.Members);
-                classification = classification with { Redux = Maybe.Just(redux) };
+                string report;
+                if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(info.ActualType, out var format))
+                    report = CustomizedPrinting.GetReduxReport(format, objectRelevant.Members);
+                else
+                    report = GetObjectReport(objectRelevant.Members);
+                redux = Maybe<Redux>.Just(new Redux(report, info.Value!));
             }
+            classification = objectRelevant with { Redux = redux };
+            return classification;
         }
+        if (classification is CollectionRelevant collectionRelevant)
+        {
+            var redux = GetRedux(info, context);
+            if (!redux.HasValue)
+                redux = Maybe<Redux>.Just(new Redux(GetCollectionReport(collectionRelevant.Elements), info.Value!));
+            classification = collectionRelevant with { Redux = redux };
+            return classification;
+        }
+        if (classification is InputRelevant inputRelevant)
+        {
+            classification = inputRelevant with { Redux = GetRedux(info, context) };
+        }
+
         return classification;
     }
 
-    private static (Maybe, Maybe<object>) GetRedux(ShrinkingInfo info, ShrinkingContext context)
+    private static Maybe<Redux> GetRedux(ShrinkingInfo info, ShrinkingContext context)
     {
         var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
         if (shrinkers is not null)
@@ -43,10 +116,10 @@ public class ReducerSelector
             if (reducerFactory is not null)
                 return Reduce(info, context, reducerFactory);
         }
-        return (Maybe.Nothing(), Maybe<object>.Nothing());
+        return Maybe<Redux>.Nothing();
     }
 
-    private static (Maybe, Maybe<object>) Reduce(
+    private static Maybe<Redux> Reduce(
         ShrinkingInfo info,
         ShrinkingContext context,
         IEnumerable<Func<Func<ReductionResult, Reduction>>> reducerFactories)
@@ -68,14 +141,14 @@ public class ReducerSelector
         return ReduxFromStep(info, context, step);
     }
 
-    private static (Maybe, Maybe<object>) Reduce(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
+    private static Maybe<Redux> Reduce(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
     {
         var reducer = reducerFactory();
         var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
         return ReduxFromStep(info, context, step);
     }
 
-    private static (Maybe, Maybe<object>) ReduxFromStep(ShrinkingInfo info, ShrinkingContext context, Reduction step)
+    private static Maybe<Redux> ReduxFromStep(ShrinkingInfo info, ShrinkingContext context, Reduction step)
     {
         if (step is Reduction.Unbounded)
         {
@@ -90,22 +163,15 @@ public class ReducerSelector
         };
     }
 
-    private static (Maybe, Maybe<object>) ReduxFromValue(ShrinkingInfo info, ShrinkingContext context, object? value)
+    private static Maybe<Redux> ReduxFromValue(ShrinkingInfo info, ShrinkingContext context, object? value)
     {
         if (Equals(info.Value, value))
-            return (Maybe.Nothing(), Maybe<object>.Nothing());
+            return Maybe<Redux>.Nothing();
         context.State.Memory.Commit(info.ExecutionId, info.Key, value!);
         context.State.Memory.Testify(info.ExecutionId, info.Key, value!);
-        return (
-            Maybe.Just(context.PrintRedux(value!)),
-            Maybe<object>.Just(value!));
+        return Maybe<Redux>.Just(new Redux(
+            context.PrintRedux(value!),
+            value!
+        ));
     }
-
-    private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
-        => new CustomClassifierDispatcher(new DefaultClassifierDispatcher()).Dispatch(options, new CustomShrinkingContext(info, context));
-
-    // TODO: private readonly DefaultClassifier defaultClassifier = new();
-
-    public InputClassification ClassifyDefault(ShrinkingInfo info, ShrinkingContext context)
-        => new DefaultClassifierDispatcher().Dispatch(info, context);
 }

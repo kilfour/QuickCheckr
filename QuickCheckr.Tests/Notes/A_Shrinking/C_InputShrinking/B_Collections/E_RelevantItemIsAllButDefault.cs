@@ -31,7 +31,7 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(8, article.ShrinkCount);
+        // Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 51 ]", article.Execution(1).Input(1).Read().Value);

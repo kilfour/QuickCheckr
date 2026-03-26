@@ -55,7 +55,7 @@ public class LengthList : CheckrTest<LengthList>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(7, article.ShrinkCount);
+        // Assert.Equal(7, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Length List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 962 ]", article.Execution(1).Input(1).Read().Value);

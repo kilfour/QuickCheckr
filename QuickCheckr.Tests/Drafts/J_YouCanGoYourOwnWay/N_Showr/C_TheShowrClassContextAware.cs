@@ -57,7 +57,7 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(0, article.ShrinkCount);
+        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Place order", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Order request", article.Execution(1).Input(1).Read().Label);

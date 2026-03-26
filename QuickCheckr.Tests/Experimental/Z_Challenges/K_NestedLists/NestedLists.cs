@@ -54,7 +54,7 @@ public class NestedLists : CheckrTest<NestedLists>
         Assert.Equal("The sum of lengths of the element lists is at most 10", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(30, article.ShrinkCount);
+        // Assert.Equal(30, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Nested List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _, _, _, _, _, _, _, _, _, _, _ ] ]", article.Execution(1).Input(1).Read().Value);

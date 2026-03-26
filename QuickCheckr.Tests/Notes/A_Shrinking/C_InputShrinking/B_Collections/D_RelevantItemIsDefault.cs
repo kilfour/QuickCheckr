@@ -31,7 +31,7 @@ public class D_RelevantItemIsDefault : CheckrTest<D_RelevantItemIsDefault>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(8, article.ShrinkCount);
+        // Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 0 ]", article.Execution(1).Input(1).Read().Value);

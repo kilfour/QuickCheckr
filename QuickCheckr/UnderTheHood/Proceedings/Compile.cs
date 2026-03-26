@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickPulse.Show.Bolts;
 
-namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice
+namespace QuickCheckr.UnderTheHood.Proceedings
 {
 
     public static class Compile
@@ -95,12 +95,16 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice
                 if (relevant == null) continue;
                 var input = executionMemory.GetInput(key);
                 var report = relevant.Report;
+                var (reduxReport, reduxValue) =
+                        relevant.Redux.HasValue
+                            ? (Maybe.Just(relevant.Redux.Value!.Report), Maybe<object>.Just(relevant.Redux.Value!.Value))
+                            : (Maybe.Nothing(), Maybe<object>.Nothing());
                 executionDeposition.AddInputDeposition(
                         new InputDeposition(labeled, key, report!)
                         {
                             Original = executionMemory.GetOriginalForKey(key),
-                            Redux = classification.GetRedux(),
-                            ReduxValue = classification.ReduxValue,
+                            Redux = reduxReport,
+                            ReduxValue = reduxValue,
                             InputValue = input.Value,
                             Type = input.Type
                         });

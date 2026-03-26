@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood.Docketing;
-
 namespace QuickCheckr.UnderTheHood;
 
 public static class TheCatcher
@@ -16,12 +14,10 @@ public static class TheCatcher
         }
         catch (CheckrWasNotExecuted)
         {
-            state.Docket.Record(new ExpectationCaughtActionWasNotExecuted(key));
             return CheckrResult.Default<T>(state);
         }
         catch (Exception exception)
         {
-            state.Docket.Record(new EvidenceFailure(exception));
             onException?.Invoke(exception);
             return CheckrResult.Default<T>(state);
         }

@@ -1,6 +1,5 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
@@ -10,7 +9,7 @@ namespace QuickCheckr.UnderTheHood;
 public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.Signals, config.Seed);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.Seed);
 
     public int Seed => State.FuzzrState.Seed;
 

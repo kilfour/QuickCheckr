@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood.Docketing;
-
 namespace QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 
 public class ExecutionShrinker(
@@ -29,7 +27,6 @@ public class ExecutionShrinker(
             {
                 shrinkCount++;
                 State.Memory.Remove(id);
-                State.Docket.Record(new ExecutionRemoved(id));
                 i--;
             }
         }
