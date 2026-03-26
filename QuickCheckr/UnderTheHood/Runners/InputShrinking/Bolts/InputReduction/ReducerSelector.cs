@@ -7,10 +7,15 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 public class ReducerSelector
 {
-    private static string GetCollectionReport(IEnumerable<InputClassification> elements) =>
-         $"[ {string.Join(", ",
+    private static string GetCollectionReport(IEnumerable<InputClassification> elements)
+    {
+        var values =
             elements.Where(a => a is not ElementAssumedIrrelevant)
-                .Select(a => GetReportValue(a)))} ]";
+                .Select(a => GetReportValue(a))
+                .ToList();
+        if (values.Count == 0) return "[ ]";
+        return $"[ {string.Join(", ", values)} ]";
+    }
 
     private static string GetObjectReport(Dictionary<string, InputClassification> members) =>
          $"{{ {string.Join(", ",
