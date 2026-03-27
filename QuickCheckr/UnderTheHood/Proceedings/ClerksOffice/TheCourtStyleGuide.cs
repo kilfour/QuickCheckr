@@ -197,8 +197,7 @@ public static class The
         from _ in Pulse.Trace(runs)
         select input;
 
-    public readonly static Flow<CaseFile> CourtStyleGuide =
-        from input in Pulse.Start<CaseFile>()
+    public static Flow<Flow> CourtStyleGuide(CaseFile input) =>
         from _1 in Pulse.Prime(() => new Decorum())
         from _2 in Pulse.Prime(() => new MaxLabel(0))
         from _3 in Pulse.ToFlowIf(input.HasEvidence, evidence, () => input)
@@ -217,5 +216,5 @@ public static class The
             input.PassedExpectationDepositions.Count > 0,
             passedExpectationDepositions,
             () => input.PassedExpectationDepositions)
-        select input;
+        select Flow.Continue;
 }

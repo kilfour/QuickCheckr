@@ -15,7 +15,7 @@ public static class TheClerk
     //             .Content();
     // }
 
-    public static string Transcribes(CaseFile caseFile, Flow<CaseFile> styleGuide)
+    public static string Transcribes(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
     {
         return
             Signal.From(styleGuide)

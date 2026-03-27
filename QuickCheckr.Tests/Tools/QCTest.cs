@@ -36,7 +36,7 @@ public abstract class QCTest<T> : QCTest
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
 
-    protected virtual Flow<CaseFile> StyleGuide => The.CourtStyleGuide;
+    protected virtual Func<CaseFile, Flow<Flow>> StyleGuide => The.CourtStyleGuide;
 
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);

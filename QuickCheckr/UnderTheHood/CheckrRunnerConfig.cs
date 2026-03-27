@@ -25,5 +25,5 @@ public record CheckrRunnerConfig
     public ReportMode ReportMode { get; init; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; init; }
     public int? DeliberationTarget { get; init; }
-    public Flow<CaseFile> StyleGuide { get; init; }
+    public Func<CaseFile, Flow<Flow>> StyleGuide { get; init; }
 }

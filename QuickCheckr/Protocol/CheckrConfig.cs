@@ -49,5 +49,5 @@ public record CheckrConfig
 
     public required ICustodian Custodian { get; init; }
 
-    public Flow<CaseFile> StyleGuide { get; init; } = The.CourtStyleGuide;
+    public Func<CaseFile, Flow<Flow>> StyleGuide { get; init; } = The.CourtStyleGuide;
 }

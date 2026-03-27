@@ -8,7 +8,7 @@ namespace QuickCheckr.Protocol.Custodians;
 
 public abstract class FileCustodian : ICustodian
 {
-    public void StoreCaseFile(string path, CaseFile caseFile, Flow<CaseFile> styleGuide)
+    public void StoreCaseFile(string path, CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
         => GetFileLogArtery(path).ClearFile().Absorb(TheClerk.Transcribes(caseFile, styleGuide));
 
     public void RemoveCaseFile(string path) => RemoveFile(path);

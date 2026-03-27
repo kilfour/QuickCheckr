@@ -6,7 +6,7 @@ namespace QuickCheckr.Protocol.Custodians;
 
 public interface ICustodian
 {
-    public void StoreCaseFile(string path, CaseFile caseFile, Flow<CaseFile> styleGuide);
+    public void StoreCaseFile(string path, CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide);
     public void RemoveCaseFile(string path);
     public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries);
     public HashSet<VaultEntry> RetrieveVaultEntries(string path);

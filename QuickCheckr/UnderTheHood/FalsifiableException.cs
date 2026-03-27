@@ -11,13 +11,13 @@ public class FalsifiableException : Exception
 {
     public CaseFile TheCaseFile { get; private set; }
 
-    public FalsifiableException(CaseFile caseFile, Flow<CaseFile> styleGuide)
+    public FalsifiableException(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide))
     {
         TheCaseFile = caseFile;
     }
 
-    public FalsifiableException(CaseFile caseFile, Flow<CaseFile> styleGuide, Exception? exception)
+    public FalsifiableException(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide, Exception? exception)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide), exception)
     {
         TheCaseFile = caseFile;
