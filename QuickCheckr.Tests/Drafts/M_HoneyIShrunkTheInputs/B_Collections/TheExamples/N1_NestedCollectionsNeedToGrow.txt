@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                N1_NestedCollectionsNeedToGrow.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    482835926
+ ------------------------------------------------------------
+  Executed:
+   - Trace: Original = { A: [ 74, 41, 59 ] }
+   - WARNING: All inputs were considered irrelevant.
+ ==========================================
+  !! Expectation Failed: List count >= 4
+ ==========================================
