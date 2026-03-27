@@ -2285,6 +2285,29 @@ select Case.Closed;
   !! Expectation Failed: Two should not be Two
  ================================================
 ```
+#### Nullable Types
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Constant<Nullable<int>>(null!))
+from expect in Checkr.Expect("Fails", () => input.HasValue)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C_NullableTypes.cs:32:1
+ Original failing run:    1 execution
+ Seed:                    393010076
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = null
+ ================================
+  !! Expectation Failed: Fails
+ ================================
+```
 ### Collections
 When shrinking collections, QuickCheckr does not attempt to rewrite or regenerate the list.
 Instead, it removes items one by one,
@@ -2924,4 +2947,770 @@ select Case.Closed;
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================
+```
+### Challenges
+
+Currently these challenges use a seeded state, because they are part of a regression test suite.
+
+At the time of writing however, this was not the case.
+The seeded report *is* representing the actual behaviour of QuickCheckr,
+but for performance reasons we do not run deliberation policies everytime for instance.
+  
+#### Bound5
+Given a 5-tuple of lists of 16-bit integers, we want to test the property that if each list sums to less than 256,
+then the sum of all the values in the lists is less than 5 * 256.
+This is false because of overflow. e.g. ([-20000], [-20000], [], [], []) is a counter-example.
+
+The interesting thing about this example is the interdependence between separate parts of the sample data.
+A single list in the tuple will never break the invariant, but you need at least two lists together.
+This prevents most of trivial shrinking algorithms from getting close to a minimum example,
+which would look somethink like ([-32768], [-1], [], [], []).
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Bound5", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "The sum of all values is less than 5 * 256.",
+    () => Sum(input) < (5 * 256))
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<(List<short>, List<short>, List<short>, List<short>, List<short>)>(
+            "Bound5", a => ElementCount(a)),
+    DeliberationTarget = 2
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Bound5.cs:32:1
+ Original failing run:    1 execution
+ Seed:                    1866106578
+ ------------------------------------------------------------
+  Executed:
+   - Input: Bound5   = ( _, [ -21169 ], _, [ -13193 ], _ )
+   - Trace: Original = ( [ ], [ -8290, -21169 ], [ ], [ -13193 ], [ ] )
+ ======================================================================
+  !! Expectation Failed: The sum of all values is less than 5 * 256.
+ ======================================================================
+```
+#### Large Union List
+
+Given a list of lists of arbitrary sized integers, 
+we want to test the property that there are no more than four distinct integers across all the lists.
+This is trivially false, and this example is an artificial one to stress test a shrinker's ability to normalise
+(always produce the same output regardless of starting point).
+
+In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
+For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("LargeUnionList", TheFuzzr,
+        Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "No more than four distinct integers.",
+    () => input.SelectMany(a => a).Distinct().Count() <= 4)
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<List<List<int>>>("LargeUnionList", a => 0 - a.Count),
+    DeliberationTarget = -5
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                LargeUnionList.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 25 shrinks)
+ Seed:                    1284201255
+ ------------------------------------------------------------
+  Executed:
+   - Input: LargeUnionList = [ [ _ ], [ 98 ], [ 33 ], [ 41 ], [ 73 ] ]
+            Redux            [ [ _ ], [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
+   - Trace: Original       = [ [ 37, 88, 82, 64, 26, 15, 91, 65 ], [ 76, 17, 18, 41, 82, 29, 89, 80, 24 ], [ 74, 39, 69, 94, 76, 44, 14, 66 ], [ 32, 98 ], [ 16, 25, 11, 59, 67, 74, 9 ], [ 63, 55, 4 ], [ ], [ 96 ], [ 16, 42, 86 ], [ 92, 57, 74, 11, 38, 67 ], [ 7, 21, 13, 49, 72, 34, 88, 10, 1, 92 ], [ 24, 61, 16 ], [ 96, 12, 20, 36, 67, 80, 80 ], [ 98 ], [ 33, 73 ], [ ], [ 41 ], [ 73 ] ]
+ ===============================================================
+  !! Expectation Failed: No more than four distinct integers.
+ ===============================================================
+```
+#### Reverse List
+
+This tests the (wrong) property that reversing a list of integers results in the same list. 
+It is a basic example to validate that a library can reliably normalize simple sample data.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("ReverseList", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from reverse in Checkr.Act("Reverse List",
+    () => { var list = new List<int>(input); list.Reverse(); return list; })
+from expect in Checkr.Expect(
+    "Reversing a list of integers results in the same list",
+    () => reverse.SequenceEqual(input))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReverseList.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    767678629
+ ------------------------------------------------------------
+  Executed: Reverse List
+   - Input: ReverseList = [ _, 92 ]
+   - Trace: Original    = [ 68, 89, 98, 88, 92 ]
+ ================================================================================
+  !! Expectation Failed: Reversing a list of integers results in the same list
+ ================================================================================
+```
+#### Calculator
+
+The challenge involves a simple calculator language representing expressions consisting of integers,
+their additions and divisions only, like 1 + (2 / 3).
+
+The property being tested is that
+
+- if we have no subterms of the form x / 0,  
+- then we can evaluate the expression without a zero division error.
+This property is false, because we might have a term like 1 / (3 + -3), in which the divisor is not literally 0 but evaluates to 0.
+
+One of the possible difficulties that might come up is the shrinking of recursive expressions.
+  
+
+**The Fuzzr:**  
+```csharp
+from i in Configr.Primitive(Fuzzr.Int(0, 10))
+from noZeroDiv in Configr<Expr>.Apply(
+    a =>
+    {
+        // rewrite division by zero terms
+        if (a is Term t)
+            if (t.Op == Operation.Div && t.R is Num { Value: 0 })
+                t.R = new Num { Value = 1 };
+    })
+from depth in Configr<Expr>.Depth(0, 10)
+from inheritance in Configr<Expr>.AsOneOf(typeof(Term), typeof(Num))
+from terminator in Configr<Expr>.EndOn<Num>()
+from expr in Fuzzr.One<Expr>()
+select expr
+```
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Calculator", TheFuzzr)
+from trace in Checkr.Trace("Original", () => input)
+from eval in Checkr.Act("Evaluate", input.Evaluate)
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_Calculator.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1264796639
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Calculator = { Op: Div, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }
+   - Trace: Original   = { Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 1 }, R: { Value: 7 } } }
+ ===========================================================================
+  !! DivideByZeroException: Attempted to divide by zero.
+ ===========================================================================
+```
+#### Calculator Adding A Reducer
+And a DeliberationPolicy.  
+
+**The Checkr:**  
+```csharp
+from showrTerm in Showr.ForClassification(a => a.For<Term>()
+    .Bounds("( ", " )")
+    .Delimiter(" ")
+    .HidePropertyNames()
+    .Property(a => a.L)
+    .Property(a => a.Op, a =>
+        a switch
+        {
+            Operation.Add => "+",
+            Operation.Div => "/",
+            _ => throw new ArgumentOutOfRangeException()
+        })
+    .Property(a => a.R))
+from showrOp in Showr.ForClassification(a => a.For<Num>()
+    .Bounds("", "")
+    .Delimiter("")
+    .HidePropertyNames())
+from input in Checkr.Input("Calculator", TheFuzzr,
+    Shrink.When<int>(s => s
+            .As<Num>(a => a.Value)
+            .As<Term, Expr>(a => a.R)
+            .Value(t => t.Op == Operation.Div),
+        s => s.Simplify(Reduce.Towards(1))),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(0))))
+from trace in Checkr.Trace("Original", () => input)
+from eval in Checkr.Act("Evaluate", input.Evaluate)
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        (caseFile.InputCount == 0 ? 100 : 0) +
+        caseFile.InputsNamed<Expr>("Calculator", a => DepthOf(a)),
+    DeliberationTarget = 2,
+    ReportMode = config.ReportMode & ~ReportMode.StackTrace
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_CalculatorAddingAReducer.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 12 shrinks)
+ Seed:                    376086434
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Input: Calculator = ( _ / ( 8 / _ ) )
+            Redux        ( _ / ( 0 / _ ) )
+   - Trace: Original   = { Op: Div, L: { Op: Add, L: { Value: 4 }, R: { Value: 6 } }, R: { Op: Div, L: { Value: 8 }, R: { Value: 9 } } }
+ ===========================================================================
+  !! DivideByZeroException: Attempted to divide by zero.
+ ===========================================================================
+```
+#### Length List
+
+A list should be generated first by picking a length between 1 and 100,
+then by generating a list of precisely that length whose elements are integers between 0 and 1000.
+The test should fail if the maximum value of the list is 900 or larger.
+
+This list should specifically be generated using monadic combinators (bind) or some equivalent,
+and this is a test that is only interesting for integrated shrinking.
+This is only interesting as a test of a problem
+[some property-based testing libraries have with monadic bind](https://clojure.github.io/test.check/growth-and-shrinking.html#unnecessary-bind).
+In particular the use of the length parameter is critical,
+and the challenge is to shrink this example to `[900]` reliably when using a PBT library's built in generator for lists.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Length List", TheFuzzr,
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "The maximum value of the list is smaller than 900.",
+    () => input.Max() < 900)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                LengthList.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 7 shrinks)
+ Seed:                    1834085712
+ ------------------------------------------------------------
+  Executed:
+   - Input: Length List = [ 962 ]
+            Redux         [ 900 ]
+   - Trace: Original    = [ 974, 962, 872, 681, 543, 118, 578 ]
+ ============================================================================
+  !! Expectation Failed: Maximum value of the list is at smaller than 900.
+ ============================================================================
+```
+#### Difference
+##### Test1
+
+Test 1 ('difference must not be zero') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not zero.
+The smallest falsified sample is `[10, 10]`
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", TheFuzzr,
+    Shrink.OnType<Pair>(s => s.Simplify(Reduce.Function<Pair>(a => TowardsZero(a)))))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "Difference must not be zero.",
+    () => input.A < 10 || input.A != input.B)
+select Case.Closed;
+```
+
+**The Reducer:**  
+```csharp
+public static IEnumerable<Pair> TowardsZero(Pair input)
+{
+    var local = input;
+    while (local.A >= 0)
+    {
+        local = local with { A = local.A - 1, B = local.B - 1 };
+        yield return local;
+    }
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test1.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1040200141
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 21, B: 21 }
+            Redux      { A: 10, B: 10 }
+   - Trace: Original = { A: 21, B: 21 }
+ =======================================================
+  !! Expectation Failed: difference must not be zero.
+ =======================================================
+```
+##### Test2
+
+Test 2 ('difference must not be small') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not between 1 and 4.
+The smallest falsified sample is `[10, 6]`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", TheFuzzr,
+    Shrink.OnType<Pair>(s => s.Simplify(
+        Reduce.Function<Pair>(a => TowardsZero(a)))))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "Difference must not be small.",
+    () => input.A < 10 || Math.Abs(input.A - input.B) > 4 || input.A == input.B)
+select Case.Closed;
+```
+
+**The Reducer:**  
+```csharp
+public static IEnumerable<Pair> TowardsZero(Pair input)
+{
+    var local = input;
+    while (local.A >= 0)
+    {
+        local = local with { A = local.A - 1, B = local.B - 1 };
+        yield return local;
+    }
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test2.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    737468544
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 53, B: 51 }
+            Redux      { A: 10, B: 8 }
+   - Trace: Original = { A: 53, B: 51 }
+ ========================================================
+  !! Expectation Failed: Difference must not be small.
+ ========================================================
+```
+##### Test2 Better
+
+This uses a custom reducer to shrink the input.  
+It currently uses the full reducer algorithm.  
+Working on turning this into a much easier way to define the reducer.  
+But chaining reducers is still a work in progress.  
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", TheFuzzr,
+    Shrink.OnType<Pair>(s => s.Simplify(PairReducer.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "Difference must not be small.",
+    () => input.A < 10 || Math.Abs(input.A - input.B) > 4 || input.A == input.B)
+select Case.Closed;
+```
+
+**The Reducer:**  
+```csharp
+private class PairReducer
+{
+    public static Func<Reducer<Pair>> TowardsZero = () => new PairReducer().Reduce;
+    private enum Phase { Both, A, B }
+    private Phase phase = Phase.Both;
+    public Reduction Reduce(ReductionResult result)
+    {
+        var current = result.ValueAs<Pair>();
+        if (result.Passed)
+        {
+            if (phase == Phase.Both)
+                phase = Phase.A;
+            else if (phase == Phase.A)
+                phase = Phase.B;
+            if (phase == Phase.B)
+                return new Reduction.Stop(current);
+        }
+        switch (phase)
+        {
+            case Phase.Both:
+                if (current.A <= 0 || current.B == 0)
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1, B = current.B - 1 });
+            case Phase.A:
+                if (current.A <= 0)
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { B = current.B - 1 });
+            case Phase.B:
+                if (current.B <= 0)
+                    return new Reduction.Stop(current);
+                return new Reduction.Next(current with { A = current.A - 1 });
+        }
+        return new Reduction.Stop(current);
+    }
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test2Better.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    737468544
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 53, B: 51 }
+            Redux      { A: 10, B: 6 }
+   - Trace: Original = { A: 53, B: 51 }
+ ========================================================
+  !! Expectation Failed: Difference must not be small.
+ ========================================================
+```
+##### Test3
+
+Test 3 ('difference must not be one') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not exactly 1.
+The smallest falsified sample is `[10, 9]`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", TheFuzzr,
+    Shrink.OnType<Pair>(s => s.Simplify(Reduce.Function<Pair>(a => TowardsZero(a)))))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect(
+    "Difference is not exactly 1.",
+    () => input.A < 10 || Math.Abs(input.A - input.B) != 1)
+select Case.Closed;
+```
+
+**The Reducer:**  
+```csharp
+public static IEnumerable<Pair> TowardsZero(Pair input)
+{
+    var local = input;
+    while (local.A >= 0)
+    {
+        local = local with { A = local.A - 1, B = local.B - 1 };
+        yield return local;
+    }
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Test3.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1238621164
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input    = { A: 49, B: 48 }
+            Redux      { A: 10, B: 9 }
+   - Trace: Original = { A: 49, B: 48 }
+ =======================================================
+  !! Expectation Failed: Difference is not exactly 1.
+ =======================================================
+```
+This one sometimes produces 10, 11  
+#### Bin Heap
+
+This is based on an example from QuickCheck's test suite (via the SmartCheck paper). 
+It generates binary heaps, and then uses a wrong implementation of a function 
+that converts the binary heap to a sorted list and asserts that the result is sorted.
+
+Interestingly most libraries seem to never find the smallest example here, 
+which is the four valued heap (0, None, (0, (0, None, None), (1, None, None))). 
+This is essentially because small examples are "too sparse", so it's very hard to find one by luck.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Heap", TheFuzzr)
+from correct in Checkr.Act("Correct", () => Flatten(input).OrderBy(x => x).ToList())
+from buggy in Checkr.Act("Buggy", () => Flatten(input).ToList())
+from expect in Checkr.Expect("Heap sort is correct", () => correct.SequenceEqual(buggy))
+from trace in Checkr.Trace("Original", () => input)
+select Case.Closed;
+```
+
+**The Fuzzr:**  
+```csharp
+from depth in Configr<Heap>.Depth(3, 20)
+from inheritance in Configr<Heap>.AsOneOf(typeof(Empty), typeof(Node))
+from terminator in Configr<Heap>.EndOn<Empty>()
+from ctor in Configr<Node>.Construct(Fuzzr.Int(), Fuzzr.One<Heap>(), Fuzzr.One<Heap>())
+from value in Configr<Node>.Property(a => a.Value,
+    from cnt in Fuzzr.Counter("heap") select 1000 - cnt)
+from heap in Fuzzr.One<Heap>()
+select heap
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+       (caseFile.InputCount == 0 ? 100 : 0) +
+       caseFile.InputsNamed<Heap>("Heap", a => Flatten(a).Count()),
+    ReportMode = config.ReportMode & ~ReportMode.Warning
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                BinHeap.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    195567586
+ ------------------------------------------------------------
+  Executed: Buggy, Correct
+   - Input: Heap     = { Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+   - Trace: Original = { Value: 997, Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }
+ ===============================================
+  !! Expectation Failed: Heap sort is correct
+ ===============================================
+```
+#### Coupling
+
+In this example the elements of a list of integers are coupled to their position in an unusual way.
+
+The expected smallest falsified sample is [1, 0].
+  
+
+**The Checkr:**  
+```csharp
+from length in Checkr.Input("Length", Fuzzr.Int(1, 100))
+from list in Checkr.Input("List", () =>
+    from enumerable in Fuzzr.Int(0, length - 1).Many(length)
+    select enumerable.ToList())
+from trace in Checkr.Trace("Original", () => list)
+from expect in Checkr.ExpectWhen("No two different indexes point to each other.",
+    () => list.All(element => element < list.Count),
+    () => list.All(element =>
+    {
+        int index = list[element];
+        if (index != element && list[index] == element)
+            return false;
+        return true;
+    }))
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        (caseFile.InputCount == 0 ? 100 : 0) +
+        caseFile.InputsNamed<List<int>>("List", a => a.Count),
+    DeliberationTarget = 2,
+    ReportMode = config.ReportMode & ~ReportMode.StackTrace
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Coupling.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    124252565
+ ------------------------------------------------------------
+  Executed:
+   - Input: List     = [ 1, 0 ]
+   - Trace: Original = [ 2, 1, 0, 1 ]
+ ========================================================================
+  !! Expectation Failed: No two different indexes point to each other.
+ ========================================================================
+```
+#### Deletion
+
+This tests the property "if we remove an element from a list, the element is
+no longer in the list". The remove function we use however only actually
+removes the _first_ instance of the element, so this fails whenever the list
+contains a duplicate and we try to remove one of those elements.
+
+This example is interesting for a couple of reasons:
+
+1. It's a nice easy to explain example of property-based testing.
+2. Shrinking duplicates simultaneously is something that most property-based
+   testing libraries can't do.
+
+The expected smallest falsified sample is `([0, 0], 0)`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Deletion", Fuzzr.Int(1, 10).Many(3, 20))
+from toRemove in Checkr.Input("Element To Remove", () => Fuzzr.OneOf(input))
+from removed in Checkr.Act("Remove Element", () =>
+{
+    var list = input.ToList();
+    list.Remove(toRemove);
+    return list;
+})
+from expect in Checkr.Expect("Element is no longer in the list", () => !removed.Contains(toRemove))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Deletion.cs:58:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 16 shrinks)
+ Seed:                    613616447
+ ------------------------------------------------------------
+  Executed: Remove Element
+   - Input: Deletion          = [ 3, 3 ]
+   - Input: Element To Remove = 3
+ ===========================================================
+  !! Expectation Failed: Element is no longer in the list
+ ===========================================================
+```
+#### Distinct
+
+This tests the example provided for the property "a list of integers containing at least three distinct elements".
+
+This is interesting because:
+
+1. Most property-based testing libraries will not successfully normalize (i.e. always return the same answer) this property,
+because it requires reordering examples to do so.
+2. Hypothesis and test.check both provide a built in generator for "a list of distinct elements",
+so the "example of size at least N" provides a sort of lower bound for how well they can shrink those built in generators.
+
+The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
+  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Distinct", Fuzzr.Int(1, 10).Many(3, 20),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Original", () => input)
+from expect in Checkr.ExpectWhen(
+    "Contains at least three distinct elements.",
+    () => input.Count() >= 3,
+    () => input.ToHashSet().Count >= 3)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                Distinct.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    767903368
+ ------------------------------------------------------------
+  Executed:
+   - Input: Distinct = [ _, 8, 8 ]
+   - Trace: Original = [ 5, 8, 8 ]
+ =====================================================================
+  !! Expectation Failed: Contains at least three distinct elements.
+ =====================================================================
+```
+#### Nested Lists
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Nested List", TheFuzzr)
+from expect in Checkr.Expect(
+    "The sum of lengths of the element lists is at most 10",
+    () => input.Sum(a => a.Count) <= 10)
+select Case.Closed;
+```
+
+**The Configuration:**  
+```csharp
+config with
+{
+    DeliberationPolicy = caseFile =>
+        caseFile.InputsNamed<List<List<int>>>("Nested List", a => a.Count),
+};
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                NestedLists.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 30 shrinks)
+ Seed:                    1716272349
+ ------------------------------------------------------------
+  Executed:
+   - Input: Nested List = [ [ _, _, _, _, _, _, _, _, _, _, _ ] ]
+ ================================================================================
+  !! Expectation Failed: The sum of lengths of the element lists is at most 10
+ ================================================================================
 ```

@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
+using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 

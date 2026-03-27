@@ -8,29 +8,6 @@ During this process no further executions are performed and no new random values
 
 QuickCheckr then reports the minimal failing case, 
 together with the number of executions, relevant actions and inputs that were required to find it.  
-##### Nullable Types
-
-**The Checkr:**  
-```csharp
-from input in Checkr.Input("Input", Fuzzr.Constant<Nullable<int>>(null!))
-from expect in Checkr.Expect("Fails", () => input.HasValue)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                NullableTypes.cs:64:1
- Original failing run:    1 execution
- Seed:                    393010076
- ------------------------------------------------------------
-  Executed:
-   - Input: Input = null
- ================================
-  !! Expectation Failed: Fails
- ================================
-```
 #### Relevant Item Is Default
 Just making sure `default` values, `0` in this case, get handled correctly.  
 
