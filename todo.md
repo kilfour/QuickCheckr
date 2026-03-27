@@ -33,7 +33,7 @@
 * Introduced pluggable report rendering via `Flow<CaseFile>`.
 * Added simplified report flow for Testr.
 * Removed Internal Affairs, it has served it's purpose.
-
+* Improved shrinking top level Collections.
 
 ## 0.0.11 : All Aboard
 * More in-built reducers
