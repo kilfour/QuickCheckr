@@ -23,13 +23,12 @@ select Case.Closed;
  Test:                    Example
  Location:                Q_ObjectOfLists.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    2082252864
+ Minimal failing case:    1 execution (after 6 shrinks)
+ Seed:                    1622405126
  ------------------------------------------------------------
   Executed:
-   - Input: Museum   = { A: [ 42 ], C: [ ] }
-   - Trace: Original = { A: [ 42, 64 ], B: [ 84, 7 ], C: [ ] }
-   - WARNING: Empty collection deemed irrelevant at input 'Museum'.
+   - Input: Museum   = { A: [ 42 ] }
+   - Trace: Original = { A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

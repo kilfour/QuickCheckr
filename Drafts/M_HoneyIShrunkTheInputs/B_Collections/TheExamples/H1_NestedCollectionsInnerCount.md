@@ -20,8 +20,6 @@ select Case.Closed;
   Executed:
    - Input: List     = [ _, _, _, _, _ ]
    - Trace: Original = [ [ 34, 19 ], [ 62, 47, 14, 22, 13 ], [ 64 ], [ 42, 5, 78, 63, 94 ], [ 4, 7, 91, 94 ] ]
-   - WARNING: Empty collection deemed irrelevant at:
-       List: 0, 1, 2, 3, 4
  ==========================================
   !! Expectation Failed: List count <= 4
  ==========================================

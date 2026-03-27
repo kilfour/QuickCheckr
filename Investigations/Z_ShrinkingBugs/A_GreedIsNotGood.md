@@ -1,4 +1,5 @@
 # Greed Is Not Good
+Fixed this one by using Testimonys, see Memory.  
 
 **The Checkr:**  
 ```csharp

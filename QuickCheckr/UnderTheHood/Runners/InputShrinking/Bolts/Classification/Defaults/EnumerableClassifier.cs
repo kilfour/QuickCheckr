@@ -4,6 +4,7 @@ using QuickCheckr.UnderTheHood.Dispatching;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
+using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
@@ -59,14 +60,33 @@ public class EnumerableClassifier : Classifier
             index++;
         }
         context.State.Memory.Commit(info.ExecutionId, info.Key, CloneList.GetSubstituteForType(info.Type, theList));
-        if (elementCount == 0 || values.Any(a => a is not ElementAssumedIrrelevant))
+        // if (elementCount == 0 || values.Any(a => a is not ElementAssumedIrrelevant))
+        // {
+        //     return new CollectionRelevant(values);
+        // }
+        // if (elementCount != 0)
+        // {
+        //     if (!context.State.Memory.HasClassifier(info))
+        //         context.Warn(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
+        // }
+        if (values.Any(a => a is not ElementAssumedIrrelevant))
         {
             return new CollectionRelevant(values);
         }
-        if (elementCount != 0)
+        if (info.Key == info.Path)
         {
-            if (!context.State.Memory.HasClassifier(info))
-                context.Warn(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
+            var substitute = CloneList.GetSubstituteForType(info.Type, theList);
+            var fuzzr = context.State.Memory.GetFuzzr(info.ExecutionId, info.Key);
+            if (fuzzr is not null)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (verifier.RunPassed(info.ExecutionId, info.Key, fuzzr(context.State.FuzzrState).Value)!)
+                    {
+                        return new CollectionRelevant(values);
+                    }
+                }
+            }
         }
         return new InputAssumedIrrelevant();
     }

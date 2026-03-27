@@ -7,7 +7,6 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.B_Reduction.C_ReducersOld.P_Custom;
 
 [DocFile]
-[DocExperimental]
 public class A_Custom : CheckrTest<A_Custom>
 {
     protected override bool Asserts => false;

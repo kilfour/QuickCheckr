@@ -801,16 +801,6 @@ Many more examples focused on shrinking behaviour can be found [here][HoneyIShru
 ### Input Reduction
 [On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  
   
-
-!! WARNING: **Under Construction** !!
-
-> This feature is **actively** being worked on. And as such this notice will disappear soon.  
-> But API and semantics may change somewhat in future versions.  
-> We're ... erm ... you know, ... considering our options.
->  
-> Use with caution in production code. 
-
-  
 After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
 are run on a relevant input (example below).  
 
@@ -1337,16 +1327,6 @@ select Case.Closed;
 ```
 #### Reducers
 ##### Custom Reducers Old
-
-!! WARNING: **Under Construction** !!
-
-> This feature is **actively** being worked on. And as such this notice will disappear soon.  
-> But API and semantics may change somewhat in future versions.  
-> We're ... erm ... you know, ... considering our options.
->  
-> Use with caution in production code. 
-
-  
 Reducers are a relatively new addition to the QuickCheckr arsenal.  
 And you could, rightfully so, point out that they violate it's core philosophy
 of not rewriting what actually happened.  
@@ -1714,16 +1694,6 @@ select Case.Closed;
   
   
 ###### Custom
-
-!! WARNING: **Experimental Feature** !!
-
-> This feature is **experimental**.  
-> Its API, behaviour, or semantics may change substantially in future versions.  
->  
-> Use with caution in production code.  
-> It is included for users who want to experiment and help shape the future of QuickCheckr.
-
-  
 
 **The Checkr:**  
 ```csharp
@@ -2524,8 +2494,6 @@ select Case.Closed;
   Executed:
    - Input: List     = [ _, _, _, _, _ ]
    - Trace: Original = [ [ 34, 19 ], [ 62, 47, 14, 22, 13 ], [ 64 ], [ 42, 5, 78, 63, 94 ], [ 4, 7, 91, 94 ] ]
-   - WARNING: Empty collection deemed irrelevant at:
-       List: 0, 1, 2, 3, 4
  ==========================================
   !! Expectation Failed: List count <= 4
  ==========================================
@@ -2590,7 +2558,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleCollection.cs:73:1
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:50:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -2600,7 +2568,6 @@ select Case.Closed;
  ------------------------------------------------------------
   Executed: Update
    - WARNING: All inputs were considered irrelevant.
-   - WARNING: Empty collection deemed irrelevant at input 'Ints'.
  ================================
   !! Expectation Failed: Has 1
  ================================
@@ -2917,9 +2884,8 @@ select Case.Closed;
  Seed:                    1892439403
  ------------------------------------------------------------
   Executed:
-   - Input: Tuple    = ( [ 42 ], _, [ ] )
+   - Input: Tuple    = ( [ 42 ], _, _ )
    - Trace: Original = ( [ 42, 32 ], [ 17, 69 ], [ ] )
-   - WARNING: Empty collection deemed irrelevant at input 'Tuple'.
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================
@@ -2949,13 +2915,12 @@ select Case.Closed;
  Test:                    Example
  Location:                Q_ObjectOfLists.cs:58:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    2082252864
+ Minimal failing case:    1 execution (after 6 shrinks)
+ Seed:                    1622405126
  ------------------------------------------------------------
   Executed:
-   - Input: Museum   = { A: [ 42 ], C: [ ] }
-   - Trace: Original = { A: [ 42, 64 ], B: [ 84, 7 ], C: [ ] }
-   - WARNING: Empty collection deemed irrelevant at input 'Museum'.
+   - Input: Museum   = { A: [ 42 ] }
+   - Trace: Original = { A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

@@ -33,7 +33,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleCollection.cs:73:1
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:50:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -43,7 +43,6 @@ select Case.Closed;
  ------------------------------------------------------------
   Executed: Update
    - WARNING: All inputs were considered irrelevant.
-   - WARNING: Empty collection deemed irrelevant at input 'Ints'.
  ================================
   !! Expectation Failed: Has 1
  ================================

@@ -58,6 +58,7 @@ select Case.Closed;
 "The expectation 'Expect Throws' threw a 'DelayedResultNullValueAccessedException'.";
 ```
 ## Greed Is Not Good
+Fixed this one by using Testimonys, see Memory.  
 
 **The Checkr:**  
 ```csharp
@@ -86,7 +87,8 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 ## Collections Need To Grow
-Not necessarily a bug, but not a helpful report either.  
+*Top level collections reuse the fuzzr from Input to make this work.  
+For nested collections, more work/thinking is needed.*  
 
 **The Checkr:**  
 ```csharp
@@ -100,47 +102,14 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_CollectionsNeedToGrow.cs:58:1
+ Location:                B_CollectionsNeedToGrow.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    482835926
  ------------------------------------------------------------
   Executed:
+   - Input: List     = [ ]
    - Trace: Original = [ 74, 41, 59 ]
-   - WARNING: All inputs were considered irrelevant.
-   - WARNING: Empty collection deemed irrelevant at input 'List'.
- ==========================================
-  !! Expectation Failed: List count >= 4
- ==========================================
-```
-## Collections Need To Grow
-Adding the custom shrinker solves the problem in the report,
-but really coming up with that solution is not something you want the user to do.
-  
-
-**The Checkr:**  
-```csharp
-from fuzzr in Checkr.Capture(() => Fuzzr.Int().Many(3, 10))
-from input in Checkr.Input("List", fuzzr,
-    // Refuzzing can grow the list.
-    // Supplying values *manually* also.
-    Shrink.OnType<IEnumerable<int>>(s => s.Classify(Try.Fuzzr(fuzzr, 100))))
-from trace in Checkr.Trace("Original", () => input)
-from expect in Checkr.Expect("List count >= 4", () => input.Count() >= 4)
-select Case.Closed;
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                B1_CollectionsNeedToGrow.cs:32:1
- Original failing run:    1 execution
- Seed:                    1134566081
- ------------------------------------------------------------
-  Executed:
-   - Input: List     = [ 87, 79, 83 ]
-   - Trace: Original = [ 87, 79, 83 ]
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================

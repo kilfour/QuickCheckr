@@ -10,6 +10,7 @@ public class H1_NestedCollectionsInnerCount : CheckrTest<H1_NestedCollectionsInn
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocCheckrHeader]
@@ -32,17 +33,11 @@ public class H1_NestedCollectionsInnerCount : CheckrTest<H1_NestedCollectionsInn
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(5, article.Total().Warnings());
-        // Assert.Equal(5, article.ShrinkCount);
+        Assert.Equal(5, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, _, _, _, _ ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ [ 34, 19 ], [ 62, 47, 14, 22, 13 ], [ 64 ], [ 42, 5, 78, 63, 94 ], [ 4, 7, 91, 94 ] ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(1).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(2).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(3).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(4).Read().Value);
-        Assert.Equal("Empty collection deemed irrelevant at input 'List'.", article.Execution(1).Warning(5).Read().Value);
     }
 }

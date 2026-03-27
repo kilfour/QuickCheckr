@@ -7,6 +7,7 @@
   Done, but these tests expose a flaw in some collection shrinking edge cases.  
   ... Investigating.    
   K_TupleOfLists & Q_ObjectOfLists
+  * When a list get's minimized by `EnumerableClassifier` to an empty list, the original fuzzr is now retried *n* times
 
 ### Todo
 * Added max steps to ReductionRunner => throws, just stop and warn instead

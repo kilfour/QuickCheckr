@@ -12,7 +12,6 @@ namespace QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
 [DocLink(typeof(InputShrinking))]
 [DocLink(typeof(DeliberationShrinking))]
 [DocContent("[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  \n")]
-[DocUnderConstruction]
 [DocContent(
 @"After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
 are run on a relevant input (example below).  

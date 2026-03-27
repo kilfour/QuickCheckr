@@ -26,5 +26,5 @@ public static partial class Checkr
     }
 
     private static T? GetValue<T>(string key, Func<FuzzrOf<T>> factory, CheckrState state)
-        => state.Memory.StoreInput(key, () => factory()(state.FuzzrState).Value);
+        => state.Memory.StoreInputFuzzr(key, factory, () => factory()(state.FuzzrState).Value);
 }

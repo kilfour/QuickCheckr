@@ -1,5 +1,6 @@
 # Collections Need To Grow
-Not necessarily a bug, but not a helpful report either.  
+*Top level collections reuse the fuzzr from Input to make this work.  
+For nested collections, more work/thinking is needed.*  
 
 **The Checkr:**  
 ```csharp
@@ -13,15 +14,14 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_CollectionsNeedToGrow.cs:58:1
+ Location:                B_CollectionsNeedToGrow.cs:32:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    482835926
  ------------------------------------------------------------
   Executed:
+   - Input: List     = [ ]
    - Trace: Original = [ 74, 41, 59 ]
-   - WARNING: All inputs were considered irrelevant.
-   - WARNING: Empty collection deemed irrelevant at input 'List'.
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================

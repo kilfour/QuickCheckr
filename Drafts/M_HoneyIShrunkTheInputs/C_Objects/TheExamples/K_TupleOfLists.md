@@ -27,9 +27,8 @@ select Case.Closed;
  Seed:                    1892439403
  ------------------------------------------------------------
   Executed:
-   - Input: Tuple    = ( [ 42 ], _, [ ] )
+   - Input: Tuple    = ( [ 42 ], _, _ )
    - Trace: Original = ( [ 42, 32 ], [ 17, 69 ], [ ] )
-   - WARNING: Empty collection deemed irrelevant at input 'Tuple'.
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

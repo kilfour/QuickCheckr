@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Warnings;
+using QuickFuzzr;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
@@ -63,6 +64,10 @@ public class ShortTermMemory
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
         => Current.StoreInput(key, factory);
+    public T? StoreInputFuzzr<T>(string key, Func<FuzzrOf<T>> fuzzrFactory, Func<T> factory)
+        => Current.StoreInputFuzzr(key, fuzzrFactory, factory);
+    public FuzzrOf<object>? GetFuzzr(int executionId, string key)
+        => memories[executionId].GetFuzzr(key);
     // --------------------------------------------------------------------------
     // Input Showrs
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)

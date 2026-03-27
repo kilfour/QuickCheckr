@@ -6,6 +6,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
 
 [DocFile]
+[DocContent("Fixed this one by using Testimonys, see Memory.")]
 public class A_GreedIsNotGood : CheckrTest<A_GreedIsNotGood>
 {
     protected override bool Asserts => false;

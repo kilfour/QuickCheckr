@@ -4,4 +4,3 @@
     - [Caused By Delayed Result](A_ExpectationExceptions/Sub/B_CausedByDelayedResult.md)
   - [Greed Is Not Good](Z_ShrinkingBugs/A_GreedIsNotGood.md)
   - [Collections Need To Grow](Z_ShrinkingBugs/B_CollectionsNeedToGrow.md)
-  - [Collections Need To Grow](Z_ShrinkingBugs/B1_CollectionsNeedToGrow.md)

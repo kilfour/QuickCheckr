@@ -6,7 +6,7 @@ public record CollectionRelevant(IEnumerable<InputClassification> Elements)
     : InputRelevant(GetReport(Elements), Maybe<Redux>.Nothing())
 {
     private static string GetReport(IEnumerable<InputClassification> elements) =>
-        !elements.Any() ? "[ ]" :
+        !elements.Any(a => a is not ElementAssumedIrrelevant) ? "[ ]" :
         $"[ {string.Join(", ",
             elements.Where(a => a is not ElementAssumedIrrelevant)
                 .Select(a => a is InputRelevant relevant ? relevant.Report : "_"))} ]";

@@ -81,10 +81,10 @@ public class Bound5 : CheckrTest<Bound5>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        // Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Bound5", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("( [ ], [ -21169 ], [ ], [ -13193 ], [ ] )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( _, [ -21169 ], _, [ -13193 ], _ )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("( [ ], [ -8290, -21169 ], [ ], [ -13193 ], [ ] )", article.Execution(1).Trace(1).Read().Value);
     }
