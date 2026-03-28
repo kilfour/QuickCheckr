@@ -10,33 +10,29 @@ public class TheEditor
     private static Flow<Flow> EmitIf(bool flag, string line)
         => Pulse.TraceIf(flag, () => $"        {line}");
 
-    private static readonly Flow<(int, int)> Warning =
-        from cursor in Pulse.Start<(int executionIndex, int warningIndex)>()
+    private static Flow<Flow> Warning((int executionIndex, int warningIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let warningArticle = article.Execution(cursor.executionIndex).Warning(cursor.warningIndex).Read()
         from value in Emit($"Assert.Equal(\"{warningArticle.Value}\", article.Execution({cursor.executionIndex}).Warning({cursor.warningIndex}).Read().Value);")
-        select cursor;
+        select Flow.Continue;
 
-    private static readonly Flow<(int, int)> Trace =
-        from cursor in Pulse.Start<(int executionIndex, int traceIndex)>()
+    private static Flow<Flow> Trace((int executionIndex, int traceIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
         from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
-        select cursor;
+        select Flow.Continue;
 
-    private static readonly Flow<(int, int)> PoolTrace =
-        from cursor in Pulse.Start<(int executionIndex, int traceIndex)>()
+    private static Flow<Flow> PoolTrace((int executionIndex, int traceIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let poolTraceArticle = article.Execution(cursor.executionIndex).PoolTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{poolTraceArticle.Label}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{poolTraceArticle.Value}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Value);")
         from labeled in EmitIf(!poolTraceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Labeled);")
-        select cursor;
+        select Flow.Continue;
 
-    private static readonly Flow<(int, int)> Input =
-        from cursor in Pulse.Start<(int executionIndex, int inputIndex)>()
+    private static Flow<Flow> Input((int executionIndex, int inputIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let inputArticle = article.Execution(cursor.executionIndex).Input(cursor.inputIndex).Read()
         from inputLabel in Emit($"Assert.Equal(\"{inputArticle.Label}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Label);")
@@ -44,7 +40,7 @@ public class TheEditor
         from inputOriginal in EmitIf(inputArticle.Original.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Original.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Original.Value);")
         from inputRedux in EmitIf(inputArticle.Redux.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Redux.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Redux.Value);")
         from labeled in EmitIf(!inputArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Labeled);")
-        select cursor;
+        select Flow.Continue;
 
     private static object ReplaceDoubleQuotes(object value)
     {
@@ -53,17 +49,14 @@ public class TheEditor
         return value;
     }
 
-    private static readonly Flow<(int, int)> Action =
-        from cursor in Pulse.Start<(int executionIndex, int actionIndex)>()
+    private static Flow<Flow> Action((int executionIndex, int actionIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let actionArticle = article.Execution(cursor.executionIndex).Action(cursor.actionIndex).Read()
         from action in Emit($"Assert.Equal(\"{actionArticle.Label}\", article.Execution({cursor.executionIndex}).Action({cursor.actionIndex}).Read().Label);")
-        select cursor;
+        select Flow.Continue;
 
-    private static readonly Flow<int> Execution =
-        from index in Pulse.Start<int>()
+    private static Flow<Flow> Execution(int index) =>
         from article in Pulse.Draw<Article>()
-
         let executionDeposition = article.Execution(index).Read()
         from execution in Emit($"Assert.Equal({executionDeposition.ExecutionId}, article.Execution({index}).Read().ExecutionId);")
         from times in EmitIf(article.Execution(index).Times > 1, $"Assert.Equal({article.Execution(index).Times}, article.Execution({index}).Times);")
@@ -72,25 +65,22 @@ public class TheEditor
         from poolTraces in Pulse.ToFlow(PoolTrace, Enumerable.Range(1, executionDeposition.PoolTraceDepositions.Count).Select(a => (index, a)))
         from traces in Pulse.ToFlow(Trace, Enumerable.Range(1, executionDeposition.TraceDepositions.Count).Select(a => (index, a)))
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
-        select index;
+        select Flow.Continue;
 
-    private static readonly Flow<int> UncheckedExpectation =
-        from index in Pulse.Start<int>()
+    private static Flow<Flow> UncheckedExpectation(int index) =>
         from article in Pulse.Draw<Article>()
         let uncheckedExpectationDeposition = article.UncheckedExpectation(index).Read()
         from label in Emit($"Assert.Equal(\"{uncheckedExpectationDeposition.Label}\", article.UncheckedExpectation({index}).Read().Label);")
-        select index;
+        select Flow.Continue;
 
-    private static readonly Flow<int> PassedExpectation =
-        from index in Pulse.Start<int>()
+    private static Flow<Flow> PassedExpectation(int index) =>
         from article in Pulse.Draw<Article>()
         let passedExpectationDeposition = article.PassedExpectation(index).Read()
         from label in Emit($"Assert.Equal(\"{passedExpectationDeposition.Label}\", article.PassedExpectation({index}).Read().Label);")
         from times in Emit($"Assert.Equal({passedExpectationDeposition.TimesPassed}, article.PassedExpectation({index}).Read().TimesPassed);")
-        select index;
+        select Flow.Continue;
 
-    public readonly static Flow<Article> ProofReads =
-        from article in Pulse.Start<Article>()
+    public static Flow<Flow> ProofReads(Article article) =>
         from prime in Pulse.Prime(() => article)
         from failedExpectation in EmitIf(
             article.FailureDescription() is not null,
@@ -127,5 +117,5 @@ public class TheEditor
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
         from uncheckedExpectations in Pulse.ToFlow(UncheckedExpectation, Enumerable.Range(1, article.Total().UncheckedExpectations()))
         from passedExpectations in Pulse.ToFlow(PassedExpectation, Enumerable.Range(1, article.Total().PassedExpectations()))
-        select article;
+        select Flow.Continue;
 }

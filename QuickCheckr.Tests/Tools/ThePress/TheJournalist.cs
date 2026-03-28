@@ -35,7 +35,7 @@ public static class TheJournalist
     }
 
     public static void Transcribes(Article article) =>
-        Signal.From(TheEditor.ProofReads)
+        Signal.From<Article>(TheEditor.ProofReads)
             .SetArtery(FileLog.Write())
             .Pulse(article);
 }
