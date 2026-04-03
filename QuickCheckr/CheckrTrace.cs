@@ -15,17 +15,6 @@ public static partial class Checkr
             return CheckrResult.CaseOnly(state);
         };
 
-    // / <summary>
-    // / Records a named trace value using a custom formatter.  
-    // / Use when you want full control over how an object is rendered in the report.
-    // / </summary>
-    // public static CheckrOf<Case> Trace<T>(string key, T? obj, Func<string, string> formatter) =>
-    //     state =>
-    //     {
-    //         state.Memory.StoreTrace(key, () => formatter(state.ManOfWealthAndTaste.IntroduceThis(obj)));
-    //         return CheckrResult.CaseOnly(state);
-    //     };
-
     /// <summary>
     /// Records a named trace string.  
     /// Use for arbitrary text or computed diagnostics that help illuminate the run.

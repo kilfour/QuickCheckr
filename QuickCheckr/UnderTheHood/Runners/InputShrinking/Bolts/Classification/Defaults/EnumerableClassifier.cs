@@ -60,15 +60,6 @@ public class EnumerableClassifier : Classifier
             index++;
         }
         context.State.Memory.Commit(info.ExecutionId, info.Key, CloneList.GetSubstituteForType(info.Type, theList));
-        // if (elementCount == 0 || values.Any(a => a is not ElementAssumedIrrelevant))
-        // {
-        //     return new CollectionRelevant(values);
-        // }
-        // if (elementCount != 0)
-        // {
-        //     if (!context.State.Memory.HasClassifier(info))
-        //         context.Warn(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
-        // }
         if (values.Any(a => a is not ElementAssumedIrrelevant))
         {
             return new CollectionRelevant(values);
