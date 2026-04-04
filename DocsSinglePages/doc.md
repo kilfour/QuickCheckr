@@ -909,7 +909,8 @@ All configuration options live in the `QuickCheckr.Protocol` namespace.
     ShrinkMode = ShrinkMode.Default,
     ReportMode = ReportMode.Default,
     DeliberationPolicy = null,
-    DeliberationTarget = null
+    DeliberationTarget = null,
+    MaxStepsPerReducer = 1024
 }
 ```
 #### Filing Evidence
@@ -958,7 +959,7 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
 {
     public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
 
-    public void StoreCaseFile(string path, CaseFile caseFile, Flow<CaseFile> styleGuide)
+    public void StoreCaseFile(string path, CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
         => CaseFiles[path] = caseFile;
 
     public string RemoveFileCalledWith { get; private set; } = string.Empty;
