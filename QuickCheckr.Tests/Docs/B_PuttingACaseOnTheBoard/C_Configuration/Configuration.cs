@@ -48,7 +48,8 @@ public class Configuration
             ShrinkMode = ShrinkMode.Default,
             ReportMode = ReportMode.Default,
             DeliberationPolicy = null,
-            DeliberationTarget = null
+            DeliberationTarget = null,
+            MaxStepsPerReducer = 1024
         };
     }
 

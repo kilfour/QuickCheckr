@@ -129,7 +129,13 @@ public class ReducerSelector
         IEnumerable<Func<Func<ReductionResult, Reduction>>> reducerFactories)
     {
         var reducer = reducerFactories.First()();
-        var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+        var step = ReductionRunner.ForReducer(
+            reducer,
+            info.Key,
+            info.Path,
+            info.Value,
+            a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
+            context);
         foreach (var reducerFactory in reducerFactories.Skip(1))
         {
             reducer = reducerFactory();
@@ -140,7 +146,13 @@ public class ReducerSelector
                 Reduction.Unbounded unbounded => unbounded.Result,
                 _ => info.Value
             };
-            step = ReductionRunner.ForReducer(reducer, value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+            step = ReductionRunner.ForReducer(
+                reducer,
+                info.Key,
+                info.Path,
+                value,
+                a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
+                context);
         }
         return ReduxFromStep(info, context, step);
     }
@@ -148,7 +160,13 @@ public class ReducerSelector
     private static Maybe<Redux> Reduce(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
     {
         var reducer = reducerFactory();
-        var step = ReductionRunner.ForReducer(reducer, info.Value, a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a));
+        var step = ReductionRunner.ForReducer(
+            reducer,
+            info.Key,
+            info.Path,
+            info.Value,
+            a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
+            context);
         return ReduxFromStep(info, context, step);
     }
 

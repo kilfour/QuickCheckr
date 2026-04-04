@@ -1,21 +1,14 @@
 ## Next version: ## 0.0.10 : Excuse My Domain Specific Language
-* QuickTestr : FsCheck-style DSL
-* QuickWebr: web-api DSL
  
 ### Doing
-* Check Lists in Objects and Tuples (empty should be '_' ?)  
-  Done, but these tests expose a flaw in some collection shrinking edge cases.  
-  ... Investigating.    
-  K_TupleOfLists & Q_ObjectOfLists
-  * When a list get's minimized by `EnumerableClassifier` to an empty list, the original fuzzr is now retried *n* times
 
 ### Todo
-* Added max steps to ReductionRunner => throws, just stop and warn instead
+
+
+### Wish List
 * Doc/test/improve `Reduce.Towards()`.
 * Auto DeliberationPolicy for Testr
   Derive default deliberation policy from input type
-
-### Wish List
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
 * SystemCheckr : System/Domain checking DSL, needs time in the oven  
@@ -25,6 +18,8 @@
 * Ouroboros Testing : We need a better `InputDeposition`
 * Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
 * Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
+* Improve nested collection shrinking/regrowth  
+  (current model struggles when classification collapses to empty).
 
 ### Done/Ready for Changelog after review
 * Added shrinking support for Tuples.
@@ -33,7 +28,10 @@
 * Introduced pluggable report rendering via `Flow<CaseFile>`.
 * Added simplified report flow for Testr.
 * Removed Internal Affairs, it has served it's purpose.
-* Improved shrinking top level Collections.
+* Improved shrinking top level Collections.  
+  **Known limitation:** nested collection shrinking/regrowth still has edge cases when classification collapses to empty and the domain really needs regrowth.
+* Added `MaxStepsPerReducer` to configuration.  
+  If a `Reducer` exceeds this value it stops and logs a warning.
 
 ## 0.0.11 : All Aboard
 * More in-built reducers

@@ -26,6 +26,7 @@ public record CheckrConfig
                 ReportMode = ReportMode.Default,
                 DeliberationPolicy = null,
                 DeliberationTarget = null,
+                MaxStepsPerReducer = 1024
                 // StyleGuide = The.CourtStyleGuide,
             };
     }
@@ -50,4 +51,6 @@ public record CheckrConfig
     public required ICustodian Custodian { get; init; }
 
     public Func<CaseFile, Flow<Flow>> StyleGuide { get; init; } = The.CourtStyleGuide;
+
+    public required int MaxStepsPerReducer { get; init; }
 }

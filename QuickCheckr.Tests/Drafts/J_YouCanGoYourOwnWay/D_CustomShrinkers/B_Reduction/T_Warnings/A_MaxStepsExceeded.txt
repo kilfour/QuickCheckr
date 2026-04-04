@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_MaxStepsExceeded.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1719639579
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 42
+            Redux   30
+   - WARNING: Reducer stopped at Input. Max steps (10) exceeded.
+ =====================================
+  !! Expectation Failed: Input <= 0
+ =====================================

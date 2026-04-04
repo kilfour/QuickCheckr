@@ -9,7 +9,7 @@ namespace QuickCheckr.UnderTheHood;
 public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.Seed);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed);
 
     public int Seed => State.FuzzrState.Seed;
 

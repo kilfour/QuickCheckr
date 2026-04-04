@@ -8,6 +8,7 @@ namespace QuickCheckr.UnderTheHood;
 
 public class CheckrState(
     int desiredNumberOfExecutions,
+    int maxStepsPerReducer,
     int? seed = null)
 {
     public State FuzzrState { get; init; } = seed is null ? new() : new(seed.Value);
@@ -27,6 +28,9 @@ public class CheckrState(
 
     private bool runStopped = false;
     public bool RunStopped => runStopped;
+
+    public int MaxStepsPerReducer { get; } = maxStepsPerReducer;
+
     public void StopRun() { runStopped = true; }
 
     public bool IsThisTheRunsLastExecution()

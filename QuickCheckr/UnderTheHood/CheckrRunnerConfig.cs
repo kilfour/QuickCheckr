@@ -16,14 +16,16 @@ public record CheckrRunnerConfig
         DeliberationPolicy = config.DeliberationPolicy;
         DeliberationTarget = config.DeliberationTarget;
         StyleGuide = config.StyleGuide;
+        MaxStepsPerReducer = config.MaxStepsPerReducer;
     }
 
     public int? Seed { get; set; } = null;
-    public string FileAs { get; init; }
-    public ICustodian Custodian { get; init; }
-    public ShrinkMode ShrinkMode { get; init; }
-    public ReportMode ReportMode { get; init; }
-    public Func<ICaseFileSummary, int>? DeliberationPolicy { get; init; }
+    public string FileAs { get; }
+    public ICustodian Custodian { get; }
+    public ShrinkMode ShrinkMode { get; }
+    public ReportMode ReportMode { get; }
+    public Func<ICaseFileSummary, int>? DeliberationPolicy { get; }
     public int? DeliberationTarget { get; init; }
-    public Func<CaseFile, Flow<Flow>> StyleGuide { get; init; }
+    public Func<CaseFile, Flow<Flow>> StyleGuide { get; }
+    public int MaxStepsPerReducer { get; }
 }
