@@ -17,8 +17,8 @@ public class GatheringEvidenceCaseFileCompareExtra
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
                 .AddInputDeposition(new InputDeposition(true, "Label", 0)));
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false)); // <= should not matter
     }
 
     [Fact]
@@ -34,8 +34,8 @@ public class GatheringEvidenceCaseFileCompareExtra
             .AddExecutionDeposition(new ExecutionDeposition(2)
                 .AddInputDeposition(new InputDeposition(true, "Label", 0)))
             .AddExecutionDeposition(new ExecutionDeposition(3));
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other)); // <= should not matter
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false)); // <= should not matter
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class GatheringEvidenceCaseFileCompareExtra
                 .AddActionDeposition(new ActionDeposition("Action Two"))
                 .AddInputDeposition(new InputDeposition(true, "Input Two", 4)));
 
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 
@@ -116,7 +116,7 @@ public class GatheringEvidenceCaseFileCompareExtra
                 .AddActionDeposition(new ActionDeposition("Action Two"))
                 .AddInputDeposition(new InputDeposition(true, "Input Two", 6)));
 
-        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other));
+        Assert.True(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

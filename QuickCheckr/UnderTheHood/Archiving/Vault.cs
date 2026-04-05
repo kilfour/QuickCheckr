@@ -78,16 +78,6 @@ public class EvidenceVault : Vault
         custodian.StoreVaultEntries(evidencePath, entries);
     }
 
-    // private static VaultEntry ParseVaultEntry(string line)
-    // {
-    //     var parts = line.Split(',');
-    //     return parts.Length == 3 &&
-    //         int.TryParse(parts[0], out var seed) &&
-    //         int.TryParse(parts[1], out var executions)
-    //         ? new VaultEntry(seed, executions, parts[2])
-    //         : null!;
-    // }
-
     private void Remove(VaultEntry vaultEntry)
     {
         if (entries.Remove(vaultEntry))
@@ -95,15 +85,4 @@ public class EvidenceVault : Vault
             custodian.LogVaultAction(logPath, $"Removed Seed: {vaultEntry.Seed}.");
         }
     }
-
-    // private void Save()
-    // {
-    //     (logPath, 
-    //     foreach (var entry in entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun},{a.Failure}"))
-    //     {
-    //         evidenceRecorder.Append(entry);
-    //     }
-    //     if (entries.Count == 0)
-    //         evidenceRecorder.Clear();
-    // }
 }
