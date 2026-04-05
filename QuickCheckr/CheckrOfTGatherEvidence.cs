@@ -14,7 +14,17 @@ public static class CheckrOfTGatherEvidence
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        bool ordered = false)
+        Func<ICaseFileSummary, int>? fingerprint = null)
+        => GatherEvidence(checkr, investigationCount, runs, executionsPerRun, configure, false, fingerprint);
+
+    public static void GatherEvidence(
+        this CheckrOf<Case> checkr,
+        InvestigationCount investigationCount,
+        CheckrOfTRun.RunCount runs,
+        CheckrOfTRun.ExecutionCount executionsPerRun,
+        Func<CheckrConfig, CheckrConfig> configure,
+        bool ordered,
+        Func<ICaseFileSummary, int>? fingerprint = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
@@ -35,9 +45,9 @@ public static class CheckrOfTGatherEvidence
         var caseFilesToReport = new List<CaseFile>();
         foreach (var caseFile in caseFiles)
         {
-            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
+            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered, fingerprint)))
                 continue;
-            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
+            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered, fingerprint)))
                 continue;
             caseFilesToReport.Add(caseFile);
         }

@@ -5,16 +5,23 @@ namespace QuickCheckr.EvidenceGathering;
 
 public class DeskOfficer
 {
-    public static bool AreCaseFilesSimilar(CaseFile caseFile, CaseFile other, bool ordered = false)
+    public static bool AreCaseFilesSimilar(CaseFile caseFile, CaseFile other, bool ordered, Func<ICaseFileSummary, int>? fingerprint = null)
     {
         if (caseFile.FailureDeposition.GetFailureDescription() != other.FailureDeposition.GetFailureDescription())
             return false;
         if (caseFile.ExecutionCount != other.ExecutionCount)
             return false;
-        if (ordered)
-            return Ordered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions);
-        else
-            return UnOrdered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions);
+        var defaultCompare =
+            ordered switch
+            {
+                true => Ordered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions),
+                false => UnOrdered.ExecutionDepositionsAreSimilar(caseFile.ExecutionDepositions, other.ExecutionDepositions)
+            };
+        if (defaultCompare && fingerprint != null)
+        {
+            if (fingerprint(caseFile) != fingerprint(other)) return false;
+        }
+        return defaultCompare;
     }
 
     private class UnOrdered

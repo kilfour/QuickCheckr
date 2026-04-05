@@ -1,9 +1,28 @@
-## Next version: ...
+## Next version: 0.0.11: Watching the Detectives
  
 ### Doing
+* Domain aware, customizable, string reduction.
+* [Fingerprint Spike](./QuickCheckr.Tests/Investigations/G_GatheringEvidence/A_Customized.cs)
 
 ### Todo
-
+* Added Deliberator: 
+  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
+  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
+  Recap : 
+    * Execution Scope: 1 Execution.
+    * Run Scope: 1 Run, possibly many Executions.
+    * Case Scope: Multiple Runs.  
+      Can lead to :
+        * Failing Run => CaseFile
+        * All Runs Pass => Case Summary
+    * Investigation Scope:
+      * Multiple Cases investigated, only through GatherEvidence for now.
+      * We could expand this.  
+        For instance:  
+        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
+* Duplicate code in CheckrOfTGatherEvidence and Vault
+* DeskOfficer seems a bit wastefull with all those lists
+  * fixed ordered version
 
 ### Wish List
 * Doc/test/improve `Reduce.Towards()`.
@@ -24,7 +43,7 @@
 ### Done/Ready for Changelog after review
 
 
-## 0.0.11 : All Aboard
+## 0.0.12 : All Aboard
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
@@ -117,27 +136,8 @@
       * `int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;`;  
       * `int InputsNamed<T>(string key, Func<T, int> calculateScore)`;
     * DeliberationTarget
-* Added Deliberator: 
-  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
-  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
-  Recap : 
-    * Execution Scope: 1 Execution.
-    * Run Scope: 1 Run, possibly many Executions.
-    * Case Scope: Multiple Runs.  
-      Can lead to :
-        * Failing Run => CaseFile
-        * All Runs Pass => Case Summary
-    * Investigation Scope:
-      * Multiple Cases investigated, only through GatherEvidence for now.
-      * We could expand this.  
-        For instance:  
-        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
-
-        Probably not now though.
 * Try to remove multiple execution shrinking passes.
-* Duplicate code in CheckrOfTGatherEvidence and Vault
-* DeskOfficer seems a bit wastefull with all those lists
-  * fixed ordered version
+
 * Compile the CaseFile
 
 ### Already Considered
