@@ -19,7 +19,7 @@ public abstract class FileCustodian : ICustodian
     public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
     {
         if (entries.Any())
-            GetFileLogArtery(path).Absorb([.. entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun}")]);
+            GetFileLogArtery(path).ClearFile().Absorb([.. entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun}")]);
         else
             RemoveFile(path);
     }
