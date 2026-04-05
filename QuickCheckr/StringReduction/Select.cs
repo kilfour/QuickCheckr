@@ -1,17 +1,18 @@
 using QuickCheckr.StringReduction.Bolts;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.StringReduction;
-
-public interface ISelector
-{
-    ISelection[] Extract(string input);
-    Func<Reducer<string>> Remove();
-}
 
 public static class Select
 {
     public static BalancedCharSelectorBuilder Balanced(char open, char close) => new(open, close);
+
+    public static ISelector While(Func<char, bool> predicate)
+        => new WhileSelector(predicate);
+
+    public static ISelector OneOf(params char[] options)
+        => new SkipWhile(a => !options.Contains(a)).OneOf(options);
+    //=> new WhileSelector(a => !options.Contains(a), null).OneOf(options);
+
 
     public class BalancedCharSelectorBuilder(char open, char close)
     {
@@ -20,4 +21,5 @@ public static class Select
         public ISelector Delimiters() => new DelimiterCharSelector(open, close);
     }
 }
+
 

@@ -1,26 +1,20 @@
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
-
 namespace QuickCheckr.StringReduction.Bolts;
 
-
-public abstract record BalancedSelector(char Open, char Close) : ISelector
+public abstract class BalancedSelector(char Open, char Close) : BaseSelector, ISelector
 {
-    public ISelection[] Extract(string input)
+    public ISelection? Extract(string input)
     {
-        if (string.IsNullOrEmpty(input)) return [];
-        List<ISelection>? selections = null;
+        if (string.IsNullOrEmpty(input)) return null;
         var left = input.IndexOf(Open);
-        while (left >= 0)
+        if (left >= 0)
         {
             var right = FindMatchingRight(input, left);
             if (right >= 0)
             {
-                selections ??= [];
-                selections.Add(GetSelection(left, right));
+                return GetSelection(left, right);
             }
-            left = input.IndexOf(Open, left + 1);
         }
-        return selections is null ? [] : [.. selections];
+        return null;
     }
 
     private int FindMatchingRight(string text, int leftIndex)
@@ -40,44 +34,23 @@ public abstract record BalancedSelector(char Open, char Close) : ISelector
     }
 
     protected abstract ISelection GetSelection(int left, int right);
-
-    public Func<Reducer<string>> Remove()
-        => () => new MinimizeStringFactory(this).Reduce;
-
-    private class MinimizeStringFactory(ISelector selector)
-    {
-        private int index = -1;
-        private ISelection[] selections = [];
-        public Reduction Reduce(ReductionResult result)
-        {
-            var str = result.ValueAs<string>();
-            if (index == -1)
-                selections = selector.Extract(str);
-            if (result.Passed)
-                return new Reduction.Stop(str);
-            index++;
-            if (index >= selections.Length)
-                return new Reduction.Unbounded(str);
-            return new Reduction.Next(selections[index].Remove(str));
-        }
-    }
 }
 
-public record InsideCharSelector(char Open, char Close)
+public class InsideCharSelector(char Open, char Close)
     : BalancedSelector(Open, Close), ISelector
 {
     protected override ISelection GetSelection(int left, int right)
         => new Slice(left + 1, right - left - 1);
 }
 
-public record EnclosedCharSelector(char Open, char Close)
+public class EnclosedCharSelector(char Open, char Close)
     : BalancedSelector(Open, Close), ISelector
 {
     protected override ISelection GetSelection(int left, int right)
         => new Slice(left, right - left + 1);
 }
 
-public record DelimiterCharSelector(char Open, char Close)
+public class DelimiterCharSelector(char Open, char Close)
     : BalancedSelector(Open, Close), ISelector
 {
     protected override ISelection GetSelection(int left, int right)

@@ -136,6 +136,7 @@ public class ReducerSelector
             info.Value,
             a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
             context);
+        var witnessed = step is Reduction.Stop;
         foreach (var reducerFactory in reducerFactories.Skip(1))
         {
             reducer = reducerFactory();
@@ -153,7 +154,10 @@ public class ReducerSelector
                 value,
                 a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
                 context);
+            witnessed = witnessed || step is Reduction.Stop;
         }
+        if (witnessed && step is Reduction.Unbounded finalUnbounded)
+            return ReduxFromValue(info, context, finalUnbounded.Result);
         return ReduxFromStep(info, context, step);
     }
 
