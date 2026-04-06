@@ -98,6 +98,6 @@
 * Added `MaxStepsPerReducer` to configuration.  
   If a `Reducer` exceeds this value it stops and logs a warning.
 
-### 0.0.11 : SELECT Might Still Be Broken
+### 0.0.11-Preview1 : SELECT Might Still Be Broken
 * Added support for domain aware string reduction.  
   * Experimental and prone to change, but to useful not to put out there. 
