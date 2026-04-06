@@ -67,4 +67,21 @@ public class BalancedEnclosedSelectorTests
         Assert.Equal(4, slice.Start);
         Assert.Equal(13, slice.Length);
     }
+
+    [Fact]
+    public void AfterOther()
+    {
+        var input = "1 + (2 + a(3 * 4))";
+        var selection = Select.OneOf('a').Balanced('(', ')').Enclosed().Extract(input);
+        var slice = Assert.IsType<Slice>(selection);
+        Assert.Equal("1 + (2 + )", slice.Remove(input));
+    }
+
+    [Fact]
+    public void AfterOtherNoSelection()
+    {
+        var input = "1 + (2 + a(3 * 4))";
+        var selection = Select.OneOf('b').Balanced('(', ')').Enclosed().Extract(input);
+        Assert.Null(selection);
+    }
 }

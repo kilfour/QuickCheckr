@@ -1,16 +1,37 @@
 namespace QuickCheckr.StringReduction.Bolts;
 
-public abstract class BalancedSelector(char Open, char Close) : BaseSelector, ISelector
+public abstract class BalancedSelector(char Open, char Close, ISelector? leftSelector) : BaseSelector, ISelector
 {
-    public ISelection? Extract(string input)
+    public ISelection? Extract(string text)
     {
-        if (string.IsNullOrEmpty(input)) return null;
-        var left = input.IndexOf(Open);
+        var keep = false;
+        var search = 0;
+        var start = 0;
+        if (leftSelector != null)
+        {
+            var selection = leftSelector.Extract(text);
+            if (selection is Slice slice)
+            {
+                search = slice.Start + slice.Length;
+                start = slice.Start;
+                keep = true;
+            }
+            else return null;
+        }
+        if (string.IsNullOrEmpty(text)) return null;
+        var left = text.IndexOf(Open, start);
         if (left >= 0)
         {
-            var right = FindMatchingRight(input, left);
+            var right = FindMatchingRight(text, left);
             if (right >= 0)
             {
+                if (keep)
+                {
+                    if (left != search)
+                        return null;
+                    else
+                        return GetSelection(start, right);
+                }
                 return GetSelection(left, right);
             }
         }
@@ -36,22 +57,22 @@ public abstract class BalancedSelector(char Open, char Close) : BaseSelector, IS
     protected abstract ISelection GetSelection(int left, int right);
 }
 
-public class InsideCharSelector(char Open, char Close)
-    : BalancedSelector(Open, Close), ISelector
+public class InsideCharSelector(char Open, char Close, ISelector? left)
+    : BalancedSelector(Open, Close, left), ISelector
 {
     protected override ISelection GetSelection(int left, int right)
         => new Slice(left + 1, right - left - 1);
 }
 
-public class EnclosedCharSelector(char Open, char Close)
-    : BalancedSelector(Open, Close), ISelector
+public class EnclosedCharSelector(char Open, char Close, ISelector? left)
+    : BalancedSelector(Open, Close, left), ISelector
 {
     protected override ISelection GetSelection(int left, int right)
         => new Slice(left, right - left + 1);
 }
 
-public class DelimiterCharSelector(char Open, char Close)
-    : BalancedSelector(Open, Close), ISelector
+public class DelimiterCharSelector(char Open, char Close, ISelector? left)
+    : BalancedSelector(Open, Close, left), ISelector
 {
     protected override ISelection GetSelection(int left, int right)
         => new IndexSet([left, right]);

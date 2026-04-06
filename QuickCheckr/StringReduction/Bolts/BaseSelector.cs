@@ -8,6 +8,7 @@ public abstract class BaseSelector : IBaseSelector
     public ISelector Or(ISelector other) => new OrSelector(AsISelector(), other);
     public ISelector While(Func<char, bool> predicate) => new WhileSelector(predicate, AsISelector());
     public ISelector OneOf(params char[] options) => new OneOfSelector(AsISelector(), options);
+    public BalancedCharSelectorBuilder Balanced(char open, char close) => new(open, close, AsISelector());
 
     public Func<Reducer<string>> Remove() => () => new Factory(
                 AsISelector(),
