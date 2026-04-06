@@ -347,11 +347,7 @@ And ofcourse, there's an edge-case.
 Another non-stateful testing example. And one where a Reducer is absolutely necessary.
 
 I used this one, during a course I was teaching to verify student code,
-because I did not feel like combing through all the code looking for bugs manually.  
-So you could say it's a real world example, and I deliberately did not clean up the code.  
-
-I had a working model, so all that was needed was a Fuzzr, and a way to get to a minimal fail-case.  
-The Reducer is far from perfect, but by adding a deliberation policy, this test quickly and reliably came up with said minimal fail-case.  
+because I did not feel like combing through all the code looking for bugs manually. 
 
   
 **Demonstrates:**
@@ -363,8 +359,14 @@ The Reducer is far from perfect, but by adding a deliberation policy, this test 
 **The Checkr:**  
 ```csharp
 from input in Checkr.Input("Expression",
-        ParseFuzzr.Expression(),
-        Shrink.OnType<string>(s => s.Simplify(Reduce.Function<string>(ParseReducer.Reducer, true))))
+    ParseFuzzr.Expression(),
+    Shrink.OnType<string>(s => s.Simplify([
+        Select.While(char.IsWhiteSpace).Remove(),
+        Select.Balanced('(', ')').Delimiters().Remove(),
+        Select.While(char.IsDigit).OneOf(operators).Remove(),
+        Select.OneOf(operators).While(char.IsDigit).Remove(),
+        Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
+    ])))
 from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
 from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
 from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
@@ -389,15 +391,15 @@ protected override CheckrConfig Configure(CheckrConfig config)
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ParsingNumbers.cs:81:1
+ Location:                ParsingNumbers.cs:32:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1166603196
+ Seed:                    640099888
  ------------------------------------------------------------
   Executed: Oracle Result, SUT Result
-   - Expression = "- (3 * 1 - 2 * 2 / 2 * 3) ^ (1 * 1 - 2 * 3 / 2) ^ (1 / 1) ^ 1 - (2 / 3 * 1 * 2 + 1 + 2 / 3 / 2) * (1 / 2 / 3 * 3 - 1) ^ 3"
-     Redux        "-2^2"
-   - Compare    = Oracle: 0,2222222222222222 /= SUT: 0,4444444444444444
+   - Expression = "1 ^ (3 * 2 + 2 - 3 / 3 * 2) - (1 / 1 + 1 * 1 + 1 * 1 / 2 * 2 + 3 / 3) ^ 1 / - 1 ^ 2"
+     Redux        "-1^2"
+   - Compare    = Oracle: 5 /= SUT: -3
  ================================
   !! Expectation Failed: Match
  ================================
@@ -473,40 +475,4 @@ This Fuzzr generates a valid numeric expression string of variable length.
 - 3
 - 2 * 1 * 2 * 3 - 1 * 1 * 1 / 3 + 2
 (1 - 1 - 1 / 2) ^ - 2 ^ 3 / (1 / 2 * 3 / 2 - 1 * 2 / 1) ^ 2 - - 2 ^ 2 + - 3 ^ 3
-```
-
-**The Reducer:**  
-```csharp
-public static class ParseReducer
-{
-    public static IEnumerable<string> Reducer(string expr)
-    {
-        foreach (var item in RemoveOperations(expr))
-            yield return item;
-        string output = Regex.Replace(expr, @"\([^()]*\)", "2");
-        yield return output;
-        foreach (var item in RemoveOperations(output))
-            yield return item;
-    }
-    private static IEnumerable<string> RemoveOperations(string expr)
-    {
-        var tokens = Lexer.Tokenize(expr);
-        tokens = tokens.Where(a => a.Kind != TokenKind.LParen && a.Kind != TokenKind.RParen);
-        yield return TokensToString(tokens);
-        var list = tokens.ToList();
-        for (int i = 0; i < list.Count; i++)
-        {
-            yield return TokensToString(tokens.Skip(i));
-            if (list[i].IsOperator && !list[i + 1].IsOperator)
-                yield return TokensToString(tokens.Skip(i + 1));
-        }
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            if (list[i].IsOperator && !list[i - 1].IsOperator)
-                yield return TokensToString(tokens.Take(i));
-        }
-    }
-    private static string TokensToString(IEnumerable<Token> tokens)
-        => string.Join("", tokens.Select(a => a.Text));
-}
 ```
