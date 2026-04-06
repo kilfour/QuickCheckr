@@ -18,8 +18,8 @@ because I did not feel like combing through all the code looking for bugs manual
 public class ParsingNumbers : CheckrTest<ParsingNumbers>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocContent(

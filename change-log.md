@@ -86,7 +86,7 @@
 * Added more complete Pool operation reporting in the `.qr` file.
 * Added warning when a reducer does not encounter a value that makes the run pass.
 
- ### 0.0.10 : Excuse My Domain Specific Language
+### 0.0.10 : Excuse My Domain Specific Language
 * Added shrinking support for Tuples.
 * Added shrinking support for Fields.
 * Added a warning when conditional expectations are never exercised during a run.
@@ -97,3 +97,7 @@
   **Known limitation:** nested collection shrinking/regrowth still has edge cases when classification collapses to empty and the domain really needs regrowth.
 * Added `MaxStepsPerReducer` to configuration.  
   If a `Reducer` exceeds this value it stops and logs a warning.
+
+### 0.0.11 : SELECT Might Still Be Broken
+* Added support for domain aware string reduction.  
+  * Experimental and prone to change, but to useful not to put out there. 

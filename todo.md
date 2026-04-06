@@ -1,4 +1,4 @@
-## Next version: 0.0.11: Strings and Things
+## Next version: 0.0.12: Strings and Things
  
 ### Doing
 * Domain aware, customizable, string reduction.
@@ -25,7 +25,7 @@
 
 ### Done/Ready for Changelog after review
 
-## 0.0.12: Watching the Detectives
+## 0.0.13: Watching the Detectives
 * Added Deliberator: 
   Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
   This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.

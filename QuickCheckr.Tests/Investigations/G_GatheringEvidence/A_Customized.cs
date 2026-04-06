@@ -10,7 +10,7 @@ public class A_Customized : QCTest<A_Customized>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explain => true;
+    protected override bool Explain => false;
 
     [Fact(Skip = "Too slow")]
     [DocBoldHeader("The Runner")]
