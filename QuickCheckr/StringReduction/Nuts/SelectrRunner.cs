@@ -1,5 +1,3 @@
-using QuickFuzzr.UnderTheHood;
-
 namespace QuickCheckr.StringReduction.Nuts;
 
 public class SelectrRun(SelectrOf<Selection> selectr, string text)
@@ -31,13 +29,4 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
 
     public bool EndOfText =>
         state.Index >= state.Text.Length;
-}
-
-public static class SelectrRunner
-{
-    public static SelectrRun For(SelectrOf<Selection> selectr, string text)
-        => new(selectr, text);
-
-    public static SelectrRun Run(this SelectrOf<Selection> selectr, string text)
-        => new(selectr, text);
 }

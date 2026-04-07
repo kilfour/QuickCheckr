@@ -1,4 +1,4 @@
-namespace QuickCheckr.StringReduction.Nuts;
+namespace QuickCheckr.StringReduction;
 
 public readonly struct Selection
 {

@@ -1,4 +1,6 @@
-namespace QuickCheckr.StringReduction.Nuts;
+using QuickCheckr.StringReduction.Nuts;
+
+namespace QuickCheckr.StringReduction;
 
 public static class Selectr_ToLinq
 {

@@ -1,16 +1,7 @@
-using QuickCheckr.StringReduction.Nuts;
+using QuickCheckr;
+using QuickCheckr.StringReduction;
 
-namespace QuickCheckr.Tests.Investigations.J_StringReduction.Spike;
-
-
-public static class T
-{
-    public static Func<string, string> Then(this Func<string, string> a, Func<string, string> b) =>
-        text => b(a(text));
-
-    public static Func<string, string> After(this Func<string, string> a, Func<string, string> b) =>
-        b.Then(a);
-}
+namespace QuickCheckr.Tests.Investigations.J_StringReduction;
 
 public class FirstShot
 {
@@ -145,7 +136,7 @@ public class FirstShot
             from a_b in Selectr.Once('a', 'b').Text()
             from replace in Selectr.Once('c', 'd').Replace(t => a_b.ToUpper())
             select Selection.Defined;
-        var runner = SelectrRunner.For(selectr, "--ac--bd--");
+        var runner = selectr.Run("--ac--bd--");
         Assert.Equal("--aA--bd--", runner.Next());
         Assert.Equal("--aA--bB--", runner.Next());
     }

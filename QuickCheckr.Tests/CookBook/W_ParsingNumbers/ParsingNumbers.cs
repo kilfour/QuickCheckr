@@ -53,25 +53,52 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
 
     private readonly char[] operators = ['+', '-', '*', '/', '^'];
 
+    // [CodeSnippet]
+    // protected override CheckrOf<Case> TheCheckr() =>
+    //     from input in Checkr.Input("Expression",
+    //         ParseFuzzr.Expression(),
+    //         Shrink.OnType<string>(s => s.Simplify(
+    //             // remove whitespace
+    //             Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Reduce(),
+    //             // remove delimiters
+    //             Selectr.Balanced('(', ')').Replace(t => t[1..^1]).Reduce(),
+    //             // remove lhs and op
+    //             (from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+    //              from op in Selectr.Once(operators).Remove()
+    //              select Selection.Defined).Reduce(),
+    //             // remove op and rhs
+    //             (from op in Selectr.Once(operators).Remove()
+    //              from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+    //              select Selection.Defined).Reduce(),
+    //             // clean up unary minus noise
+    //             Selectr.AtleastOnce('-').Replace(t => "-").Reduce())))
+    //     from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
+    //     from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
+    //     from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
+    //     from match in Checkr.ExpectWhen("Match",
+    //         () => !double.IsNaN(oracleResult),
+    //         () => oracleResult == result)
+    //     select Case.Closed;
+
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Expression",
             ParseFuzzr.Expression(),
             Shrink.OnType<string>(s => s.Simplify(
                 // remove whitespace
-                Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Reduce(),
+                Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Defined(),
                 // remove delimiters
-                Selectr.Balanced('(', ')').Replace(t => t[1..^1]).Reduce(),
+                Selectr.Balanced('(', ')').Replace(t => t[1..^1]).Defined(),
                 // remove lhs and op
-                (from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
-                 from op in Selectr.Once(operators).Remove()
-                 select Selection.Defined).Reduce(),
+                from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+                from op in Selectr.Once(operators).Remove()
+                select Selection.Defined,
                 // remove op and rhs
-                (from op in Selectr.Once(operators).Remove()
-                 from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
-                 select Selection.Defined).Reduce(),
+                from op in Selectr.Once(operators).Remove()
+                from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+                select Selection.Defined,
                 // clean up unary minus noise
-                Selectr.AtleastOnce('-').Replace(t => "-").Reduce())))
+                Selectr.AtleastOnce('-').Replace(t => "-").Defined())))
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
         from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")

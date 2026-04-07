@@ -1,6 +1,6 @@
-using QuickCheckr.StringReduction.Bolts;
+using QuickCheckr.StringReduction.Nuts;
 
-namespace QuickCheckr.StringReduction.Nuts;
+namespace QuickCheckr.StringReduction;
 
 
 public static partial class Selectr

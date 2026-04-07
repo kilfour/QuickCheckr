@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.StringReduction.Nuts;
 
-public static partial class Selectr
+public static class SelectrToReducer
 {
     public static Func<Reducer<string>> Reduce(this SelectrOf<Selection> selector) =>
         () => new Factory(selector).Reduce;

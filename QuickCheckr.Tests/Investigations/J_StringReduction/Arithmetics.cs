@@ -1,6 +1,7 @@
-using QuickCheckr.StringReduction.Nuts;
+using QuickCheckr;
+using QuickCheckr.StringReduction;
 
-namespace QuickCheckr.Tests.Investigations.J_StringReduction.Spike;
+namespace QuickCheckr.Tests.Investigations.J_StringReduction;
 
 public class Arithmetics
 {
