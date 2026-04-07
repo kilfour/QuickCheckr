@@ -7,8 +7,8 @@ public static class Selectr_ToLinq
         Func<TValueOne, TValueTwo> selector) =>
             state =>
                 {
-                    // if (state.RunStopped)
-                    //     return SelectrResult.Default<TValueTwo>(state);
+                    if (state.RunStopped)
+                        return SelectrResult.Default<TValueTwo>(state);
                     return SelectrResult.Some(state, selector(script(state).Value));
                 };
 
@@ -17,11 +17,11 @@ public static class Selectr_ToLinq
         Func<TSource, SelectrOf<TResult>> selector) =>
             state =>
                 {
-                    // if (state.RunStopped)
-                    //     return SelectrResult.Default<TResult>(state);
+                    if (state.RunStopped)
+                        return SelectrResult.Default<TResult>(state);
                     var result = source(state);
-                    // if (state.RunStopped)
-                    //     return SelectrResult.Default<TResult>(state);
+                    if (state.RunStopped)
+                        return SelectrResult.Default<TResult>(state);
                     return selector(result.Value)(state);
                 };
 

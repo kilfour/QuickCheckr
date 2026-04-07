@@ -1,25 +1,40 @@
+using QuickFuzzr.UnderTheHood;
+
 namespace QuickCheckr.StringReduction.Nuts;
+
+public class SelectrRun(SelectrOf<Selection> selectr, string text)
+{
+    private readonly SelectrState state = new(text);
+    private int outerIndex = 0;
+
+    public string Next()
+    {
+        while (!EndOfText)
+        {
+            while (!EndOfText)
+            {
+                var prevText = state.Text;
+                state.NewRun = true;
+                state.RunStopped = false;
+                selectr(state);
+                if (state.RunStopped)
+                    state.Text = prevText;
+                else
+                    return state.Text;
+                state.Index++;
+            }
+            if (EndOfText)
+                state.Index = outerIndex++;
+        }
+        return state.Text;
+    }
+
+    public bool EndOfText =>
+        state.Index >= state.Text.Length;
+}
 
 public static class SelectrRunner
 {
-
-    public class SelectrRun(SelectrOf<Selection> selectr, string text)
-    {
-        private readonly SelectrState state = new(text);
-        public string Next()
-        {
-            state.PrevText = state.Text;
-            state.NewRun = true;
-            state.RunStopped = false;
-            selectr(state);
-            if (state.RunStopped)
-            {
-                state.Text = state.PrevText;
-                return state.Text;
-            }
-            return state.Text;
-        }
-    }
     public static SelectrRun For(SelectrOf<Selection> selectr, string text)
         => new(selectr, text);
 

@@ -4,10 +4,10 @@ namespace QuickCheckr.StringReduction.Nuts;
 
 public static partial class SelectrExt
 {
-    public static SelectrOf<string> Remove(this SelectrOf<ISelection> selection) =>
+    public static SelectrOf<string> Remove(this SelectrOf<SelectrSlice> selection) =>
         state =>
         {
-            var slice = selection(state).Value as Slice;
+            var slice = selection(state).Value as SelectrSlice;
             if (slice == null) return SelectrResult.Default<string>(state);
             var result = slice.GetText(state.Text);
             state.Text = slice.Remove(state.Text);

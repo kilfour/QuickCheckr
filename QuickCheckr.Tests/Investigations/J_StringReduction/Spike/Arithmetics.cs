@@ -4,11 +4,151 @@ namespace QuickCheckr.Tests.Investigations.J_StringReduction.Spike;
 
 public class Arithmetics
 {
-    [Fact(Skip = "wip")]
-    public void Atomic()
+    private static string RunAll(SelectrOf<Selection> selector, string input)
     {
-        var selectr = Selectr.OneOf('a', 'b');
-        var result = selectr(new SelectrState("abc"));
-        Assert.Equal("bc", result.Value.Remove("abc"));
+        var result = string.Empty;
+        var runner = selector.Run(input);
+        while (!runner.EndOfText) result = runner.Next();
+        return result;
+    }
+
+    [Fact]
+    public void RemoveOpAndRhs()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-').Remove()
+            from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+            select Selection.Defined;
+        Assert.Equal("39", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void RemoveOpAndRhsWhitespaced()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from wsl in Selectr.Optional(char.IsWhiteSpace).Remove()
+            from op in Selectr.Once('+', '-').Remove()
+            from wsr in Selectr.Optional(char.IsWhiteSpace).Remove()
+            from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+            select Selection.Defined;
+        Assert.Equal(" 39 ", RunAll(selectr, " 39  +2 "));
+    }
+
+    [Fact]
+    public void RemoveLhsAndOp()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+            from op in Selectr.Once('+', '-').Remove()
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            select Selection.Defined;
+        Assert.Equal("2", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void ReplaceRhsWithLhs()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit).Replace(t => lhs.Text)
+            select Selection.Defined;
+        Assert.Equal("39+39", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void ReplaceLhsWithRhs()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            from replaceLhs in lhs.Replace(t => rhs.Text)
+            select Selection.Defined;
+        Assert.Equal("2+2", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void Swap()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            from replaceLhs in lhs.Replace(t => rhs.Text)
+            from replaceRhs in rhs.Replace(t => lhs.Text)
+            select Selection.Defined;
+        Assert.Equal("2+39", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void All()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            from replaceLhs in lhs.Replace(t => rhs.Text)
+            from replaceOp in op.Replace(t => "-")
+            from replaceRhs in rhs.Replace(t => lhs.Text)
+            select Selection.Defined;
+        Assert.Equal("2-39", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void All_LengthChange()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            from replaceLhs in lhs.Replace(t => "1234")
+            from replaceOp in op.Replace(t => "---")
+            from replaceRhs in rhs.Replace(t => "12345")
+            select Selection.Defined;
+        Assert.Equal("1234---12345", RunAll(selectr, "39+2"));
+    }
+
+    [Fact]
+    public void Parenthesis()
+    {
+        var selectr =
+            from lb in Selectr.Once('(').Remove()
+            from between in Selectr.Until(')')
+            from rb in Selectr.Once(')').Remove()
+            select Selection.Defined;
+        var runner = selectr.Run("1+(2+(3*4))");
+        Assert.Equal("1+2+(3*4)", runner.Next());
+        Assert.Equal("1+2+3*4", runner.Next());
+        Assert.True(runner.EndOfText);
+    }
+
+    [Fact]
+    public void Balanced()
+    {
+        var selectr =
+            from lb in Selectr.Balanced('(', ')').Replace(t => t[1..^1])
+            select Selection.Defined;
+        var runner = selectr.Run("1+(2+(3*4)-5)");
+        Assert.Equal("1+2+(3*4)-5", runner.Next());
+        Assert.Equal("1+2+3*4-5", runner.Next());
+        Assert.Equal("1+2+3*4-5", runner.Next());
+        Assert.True(runner.EndOfText);
+    }
+
+    [Fact(Skip = "Fails with 32-9")]
+    public void AllChaotic()
+    {
+        var selectr =
+            from lhs in Selectr.AtleastOnce(char.IsDigit)
+            from op in Selectr.Once('+', '-')
+            from rhs in Selectr.AtleastOnce(char.IsDigit)
+            from replaceRhs in rhs.Replace(t => lhs.Text)
+            from replaceLhs in lhs.Replace(t => rhs.Text)
+            from replaceOp in op.Replace(t => "-")
+            select Selection.Defined;
+        Assert.Equal("39-2", RunAll(selectr, "39+2"));
     }
 }

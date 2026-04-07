@@ -1,5 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.StringReduction;
+using QuickCheckr.StringReduction.Nuts;
 using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.Tests.Tools.ThePress.Printing;
@@ -56,13 +57,21 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Expression",
             ParseFuzzr.Expression(),
-            Shrink.OnType<string>(s => s.Simplify([
-                Select.While(char.IsWhiteSpace).Remove(),
-                Select.Balanced('(', ')').Delimiters().Remove(),
-                Select.While(char.IsDigit).OneOf(operators).Remove(),
-                Select.OneOf(operators).While(char.IsDigit).Remove(),
-                Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
-            ])))
+            Shrink.OnType<string>(s => s.Simplify(
+                // remove whitespace
+                Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Reduce(),
+                // remove delimiters
+                Selectr.Balanced('(', ')').Replace(t => t[1..^1]).Reduce(),
+                // remove lhs and op
+                (from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+                 from op in Selectr.Once(operators).Remove()
+                 select Selection.Defined).Reduce(),
+                // remove op and rhs
+                (from op in Selectr.Once(operators).Remove()
+                 from rhs in Selectr.AtleastOnce(char.IsDigit).Remove()
+                 select Selection.Defined).Reduce(),
+                // clean up unary minus noise
+                Selectr.AtleastOnce('-').Replace(t => "-").Reduce())))
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
         from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
@@ -70,6 +79,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
             () => !double.IsNaN(oracleResult),
             () => oracleResult == result)
         select Case.Closed;
+
 
     protected override void Verify(Article article)
     {

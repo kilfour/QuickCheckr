@@ -4,7 +4,7 @@ namespace QuickCheckr.StringReduction.Nuts;
 
 public static partial class SelectrExt
 {
-    public static SelectrOf<string> Text(this SelectrOf<ISelection> selection) =>
+    public static SelectrOf<string> Text(this SelectrOf<SelectrSlice> selection) =>
        state =>
        {
            var slice = selection(state).Value;
