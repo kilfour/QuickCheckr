@@ -101,3 +101,6 @@
 ### 0.0.11-Preview1 : SELECT Might Still Be Broken
 * Added support for domain aware string reduction.  
   * Experimental and prone to change, but to useful not to put out there. 
+  
+## 0.0.12: Strings and Things
+* QuickCheckr now has domain-aware, customizable string reduction.

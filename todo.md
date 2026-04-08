@@ -1,22 +1,10 @@
-## Next version: 0.0.12: Strings and Things
- 
+
 ### Doing
-* Domain aware, customizable, string reduction.
+
 * [Fingerprint Spike](./QuickCheckr.Tests/Investigations/G_GatheringEvidence/A_Customized.cs)
 
 ### Todo
-
-Failure semantics are hard to reason about. 
-In Stringr_ToLinq.cs, success/failure is inferred from mutable state and Value, not from an explicit result shape. 
-
-StringrExt_Remove.cs and StringrExt_Replace.cs adjust Index directly
-StringSlice.Replace adjusts Offset. 
-
-make success/failure explicit
-reduce hidden mutable-state coupling
-fully commit to currently-unused concepts like Stop and NewRun.
-
-If you want, I can do a sharper pass next and propose a concrete refactor direction without changing the external DSL.
+Stringr => use Result.Stop instead of State.RunStopped
 
 ### Wish List
 * Doc/test/improve `Reduce.Towards()`.

@@ -30,85 +30,54 @@ public class DeskOfficer
             List<ExecutionDeposition> executionDepositions,
             List<ExecutionDeposition> other)
         {
-            var notes = Note.From(executionDepositions);
-            var otherNotes = Note.From(other);
-            foreach (var note in notes)
+            if (executionDepositions.Count != other.Count)
+                return false;
+            var counts = executionDepositions
+                .Select(ExecutionSignature.From)
+                .GroupBy(signature => signature)
+                .ToDictionary(group => group.Key, group => group.Count());
+            foreach (var signature in other.Select(ExecutionSignature.From))
             {
-                if (!ExecutionDepositionIsSimilar(note, otherNotes))
+                if (!counts.TryGetValue(signature, out var count) || count == 0)
                     return false;
+                counts[signature] = count - 1;
             }
-            return true;
-        }
-
-        private static bool ExecutionDepositionIsSimilar(
-            Note note,
-            List<Note> otherNotes)
-        {
-            var remaining = ActionDepositionsAreSimilar(note.Actions, otherNotes);
-            if (remaining.Count == 0)
-                return false;
-            remaining = InputDepositionsAreSimilar(note.Inputs, remaining);
-            if (remaining.Count == 0)
-                return false;
-            otherNotes.Remove(remaining.First());
-            return true;
-        }
-
-        private static List<Note> ActionDepositionsAreSimilar(
-            List<string> actions, List<Note> otherNotes)
-        {
-            var others = otherNotes.Where(a => a.Actions.Count == actions.Count);
-            if (!others.Any())
-                return [];
-
-            foreach (var action in actions)
-            {
-                others = others.Where(a => a.Actions.Any(b => b == action));
-                if (!others.Any())
-                    return [];
-            }
-            return [.. others];
-        }
-
-        private static List<Note> InputDepositionsAreSimilar(
-            List<string> inputs,
-            List<Note> otherNotes)
-        {
-            var others = otherNotes.Where(a => a.Inputs.Count == inputs.Count);
-            if (!others.Any())
-                return [];
-
-            foreach (var input in inputs)
-            {
-                others = others.Where(a => a.Inputs.Any(b => b == input));
-                if (!others.Any())
-                    return [];
-            }
-            return [.. others];
+            return counts.Values.All(count => count == 0);
         }
     }
 
-    private class Note
+    private class ExecutionSignature : IEquatable<ExecutionSignature>
     {
-        public List<string> Actions { get; } = [];
-        public List<string> Inputs { get; } = [];
-        public static List<Note> From(List<ExecutionDeposition> executionDepositions)
+        public List<string> Actions { get; }
+        public List<string> Inputs { get; }
+
+        private ExecutionSignature(List<string> actions, List<string> inputs)
         {
-            var notepad = new List<Note>();
-            foreach (var executionDeposition in executionDepositions)
-            {
-                var note = new Note();
-                foreach (var actionDeposition in executionDeposition.ActionDepositions)
-                {
-                    note.Actions.Add(actionDeposition.Label);
-                }
-                foreach (var inputDeposition in executionDeposition.InputDepositions)
-                {
-                    note.Inputs.Add(inputDeposition.Label);
-                }
-                notepad.Add(note);
-            }
-            return notepad;
+            Actions = actions;
+            Inputs = inputs;
+        }
+
+        public static ExecutionSignature From(ExecutionDeposition executionDeposition)
+            => new(
+                [.. executionDeposition.ActionDepositions.Select(deposition => deposition.Label).OrderBy(label => label)],
+                [.. executionDeposition.InputDepositions.Select(deposition => deposition.Label).OrderBy(label => label)]);
+
+        public bool Equals(ExecutionSignature? other)
+            => other != null
+            && Actions.SequenceEqual(other.Actions)
+            && Inputs.SequenceEqual(other.Inputs);
+
+        public override bool Equals(object? obj) => Equals(obj as ExecutionSignature);
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            foreach (var action in Actions)
+                hash.Add(action);
+            hash.Add("|");
+            foreach (var input in Inputs)
+                hash.Add(input);
+            return hash.ToHashCode();
         }
     }
 
