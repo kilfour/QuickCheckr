@@ -2,9 +2,9 @@ using QuickCheckr.StringReduction.Nuts;
 
 namespace QuickCheckr.StringReduction;
 
-public static partial class SelectrExt
+public static partial class StringrExtensions
 {
-    public static SelectrOf<string> Text(this SelectrOf<SelectrSlice> selection) =>
+    public static SelectrOf<string> Text(this SelectrOf<StringSlice> selection) =>
        state =>
        {
            var slice = selection(state).Value;

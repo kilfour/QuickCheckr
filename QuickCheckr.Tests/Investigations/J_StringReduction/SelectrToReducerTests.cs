@@ -29,7 +29,7 @@ public class SelectrToReducerTests
     public void FirstTry()
     {
         var selectr =
-            from a_b in Selectr.Once('a', 'b').Remove()
+            from a_b in Stringr.Once('a', 'b').Remove()
             select Selection.Defined;
         var reducer = selectr.Reduce();
         var result = Act(reducer, "abc");
@@ -41,11 +41,11 @@ public class SelectrToReducerTests
     public void Trickier()
     {
         var selectr =
-            from a_b in Selectr.Once('a', 'b').Text()
-            from replace in Selectr.Once('c', 'd').Replace(t => a_b.ToUpper())
+            from a_b in Stringr.Once('a', 'b')
+            from replace in Stringr.Once('c', 'd').Replace(t => a_b.Text.ToUpper())
             select Selection.Defined;
         var reducer = selectr.Reduce();
-        var result = Act(reducer, "--ac--bd--", a => ((string)a!).Contains("d"));
+        var result = Act(reducer, "--ac--bd--", a => ((string)a!).Contains('d'));
         var step = Assert.IsType<Reduction.Stop>(result);
         Assert.Equal("--aA--bd--", step.Result);
     }
@@ -76,20 +76,20 @@ public class SelectrToReducerTests
 
     public class Remove
     {
-        private static readonly SelectrOf<SelectrSlice> Operator =
-            Selectr.Once('+', '-', '*', '/', '^');
-        private static readonly SelectrOf<SelectrSlice> Number =
-            Selectr.AtleastOnce(char.IsDigit);
-        private static readonly SelectrOf<SelectrSlice> Enclosed =
-            Selectr.Balanced('(', ')');
-        private static readonly SelectrOf<SelectrSlice> Term =
+        private static readonly SelectrOf<ITextSelection> Operator =
+            Stringr.Once('+', '-', '*', '/', '^');
+        private static readonly SelectrOf<ITextSelection> Number =
+            Stringr.AtleastOnce(char.IsDigit);
+        private static readonly SelectrOf<ITextSelection> Enclosed =
+            Stringr.Balanced('(', ')');
+        private static readonly SelectrOf<ITextSelection> Term =
             Number.Or(Enclosed);
 
         public static readonly SelectrOf<Selection> WhiteSpace =
-            Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
+            Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
 
         public static readonly SelectrOf<Selection> BalancedParentheses =
-            Selectr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
+            Stringr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
 
         public static readonly SelectrOf<Selection> LeftHandSideAndOperator =
             from lhs in Number.Remove()

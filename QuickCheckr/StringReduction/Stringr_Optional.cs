@@ -3,20 +3,20 @@ using QuickCheckr.StringReduction.Nuts;
 namespace QuickCheckr.StringReduction;
 
 
-public static partial class Selectr
+public static partial class Stringr
 {
-    public static SelectrOf<SelectrSlice> Optional(params char[] options) =>
+    public static SelectrOf<ITextSelection> Optional(params char[] options) =>
         Optional(a => options.Contains(a));
 
-    public static SelectrOf<SelectrSlice> Optional(Func<char, bool> predicate) =>
+    public static SelectrOf<ITextSelection> Optional(Func<char, bool> predicate) =>
         state =>
         {
             var length = 0;
             while (state.InBounds(length) && predicate(state.Text[state.Index + length]))
                 length++;
             var result = length > 0
-                ? SelectrResult.Some<SelectrSlice>(state, SelectrSlice.From(state.Index, length, state.Text))
-                : SelectrResult.Default<SelectrSlice>(state);
+                ? SelectrResult.Some(state, StringSlice.From(state.Index, length, state.Text))
+                : SelectrResult.Default<ITextSelection>(state);
             state.Index += length;
             return result;
         };

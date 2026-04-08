@@ -16,7 +16,7 @@ public class OrTests
     public void FirstShot()
     {
         var selectr =
-            Selectr.Once('a').Or(Selectr.Once('b')).Remove().Defined();
+            Stringr.Once('a').Or(Stringr.Once('b')).Remove().Defined();
         Assert.Equal("cdc", RunAll(selectr, "abcdcba"));
     }
 
@@ -25,8 +25,8 @@ public class OrTests
     [InlineData("1+(2 + 3)+4", "++")]
     public void RemoveTerms(string input, string expected)
     {
-        var number = Selectr.AtleastOnce(char.IsDigit);
-        var enclosed = Selectr.Balanced('(', ')');
+        var number = Stringr.AtleastOnce(char.IsDigit);
+        var enclosed = Stringr.Balanced('(', ')');
         Assert.Equal(expected, RunAll(number.Or(enclosed).Remove().Defined(), input));
     }
 }

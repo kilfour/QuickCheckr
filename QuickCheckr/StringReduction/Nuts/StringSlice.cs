@@ -1,9 +1,11 @@
 namespace QuickCheckr.StringReduction.Nuts;
 
-public record SelectrSlice(int Start, int Length, string Text)
+
+
+public record StringSlice(int Start, int Length, string Text) : ITextSelection, IEditable
 {
-    public static SelectrSlice From(int start, int length, string input)
-        => new(start, length, input.Substring(start, length));
+    public static ITextSelection From(int start, int length, string input)
+        => new StringSlice(start, length, input.Substring(start, length));
 
     public string Remove(string input)
         => input.Remove(Start, Length);
