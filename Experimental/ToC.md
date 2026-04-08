@@ -1,3 +1,0 @@
-  - [The Needler Pattern](A_TheNeedlerPattern/TheNeedlerPattern.md)
-  - [The Broadcaster](F_TheBroadcaster/TheBroadcasterTest.md)
-  - [Warehousing](W_Warehouse/Warehousing.md)

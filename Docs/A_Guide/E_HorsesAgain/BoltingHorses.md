@@ -193,4 +193,4 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence].
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
 
-[GatheringEvidence]: ../../B_PuttingACaseOnTheBoard/E_GatheringEvidence/GatheringEvidence.md
+[GatheringEvidence]: ../../../Drafts/B_PuttingACaseOnTheBoard/E_GatheringEvidence/GatheringEvidence.md

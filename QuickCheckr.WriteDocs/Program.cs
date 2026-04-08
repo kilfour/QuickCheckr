@@ -11,10 +11,10 @@ using QuickCheckr.Tests.CookBook;
 
 Explain.These<CookBook>("CookBook/");
 Explain.These<Documentation>("Docs/");
-Explain.These<Drafts>("Drafts/");
-Explain.These<Experimental>("Experimental/");
-Explain.These<Notes>("Notes/");
-Explain.These<Investigations>("Investigations/");
+// Explain.These<Drafts>("Drafts/");
+// Explain.These<Experimental>("Experimental/");
+// Explain.These<Notes>("Notes/");
+// Explain.These<Investigations>("Investigations/");
 
 Explain.This<CookBook>("DocsSinglePages/cookbook.md");
 Explain.This<Documentation>("DocsSinglePages/doc.md");
