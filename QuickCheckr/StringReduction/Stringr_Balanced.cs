@@ -18,7 +18,7 @@ public static partial class Stringr
             var length = 1;
             int depth = 1;
             int maxDepth = 1;
-            while (state.InBounds(length) && depth != 0)
+            while (state.InBounds(length + 1) && depth != 0)
             {
                 length++;
                 if (state.Text[state.Index + length] == left)
