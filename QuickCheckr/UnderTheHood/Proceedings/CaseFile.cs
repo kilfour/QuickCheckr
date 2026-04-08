@@ -16,6 +16,7 @@ public interface ICaseFileSummary
     public int TraceCount { get; }
     public int WarningCount { get; }
     public int PassedExpectationCount { get; }
+    public T GetInput<T>(string key);
     public int InputsNamed<T>(string key, Func<T, int> calculateScore);
     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
 }
@@ -38,6 +39,15 @@ public class CaseFile : ICaseFileSummary
     public int WarningCount => ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
     public int PassedExpectationCount => PassedExpectationDepositions.Count;
 
+
+    public T GetInput<T>(string key)
+    {
+        return (T)ExecutionDepositions
+            .SelectMany(a => a.InputDepositions)
+            .Where(a => a.Label == key)
+            .Select(a => a.GetReduxOrValueAsObject())
+            .First();
+    }
     public int InputsNamed<T>(string key, Func<T, int> calculateScore)
     {
         if (!HasEvidence) return int.MaxValue;

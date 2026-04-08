@@ -24,7 +24,7 @@ public class GatheringEvidenceShowDontTell : BaseTest
     [Fact(Skip = "Touches the file system.")]
     public void RunTest()
     {
-        GatheringEvidenceCheckr.TheCheckr().GatherEvidence(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun(),
+        GatheringEvidenceCheckr.TheCheckr().Conduct(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun(),
             cfg => cfg with
             {
                 FileAs = "GatheringEvidence",

@@ -81,7 +81,7 @@ public class ReduceTowardsIntTests : BaseTest
                 select Case.Closed)
             select Case.Closed;
         // checkr.Run(100.Runs(), a => a with { FileAs = "ReduceTowardsInt" });
-        checkr.GatherEvidence(
+        checkr.Conduct(
             1000.Investigations(),
             10.Runs(),
             1.ExecutionsPerRun(),

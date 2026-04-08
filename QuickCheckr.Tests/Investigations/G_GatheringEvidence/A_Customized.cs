@@ -12,7 +12,7 @@ public class A_Customized : QCTest<A_Customized>
     protected override bool Report => false;
     protected override bool Explain => false;
 
-    [Fact(Skip = "Too slow")]
+    [Fact]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(A_Customized), nameof(Example))]
     [DocCheckrHeader]
@@ -22,11 +22,11 @@ public class A_Customized : QCTest<A_Customized>
     [CodeSnippet]
     public override void Example() =>
         TheCheckr().GatherEvidence(
-            50.Investigations(),
-            10.Runs(),
+            20.Investigations(),
+            20.Runs(),
             1.ExecutionsPerRun(),
             a => a with { FileAs = "GatheringEvidence" },
-            a => a.InputsNamed<string>("Input", a => a.IndexOf('a') + (a.Length * 100) + (a.Count(a => a == 'a') * 1000)));
+            a => a.GetInput<string>("Input").Contains('c') ? 1 : 0);
 
     [CodeSnippet]
     private CheckrOf<Case> TheCheckr() =>

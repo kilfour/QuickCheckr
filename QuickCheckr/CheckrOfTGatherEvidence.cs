@@ -1,7 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.EvidenceGathering;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr;
@@ -10,50 +9,40 @@ public static class CheckrOfTGatherEvidence
 {
     public static void GatherEvidence(
         this CheckrOf<Case> checkr,
-        InvestigationCount investigationCount,
+        CheckrOfTConductInvestigations.InvestigationCount maxInvestigations,
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        Func<ICaseFileSummary, int>? fingerprint = null)
-        => GatherEvidence(checkr, investigationCount, runs, executionsPerRun, configure, false, fingerprint);
-
-    public static void GatherEvidence(
-        this CheckrOf<Case> checkr,
-        InvestigationCount investigationCount,
-        CheckrOfTRun.RunCount runs,
-        CheckrOfTRun.ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure,
-        bool ordered,
-        Func<ICaseFileSummary, int>? fingerprint = null)
+        Func<ICaseFileSummary, object> fingerPrint,
+        int? MaxCaseFiles = null,
+        Func<ICaseFileSummary, bool>? RejectWhen = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
-        var vaultCaseFiles = vault.Check(checkr, config, false);
-        var caseFiles = new List<CaseFile>();
-        for (int i = 0; i < investigationCount.NumberOfInvestigations; i++)
+        var caseFiles = vault.Check(checkr, config, false).ToList();
+        var stop = false;
+        for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            for (int j = 0; j < runs.NumberOfRuns; j++)
+            for (int j = 0; j < runs.NumberOfRuns && !stop; j++)
             {
                 var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
                 var caseFile = runner.Run();
                 if (caseFile.HasEvidence)
                 {
-                    caseFiles.Add(caseFile);
+                    if (RejectWhen != null && RejectWhen(caseFile))
+                        continue;
+                    if (!caseFiles.Any(a => Equals(fingerPrint(a), fingerPrint(caseFile))))
+                    {
+                        caseFiles.Add(caseFile);
+                    }
+                    if (MaxCaseFiles.HasValue && caseFiles.Count > MaxCaseFiles.Value)
+                        stop = true;
                 }
             }
         }
-        var caseFilesToReport = new List<CaseFile>();
-        foreach (var caseFile in caseFiles)
-        {
-            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered, fingerprint)))
-                continue;
-            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered, fingerprint)))
-                continue;
-            caseFilesToReport.Add(caseFile);
-        }
 
         var logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
-        foreach (var caseFile in caseFilesToReport)
+        foreach (var caseFile in caseFiles)
         {
             // ---------------------------------------------------------------------------------------------
             // BEHOLD THE DUPLICATION ... from Vault.cs
@@ -66,10 +55,6 @@ public static class CheckrOfTGatherEvidence
             // ---------------------------------------------------------------------------------------------
         }
     }
-
-    public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);
-
-    public record InvestigationCount(int NumberOfInvestigations);
 
     // ---------------------------------------------------------------------------------------------
     // BEHOLD THE DUPLICATION ... from Vault.cs

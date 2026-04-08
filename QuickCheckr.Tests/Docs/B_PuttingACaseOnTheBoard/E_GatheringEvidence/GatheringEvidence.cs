@@ -39,7 +39,7 @@ public class GatheringEvidence
 {
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.GatherEvidence(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
+        checkr.Conduct(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
             cfg => cfg with { FileAs = "GatheringEvidence" });
 
 }
