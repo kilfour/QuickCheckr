@@ -9,6 +9,6 @@ public static partial class SelectrExt
        {
            var slice = selection(state).Value;
            if (slice == null) return SelectrResult.Default<string>(state);
-           return SelectrResult.Some(state, slice.GetText(state.Text));
+           return SelectrResult.Some(state, slice.Text);
        };
 }

@@ -5,8 +5,6 @@ public record SelectrSlice(int Start, int Length, string Text)
     public static SelectrSlice From(int start, int length, string input)
         => new(start, length, input.Substring(start, length));
 
-    public string GetText(string input) => Text;
-
     public string Remove(string input)
         => input.Remove(Start, Length);
 

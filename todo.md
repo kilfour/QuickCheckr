@@ -9,8 +9,6 @@
 
 ### Wish List
 * Doc/test/improve `Reduce.Towards()`.
-* Auto DeliberationPolicy for Testr
-  Derive default deliberation policy from input type
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
 * SystemCheckr : System/Domain checking DSL, needs time in the oven  
@@ -45,7 +43,7 @@
 * DeskOfficer seems a bit wastefull with all those lists
   * fixed ordered version
 
-## 0.0.13 : All Aboard
+## 0.0.14 : All Aboard
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 

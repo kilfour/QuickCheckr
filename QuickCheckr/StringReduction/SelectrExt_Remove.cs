@@ -9,7 +9,7 @@ public static partial class SelectrExt
         {
             var slice = selection(state).Value as SelectrSlice;
             if (slice == null) return SelectrResult.Default<string>(state);
-            var result = slice.GetText(state.Text);
+            var result = slice.Text;
             state.Text = slice.Remove(state.Text);
             state.Index -= slice.Length;
             return SelectrResult.Some(state, result);

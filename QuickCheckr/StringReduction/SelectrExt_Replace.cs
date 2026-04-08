@@ -11,7 +11,7 @@ public static partial class SelectrExt
         {
             var slice = selection(state).Value;
             if (slice == null) return SelectrResult.Default<string>(state);
-            var result = slice.GetText(state.Text);
+            var result = slice.Text;
             var replacement = replacementFactory(result);
             state.Text = slice.Replace(state.Text, replacement);
             state.Index -= slice.Length;
