@@ -1,10 +1,11 @@
+using QuickCheckr;
 using QuickCheckr.StringReduction;
 using QuickCheckr.StringReduction.Nuts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.Tests.Investigations.J_StringReduction.Spike;
+namespace QuickCheckr.Tests.Investigations.J_StringReduction;
 
 public class SelectrToReducerTests
 {
@@ -70,7 +71,7 @@ public class SelectrToReducerTests
     {
         var result = Act(Remove.LeftHandSideAndOperator.Reduce(), "3+2-(3+1#-2)", a => true);
         var step = Assert.IsType<Reduction.Unbounded>(result);
-        Assert.Equal("", step.Result);
+        Assert.Equal("(1#-2)", step.Result);
     }
 
     public class Remove
