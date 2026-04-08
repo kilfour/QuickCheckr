@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
+namespace QuickCheckr.UnderTheHood.Runners.Tracing;
 
 public class TraceRun(
     CheckrState State,

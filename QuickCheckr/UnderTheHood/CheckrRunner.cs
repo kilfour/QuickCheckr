@@ -3,6 +3,7 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Runners;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
+using QuickCheckr.UnderTheHood.Runners.Tracing;
 
 namespace QuickCheckr.UnderTheHood;
 

@@ -5,6 +5,7 @@
 
 
 ### Todo
+* Check .Trace + .Verify
 * Added Deliberator: 
   Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
   This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
