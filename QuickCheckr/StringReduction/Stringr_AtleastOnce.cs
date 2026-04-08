@@ -18,7 +18,7 @@ public static partial class Stringr
             var result = length > 0
                 ? SelectrResult.Some(state, StringSlice.From(state.Index, length, state.Text))
                 : SelectrResult.Default<ITextSelection>(state);
-            state.Index += length;
+            state.Advance(length);
             return result;
         };
 }

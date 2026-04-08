@@ -9,10 +9,7 @@ public static partial class StringrExtensions
         {
             var selection = selectr(state).Value;
             if (selection == null) return SelectrResult.Default<ITextSelection>(state);
-            var slice = selection.AsSlice();
-            var result = slice.Text;
-            state.Text = slice.Remove(state.Text);
-            state.Index -= slice.Length;
+            state.Remove(selection.AsSlice());
             return SelectrResult.Some(state, selection);
         };
 }

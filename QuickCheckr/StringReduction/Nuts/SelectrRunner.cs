@@ -11,18 +11,20 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
         {
             while (!EndOfText)
             {
-                var prevText = state.Text;
-                state.NewRun = true;
+                state.StoreText();
                 state.RunStopped = false;
                 selectr(state);
                 if (state.RunStopped)
-                    state.Text = prevText;
+                    state.RestoreText();
                 else
                     return state.Text;
-                state.Index++;
+                state.Advance();
             }
             if (EndOfText)
-                state.Index = outerIndex++;
+            {
+                outerIndex++;
+                state.Restart(outerIndex);
+            }
         }
         return state.Text;
     }

@@ -1,6 +1,6 @@
 namespace QuickCheckr.StringReduction.Nuts;
 
-public record SelectrResult<TValue>(SelectrState State, TValue Value, bool Stop = false);
+public record SelectrResult<TValue>(SelectrState State, TValue Value);
 
 public static class SelectrResult
 {

@@ -11,11 +11,8 @@ public static partial class StringrExtensions
         {
             var selection = selectr(state).Value;
             if (selection == null) return SelectrResult.Default<ITextSelection>(state);
-            var slice = selection.AsSlice();
-            var replacement = replacementFactory(slice.Text);
-            state.Text = slice.Replace(state.Text, replacement);
-            state.Index -= slice.Length;
-            state.Index += replacement.Length;
+            var replacement = replacementFactory(selection.Text);
+            state.Replace(selection.AsSlice(), replacement);
             return SelectrResult.Some(state, selection);
         };
 }

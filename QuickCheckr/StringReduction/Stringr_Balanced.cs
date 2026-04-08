@@ -36,9 +36,9 @@ public static partial class Stringr
             }
             var result = SelectrResult.Some(state, StringSlice.From(state.Index, length + 1, state.Text));
             if (maxDepth == 1)
-                state.Index += length + 1;
+                state.Advance(length + 1);
             else
-                state.Index++;
+                state.Advance();
             return result;
         };
 }

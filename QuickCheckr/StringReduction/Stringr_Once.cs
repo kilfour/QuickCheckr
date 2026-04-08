@@ -16,7 +16,7 @@ public static partial class Stringr
             if (predicate(state.Text[state.Index]))
             {
                 var result = StringSlice.From(state.Index, 1, state.Text);
-                state.Index++;
+                state.Advance();
                 return SelectrResult.Some(state, result);
             }
             state.RunStopped = true;
