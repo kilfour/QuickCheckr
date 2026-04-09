@@ -24,6 +24,10 @@ public class ExecutionArticle(CollapsableExecutionDeposition collapsableExecutio
         => new(deposition.TraceDepositions[number - 1]);
 
     [StackTraceHidden]
+    public TraceArticle FinalTrace(int number)
+        => new(deposition.FinalTraceDepositions[number - 1]);
+
+    [StackTraceHidden]
     public WarningArticle Warning(int number)
         => new(deposition.WarningDepositions[number - 1]);
 

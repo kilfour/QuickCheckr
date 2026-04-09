@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ReportsRedux.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1883509239
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 69
+            Redux   43
+   - Trace: Input = 69
+   - Final: Input = 43
+ ================================
+  !! Expectation Failed: <= 42
+ ================================

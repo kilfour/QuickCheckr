@@ -54,6 +54,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, inputPrinter, reportMode.HasFlag(ReportMode.Labels));
             GetPoolTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
             GetTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
+            GetFinalTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
             if (reportMode.HasFlag(ReportMode.Warning))
                 GetWarningDepositions(executionDeposition, shortTermMemory);
             return executionDeposition;
@@ -124,6 +125,14 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             foreach (var (key, val) in shortTermMemory.GetTraces())
             {
                 executionDeposition.AddTraceDeposition(new TraceDeposition(key, val, labeled));
+            }
+        }
+
+        private static void GetFinalTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
+        {
+            foreach (var (key, val) in shortTermMemory.GetFinalTraces())
+            {
+                executionDeposition.AddFinalTraceDeposition(new TraceDeposition(key, val, labeled));
             }
         }
 

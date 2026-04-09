@@ -115,6 +115,12 @@ public class ExecutionMemory
         => traces.Store(key, factory);
     public IReadOnlyDictionary<string, string> GetTraces()
         => traces.Values;
+
+    private readonly TypedMemoryBank<string> finalTraces = new();
+    public void StoreFinalTrace(string key, Func<string> factory)
+        => finalTraces.Store(key, factory);
+    public IReadOnlyDictionary<string, string> GetFinalTraces()
+        => finalTraces.Values;
     // --------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------

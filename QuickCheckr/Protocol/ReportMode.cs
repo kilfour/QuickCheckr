@@ -8,5 +8,6 @@ public enum ReportMode
     Warning = 2,
     StackTrace = 4,
     Labels = 8,
+    FinalTrace = 16,
     Default = Trace | Warning | StackTrace | Labels
 }

@@ -2,7 +2,7 @@
 
 ### Doing
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
-
+* final trace <= done
 
 ### Todo
 * Check .Trace + .Verify

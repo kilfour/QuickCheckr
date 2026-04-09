@@ -24,6 +24,14 @@ public class TheEditor
         from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
         select Flow.Continue;
 
+    private static Flow<Flow> FinalTrace((int executionIndex, int traceIndex) cursor) =>
+        from article in Pulse.Draw<Article>()
+        let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
+        from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Label);")
+        from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Value);")
+        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Labeled);")
+        select Flow.Continue;
+
     private static Flow<Flow> PoolTrace((int executionIndex, int traceIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let poolTraceArticle = article.Execution(cursor.executionIndex).PoolTrace(cursor.traceIndex).Read()
@@ -64,6 +72,7 @@ public class TheEditor
         from inputs in Pulse.ToFlow(Input, Enumerable.Range(1, executionDeposition.InputDepositions.Count).Select(a => (index, a)))
         from poolTraces in Pulse.ToFlow(PoolTrace, Enumerable.Range(1, executionDeposition.PoolTraceDepositions.Count).Select(a => (index, a)))
         from traces in Pulse.ToFlow(Trace, Enumerable.Range(1, executionDeposition.TraceDepositions.Count).Select(a => (index, a)))
+        from finalTraces in Pulse.ToFlow(FinalTrace, Enumerable.Range(1, executionDeposition.FinalTraceDepositions.Count).Select(a => (index, a)))
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select Flow.Continue;
 
@@ -103,6 +112,9 @@ public class TheEditor
         from traceCount in EmitIf(
             article.Total().Traces() > 0,
             $"Assert.Equal({article.Total().Traces()}, article.Total().Traces());")
+        from finalTraceCount in EmitIf(
+            article.Total().FinalTraces() > 0,
+            $"Assert.Equal({article.Total().FinalTraces()}, article.Total().FinalTraces());")
         from warningCount in EmitIf(
             article.Total().Warnings() > 0,
             $"Assert.Equal({article.Total().Warnings()}, article.Total().Warnings());")

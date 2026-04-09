@@ -1,0 +1,39 @@
+using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+
+namespace QuickCheckr.Tests.Verification.Proceedings.FinalTraceDepositions;
+
+public class FinalTraceDepositionsTests : DepositionTest
+{
+    [Fact]
+    public void One()
+    {
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                    .AddFinalTraceDeposition(new TraceDeposition("Something", "I Traced")));
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
+        Assert.Equal("   - Final: Something = I Traced", reader.NextLine());
+        EndOfContent(reader);
+    }
+
+    [Fact]
+    public void Position()
+    {
+        var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
+                    .AddInputDeposition(new InputDeposition(true, "Answer", 42))
+                    .AddFinalTraceDeposition(new TraceDeposition("Something", "I Traced"))
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Executed:", reader.NextLine());
+        Assert.Equal("   -  Pool: Universe    = Pooled", reader.NextLine());
+        Assert.Equal("   - Input: Answer      = 42", reader.NextLine());
+        Assert.Equal("   - Trace: Making Sure = 42", reader.NextLine());
+        Assert.Equal("   - Final: Something   = I Traced", reader.NextLine());
+        EndOfContent(reader);
+    }
+}

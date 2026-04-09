@@ -82,6 +82,8 @@ public class ShortTermMemory
     // Traces
     public void StoreTrace(string key, Func<string> factory)
         => Current.StoreTrace(key, factory);
+    public void StoreFinalTrace(string key, Func<string> factory)
+        => Current.StoreFinalTrace(key, factory);
     // --------------------------------------------------------------------------
     // Pool Traces
     public void StorePoolTrace(string key, Func<string> factory)

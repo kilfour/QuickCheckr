@@ -38,6 +38,9 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += new InputShrinker(State, Check, config.ShrinkMode.HasFlag(ShrinkMode.Reduction)).Run();
 
+        if (config.ReportMode.HasFlag(ReportMode.FinalTrace))
+            new FinalTraceRun(State, Check).Run();
+
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 

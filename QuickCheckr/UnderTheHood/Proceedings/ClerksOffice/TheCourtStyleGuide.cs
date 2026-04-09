@@ -60,6 +60,14 @@ public static class The
         from _4 in Pulse.Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
         select Flow.Continue;
 
+    private static Flow<Flow> FinalTrace(TraceDeposition input) =>
+        from maxLabel in Pulse.Draw<MaxLabel>()
+        from _1 in newLine
+        from _2 in Pulse.Trace("   - ")
+        from _3 in Pulse.TraceIf(input.Labeled, () => "Final: ")
+        from _4 in Pulse.Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
+        select Flow.Continue;
+
     private static Flow<Flow> PoolTrace(PoolTraceDeposition input) =>
         from maxLabel in Pulse.Draw<MaxLabel>()
         from _ in newLine
@@ -110,7 +118,8 @@ public static class The
         from _5 in Pulse.ToFlow(PoolTrace, execution.PoolTraceDepositions)
         from _6 in Pulse.ToFlow(Input, execution.InputDepositions)
         from _7 in Pulse.ToFlow(Trace, execution.TraceDepositions)
-        from _8 in Pulse.ToFlow(Warning, execution.GetWarningDepositionsForReport())
+        from _8 in Pulse.ToFlow(FinalTrace, execution.FinalTraceDepositions)
+        from _9 in Pulse.ToFlow(Warning, execution.GetWarningDepositionsForReport())
         select Flow.Continue;
 
     private static Flow<Flow> FailedVerification(FailedVerificationDeposition input) =>
