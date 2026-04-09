@@ -26,7 +26,7 @@ public class TheEditor
 
     private static Flow<Flow> FinalTrace((int executionIndex, int traceIndex) cursor) =>
         from article in Pulse.Draw<Article>()
-        let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
+        let traceArticle = article.Execution(cursor.executionIndex).FinalTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Value);")
         from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Labeled);")

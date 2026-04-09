@@ -57,6 +57,34 @@ select Case.Closed;
 ```csharp
 "The expectation 'Expect Throws' threw a 'DelayedResultNullValueAccessedException'.";
 ```
+## Reports Redux
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from trace in Checkr.Trace("Input", () => input)
+from expect in Checkr.Expect("<= 42", () => input <= 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ReportsRedux.cs:32:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1883509239
+ ------------------------------------------------------------
+  Executed:
+   - Input: Input = 69
+            Redux   43
+   - Trace: Input = 69
+   - Final: Input = 43
+ ================================
+  !! Expectation Failed: <= 42
+ ================================
+```
 ## Greed Is Not Good
 Fixed this one by using Testimonys, see Memory.  
 
