@@ -2,13 +2,20 @@
 This chapter takes you through the different options on how to run, configure and rerun Checkrs.
 It also explains the *Evidence Vault* system and how to gather evidence.
   
+### Test Framework Integration
+QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
+
+A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
+
+If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
+
+Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
 ### Contents
 
 - [Running a Checkr][RunningACheckr]
 - [Configuration][Configuration]
 - [The Evidence Vault][TheEvidenceVault]
 - [Gathering Evidence][GatheringEvidence]
-- [Test Framework Integration][TestFrameworkIntegration]
   
 
 [RunningACheckr]: #running-a-checkr
@@ -18,8 +25,6 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 [TheEvidenceVault]: #the-evidence-vault
 
 [GatheringEvidence]: #gathering-evidence
-
-[TestFrameworkIntegration]: #test-framework-integration
 ### Running a Checkr
 [The Board][PuttingACaseOnTheBoard] | [Next][Configuration]  
   
@@ -595,7 +600,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
 
 [GatheringEvidence]: #gathering-evidence
 ### Gathering Evidence
-[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] | [Next][TestFrameworkIntegration] 
+[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] 
   
 This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.  
 #### Running Investigations
@@ -867,27 +872,11 @@ The Shrinker however managed to collapse that one down to only four executions, 
 
 [TheEvidenceVault]: #the-evidence-vault
 
-[TestFrameworkIntegration]: #test-framework-integration
-
 [Guide]: #guide
 
 [BoltingHorses]: #bolting-horses
 
 [J_TheCaseOfTheInvisibleCollection]: #the-case-of-the-invisible-collection
-### Test Framework Integration
-[The Board][PuttingACaseOnTheBoard] | [Previous][GatheringEvidence]  
-  
-QuickCheckr is fully **framework agnostic**: it doesn't care whether you run your tests with xUnit, NUnit, MSTest, or TUnit. There are no base classes to inherit from, no runner integrations to install, and no magic attributes controlling behaviour.  
-
-A Checkr is just a LINQ expression that you evaluate by calling `Run()`.  
-
-If a minimal failing case is found, QuickCheckr reports it by **throwing a `FalsifiableException`**, which contains the complete shrunk report, including the seed, execution steps, inputs, actions, traces, and the reason for failure.  
-
-Because the failure is surfaced as a standard exception, any test framework can treat it as a normal assertion failure and you get a rich, human-readable report for free.  
-
-[PuttingACaseOnTheBoard]: #putting-a-case-on-the-board
-
-[GatheringEvidence]: #gathering-evidence
 ## Building a Testing DSL with QuickCheckr
 ### Model Based Testing
 
