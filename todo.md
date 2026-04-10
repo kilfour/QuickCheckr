@@ -1,4 +1,4 @@
-## 0.0.13: Watching the Detectives
+## 0.2.0: Watching the Detectives
 
 ### Doing
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
@@ -66,7 +66,7 @@ sz### Todo
 
 
 
-## 0.0.14 : All Aboard
+## 0.3.0 : All Aboard
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
@@ -98,14 +98,11 @@ sz### Todo
   * minimal
   * for newbies
   * web api
-
-
-## 0.1.0
 * update xml summaries
 * make some noise
 
 
-## 0.1.1 : Wait for Me !
+## 0.4.0 : Wait for Me !
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
   => initial web-api example (QuickWebr ?)
 

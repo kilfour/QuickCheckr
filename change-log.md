@@ -104,3 +104,8 @@
   
 ## 0.0.12: Strings and Things
 * QuickCheckr now has domain-aware, customizable string reduction.
+
+## 0.1.0: Steady in Purpose 
+* Stabilization release.
+* Minor polish and internal cleanup.
+* Moved `GatheringEvidence(...)` to `Conduct(n.Investigations, ...)`.
