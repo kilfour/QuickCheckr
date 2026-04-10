@@ -1,8 +1,6 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.F_TestFrameworkIntegration;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickPulse.Explains;
 
@@ -11,11 +9,10 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 [DocFile]
 [DocLink(typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(TheEvidenceVault))]
-[DocLink(typeof(TestFrameworkIntegration))]
 [DocLink(typeof(Guide))]
 [DocLink(typeof(BoltingHorses))]
 [DocLink(typeof(J_TheCaseOfTheInvisibleCollection))]
-[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] | [Next][TestFrameworkIntegration] \n")]
+[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][TheEvidenceVault] \n")]
 [DocContent("This is another way to run a Checkr, and an alternate method to populate the *Evidence Vault* with seeds for failing runs.")]
 [DocHeader("Running Investigations")]
 [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]

@@ -13,11 +13,11 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 [DocLink(typeof(Configuration))]
 [DocLink(typeof(TheEvidenceVault))]
 [DocLink(typeof(GatheringEvidence))]
-[DocLink(typeof(TestFrameworkIntegration))]
 [DocContent(
 @"This chapter takes you through the different options on how to run, configure and rerun Checkrs.
 It also explains the *Evidence Vault* system and how to gather evidence.
 ")]
+[DocInclude(typeof(TestFrameworkIntegration))]
 [DocHeader("Contents")]
 [DocContent(
 @"
@@ -25,6 +25,5 @@ It also explains the *Evidence Vault* system and how to gather evidence.
 - [Configuration][Configuration]
 - [The Evidence Vault][TheEvidenceVault]
 - [Gathering Evidence][GatheringEvidence]
-- [Test Framework Integration][TestFrameworkIntegration]
 ")]
 public class PuttingACaseOnTheBoard;
