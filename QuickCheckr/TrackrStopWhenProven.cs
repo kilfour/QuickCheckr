@@ -14,7 +14,7 @@ public static partial class Trackr
             state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
-            return TheCatcher.InTheCheckr(state, $"StopWhenProven: {key}",
+            return TheCatcher.InTheCheckr(state,
                 () => EvaluateStopWhenProven(key, condition, state),
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };

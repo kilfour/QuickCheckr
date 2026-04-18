@@ -9,7 +9,7 @@ public static class Evaluate
                 state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
-            return TheCatcher.InTheCheckr(state, $"Spec: {key}",
+            return TheCatcher.InTheCheckr(state,
                 () => InnerExpect(key, condition, state),
                 (ex) => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };

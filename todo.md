@@ -1,6 +1,8 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
+* Added a `CatcherInTheCheckr` to `Perform`, needs testing coz it might eat exceptions.
+  Maybe needs `Action<Exception>? onException` argument
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 * final trace <= done
 ```text
@@ -25,7 +27,7 @@
     Occurrences: 2
 ```
 
-sz### Todo
+### Todo
 * Check .Trace + .Verify
 * Added Deliberator: 
   Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
@@ -61,10 +63,6 @@ sz### Todo
 * Stringr => use Result.Stop instead of State.RunStopped
 
 ### Done/Ready for Changelog after review
-* Renamed `GatheringEvidence` to `Conduct`.
-
-
-
 
 ## 0.3.0 : All Aboard
 * More in-built reducers

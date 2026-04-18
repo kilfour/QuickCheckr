@@ -10,9 +10,9 @@ public class CaptureExceptions : BaseTest
     [Fact]
     [DocCheckrHeader]
     [DocExample(typeof(CaptureExceptions), nameof(GetCheckr))]
-    public void RunTest()
+    public void RunTestDoesNotThrow()
     {
-        Assert.Throws<InvalidOperationException>(() => GetCheckr().Run());
+        GetCheckr().Run();
     }
 
 

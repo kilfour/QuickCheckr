@@ -9,7 +9,7 @@ public static partial class Checkr
         {
             if (!state.EvidenceRecorder.IsReplay) // HACK
                 state.Memory.StoreAction(key);
-            return TheCatcher.InTheCheckr(state, key,
+            return TheCatcher.InTheCheckr(state,
                 () => CheckrResult.Some(state, func()),
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };
