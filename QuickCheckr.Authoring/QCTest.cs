@@ -8,7 +8,7 @@ using QuickPulse;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Tools;
+namespace QuickCheckr.Authoring;
 
 public abstract class QCTest
 {

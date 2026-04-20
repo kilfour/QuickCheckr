@@ -1,7 +1,7 @@
-using QuickCheckr.Tests.Tools;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickCheckr.Authoring;
 
 namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
 
