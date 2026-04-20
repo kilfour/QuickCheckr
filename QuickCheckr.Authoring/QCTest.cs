@@ -47,8 +47,6 @@ public abstract class QCTest<T> : QCTest
 
     protected virtual CheckrConfig Configure(CheckrConfig config) => config;
 
-    public abstract void Example();
-
     protected void ProcessArticle(Article article, string callerPath)
     {
         WriteAsserts(article);

@@ -14,6 +14,8 @@ public abstract class CheckrTest<T> : QCTest<T>
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
 
+    public abstract void Example();
+
     protected abstract CheckrOf<Case> TheCheckr();
 
     [StackTraceHidden]

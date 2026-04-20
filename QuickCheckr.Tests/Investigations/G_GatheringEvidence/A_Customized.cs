@@ -20,7 +20,7 @@ public class A_Customized : QCTest<A_Customized>
     [DocReportHeader]
     [DocReport]
     [CodeSnippet]
-    public override void Example() =>
+    public void Example() =>
         TheCheckr().GatherEvidence(
             20.Investigations(),
             20.Runs(),

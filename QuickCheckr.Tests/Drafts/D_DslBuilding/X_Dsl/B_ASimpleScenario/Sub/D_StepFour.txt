@@ -1,7 +1,0 @@
- 1 Run
- Passed Expectations
- - 'Create Appointment' Name: 10x
- - 'Create Appointment' Empty string: 1x
- - 'Create Appointment' Null string: 1x
- - 'Create Appointment' Whitespace string: 1x
- ------------------------------------------------------------
