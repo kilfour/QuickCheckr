@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
@@ -44,6 +45,8 @@ public abstract class QCTest<T> : QCTest
     protected class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", skiplines, numberOfLines, path);
 
+    protected virtual CheckrConfig Configure(CheckrConfig config) => config;
+
     public abstract void Example();
 
     protected void ProcessArticle(Article article, string callerPath)
@@ -55,8 +58,6 @@ public abstract class QCTest<T> : QCTest
     }
 
     protected abstract void Verify(Article article);
-
-    private const string basePath = @"C:\Code\";
 
     private void WriteReport(
         Article article,

@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.Protocol;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
@@ -14,7 +13,6 @@ public abstract class CheckrTest<T> : QCTest<T>
     public class DocCheckrAttribute() :
         DocExampleAttribute(typeof(T), "TheCheckr");
 
-    protected virtual CheckrConfig Configure(CheckrConfig config) => config;
     protected abstract CheckrOf<Case> TheCheckr();
 
     [StackTraceHidden]
