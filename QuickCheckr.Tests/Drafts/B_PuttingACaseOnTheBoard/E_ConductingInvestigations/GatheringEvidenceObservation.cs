@@ -1,6 +1,6 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;

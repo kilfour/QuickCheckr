@@ -1,9 +1,9 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 

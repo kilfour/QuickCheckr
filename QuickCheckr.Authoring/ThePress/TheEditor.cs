@@ -1,7 +1,8 @@
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickPulse;
 
-namespace QuickCheckr.Tests.Tools.ThePress;
+namespace QuickCheckr.Authoring.ThePress;
 
 public class TheEditor
 {

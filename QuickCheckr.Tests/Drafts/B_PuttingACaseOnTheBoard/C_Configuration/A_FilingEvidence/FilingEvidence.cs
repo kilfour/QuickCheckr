@@ -1,8 +1,8 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickPulse.Explains;
 
 

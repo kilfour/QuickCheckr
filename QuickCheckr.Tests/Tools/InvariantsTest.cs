@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Explains;
 

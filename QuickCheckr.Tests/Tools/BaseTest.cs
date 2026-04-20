@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;

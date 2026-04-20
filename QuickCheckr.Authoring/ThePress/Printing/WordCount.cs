@@ -1,7 +1,7 @@
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-namespace QuickCheckr.Tests.Tools.ThePress.Printing;
+namespace QuickCheckr.Authoring.ThePress.Printing;
 
 public class WordCount(CaseFile caseFile)
 {

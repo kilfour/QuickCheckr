@@ -5431,3 +5431,5 @@ config with
   !! Expectation Failed: The sum of lengths of the element lists is at most 10
  ================================================================================
 ```
+## When Things Go Wrong
+### What Happens When An Exception Is Thrown

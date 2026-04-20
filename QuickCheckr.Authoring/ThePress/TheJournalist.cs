@@ -1,13 +1,13 @@
 
 
 using System.Diagnostics;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 using QuickPulse.Arteries;
 
-namespace QuickCheckr.Tests.Tools.ThePress;
+namespace QuickCheckr.Authoring.ThePress;
 
 public static class TheJournalist
 {
@@ -17,8 +17,15 @@ public static class TheJournalist
     [StackTraceHidden]
     public static Article Exposes(Action run)
     {
-        var ex = Assert.Throws<FalsifiableException>(run);
-        return Unearths(ex.TheCaseFile);
+        try
+        {
+            run();
+        }
+        catch (FalsifiableException ex)
+        {
+            return Unearths(ex.TheCaseFile);
+        }
+        throw new InvalidOperationException("Expected FalsifiableException, but none was thrown.");
     }
 
     [StackTraceHidden]

@@ -1,6 +1,7 @@
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
-namespace QuickCheckr.Tests.Tools.ThePress.Printing;
+namespace QuickCheckr.Authoring.ThePress.Printing;
 
 public class TraceArticle(TraceDeposition deposition)
     : AbstractArticle<TraceDeposition>(deposition);

@@ -1,8 +1,9 @@
 using System.Diagnostics;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
-namespace QuickCheckr.Tests.Tools.ThePress.Printing;
+namespace QuickCheckr.Authoring.ThePress.Printing;
 
 public class ExecutionArticle(CollapsableExecutionDeposition collapsableExecutionDeposition)
     : AbstractArticle<ExecutionDeposition>(collapsableExecutionDeposition.ExecutionDeposition)

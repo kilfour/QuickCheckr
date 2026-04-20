@@ -1,7 +1,7 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster;

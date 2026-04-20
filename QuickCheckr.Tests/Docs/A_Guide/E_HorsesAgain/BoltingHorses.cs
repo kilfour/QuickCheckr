@@ -1,10 +1,11 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -92,7 +93,7 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
         Verify(article);
     }
 
-    private static void Verify(Tools.ThePress.Printing.Article article)
+    private static void Verify(Article article)
     {
         Assert.Equal("Assigned Coach Must Be Suitable", article.FailureDescription());
         Assert.Equal(4, article.Total().Executions());

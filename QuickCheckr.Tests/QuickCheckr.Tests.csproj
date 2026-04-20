@@ -25,6 +25,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\QuickCheckr.Authoring\QuickCheckr.Authoring.csproj" />
     <ProjectReference Include="..\QuickCheckr\QuickCheckr.csproj" />
   </ItemGroup>
 

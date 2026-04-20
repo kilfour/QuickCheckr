@@ -1,10 +1,10 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 

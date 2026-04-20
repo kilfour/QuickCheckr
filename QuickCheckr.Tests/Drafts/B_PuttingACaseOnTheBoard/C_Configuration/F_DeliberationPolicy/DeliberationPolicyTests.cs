@@ -1,7 +1,7 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;

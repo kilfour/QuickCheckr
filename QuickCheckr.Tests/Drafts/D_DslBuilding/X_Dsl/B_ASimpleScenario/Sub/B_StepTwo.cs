@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;

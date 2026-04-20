@@ -1,6 +1,6 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.D_Challenges.D_Calculator;

@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
-namespace QuickCheckr.Tests.Tools.ThePress.Printing;
+namespace QuickCheckr.Authoring.ThePress.Printing;
 
 public class Article(CaseFile caseFile)
 {

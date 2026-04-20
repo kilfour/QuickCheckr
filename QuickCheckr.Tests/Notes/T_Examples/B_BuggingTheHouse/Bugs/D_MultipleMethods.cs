@@ -1,8 +1,8 @@
 ﻿using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickCheckr.Tests.Notes.T_Examples.B_BuggingTheHouse.Bugs;
 

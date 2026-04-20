@@ -2,7 +2,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.StringReduction;
 using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;
