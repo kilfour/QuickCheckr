@@ -32,7 +32,7 @@ public abstract class QCTest
 
 public abstract class QCTest<T> : QCTest
 {
-    protected readonly bool writeAllReportsToDisk = false;
+    protected virtual bool WriteAllReportsToDisk => false;
     protected virtual bool Asserts => false;
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
@@ -66,7 +66,7 @@ public abstract class QCTest<T> : QCTest
 
     private void DoTheWriting(Article article, string filename, string callerPath)
     {
-        if (!Report && !writeAllReportsToDisk) return;
+        if (!Report && !WriteAllReportsToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
         if (article.CaseFile.HasEvidence)
