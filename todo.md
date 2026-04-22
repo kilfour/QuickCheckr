@@ -63,6 +63,7 @@
 * Stringr => use Result.Stop instead of State.RunStopped
 
 ### Done/Ready for Changelog after review
+* Added `Trackr.GetPool<T>()`, used by QuickSystemCheckr.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
