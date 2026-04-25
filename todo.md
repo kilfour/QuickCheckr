@@ -1,8 +1,8 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
-* Added a `CatcherInTheCheckr` to `Perform`, needs testing coz it might eat exceptions.
-  Maybe needs `Action<Exception>? onException` argument
+
+
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 * final trace <= done
 ```text
@@ -64,6 +64,9 @@
 
 ### Done/Ready for Changelog after review
 * Added `Trackr.GetPool<T>()`, used by QuickSystemCheckr.
+* Exception handling of `Perform` and `Capture` now behaves as same as `Act`:
+  * If an exception occurs => failure.
+  * Never throws during shrinking.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
