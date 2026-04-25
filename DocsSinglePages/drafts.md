@@ -1948,302 +1948,6 @@ public class AssignCoachToCourse : ApiMethod
  ------------------------------------------------------------
 ```
   
-### Explore and Exemplify
-#### Bolting Horses Dsl
-
-**The Invariant:**  
-```csharp
-SystemCheckr
-    .Define()
-    // Using `.Named("Bolting Horses")` instead of `.Define()` persists the report.
-    .DisableWarnings()
-    .PoolOf<Coach>()
-    .PoolOf<Course>()
-    .Operations(
-        new CreateCoach(),
-        new UpdateCoachSkills(),
-        new CreateCourse(),
-        new UpdateCourseSkills(),
-        new AssignCoachToCourse())
-    .ForAll<Coach>("All Assigned Coaches Must Be Suitable",
-        coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
-    .Run(1473455315, 20.ExecutionsPerRun());
-```
-```csharp
-public class CreateCoach : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Coach>()
-            .When(coaches => coaches.Count <= 10)
-            .With(from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-            .Perform(input => new Coach(input))
-            .Expect(("Name", (coach, input) => coach.Name == input));
-}
-```
-```csharp
-public class UpdateCoachSkills : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Update<Coach>("Skills")
-            .When(coaches => coaches.Count != 0)
-            .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
-            .Perform((coach, input) => coach.UpdateSkills(input))
-            .Expect(("Skills", (coach, input) =>
-                coach.Skills.Count == input.Count() && coach.Skills.All(input.Contains)));
-}
-```
-```csharp
-public class CreateCourse : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Course>()
-            .When(courses => courses.Count <= 5)
-            .With(from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-            .Perform(input => new Course(input))
-            .Expect(("Name", (course, input) => course.Name == input));
-}
-```
-```csharp
-public class UpdateCourseSkills : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Update<Course>("Skills")
-            .When(courses => courses.Count != 0)
-            .With(Fuzzr.OneOf(Skills.Pool).Unique(Guid.NewGuid()).Many(1, 3))
-            .Perform((course, input) => course.UpdateRequiredSkills(input))
-            .Expect(("Skills", (course, input) =>
-                course.RequiredSkills.Count == input.Count() && course.RequiredSkills.All(input.Contains)));
-}
-```
-```csharp
-public class AssignCoachToCourse : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Update<Coach, Course>("Assign")
-            .When((coach, course) => coach.IsSuitableFor(course))
-            .Perform((coach, course) => course.AssignCoach(coach))
-            .Expect(("Assigned", (coach, course) => course.AssignedCoach == coach));
-}
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                BoltingHorsesDsl.cs:53:1
- Original failing run:    13 executions
- Minimal failing case:    4 executions (after 14 shrinks)
- Seed:                    1473455315
- ------------------------------------------------------------
-  Executed: Create Course
-   -  Pool: 'Create Course' to Pool = Course-1
- ------------------------------------------------------------
-  Executed: Create Coach
-   -  Pool: 'Create Coach' to Pool = Coach-1
- ------------------------------------------------------------
-  Executed: Update (Coach, Course) Assign
-   -  Pool: Update (Coach, Course) Assign = ( Coach-1, Course-1 )
- ------------------------------------------------------------
-  Executed: Update Course Skills
-   -  Pool: Update Course Skills         = Course-1
-   - Input: 'Update Course Skills' Input = [ _ ]
- ================================================================
-  !! Expectation Failed: All Assigned Coaches Must Be Suitable
- ================================================================
- Passed Expectations
- - 'Create Course' Name: 4x
- - All Assigned Coaches Must Be Suitable: 12x
- - 'Create Coach' Name: 4x
- - 'Update Coach Skills' Skills: 2x
- - 'Update (Coach, Course) Assign' Assigned: 2x
- - 'Update Course Skills' Skills: 1x
- ------------------------------------------------------------
-```
-#### A Simple Scenario
-##### Step One
-
-**The Invariant:**  
-```csharp
-SystemCheckr
-    .Define()
-    .PoolOf<Appointment>()
-    .Operations(
-        new CreateAppointment())
-    .Run(100.Runs(), 10.ExecutionsPerRun());
-```
-
-**The Fuzzr:**  
-```csharp
-// Todo: use QuickFuzzr.Evil, maybe add .Remove() or something somehow
-Fuzzr.OneOf(
-    Fuzzr.String(),
-    Fuzzr.Constant(string.Empty),
-    Fuzzr.Constant<string>(null!),
-    Fuzzr.Constant("  "));
-```
-
-**The Operation:**  
-```csharp
-public class CreateAppointment : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Appointment>()
-            .When(coaches => coaches.Count <= 10)
-            .With(EvilString())
-            .Perform(input => new Appointment(input))
-            .Expect(("Name", (appointment, input) => appointment.Title == input));
-}
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                A_StepOne.cs:51:1
- Original failing run:    1 execution
- Seed:                    1279955743
- ------------------------------------------------------------
-  Executed: Create Appointment
-   -  Pool: 'Create Appointment' to Pool = Appointment-1
-   - Input: 'Create Appointment' Input   = null
- ===========================================================================
-  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.A_StepOne.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\A_StepOne.cs:line 52
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
-```
-##### Step Two
-
-**The Fuzzr:**  
-```csharp
-Fuzzr.OneOf(
-    Fuzzr.String(),
-    Fuzzr.Constant(string.Empty),
-    Fuzzr.Constant("  "));
-```
-
-**The Operation:**  
-```csharp
-public class CreateAppointment : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Appointment>()
-            .When(coaches => coaches.Count <= 10)
-            .With(EvilString())
-            .Perform(input => new Appointment(input))
-            .Example("Empty string", string.Empty, result => result.ThrewExactly<ArgumentNullException>())
-            .Expect(("Name", (appointment, input) => appointment.Title == input));
-}
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                B_StepTwo.cs:48:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1941262939
- ------------------------------------------------------------
-  Executed: 'Create Appointment' Empty string, Create Appointment
-   -  Pool: 'Create Appointment' to Pool = Appointment-1
-   - Input: 'Create Appointment' Input   = "  "
- ===========================================================================
-  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.B_StepTwo.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\B_StepTwo.cs:line 50
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
- Passed Expectations
- - 'Create Appointment' Empty string: 1x
- ------------------------------------------------------------
-```
-##### Step Three
-
-**The Fuzzr:**  
-```csharp
-Fuzzr.OneOf(
-    Fuzzr.String(),
-    Fuzzr.Constant(string.Empty));
-```
-
-**The Operation:**  
-```csharp
-public class CreateAppointment : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Appointment>()
-            .When(coaches => coaches.Count <= 10)
-            .With(EvilString())
-            .Perform(input => new Appointment(input))
-            .Example("Null string", null!, result => result.ThrewExactly<ArgumentNullException>())
-            .Example("Whitespace string", " ", result => result.ThrewExactly<ArgumentNullException>())
-            .Expect(("Name", (appointment, input) => appointment.Title == input));
-}
-```
-
-**The Report:**  
-```text
-------------------------------------------------------------
- Test:                    Example
- Location:                C_StepThree.cs:48:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    1493980658
- ------------------------------------------------------------
-  Executed: 'Create Appointment' Null string, 'Create Appointment' Whitespace string, Create Appointment
-   -  Pool: 'Create Appointment' to Pool = Appointment-2
-   - Input: 'Create Appointment' Input   = ""
- ===========================================================================
-  !! System.ArgumentNullException: Title cannot be null or whitespace (Parameter 'title')
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment.EditTitle(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 18
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.Appointment..ctor(String title) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\Appointment.cs:line 10
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.B_ASimpleScenario.Sub.C_StepThree.CreateAppointment.<>c.<Define>b__0_1(String input) in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\B_ASimpleScenario\Sub\C_StepThree.cs:line 49
-   at QuickCheckr.Tests.Drafts.D_DslBuilding.X_Dsl.Dsl.OperationBuilders.CreateBuilder3`2.<>c__DisplayClass7_1.<GetCheckr>b__8() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\D_DslBuilding\X_Dsl\Dsl\OperationBuilders\CreateBuilder.cs:line 45
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
- Passed Expectations
- - 'Create Appointment' Name: 1x
- - 'Create Appointment' Null string: 1x
- - 'Create Appointment' Whitespace string: 1x
- ------------------------------------------------------------
-```
-##### Step Four
-
-**The Operation:**  
-```csharp
-public class CreateAppointment : Operation
-{
-    public override OperationSpecification Define(SystemUnderTest system) =>
-        system.Create<Appointment>()
-            .When(coaches => coaches.Count <= 10)
-            .With(Fuzzr.String())
-            .Perform(input => new Appointment(input))
-            .Example("Empty string", string.Empty, result => result.ThrewExactly<ArgumentNullException>())
-            .Example("Null string", null!, result => result.ThrewExactly<ArgumentNullException>())
-            .Example("Whitespace string", " ", result => result.ThrewExactly<ArgumentNullException>())
-            .Expect(("Name", (appointment, input) => appointment.Title == input));
-}
-```
-
-**The Report:**  
-```text
-1 Run
- Passed Expectations
- - 'Create Appointment' Name: 10x
- - 'Create Appointment' Empty string: 1x
- - 'Create Appointment' Null string: 1x
- - 'Create Appointment' Whitespace string: 1x
- ------------------------------------------------------------
-```
 ## On Shrinking
 ### Philosophy
 
@@ -5433,3 +5137,100 @@ config with
 ```
 ## When Things Go Wrong
 ### What Happens When An Exception Is Thrown
+- Whenever an exception is thrown in an 'Act', 'Capture' or 'Perform' it is considered a failure.
+- ActCarefully for asserting exceptions and exception behaviour
+- everything else BOOM
+- never BOOM during shrinking  
+#### During Act
+Whenever an excecption occurs during the execution of an `Act` it is considered a failure.  
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Counter", Fuzzr.Counter("cnt"))
+from expect in Checkr.Act("Sometimes throws", () =>
+{
+    if (input > 0)
+        ComputerSays.No("Only one is available");
+})
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_DuringAct.cs:68:1
+ Original failing run:    1 execution
+ Seed:                    228179617
+ ------------------------------------------------------------
+  Executed: Sometimes throws
+   - Input: Counter = 1
+ ===========================================================================
+  !! QuickPulse.Instruments.ComputerSaysNo: Only one is available
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExceptionIsThrown.A_DuringAct.A_DuringAct.<>c__DisplayClass5_0.<TheCheckr>b__2() in C:\Code\QuickCheckr\QuickCheckr.Tests\Drafts\P_WhenThingsGoWrong\D_WhatHappensWhenAnExceptionIsThrown\A_DuringAct\A_DuringAct.cs:line 30
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 24
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 13
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 12
+ ===========================================================================
+```
+#### Checking The Exception
+
+**The Checkr:**  
+```csharp
+from result in Checkr.ActCarefully("Act", () => throw new Exception("BOOM"))
+from throws in Checkr.Expect("Throws", () => result.Threw)
+from throwsExact in Checkr.Expect("Throws InvalidOperationException", result.ThrewAs<InvalidOperationException>)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                CheckingTheException.cs:33:1
+ Original failing run:    1 execution
+ Seed:                    412717959
+ ------------------------------------------------------------
+  Executed: Act
+ ===========================================================
+  !! Expectation Failed: Throws InvalidOperationException
+ ===========================================================
+ Passed Expectations
+ - Throws: 1x
+ ------------------------------------------------------------
+```
+#### Input Throws
+Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.  
+The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:  
+```csharp
+from input in Checkr.Input("AnInt", Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
+```
+```csharp
+Input 'AnInt' threw a 'OneOfEmptyOptionsException', see InnerException.
+This might mean something is wrong with the way you wrote the Fuzzr.
+But it might also mean that the fuzzr is depending on state.
+And as 'Input' is eagerly evaluated, this can cause problems.
+In the latter case please try using the 'lazy' version. 
+Example: 'Checkr.Input(() => Fuzzr.Int()).
+```
+As you can gather from the exception message, this is done in order to inform the user of a rare, but real,
+issue when a Fuzzr depends on external state.  
+The solution is also supplied in said message:   
+```csharp
+Checkr.Input("AnInt", () => Fuzzr.Int());
+```
+If the *lazy* version throws:  
+```csharp
+from input in Checkr.Input("AnInt", () => Fuzzr.OneOf<int>((List<int>)[]))
+select Case.Closed;
+```
+The Exception is **not** wrapped.  
+```csharp
+Fuzzr.OneOf<Int32> cannot select from an empty sequence.
+Possible solutions:
+- Provide at least one option (ensure the sequence is non-empty).
+- Use a fallback: Fuzzr.OneOf(values).WithDefault()
+- Guard upstream: values.Any() ? Fuzzr.OneOf(values) : Fuzzr.Constant(default!).
+```

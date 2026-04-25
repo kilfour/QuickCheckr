@@ -9,7 +9,6 @@ using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_Shrink
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 using QuickPulse.Explains;
 
 

@@ -9,7 +9,9 @@ public static partial class Checkr
     /// Use when you want to compute state or helper values that participate in the script but do not represent observable behaviour.
     /// </summary>
     public static CheckrOf<T> Capture<T>(Func<T> func) =>
-        state => TheCatcher.InTheCheckr(state, () => CheckrResult.Some(state, func()));
+        state => TheCatcher.InTheCheckr(state,
+            () => CheckrResult.Some(state, func()),
+            ex => state.EvidenceRecorder.RecordFailure(ex));
 
 
     /// <summary>
@@ -17,5 +19,7 @@ public static partial class Checkr
     /// Use when awaiting a helper computation that should influence the script but not appear as an action.
     /// </summary>
     public static CheckrOf<T> Capture<T>(Task<T> func) =>
-        state => TheCatcher.InTheCheckr(state, () => CheckrResult.Some(state, func.GetAwaiter().GetResult()));
+        state => TheCatcher.InTheCheckr(state,
+            () => CheckrResult.Some(state, func.GetAwaiter().GetResult()),
+            ex => state.EvidenceRecorder.RecordFailure(ex));
 }

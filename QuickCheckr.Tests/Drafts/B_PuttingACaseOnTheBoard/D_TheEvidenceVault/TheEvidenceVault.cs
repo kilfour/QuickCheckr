@@ -2,7 +2,6 @@ using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;

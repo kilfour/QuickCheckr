@@ -26,7 +26,6 @@ select Case.Closed;
  - unchecked
  ------------------------------------------------------------
 ```
-## Expectation Exceptions
 ### Expectation Throws
 In case an expectation throws an exception during the initial Checkr run, 
 It is wrapped in an ExpectationThrowsException through InnerException and the expectation key is reported.  
