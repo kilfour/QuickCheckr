@@ -4,11 +4,11 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 
 [DocFile]
 [DocContent(
-""""
-- Whenever an exception is thrown in an 'Act', 'Capture' or 'Perform' it is considered a failure.
-- ActCarefully for asserting exceptions and exception behaviour
-- everything else BOOM
-- never BOOM during shrinking
-""""
+"""
+- Act/Capture/Perform exception   => failure
+- ActCarefully                    => inspect/assert exception behaviour
+- Anything else                   => throws or rethrows
+- Shrinking replay                => never throws
+"""
 )]
 public class WhatHappensWhenAnExceptionIsThrown;
