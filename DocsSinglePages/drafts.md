@@ -334,7 +334,7 @@ select Case.Closed;
 protected override CheckrConfig Configure(CheckrConfig config)
     => config with { ReportMode = ReportMode.Default };
 ```
-Includes all possible ReportModes.  
+Includes all possible ReportModes, except `ReportMode.FinalTrace`.  
 ```text
 ------------------------------------------------------------
  Test:                    Example
@@ -441,6 +441,30 @@ Only labels.
  ===========================================================================
   !! ComputerSaysNo: Only one is available
  ===========================================================================
+```
+###### ReportMode.FinalTrace
+Using a different checkr in order to demonstrate the difference between `ReportMode.Trace` and `ReportMode.FinalTrace`.
+- `ReportMode.Trace` reports the values of the initial run.
+- `ReportMode.FinalTrace` reports the values of the final run, after shrinking.  
+```csharp
+protected override CheckrConfig Configure(CheckrConfig config)
+    => config with { ReportMode = ReportMode.FinalTrace };
+```
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ReportModeFinalTrace.cs:51:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1964562926
+ ------------------------------------------------------------
+  Executed:
+   - Input = 59
+     Redux   10
+   - Input / 2 = 5
+ =====================================
+  !! Expectation Failed: Input > 10
+ =====================================
 ```
 **Hint:** You can use bit-wise operations to manipulate `ReportMode`:  
 ```csharp
@@ -5137,10 +5161,10 @@ config with
 ```
 ## When Things Go Wrong
 ### What Happens When An Exception Is Thrown
-- Whenever an exception is thrown in an 'Act', 'Capture' or 'Perform' it is considered a failure.
-- ActCarefully for asserting exceptions and exception behaviour
-- everything else BOOM
-- never BOOM during shrinking  
+- Act/Capture/Perform exception   => failure
+- ActCarefully                    => inspect/assert exception behaviour
+- Anything else                   => throws or rethrows
+- Shrinking replay                => never throws  
 #### During Act
 Whenever an excecption occurs during the execution of an `Act` it is considered a failure.  
 

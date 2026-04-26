@@ -15,6 +15,7 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_Re
 [DocInclude(typeof(ReportModeTrace))]
 [DocInclude(typeof(ReportModeWarning))]
 [DocInclude(typeof(ReportModeLabels))]
+[DocInclude(typeof(ReportModeFinalTrace))]
 [DocContent("**Hint:** You can use bit-wise operations to manipulate `ReportMode`:")]
 [DocExample(typeof(A_ReportModeReference), nameof(BitWiseOperationExample))]
 public class A_ReportModeReference : BaseTest

@@ -95,13 +95,13 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
 
     private static void Verify(Article article)
     {
-        Assert.Equal("Assigned Coach Must Be Suitable", article.FailureDescription());
+        Assert.Equal("Assigned Coach Must Be Suitable: Coach-1", article.FailureDescription());
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(4, article.Total().PoolTraces());
-        Assert.Equal(6, article.Total().PassedExpectations());
-        // Assert.Equal(14, article.ShrinkCount);
+        Assert.Equal(7, article.Total().PassedExpectations());
+        Assert.Equal(14, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Course", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Store Course", article.Execution(1).PoolTrace(1).Read().Label);
@@ -128,10 +128,12 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
         Assert.Equal(2, article.PassedExpectation(3).Read().TimesPassed);
         Assert.Equal("Coach is assigned", article.PassedExpectation(4).Read().Label);
         Assert.Equal(2, article.PassedExpectation(4).Read().TimesPassed);
-        Assert.Equal("Assigned Coach Must Be Suitable", article.PassedExpectation(5).Read().Label);
+        Assert.Equal("Assigned Coach Must Be Suitable: Coach-1", article.PassedExpectation(5).Read().Label);
         Assert.Equal(3, article.PassedExpectation(5).Read().TimesPassed);
-        Assert.Equal("Course Required Skills Set", article.PassedExpectation(6).Read().Label);
-        Assert.Equal(1, article.PassedExpectation(6).Read().TimesPassed);
+        Assert.Equal("Assigned Coach Must Be Suitable: Coach-3", article.PassedExpectation(6).Read().Label);
+        Assert.Equal(3, article.PassedExpectation(6).Read().TimesPassed);
+        Assert.Equal("Course Required Skills Set", article.PassedExpectation(7).Read().Label);
+        Assert.Equal(1, article.PassedExpectation(7).Read().TimesPassed);
     }
 
     private static readonly string[] SkillPool =

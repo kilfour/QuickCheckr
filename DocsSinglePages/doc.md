@@ -794,7 +794,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:85:1
+ Location:                Docs\A_Guide\E_HorsesAgain\BoltingHorses.cs:86:1
  Original failing run:    13 executions
  Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1473455315
@@ -811,15 +811,16 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   Executed: Update Course Skills
    -  Pool: Course to Update Skills = Course-1
    - Input: Course Skills           = [ _ ]
- ==========================================================
-  !! Expectation Failed: Assigned Coach Must Be Suitable
- ==========================================================
+ ===================================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable: Coach-1
+ ===================================================================
  Passed Expectations
  - Course Name Set: 4x
  - Coach Name is set: 4x
  - Coach Skills Set: 2x
  - Coach is assigned: 2x
- - Assigned Coach Must Be Suitable: 3x
+ - Assigned Coach Must Be Suitable: Coach-1: 3x
+ - Assigned Coach Must Be Suitable: Coach-3: 3x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```

@@ -1,3 +1,5 @@
+using QuickCheckr.UnderTheHood;
+
 namespace QuickCheckr;
 
 public static partial class Trackr
@@ -5,5 +7,7 @@ public static partial class Trackr
     public static CheckrOf<Case> PoolExpectEach<T>(
         string key,
         Func<T, bool> condition) =>
-        state => Checkr.Expect(key, () => state.Memory.GetPool<T>().All(a => condition(a)))(state);
+        state => Combine.Checkrs(
+            state.Memory.GetPoolDictionary<T>()
+                .Select(a => Checkr.Expect($"{key}: {typeof(T).Name}-{a.Key}", () => condition(a.Value))))(state);
 }

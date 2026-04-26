@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 public class CheckingTheException : CheckrTest<CheckingTheException>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -14,7 +14,7 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
 
     [Fact]
     [DocConfigure]
-    [DocContent("Includes all possible ReportModes.")]
+    [DocContent("Includes all possible ReportModes, except `ReportMode.FinalTrace`.")]
     [DocReport]
     public override void Example()
     {

@@ -109,3 +109,12 @@
 * Stabilization release.
 * Minor polish and internal cleanup.
 * Moved `GatheringEvidence(...)` to `Conduct(n.Investigations, ...)`.
+
+## 0.1.1: Consistency Matters 
+* Exception handling of `Perform` and `Capture` now behaves as same as `Act`:
+  * If an exception occurs => failure.
+  * Never throws during shrinking.
+* Added `Trackr.PoolForEach` and `Trackr.PoolForEachWhen`.
+* `Trackr.PoolExpectEach` now adds PoolElement Id to `Expectation` label.
+* Added `ReportMode.FinalTrace` which reports the values of the final run, after shrinking.  
+  In contrast to `ReportMode.Trace`, which reports the values of the initial run.
