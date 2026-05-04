@@ -1,6 +1,7 @@
 ## 0.2.0: Watching the Detectives
 
-### Doing
+### 
+* Auto Pool
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 ```text
 ============================================================

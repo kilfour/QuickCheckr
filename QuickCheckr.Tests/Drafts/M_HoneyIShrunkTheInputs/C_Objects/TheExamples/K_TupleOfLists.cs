@@ -38,6 +38,15 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("First list does not contain 42.", article.FailureDescription());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(3, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Tuple", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("( [ 42 ], _, _ )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("( [ 42, 32 ], [ 17, 69 ], [ ] )", article.Execution(1).Trace(1).Read().Value);
     }
 }
