@@ -513,21 +513,10 @@ Pools are not exposed as raw sequences on purpose.
 Treating pools as lists leads to scattered .Any() / .Count() checks that tend to become brittle during shrinking.
 Instead, Pool operations encapsulate "is this state valid?" so shrinking can replay safely.
   
-#### Creating a Pool
-Pools are created for *a specific type* using:  
-```csharp
-Trackr.PoolFor<Contact>();
-```
-Which is a Pool for the following type:  
-```csharp
-public record Contact(string Name)
-{
-    public string Name { get; set; } = Name;
-};
-```
+#### Pool Creation
+Pools are created **auto-magically**. Whenever any checkr tries to access a pool, store something in a pool, or perform any other pool related operation, a pool is created.  
 #### Storing elements in the Pool
 ```csharp
-from pool in Trackr.PoolFor<Contact>()                     // Create a Pool.
 from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
 from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
 select Case.Closed;
@@ -581,9 +570,7 @@ public class Rolodex
 ##### The Checkr
 ```csharp
 from contactBook in Trackr.Stashed(() => new Rolodex())
-// Create a Pool.
-from createContactPool in Trackr.PoolFor<Contact>()
-    // Pick one of two operations.
+// Pick one of two operations.
 from operations in Checkr.OneOfWhen(
     // 1. Add a (Contact-) name to the Rolodex
     Trackr.PoolWhen<Contact>(a => a.Count < 10,
@@ -609,7 +596,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:153:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:139:1
  Original failing run:    10 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    1444257086
@@ -705,8 +692,6 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
-    from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
         Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
@@ -719,7 +704,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
         Trackr.PoolWhen("(Coach, Course) to Assign",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
-        // Ensure the system invariant is met at all times.
+    // Ensure the system invariant is met at all times.
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```

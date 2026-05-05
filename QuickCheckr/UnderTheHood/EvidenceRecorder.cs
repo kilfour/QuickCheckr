@@ -33,8 +33,11 @@ public class EvidenceRecorder
                 currentFailed = true;
             return;
         }
-        Exception = exception;
-        runFailed = true;
+        if (!runFailed) // Action already crashed or previous expectation failed
+        {
+            Exception = exception;
+            runFailed = true;
+        }
     }
 
     public void ExpectationCrashed(string key, Exception exception)

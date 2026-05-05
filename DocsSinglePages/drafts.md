@@ -668,8 +668,6 @@ Changes:
 public class GatheringEvidenceCheckr
 {
     public static CheckrOf<Case> TheCheckr() =>
-        from coaches in Trackr.PoolFor<Coach>()
-        from courses in Trackr.PoolFor<Course>()
         from operations in Checkr.OneOfWhen(
             Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
             Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
@@ -4357,6 +4355,42 @@ select Case.Closed;
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================
+```
+#### Tuples Again
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Tuple",
+    from a in Fuzzr.Int()
+    from b in Fuzzr.Int()
+    from c in Fuzzr.Int()
+    select Tuple.Create(a, b, c),
+    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+from irrelevant in Checkr.Input("Irrelevant",
+    from a in Fuzzr.Int()
+    from b in Fuzzr.Int()
+    select Tuple.Create(a, b))
+from traceOne in Checkr.Trace("Original", () => input)
+from expect in Checkr.Expect("Sum is < 42.", () => input.Item1 + input.Item2 < 42)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                L_TuplesAgain.cs:33:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    751254928
+ ------------------------------------------------------------
+  Executed:
+   - Input: Tuple    = ( 52, 25, _ )
+            Redux      ( 17, 25, _ )
+   - Trace: Original = { Item1: 52, Item2: 25, Item3: 23 }
+ =======================================
+  !! Expectation Failed: Sum is < 42.
+ =======================================
 ```
 #### Object Of Lists
 

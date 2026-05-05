@@ -687,7 +687,6 @@ public class ContactBook
 #### The Checkr
 ```csharp
 from contactBook in Trackr.Stashed(() => new ContactBook())
-from stringPool in Trackr.PoolFor<string>()
 from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
 from operations in Checkr.OneOfWhen(
         Checkr.Option(() => counter == 1, // add AAA
@@ -821,7 +820,6 @@ public class ContactBook
 ```
 ```csharp
 from contactBook in Trackr.Stashed(() => new ContactBook())
-from stringPool in Trackr.PoolFor<string>()
 from counter in Checkr.Input("Counter", Fuzzr.Counter("my counter"))
 from operations in Checkr.OneOfWhen(
         Checkr.Option(() => counter == 1, // add AAA
@@ -1107,8 +1105,6 @@ select Case.Closed;
 ```csharp
 private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
-    from coaches in Trackr.PoolFor<CoachBy>()
-    from courses in Trackr.PoolFor<CourseBy>()
     from dbCourses in Checkr.Capture(service.GetCoursesAsync())
     from operations in Checkr.OneOfWhen(
         Trackr.PoolWhen<CoachBy>(a => a.Count() < 10, CreateCoach),
@@ -1369,17 +1365,6 @@ from notNull in Checkr.Expect("Not Null", () => thing.Value != null)
 select Case.Closed;
 ```
 ### When Things Go Wrong
-#### Everything Means Less Than Null
-##### Trackr To Pool
-```csharp
-from one in Trackr.ToPool("answer", 42)
-select Case.Closed;
-```
-  Throws:  
-```text
-A storage attempt was made for a 'Pool' of 'System.Int32' using key 'answer', but no such pool was found.
-Make sure you created this pool using: 'Trackr.PoolFor<T>()'.
-```
 #### It Is Written, ... But Only Once
 In QuickCheckr, the strings you pass to `Trackr.Stashed`, `Checkr.Input`, `Checkr.Act`, etcetera,
 are not just pretty captions in a report.
@@ -1573,21 +1558,6 @@ The following Checkrs write to the this bank:
 - 'Trackr.Expect'
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'
-```
-##### Trackr Pool For
-```csharp
-from one in Trackr.PoolFor<int>()
-from two in Trackr.PoolFor<int>()
-select Case.Closed;
-```
-  Throws:  
-```text
-Key 'System.Int32' is written more than once to the same memory location.
-QuickCheckr treats keys as stable identifiers.
-Keys must be unique per memory bank.
-Reusing a key for multiple write operations makes reports and shrinking ambiguous.
-The following Checkrs write to the this bank:
-- 'Trackr.PoolFor'
 ```
 ##### Trackr Stashed
 ```csharp

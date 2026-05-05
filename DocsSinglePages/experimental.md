@@ -95,7 +95,6 @@ return
     from factory in Trackr.Stashed(() => new TestClientProxyFactory())
     from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
     from tasks in Taskr.PoolFor()
-    from clients in Trackr.PoolFor<TestClientProxy>()
     from _ in Checkr.OneOfWhen(
         // 1) Register
         Trackr.PoolWhen<TestClientProxy>(a => a.Count < 10,
@@ -306,7 +305,6 @@ So then the tester tries multiple clients at the same time.
 ```csharp
 private static readonly CheckrOf<Case> TheCheckr =
     from service in Trackr.Stashed(GetWarehouseService)
-    from clients in Trackr.PoolFor<ClientSim>()
     from showStock in Showr.ForTrace(GetShowr)
     from ops in Checkr.OneOfWhen(
         Trackr.PoolWhen<ClientSim>(a => a.Count < 3, LogOn),

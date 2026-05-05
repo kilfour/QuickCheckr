@@ -6,8 +6,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 public class GatheringEvidenceCheckr
 {
     public static CheckrOf<Case> TheCheckr() =>
-        from coaches in Trackr.PoolFor<Coach>()
-        from courses in Trackr.PoolFor<Course>()
         from operations in Checkr.OneOfWhen(
             Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
             Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),

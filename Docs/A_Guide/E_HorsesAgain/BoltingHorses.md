@@ -65,8 +65,6 @@ out of those in the list for which it's predicate is fulfilled.
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
 public static readonly CheckrOf<Case> TheCheckr =
-    from coaches in Trackr.PoolFor<Coach>()  // Create a pool of coaches.
-    from courses in Trackr.PoolFor<Course>() // Create a pool of courses.
     from operations in Checkr.OneOfWhen(
         // Create up to 10 coaches.
         Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
@@ -79,7 +77,7 @@ public static readonly CheckrOf<Case> TheCheckr =
         // Maybe assign a coach, if there exists a combination for which the predicate holds.
         Trackr.PoolWhen("(Coach, Course) to Assign",
             (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
-        // Ensure the system invariant is met at all times.
+    // Ensure the system invariant is met at all times.
     from invariant in AssignedCoachesMustBeSuitable
     select Case.Closed;
 ```

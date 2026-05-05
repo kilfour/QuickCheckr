@@ -31,7 +31,6 @@ public partial class TheBroadcasterTest : BaseTest
             from factory in Trackr.Stashed(() => new TestClientProxyFactory())
             from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
             from tasks in Taskr.PoolFor()
-            from clients in Trackr.PoolFor<TestClientProxy>()
             from _ in Checkr.OneOfWhen(
 
                 // 1) Register

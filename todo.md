@@ -1,7 +1,14 @@
 ## 0.2.0: Watching the Detectives
 
-### 
+### Doing
 * Auto Pool
+  - check DuplicateKeyWriteGuardForPools
+  - check Memory.CreatePool
+* WarningLevel
+  * WarningLevel.None
+  * WarningLevel.Important
+  * WarningLevel.Verbose
+  * WarningLevel.Debug
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 ```text
 ============================================================

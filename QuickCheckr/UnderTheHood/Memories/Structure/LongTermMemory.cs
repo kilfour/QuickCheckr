@@ -24,9 +24,15 @@ public class LongTermMemory
     private MemoryBank pools = new();
     private IEnumerable<T> GetPool<T>(string key)
     {
-        var pool =
-            pools.Get<Dictionary<int, T>>(key)
-            ?? throw new PoolDoesNotExistException(key);
+        // var pool =
+        //     pools.Get<Dictionary<int, T>>(key)
+        //     ?? throw new PoolDoesNotExistException(key);
+        var pool = pools.Get<Dictionary<int, T>>(key);
+        if (pool is null)
+        {
+            pool = [];
+            pools.Store(key, () => pool);
+        }
         return pool.Values;
     }
 
@@ -34,7 +40,7 @@ public class LongTermMemory
         => GetPool<T>(typeof(T).FullName!);
 
     public Dictionary<int, T> GetPoolDictionary<T>()
-        => pools.Get<Dictionary<int, T>>(typeof(T).FullName!);
+        => pools.Get<Dictionary<int, T>>(typeof(T).FullName!) ?? [];
 
     public IEnumerable<T> CreatePool<T>(string key)
     {
@@ -85,12 +91,15 @@ public class LongTermMemory
     }
 
 
-    public T StoreInPool<T>(int id, string key, T value)
+    public T StoreInPool<T>(int id, T value)
     {
-        var type = typeof(T).FullName!;
-        var pool =
-            pools.Get<Dictionary<int, T>>(type)
-            ?? throw new PoolDoesNotExistException(type, key);
+        var key = typeof(T).FullName!;
+        var pool = pools.Get<Dictionary<int, T>>(key);
+        if (pool is null)
+        {
+            pool = [];
+            pools.Store(key, () => pool);
+        }
         pool[id] = value;
         return value;
     }

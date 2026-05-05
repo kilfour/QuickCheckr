@@ -129,7 +129,6 @@ public class WarehouseStepThree : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> TheCheckr =
         from service in Trackr.Stashed(GetWarehouseService)
-        from clients in Trackr.PoolFor<ClientSim>()
         from showStock in Showr.ForTrace(GetShowr)
         from ops in Checkr.OneOfWhen(
             Trackr.PoolWhen<ClientSim>(a => a.Count < 3, LogOn),
