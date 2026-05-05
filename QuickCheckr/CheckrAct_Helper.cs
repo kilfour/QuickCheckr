@@ -10,8 +10,14 @@ public static partial class Checkr
             if (!state.EvidenceRecorder.IsReplay) // HACK
                 state.Memory.StoreAction(key);
             return TheCatcher.InTheCheckr(state,
-                () => CheckrResult.Some(state, func()),
+                () =>
+                {
+                    // if (ActionNeedsToBeSkipped(key, state))
+                    //     throw new CheckrWasNotExecuted();
+                    return CheckrResult.Some(state, func());
+                },
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };
-
+    private static bool ActionNeedsToBeSkipped(string key, CheckrState state)
+        => state.EvidenceRecorder.IsReplay && !state.Memory.GetActions().Contains(key);
 }

@@ -125,7 +125,7 @@ public class Memory
     // Actions
     public void StoreAction(string key)
         => ShortTermMemory.StoreAction(KeyGuardian.Acts.Check(key));
-
+    public IReadOnlyList<string> GetActions() => ShortTermMemory.GetActions();
     // --------------------------------------------------------------------------
     // Traces
     public bool Tracing { get; set; } = false;

@@ -1,6 +1,7 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Runners;
+using QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 using QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking;
 using QuickCheckr.UnderTheHood.Runners.Tracing;
@@ -32,6 +33,9 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
+
+        // if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
+        //     shrinkCount += new ActionShrinker(State, Check).Run();
 
         new TraceRun(State, Check).Run(config.ReportMode.HasFlag(ReportMode.Trace));
 

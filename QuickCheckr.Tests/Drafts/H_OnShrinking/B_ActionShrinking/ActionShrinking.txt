@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:37:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1606067307
+ ------------------------------------------------------------
+  Executed: Act Three
+ ===========================================================================
+  !! System.Exception: BOOM
+   at QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:line 59
+   at QuickCheckr.Checkr.<>c__DisplayClass3_0.Act() in CheckrAct.cs:line 31
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 17
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 12
+ ===========================================================================

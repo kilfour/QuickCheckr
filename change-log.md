@@ -118,3 +118,7 @@
 * `Trackr.PoolExpectEach` now adds PoolElement Id to `Expectation` label.
 * Added `ReportMode.FinalTrace` which reports the values of the final run, after shrinking.  
   In contrast to `ReportMode.Trace`, which reports the values of the initial run.
+
+## 0.1.2: Act and Ride
+* Added *Auto Pooling*, removing the need for explicit `Trackr.PoolFor<T>()`.  
+  QuickCheckr now automatically manages pools based on usage.

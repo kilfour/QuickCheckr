@@ -94,6 +94,7 @@ public class ExecutionMemory
     // Actions
     private readonly HashSet<string> actions = [];
     public void StoreAction(string key) => actions.Add(key);
+    public void RemoveAction(string key) => actions.Remove(key);
     public IReadOnlyList<string> GetActions() => [.. actions.Order()];
     // --------------------------------------------------------------------------
 

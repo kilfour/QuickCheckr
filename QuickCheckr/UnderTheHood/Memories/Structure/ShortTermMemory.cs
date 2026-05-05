@@ -78,6 +78,7 @@ public class ShortTermMemory
     // Actions
     public void StoreAction(string key)
         => Current.StoreAction(key);
+    public IReadOnlyList<string> GetActions() => Current.GetActions();
     // --------------------------------------------------------------------------
     // Traces
     public void StoreTrace(string key, Func<string> factory)
