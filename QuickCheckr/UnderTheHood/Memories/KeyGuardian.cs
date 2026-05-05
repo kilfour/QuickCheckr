@@ -11,5 +11,4 @@ public class KeyGuardian
     public readonly DuplicateKeyWriteGuardForPoolTraces PoolTraces = new();
     public readonly DuplicateKeyWriteGuardForVariables Variables = new();
     public readonly DuplicateKeyWriteGuardForStashed Stash = new();
-    public readonly DuplicateKeyWriteGuardForPools Pools = new();
 }
