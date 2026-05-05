@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
-
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
 public class LongTermMemory

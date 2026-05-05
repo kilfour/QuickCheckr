@@ -1,8 +1,8 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Experimental.W_Warehouse.D_StepFour.Model;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;

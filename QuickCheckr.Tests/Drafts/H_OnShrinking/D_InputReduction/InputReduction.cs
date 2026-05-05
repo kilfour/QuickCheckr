@@ -1,7 +1,7 @@
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
 using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 

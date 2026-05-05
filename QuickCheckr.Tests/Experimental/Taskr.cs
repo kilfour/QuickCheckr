@@ -7,12 +7,6 @@ public static class Taskr
 {
     private static readonly CancellationTokenSource cancellationTokenSource = new();
 
-    public static CheckrOf<IEnumerable<Task>> PoolFor() =>
-        state => CheckrResult.Some(state, state.Memory.CreatePool<Task>());
-
-    public static CheckrOf<IEnumerable<Task<T>>> PoolFor<T>() =>
-        state => CheckrResult.Some(state, state.Memory.CreatePool<Task<T>>());
-
     public static CheckrOf<Task> Start(string key, Func<CancellationToken, Task> action) =>
         state =>
         {

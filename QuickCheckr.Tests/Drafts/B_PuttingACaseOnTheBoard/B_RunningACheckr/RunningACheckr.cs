@@ -1,8 +1,8 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Bolts;
 using QuickPulse.Explains;
-using QuickCheckr.Authoring.ThePress;
 
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.B_RunningACheckr;

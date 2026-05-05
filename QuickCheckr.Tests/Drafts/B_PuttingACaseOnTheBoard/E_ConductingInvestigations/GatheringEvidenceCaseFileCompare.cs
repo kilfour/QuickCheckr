@@ -1,7 +1,7 @@
 using QuickCheckr.EvidenceGathering;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 

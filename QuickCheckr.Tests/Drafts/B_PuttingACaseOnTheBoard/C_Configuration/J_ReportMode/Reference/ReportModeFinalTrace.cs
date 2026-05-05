@@ -1,8 +1,8 @@
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
-using QuickPulse.Explains;
 using QuickFuzzr;
+using QuickPulse.Explains;
 
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMode.Reference;

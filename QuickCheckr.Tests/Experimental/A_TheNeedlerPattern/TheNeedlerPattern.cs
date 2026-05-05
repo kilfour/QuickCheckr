@@ -1,14 +1,40 @@
-using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.Tests.Tools;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Experimental.A_TheNeedlerPattern;
 
 [DocFile]
-public class TheNeedlerPattern : BaseTest
+public class TheNeedlerPattern : CheckrTest<TheNeedlerPattern>
 {
+    protected override bool Asserts => true;
+    protected override bool Report => true;
+
+    [Fact]
+    [DocContent("**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.")]
+    [DocHeader("The SUT:")]
+    [DocExample(typeof(Eventually))]
+    [DocCheckrHeader]
+    [DocCheckr]
+    [DocReportHeader]
+    [DocReport]
+    [DocHeader("Where to go from here:")]
+    [DocRawFile("taskr-todo.md")]
+    public override void Example()
+        => Run(307579878, 10.ExecutionsPerRun());
+
+
+    protected override CheckrOf<Case> TheCheckr() =>
+        from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
+        from task in Taskr.Start("start", ct => Eventually.AddOne(input))
+        from no7 in Trackr.PoolExpectEach<Task<int>>("Is not 7", a => a.GetAwaiter().GetResult() != 7)
+        select Case.Closed;
+
+    protected override void Verify(Article article)
+    {
+    }
+
     [CodeExample]
     public class Eventually
     {
@@ -17,51 +43,5 @@ public class TheNeedlerPattern : BaseTest
             await Task.Delay(10);
             return input + 1;
         }
-    }
-
-    [Fact]
-    [DocContent("**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.")]
-    [DocHeader("The SUT:")]
-    [DocExample(typeof(Eventually))]
-    [DocHeader("The Checkr:")]
-    [DocExample(typeof(TheNeedlerPattern), nameof(GetCheckrBuiltIn))]
-    [DocHeader("The Report:")]
-    [DocCodeFile("TheNeedlerPattern.txt", "text")]
-    [DocHeader("Where to go from here:")]
-    [DocRawFile("taskr-todo.md")]
-    public void RunTest()
-    {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckrBuiltIn().Run(307579878, 10.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<TheNeedlerPattern>(article, false);
-        VerifyBuiltIn(article);
-    }
-
-    [CodeSnippet]
-    [CodeRemove("return")]
-    private static CheckrOf<Case> GetCheckrBuiltIn()
-    {
-        return
-            from tasks in Taskr.PoolFor<int>()
-            from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
-            from task in Taskr.Start("start", ct => Eventually.AddOne(input))
-            from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
-            select Case.Closed;
-    }
-
-    private static void VerifyBuiltIn(Article article)
-    {
-        Assert.Equal("Is not 7", article.FailureDescription());
-        Assert.Equal(2, article.Total().Executions());
-        Assert.Equal(2, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(9, article.ShrinkCount);
-        Assert.Equal(5, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("start", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal(10, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("start", article.Execution(2).Action(1).Read().Label);
     }
 }

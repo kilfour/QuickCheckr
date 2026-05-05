@@ -1,15 +1,15 @@
  ------------------------------------------------------------
- Test:                    RunTest
- Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:35:1
- Original failing run:    10 executions
- Minimal failing case:    2 executions (after 9 shrinks)
+ Test:                    Example
+ Location:                TheNeedlerPattern.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    307579878
  ------------------------------------------------------------
   Executed: start
    - Input: Input = 6
+ =====================================================
+  !! Expectation Failed: Is not 7: Task`1-231058368
+ =====================================================
+ Passed Expectations
+ - Is not 7: Task`1-898946557: 2x
  ------------------------------------------------------------
-  Executed: start
-   - WARNING: All inputs were considered irrelevant.
- ===================================
-  !! Expectation Failed: Is not 7
- ===================================

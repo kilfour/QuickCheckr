@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse;
 
 

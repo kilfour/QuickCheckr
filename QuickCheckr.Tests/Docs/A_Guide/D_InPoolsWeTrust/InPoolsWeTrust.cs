@@ -1,9 +1,9 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;

@@ -1,3 +1,4 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
@@ -5,7 +6,6 @@ using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;
-using QuickCheckr.Authoring.ThePress;
 
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;

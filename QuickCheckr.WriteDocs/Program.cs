@@ -1,10 +1,10 @@
-﻿using QuickCheckr.Tests.Docs;
+﻿using QuickCheckr.Tests.CookBook;
+using QuickCheckr.Tests.Docs;
 using QuickCheckr.Tests.Drafts;
-using QuickPulse.Explains;
 using QuickCheckr.Tests.Experimental;
-using QuickCheckr.Tests.Notes;
 using QuickCheckr.Tests.Investigations;
-using QuickCheckr.Tests.CookBook;
+using QuickCheckr.Tests.Notes;
+using QuickPulse.Explains;
 
 
 // Explain.OnlyThis<CreateReadMe>("README.md");

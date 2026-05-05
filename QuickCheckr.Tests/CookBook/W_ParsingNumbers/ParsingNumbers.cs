@@ -1,8 +1,8 @@
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.StringReduction;
 using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.CookBook.W_ParsingNumbers;

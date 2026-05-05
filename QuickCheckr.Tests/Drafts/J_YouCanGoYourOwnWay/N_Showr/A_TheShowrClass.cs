@@ -1,7 +1,7 @@
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr.Reference;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;

@@ -1,7 +1,7 @@
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Notes.A_Shrinking.C_InputShrinking.C_Objects.TheExamples.Models;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 

@@ -30,7 +30,6 @@ public partial class TheBroadcasterTest : BaseTest
         return
             from factory in Trackr.Stashed(() => new TestClientProxyFactory())
             from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
-            from tasks in Taskr.PoolFor()
             from _ in Checkr.OneOfWhen(
 
                 // 1) Register
@@ -56,9 +55,7 @@ public partial class TheBroadcasterTest : BaseTest
 
                 // 4) Stop broadcast
                 Checkr.Option(() => broadcaster.Broadcasting,
-                    from stop in Checkr.Act("stop",
-                        () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
-                    select Case.Closed))
+                    Trackr.PoolForEach<Task>(a => Checkr.Act("stop", () => a.Value.GetAwaiter().GetResult()))))
             select Case.Closed;
     }
 }

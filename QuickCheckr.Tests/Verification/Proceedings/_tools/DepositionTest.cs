@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickPulse.Explains.Text;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
+using QuickPulse.Explains.Text;
 
 namespace QuickCheckr.Tests.Verification.Proceedings;
 

@@ -1,6 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.Tests.Tools;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Tests.Tools;
 using QuickPulse.Bolts;
 using QuickPulse.Explains;
 
