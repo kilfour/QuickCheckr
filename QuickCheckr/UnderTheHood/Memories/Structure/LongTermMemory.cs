@@ -40,17 +40,6 @@ public class LongTermMemory
     public Dictionary<int, T> GetPoolDictionary<T>()
         => pools.Get<Dictionary<int, T>>(typeof(T).FullName!) ?? [];
 
-    public IEnumerable<T> CreatePool<T>(string key)
-    {
-        var pool = pools.Get<Dictionary<int, T>>(key);
-        if (pool is null)
-        {
-            pool = [];
-            pools.Store(key, () => pool);
-        }
-        return pool.Values;
-    }
-
     public IEnumerable<int> GetPoolIds<T>()
     {
         var pool = pools.Get<Dictionary<int, T>>(typeof(T).FullName!);

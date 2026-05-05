@@ -69,8 +69,6 @@ public class Memory
         => LongTermMemory.GetStashed<T>(key);
     // --------------------------------------------------------------------------
     // Pool
-    public IEnumerable<T> CreatePool<T>()
-        => LongTermMemory.CreatePool<T>(KeyGuardian.Pools.Check(typeof(T).FullName!));
     public IEnumerable<T> GetPool<T>()
         => LongTermMemory.GetPool<T>();
     public Dictionary<int, T> GetPoolDictionary<T>()
