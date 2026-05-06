@@ -24,7 +24,7 @@ public class TheNeedlerPattern : CheckrTest<TheNeedlerPattern>
     public override void Example()
         => Run(307579878, 10.ExecutionsPerRun());
 
-
+    [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
         from task in Taskr.Start("start", ct => Eventually.AddOne(input))

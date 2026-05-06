@@ -84,6 +84,39 @@ select Case.Closed;
   !! Expectation Failed: <= 42
  ================================
 ```
+## Checkr Sequence
+Fixed this one by using Testimonys, see Memory.  
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("Counter", Fuzzr.Counter("counter"))
+from sequence in Checkr.Sequence(
+    Checkr.Act("1", () => { if (counter == 3) ComputerSays.No("BOOM"); }),
+    Checkr.Act("2", () => { })
+)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                CheckrSequence.cs:41:1
+ Original failing run:    3 executions
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    207626985
+ ------------------------------------------------------------
+  Executed: 1
+   - Input: Counter = 3
+ ===========================================================================
+  !! QuickPulse.Instruments.ComputerSaysNo: BOOM
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickCheckr.Tests.Investigations.Sequence.CheckrSequence.<>c__DisplayClass7_0.<TheCheckr>b__2() in C:\Code\QuickCheckr\QuickCheckr.Tests\Investigations\Sequence\CheckrSequence.cs:line 30
+   at QuickCheckr.Checkr.<>c__DisplayClass2_0.<Act>b__0() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct.cs:line 24
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1() in C:\Code\QuickCheckr\QuickCheckr\CheckrAct_Helper.cs:line 15
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in C:\Code\QuickCheckr\QuickCheckr\UnderTheHood\TheCatcher.cs:line 12
+ ===========================================================================
+```
 ## Greed Is Not Good
 Fixed this one by using Testimonys, see Memory.  
 

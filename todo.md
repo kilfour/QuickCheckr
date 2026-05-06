@@ -1,9 +1,18 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
-* Auto Pool
-  - check DuplicateKeyWriteGuardForPools
-  - check Memory.CreatePool
+* Checkr.Sequence
+* PoolExpectEach<T1, T2>
+
+* Action Shrinking
+  * Triple check `ActWhen`
+    ```csharp 
+    from res in Checkr.ActWhen(...)
+    from next in Checkr.ActWhen(() => res.Value == false, throw ...) 
+    ...
+    ```
+ * Create a temporary `ShrinkableAct` using similar mechanism
+
 * WarningLevel
   * WarningLevel.None
   * WarningLevel.Important

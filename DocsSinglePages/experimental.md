@@ -11,31 +11,32 @@ public class Eventually
     }
 }
 ```
-### The Checkr:
+
+**The Checkr:**  
 ```csharp
-from tasks in Taskr.PoolFor<int>()
 from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
 from task in Taskr.Start("start", ct => Eventually.AddOne(input))
-from no7 in Trackr.Expect("Is not 7", () => tasks.All(a => a.GetAwaiter().GetResult() != 7))
+from no7 in Trackr.PoolExpectEach<Task<int>>("Is not 7", a => a.GetAwaiter().GetResult() != 7)
 select Case.Closed;
 ```
-### The Report:
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    RunTest
- Location:                Experimental\A_TheNeedlerPattern\TheNeedlerPattern.cs:35:1
- Original failing run:    10 executions
- Minimal failing case:    2 executions (after 9 shrinks)
+ Test:                    Example
+ Location:                TheNeedlerPattern.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    307579878
  ------------------------------------------------------------
   Executed: start
    - Input: Input = 6
+ =====================================================
+  !! Expectation Failed: Is not 7: Task`1-231058368
+ =====================================================
+ Passed Expectations
+ - Is not 7: Task`1-898946557: 2x
  ------------------------------------------------------------
-  Executed: start
-   - WARNING: All inputs were considered irrelevant.
- ===================================
-  !! Expectation Failed: Is not 7
- ===================================
 ```
 ### Where to go from here:
 # Taskr Todo 
@@ -94,7 +95,6 @@ Make pooling tasks feel as native as Trackr pooling.
 return
     from factory in Trackr.Stashed(() => new TestClientProxyFactory())
     from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
-    from tasks in Taskr.PoolFor()
     from _ in Checkr.OneOfWhen(
         // 1) Register
         Trackr.PoolWhen<TestClientProxy>(a => a.Count < 10,
@@ -116,9 +116,7 @@ return
             select Case.Closed),
         // 4) Stop broadcast
         Checkr.Option(() => broadcaster.Broadcasting,
-            from stop in Checkr.Act("stop",
-                () => tasks.ToList().ForEach(a => a.GetAwaiter().GetResult()))
-            select Case.Closed))
+            Trackr.PoolForEach<Task>(a => Checkr.Act("stop", () => a.Value.GetAwaiter().GetResult()))))
     select Case.Closed;
 ```
 ### The Report:

@@ -6,8 +6,26 @@ public static partial class Trackr
 {
     public static CheckrOf<Case> PoolExpectEach<T>(
         string key,
-        Func<T, bool> condition) =>
+        Func<T, bool> expectation) =>
         state => Combine.Checkrs(
             state.Memory.GetPoolDictionary<T>()
-                .Select(a => Checkr.Expect($"{key}: {typeof(T).Name}-{a.Key}", () => condition(a.Value))))(state);
+                .Select(a => Checkr.Expect($"{key}: {typeof(T).Name}-{a.Key}", () => expectation(a.Value))))(state);
+
+    public static CheckrOf<Case> PoolExpectEach<T1, T2>(
+        string key,
+        Func<T1, T2, bool> belongsTo,
+        Func<T1, IReadOnlyCollection<T2>, bool> expectation) =>
+        state =>
+        {
+            var poolDictionary = state.Memory.GetPoolDictionary<T1>();
+            var other = state.Memory.GetPool<T2>();
+            var combined = poolDictionary.Select(a => (KeyValueElement: a, Pool: other.Where(b => belongsTo(a.Value, b))));
+            IEnumerable<CheckrOf<Case>> checkrs =
+                combined
+                    .Select(a =>
+                        Checkr.Expect($"{key}: {typeof(T1).Name}-{a.KeyValueElement.Key}",
+                            () => expectation(a.KeyValueElement.Value, [.. a.Pool])));
+            // return Checkr.Expect(key, () => combined.All(a => expectation(a.KeyValueElement.Value, [.. a.Pool])))(state);
+            return Combine.Checkrs(checkrs)(state);
+        };
 }
