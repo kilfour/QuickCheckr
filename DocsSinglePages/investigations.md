@@ -84,8 +84,44 @@ select Case.Closed;
   !! Expectation Failed: <= 42
  ================================
 ```
+## Pool Expect Each
+
+**The Checkr:**  
+```csharp
+from sequence in Checkr.Sequence(
+    Trackr.ToPool("1", new Thing()).Select(_ => Case.Closed),
+    Trackr.ToPool("2", new Thing()).Select(_ => Case.Closed),
+    Trackr.ToPool("3", new OtherThing()).Select(_ => Case.Closed)
+)
+from check in Trackr.PoolExpectEach<Thing, OtherThing>(
+    "just checking",
+    (a, b) => true,
+    (a, bs) => bs.Count == 0)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                PoolExpectEach.cs:41:1
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    845928227
+ ------------------------------------------------------------
+  Executed:
+   -  Pool: 2 = Thing-1
+ ------------------------------------------------------------
+  Executed:
+   -  Pool: 3 = OtherThing-1
+ =================================================
+  !! Expectation Failed: just checking: Thing-1
+ =================================================
+ Passed Expectations
+ - just checking: Thing-1: 2x
+ ------------------------------------------------------------
+```
 ## Checkr Sequence
-Fixed this one by using Testimonys, see Memory.  
 
 **The Checkr:**  
 ```csharp

@@ -7,7 +7,6 @@ using QuickPulse.Instruments;
 namespace QuickCheckr.Tests.Investigations.Sequence;
 
 [DocFile]
-[DocContent("Fixed this one by using Testimonys, see Memory.")]
 public class CheckrSequence : CheckrTest<CheckrSequence>
 {
     protected override bool Asserts => false;

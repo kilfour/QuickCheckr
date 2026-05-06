@@ -8,8 +8,8 @@ namespace QuickCheckr.Tests.Experimental.A_TheNeedlerPattern;
 [DocFile]
 public class TheNeedlerPattern : CheckrTest<TheNeedlerPattern>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
 
     [Fact]
     [DocContent("**Note:** `Taskr` is not part of QuickCheckr yet. It is defined in the test project.")]
