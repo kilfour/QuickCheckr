@@ -3,13 +3,13 @@
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1241173241
+ Seed:                    31328759
  ------------------------------------------------------------
   Executed: Act Three
  ===========================================================================
   !! System.Exception: BOOM
    at QuickCheckr.Tests.Drafts.H_OnShrinking.B_ActionShrinking.ActionShrinking.<>c.GetCheckr() in Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:line 59
-   at QuickCheckr.Checkr.<>c__DisplayClass12_0.ShrinkableAct() in CheckrAct_Shrinkable.cs:line 14
-   at QuickCheckr.Checkr.<>c__DisplayClass13_1`1.TryShrinkableCatch() in CheckrAct_Shrinkable.cs:line 27
+   at QuickCheckr.Checkr.<>c__DisplayClass14_0.ShrinkableAct() in CheckrAct_Shrinkable.cs:line 17
+   at QuickCheckr.Checkr.<>c__DisplayClass15_1`1.TryShrinkableCatch() in CheckrAct_Shrinkable.cs:line 28
    at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 12
  ===========================================================================

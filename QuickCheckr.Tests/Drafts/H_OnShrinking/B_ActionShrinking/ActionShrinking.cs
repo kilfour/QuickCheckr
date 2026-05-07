@@ -99,7 +99,7 @@ And here we find ourselves confused ;-).
     {
         return
             from act in Checkr.ShrinkableAct("Act", () => false)
-            from spec in Checkr.Expect("Act returns true", () => act.Value == true)
+            from spec in Checkr.Expect("Act returns true", () => act.Result == true)
             select Case.Closed;
     }
 
@@ -127,7 +127,7 @@ And here we find ourselves confused ;-).
     {
         return
             from act in Checkr.ShrinkableAct("Act", () => false)
-            from spec in Checkr.Expect("Act returns true", () => act.Value == true)
+            from spec in Checkr.Expect("Act returns true", () => act.Result == true)
             select Case.Closed;
     }
 }
