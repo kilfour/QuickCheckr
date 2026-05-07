@@ -4,9 +4,9 @@ using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 
-namespace QuickCheckr.Tests.Notes.A_Shrinking.B_ActionShrinking;
+namespace QuickCheckr.Tests.Drafts.H_OnShrinking.B_ActionShrinking;
 
-// [DocFile]
+[DocFile]
 [DocContent(
 @"This is the second step in QuickCheckr shrinking, but it needs to be explicitely activated
 by passing in a configuration function to the Run method: `a => a with { ShrinkingActions = true }`.  
@@ -19,7 +19,7 @@ Investigation is ongoing ...
 In the same vein as with *Execution Shrinking*, Actions are also evaluated and judged to be relevant for the failure.")]
 public class ActionShrinking : BaseTest
 {
-    [Fact(Skip = "actionshrinking is disabled")]
+    [Fact]
     [DocContent("The following simple example fails on the third action.")]
     [DocExample(typeof(ActionShrinking), nameof(GetCheckr))]
     [DocContent(
@@ -36,7 +36,7 @@ So after *Action Shrinking*, the result is:
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { ShrinkMode = ShrinkMode.ExceptReduction }));
         WriteAsserts(article);
-        WriteReport<ActionShrinking>(article);
+        WriteReport<ActionShrinking>(article, true);
         Verify(article);
     }
 
@@ -54,13 +54,13 @@ So after *Action Shrinking*, the result is:
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from actOne in Checkr.Act("Act One", () => { })
-            from actTwo in Checkr.Act("Act Two", () => { })
-            from actThree in Checkr.Act("Act Three", () => throw new Exception("BOOM"))
+            from actOne in Checkr.ShrinkableAct("Act One", () => { })
+            from actTwo in Checkr.ShrinkableAct("Act Two", () => { })
+            from actThree in Checkr.ShrinkableAct("Act Three", () => throw new Exception("BOOM"))
             select Case.Closed;
     }
 
-    [Fact(Skip = "actionshrinking is disabled")]
+    [Fact]
     [DocHeader("Elaborating")]
     [DocContent(
 @"In very rare occasions *Action Shrinking* can be too greedy.  
@@ -75,16 +75,21 @@ so the spec fails even if the action is deactivated,
 and hence QuickCheckr decides it is irrelevant and happily removes it from the run.  
 
 And here we find ourselves confused ;-).  
+
+!!! No LONGER THE CASE SEE THE REPORT: !!!
 ")]
+    [DocReportHeader]
+    [DocCodeFile("Elaborating.txt", "text")]
     public void Elaborating()
     {
         var article = TheJournalist.Exposes(() =>
             Elaborating_Checkr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
         WriteAsserts(article);
+        WriteReport(article, "Elaborating.txt", true);
         Assert.Equal("Act returns true", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(0, article.Total().Actions()); // <=
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Total().Actions()); // <=
+        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
     }
 
@@ -93,15 +98,15 @@ And here we find ourselves confused ;-).
     private static CheckrOf<Case> Elaborating_Checkr()
     {
         return
-            from act in Checkr.Act("Act", () => false)
-            from spec in Checkr.Expect("Act returns true", () => act == true)
+            from act in Checkr.ShrinkableAct("Act", () => false)
+            from spec in Checkr.Expect("Act returns true", () => act.Value == true)
             select Case.Closed;
     }
 
-    [Fact(Skip = "actionshrinking is disabled")]
+    [Fact]
     [DocHeader("Workaround")]
     [DocContent(
-@"Use a stand in:")]
+@"No Longer Needed !!!")]
     [DocExample(typeof(ActionShrinking), nameof(ElaboratingFix_Checkr))]
     public void ElaboratingFix()
     {
@@ -121,9 +126,8 @@ And here we find ourselves confused ;-).
     private static CheckrOf<Case> ElaboratingFix_Checkr()
     {
         return
-            //from standIn in Trackr.StandIn(true)
-            from act in Checkr.Act("Act", () => false)
-            from spec in Checkr.Expect("Act returns true", () => act == true)
+            from act in Checkr.ShrinkableAct("Act", () => false)
+            from spec in Checkr.Expect("Act returns true", () => act.Value == true)
             select Case.Closed;
     }
 }
