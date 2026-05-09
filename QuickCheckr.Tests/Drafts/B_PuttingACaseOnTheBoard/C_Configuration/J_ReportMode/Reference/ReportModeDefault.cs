@@ -19,7 +19,6 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
     public override void Example()
     {
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Trace));
-        Assert.True(ReportMode.Default.HasFlag(ReportMode.Warning));
         Assert.True(ReportMode.Default.HasFlag(ReportMode.StackTrace));
         Run(1964562926, 2.ExecutionsPerRun());
     }

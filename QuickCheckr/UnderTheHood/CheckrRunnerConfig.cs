@@ -13,6 +13,7 @@ public record CheckrRunnerConfig
         Custodian = config.Custodian;
         ShrinkMode = config.ShrinkMode;
         ReportMode = config.ReportMode;
+        WarningLevel = config.WarningLevel;
         DeliberationPolicy = config.DeliberationPolicy;
         DeliberationTarget = config.DeliberationTarget;
         StyleGuide = config.StyleGuide;
@@ -24,6 +25,7 @@ public record CheckrRunnerConfig
     public ICustodian Custodian { get; }
     public ShrinkMode ShrinkMode { get; }
     public ReportMode ReportMode { get; }
+    public WarningLevel WarningLevel { get; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; }
     public int? DeliberationTarget { get; init; }
     public Func<CaseFile, Flow<Flow>> StyleGuide { get; }

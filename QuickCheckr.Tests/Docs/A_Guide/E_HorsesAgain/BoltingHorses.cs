@@ -86,7 +86,7 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
         var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(),
             a => a with
             {
-                ReportMode = a.ReportMode & ~ReportMode.Warning
+                WarningLevel = WarningLevel.None
             }));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);

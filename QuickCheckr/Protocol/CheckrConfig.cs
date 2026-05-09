@@ -24,6 +24,7 @@ public record CheckrConfig
                 Custodian = Protocol.Custodian.Default,
                 ShrinkMode = ShrinkMode.Default,
                 ReportMode = ReportMode.Default,
+                WarningLevel = WarningLevel.Important,
                 DeliberationPolicy = null,
                 DeliberationTarget = null,
                 MaxStepsPerReducer = 1024
@@ -41,6 +42,8 @@ public record CheckrConfig
     public required ShrinkMode ShrinkMode { get; init; }
 
     public required ReportMode ReportMode { get; init; }
+
+    public required WarningLevel WarningLevel { get; init; }
 
     /// <summary>
     /// Label under which this run is filed.  

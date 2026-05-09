@@ -8,7 +8,8 @@ public record Dossier(
     IReadOnlyDictionary<string, int> PassedExpectations,
     List<string> UncheckedExpectations,
     bool UseMemoryForInputReporting,
-    ReportMode ReportMode)
+    ReportMode ReportMode,
+    WarningLevel WarningLevel)
 {
     public static Dossier Empty =>
         new(FailureInfo: new FailureInfo(),
@@ -16,5 +17,6 @@ public record Dossier(
             PassedExpectations: new Dictionary<string, int>(),
             UncheckedExpectations: [],
             UseMemoryForInputReporting: false,
-            ReportMode: ReportMode.None);
+            ReportMode: ReportMode.None,
+            WarningLevel: WarningLevel.None);
 }

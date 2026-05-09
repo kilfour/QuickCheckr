@@ -11,5 +11,4 @@ public enum ShrinkMode
     Default = Executions | Inputs,
     ExceptReduction = Executions | Actions | Inputs,
     All = Executions | Actions | Inputs | Reduction
-
 }

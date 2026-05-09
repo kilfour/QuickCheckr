@@ -43,7 +43,7 @@ public class BinHeap : CheckrTest<BinHeap>
             DeliberationPolicy = caseFile =>
                (caseFile.InputCount == 0 ? 100 : 0) +
                caseFile.InputsNamed<Heap>("Heap", a => Flatten(a).Count()),
-            ReportMode = config.ReportMode & ~ReportMode.Warning
+            WarningLevel = WarningLevel.None
         };
 
     [CodeSnippet]

@@ -68,7 +68,8 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 PassedExpectations: State.EvidenceRecorder.PassedExpectations,
                 UncheckedExpectations: GetUncheckedExpectations(),
                 UseMemoryForInputReporting: !config.ShrinkMode.HasFlag(ShrinkMode.Inputs),
-                ReportMode: config.ReportMode
+                ReportMode: config.ReportMode,
+                WarningLevel: config.WarningLevel
             );
         return Compile.TheCaseFile(dossier, State.Memory, State.ClassificationFormatter.InputPrinter);
     }

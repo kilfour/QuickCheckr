@@ -47,6 +47,7 @@ public class Configuration
             Custodian = Custodian.Default,
             ShrinkMode = ShrinkMode.Default,
             ReportMode = ReportMode.Default,
+            WarningLevel = WarningLevel.Important,
             DeliberationPolicy = null,
             DeliberationTarget = null,
             MaxStepsPerReducer = 1024

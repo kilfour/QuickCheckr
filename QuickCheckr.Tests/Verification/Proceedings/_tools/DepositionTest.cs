@@ -18,7 +18,8 @@ public abstract class DepositionTest
                 PassedExpectations: new Dictionary<string, int>(),
                 UncheckedExpectations: [],
                 UseMemoryForInputReporting: false,
-                ReportMode: ReportMode.Default & ~ReportMode.StackTrace
+                ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
+                WarningLevel: WarningLevel.Debug
             );
 
     protected LinesReader Transcribe(CaseFile caseFile)

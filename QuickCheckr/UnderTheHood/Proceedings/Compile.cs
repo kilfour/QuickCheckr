@@ -23,7 +23,13 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             foreach (var (executionId, shortTermMemory) in memory.Entries())
             {
                 caseFile.AddExecutionDeposition(
-                    GetExecutionDeposition(shortTermMemory, executionId, dossier.UseMemoryForInputReporting, inputPrinter, dossier.ReportMode));
+                    GetExecutionDeposition(
+                        shortTermMemory,
+                        executionId,
+                        dossier.UseMemoryForInputReporting,
+                        inputPrinter,
+                        dossier.ReportMode,
+                        dossier.WarningLevel));
             }
             AddPassedExpectations(dossier.PassedExpectations, caseFile);
             AddUncheckedExpectations(dossier.UncheckedExpectations, caseFile);
@@ -47,7 +53,8 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             int executionNumber,
             bool useMemoryForInputReporting,
             ManOfWealthAndTaste inputPrinter,
-            ReportMode reportMode)
+            ReportMode reportMode,
+            WarningLevel warningLevel)
         {
             var executionDeposition = new ExecutionDeposition(executionNumber);
             GetActionDepositions(executionDeposition, shortTermMemory);
@@ -55,8 +62,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             GetPoolTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
             GetTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
             GetFinalTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
-            if (reportMode.HasFlag(ReportMode.Warning))
-                GetWarningDepositions(executionDeposition, shortTermMemory);
+            GetWarningDepositions(executionDeposition, shortTermMemory, warningLevel);
             return executionDeposition;
         }
 
@@ -136,9 +142,9 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             }
         }
 
-        private static void GetWarningDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
+        private static void GetWarningDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, WarningLevel warningLevel)
         {
-            foreach (var warning in shortTermMemory.GetWarnings())
+            foreach (var warning in shortTermMemory.GetWarnings().Where(a => a.WarningLevel <= warningLevel))
             {
                 executionDeposition.AddWarningDeposition(new WarningDeposition(warning));
             }
