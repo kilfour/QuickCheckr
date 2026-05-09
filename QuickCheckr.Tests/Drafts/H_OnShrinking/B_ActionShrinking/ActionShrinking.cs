@@ -85,7 +85,7 @@ And here we find ourselves confused ;-).
         var article = TheJournalist.Exposes(() =>
             Elaborating_Checkr().Run(a => a with { ShrinkMode = ShrinkMode.All }));
         WriteAsserts(article);
-        WriteReport(article, "Elaborating.txt", true);
+        WriteReport(article, "Elaborating.txt", false);
         Assert.Equal("Act returns true", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions()); // <=
