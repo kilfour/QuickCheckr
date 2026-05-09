@@ -74,17 +74,17 @@ public class ActResult<T>
 {
     private readonly bool notExecuted = false;
     private readonly T? result;
-    public T? Result
+    public T Result
     {
         get
         {
             if (notExecuted)
                 throw new CheckrWasNotExecuted();
-            return result;
+            return result!;
         }
     }
     private ActResult() { notExecuted = true; }
-    private ActResult(T? result) => this.result = result;
+    private ActResult(T result) => this.result = result;
     public static ActResult<T> NotExecuted => new() { };
-    public static ActResult<T> Executed(T? value) => new(value) { };
+    public static ActResult<T> Executed(T value) => new(value) { };
 }

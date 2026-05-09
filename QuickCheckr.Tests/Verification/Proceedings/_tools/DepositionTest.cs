@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using QuickCheckr.Protocol;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains.Text;
@@ -12,7 +13,7 @@ public abstract class DepositionTest
     protected virtual bool IgnoreFailingExpectation { get; init; } = true;
     protected Dossier Dossier { get; } =
         new Dossier(
-                FailureInfo: new FailureInfo(FailingExpectation: "Some Invariant"),
+                FailureInfo: new FailureInfo(FailingExpectation: new ExpectationFailure("Some Invariant", [])),
                 RunInfo: new RunInfo(10, 1, 12345678),
                 PassedExpectations: new Dictionary<string, int>(),
                 UncheckedExpectations: [],

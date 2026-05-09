@@ -131,13 +131,17 @@ public static class The
         from _3 in DoubleLineOf(length)
         select Flow.Continue;
 
+    private static Flow<Flow> FailedExpectationMessage(string message) =>
+        Pulse.Trace($"       {message}").Then(newLine);
+
     private static Flow<Flow> FailedExpectation(FailedExpectationDeposition input) =>
         from _ in Pulse.NoOp()
         let text = $"  !! Expectation Failed: {input.FailedExpectation}"
         let length = text.Length + 2
         from _1 in newLine.Then(DoubleLineOf(length)).Then(newLine)
         from _2 in Pulse.Trace(text).Then(newLine)
-        from _3 in DoubleLineOf(length)
+        from _3 in Pulse.ToFlow(FailedExpectationMessage, input.Messages)
+        from _4 in DoubleLineOf(length)
         select Flow.Continue;
 
     private static Flow<Flow> Exception(FailedExceptionDeposition input) =>

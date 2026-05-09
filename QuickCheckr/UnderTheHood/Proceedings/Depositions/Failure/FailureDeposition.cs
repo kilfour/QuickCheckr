@@ -14,8 +14,8 @@ public abstract record FailureDeposition
                 ? new FailedExceptionDeposition(failureInfo.Exception.ToString(), message)
                 : new FailedExceptionDeposition(message, message);
         }
-        if (!string.IsNullOrEmpty(failureInfo.FailingExpectation))
-            return new FailedExpectationDeposition(failureInfo.FailingExpectation);
+        if (failureInfo.FailingExpectation is not null && !string.IsNullOrEmpty(failureInfo.FailingExpectation.Key))
+            return new FailedExpectationDeposition(failureInfo.FailingExpectation.Key, failureInfo.FailingExpectation.Message);
         if (!string.IsNullOrEmpty(failureInfo.Verification))
             return new FailedVerificationDeposition(failureInfo.Verification!);
         return new FailedNoneDeposition();

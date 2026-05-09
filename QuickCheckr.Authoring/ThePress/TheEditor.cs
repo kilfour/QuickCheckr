@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 using QuickPulse;
 
 namespace QuickCheckr.Authoring.ThePress;
@@ -90,11 +91,17 @@ public class TheEditor
         from times in Emit($"Assert.Equal({passedExpectationDeposition.TimesPassed}, article.PassedExpectation({index}).Read().TimesPassed);")
         select Flow.Continue;
 
+    private static Flow<Flow> FailedExceptionMessage(int index) =>
+        from article in Pulse.Draw<Article>()
+        from _1 in Emit($"Assert.Equal(\"{article.FailingExpectationMessages()[index]}\", article.FailingExpectationMessages()[{index}]);")
+        select Flow.Continue;
+
     public static Flow<Flow> ProofReads(Article article) =>
         from prime in Pulse.Prime(() => article)
         from failedExpectation in EmitIf(
             article.FailureDescription() is not null,
             $"Assert.Equal(\"{article.FailureDescription()}\", article.FailureDescription());")
+        from failedExpectationMessages in Pulse.ToFlow(FailedExceptionMessage, Enumerable.Range(0, article.FailingExpectationMessages().Count))
         from failedAssat in EmitIf(
             article.VerifyFailed() is not null,
             $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")

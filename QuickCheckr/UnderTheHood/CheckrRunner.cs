@@ -77,7 +77,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
     {
         return [.. State.Memory.KeyGuardian.Expects.KeysWritten
             .Where(a =>
-                a != State.EvidenceRecorder.FailingExpectation &&
+                a != State.EvidenceRecorder.FailingExpectation.Key &&
                 a != State.EvidenceRecorder.FailingVerify &&
                 !State.EvidenceRecorder.PassedExpectations.ContainsKey(a))];
     }

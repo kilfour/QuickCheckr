@@ -9,5 +9,14 @@ public static partial class Checkr
     /// Use to assert expected behaviour and have failures trigger shrinking and detailed reporting.
     /// </summary>
     public static CheckrOf<Case> Expect(string key, Func<bool> condition)
-        => Evaluate.Expect(key, condition);
+        => InnerExpect(key, condition, () => []);
+
+    public static CheckrOf<Case> Expect(string key, Func<bool> condition, Func<string> message)
+        => InnerExpect(key, condition, () => [message()]);
+
+    public static CheckrOf<Case> Expect(string key, Func<bool> condition, Func<List<string>>? messages)
+        => InnerExpect(key, condition, messages);
+
+    private static CheckrOf<Case> InnerExpect(string key, Func<bool> condition, Func<List<string>>? messages)
+        => Evaluate.Expect(key, condition, true, messages);
 }

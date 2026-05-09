@@ -1,4 +1,5 @@
 using QuickCheckr.EvidenceGathering;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains;
@@ -13,8 +14,8 @@ public class GatheringEvidenceCaseFileCompare
     [DocContent("- *Failure Description* is not equal.")]
     public void CaseFileNotSimilar_FailureDescription()
     {
-        var caseFile = CaseFile.From(new FailureInfo(FailingExpectation: "Some Failure"), new RunInfo());
-        var other = CaseFile.From(new FailureInfo(FailingExpectation: "Other Failure"), new RunInfo());
+        var caseFile = CaseFile.From(new FailureInfo(FailingExpectation: new ExpectationFailure("Some Failure", [])), new RunInfo());
+        var other = CaseFile.From(new FailureInfo(FailingExpectation: new ExpectationFailure("Other Failure", [])), new RunInfo());
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }

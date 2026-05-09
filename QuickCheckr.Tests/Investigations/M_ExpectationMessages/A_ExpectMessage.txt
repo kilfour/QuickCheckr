@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ExpectMessage.cs:25:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    435330806
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+       answer = 42
+ =======================================

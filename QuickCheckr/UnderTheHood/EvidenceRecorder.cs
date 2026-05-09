@@ -22,7 +22,7 @@ public class EvidenceRecorder
     }
 
     public bool ExpectationNeedsToBeSkipped(string key)
-        => IsReplay && (FailingExpectation != key);
+        => IsReplay && (FailingExpectation.Key != key);
 
     public Exception? Exception { get; private set; } = null;
     public void RecordFailure(Exception exception)
@@ -62,20 +62,20 @@ public class EvidenceRecorder
     }
 
     private int failingExecutionId;
-    public string FailingExpectation { get; private set; } = string.Empty;
-    public void ExpectationFailed(string key, int executionId)
+    public ExpectationFailure FailingExpectation { get; private set; } = ExpectationFailure.Empty;
+    public void ExpectationFailed(ExpectationFailure failure, int executionId)
     {
         if (IsReplay)
         {
 
-            if (FailingExpectation == key && failingExecutionId == executionId)
+            if (FailingExpectation.Key == failure.Key && failingExecutionId == executionId)
                 currentFailed = true;
             else
                 failedOnWrongExecutionId = true;
             return;
         }
         if (runFailed) return; // Stop on First Expectation Failed
-        FailingExpectation = key;
+        FailingExpectation = failure;
         failingExecutionId = executionId;
         runFailed = true;
     }

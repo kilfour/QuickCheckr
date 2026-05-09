@@ -3,7 +3,7 @@
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    31328759
+ Seed:                    750325231
  ------------------------------------------------------------
   Executed: Act Three
  ===========================================================================

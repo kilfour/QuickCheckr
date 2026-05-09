@@ -122,3 +122,4 @@
 ## 0.1.2: Act and Ride
 * Added *Auto Pooling*, removing the need for explicit `Trackr.PoolFor<T>()`.  
   QuickCheckr now automatically manages pools based on usage.
+* Added `Shrink.Keep<T>()` as syntactic sugar.

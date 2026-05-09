@@ -35,6 +35,25 @@ public class DelayedResult
         ex = default!;
         return false;
     }
+
+    public List<string> DescribeException<TExpected>()
+    {
+        var expected = typeof(TExpected).Name;
+        if (Threw)
+        {
+            var actual = Exception!.GetType().Name;
+            var message = Exception!.Message;
+            return [
+                $"Expected: {expected}",
+                $"Actual:   {actual}",
+                $"Message:  {message}"
+            ];
+        }
+        return [
+                $"Expected: {expected}",
+                $"Actual:   No Exception was thrown.",
+            ];
+    }
 }
 
 public class DelayedResult<T> : DelayedResult

@@ -84,6 +84,56 @@ select Case.Closed;
   !! Expectation Failed: <= 42
  ================================
 ```
+## Expect Message
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Answer", Fuzzr.Constant(42))
+from expect in Checkr.Expect("Always fails", () => false, () => $"answer = {input}")
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ExpectMessage.cs:25:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    435330806
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+       answer = 42
+ =======================================
+```
+## Expect When Message
+
+**The Checkr:**  
+```csharp
+from input in Checkr.Input("Answer", Fuzzr.Constant(42))
+from expect in Checkr.ExpectWhen("Always fails", () => true, () => false, () => $"answer = {input}")
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_ExpectWhenMessage.cs:25:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1370925842
+ ------------------------------------------------------------
+  Executed:
+   - WARNING: All inputs were considered irrelevant.
+ =======================================
+  !! Expectation Failed: Always fails
+       answer = 42
+ =======================================
+```
 ## Pool Expect Each
 
 **The Checkr:**  

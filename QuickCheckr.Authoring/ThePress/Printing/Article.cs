@@ -21,6 +21,8 @@ public class Article(CaseFile caseFile)
         }
         return null!;
     }
+    public List<string> FailingExpectationMessages()
+        => (caseFile.FailureDeposition as FailedExpectationDeposition)?.Messages ?? [];
 
     public string FailureDescription()
         => caseFile.FailureDeposition.GetFailureDescription();
