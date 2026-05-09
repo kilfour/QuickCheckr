@@ -143,8 +143,9 @@
   Supports expectations over pairs of pooled values.
 * Added `Checkr.Sequence`.  
   Allows multiple Checkrs to be composed in an explicit order.
+* Removed `ReportMode.Warnings` and added a new `WarningLevel` configuration option.
 ### Experimental
-* Initial support for *Action Shrinking*.
+* Initial experimental support for *Action Shrinking*.
   * Added a new (opt-in) `ShrinkMode.Actions` to configuration.
   * Added a temporary `ShrinkableAct` combinator,
-    which later likely will replace the current `Act`
+    which later likely will replace the current `Act`.

@@ -2,11 +2,6 @@
 
 ### Doing
 * ShrinkableAct consolidation
-* WarningLevel
-  * WarningLevel.None
-  * WarningLevel.Important
-  * WarningLevel.Verbose
-  * WarningLevel.Debug
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 ```text
 ============================================================
@@ -31,7 +26,6 @@
 ```
 
 ### Todo
-* Check .Trace + .Verify
 * Added Deliberator: 
   Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
   This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
@@ -47,20 +41,16 @@
       * We could expand this.  
         For instance:  
         > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
-* Duplicate code in CheckrOfTGatherEvidence and Vault + conduct
+
 
 
 ### Wish List
 * Doc/test/improve `Reduce.Towards()`.
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
-* SystemCheckr : System/Domain checking DSL, needs time in the oven  
-  => Modelr : use a Application Service in stash + GetEntities method  
-  similar approach as QuickWebr
 * MBT : use as How to build your own example
 * Ouroboros Testing : We need a better `InputDeposition`
 * Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
-* Auto.Fuzz<T> for Testr, ... maybe, quick spike first.
 * Improve nested collection shrinking/regrowth  
   (current model struggles when classification collapses to empty).
 * Stringr => use Result.Stop instead of State.RunStopped

@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -15,11 +16,17 @@ public class RegisteredButUnused : CheckrTest<RegisteredButUnused>
     protected override bool Report => false;
 
     [Fact]
+    [DocConfigureHeader]
+    [DocConfigure]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
     public override void Example() => Run(1681332589);
+
+    [CodeSnippet]
+    protected override CheckrConfig Configure(CheckrConfig config)
+        => config with { WarningLevel = WarningLevel.Debug };
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

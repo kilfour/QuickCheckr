@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,12 +20,18 @@ public class C_TryDefault : CheckrTest<C_TryDefault>
     protected override bool Report => false;
 
     [Fact]
+    [DocConfigureHeader]
+    [DocConfigure]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Run(161541321, 2.ExecutionsPerRun());
+
+    [CodeSnippet]
+    protected override CheckrConfig Configure(CheckrConfig config)
+        => config with { WarningLevel = WarningLevel.Verbose };
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

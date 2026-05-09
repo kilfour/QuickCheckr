@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -13,11 +14,12 @@ public class SystemTypes : BaseTest
     [Fact]
     [DocExample(typeof(Thing))]
     [DocExample(typeof(SystemTypes), nameof(GetCheckr))]
+    [DocContent("Run with `WarningLevel.Debug`.")]
     [DocCodeFile("SystemTypes.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1487819190, 1.ExecutionsPerRun()));
+            GetCheckr().Run(1487819190, 1.ExecutionsPerRun(), a => a with { WarningLevel = WarningLevel.Debug }));
         WriteAsserts(article, false);
         WriteReport<SystemTypes>(article, false);
         Verify(article);

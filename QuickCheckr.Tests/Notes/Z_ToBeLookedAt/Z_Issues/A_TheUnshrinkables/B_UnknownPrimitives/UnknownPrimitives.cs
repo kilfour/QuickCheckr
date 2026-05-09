@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -12,11 +13,12 @@ public class UnknownPrimitives : BaseTest
 {
     [Fact]
     [DocExample(typeof(UnknownPrimitives), nameof(GetCheckr))]
+    [DocContent("Run with `WarningLevel.Verbose`.")]
     [DocCodeFile("UnknownPrimitives.txt", "text")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(746257211, 1.ExecutionsPerRun()));
+            GetCheckr().Run(746257211, 1.ExecutionsPerRun(), a => a with { WarningLevel = WarningLevel.Verbose }));
         WriteAsserts(article, false);
         WriteReport<UnknownPrimitives>(article, false);
         Verify(article);

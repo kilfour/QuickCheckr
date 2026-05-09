@@ -33,12 +33,10 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
     protected override void Verify(Article article)
     {
         Assert.Equal("ComputerSaysNo: Only one is available", article.FailureDescription());
-        Assert.Contains("at QuickPulse.Instruments.ComputerSays.No", article.GetExceptionMessage());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Blows up on 2", article.Execution(1).Action(1).Read().Label);
@@ -48,6 +46,5 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("73", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("Null value for type 'Thing' at input 'Null Thing'.", article.Execution(1).Warning(1).Read().Value);
     }
 }
