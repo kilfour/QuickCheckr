@@ -1,8 +1,7 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
-* ShrinkableAct 
-  Do not mix with regular act
+* ShrinkableAct consolidation
 * WarningLevel
   * WarningLevel.None
   * WarningLevel.Important

@@ -19,7 +19,7 @@ public class TestTemplate : BaseTest
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<TestTemplate>(article, true);
+        WriteReport<TestTemplate>(article, false);
         Verify(article);
     }
 

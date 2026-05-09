@@ -2065,7 +2065,7 @@ So after *Action Shrinking*, the result is:
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1722492210
+ Seed:                    2085509785
  ------------------------------------------------------------
   Executed: Act Three
  ===========================================================================
@@ -2102,7 +2102,7 @@ And here we find ourselves confused ;-).
  Test:                    Elaborating
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:86:1
  Original failing run:    1 execution
- Seed:                    573101023
+ Seed:                    1240619907
  ------------------------------------------------------------
   Executed: Act
  ===========================================

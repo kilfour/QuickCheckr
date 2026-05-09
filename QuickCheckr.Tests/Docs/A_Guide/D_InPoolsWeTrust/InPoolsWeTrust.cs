@@ -138,7 +138,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
     {
         var article = TheJournalist.Exposes(() => GetCheckr().Run(1444257086, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<InPoolsWeTrust>(article, true);
+        WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);
     }
 

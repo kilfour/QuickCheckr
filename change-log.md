@@ -124,7 +124,7 @@
   QuickCheckr now automatically manages pools based on usage.
 * `Expect` and `ExpectWhen` now take an optional *message factory* method.  
   This allows failing expectations to include contextual, lazily generated diagnostic messages.
-* Shrink API polish: treating Classification as the default path by routing `Try.` methods to `Shrink.`  
+* Shrink API polish: common classification strategies are now available directly through `Shrink.`
   Example:
   ```csharp
   Shrink.OnType<Thing>(s => s.Classify(Try.Values(new Thing())))
@@ -138,8 +138,13 @@
     * `Shrink.Values<T>(...)`
     * `Shrink.Collection<T>(...)`
     * `Shrink.Function<T>(...)`
-    * `Shrink.fuzzr<T>(...)`
+    * `Shrink.Fuzzr<T>(...)`
 * Added `PoolExpectEach<T1, T2>` expectation.  
   Supports expectations over pairs of pooled values.
 * Added `Checkr.Sequence`.  
   Allows multiple Checkrs to be composed in an explicit order.
+### Experimental
+* Initial support for *Action Shrinking*.
+  * Added a new (opt-in) `ShrinkMode.Actions` to configuration.
+  * Added a temporary `ShrinkableAct` combinator,
+    which later likely will replace the current `Act`

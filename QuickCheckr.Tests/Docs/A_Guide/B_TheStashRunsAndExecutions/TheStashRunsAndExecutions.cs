@@ -153,7 +153,7 @@ the failure only emerges when several executions act on the *same* object.
     {
         var article = TheJournalist.Exposes(RunBugHouseCheckr);
         WriteAsserts(article, false);
-        WriteReport<TheStashRunsAndExecutions>(article, true);
+        WriteReport<TheStashRunsAndExecutions>(article, false);
         Verify(article);
     }
 

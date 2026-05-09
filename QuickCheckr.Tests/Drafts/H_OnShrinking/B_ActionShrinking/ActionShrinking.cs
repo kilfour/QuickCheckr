@@ -36,7 +36,7 @@ So after *Action Shrinking*, the result is:
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(a => a with { ShrinkMode = ShrinkMode.ExceptReduction }));
         WriteAsserts(article);
-        WriteReport<ActionShrinking>(article, true);
+        WriteReport<ActionShrinking>(article, false);
         Verify(article);
     }
 
