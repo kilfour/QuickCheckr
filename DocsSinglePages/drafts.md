@@ -2065,7 +2065,7 @@ So after *Action Shrinking*, the result is:
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:37:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    431151605
+ Seed:                    1722492210
  ------------------------------------------------------------
   Executed: Act Three
  ===========================================================================
@@ -2102,7 +2102,7 @@ And here we find ourselves confused ;-).
  Test:                    Elaborating
  Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:86:1
  Original failing run:    1 execution
- Seed:                    1775995915
+ Seed:                    573101023
  ------------------------------------------------------------
   Executed: Act
  ===========================================
@@ -2558,6 +2558,38 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
+###### Values on Shrink
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Shrink.Values(new Thing()))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A1_TryValuesOnShrink.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+   - WARNING: Null value for type 'Thing' at input 'Null Thing'.
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
 ###### Collection
 This is very similar to `Try.Values`.  
 It only exists to avoid generic type soup and easily made mistakes when typing candidates supply for collections.  
@@ -2575,6 +2607,30 @@ select Case.Closed;
 ------------------------------------------------------------
  Test:                    Example
  Location:                B_TryCollection.cs:56:1
+ Original failing run:    1 execution
+ Seed:                    899182715
+ ------------------------------------------------------------
+  Executed:
+   - Input: answers = [ 2, 80 ]
+ ===============================================
+  !! Expectation Failed: all answers equal 42
+ ===============================================
+```
+###### Collection on Shrink
+
+**The Checkr:**  
+```csharp
+from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
+    Shrink.Collection([0], [1], [42]))
+from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B1_TryCollectionOnShrink.cs:33:1
  Original failing run:    1 execution
  Seed:                    899182715
  ------------------------------------------------------------
@@ -2617,6 +2673,36 @@ select Case.Closed;
  - counter != 2: 1x
  ------------------------------------------------------------
 ```
+###### Function on Shrink
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Shrink.Function((Thing a) => [new Thing()]))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                C1_TryFunctionOnShrink.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
 ###### Fuzzr
 
 **The Checkr:**  
@@ -2632,9 +2718,38 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_TryFuzzr.cs:73:1
+ Location:                D_TryFuzzr.cs:51:1
  Original failing run:    2 executions
- Minimal failing case:    1 execution (after 2 shrinks)
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Fuzzr on Shrink
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
+    Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                D1_TryFuzzrOnShrink.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
@@ -2671,6 +2786,37 @@ select Case.Closed;
 ------------------------------------------------------------
  Test:                    Example
  Location:                A_TryKeep.cs:46:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter    = 2
+   - Input: Null Thing = null
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
+```
+###### Keep on Shrink
+
+**The Checkr:**  
+```csharp
+from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
+from thing in Checkr.Input("Null Thing",
+    Fuzzr.Constant<Thing>(null!),
+    Shrink.Keep<Thing>())
+from expect in Checkr.Expect("counter != 2", () => counter != 2)
+select Case.Closed;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                A1_TryKeepOnShrink.cs:51:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321

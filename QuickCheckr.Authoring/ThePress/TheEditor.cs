@@ -1,6 +1,5 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 using QuickPulse;
 
 namespace QuickCheckr.Authoring.ThePress;

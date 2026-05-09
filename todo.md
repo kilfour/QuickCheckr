@@ -1,12 +1,8 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
-* Add message to expectation
 * ShrinkableAct 
   Do not mix with regular act
-* Checkr.Sequence
-* PoolExpectEach<T1, T2>
-
 * WarningLevel
   * WarningLevel.None
   * WarningLevel.Important

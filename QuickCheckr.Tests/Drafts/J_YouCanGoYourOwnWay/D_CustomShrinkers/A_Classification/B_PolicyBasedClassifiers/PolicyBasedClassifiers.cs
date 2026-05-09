@@ -8,5 +8,6 @@ namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Clas
 [DocContent(
 @"")]
 [DocInclude(typeof(A_TryKeep))]
+[DocInclude(typeof(A1_TryKeepOnShrink))]
 [DocInclude(typeof(C_TryDefault))]
 public class PolicyBasedClassifiers;

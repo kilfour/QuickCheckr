@@ -11,7 +11,11 @@ namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Clas
 @"Here is an overview of all the different ways you can define *candidates* for classification.  
 Using a more relevant example this time (where possible), that allows you to deal with [this][E_CheckingNulls] relatively common issue.")]
 [DocInclude(typeof(A_TryValues))]
+[DocInclude(typeof(A1_TryValuesOnShrink))]
 [DocInclude(typeof(B_TryCollection))]
+[DocInclude(typeof(B1_TryCollectionOnShrink))]
 [DocInclude(typeof(C_TryFunction))]
+[DocInclude(typeof(C1_TryFunctionOnShrink))]
 [DocInclude(typeof(D_TryFuzzr))]
+[DocInclude(typeof(D1_TryFuzzrOnShrink))]
 public class CandidateClassifiers;

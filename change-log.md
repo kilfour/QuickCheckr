@@ -119,7 +119,27 @@
 * Added `ReportMode.FinalTrace` which reports the values of the final run, after shrinking.  
   In contrast to `ReportMode.Trace`, which reports the values of the initial run.
 
-## 0.1.2: Act and Ride
+## 0.1.2: Bits and Alices
 * Added *Auto Pooling*, removing the need for explicit `Trackr.PoolFor<T>()`.  
   QuickCheckr now automatically manages pools based on usage.
-* Added `Shrink.Keep<T>()` as syntactic sugar.
+* `Expect` and `ExpectWhen` now take an optional *message factory* method.  
+  This allows failing expectations to include contextual, lazily generated diagnostic messages.
+* Shrink API polish: treating Classification as the default path by routing `Try.` methods to `Shrink.`  
+  Example:
+  ```csharp
+  Shrink.OnType<Thing>(s => s.Classify(Try.Values(new Thing())))
+  ```
+  Becomes:
+  ```csharp
+  Shrink.Values(new Thing())
+  ```
+  Added for:
+    * `Shrink.Keep<T>()`
+    * `Shrink.Values<T>(...)`
+    * `Shrink.Collection<T>(...)`
+    * `Shrink.Function<T>(...)`
+    * `Shrink.fuzzr<T>(...)`
+* Added `PoolExpectEach<T1, T2>` expectation.  
+  Supports expectations over pairs of pooled values.
+* Added `Checkr.Sequence`.  
+  Allows multiple Checkrs to be composed in an explicit order.

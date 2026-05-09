@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-namespace QuickCheckr;
+namespace QuickCheckr.UnderTheHood;
 
 public record Shrinker(
     Func<ShrinkingInfo, bool> Condition,

@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C1_TryFunctionOnShrink.cs:51:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    161541321
+ ------------------------------------------------------------
+  Executed:
+   - Input: counter = 2
+ =======================================
+  !! Expectation Failed: counter != 2
+ =======================================
+ Passed Expectations
+ - counter != 2: 1x
+ ------------------------------------------------------------
