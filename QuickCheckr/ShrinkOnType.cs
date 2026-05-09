@@ -1,4 +1,3 @@
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.ShrinkerBuilders;
