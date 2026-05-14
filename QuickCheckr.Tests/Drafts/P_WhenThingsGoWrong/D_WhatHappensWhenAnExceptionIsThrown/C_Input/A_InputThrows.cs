@@ -8,12 +8,12 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 
 [DocFile]
 [DocContent("Whenever an input throws, the exception is wrapped into a `InputFuzzrThrewException`.")]
-public class InputThrows
+public class A_InputThrows
 {
     [Fact]
     [DocContent("The Checkr below will throw a QuickFuzzr `OneOfEmptyOptionsException`:")]
-    [DocExample(typeof(InputThrows), nameof(IfItThrowsCheckr))]
-    [DocExample(typeof(InputThrows), nameof(IfItThrowsMessage))]
+    [DocExample(typeof(A_InputThrows), nameof(IfItThrowsCheckr))]
+    [DocExample(typeof(A_InputThrows), nameof(IfItThrowsMessage))]
     [CodeSnippet]
     public void IfItThrows()
     {
@@ -50,7 +50,7 @@ Example: 'Checkr.Input(() => Fuzzr.Int()).
 @"As you can gather from the exception message, this is done in order to inform the user of a rare, but real,
 issue when a Fuzzr depends on external state.  
 The solution is also supplied in said message: ")]
-    [DocExample(typeof(InputThrows), nameof(LazyUsageExample))]
+    [DocExample(typeof(A_InputThrows), nameof(LazyUsageExample))]
     [CodeSnippet]
     public void LazyUsageExample()
     {
@@ -59,9 +59,9 @@ The solution is also supplied in said message: ")]
 
     [Fact]
     [DocContent("If the *lazy* version throws:")]
-    [DocExample(typeof(InputThrows), nameof(IfLazyThrowsCheckr))]
+    [DocExample(typeof(A_InputThrows), nameof(IfLazyThrowsCheckr))]
     [DocContent("The Exception is **not** wrapped.")]
-    [DocExample(typeof(InputThrows), nameof(IfLazyThrowsMessage))]
+    [DocExample(typeof(A_InputThrows), nameof(IfLazyThrowsMessage))]
     [CodeSnippet]
     public void IfLazyThrows()
     {
