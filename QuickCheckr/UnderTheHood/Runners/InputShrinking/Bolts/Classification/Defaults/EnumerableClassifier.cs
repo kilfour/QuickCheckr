@@ -47,13 +47,17 @@ public class EnumerableClassifier : Classifier
             }
             theList.Insert(ix, before);
             substitute = CloneList.GetSubstituteForType(info.Type, theList);
-            using (context.State.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute))
+            var disposable = context.State.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute);
+            if (disposable is not null)
             {
-                var swapper = new ListLens(elementType, ix);
-                using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
+                using (disposable)
                 {
-                    var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
-                    values.Add(selector.Classify(childInfo, context));
+                    var swapper = new ListLens(elementType, ix);
+                    using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
+                    {
+                        var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
+                        values.Add(selector.Classify(childInfo, context));
+                    }
                 }
             }
             index++;

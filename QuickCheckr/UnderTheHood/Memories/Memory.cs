@@ -46,8 +46,20 @@ public class Memory
         => ShortTermMemory.Remove(executionNumber);
     public IDisposable ScopedExecutionRemoval(int executionNumber)
         => ShortTermMemory.ScopedExecutionRemoval(executionNumber);
-    public IDisposable ScopedSwap(int executionId, string key, object value)
-        => ShortTermMemory.ScopedSwap(executionId, key, value);
+    public IDisposable? ScopedSwap(int executionId, string key, object value)
+    {
+        IDisposable? disposable = null;
+        try
+        {
+            disposable = ShortTermMemory.ScopedSwap(executionId, key, value);
+        }
+        catch (Exception)
+        {
+            // maybe log or warn
+        }
+        return disposable;
+    }
+
     public IDisposable NestedValue(int executionId, MemoryLens swapper)
         => ShortTermMemory.NestedValue(executionId, swapper);
     public void Commit(int executionId, string key, object value)

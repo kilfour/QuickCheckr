@@ -9,12 +9,16 @@ public class Verifier(CheckrState State,
     public virtual bool RunFailed(int executionId, string key, object value)
     {
         State.StartReplay();
-        using (State.Memory.ScopedSwap(executionId, key, value))
+        var disposable = State.Memory.ScopedSwap(executionId, key, value);
+        if (disposable is not null)
         {
-            foreach (var id in State.Memory.Numbers)
+            using (disposable)
             {
-                State.Memory.GotoExecution(id);
-                Check(State);
+                foreach (var id in State.Memory.Numbers)
+                {
+                    State.Memory.GotoExecution(id);
+                    Check(State);
+                }
             }
         }
         return State.EvidenceRecorder.Failed();

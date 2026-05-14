@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_PropertySetterThrows.cs:68:1
+ Original failing run:    1 execution
+ Seed:                    662847995
+ ------------------------------------------------------------
+  Executed:
+   - Input: above 0 = { Amount: 77 }
+ ======================================
+  !! Expectation Failed: amount < 10
+ ======================================

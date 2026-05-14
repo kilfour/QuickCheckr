@@ -43,7 +43,6 @@
         > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
 
 
-
 ### Wish List
 * Doc/test/improve `Reduce.Towards()`.
 * Add shrinking(reducing) multiple values together
@@ -56,7 +55,7 @@
 * Stringr => use Result.Stop instead of State.RunStopped
 
 ### Done/Ready for Changelog after review
-
+* Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
