@@ -56,3 +56,4 @@ temp*.md
 nuget.md
 
 DocsSinglePages/
+*.lscache
