@@ -14,9 +14,9 @@ public class VerifyingDepositionsTests : DepositionTest
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());
         Assert.Equal(" Seed:                    12345678", reader.NextLine());
-        Assert.Equal(" ==============================================", reader.NextLine());
-        Assert.Equal("  !!  The Verifier Disagrees: Some Invariant", reader.NextLine());
-        Assert.Equal(" ==============================================", reader.NextLine());
+        Assert.Equal(" =============================================", reader.NextLine());
+        Assert.Equal("  !! The Verifier Disagrees: Some Invariant", reader.NextLine());
+        Assert.Equal(" =============================================", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }
 }

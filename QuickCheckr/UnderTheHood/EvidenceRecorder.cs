@@ -29,7 +29,7 @@ public class EvidenceRecorder
     {
         if (IsReplay)
         {
-            if (!IsExceptionMismatch(exception))
+            if (ExceptionIs.Equivalent(Exception, exception))
                 currentFailed = true;
             return;
         }
@@ -49,16 +49,6 @@ public class EvidenceRecorder
         }
         if (!runFailed) // Action already crashed or previous expectation failed
             throw new ExpectationThrowsException(key, exception);
-    }
-
-    private bool IsExceptionMismatch(Exception actual)
-    {
-        if (Exception == null) return true;
-
-        var e = Exception;
-        return actual.GetType() != e.GetType()
-            || actual.Message != e.Message
-            || (actual.InnerException?.GetType() != e.InnerException?.GetType());
     }
 
     private int failingExecutionId;

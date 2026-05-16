@@ -1,6 +1,7 @@
 ## 0.2.0: Watching the Detectives
 
 ### Doing
+* Shrink Log
 * ShrinkableAct consolidation
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
 ```text
@@ -47,7 +48,6 @@
 * Doc/test/improve `Reduce.Towards()`.
 * Add shrinking(reducing) multiple values together
 * Add reuse fuzzr reducer with predicate (input, candidate) => score
-* MBT : use as How to build your own example
 * Ouroboros Testing : We need a better `InputDeposition`
 * Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
 * Improve nested collection shrinking/regrowth  
@@ -65,7 +65,7 @@
 * DuplicateKeyWriteException check wording (Input as example)
 * Figure out which Reducer warnings are needed/useful.
 * Stabilize + Doc InternalAffairs
-  * Shrink Log
+  
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * more stats:
