@@ -68,25 +68,26 @@ public static class The
         var spaces = input.Labeled ? 15 : 8;
         return
             from maxLabel in Pulse.Draw<MaxLabel>()
-            from _ in newLine
-                .Trace("   - ")
-                .TraceIf(input.Labeled, () => "Input: ")
-                .Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
-                .When(input.Original.HasValue,
-                    newLine
-                        .Trace(new string(' ', maxLabel.Length + spaces))
-                        .Trace(input.Original.Value!))
-                .ToFlowIf(input.Redux.HasValue, Redux, () => input)
+            from _ in
+                newLine
+                    .Trace("   - ")
+                    .TraceIf(input.Labeled, () => "Input: ")
+                    .Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
+                    .When(input.Original.HasValue,
+                        newLine
+                            .Trace(new string(' ', maxLabel.Length + spaces))
+                            .Trace(input.Original.Value!))
+                    .ToFlowIf(input.Redux.HasValue, Redux, () => input)
             select Flow.Continue;
     }
 
     private static Flow<Flow> Action(ActionDeposition input) =>
         Pulse
-            .When<Decorum>(a => a.Intersperse.NeedsSeparator(), separator)
+            .When<Joiner>(a => a.NeedsSeparator(), separator)
             .Trace($" {input.Label}");
 
     private static Flow<Flow> Actions(IEnumerable<ActionDeposition> input) =>
-        Pulse.Scoped<Decorum>(a => a with { Intersperse = new Joiner() },
+        Pulse.Scoped<Joiner>(a => a.Start(),
             Pulse.ToFlow(Action, input));
 
     private static Flow<Flow> Actions(this Flow<Flow> other, IEnumerable<ActionDeposition> input) =>
@@ -206,7 +207,7 @@ public static class The
         var breakBeforePassed = (input.HasEvidence || hasUnchecked) && hasPassed;
         return
             Pulse
-                .Prime(() => new Decorum()).Dissipate()
+                .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
                 .ToFlowIf(input.HasEvidence, Evidence, () => input)
                 .OnType((CaseSummary a) => Summary(a), () => input)
