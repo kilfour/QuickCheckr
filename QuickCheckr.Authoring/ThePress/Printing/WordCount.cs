@@ -14,5 +14,4 @@ public class WordCount(CaseFile caseFile)
     public int FinalTraces() => depositions.Sum(a => a.ExecutionDeposition.FinalTraceDepositions.Count);
     public int Warnings() => depositions.Sum(a => a.ExecutionDeposition.WarningDepositions.Count);
     public int PassedExpectations() => caseFile.PassedExpectationDepositions.Count;
-    public int UncheckedExpectations() => caseFile.UncheckedExpectationDepositions.Count;
 }

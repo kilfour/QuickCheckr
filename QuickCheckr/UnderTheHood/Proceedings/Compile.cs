@@ -32,7 +32,6 @@ namespace QuickCheckr.UnderTheHood.Proceedings
                         dossier.WarningLevel));
             }
             AddPassedExpectations(dossier.PassedExpectations, caseFile);
-            AddUncheckedExpectations(dossier.UncheckedExpectations, caseFile);
             return caseFile;
         }
 
@@ -40,12 +39,6 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         {
             foreach (var passedExpectation in passedExpectations)
                 caseFile.AddPassedExpectationDeposition(new PassedExpectationDeposition(passedExpectation.Key, passedExpectation.Value));
-        }
-
-        private static void AddUncheckedExpectations(List<string> uncheckedExpectations, CaseFile caseFile)
-        {
-            foreach (var uncheckedExpectation in uncheckedExpectations)
-                caseFile.AddUncheckedExpectationDeposition(new UncheckedExpectationDeposition(uncheckedExpectation));
         }
 
         private static ExecutionDeposition GetExecutionDeposition(

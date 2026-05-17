@@ -35,10 +35,6 @@ public class Article(CaseFile caseFile)
         => new(collapsableExecutionDepositions[number - 1]!);
 
     [StackTraceHidden]
-    public UncheckedExpectationArticle UncheckedExpectation(int number)
-        => new(caseFile.UncheckedExpectationDepositions[number - 1]);
-
-    [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)
         => new(caseFile.PassedExpectationDepositions[number - 1]);
 

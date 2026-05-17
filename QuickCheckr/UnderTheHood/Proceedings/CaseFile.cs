@@ -115,11 +115,4 @@ public class CaseFile : ICaseFileSummary
         PassedExpectationDepositions.Add(passedExpectationDepositions);
         return this;
     }
-
-    public List<UncheckedExpectationDeposition> UncheckedExpectationDepositions { get; init; } = [];
-    public CaseFile AddUncheckedExpectationDeposition(UncheckedExpectationDeposition passedExpectationDepositions)
-    {
-        UncheckedExpectationDepositions.Add(passedExpectationDepositions);
-        return this;
-    }
 }

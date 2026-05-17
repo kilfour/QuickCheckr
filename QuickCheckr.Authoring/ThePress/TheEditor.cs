@@ -77,12 +77,6 @@ public class TheEditor
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select Flow.Continue;
 
-    private static Flow<Flow> UncheckedExpectation(int index) =>
-        from article in Pulse.Draw<Article>()
-        let uncheckedExpectationDeposition = article.UncheckedExpectation(index).Read()
-        from label in Emit($"Assert.Equal(\"{uncheckedExpectationDeposition.Label}\", article.UncheckedExpectation({index}).Read().Label);")
-        select Flow.Continue;
-
     private static Flow<Flow> PassedExpectation(int index) =>
         from article in Pulse.Draw<Article>()
         let passedExpectationDeposition = article.PassedExpectation(index).Read()
@@ -125,16 +119,12 @@ public class TheEditor
         from warningCount in EmitIf(
             article.Total().Warnings() > 0,
             $"Assert.Equal({article.Total().Warnings()}, article.Total().Warnings());")
-        from uncheckedExpectationCount in EmitIf(
-            article.Total().UncheckedExpectations() > 0,
-            $"Assert.Equal({article.Total().UncheckedExpectations()}, article.Total().UncheckedExpectations());")
         from passedExpectationCount in EmitIf(
             article.Total().PassedExpectations() > 0,
             $"Assert.Equal({article.Total().PassedExpectations()}, article.Total().PassedExpectations());")
         from shrinkCount in Emit(
             $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
-        from uncheckedExpectations in Pulse.ToFlow(UncheckedExpectation, Enumerable.Range(1, article.Total().UncheckedExpectations()))
         from passedExpectations in Pulse.ToFlow(PassedExpectation, Enumerable.Range(1, article.Total().PassedExpectations()))
         select Flow.Continue;
 }

@@ -184,12 +184,6 @@ public static class The
                 .ToFlow(Failure, caseFile.FailureDeposition);
     }
 
-    private static Flow<Flow> UncheckedExpectations(IEnumerable<UncheckedExpectationDeposition> input) =>
-        Pulse
-            .Trace(" ! Warning: Unchecked Expectations !")
-            .ToFlow(a => Pulse.Trace($"{Environment.NewLine} - {a.Label}"), input)
-            .When(input.Any(), newLine.Line());
-
     private static Flow<Flow> PassedExpectations(IEnumerable<PassedExpectationDeposition> input) =>
         Pulse
             .Trace(" Passed Expectations")
@@ -201,18 +195,14 @@ public static class The
 
     public static Flow<Flow> CourtStyleGuide(CaseFile input)
     {
-        var hasUnchecked = input.UncheckedExpectationDepositions.Count > 0;
-        var breakBeforeUnchecked = input.HasEvidence && hasUnchecked;
         var hasPassed = input.PassedExpectationDepositions.Count > 0;
-        var breakBeforePassed = (input.HasEvidence || hasUnchecked) && hasPassed;
+        var breakBeforePassed = input.HasEvidence && hasPassed;
         return
             Pulse
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
                 .ToFlowIf(input.HasEvidence, Evidence, () => input)
                 .OnType((CaseSummary a) => Summary(a), () => input)
-                .When(breakBeforeUnchecked, newLine)
-                .ToFlowIf(hasUnchecked, UncheckedExpectations, () => input.UncheckedExpectationDepositions)
                 .When(breakBeforePassed, newLine)
                 .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
     }
