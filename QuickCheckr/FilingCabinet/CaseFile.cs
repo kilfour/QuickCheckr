@@ -25,7 +25,7 @@ public interface ICaseFileSummary
 
 public class CaseFile : ICaseFileSummary, IRecord
 {
-    public bool HasEvidence { get; init; }
+    public bool HasEvidence => FailureDeposition is not FailedNoneDeposition;
     public FailureDeposition FailureDeposition { get; init; }
 
     // -----------------------------------------------------------------------
@@ -84,7 +84,6 @@ public class CaseFile : ICaseFileSummary, IRecord
         OriginalRunExecutionCount = runInfo.OriginalRunExecutionCount;
         ShrinkCount = runInfo.ShrinkCount;
         Seed = runInfo.Seed;
-        HasEvidence = true;
     }
 
     public static CaseFile From(FailureInfo failureInfo, RunInfo runInfo)

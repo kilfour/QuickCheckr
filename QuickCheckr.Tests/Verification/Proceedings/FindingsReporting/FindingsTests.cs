@@ -2,6 +2,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains.Text;
+using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.FindingsReporting;
 
@@ -20,7 +21,9 @@ public class FindingsTests
 
         var result = TheClerk.Transcribes(summary, The.CourtStyleGuide);
         var reader = LinesReader.FromText(result);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" 2 Runs", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Passed Expectations", reader.NextLine());
         Assert.Equal(" - One: 5x", reader.NextLine());
         Assert.Equal(" - Two: 3x", reader.NextLine());
