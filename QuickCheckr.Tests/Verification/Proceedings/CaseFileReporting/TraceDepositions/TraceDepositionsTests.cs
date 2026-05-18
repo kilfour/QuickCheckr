@@ -2,7 +2,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.TraceDepositions;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.TraceDepositions;
 
 public class TraceDepositionsTests : DepositionTest
 {

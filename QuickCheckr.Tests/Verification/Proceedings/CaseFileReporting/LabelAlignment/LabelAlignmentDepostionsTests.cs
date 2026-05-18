@@ -2,7 +2,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.LabelAlignment;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.LabelAlignment;
 
 public class LabelAlignmentDepostionsTests : DepositionTest
 {

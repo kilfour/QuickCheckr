@@ -1,7 +1,7 @@
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.ExecutionDepositions;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.PassedSpecDepositions;
 
 public class PassedExpectationDepositionsTests : DepositionTest
 {

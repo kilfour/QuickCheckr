@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.Unlabeled;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.Unlabeled;
 
 public class UnlabeledDepostionsTests : DepositionTest
 {

@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.WarningDepositions;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.WarningDepositions;
 
 public class WarningDepositionsTests : DepositionTest
 {

@@ -1,7 +1,7 @@
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Verification.Proceedings;
+namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.AssayerDepositions;
 
 public class VerifyingDepositionsTests : DepositionTest
 {
