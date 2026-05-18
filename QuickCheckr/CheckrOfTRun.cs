@@ -1,8 +1,8 @@
 using System.Diagnostics;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr;
 
@@ -19,7 +19,7 @@ public static class CheckrOfTRun
     /// Use for complete control over test exploration and shrinking behaviour.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
@@ -27,13 +27,13 @@ public static class CheckrOfTRun
         int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var caseFiles = new List<CaseFile>();
+        var findings = new Findings();
         var deliberator = new Deliberator(config.DeliberationPolicy, config.DeliberationTarget);
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
             var caseFile = runner.Run();
-            caseFiles.Add(caseFile);
+            findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {
                 if (config.DeliberationPolicy != null)
@@ -49,8 +49,8 @@ public static class CheckrOfTRun
         if (config.DeliberationPolicy != null && deliberator.HasCaseFile)
             ReportCaseFile(executionsPerRun, config, deliberator.GetCaseFile());
         else
-            ReportCaseFileSummary(config, caseFiles);
-        return CaseSummary.FromCaseFiles(caseFiles);
+            ReportCaseFileSummary(config, findings);
+        return findings;
     }
 
     [StackTraceHidden]
@@ -59,19 +59,18 @@ public static class CheckrOfTRun
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
             var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-            config.Custodian.StoreCaseFile(fileName, caseFile, config.StyleGuide);
+            config.Custodian.FileRecord(fileName, caseFile, config.StyleGuide);
             Vault.From(config).AddSeed(caseFile.Seed, executionsPerRun.NumberOfExecutions);
         }
         throw new FalsifiableException(caseFile, config.StyleGuide);
     }
 
-    private static void ReportCaseFileSummary(CheckrRunnerConfig config, List<CaseFile> caseFiles)
+    private static void ReportCaseFileSummary(CheckrRunnerConfig config, Findings findings)
     {
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
             var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
-            var summary = CaseSummary.FromCaseFiles(caseFiles);
-            config.Custodian.StoreCaseFile(fileName, summary, config.StyleGuide);
+            config.Custodian.FileRecord(fileName, findings, config.StyleGuide);
         }
     }
 
@@ -80,7 +79,7 @@ public static class CheckrOfTRun
     /// Use for the simplest possible run when no configuration or repetition is needed.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check)
+    public static IRecord Run(this CheckrOf<Case> check)
         => Run(check, 1.Runs(), 1.ExecutionsPerRun());
 
     /// <summary>
@@ -88,7 +87,7 @@ public static class CheckrOfTRun
     /// Use when you want to adjust shrinking, diagnostics, or other settings for a minimal run.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, Func<CheckrConfig, CheckrConfig> configure)
+    public static IRecord Run(this CheckrOf<Case> check, Func<CheckrConfig, CheckrConfig> configure)
         => Run(check, 1.Runs(), 1.ExecutionsPerRun(), configure);
 
     /// <summary>
@@ -96,7 +95,7 @@ public static class CheckrOfTRun
     /// Use when exploring a larger input space while keeping individual runs isolated.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs)
+    public static IRecord Run(this CheckrOf<Case> check, RunCount runs)
         => Run(check, runs, 1.ExecutionsPerRun());
 
     /// <summary>
@@ -104,7 +103,7 @@ public static class CheckrOfTRun
     /// Use to combine repeated exploration with tuned settings such as shrinking or diagnostics.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, RunCount runs, Func<CheckrConfig, CheckrConfig> configure)
+    public static IRecord Run(this CheckrOf<Case> check, RunCount runs, Func<CheckrConfig, CheckrConfig> configure)
         => Run(check, runs, 1.ExecutionsPerRun(), configure);
 
     /// <summary>
@@ -112,7 +111,7 @@ public static class CheckrOfTRun
     /// Use for stateful systems where behaviour depends on repeated steps on the same state.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, ExecutionCount executionsPerRun)
+    public static IRecord Run(this CheckrOf<Case> check, ExecutionCount executionsPerRun)
         => Run(check, 1.Runs(), executionsPerRun);
 
     /// <summary>
@@ -120,7 +119,7 @@ public static class CheckrOfTRun
     /// Use when testing stateful behaviour that needs both repetition and custom settings.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(this CheckrOf<Case> check, ExecutionCount executionsPerRun, Func<CheckrConfig, CheckrConfig> configure)
+    public static IRecord Run(this CheckrOf<Case> check, ExecutionCount executionsPerRun, Func<CheckrConfig, CheckrConfig> configure)
         => Run(check, 1.Runs(), executionsPerRun, configure);
 
     /// <summary>
@@ -128,21 +127,21 @@ public static class CheckrOfTRun
     /// Use to explore both pure input variation and multi-step behaviour.
     /// </summary>
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> check,
         RunCount runs,
         ExecutionCount executionsPerRun)
             => Run(check, runs, executionsPerRun, _ => CheckrConfig.Default());
 
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> check,
         int seed,
         ExecutionCount executionsPerRun)
             => Run(check, 1.Runs(), executionsPerRun, _ => CheckrConfig.Default(), seed);
 
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> check,
         int seed,
         ExecutionCount executionsPerRun,
@@ -150,13 +149,13 @@ public static class CheckrOfTRun
         => Run(check, 1.Runs(), executionsPerRun, configure, seed);
 
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> check,
         int seed)
             => Run(check, 1.Runs(), 1.ExecutionsPerRun(), _ => CheckrConfig.Default(), seed);
 
     [StackTraceHidden]
-    public static CaseFile Run(
+    public static IRecord Run(
         this CheckrOf<Case> check,
         int seed,
         Func<CheckrConfig, CheckrConfig> configure)

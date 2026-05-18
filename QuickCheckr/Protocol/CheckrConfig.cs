@@ -1,5 +1,5 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
@@ -53,7 +53,7 @@ public record CheckrConfig
 
     public required ICustodian Custodian { get; init; }
 
-    public Func<CaseFile, Flow<Flow>> StyleGuide { get; init; } = The.CourtStyleGuide;
+    public Func<IRecord, Flow<Flow>> StyleGuide { get; init; } = The.CourtStyleGuide;
 
     public required int MaxStepsPerReducer { get; init; }
 }

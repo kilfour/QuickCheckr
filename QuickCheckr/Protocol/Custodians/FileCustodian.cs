@@ -1,5 +1,5 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 using QuickPulse.Arteries;
@@ -8,10 +8,10 @@ namespace QuickCheckr.Protocol.Custodians;
 
 public abstract class FileCustodian : ICustodian
 {
-    public void StoreCaseFile(string path, CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
-        => GetFileLogArtery(path).ClearFile().Absorb(TheClerk.Transcribes(caseFile, styleGuide));
+    public void FileRecord(string path, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
+        => GetFileLogArtery(path).ClearFile().Absorb(TheClerk.Transcribes(record, styleGuide));
 
-    public void RemoveCaseFile(string path) => RemoveFile(path);
+    public void RemoveRecord(string path) => RemoveFile(path);
 
     public void LogVaultAction(string path, string line)
         => GetFileLogArtery(path).Absorb(line);

@@ -1,19 +1,24 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickPulse;
 
 namespace QuickCheckr.Authoring.ThePress;
 
-public class TheEditor
+public static class TheEditor
 {
     private static Flow<Flow> Emit(string line) => Pulse.Trace($"        {line}");
+    private static Flow<Flow> Emit(this Flow<Flow> other, string line)
+        => other.Then(Emit(line));
 
     private static Flow<Flow> EmitIf(bool flag, string line)
         => Pulse.TraceIf(flag, () => $"        {line}");
+    private static Flow<Flow> EmitIf(this Flow<Flow> other, bool flag, string line)
+        => other.Then(EmitIf(flag, line));
 
     private static Flow<Flow> Warning((int executionIndex, int warningIndex) cursor) =>
-        from article in Pulse.Draw<Article>()
-        let warningArticle = article.Execution(cursor.executionIndex).Warning(cursor.warningIndex).Read()
+        from warningArticle in Pulse.Draw<Article, WarningDeposition>(
+            a => a.Execution(cursor.executionIndex).Warning(cursor.warningIndex).Read())
         from value in Emit($"Assert.Equal(\"{warningArticle.Value}\", article.Execution({cursor.executionIndex}).Warning({cursor.warningIndex}).Read().Value);")
         select Flow.Continue;
 

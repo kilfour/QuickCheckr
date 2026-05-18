@@ -34,7 +34,7 @@ public class FilingEvidence : BaseTest
         TheJournalist.Exposes(() =>
             Checkr.Expect("Fails", () => false).Run(cfg =>
                 Configure(cfg with { Custodian = custodian })));
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.CaseFiles.Keys.Single()));
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Records.Keys.Single()));
     }
 
     [Fact]
@@ -45,8 +45,8 @@ public class FilingEvidence : BaseTest
         var custodian = new InMemoryCustodian([]);
         Checkr.Expect("Always Passes", () => true).Run(cfg =>
             Configure(cfg with { Custodian = custodian }));
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.CaseFiles.Keys.Single()));
-        var caseFile = custodian.CaseFiles.Values.Single();
+        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Records.Keys.Single()));
+        var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
         WriteReport(article, "FilingEvidenceRunPassed.txt", false);
         VerifyPassedReport(article);

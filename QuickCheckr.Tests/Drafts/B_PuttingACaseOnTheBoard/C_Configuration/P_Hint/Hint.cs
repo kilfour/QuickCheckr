@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse.Explains;
 
 
@@ -20,14 +20,14 @@ it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` exten
 public static class Hint
 {
     [CodeExample]
-    public static CaseFile Deliberate(
+    public static IRecord Deliberate(
         this CheckrOf<Case> checkr,
         Func<ICaseFileSummary, int>? policy = null)
         => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
             cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 
     [CodeExample]
-    public static CaseFile FileThis(
+    public static IRecord FileThis(
         this CheckrOf<Case> checkr,
         [CallerFilePath] string filePath = "",
         [CallerMemberName] string testName = "")

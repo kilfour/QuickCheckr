@@ -1,16 +1,16 @@
 using System.Diagnostics;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions.Failure;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 
 namespace QuickCheckr.Authoring.ThePress.Printing;
 
-public class Article(CaseFile caseFile)
+public class Article(IRecord record)
 {
-    private readonly CaseFile caseFile = caseFile;
-    public CaseFile CaseFile { get; } = caseFile;
+    private readonly CaseFile caseFile = (record as CaseFile)!;
+    public CaseFile CaseFile => caseFile;
 
-    private readonly List<CollapsableExecutionDeposition> collapsableExecutionDepositions =
+    private List<CollapsableExecutionDeposition> CollapsableExecutionDepositions =>
         caseFile.CollapseExecutions();
 
     public string VerifyFailed()
@@ -32,7 +32,7 @@ public class Article(CaseFile caseFile)
 
     [StackTraceHidden]
     public ExecutionArticle Execution(int number)
-        => new(collapsableExecutionDepositions[number - 1]!);
+        => new(CollapsableExecutionDepositions[number - 1]!);
 
     [StackTraceHidden]
     public PassedExpectationArticle PassedExpectation(int number)

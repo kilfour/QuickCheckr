@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse;
 
 
@@ -11,13 +11,13 @@ public class FalsifiableException : Exception
 {
     public CaseFile TheCaseFile { get; private set; }
 
-    public FalsifiableException(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
+    public FalsifiableException(CaseFile caseFile, Func<IRecord, Flow<Flow>> styleGuide)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide))
     {
         TheCaseFile = caseFile;
     }
 
-    public FalsifiableException(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide, Exception? exception)
+    public FalsifiableException(CaseFile caseFile, Func<IRecord, Flow<Flow>> styleGuide, Exception? exception)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide), exception)
     {
         TheCaseFile = caseFile;

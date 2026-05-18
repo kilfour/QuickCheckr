@@ -1,5 +1,6 @@
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.WarningDepositions;

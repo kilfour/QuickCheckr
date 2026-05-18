@@ -1,5 +1,5 @@
-using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.EvidenceGathering;
 

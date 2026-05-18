@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
+using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.Authoring.ThePress.Printing;
 

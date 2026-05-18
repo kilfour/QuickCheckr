@@ -1,22 +1,22 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 
 public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodian
 {
-    public Dictionary<string, CaseFile> CaseFiles { get; private set; } = [];
+    public Dictionary<string, IRecord> Records { get; private set; } = [];
 
-    public void StoreCaseFile(string path, CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
-        => CaseFiles[path] = caseFile;
+    public void FileRecord(string path, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
+        => Records[path] = record;
 
     public string RemoveFileCalledWith { get; private set; } = string.Empty;
-    public void RemoveCaseFile(string path)
+    public void RemoveRecord(string path)
     {
         RemoveFileCalledWith = path;
-        CaseFiles.Remove(path);
+        Records.Remove(path);
     }
 
     public string EvidenceFileName { get; private set; } = string.Empty;

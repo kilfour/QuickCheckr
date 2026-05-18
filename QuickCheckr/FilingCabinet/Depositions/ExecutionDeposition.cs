@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Proceedings.Depositions;
+namespace QuickCheckr.FilingCabinet.Depositions;
 
 public record ExecutionDeposition
 {

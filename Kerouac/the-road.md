@@ -1,5 +1,54 @@
 ## 0.2.0: Watching the Detectives
 
+## Hierarchy
+
+```text
+=> means produces
+-> means contains
+
+Inquiry => Dossier : IRecord
+    -> many Investigations
+
+Investigation => Findings : IRecord
+    -> many Cases
+
+Case => CaseFile : IRecord
+    -> many Executions
+    -> Testimony
+    -> Evidence?
+    -> Verdict
+```
+FilingCabinet
+    IRecord
+    CaseFile
+    Findings
+    Dossier
+
+ClerksOffice
+    RecordRenderer => Clerk
+    RecordStyleGuide
+    Decorum
+
+public interface IClerk
+{
+    Flow<Flow> File(IRecord record, Decorum decorum);
+}
+
+public record Decorum
+{
+    public bool ShowLabels { get; init; }
+    public bool ShowTraces { get; init; }
+    public bool ShowFinalTrace { get; init; }
+    public bool ShowWarnings { get; init; }
+    public bool ShowStackTrace { get; init; }
+
+    public int Indent { get; init; }
+    public string Separator { get; init; }
+
+    public WarningLevel WarningLevel { get; init; }
+}
+
+
 ### Doing
 * Shrink Log
 * ShrinkableAct consolidation

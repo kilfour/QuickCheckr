@@ -1,16 +1,17 @@
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains.Text;
+using QuickPulse.Show;
 
-namespace QuickCheckr.Tests.Verification.Proceedings.CaseSummaryDepositions;
+namespace QuickCheckr.Tests.Verification.Proceedings.FindingsReporting;
 
-public class CaseSummaryTests
+public class FindingsTests
 {
     [Fact]
     public void RunTest()
     {
-        var summary = CaseSummary.FromCaseFiles([
+        var summary = new Findings().Add([
             CaseFile.Empty()
                 .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 2))
                 .AddPassedExpectationDeposition(new PassedExpectationDeposition("Two", 3)),
@@ -19,7 +20,7 @@ public class CaseSummaryTests
                 ]);
 
         var result = TheClerk.Transcribes(summary, The.CourtStyleGuide);
-        var reader = LinesReader.FromText(result);
+        var reader = LinesReader.FromText(result.PulseToQuickLog());
         Assert.Equal(" 2 Runs", reader.NextLine());
         Assert.Equal(" Passed Expectations", reader.NextLine());
         Assert.Equal(" - One: 5x", reader.NextLine());

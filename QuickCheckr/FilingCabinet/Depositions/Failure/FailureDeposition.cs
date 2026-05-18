@@ -1,4 +1,6 @@
-namespace QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+using QuickCheckr.UnderTheHood.Proceedings;
+
+namespace QuickCheckr.FilingCabinet.Depositions.Failure;
 
 
 public abstract record FailureDeposition

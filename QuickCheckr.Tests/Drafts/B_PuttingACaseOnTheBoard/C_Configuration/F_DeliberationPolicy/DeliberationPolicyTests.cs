@@ -1,10 +1,11 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
 using QuickPulse.Explains;

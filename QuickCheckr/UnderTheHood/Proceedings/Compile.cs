@@ -1,7 +1,8 @@
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Memories.Structure;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickPulse.Show.Bolts;
 

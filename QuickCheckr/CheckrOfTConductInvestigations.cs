@@ -1,8 +1,8 @@
 using QuickCheckr.EvidenceGathering;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr;
 
@@ -58,7 +58,7 @@ public static class CheckrOfTConductInvestigations
             config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.StyleGuide);
+                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.StyleGuide);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
             // ---------------------------------------------------------------------------------------------

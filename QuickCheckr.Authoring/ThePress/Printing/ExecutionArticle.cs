@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 namespace QuickCheckr.Authoring.ThePress.Printing;
 

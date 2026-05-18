@@ -52,7 +52,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
         Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.CaseFiles.Keys.Single()));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
@@ -75,7 +75,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Single(custodian.Log);
         Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
 
-        var caseFile = custodian.CaseFiles.Values.Single();
+        var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
@@ -96,7 +96,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Single(custodian.Log);
         Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
 
-        var caseFile = custodian.CaseFiles.Values.Single();
+        var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("", article.FailureDescription());
@@ -124,7 +124,7 @@ In this case we use:")]
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
         Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.CaseFiles.Keys.Single()));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
@@ -134,7 +134,7 @@ In this case we use:")]
         Assert.Single(custodian.Log);
         Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
 
-        var caseFile = custodian.CaseFiles.Values.Single();
+        var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
@@ -169,7 +169,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
         Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
         Assert.Equal("Removed Seed: 1862095796.", custodian.Log[1]);
 
-        Assert.Empty(custodian.CaseFiles);
+        Assert.Empty(custodian.Records);
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
     }
 }

@@ -1,6 +1,6 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
@@ -28,6 +28,6 @@ public record CheckrRunnerConfig
     public WarningLevel WarningLevel { get; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; }
     public int? DeliberationTarget { get; init; }
-    public Func<CaseFile, Flow<Flow>> StyleGuide { get; }
+    public Func<IRecord, Flow<Flow>> StyleGuide { get; }
     public int MaxStepsPerReducer { get; }
 }

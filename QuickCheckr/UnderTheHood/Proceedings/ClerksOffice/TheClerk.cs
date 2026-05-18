@@ -1,3 +1,4 @@
+using QuickCheckr.FilingCabinet;
 using QuickPulse;
 using QuickPulse.Arteries;
 
@@ -5,12 +6,12 @@ namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 public static class TheClerk
 {
-    public static string Transcribes(CaseFile caseFile, Func<CaseFile, Flow<Flow>> styleGuide)
+    public static string Transcribes(IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
     {
         return
             Signal.From(styleGuide)
                 .SetArtery(Text.Capture())
-                .Pulse(caseFile)
+                .Pulse(record)
                 .GetArtery<StringSink>()
                 .Content();
     }

@@ -1,8 +1,8 @@
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 using QuickPulse.Arteries;
@@ -37,7 +37,7 @@ public abstract class QCTest<T> : QCTest
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
 
-    protected virtual Func<CaseFile, Flow<Flow>> StyleGuide => The.CourtStyleGuide;
+    protected virtual Func<IRecord, Flow<Flow>> StyleGuide => The.CourtStyleGuide;
 
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);

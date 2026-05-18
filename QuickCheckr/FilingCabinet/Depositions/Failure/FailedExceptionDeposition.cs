@@ -1,4 +1,4 @@
-namespace QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+namespace QuickCheckr.FilingCabinet.Depositions.Failure;
 
 public record FailedExceptionDeposition(string Message, string FailureDescription) : FailureDeposition
 {

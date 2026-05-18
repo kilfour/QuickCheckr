@@ -1,5 +1,6 @@
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
+using QuickCheckr.FilingCabinet.Depositions.Failure;
 using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
@@ -190,20 +191,27 @@ public static class The
             .ToFlow(a => newLine.Trace($" - {a.Label}: {a.TimesPassed}x"), input)
             .When(input.Any(), newLine.Line());
 
-    public static Flow<Flow> Summary(CaseSummary input) =>
-        Pulse.Trace($" {input.NumberOfRuns} {Pluralize(input.NumberOfRuns, "Run")}{Environment.NewLine}");
+    public static Flow<Flow> Summary(Findings input) =>
+        Pulse.Trace($" {input.NumberOfRuns} {Pluralize(input.NumberOfRuns, "Run")}{Environment.NewLine}")
+            .ToFlow(PassedExpectations, input.PassedExpectationDepositions);
 
-    public static Flow<Flow> CourtStyleGuide(CaseFile input)
+    public static Flow<Flow> CaseFileFlow(CaseFile input)
     {
         var hasPassed = input.PassedExpectationDepositions.Count > 0;
         var breakBeforePassed = input.HasEvidence && hasPassed;
+        return Pulse
+            .ToFlowIf(input.HasEvidence, Evidence, () => input)
+            .When(breakBeforePassed, newLine)
+            .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
+    }
+
+    public static Flow<Flow> CourtStyleGuide(IRecord input)
+    {
         return
             Pulse
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
-                .ToFlowIf(input.HasEvidence, Evidence, () => input)
-                .OnType((CaseSummary a) => Summary(a), () => input)
-                .When(breakBeforePassed, newLine)
-                .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
+                .OnType((Findings a) => Summary(a), () => input)
+                .OnType((CaseFile a) => CaseFileFlow(a), () => input);
     }
 }

@@ -1,5 +1,5 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.UnderTheHood.Archiving;
 
@@ -43,7 +43,7 @@ public class EvidenceVault : Vault
                 custodian.LogVaultAction(logPath, $"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
+                    custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
                 }
             }
             else
@@ -52,11 +52,11 @@ public class EvidenceVault : Vault
                 if (closeResolved)
                 {
                     Remove(entry);
-                    custodian.RemoveCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"));
+                    custodian.RemoveRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"));
                 }
                 else if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    custodian.StoreCaseFile(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
+                    custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.StyleGuide);
                 }
             }
         }

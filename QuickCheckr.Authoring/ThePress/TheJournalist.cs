@@ -2,8 +2,8 @@
 
 using System.Diagnostics;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 using QuickPulse.Arteries;
 
@@ -12,7 +12,7 @@ namespace QuickCheckr.Authoring.ThePress;
 public static class TheJournalist
 {
     [StackTraceHidden]
-    public static Article Unearths(CaseFile caseFile) => new(caseFile!);
+    public static Article Unearths(IRecord record) => new(record);
 
     [StackTraceHidden]
     public static Article Exposes(Action run)
@@ -29,7 +29,7 @@ public static class TheJournalist
     }
 
     [StackTraceHidden]
-    public static Article Investigates(Func<CaseFile> run)
+    public static Article Investigates(Func<IRecord> run)
     {
         try
         {

@@ -1,5 +1,6 @@
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.TestMethodInfoDepositions;
 

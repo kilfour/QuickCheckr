@@ -1,6 +1,6 @@
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Proceedings.Depositions;
+namespace QuickCheckr.FilingCabinet.Depositions;
 
 public record WarningDeposition(Warning Warning)
 {

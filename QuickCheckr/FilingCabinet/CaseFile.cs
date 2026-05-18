@@ -1,8 +1,10 @@
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+using QuickCheckr;
+using QuickCheckr.FilingCabinet.Depositions;
+using QuickCheckr.FilingCabinet.Depositions.Failure;
+using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Proceedings;
+namespace QuickCheckr.FilingCabinet;
 
 
 public interface ICaseFileSummary
@@ -21,7 +23,7 @@ public interface ICaseFileSummary
     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
 }
 
-public class CaseFile : ICaseFileSummary
+public class CaseFile : ICaseFileSummary, IRecord
 {
     public bool HasEvidence { get; init; }
     public FailureDeposition FailureDeposition { get; init; }
