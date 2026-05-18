@@ -32,7 +32,7 @@ public abstract class BaseTest : QCTest
         if (!writeToDisk && !writeAllToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
-        var report = TheClerk.Transcribes(article.CaseFile, The.CourtStyleGuide);
+        var report = TheClerk.Transcribes(article.Record, The.CourtStyleGuide);
         var formattedReport = report
             .Replace(@$"{basePath}QuickCheckr\QuickCheckr.Tests\", "")
             .Replace(@$"{basePath}QuickCheckr\QuickCheckr\", "")

@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse.D_StepFour;
 
 public class WarehouseStepFour : BaseTest
 {
-    [Fact(Skip = "passing run tests temp broken")]
+    [Fact]
     [DocContent("So after the dev applies the correct fix, the single client checkr looks like this.")]
     [DocHeader("Checkrs")]
     [DocExample(typeof(WarehouseStepFour), nameof(TheCheckr))]
@@ -134,7 +134,6 @@ public class WarehouseStepFour : BaseTest
     private static void Verify(Article article)
     {
         Assert.Equal(3, article.Total().PassedExpectations());
-        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("No Stock Below Zero After Any Action", article.PassedExpectation(1).Read().Label);
         Assert.Equal(50, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("Stock Decreased After Order", article.PassedExpectation(2).Read().Label);

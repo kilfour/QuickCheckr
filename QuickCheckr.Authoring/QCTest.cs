@@ -67,7 +67,7 @@ public abstract class QCTest<T> : QCTest
         if (!Report && !WriteAllReportsToDisk) return;
         var dir = Path.GetDirectoryName(callerPath)!;
         var fullPath = Path.Combine(dir, filename);
-        if (article.CaseFile.HasEvidence)
+        if (article.CaseFile is not null && article.CaseFile.HasEvidence)
         {
             article.CaseFile.AddTestMethodDisposition(
                 article.CaseFile.TestMethodInfoDeposition! with
@@ -76,7 +76,7 @@ public abstract class QCTest<T> : QCTest
                     SourceFile = $"{typeof(T).Name}.cs"
                 });
         }
-        var report = TheClerk.Transcribes(article.CaseFile, StyleGuide);
+        var report = TheClerk.Transcribes(article.Record, StyleGuide);
         FileLog.Write(fullPath).Absorb(report);
     }
 

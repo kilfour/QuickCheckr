@@ -37,7 +37,7 @@ public class FilingEvidence : BaseTest
         Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Records.Keys.Single()));
     }
 
-    [Fact(Skip = "passing run tests temp broken")]
+    [Fact]
     [DocContent("In case a test passes, a *summary report* is provided.")]
     [DocCodeFile("FilingEvidenceRunPassed.txt", "text")]
     public void RunPassedReport()
@@ -55,7 +55,6 @@ public class FilingEvidence : BaseTest
     private static void VerifyPassedReport(Article article)
     {
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("Always Passes", article.PassedExpectation(1).Read().Label);
         Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }

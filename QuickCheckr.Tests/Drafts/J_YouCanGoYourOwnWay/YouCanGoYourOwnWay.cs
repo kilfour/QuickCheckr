@@ -21,8 +21,4 @@ But there are ways to obtain more fine-grained control. That is what this chapte
 - [Showr][A_TheShowrClass]
 ")]
 
-public class YouCanGoYourOwnWay : BaseTest
-{
-    [Fact(Skip = "Doc")]
-    public void Doc() => ExplainMe<YouCanGoYourOwnWay>(true);
-}
+public class YouCanGoYourOwnWay;
