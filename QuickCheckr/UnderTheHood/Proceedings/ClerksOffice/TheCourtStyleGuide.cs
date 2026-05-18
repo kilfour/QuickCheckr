@@ -195,7 +195,7 @@ public static class The
         Pulse.Trace($" {input.NumberOfRuns} {Pluralize(input.NumberOfRuns, "Run")}{Environment.NewLine}")
             .ToFlow(PassedExpectations, input.PassedExpectationDepositions);
 
-    public static Flow<Flow> CaseFileFlow(CaseFile input)
+    public static Flow<Flow> CaseFile(CaseFile input)
     {
         var hasPassed = input.PassedExpectationDepositions.Count > 0;
         var breakBeforePassed = input.HasEvidence && hasPassed;
@@ -212,6 +212,6 @@ public static class The
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
                 .OnType((Findings a) => Summary(a), () => input)
-                .OnType((CaseFile a) => CaseFileFlow(a), () => input);
+                .OnType((CaseFile a) => CaseFile(a), () => input);
     }
 }
