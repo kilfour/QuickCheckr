@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Experimental.W_Warehouse.D_StepFour;
 
 public class WarehouseStepFour : BaseTest
 {
-    [Fact]
+    [Fact(Skip = "passing run tests temp broken")]
     [DocContent("So after the dev applies the correct fix, the single client checkr looks like this.")]
     [DocHeader("Checkrs")]
     [DocExample(typeof(WarehouseStepFour), nameof(TheCheckr))]

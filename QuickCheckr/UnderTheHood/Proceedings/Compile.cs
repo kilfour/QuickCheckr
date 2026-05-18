@@ -8,7 +8,6 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings
 {
-
     public static class Compile
     {
         public static CaseFile PassedExpectations(IReadOnlyDictionary<string, int> passedExpectations)
