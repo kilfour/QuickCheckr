@@ -25,7 +25,7 @@ public class EvidenceVault : Vault
         evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
         logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         custodian = config.Custodian;
-        entries = custodian.RetrieveVaultEntries(evidencePath);//GetVaultEntries(config);
+        entries = custodian.RetrieveVaultEntries(evidencePath);
     }
 
     public static string GetVaultPath(string fileAs, string filename)

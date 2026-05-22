@@ -22,5 +22,5 @@ public class CourtClerk : ITranscribe
     }
 
     public Flow<Flow> File(IRecord record)
-        => The.CourtStyleGuide(record, decorum);
+        => TheCourtStyleGuide.Flow(record, decorum);
 }

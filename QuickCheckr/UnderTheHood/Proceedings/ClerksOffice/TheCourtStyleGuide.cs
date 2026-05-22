@@ -5,7 +5,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class The
+public static class TheCourtStyleGuide
 {
     private record MaxLabel(int Length);
 
@@ -28,7 +28,7 @@ public static class The
                 .Space()
                 .When(labeled, Style.Caption(type).Space())
                 .Trace($"{label.PadRight(maxLabel.Length, ' ')} = {value}")
-        select Flow.Continue;
+        select QuickPulse.Flow.Continue;
 
     private static Flow<Flow> Trace(TraceDeposition input) =>
         Labeled("Trace", input.Label, input.Value);
@@ -49,7 +49,7 @@ public static class The
             .Trace("Redux")
             .Trace(new string(' ', Math.Max(3, maxLabel.Length - 2)))
             .Trace(input.Redux.Value!)
-        select Flow.Continue;
+        select QuickPulse.Flow.Continue;
 
     private static Flow<Flow> Input(InputDeposition input) =>
         from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
@@ -67,7 +67,7 @@ public static class The
                     .Trace(new string(' ', maxLabel.Length + spaces))
                     .Trace(input.Original.Value!))
             .ToFlowIf(input.Redux.HasValue, Redux, () => input)
-        select Flow.Continue;
+        select QuickPulse.Flow.Continue;
 
     private static Flow<Flow> Actions(IEnumerable<ActionDeposition> input) =>
         Style.Interspersed(input.Select(a => a.Label));
@@ -161,6 +161,14 @@ public static class The
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input)
             .DrawLine();
 
+    public static Flow<Flow> Inquiry(Inquiry input) =>
+        Style
+            .DrawTopLine()
+            .OnNewLine().Trace(input.NumberOfRuns).Space().Pluralize(input.NumberOfRuns, "Run")
+            .DrawLine()
+            .OnNewLine().Trace("Passed Expectations")
+            .ToFlow(PassedExpectations, input.PassedExpectationDepositions);
+
     public static Flow<Flow> Summary(Findings input) =>
         Style
             .DrawTopLine()
@@ -180,13 +188,14 @@ public static class The
             .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
     }
 
-    public static Flow<Flow> CourtStyleGuide(IRecord input, Decorum decorum)
+    public static Flow<Flow> Flow(IRecord input, Decorum decorum)
     {
         return
             Pulse
                 .Prime(() => decorum).Dissipate()
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
+                .OnType((Inquiry a) => Inquiry(a), () => input)
                 .OnType((Findings a) => Summary(a), () => input)
                 .OnType((CaseFile a) => CaseFile(a), () => input);
     }
