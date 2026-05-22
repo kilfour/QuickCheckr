@@ -14,7 +14,7 @@ public class LabelAlignmentDepostionsTests : DepositionTest
                     .AddTraceDeposition(new TraceDeposition("One", "42"))
                     .AddInputDeposition(new InputDeposition("TwoTwo", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled")));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - ThreeThreeThree = Pooled", reader.NextLine());
@@ -31,7 +31,7 @@ public class LabelAlignmentDepostionsTests : DepositionTest
                     .AddTraceDeposition(new TraceDeposition("TwoTwo", "42"))
                     .AddInputDeposition(new InputDeposition("ThreeThreeThree", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled")));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - One             = Pooled", reader.NextLine());

@@ -41,28 +41,17 @@ public static class CheckrOfTGatherEvidence
             }
         }
 
-        var logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         foreach (var caseFile in caseFiles)
         {
-            // ---------------------------------------------------------------------------------------------
-            // BEHOLD THE DUPLICATION ... from Vault.cs
-            config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
+                config.Custodian.FileRecord(EvidenceVault.GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
-            // ---------------------------------------------------------------------------------------------
         }
         var inquiry = new Inquiry().Add([.. caseFiles]);
         var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
         config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
         return inquiry;
     }
-
-    // ---------------------------------------------------------------------------------------------
-    // BEHOLD THE DUPLICATION ... from Vault.cs
-    private static string GetVaultPath(string fileAs, string filename)
-        => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
-    // ---------------------------------------------------------------------------------------------
 }

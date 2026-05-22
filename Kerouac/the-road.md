@@ -50,6 +50,7 @@ public record Decorum
 
 
 ### Doing
+* consolidate CheckrOfTConductInvestigations and CheckrOfTGatherEvidence
 * Shrink Log
 * ShrinkableAct consolidation
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.

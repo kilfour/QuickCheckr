@@ -23,9 +23,10 @@ public abstract class DepositionTest
                 WarningLevel: WarningLevel.Debug
             );
 
-    protected LinesReader Transcribe(CaseFile caseFile)
+    protected LinesReader Transcribe(CaseFile caseFile, bool includeLabels = true)
     {
-        var result = TheClerk.Transcribes(caseFile, CourtClerk.Default().File);
+        var clerk = includeLabels ? CourtClerk.Default().WithLabels() : CourtClerk.Default();
+        var result = TheClerk.Transcribes(caseFile, clerk.File);
         var reader = LinesReader.FromText(result);
         if (IgnoreVerdictHeader)
             reader.Skip(4);

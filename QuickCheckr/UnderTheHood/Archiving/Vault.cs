@@ -28,7 +28,7 @@ public class EvidenceVault : Vault
         entries = custodian.RetrieveVaultEntries(evidencePath);//GetVaultEntries(config);
     }
 
-    private static string GetVaultPath(string fileAs, string filename)
+    public static string GetVaultPath(string fileAs, string filename)
         => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
 
     public override IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)

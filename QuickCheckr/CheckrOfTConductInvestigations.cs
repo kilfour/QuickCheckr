@@ -14,9 +14,9 @@ public static class CheckrOfTConductInvestigations
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure)
-        => GatherEvidence(checkr, investigationCount, runs, executionsPerRun, configure, false);
+        => Conduct(checkr, investigationCount, runs, executionsPerRun, configure, false);
 
-    public static void GatherEvidence(
+    public static void Conduct(
         this CheckrOf<Case> checkr,
         InvestigationCount investigationCount,
         CheckrOfTRun.RunCount runs,
@@ -50,28 +50,17 @@ public static class CheckrOfTConductInvestigations
             caseFilesToReport.Add(caseFile);
         }
 
-        var logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         foreach (var caseFile in caseFilesToReport)
         {
-            // ---------------------------------------------------------------------------------------------
-            // BEHOLD THE DUPLICATION ... from Vault.cs
-            config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
+                config.Custodian.FileRecord(EvidenceVault.GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
-            // ---------------------------------------------------------------------------------------------
         }
     }
 
     public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);
 
     public record InvestigationCount(int NumberOfInvestigations);
-
-    // ---------------------------------------------------------------------------------------------
-    // BEHOLD THE DUPLICATION ... from Vault.cs
-    private static string GetVaultPath(string fileAs, string filename)
-        => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
-    // ---------------------------------------------------------------------------------------------
 }

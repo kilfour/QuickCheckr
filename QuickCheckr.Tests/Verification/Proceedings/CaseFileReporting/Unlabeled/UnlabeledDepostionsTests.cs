@@ -15,7 +15,7 @@ public class UnlabeledDepostionsTests : DepositionTest
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
                     .AddInputDeposition(new InputDeposition("Answer", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Universe    = Pooled", reader.NextLine());
@@ -32,7 +32,7 @@ public class UnlabeledDepostionsTests : DepositionTest
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
                     .AddInputDeposition(new InputDeposition("Answer", 42) { Original = Maybe.Just("666") })
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - Universe    = Pooled", reader.NextLine());

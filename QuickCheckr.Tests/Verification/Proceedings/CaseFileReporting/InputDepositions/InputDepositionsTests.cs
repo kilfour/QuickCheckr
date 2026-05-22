@@ -107,7 +107,7 @@ public class InputDepositionsTests : DepositionTest
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddInputDeposition(new InputDeposition("PropertyName", 42) { Redux = Maybe.Just("1") }));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - PropertyName = 42", reader.NextLine());
@@ -121,7 +121,7 @@ public class InputDepositionsTests : DepositionTest
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddInputDeposition(new InputDeposition("PropertyName", 42) { Original = Maybe.Just("Int 42") }));
-        var reader = Transcribe(caseFile);
+        var reader = Transcribe(caseFile, false);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - PropertyName = 42", reader.NextLine());
