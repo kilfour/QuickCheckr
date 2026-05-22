@@ -187,22 +187,29 @@ public static class TheCourtStyleGuide
         Pulse
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input);
 
-    public static Flow<Flow> Inquiry(Inquiry input)
-    {
-        var failingCaseFiles = input.CaseFiles.Where(a => a.HasEvidence).ToList();
-        return Style
+    public static Flow<Flow> InquiryHeaderCount(this Flow<Flow> other, int count, string label, string suffix) =>
+        other.Then(
+            Style
+                .OnNewLine()
+                .Trace(count)
+                .Space()
+                .Trace(label)
+                .Space()
+                .Pluralize(count, suffix));
+    public static Flow<Flow> Inquiry(Inquiry input) =>
+        Style
             .DrawTopLine()
-            .OnNewLine().Trace(input.NumberOfRuns).Space().Trace("Total").Space().Pluralize(input.NumberOfRuns, "Run")
-            .OnNewLine().Trace(input.NumberOfRuns).Space().Trace("Failed").Space().Pluralize(failingCaseFiles.Count, "Run")
+            .InquiryHeaderCount(input.NumberOfRuns, "Total", "Run")
+            .InquiryHeaderCount(input.FailureCount, "Failed", "Run")
+            .InquiryHeaderCount(input.DistinctFailureCount, "Distinct", "Failure")
             .DrawLine()
             .NewLine()
-            .ToFlow(InquiryCaseFile, failingCaseFiles)
+            .ToFlow(InquiryCaseFile, input.DistinctFailures)
             .NewLine()
             .DoubleLine()
             .OnNewLine().Trace("Passed Expectations")
             .ToFlow(InquiryPassedExpectations, input.PassedExpectationDepositions)
             .DoubleLine();
-    }
 
     public static Flow<Flow> Summary(Findings input) =>
         Style

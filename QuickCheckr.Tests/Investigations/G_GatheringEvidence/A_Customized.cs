@@ -25,7 +25,7 @@ public class A_Customized : QCTest<A_Customized>
             20.Investigations(),
             20.Runs(),
             1.ExecutionsPerRun(),
-            a => a with { FileAs = "GatheringEvidence" },
+            a => a with { FileAs = "Gathering Evidence" },
             a => a.GetInput<string>("Input").Contains('c') ? 1 : 0);
 
     [CodeSnippet]

@@ -20,6 +20,7 @@ public static class CheckrOfTGatherEvidence
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
         var caseFiles = vault.Check(checkr, config, false).ToList();
+        var inquiry = new Inquiry().Add([.. caseFiles]);
         var stop = false;
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
@@ -27,6 +28,7 @@ public static class CheckrOfTGatherEvidence
             {
                 var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
                 var caseFile = runner.Run();
+                inquiry.Add(caseFile);
                 if (caseFile.HasEvidence)
                 {
                     if (RejectWhen != null && RejectWhen(caseFile))
@@ -49,8 +51,8 @@ public static class CheckrOfTGatherEvidence
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
         }
-        var inquiry = new Inquiry().Add([.. caseFiles]);
         var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+        inquiry.AddDistinctFailure([.. caseFiles]);
         config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
         return inquiry;
     }
