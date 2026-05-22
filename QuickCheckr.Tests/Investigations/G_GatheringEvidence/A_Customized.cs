@@ -12,7 +12,7 @@ public class A_Customized : QCTest<A_Customized>
     protected override bool Report => false;
     protected override bool Explain => false;
 
-    [Fact(Skip = "Touches Filesystem")]
+    [Fact]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(A_Customized), nameof(Example))]
     [DocCheckrHeader]

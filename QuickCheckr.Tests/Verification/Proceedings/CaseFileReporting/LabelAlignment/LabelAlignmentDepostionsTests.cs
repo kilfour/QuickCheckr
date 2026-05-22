@@ -11,9 +11,9 @@ public class LabelAlignmentDepostionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("One", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "TwoTwo", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled", false)));
+                    .AddTraceDeposition(new TraceDeposition("One", "42"))
+                    .AddInputDeposition(new InputDeposition("TwoTwo", 42))
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("ThreeThreeThree", "Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -28,9 +28,9 @@ public class LabelAlignmentDepostionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("TwoTwo", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "ThreeThreeThree", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled", false)));
+                    .AddTraceDeposition(new TraceDeposition("TwoTwo", "42"))
+                    .AddInputDeposition(new InputDeposition("ThreeThreeThree", 42))
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("One", "Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

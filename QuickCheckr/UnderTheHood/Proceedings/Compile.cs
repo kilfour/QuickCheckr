@@ -51,10 +51,10 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         {
             var executionDeposition = new ExecutionDeposition(executionNumber);
             GetActionDepositions(executionDeposition, shortTermMemory);
-            GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, inputPrinter, reportMode.HasFlag(ReportMode.Labels));
-            GetPoolTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
-            GetTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
-            GetFinalTraceDepositions(executionDeposition, shortTermMemory, reportMode.HasFlag(ReportMode.Labels));
+            GetInputDepositions(executionDeposition, shortTermMemory, useMemoryForInputReporting, inputPrinter);
+            GetPoolTraceDepositions(executionDeposition, shortTermMemory);
+            GetTraceDepositions(executionDeposition, shortTermMemory);
+            GetFinalTraceDepositions(executionDeposition, shortTermMemory);
             GetWarningDepositions(executionDeposition, shortTermMemory, warningLevel);
             return executionDeposition;
         }
@@ -71,8 +71,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             ExecutionDeposition executionDeposition,
             ExecutionMemory executionMemory,
             bool useMemoryForInputReporting,
-            ManOfWealthAndTaste inputPrinter,
-            bool labeled)
+            ManOfWealthAndTaste inputPrinter)
         {
 
             if (useMemoryForInputReporting)
@@ -80,7 +79,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
                 foreach (var (key, val) in executionMemory.GetInputValues())
                 {
                     executionDeposition.AddInputDeposition(
-                        new InputDeposition(labeled, key, inputPrinter.IntroduceThis(val.Value!))
+                        new InputDeposition(key, inputPrinter.IntroduceThis(val.Value!))
                         {
                             InputValue = val.Value,
                             Type = val.Type
@@ -100,7 +99,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
                             ? (Maybe.Just(relevant.Redux.Value!.Report), Maybe<object>.Just(relevant.Redux.Value!.Value))
                             : (Maybe.Nothing(), Maybe<object>.Nothing());
                 executionDeposition.AddInputDeposition(
-                        new InputDeposition(labeled, key, report!)
+                        new InputDeposition(key, report!)
                         {
                             Original = executionMemory.GetOriginalForKey(key),
                             Redux = reduxReport,
@@ -111,27 +110,27 @@ namespace QuickCheckr.UnderTheHood.Proceedings
             }
         }
 
-        private static void GetPoolTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
+        private static void GetPoolTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
         {
             foreach (var (key, val) in shortTermMemory.GetPoolTraces())
             {
-                executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, val, labeled));
+                executionDeposition.AddPoolTraceDeposition(new PoolTraceDeposition(key, val));
             }
         }
 
-        private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
+        private static void GetTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
         {
             foreach (var (key, val) in shortTermMemory.GetTraces())
             {
-                executionDeposition.AddTraceDeposition(new TraceDeposition(key, val, labeled));
+                executionDeposition.AddTraceDeposition(new TraceDeposition(key, val));
             }
         }
 
-        private static void GetFinalTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory, bool labeled)
+        private static void GetFinalTraceDepositions(ExecutionDeposition executionDeposition, ExecutionMemory shortTermMemory)
         {
             foreach (var (key, val) in shortTermMemory.GetFinalTraces())
             {
-                executionDeposition.AddFinalTraceDeposition(new TraceDeposition(key, val, labeled));
+                executionDeposition.AddFinalTraceDeposition(new TraceDeposition(key, val));
             }
         }
 

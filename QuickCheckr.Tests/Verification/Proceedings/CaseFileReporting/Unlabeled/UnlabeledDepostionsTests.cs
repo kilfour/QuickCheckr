@@ -12,9 +12,9 @@ public class UnlabeledDepostionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "Answer", 42))
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled", false)));
+                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
+                    .AddInputDeposition(new InputDeposition("Answer", 42))
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
@@ -29,9 +29,9 @@ public class UnlabeledDepostionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42", false))
-                    .AddInputDeposition(new InputDeposition(false, "Answer", 42) { Original = Maybe.Just("666") })
-                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled", false)));
+                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
+                    .AddInputDeposition(new InputDeposition("Answer", 42) { Original = Maybe.Just("666") })
+                    .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());

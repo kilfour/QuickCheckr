@@ -50,6 +50,7 @@ public class CaseFile : ICaseFileSummary, IRecord
             .Select(a => a.GetReduxOrValueAsObject())
             .First();
     }
+
     public int InputsNamed<T>(string key, Func<T, int> calculateScore)
     {
         if (!HasEvidence) return int.MaxValue;

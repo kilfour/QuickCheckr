@@ -7,7 +7,7 @@ namespace QuickCheckr;
 
 public static class CheckrOfTGatherEvidence
 {
-    public static void GatherEvidence(
+    public static IRecord GatherEvidence(
         this CheckrOf<Case> checkr,
         CheckrOfTConductInvestigations.InvestigationCount maxInvestigations,
         CheckrOfTRun.RunCount runs,
@@ -49,11 +49,15 @@ public static class CheckrOfTGatherEvidence
             config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.StyleGuide);
+                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
             // ---------------------------------------------------------------------------------------------
         }
+        var inquiry = new Inquiry().Add([.. caseFiles]);
+        var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+        config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
+        return inquiry;
     }
 
     // ---------------------------------------------------------------------------------------------

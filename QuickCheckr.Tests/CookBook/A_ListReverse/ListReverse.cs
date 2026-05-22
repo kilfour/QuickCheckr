@@ -77,9 +77,7 @@ public class ListReverse : CheckrTest<ListReverse>
         Assert.Equal("Result", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Result", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

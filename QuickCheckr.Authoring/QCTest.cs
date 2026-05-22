@@ -37,7 +37,8 @@ public abstract class QCTest<T> : QCTest
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
 
-    protected virtual Func<IRecord, Flow<Flow>> StyleGuide => The.CourtStyleGuide;
+    protected virtual ITranscribe Clerk =>
+        CourtClerk.Default();
 
     protected class DocReport([CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
@@ -76,7 +77,7 @@ public abstract class QCTest<T> : QCTest
                     SourceFile = $"{typeof(T).Name}.cs"
                 });
         }
-        var report = TheClerk.Transcribes(article.Record, StyleGuide);
+        var report = TheClerk.Transcribes(article.Record, Clerk.File);
         FileLog.Write(fullPath).Absorb(report);
     }
 

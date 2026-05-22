@@ -84,7 +84,7 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
+                .AddInputDeposition(new InputDeposition("Label", 0)));
         var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
@@ -97,10 +97,10 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
+                .AddInputDeposition(new InputDeposition("Label", 0)));
         var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Other Label", 0)));
+                .AddInputDeposition(new InputDeposition("Other Label", 0)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, false));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
@@ -126,12 +126,12 @@ public class GatheringEvidenceCaseFileCompare
     {
         var caseFile = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0)))
+                .AddInputDeposition(new InputDeposition("Label", 0)))
             .AddExecutionDeposition(new ExecutionDeposition(2));
         var other = CaseFile.From(new FailureInfo(), new RunInfo())
             .AddExecutionDeposition(new ExecutionDeposition(1))
             .AddExecutionDeposition(new ExecutionDeposition(2)
-                .AddInputDeposition(new InputDeposition(true, "Label", 0)));
+                .AddInputDeposition(new InputDeposition("Label", 0)));
         Assert.False(DeskOfficer.AreCaseFilesSimilar(caseFile, other, true));
     }
 }

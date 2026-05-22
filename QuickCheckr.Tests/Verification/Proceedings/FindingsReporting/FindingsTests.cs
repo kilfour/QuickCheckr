@@ -19,7 +19,7 @@ public class FindingsTests
                 .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 3))
                 ]);
 
-        var result = TheClerk.Transcribes(summary, The.CourtStyleGuide);
+        var result = TheClerk.Transcribes(summary, CourtClerk.Default().File);
         var reader = LinesReader.FromText(result);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" 2 Runs", reader.NextLine());

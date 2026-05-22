@@ -18,8 +18,9 @@ public static class The
             .Space()
             .Trace(input.Value);
 
-    private static Flow<Flow> Labeled(bool labeled, string type, string label, string value) =>
+    private static Flow<Flow> Labeled(string type, string label, string value) =>
         from maxLabel in Pulse.Draw<MaxLabel>()
+        from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
         from _ in
             Style.OnNewLine()
                 .Indent(2)
@@ -30,47 +31,43 @@ public static class The
         select Flow.Continue;
 
     private static Flow<Flow> Trace(TraceDeposition input) =>
-        Labeled(input.Labeled, "Trace", input.Label, input.Value);
+        Labeled("Trace", input.Label, input.Value);
 
     private static Flow<Flow> FinalTrace(TraceDeposition input) =>
-        Labeled(input.Labeled, "Final", input.Label, input.Value);
+        Labeled("Final", input.Label, input.Value);
 
     private static Flow<Flow> PoolTrace(PoolTraceDeposition input) =>
-        Labeled(input.Labeled, " Pool", input.Label, input.Value);
+        Labeled(" Pool", input.Label, input.Value);
 
-    private static Flow<Flow> Redux(InputDeposition input)
-    {
-        var leftPadding = input.Labeled ? 11 : 4;
-        return
-            from maxLabel in Pulse.Draw<MaxLabel>()
-            from _ in Style
-                .OnNewLine()
-                .Trace(new string(' ', leftPadding))
-                .Trace("Redux")
-                .Trace(new string(' ', Math.Max(3, maxLabel.Length - 2)))
-                .Trace(input.Redux.Value!)
-            select Flow.Continue;
-    }
+    private static Flow<Flow> Redux(InputDeposition input) =>
+        from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
+        let leftPadding = labeled ? 11 : 4
+        from maxLabel in Pulse.Draw<MaxLabel>()
+        from _ in Style
+            .OnNewLine()
+            .Trace(new string(' ', leftPadding))
+            .Trace("Redux")
+            .Trace(new string(' ', Math.Max(3, maxLabel.Length - 2)))
+            .Trace(input.Redux.Value!)
+        select Flow.Continue;
 
-    private static Flow<Flow> Input(InputDeposition input)
-    {
-        var spaces = input.Labeled ? 14 : 7;
-        return
-            from maxLabel in Pulse.Draw<MaxLabel>()
-            from _ in Style
-                .OnNewLine()
-                .Indent(2)
-                .Dash()
-                .Space()
-                .When(input.Labeled, Style.Caption("Input").Space())
-                .Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
-                .When(input.Original.HasValue,
-                    Style.OnNewLine()
-                        .Trace(new string(' ', maxLabel.Length + spaces))
-                        .Trace(input.Original.Value!))
-                .ToFlowIf(input.Redux.HasValue, Redux, () => input)
-            select Flow.Continue;
-    }
+    private static Flow<Flow> Input(InputDeposition input) =>
+        from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
+        let spaces = labeled ? 14 : 7
+        from maxLabel in Pulse.Draw<MaxLabel>()
+        from _ in Style
+            .OnNewLine()
+            .Indent(2)
+            .Dash()
+            .Space()
+            .When(labeled, Style.Caption("Input").Space())
+            .Trace($"{input.Label.PadRight(maxLabel.Length, ' ')} = {input.Value}")
+            .When(input.Original.HasValue,
+                Style.OnNewLine()
+                    .Trace(new string(' ', maxLabel.Length + spaces))
+                    .Trace(input.Original.Value!))
+            .ToFlowIf(input.Redux.HasValue, Redux, () => input)
+        select Flow.Continue;
 
     private static Flow<Flow> Actions(IEnumerable<ActionDeposition> input) =>
         Style.Interspersed(input.Select(a => a.Label));
@@ -183,10 +180,11 @@ public static class The
             .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
     }
 
-    public static Flow<Flow> CourtStyleGuide(IRecord input)
+    public static Flow<Flow> CourtStyleGuide(IRecord input, Decorum decorum)
     {
         return
             Pulse
+                .Prime(() => decorum).Dissipate()
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
                 .OnType((Findings a) => Summary(a), () => input)

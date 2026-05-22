@@ -47,9 +47,7 @@ public class ReportModeFinalTrace : CheckrTest<ReportModeFinalTrace>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("59", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("10", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Input / 2", article.Execution(1).FinalTrace(1).Read().Label);
         Assert.Equal("5", article.Execution(1).FinalTrace(1).Read().Value);
-        Assert.False(article.Execution(1).FinalTrace(1).Read().Labeled);
     }
 }

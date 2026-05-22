@@ -58,7 +58,7 @@ public static class CheckrOfTConductInvestigations
             config.Custodian.LogVaultAction(logPath, $"Run failed for Seed: {caseFile.Seed}.");
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.StyleGuide);
+                config.Custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
             // ---------------------------------------------------------------------------------------------

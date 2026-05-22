@@ -27,7 +27,6 @@ public static class TheEditor
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
-        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Labeled);")
         select Flow.Continue;
 
     private static Flow<Flow> FinalTrace((int executionIndex, int traceIndex) cursor) =>
@@ -35,7 +34,6 @@ public static class TheEditor
         let traceArticle = article.Execution(cursor.executionIndex).FinalTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Value);")
-        from labeled in EmitIf(!traceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Labeled);")
         select Flow.Continue;
 
     private static Flow<Flow> PoolTrace((int executionIndex, int traceIndex) cursor) =>
@@ -43,7 +41,6 @@ public static class TheEditor
         let poolTraceArticle = article.Execution(cursor.executionIndex).PoolTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{poolTraceArticle.Label}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Label);")
         from value in Emit($"Assert.Equal(\"{poolTraceArticle.Value}\", article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Value);")
-        from labeled in EmitIf(!poolTraceArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).PoolTrace({cursor.traceIndex}).Read().Labeled);")
         select Flow.Continue;
 
     private static Flow<Flow> Input((int executionIndex, int inputIndex) cursor) =>
@@ -53,7 +50,6 @@ public static class TheEditor
         from inputValue in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Value)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Value);")
         from inputOriginal in EmitIf(inputArticle.Original.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Original.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Original.Value);")
         from inputRedux in EmitIf(inputArticle.Redux.HasValue, $"Assert.Equal(\"{ReplaceDoubleQuotes(inputArticle.Redux.Value!)}\", article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Redux.Value);")
-        from labeled in EmitIf(!inputArticle.Labeled, $"Assert.False(article.Execution({cursor.executionIndex}).Input({cursor.inputIndex}).Read().Labeled);")
         select Flow.Continue;
 
     private static object ReplaceDoubleQuotes(object value)

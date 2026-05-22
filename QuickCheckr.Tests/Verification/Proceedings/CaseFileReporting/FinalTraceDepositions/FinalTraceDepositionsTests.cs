@@ -25,7 +25,7 @@ public class FinalTraceDepositionsTests : DepositionTest
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                     .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
-                    .AddInputDeposition(new InputDeposition(true, "Answer", 42))
+                    .AddInputDeposition(new InputDeposition("Answer", 42))
                     .AddFinalTraceDeposition(new TraceDeposition("Something", "I Traced"))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
         var reader = Transcribe(caseFile);

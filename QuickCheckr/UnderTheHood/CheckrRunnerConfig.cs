@@ -16,7 +16,7 @@ public record CheckrRunnerConfig
         WarningLevel = config.WarningLevel;
         DeliberationPolicy = config.DeliberationPolicy;
         DeliberationTarget = config.DeliberationTarget;
-        StyleGuide = config.StyleGuide;
+        Clerk = config.Clerk;
         MaxStepsPerReducer = config.MaxStepsPerReducer;
     }
 
@@ -28,6 +28,6 @@ public record CheckrRunnerConfig
     public WarningLevel WarningLevel { get; }
     public Func<ICaseFileSummary, int>? DeliberationPolicy { get; }
     public int? DeliberationTarget { get; init; }
-    public Func<IRecord, Flow<Flow>> StyleGuide { get; }
+    public ITranscribe Clerk { get; }
     public int MaxStepsPerReducer { get; }
 }
