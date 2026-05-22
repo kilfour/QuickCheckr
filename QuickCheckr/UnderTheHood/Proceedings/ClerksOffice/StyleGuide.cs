@@ -46,6 +46,10 @@ public static class Style
     public static Flow<Flow> DoubleLineOf(this Flow<Flow> other, int length) =>
         other.Then(DoubleLineOf(length));
 
+    public static Flow<Flow> DoubleLine() => DoubleLineOf(60);
+    public static Flow<Flow> DoubleLine(this Flow<Flow> other) =>
+        other.Then(DoubleLine());
+
     public static Flow<Flow> LabeledValue(string label, object value) =>
         Pulse.Trace($"{label} = {value}");
     public static Flow<Flow> LabeledValue(this Flow<Flow> other, string label, object value) =>

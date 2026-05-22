@@ -78,7 +78,6 @@ public class FilingEvidence : BaseTest
     [DocContent(
 @"
     - `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
-    - `evidence-log.ql` is an append only log of all evidence vault actions.
 
     This *evidence* can later be used to potentially solve *Cold Cases*.")]
     public void EvidenceLocation()
@@ -94,10 +93,5 @@ public class FilingEvidence : BaseTest
         var entry = custodian.Entries.Single();
         Assert.Equal(1862095796, entry.Seed);
         Assert.Equal(1, entry.ExecutionsPerRun);
-
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
-
-        Assert.Single(custodian.Log);
-        Assert.Equal($"Added Seed: 1862095796.", custodian.Log[0]);
     }
 }

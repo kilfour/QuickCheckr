@@ -16,14 +16,12 @@ public class Vault
 public class EvidenceVault : Vault
 {
     private readonly string evidencePath;
-    private readonly string logPath;
     private readonly HashSet<VaultEntry> entries;
     private readonly ICustodian custodian;
 
     public EvidenceVault(CheckrRunnerConfig config)
     {
         evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
-        logPath = GetVaultPath(config.FileAs, "evidence-log.ql");
         custodian = config.Custodian;
         entries = custodian.RetrieveVaultEntries(evidencePath);
     }
@@ -40,7 +38,6 @@ public class EvidenceVault : Vault
             if (caseFile.HasEvidence)
             {
                 caseFiles.Add(caseFile);
-                custodian.LogVaultAction(logPath, $"Run failed for Seed: {entry.Seed}.");
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
                     custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.Clerk.File);
@@ -48,7 +45,6 @@ public class EvidenceVault : Vault
             }
             else
             {
-                custodian.LogVaultAction(logPath, $"Run passed for Seed: {entry.Seed}.");
                 if (closeResolved)
                 {
                     Remove(entry);
@@ -71,18 +67,13 @@ public class EvidenceVault : Vault
 
     private void Add(VaultEntry vaultEntry)
     {
-        if (entries.Add(vaultEntry))
-        {
-            custodian.LogVaultAction(logPath, $"Added Seed: {vaultEntry.Seed}.");
-        }
+        entries.Add(vaultEntry);
         custodian.StoreVaultEntries(evidencePath, entries);
     }
 
     private void Remove(VaultEntry vaultEntry)
     {
-        if (entries.Remove(vaultEntry))
-        {
-            custodian.LogVaultAction(logPath, $"Removed Seed: {vaultEntry.Seed}.");
-        }
+        entries.Remove(vaultEntry);
+        custodian.StoreVaultEntries(evidencePath, entries);
     }
 }

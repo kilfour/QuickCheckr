@@ -10,9 +10,9 @@ public class ExceptionDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(new FailureInfo(Exception: new Exception("BOOM")), Dossier.RunInfo);
         var reader = Transcribe(caseFile);
-        Assert.Equal(" ===========================================================================", reader.NextLine());
+        Assert.Equal(" ============================================================", reader.NextLine());
         Assert.Equal("  !! Exception: BOOM", reader.NextLine());
-        Assert.Equal(" ===========================================================================", reader.NextLine());
+        Assert.Equal(" ============================================================", reader.NextLine());
         EndOfContent(reader);
     }
 }

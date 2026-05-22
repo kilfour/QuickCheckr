@@ -31,10 +31,5 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
         => Entries;
 
     public string LogFileName { get; private set; } = string.Empty;
-    public List<string> Log = [];
-    public void LogVaultAction(string path, string line)
-    {
-        LogFileName = path;
-        Log.Add(line);
-    }
+
 }

@@ -118,9 +118,9 @@ public static class TheCourtStyleGuide
 
     private static Flow<Flow> Exception(FailedExceptionDeposition input) =>
         Style
-            .DoubleLineOf(75)
+            .DoubleLine()
             .OnNewLine().Indent(1).Exclaim(input.Message)
-            .DoubleLineOf(75);
+            .DoubleLine();
 
     private static Flow<Flow> Failure(FailureDeposition input) =>
         Pulse
@@ -161,13 +161,48 @@ public static class TheCourtStyleGuide
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input)
             .DrawLine();
 
-    public static Flow<Flow> Inquiry(Inquiry input) =>
-        Style
+    public static Flow<Flow> InquiryCaseFile(CaseFile caseFile)
+    {
+        var originalExecutionCountText = $"{caseFile.OriginalRunExecutionCount} {Pluralize(caseFile.OriginalRunExecutionCount, "execution")}";
+        var executionCountText = $"{caseFile.ExecutionCount} {Pluralize(caseFile.ExecutionCount, "execution")}";
+        var shrinkCountText = $" (after {caseFile.ShrinkCount} {Pluralize(caseFile.ShrinkCount, "shrink")})";
+        return
+            Style
+                .DoubleLine()
+                .OnNewLine().Trace($"Seed:                    {caseFile.Seed}")
+                .OnNewLine().Trace($"Original failing run:    {originalExecutionCountText}")
+                .OnNewLine().Trace($"Failure:                 {caseFile.FailureDeposition.GetFailureDescription()}")
+                .When(caseFile.ShrinkCount > 0,
+                    Style
+                        .OnNewLine()
+                        .Trace($"Minimal failing case:    ")
+                        .Trace(executionCountText)
+                        .Trace(shrinkCountText))
+                .ToFlow(Execution, caseFile.CollapseExecutions())
+                .DoubleLine()
+                .NewLine();
+    }
+
+    private static Flow<Flow> InquiryPassedExpectations(IEnumerable<PassedExpectationDeposition> input) =>
+        Pulse
+            .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input);
+
+    public static Flow<Flow> Inquiry(Inquiry input)
+    {
+        var failingCaseFiles = input.CaseFiles.Where(a => a.HasEvidence).ToList();
+        return Style
             .DrawTopLine()
-            .OnNewLine().Trace(input.NumberOfRuns).Space().Pluralize(input.NumberOfRuns, "Run")
+            .OnNewLine().Trace(input.NumberOfRuns).Space().Trace("Total").Space().Pluralize(input.NumberOfRuns, "Run")
+            .OnNewLine().Trace(input.NumberOfRuns).Space().Trace("Failed").Space().Pluralize(failingCaseFiles.Count, "Run")
             .DrawLine()
+            .NewLine()
+            .ToFlow(InquiryCaseFile, failingCaseFiles)
+            .NewLine()
+            .DoubleLine()
             .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(PassedExpectations, input.PassedExpectationDepositions);
+            .ToFlow(InquiryPassedExpectations, input.PassedExpectationDepositions)
+            .DoubleLine();
+    }
 
     public static Flow<Flow> Summary(Findings input) =>
         Style

@@ -10,6 +10,5 @@ public interface ICustodian
     public void RemoveRecord(string path);
     public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries);
     public HashSet<VaultEntry> RetrieveVaultEntries(string path);
-    public void LogVaultAction(string path, string line);
 }
 

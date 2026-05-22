@@ -108,6 +108,8 @@ public record Decorum
 * Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
 * Removed warnings for unchecked conditional expectations.  
   The implementation could not reliably detect all unchecked expectations in composed Checkrs, potentially creating false confidence.
+* Added a consolidated report for GatherEvidence(...) and Conduct( n.Investigations(), ...)
+* Removed the *evidence-log* vault file.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers

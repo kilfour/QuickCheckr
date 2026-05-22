@@ -26,9 +26,6 @@ public class TheEvidenceVault : BaseTest
     private static string DefaultEvidenceFileName()
         => @".quickcheckr\MyQuickCheckrTest\vault\evidence.qv";
 
-    private static string DefaultEvidenceLogFileName()
-        => @".quickcheckr\MyQuickCheckrTest\vault\evidence-log.ql";
-
     private static string DefaultReportFileName(int seed)
         => @$".quickcheckr\MyQuickCheckrTest\vault\report_{seed}.qr";
 
@@ -42,7 +39,7 @@ public class TheEvidenceVault : BaseTest
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
     [DocExample(typeof(TheEvidenceVault), nameof(RunColdCasesReview))]
-    [DocContent("This will create a report per seed in the evidence vault and a log of all evidence vault actions.")]
+    [DocContent("This will create a report per seed in the evidence vault.")]
     public void ReviewingColdCases()
     {
         var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
@@ -51,16 +48,12 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
         Assert.Equal(1862095796, entry.Seed);
         Assert.Equal(1, entry.ExecutionsPerRun);
-
-        Assert.Single(custodian.Log);
-        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
     }
 
     [Fact]
@@ -71,9 +64,6 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 
         RunColdCasesReview(Checkr.Expect("Fails", () => false),
             cfg => Configure(cfg with { Custodian = custodian }));
-
-        Assert.Single(custodian.Log);
-        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
 
         var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
@@ -92,9 +82,6 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 
         RunColdCasesReview(Checkr.Expect("Fails", () => true),
             cfg => Configure(cfg with { Custodian = custodian }));
-
-        Assert.Single(custodian.Log);
-        Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
 
         var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
@@ -123,16 +110,12 @@ In this case we use:")]
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
         Assert.Equal(1862095796, entry.Seed);
         Assert.Equal(1, entry.ExecutionsPerRun);
-
-        Assert.Single(custodian.Log);
-        Assert.Equal("Run failed for Seed: 1862095796.", custodian.Log[0]);
 
         var caseFile = custodian.Records.Values.Single();
         var article = TheJournalist.Unearths(caseFile);
@@ -160,14 +143,9 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultEvidenceLogFileName()), Normalize(custodian.LogFileName));
 
         Assert.Empty(custodian.Entries);
         // FILE DELETED is untested as this is handled by specific Custodians
-
-        Assert.Equal(2, custodian.Log.Count);
-        Assert.Equal("Run passed for Seed: 1862095796.", custodian.Log[0]);
-        Assert.Equal("Removed Seed: 1862095796.", custodian.Log[1]);
 
         Assert.Empty(custodian.Records);
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
