@@ -7,11 +7,11 @@ public class Findings : IRecord
     private readonly List<CaseFile> caseFiles = [];
     public IReadOnlyList<CaseFile> CaseFiles => caseFiles;
     public int NumberOfRuns => caseFiles.Count;
-    public List<PassedExpectationDeposition> PassedExpectationDepositions =>
+    public List<PassedExpectation> PassedExpectationDepositions =>
         [.. caseFiles
-            .SelectMany(cf => cf.PassedExpectationDepositions)
+            .SelectMany(cf => cf.PassedExpectations)
             .GroupBy(ps => ps.Label)
-            .Select(g => new PassedExpectationDeposition(g.Key, g.Sum(ps => ps.TimesPassed)))];
+            .Select(g => new PassedExpectation(g.Key, g.Sum(ps => ps.TimesPassed)))];
 
     public Findings Add(params CaseFile[] newCaseFiles)
     {

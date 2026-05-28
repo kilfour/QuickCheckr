@@ -2,7 +2,6 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Explains.Text;
-using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.FindingsReporting;
 
@@ -13,10 +12,10 @@ public class FindingsTests
     {
         var summary = new Findings().Add([
             CaseFile.Empty()
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 2))
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("Two", 3)),
+                .AddPassedExpectationDeposition(new PassedExpectation("One", 2))
+                .AddPassedExpectationDeposition(new PassedExpectation("Two", 3)),
             CaseFile.Empty()
-                .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 3))
+                .AddPassedExpectationDeposition(new PassedExpectation("One", 3))
                 ]);
 
         var result = TheClerk.Transcribes(summary, CourtClerk.Default().File);

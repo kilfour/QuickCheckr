@@ -1,4 +1,5 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Runners;
@@ -21,7 +22,9 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         new InitialRun(State, Check).Run(numberOfExecutions);
         if (State.EvidenceRecorder.Failed())
             return HandleFailure();
-        return Compile.PassedExpectations(State.EvidenceRecorder.PassedExpectations);
+        var passedExpectations = State.EvidenceRecorder.PassedExpectations
+            .Select(a => new PassedExpectation(a.Key, a.Value));
+        return CaseFile.Passed([.. passedExpectations]);
     }
 
     private CaseFile HandleFailure()

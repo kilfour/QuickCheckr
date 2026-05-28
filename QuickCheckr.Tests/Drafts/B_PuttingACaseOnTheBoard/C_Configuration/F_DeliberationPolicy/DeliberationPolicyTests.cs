@@ -212,10 +212,10 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     public void PolicyMaximumDistinctPassedExpectations()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 3, Seed: 1))
-            .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 1000));
+            .AddPassedExpectationDeposition(new PassedExpectation("One", 1000));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 2, Seed: 2))
-            .AddPassedExpectationDeposition(new PassedExpectationDeposition("One", 1))
-            .AddPassedExpectationDeposition(new PassedExpectationDeposition("Two", 1));
+            .AddPassedExpectationDeposition(new PassedExpectation("One", 1))
+            .AddPassedExpectationDeposition(new PassedExpectation("Two", 1));
         var deliberator = new Deliberator(DeliberationPolicy.MaximumDistinctPassedExpectations, null);
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);

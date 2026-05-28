@@ -16,5 +16,5 @@ public class WordCount(IRecord record)
     public int FinalTraces() => depositions.Sum(a => a.ExecutionDeposition.FinalTraceDepositions.Count);
     public int Warnings() => depositions.Sum(a => a.ExecutionDeposition.WarningDepositions.Count);
     public int PassedExpectations() =>
-        record is CaseFile caseFile ? caseFile.PassedExpectationDepositions.Count : ((Findings)record).PassedExpectationDepositions.Count;
+        record is CaseFile caseFile ? caseFile.PassedExpectations.Count : ((Findings)record).PassedExpectationDepositions.Count;
 }

@@ -14,11 +14,11 @@ public class Inquiry : IRecord
     public int FailureCount => caseFiles.Count(a => a.HasEvidence);
     public int DistinctFailureCount => distinctFailures.Count;
 
-    public List<PassedExpectationDeposition> PassedExpectationDepositions =>
+    public List<PassedExpectation> PassedExpectationDepositions =>
         [.. caseFiles
-            .SelectMany(cf => cf.PassedExpectationDepositions)
+            .SelectMany(cf => cf.PassedExpectations)
             .GroupBy(ps => ps.Label)
-            .Select(g => new PassedExpectationDeposition(g.Key, g.Sum(ps => ps.TimesPassed)))];
+            .Select(g => new PassedExpectation(g.Key, g.Sum(ps => ps.TimesPassed)))];
 
     public Inquiry Add(params CaseFile[] newCaseFiles)
     {
@@ -35,4 +35,7 @@ public class Inquiry : IRecord
         }
         return this;
     }
+
+    public bool MaxStoredCaseFilesReached { get; private set; } = false;
+    public bool Stop() => MaxStoredCaseFilesReached = true;
 }

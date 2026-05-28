@@ -7,23 +7,23 @@ using QuickCheckr.UnderTheHood.Warnings;
 namespace QuickCheckr.FilingCabinet;
 
 
-public interface ICaseFileSummary
-{
-    int OriginalRunExecutionCount { get; }
-    int ExecutionCount { get; }
-    int ShrinkCount { get; }
-    public int ActionCount { get; }
-    public int InputCount { get; }
-    public int PoolTraceCount { get; }
-    public int TraceCount { get; }
-    public int WarningCount { get; }
-    public int PassedExpectationCount { get; }
-    public T GetInput<T>(string key);
-    public int InputsNamed<T>(string key, Func<T, int> calculateScore);
-    public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
-}
+// public interface ICaseFileSummary
+// {
+//     int OriginalRunExecutionCount { get; }
+//     int ExecutionCount { get; }
+//     int ShrinkCount { get; }
+//     public int ActionCount { get; }
+//     public int InputCount { get; }
+//     public int PoolTraceCount { get; }
+//     public int TraceCount { get; }
+//     public int WarningCount { get; }
+//     public int PassedExpectationCount { get; }
+//     public T GetInput<T>(string key);
+//     public int InputsNamed<T>(string key, Func<T, int> calculateScore);
+//     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
+// }
 
-public class CaseFile : ICaseFileSummary, IRecord
+public class CaseFile : IRecord
 {
     public bool HasEvidence => FailureDeposition is not FailedNoneDeposition;
     public FailureDeposition FailureDeposition { get; init; }
@@ -39,7 +39,7 @@ public class CaseFile : ICaseFileSummary, IRecord
     public int PoolTraceCount => ExecutionDepositions.Sum(a => a.PoolTraceDepositions.Count);
     public int TraceCount => ExecutionDepositions.Sum(a => a.TraceDepositions.Count);
     public int WarningCount => ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
-    public int PassedExpectationCount => PassedExpectationDepositions.Count;
+    public int PassedExpectationCount => PassedExpectations.Count;
 
 
     public T GetInput<T>(string key)
@@ -88,9 +88,7 @@ public class CaseFile : ICaseFileSummary, IRecord
     }
 
     public static CaseFile From(FailureInfo failureInfo, RunInfo runInfo)
-    {
-        return new CaseFile(FailureDeposition.From(failureInfo), runInfo);
-    }
+        => new(FailureDeposition.From(failureInfo), runInfo);
 
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];
     public CaseFile AddExecutionDeposition(ExecutionDeposition executionDepostion)
@@ -110,11 +108,17 @@ public class CaseFile : ICaseFileSummary, IRecord
         => FailureDeposition.GetFailureDescription();
 
     public static CaseFile Empty() => new();
-
-    public List<PassedExpectationDeposition> PassedExpectationDepositions { get; init; } = [];
-    public CaseFile AddPassedExpectationDeposition(PassedExpectationDeposition passedExpectationDepositions)
+    public static CaseFile Passed(List<PassedExpectation> passedExpectations)
     {
-        PassedExpectationDepositions.Add(passedExpectationDepositions);
+        var caseFile = new CaseFile();
+        caseFile.PassedExpectations.AddRange(passedExpectations);
+        return caseFile;
+    }
+
+    public List<PassedExpectation> PassedExpectations { get; init; } = [];
+    public CaseFile AddPassedExpectationDeposition(PassedExpectation passedExpectationDepositions)
+    {
+        PassedExpectations.Add(passedExpectationDepositions);
         return this;
     }
 }

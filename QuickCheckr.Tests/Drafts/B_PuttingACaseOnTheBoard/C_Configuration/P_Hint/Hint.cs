@@ -22,7 +22,7 @@ public static class Hint
     [CodeExample]
     public static IRecord Deliberate(
         this CheckrOf<Case> checkr,
-        Func<ICaseFileSummary, int>? policy = null)
+        Func<CaseFile, int>? policy = null)
         => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
             cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
 

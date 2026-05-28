@@ -31,7 +31,7 @@ public record CheckrConfig
             };
     }
 
-    public required Func<ICaseFileSummary, int>? DeliberationPolicy { get; init; }
+    public required Func<CaseFile, int>? DeliberationPolicy { get; init; }
     public required int? DeliberationTarget { get; init; }
 
     /// <summary>

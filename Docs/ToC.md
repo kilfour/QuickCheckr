@@ -4,3 +4,6 @@
     - [Choosing the Next Move](A_Guide/C_ChoosingTheNextMove/ChoosingTheNextMove.md)
     - [In Pools We Trust](A_Guide/D_InPoolsWeTrust/InPoolsWeTrust.md)
     - [Bolting Horses](A_Guide/E_HorsesAgain/BoltingHorses.md)
+  - [The Vault Evidence And Investigations](K_Evidence/TheVaultEvidenceAndInvestigations.md)
+    - [When the Checkr passes.](K_Evidence/A_StoringCaseFiles/A_PassedRun.md)
+    - [Filing Evidence](K_Evidence/A_StoringCaseFiles/FilingEvidence.md)

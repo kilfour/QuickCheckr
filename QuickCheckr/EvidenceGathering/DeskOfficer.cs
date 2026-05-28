@@ -98,3 +98,60 @@ public class DeskOfficer
         }
     }
 }
+
+public static class CaseFileFingerprints
+{
+    public static string FingerPrint(CaseFile caseFile, bool ordered = false)
+    {
+        var executions = ordered
+            ? OrderedExecutionFingerprints(caseFile.ExecutionDepositions)
+            : UnOrderedExecutionFingerprints(caseFile.ExecutionDepositions);
+
+        return string.Join("\n",
+        [
+            $"Failure: {caseFile.FailureDeposition.GetFailureDescription()}",
+            $"ExecutionCount: {caseFile.ExecutionCount}",
+            .. executions
+        ]);
+    }
+
+    private static IEnumerable<string> OrderedExecutionFingerprints(
+        List<ExecutionDeposition> executionDepositions)
+        => executionDepositions.Select(OrderedExecutionFingerprint);
+
+    private static IEnumerable<string> UnOrderedExecutionFingerprints(
+        List<ExecutionDeposition> executionDepositions)
+        => executionDepositions
+            .Select(UnOrderedExecutionFingerprint)
+            .GroupBy(signature => signature)
+            .OrderBy(group => group.Key)
+            .Select(group => group.Count() == 1
+                ? group.Key
+                : $"{group.Key} x{group.Count()}");
+
+    private static string OrderedExecutionFingerprint(ExecutionDeposition executionDeposition)
+    {
+        var actions = string.Join(",",
+            executionDeposition.ActionDepositions.Select(deposition => deposition.Label));
+
+        var inputs = string.Join(",",
+            executionDeposition.InputDepositions.Select(deposition => deposition.Label));
+
+        return $"Execution: Actions[{actions}] Inputs[{inputs}]";
+    }
+
+    private static string UnOrderedExecutionFingerprint(ExecutionDeposition executionDeposition)
+    {
+        var actions = string.Join(",",
+            executionDeposition.ActionDepositions
+                .Select(deposition => deposition.Label)
+                .OrderBy(label => label));
+
+        var inputs = string.Join(",",
+            executionDeposition.InputDepositions
+                .Select(deposition => deposition.Label)
+                .OrderBy(label => label));
+
+        return $"Execution: Actions[{actions}] Inputs[{inputs}]";
+    }
+}

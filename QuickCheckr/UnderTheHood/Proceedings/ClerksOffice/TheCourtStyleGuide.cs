@@ -156,7 +156,7 @@ public static class TheCourtStyleGuide
                 .ToFlow(Failure, caseFile.FailureDeposition);
     }
 
-    private static Flow<Flow> PassedExpectations(IEnumerable<PassedExpectationDeposition> input) =>
+    private static Flow<Flow> PassedExpectations(IEnumerable<PassedExpectation> input) =>
         Pulse
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input)
             .DrawLine();
@@ -183,7 +183,7 @@ public static class TheCourtStyleGuide
                 .NewLine();
     }
 
-    private static Flow<Flow> InquiryPassedExpectations(IEnumerable<PassedExpectationDeposition> input) =>
+    private static Flow<Flow> InquiryPassedExpectations(IEnumerable<PassedExpectation> input) =>
         Pulse
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input);
 
@@ -221,13 +221,13 @@ public static class TheCourtStyleGuide
 
     public static Flow<Flow> CaseFile(CaseFile input)
     {
-        var hasPassed = input.PassedExpectationDepositions.Count > 0;
+        var hasPassed = input.PassedExpectations.Count > 0;
         var breakBeforePassed = input.HasEvidence && hasPassed;
         return Pulse
             .ToFlowIf(input.HasEvidence, Evidence, () => input)
             .When(breakBeforePassed, Style.NewLine())
             .TraceIf(hasPassed, () => " Passed Expectations")
-            .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectationDepositions);
+            .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectations);
     }
 
     public static Flow<Flow> Flow(IRecord input, Decorum decorum)

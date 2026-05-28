@@ -1,7 +1,6 @@
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
-using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -26,7 +25,7 @@ public record CheckrRunnerConfig
     public ShrinkMode ShrinkMode { get; }
     public ReportMode ReportMode { get; }
     public WarningLevel WarningLevel { get; }
-    public Func<ICaseFileSummary, int>? DeliberationPolicy { get; }
+    public Func<CaseFile, int>? DeliberationPolicy { get; }
     public int? DeliberationTarget { get; init; }
     public ITranscribe Clerk { get; }
     public int MaxStepsPerReducer { get; }

@@ -1,7 +1,6 @@
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr;
-using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay;

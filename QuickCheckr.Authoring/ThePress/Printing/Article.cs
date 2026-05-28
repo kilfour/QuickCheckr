@@ -50,7 +50,7 @@ public class Article(IRecord record)
     public PassedExpectationArticle PassedExpectation(int number)
     {
         return record is CaseFile
-            ? new(caseFile!.PassedExpectationDepositions[number - 1])
+            ? new(caseFile!.PassedExpectations[number - 1])
             : new(((Findings)record).PassedExpectationDepositions[number - 1]);
 
     }

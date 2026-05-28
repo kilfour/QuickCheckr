@@ -38,7 +38,7 @@ namespace QuickCheckr.UnderTheHood.Proceedings
         private static void AddPassedExpectations(IReadOnlyDictionary<string, int> passedExpectations, CaseFile caseFile)
         {
             foreach (var passedExpectation in passedExpectations)
-                caseFile.AddPassedExpectationDeposition(new PassedExpectationDeposition(passedExpectation.Key, passedExpectation.Value));
+                caseFile.AddPassedExpectationDeposition(new PassedExpectation(passedExpectation.Key, passedExpectation.Value));
         }
 
         private static ExecutionDeposition GetExecutionDeposition(

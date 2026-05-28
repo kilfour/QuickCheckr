@@ -29,7 +29,4 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
 
     public HashSet<VaultEntry> RetrieveVaultEntries(string path)
         => Entries;
-
-    public string LogFileName { get; private set; } = string.Empty;
-
 }

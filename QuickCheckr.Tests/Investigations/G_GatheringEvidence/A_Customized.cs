@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
 public class A_Customized : QCTest<A_Customized>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -21,12 +21,12 @@ public class A_Customized : QCTest<A_Customized>
     [DocReport]
     [CodeSnippet]
     public void Example() =>
-        TheCheckr().GatherEvidence(
+        TheCheckr().Conduct(
             20.Investigations(),
             20.Runs(),
             1.ExecutionsPerRun(),
             a => a with { FileAs = "Gathering Evidence" },
-            a => a.GetInput<string>("Input").Contains('c') ? 1 : 0);
+            Directive.Default with { ClassifyBy = a => a.GetInput<string>("Input").Contains('c') ? 1 : 0 });
 
     [CodeSnippet]
     private CheckrOf<Case> TheCheckr() =>

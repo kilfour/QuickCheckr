@@ -1,10 +1,8 @@
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickPulse;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 

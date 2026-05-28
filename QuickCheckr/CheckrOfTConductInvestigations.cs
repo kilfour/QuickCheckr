@@ -1,4 +1,3 @@
-using QuickCheckr.EvidenceGathering;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
@@ -8,49 +7,51 @@ namespace QuickCheckr;
 
 public static class CheckrOfTConductInvestigations
 {
-    public static void Conduct(
+    public static IRecord Conduct(
         this CheckrOf<Case> checkr,
-        InvestigationCount investigationCount,
+        InvestigationCount maxInvestigations,
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure)
-        => Conduct(checkr, investigationCount, runs, executionsPerRun, configure, false);
+        => checkr.Conduct(maxInvestigations, runs, executionsPerRun, configure, Directive.Default);
 
-    public static void Conduct(
+    public static IRecord Conduct(
         this CheckrOf<Case> checkr,
-        InvestigationCount investigationCount,
+        InvestigationCount maxInvestigations,
         CheckrOfTRun.RunCount runs,
         CheckrOfTRun.ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        bool ordered)
+        Directive directive)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
-        var vaultCaseFiles = vault.Check(checkr, config, false);
-        var caseFiles = new List<CaseFile>();
-        for (int i = 0; i < investigationCount.NumberOfInvestigations; i++)
+        var caseFiles = vault.Check(checkr, config, false).ToList();
+        var inquiry = new Inquiry().Add([.. caseFiles]);
+        var stop = false;
+        if (directive.MaxCaseFiles.HasValue && caseFiles.Count >= directive.MaxCaseFiles.Value)
+            stop = inquiry.Stop();
+        for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            for (int j = 0; j < runs.NumberOfRuns; j++)
+            for (int j = 0; j < runs.NumberOfRuns && !stop; j++)
             {
                 var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
                 var caseFile = runner.Run();
+                inquiry.Add(caseFile);
                 if (caseFile.HasEvidence)
                 {
-                    caseFiles.Add(caseFile);
+                    if (directive.Reject != null && directive.Reject(caseFile))
+                        continue;
+                    if (!caseFiles.Any(a => Equals(directive.ClassifyBy(a), directive.ClassifyBy(caseFile))))
+                    {
+                        caseFiles.Add(caseFile);
+                    }
+                    if (directive.MaxCaseFiles.HasValue && caseFiles.Count >= directive.MaxCaseFiles.Value)
+                        stop = inquiry.Stop();
                 }
             }
         }
-        var caseFilesToReport = new List<CaseFile>();
-        foreach (var caseFile in caseFiles)
-        {
-            if (vaultCaseFiles.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
-                continue;
-            if (caseFilesToReport.Any(a => DeskOfficer.AreCaseFilesSimilar(caseFile, a, ordered)))
-                continue;
-            caseFilesToReport.Add(caseFile);
-        }
 
-        foreach (var caseFile in caseFilesToReport)
+        foreach (var caseFile in caseFiles)
         {
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
@@ -58,6 +59,10 @@ public static class CheckrOfTConductInvestigations
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
         }
+        var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
+        inquiry.AddDistinctFailure([.. caseFiles]);
+        config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
+        return inquiry;
     }
 
     public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);

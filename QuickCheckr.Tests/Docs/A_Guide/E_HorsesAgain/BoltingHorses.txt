@@ -6,26 +6,26 @@
  Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = Course-1
+   - Store Course = Course-1
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = Coach-1
+   - Store Coach = Coach-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: (Coach, Course) to Assign = ( Coach-1, Course-1 )
+   - (Coach, Course) to Assign = ( Coach-1, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to Update Skills = Course-1
-   - Input: Course Skills           = [ _ ]
- ===================================================================
-  !! Expectation Failed: Assigned Coach Must Be Suitable: Coach-1
- ===================================================================
+   - Course to Update Skills = Course-1
+   - Course Skills           = [ _ ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+       Coach-1
+ ==========================================================
  Passed Expectations
  - Course Name Set: 4x
  - Coach Name is set: 4x
  - Coach Skills Set: 2x
  - Coach is assigned: 2x
- - Assigned Coach Must Be Suitable: Coach-1: 3x
- - Assigned Coach Must Be Suitable: Coach-3: 3x
+ - Assigned Coach Must Be Suitable: 3x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
