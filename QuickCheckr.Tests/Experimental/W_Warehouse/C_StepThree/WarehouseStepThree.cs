@@ -89,7 +89,7 @@ public class WarehouseStepThree : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> LogOn =
         from newClient in Checkr.Act("Create Client", () => new ClientSim())
-        from toPool in Trackr.ToPool("Create Client", newClient)
+        from toPool in Trackr.ToPool("Create Client", () => newClient)
         select Case.Closed;
 
     [CodeExample]

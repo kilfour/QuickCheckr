@@ -7,9 +7,18 @@ public static partial class Trackr
     public static CheckrOf<Case> PoolExpectEach<T>(
         string key,
         Func<T, bool> expectation) =>
-        state => Combine.Checkrs(
-            state.Memory.GetPoolDictionary<T>()
-                .Select(a => Checkr.Expect($"{key}: {typeof(T).Name}-{a.Key}", () => expectation(a.Value))))(state);
+        state =>
+        {
+            var candidates = state.Memory.GetPoolDictionary<T>();
+            if (candidates.Count == 0)
+                return CheckrResult.CaseOnly(state);
+            var failed = candidates.Where(a => !expectation(a.Value));
+            var expect = Evaluate.Expect(key, () => !failed.Any(), true, () => [.. failed.Select(a => $"{typeof(T).Name}-{a.Key}")]);
+            return expect(state);
+        };
+    // state => Combine.Checkrs(
+    //     state.Memory.GetPoolDictionary<T>()
+    //         .Select(a => Checkr.Expect($"{key}: {typeof(T).Name}-{a.Key}", () => expectation(a.Value))))(state);
 
     public static CheckrOf<Case> PoolExpectEach<T1, T2>(
         string key,

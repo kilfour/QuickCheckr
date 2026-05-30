@@ -77,7 +77,7 @@ public class LockTheStableDoors : BaseTest
         from name in Checkr.Input("Coach Name",
             from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
         from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
-        from toPool in Trackr.ToPool("Store Coach", new CoachBy(name))
+        from toPool in Trackr.ToPool("Store Coach", () => new CoachBy(name))
         select Case.Closed;
 
     [CodeExample]
@@ -96,7 +96,7 @@ public class LockTheStableDoors : BaseTest
         from name in Checkr.Input("Course Name",
             from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
         from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
-        from toPool in Trackr.ToPool("Store Course", new CourseBy(name))
+        from toPool in Trackr.ToPool("Store Course", () => new CourseBy(name))
         select Case.Closed;
 
     [CodeExample]

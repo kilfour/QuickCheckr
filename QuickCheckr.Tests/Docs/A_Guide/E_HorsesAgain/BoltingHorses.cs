@@ -150,7 +150,7 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
             from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-        from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
+        from toPool in Trackr.ToPool("Store Coach", () => coach) // Store this coach in the pool.
         select Case.Closed;
 
     [CodeExample]
@@ -171,7 +171,7 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
             from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-        from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
+        from toPool in Trackr.ToPool("Store Course", () => course) // Store this course in the pool.
         select Case.Closed;
 
     [CodeExample]

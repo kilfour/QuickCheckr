@@ -65,7 +65,7 @@ So now, **Execution Id Matters**.
                     Checkr.Option(() => counter == 1, // add AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
-                        from storeName in Trackr.ToPool("Name", name)
+                        from storeName in Trackr.ToPool("Name", () => name)
                         select Case.Closed),
                     Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                         from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
@@ -77,12 +77,12 @@ So now, **Execution Id Matters**.
                     Checkr.Option(() => counter == 3, // add a new AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
-                        from storeName in Trackr.ToPool("Name", name)
+                        from storeName in Trackr.ToPool("Name", () => name)
                         select Case.Closed),
                     Checkr.Option(() => counter == 4, // add BBB, initial run fails here
                         from name in Checkr.Input("Name", Fuzzr.Constant("BBB"))
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
-                        from storeName in Trackr.ToPool("Name", name)
+                        from storeName in Trackr.ToPool("Name", () => name)
                         select Case.Closed))
             from traceSut in Checkr.Trace("Sut", () => contactBook)
             from count in Trackr.PoolExpect<string>("Count matches",

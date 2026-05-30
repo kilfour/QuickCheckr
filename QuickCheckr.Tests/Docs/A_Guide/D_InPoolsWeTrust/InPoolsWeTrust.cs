@@ -61,7 +61,7 @@ public class InPoolsWeTrust : BaseTest
     [CodeSnippet]
     private static CheckrOf<Case> Store() =>
         from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
-        from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
+        from storeName in Trackr.ToPool("Name", () => new Contact(name)) // <= And in it goes.
         select Case.Closed;
 
     [Fact]
@@ -160,7 +160,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
                     from name in Checkr.Input("Name", NameFuzzr)
                     from add in Checkr.Act("Add", () => contactBook.Add(name))
                         // Store the Contact in the Pool.
-                    from storeName in Trackr.ToPool("Store", new Contact(name))
+                    from storeName in Trackr.ToPool("Store", () => new Contact(name))
                     select Case.Closed),
                 // 2. Update a (Contact-) name in the Rolodex
                 Trackr.PoolWhen<Contact>("Contact to update",

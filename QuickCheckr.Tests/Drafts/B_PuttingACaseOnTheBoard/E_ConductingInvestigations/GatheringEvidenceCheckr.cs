@@ -21,7 +21,7 @@ public class GatheringEvidenceCheckr
             Shrink.None<string>())
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-        from toPool in Trackr.ToPool("Store Coach", coach)
+        from toPool in Trackr.ToPool("Store Coach", () => coach)
         select Case.Closed;
 
     private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
@@ -41,7 +41,7 @@ public class GatheringEvidenceCheckr
             Shrink.None<string>())
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-        from toPool in Trackr.ToPool("Store Course", course)
+        from toPool in Trackr.ToPool("Store Course", () => course)
         select Case.Closed;
 
     private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
