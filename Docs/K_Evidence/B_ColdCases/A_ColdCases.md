@@ -8,7 +8,7 @@ checkr.ReviewColdCases(Configure);
 This will create a report per seed in the evidence vault.  
 - For every failing seed the report will look like the by now familiar failure report.  
 - For every passing seed the report will only contain a list of passed expectations.  
-- Trying to run `ReviewColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.  
+- `ReviewColdCases` requires `FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.  
 ## Closing Cold Cases
 The method mentioned above is usefull for regression testing, but sometimes,
 there is no need to keep the evidence around after the culprit is found.  
@@ -20,4 +20,4 @@ If the seeds stored in the vault still all result in failure, the behaviour is e
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
 and no report is generated for the passing run.  
 Any existing previous reports for runs that now pass are deleted, and if the evidence vault is empty, it is also deleted.  
-- Trying to run `CloseResolvedColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.  
+- `CloseResolvedColdCases` requires`FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.  

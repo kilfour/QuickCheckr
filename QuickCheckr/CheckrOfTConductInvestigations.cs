@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
@@ -7,6 +8,7 @@ namespace QuickCheckr;
 
 public static class CheckrOfTConductInvestigations
 {
+    [StackTraceHidden]
     public static IRecord Conduct(
         this CheckrOf<Case> checkr,
         InvestigationCount maxInvestigations,
@@ -15,6 +17,7 @@ public static class CheckrOfTConductInvestigations
         Func<CheckrConfig, CheckrConfig> configure)
         => checkr.Conduct(maxInvestigations, runs, executionsPerRun, configure, Directive.Default);
 
+    [StackTraceHidden]
     public static IRecord Conduct(
         this CheckrOf<Case> checkr,
         InvestigationCount maxInvestigations,
@@ -54,6 +57,8 @@ public static class CheckrOfTConductInvestigations
         }
         inquiry.AddDistinctFailure([.. caseFiles]);
         config.Custodian.FileRecord(ReportPath.Main(config), inquiry, config.Clerk.File);
+        if (inquiry.DistinctFailureCount > 0)
+            throw new FalsifiableException(inquiry, config.Clerk.File);
         return inquiry;
     }
 

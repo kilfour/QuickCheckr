@@ -9,7 +9,13 @@ namespace QuickCheckr.UnderTheHood;
 
 public class FalsifiableException : Exception
 {
-    public CaseFile TheCaseFile { get; private set; }
+    public IRecord TheCaseFile { get; private set; }
+
+    public FalsifiableException(Inquiry inquiry, Func<IRecord, Flow<Flow>> styleGuide)
+        : base(Environment.NewLine + TheClerk.Transcribes(inquiry, styleGuide))
+    {
+        TheCaseFile = inquiry;
+    }
 
     public FalsifiableException(CaseFile caseFile, Func<IRecord, Flow<Flow>> styleGuide)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide))

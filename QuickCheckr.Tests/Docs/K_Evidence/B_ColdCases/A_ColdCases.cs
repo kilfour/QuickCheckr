@@ -110,7 +110,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     // }
 
     [Fact]
-    [DocContent("- Trying to run `ReviewColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.")]
+    [DocContent("- `ReviewColdCases` requires `FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.")]
     public void ReviewingColdCases_ThrowsIfFileAsIsNotConfigured()
     {
         Assert.Throws<VaultNotConfiguredException>(
@@ -176,7 +176,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
     }
 
     [Fact]
-    [DocContent("- Trying to run `CloseResolvedColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.")]
+    [DocContent("- `CloseResolvedColdCases` requires`FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.")]
     public void ClosingColdCases_ThrowsIfFileAsIsNotConfigured()
     {
         Assert.Throws<VaultNotConfiguredException>(
