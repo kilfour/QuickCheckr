@@ -6,7 +6,7 @@ using QuickCheckr.UnderTheHood.Archiving;
 
 namespace QuickCheckr;
 
-public record DeliberatedCaseFile(CaseFile CaseFile, int Score);
+
 /// <summary>
 /// Provides helpers for executing a Checkr script and controlling how often it is run.  
 /// Use these extensions to run a case once, repeatedly, or with custom configuration.
@@ -27,27 +27,9 @@ public static class CheckrOfTRun
         int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var findings = new Findings();
-        var deliberator = new Deliberator(config.Deliberation);
-        for (int i = 0; i < runs.NumberOfRuns; i++)
-        {
-            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
-            var caseFile = runner.Run();
-            findings.Add(caseFile);
-            if (caseFile.HasEvidence)
-            {
-                if (config.Deliberation != null)
-                {
-                    deliberator.Check(caseFile);
-                    if (deliberator.TargetReached())
-                        ReportCaseFile(executionsPerRun, config, deliberator.GetCaseFile());
-                }
-                else
-                    ReportCaseFile(executionsPerRun, config, caseFile);
-            }
-        }
-        if (config.Deliberation != null && deliberator.HasCaseFile)
-            ReportCaseFile(executionsPerRun, config, deliberator.GetCaseFile());
+        var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config);
+        if (findings.FalsifyingCaseFile is { } caseFile)
+            ReportCaseFile(executionsPerRun, config, caseFile);
         else
             ReportCaseFileSummary(config, findings);
         return findings;
@@ -172,16 +154,4 @@ public static class CheckrOfTRun
     /// Use for specifying how many executions occur within each run.
     /// </summary>
     public static ExecutionCount ExecutionsPerRun(this int numberOfExecutions) => new(numberOfExecutions);
-
-    /// <summary>
-    /// Represents how many times the Checkr should be run.  
-    /// Use to expand exploration across multiple independent input sets.
-    /// </summary>
-    public record RunCount(int NumberOfRuns);
-
-    /// <summary>
-    /// Represents how many executions occur within a single run.  
-    /// Use to model stateful behaviour spanning several sequential steps.
-    /// </summary>
-    public record ExecutionCount(int NumberOfExecutions);
 }

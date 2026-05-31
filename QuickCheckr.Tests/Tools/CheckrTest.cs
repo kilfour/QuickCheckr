@@ -35,7 +35,7 @@ public abstract class CheckrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        CheckrOfTRun.ExecutionCount executionCount,
+        ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Exposes(
             () => TheCheckr().Run(executionCount, Configure))
@@ -45,7 +45,7 @@ public abstract class CheckrTest<T> : QCTest<T>
     [StackTraceHidden]
     protected void Run(
         int seed,
-        CheckrOfTRun.ExecutionCount executionCount,
+        ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(
             () => TheCheckr().Run(seed, executionCount, Configure))
@@ -53,7 +53,7 @@ public abstract class CheckrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        CheckrOfTRun.RunCount runCount,
+        RunCount runCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(
             () => TheCheckr().Run(runCount, Configure))
@@ -61,8 +61,8 @@ public abstract class CheckrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        CheckrOfTRun.RunCount runCount,
-        CheckrOfTRun.ExecutionCount executionCount,
+        RunCount runCount,
+        ExecutionCount executionCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(
             () => TheCheckr().Run(runCount, executionCount, Configure))

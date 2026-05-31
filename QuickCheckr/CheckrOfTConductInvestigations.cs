@@ -10,16 +10,16 @@ public static class CheckrOfTConductInvestigations
     public static IRecord Conduct(
         this CheckrOf<Case> checkr,
         InvestigationCount maxInvestigations,
-        CheckrOfTRun.RunCount runs,
-        CheckrOfTRun.ExecutionCount executionsPerRun,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure)
         => checkr.Conduct(maxInvestigations, runs, executionsPerRun, configure, Directive.Default);
 
     public static IRecord Conduct(
         this CheckrOf<Case> checkr,
         InvestigationCount maxInvestigations,
-        CheckrOfTRun.RunCount runs,
-        CheckrOfTRun.ExecutionCount executionsPerRun,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
         Directive directive)
     {
@@ -27,27 +27,20 @@ public static class CheckrOfTConductInvestigations
         var vault = Vault.From(config);
         var caseFiles = vault.Check(checkr, config, false).ToList();
         var inquiry = new Inquiry().Add([.. caseFiles]);
-        var stop = false;
-        if (directive.MaxCaseFiles.HasValue && caseFiles.Count >= directive.MaxCaseFiles.Value)
-            stop = inquiry.Stop();
+        var stop = NeedsToStop(directive, caseFiles, inquiry);
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            for (int j = 0; j < runs.NumberOfRuns && !stop; j++)
+            var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config);
+            inquiry.Add([.. findings.CaseFiles]);
+            if (findings.FalsifyingCaseFile is { } caseFile)
             {
-                var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
-                var caseFile = runner.Run();
-                inquiry.Add(caseFile);
-                if (caseFile.HasEvidence)
+                if (directive.Reject != null && directive.Reject(caseFile))
+                    continue;
+                if (!caseFiles.Any(a => Equals(directive.ClassifyBy(a), directive.ClassifyBy(caseFile))))
                 {
-                    if (directive.Reject != null && directive.Reject(caseFile))
-                        continue;
-                    if (!caseFiles.Any(a => Equals(directive.ClassifyBy(a), directive.ClassifyBy(caseFile))))
-                    {
-                        caseFiles.Add(caseFile);
-                    }
-                    if (directive.MaxCaseFiles.HasValue && caseFiles.Count >= directive.MaxCaseFiles.Value)
-                        stop = inquiry.Stop();
+                    caseFiles.Add(caseFile);
                 }
+                stop = NeedsToStop(directive, caseFiles, inquiry);
             }
         }
 
@@ -59,10 +52,16 @@ public static class CheckrOfTConductInvestigations
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
         }
+
         var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
         inquiry.AddDistinctFailure([.. caseFiles]);
         config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
         return inquiry;
+    }
+
+    private static bool NeedsToStop(Directive directive, List<CaseFile> caseFiles, Inquiry inquiry)
+    {
+        return directive.MaxCaseFiles is { } max && caseFiles.Count >= max && inquiry.Stop();
     }
 
     public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);

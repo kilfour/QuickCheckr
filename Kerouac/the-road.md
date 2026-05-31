@@ -2,37 +2,27 @@
 
 
 ### Doing
+* ShrinkableAct consolidation 
+  Needs a decision, maybe not for 0.2.0
 
-* Shrink Log
-* ShrinkableAct consolidation
-* Reused the name `GatheringEvidence` for the new casefile producing workflow.
-
-
+### To Test
+* Move all evidence related stuff (vault and conduct) to Tests.Doc and ensure full
 
 ### Todo
-* consolidate CheckrOfTConductInvestigations and CheckrOfTGatherEvidence
-  * Test maxStoredCaseFilesReached in Inquiry
-
-
-### Wish List
-* Doc/test/improve `Reduce.Towards()`.
-* Add shrinking(reducing) multiple values together
-* Add reuse fuzzr reducer with predicate (input, candidate) => score
-* Ouroboros Testing : We need a better `InputDeposition`
-* Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
-* Improve nested collection shrinking/regrowth  
-  (current model struggles when classification collapses to empty).
-* Stringr => use Result.Stop instead of State.RunStopped
+* make every public method that runs a checkr throw on failure
+* check if vault and conduct require FileAs => throw if not configured ?
+  
 
 ### Done/Ready for Changelog after review
 * Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
 * Removed warnings for unchecked conditional expectations.  
   The implementation could not reliably detect all unchecked expectations in composed Checkrs, potentially creating false confidence.
-* Consolidated GatherEvidence(...) and Conduct( n.Investigations(), ...)  
+* Consolidated `GatherEvidence(...)` and `Conduct( n.Investigations(), ...)` 
   GatherEvidence is now a special customizable case of Conduct.
 * Removed the *evidence-log* vault file.
 * Moved config's `DeliberationPolicy` and `DeliberationTarget` into a new class `Deliberation`.  
   Renamed all occurences of *DeliberationPolicy* to *Deliberation*.
+* `Conduct( n.Investigations(), ...)` now takes into account *Deliberation* parameters too.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
@@ -42,7 +32,6 @@
 * DuplicateKeyWriteException check wording (Input as example)
 * Figure out which Reducer warnings are needed/useful.
 * Stabilize + Doc InternalAffairs
-  
 * Do a sanity pass on the public API.
 * Also, check the namespaces, put under the hood stuff in UnderTheHood and don't leak anything.
 * more stats:
@@ -74,6 +63,16 @@
 * async & concurrency (spike cooking in Experimental, see TheNeedlerPattern)
   => initial web-api example (QuickWebr ?)
 
+
+### Wish List
+* Doc/test/improve `Reduce.Towards()`.
+* Add shrinking(reducing) multiple values together
+* Add reuse fuzzr reducer with predicate (input, candidate) => score
+* Ouroboros Testing : We need a better `InputDeposition`
+* Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
+* Improve nested collection shrinking/regrowth  
+  (current model struggles when classification collapses to empty).
+* Stringr => use Result.Stop instead of State.RunStopped
 
 ## Skipped Tests
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.

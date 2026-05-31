@@ -3,8 +3,11 @@ using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood;
 
+
 public class Deliberator(Deliberation? deliberation)
 {
+    private record DeliberatedCaseFile(CaseFile CaseFile, int Score);
+
     private readonly Func<CaseFile, int>? scoringFunction = deliberation?.Score;
     private readonly int? deliberationTarget = deliberation?.Target;
     private DeliberatedCaseFile? current = null;
