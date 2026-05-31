@@ -3,41 +3,34 @@ using QuickCheckr.Protocol.Custodians;
 
 namespace QuickCheckr.UnderTheHood.Archiving;
 
-public class Vault
+public class VaultNotConfiguredException : Exception;
+public static class Vault
 {
-    public virtual IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved) => [];
-    public virtual bool Replay() { return false; }
-    public virtual void AddSeed(int seed, int numberOfExecutions) { }
-
-    public static Vault From(CheckrRunnerConfig config)
-        => string.IsNullOrWhiteSpace(config.FileAs) ? new Vault() : new EvidenceVault(config);
+    public static EvidenceVault From(CheckrRunnerConfig config)
+        => string.IsNullOrWhiteSpace(config.FileAs) ? throw new VaultNotConfiguredException() : new EvidenceVault(config);
 }
 
-public class EvidenceVault : Vault
+public class EvidenceVault(CheckrRunnerConfig config)
 {
-    private readonly string evidencePath;
-    private readonly HashSet<VaultEntry> entries;
-    private readonly ICustodian custodian;
+    const string EvidenceFolder = "vault";
 
-    public EvidenceVault(CheckrRunnerConfig config)
-    {
-        evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
-        custodian = config.Custodian;
-        entries = custodian.RetrieveVaultEntries(evidencePath);
-    }
+    private readonly string evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
+    private HashSet<VaultEntry> entries = [];
+    private readonly ICustodian custodian = config.Custodian;
 
     public static string GetVaultPath(string fileAs, string filename)
-        => Path.Combine(Constants.ReportFolder, fileAs, Constants.EvidenceFolder, filename);
+        => Path.Combine(ReportPath.MainFolder, fileAs, EvidenceFolder, filename);
 
-    public override IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
+    public IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
     {
+        entries = custodian.RetrieveVaultEntries(evidencePath);
         var caseFiles = new List<CaseFile>();
         foreach (var entry in entries)
         {
             var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun).Run();
+            caseFiles.Add(caseFile);
             if (caseFile.HasEvidence)
             {
-                caseFiles.Add(caseFile);
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
                     custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.Clerk.File);
@@ -60,7 +53,7 @@ public class EvidenceVault : Vault
         return caseFiles;
     }
 
-    public override void AddSeed(int seed, int numberOfExecutions)
+    public void AddSeed(int seed, int numberOfExecutions)
     {
         Add(new(seed, numberOfExecutions));
     }

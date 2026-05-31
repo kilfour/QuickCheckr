@@ -1,3 +1,4 @@
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
@@ -16,6 +17,7 @@ public static class CheckrOfTRunColdCases
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
-        vault.Check(checkr, config, closeResolved);
+        var caseFiles = vault.Check(checkr, config, closeResolved);
+        // config.Custodian.FileRecord(ReportPath.Main(config), new Findings().Add([.. caseFiles]), config.Clerk.File);
     }
 }

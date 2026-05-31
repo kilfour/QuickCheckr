@@ -13,9 +13,6 @@ public abstract class FileCustodian : ICustodian
 
     public void RemoveRecord(string path) => RemoveFile(path);
 
-    public void LogVaultAction(string path, string line)
-        => GetFileLogArtery(path).Absorb(line);
-
     public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
     {
         if (entries.Any())

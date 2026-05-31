@@ -1,8 +1,10 @@
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Archiving;
+using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.K_Evidence.B_ColdCases;
@@ -42,7 +44,8 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
+
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
@@ -59,7 +62,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         RunColdCasesReview(Checkr.Expect("Fails", () => false),
             cfg => Configure(cfg with { Custodian = custodian }));
 
-        var caseFile = custodian.Records.Values.Single();
+        var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
@@ -77,7 +80,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         RunColdCasesReview(Checkr.Expect("Fails", () => true),
             cfg => Configure(cfg with { Custodian = custodian }));
 
-        var caseFile = custodian.Records.Values.Single();
+        var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("", article.FailureDescription());
@@ -85,6 +88,33 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("Fails", article.PassedExpectation(1).Read().Label);
         Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
+    }
+
+    // [Fact]
+    // [DocContent("- The main report contains a summary of the case files.")]
+    // public void ReviewingColdCases_Summary()
+    // {
+    //     var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
+    //     var checkr =
+    //         from input in Checkr.Input("input", Fuzzr.Bool())
+    //         from expect in Checkr.Expect("input is true", () => input)
+    //         select Case.Closed;
+
+    //     RunColdCasesReview(checkr,
+    //         cfg => Configure(cfg with { Custodian = custodian }));
+
+    //     var record = custodian.Records.Values.Single(a => a is Findings);
+    //     var article = TheJournalist.Unearths(record);
+
+    //     // WriteReport(article, "temp.txt", true);
+    // }
+
+    [Fact]
+    [DocContent("- Trying to run `ReviewColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.")]
+    public void ReviewingColdCases_ThrowsIfFileAsIsNotConfigured()
+    {
+        Assert.Throws<VaultNotConfiguredException>(
+            () => Checkr.Expect("Fails", () => false).ReviewColdCases(a => a));
     }
 
     [Fact]
@@ -104,14 +134,14 @@ In this case we use:")]
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Keys.Single()));
+        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
         Assert.Equal(1862095796, entry.Seed);
         Assert.Equal(1, entry.ExecutionsPerRun);
 
-        var caseFile = custodian.Records.Values.Single();
+        var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
         var article = TheJournalist.Unearths(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
@@ -141,7 +171,15 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
         Assert.Empty(custodian.Entries);
         // FILE DELETED is untested as this is handled by specific Custodians
 
-        Assert.Empty(custodian.Records);
+        Assert.Empty(custodian.Records.Where(a => a.Value is CaseFile));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
+    }
+
+    [Fact]
+    [DocContent("- Trying to run `CloseResolvedColdCases` without configuring `FileAs` throws a `VaultNotConfiguredException`.")]
+    public void ClosingColdCases_ThrowsIfFileAsIsNotConfigured()
+    {
+        Assert.Throws<VaultNotConfiguredException>(
+            () => Checkr.Expect("Fails", () => false).CloseResolvedColdCases(a => a));
     }
 }

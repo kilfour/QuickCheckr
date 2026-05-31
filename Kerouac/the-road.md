@@ -4,9 +4,10 @@
 ### Doing
 * ShrinkableAct consolidation 
   Needs a decision, maybe not for 0.2.0
+* Add a summary report for cold case stuff.
 
 ### To Test
-* Move all evidence related stuff (vault and conduct) to Tests.Doc and ensure full
+* Move all evidence related stuff (vault and conduct) to Tests.Doc and ensure full coverage
 
 ### Todo
 * make every public method that runs a checkr throw on failure
@@ -23,6 +24,8 @@
 * Moved config's `DeliberationPolicy` and `DeliberationTarget` into a new class `Deliberation`.  
   Renamed all occurences of *DeliberationPolicy* to *Deliberation*.
 * `Conduct( n.Investigations(), ...)` now takes into account *Deliberation* parameters too.
+* `ReviewColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
+* `CloseColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers

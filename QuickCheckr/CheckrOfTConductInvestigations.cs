@@ -52,10 +52,8 @@ public static class CheckrOfTConductInvestigations
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
         }
-
-        var fileName = Path.Combine(Constants.ReportFolder, config.FileAs, $"report.qr");
         inquiry.AddDistinctFailure([.. caseFiles]);
-        config.Custodian.FileRecord(fileName, inquiry, config.Clerk.File);
+        config.Custodian.FileRecord(ReportPath.Main(config), inquiry, config.Clerk.File);
         return inquiry;
     }
 
