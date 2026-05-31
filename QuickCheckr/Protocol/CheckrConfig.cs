@@ -1,4 +1,3 @@
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
@@ -24,15 +23,12 @@ public record CheckrConfig
                 ShrinkMode = ShrinkMode.Default,
                 ReportMode = ReportMode.Default,
                 WarningLevel = WarningLevel.Important,
-                DeliberationPolicy = null,
-                DeliberationTarget = null,
+                Deliberation = null,
                 MaxStepsPerReducer = 1024
-                // StyleGuide = The.CourtStyleGuide,
             };
     }
 
-    public required Func<CaseFile, int>? DeliberationPolicy { get; init; }
-    public required int? DeliberationTarget { get; init; }
+    public required Deliberation? Deliberation { get; init; }
 
     /// <summary>
     /// Controls how shrinking behaves for this run.  
@@ -57,6 +53,3 @@ public record CheckrConfig
 
     public required int MaxStepsPerReducer { get; init; }
 }
-
-
-

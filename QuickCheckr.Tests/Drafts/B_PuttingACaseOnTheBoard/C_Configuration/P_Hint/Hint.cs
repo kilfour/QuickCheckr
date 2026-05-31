@@ -10,8 +10,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.P_Hi
 @$"If you do not like the defaults,
 it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` extension method(s):  
 ")]
-[DocContent("**Fast Deliberation:**")]
-[DocExample(typeof(Hint), nameof(Deliberate))]
 [DocContent("**Auto File:**")]
 [DocExample(typeof(Hint), nameof(FileThis))]
 [DocContent("**Investigating:**")]
@@ -19,13 +17,6 @@ it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` exten
 [DocContent("You get the idea.")]
 public static class Hint
 {
-    [CodeExample]
-    public static IRecord Deliberate(
-        this CheckrOf<Case> checkr,
-        Func<CaseFile, int>? policy = null)
-        => checkr.Run(50.Runs(), 20.ExecutionsPerRun(),
-            cfg => cfg with { DeliberationPolicy = policy ?? DeliberationPolicy.MinimumExecutions });
-
     [CodeExample]
     public static IRecord FileThis(
         this CheckrOf<Case> checkr,

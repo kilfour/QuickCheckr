@@ -1,6 +1,5 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickPulse.Explains;
 
@@ -8,7 +7,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 
 [DocFile]
 [DocLink(typeof(PuttingACaseOnTheBoard))]
-[DocLink(typeof(TheEvidenceVault))]
 [DocLink(typeof(Guide))]
 [DocLink(typeof(BoltingHorses))]
 [DocLink(typeof(J_TheCaseOfTheInvisibleCollection))]

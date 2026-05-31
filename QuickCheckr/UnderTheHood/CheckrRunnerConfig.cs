@@ -1,4 +1,3 @@
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
 
@@ -13,8 +12,7 @@ public record CheckrRunnerConfig
         ShrinkMode = config.ShrinkMode;
         ReportMode = config.ReportMode;
         WarningLevel = config.WarningLevel;
-        DeliberationPolicy = config.DeliberationPolicy;
-        DeliberationTarget = config.DeliberationTarget;
+        Deliberation = config.Deliberation;
         Clerk = config.Clerk;
         MaxStepsPerReducer = config.MaxStepsPerReducer;
     }
@@ -25,8 +23,7 @@ public record CheckrRunnerConfig
     public ShrinkMode ShrinkMode { get; }
     public ReportMode ReportMode { get; }
     public WarningLevel WarningLevel { get; }
-    public Func<CaseFile, int>? DeliberationPolicy { get; }
-    public int? DeliberationTarget { get; init; }
+    public Deliberation? Deliberation { get; }
     public ITranscribe Clerk { get; }
     public int MaxStepsPerReducer { get; }
 }

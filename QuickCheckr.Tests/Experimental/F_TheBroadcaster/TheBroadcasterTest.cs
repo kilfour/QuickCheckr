@@ -19,7 +19,7 @@ public partial class TheBroadcasterTest : BaseTest
     {
         var article = TheJournalist.Exposes(() =>
             GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(),
-                a => a with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions }));
+                a => a with { Deliberation = Deliberation.MinimumExecutions() }));
         WriteAsserts(article, false);
         WriteReport<TheBroadcasterTest>(article, false);
     }

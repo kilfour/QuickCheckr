@@ -1,6 +1,5 @@
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.B_RunningACheckr;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.A_FilingEvidence;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.F_DeliberationPolicy;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMode;
@@ -8,7 +7,6 @@ using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_Report
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickPulse.Explains;
 
 
@@ -17,7 +15,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 [DocFile]
 [DocLink(typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(RunningACheckr))]
-[DocLink(typeof(TheEvidenceVault))]
 [DocLink(typeof(A_ReportModeReference))]
 [DocLink(typeof(A_ShrinkModeReference))]
 [DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][RunningACheckr] | [Next][TheEvidenceVault]  \n")]
@@ -28,7 +25,6 @@ You typically start from `CheckrConfig.Default()` and then tweak the parts you c
 All configuration options live in the `QuickCheckr.Protocol` namespace.")]
 [DocContent("\n**Default Configuration:**")]
 [DocExample(typeof(Configuration), nameof(DefaultSettings))]
-[DocInclude(typeof(FilingEvidence))]
 [DocInclude(typeof(TheCustodian))]
 [DocInclude(typeof(DeliberationPolicyTests))]
 [DocInclude(typeof(ReportModeTests))]
@@ -48,8 +44,7 @@ public class Configuration
             ShrinkMode = ShrinkMode.Default,
             ReportMode = ReportMode.Default,
             WarningLevel = WarningLevel.Important,
-            DeliberationPolicy = null,
-            DeliberationTarget = null,
+            Deliberation = null,
             MaxStepsPerReducer = 1024
         };
     }
@@ -65,7 +60,7 @@ public class Configuration
         // Assert.IsType<Custodian.FileRecorder>(actual.Custodian.Recorder("test"));
         Assert.Equal(expected.ShrinkMode, actual.ShrinkMode);
         Assert.Equal(expected.ReportMode, actual.ReportMode);
-        Assert.Equal(expected.DeliberationPolicy, actual.DeliberationPolicy);
+        Assert.Equal(expected.Deliberation, actual.Deliberation);
         // more ?
     }
 }

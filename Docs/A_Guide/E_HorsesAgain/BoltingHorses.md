@@ -89,7 +89,7 @@ private static readonly CheckrOf<Case> CreateCoach =
         from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
     from coach in Checkr.Act("Create Coach", () => new Coach(name))
     from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-    from toPool in Trackr.ToPool("Store Coach", coach) // Store this coach in the pool.
+    from toPool in Trackr.ToPool("Store Coach", () => coach) // Store this coach in the pool.
     select Case.Closed;
 ```
 **Update Coach Skills Checkr:**  
@@ -114,7 +114,7 @@ private static readonly CheckrOf<Case> CreateCourse =
         from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
     from course in Checkr.Act("Create Course", () => new Course(name))
     from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-    from toPool in Trackr.ToPool("Store Course", course) // Store this course in the pool.
+    from toPool in Trackr.ToPool("Store Course", () => course) // Store this course in the pool.
     select Case.Closed;
 ```
 **Assign Coach to Course Checkr:**  
@@ -158,27 +158,27 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  Seed:                    1473455315
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = Course-1
+   - Store Course = Course-1
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = Coach-1
+   - Store Coach = Coach-1
  ------------------------------------------------------------
   Executed: Assign Coach to Course
-   -  Pool: (Coach, Course) to Assign = ( Coach-1, Course-1 )
+   - (Coach, Course) to Assign = ( Coach-1, Course-1 )
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to Update Skills = Course-1
-   - Input: Course Skills           = [ _ ]
- ===================================================================
-  !! Expectation Failed: Assigned Coach Must Be Suitable: Coach-1
- ===================================================================
+   - Course to Update Skills = Course-1
+   - Course Skills           = [ _ ]
+ ==========================================================
+  !! Expectation Failed: Assigned Coach Must Be Suitable
+       Coach-1
+ ==========================================================
  Passed Expectations
  - Course Name Set: 4x
  - Coach Name is set: 4x
  - Coach Skills Set: 2x
  - Coach is assigned: 2x
- - Assigned Coach Must Be Suitable: Coach-1: 3x
- - Assigned Coach Must Be Suitable: Coach-3: 3x
+ - Assigned Coach Must Be Suitable: 3x
  - Course Required Skills Set: 1x
  ------------------------------------------------------------
 ```

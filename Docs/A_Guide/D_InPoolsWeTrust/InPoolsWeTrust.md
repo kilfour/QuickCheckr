@@ -16,7 +16,7 @@ Pools are created **auto-magically**. Whenever any checkr tries to access a pool
 ## Storing elements in the Pool
 ```csharp
 from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
-from storeName in Trackr.ToPool("Name", new Contact(name)) // <= And in it goes.
+from storeName in Trackr.ToPool("Name", () => new Contact(name)) // <= And in it goes.
 select Case.Closed;
 ```
 ## Using random elements from a Pool
@@ -75,7 +75,7 @@ from operations in Checkr.OneOfWhen(
         from name in Checkr.Input("Name", NameFuzzr)
         from add in Checkr.Act("Add", () => contactBook.Add(name))
             // Store the Contact in the Pool.
-        from storeName in Trackr.ToPool("Store", new Contact(name))
+        from storeName in Trackr.ToPool("Store", () => new Contact(name))
         select Case.Closed),
     // 2. Update a (Contact-) name in the Rolodex
     Trackr.PoolWhen<Contact>("Contact to update",

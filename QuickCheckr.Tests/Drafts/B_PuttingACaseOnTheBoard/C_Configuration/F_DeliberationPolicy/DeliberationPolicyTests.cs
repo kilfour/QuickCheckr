@@ -100,7 +100,7 @@ public class DeliberationPolicyTests : BaseTest
 
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
-        => config with { DeliberationPolicy = DeliberationPolicy.MinimumExecutions };
+        => config with { Deliberation = Deliberation.MinimumExecutions() };
 
 
     [Fact]
@@ -130,85 +130,85 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MinimumExecutions)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MinimumExecutions)}`")]
     public void PolicyMinimumExecutions()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 1))
             .AddExecutionDeposition(new ExecutionDeposition(1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 2));
-        var deliberator = new Deliberator(DeliberationPolicy.MinimumExecutions, null);
+        var deliberator = new Deliberator(Deliberation.MinimumExecutions());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(2, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MinimumOriginalExecutions)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MinimumOriginalExecutions)}`")]
     public void PolicyMinimumOriginalExecutions()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 2, Seed: 1))
             .AddExecutionDeposition(new ExecutionDeposition(1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 3, Seed: 2));
-        var deliberator = new Deliberator(DeliberationPolicy.MinimumOriginalExecutions, null);
+        var deliberator = new Deliberator(Deliberation.MinimumOriginalExecutions());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(1, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MinimumShrinkCount)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MinimumShrinkCount)}`")]
     public void PolicyMinimumShrinkCount()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 1, ShrinkCount: 1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 2, ShrinkCount: 2));
-        var deliberator = new Deliberator(DeliberationPolicy.MinimumShrinkCount, null);
+        var deliberator = new Deliberator(Deliberation.MinimumShrinkCount());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(1, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MaximumShrinkCount)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MaximumShrinkCount)}`")]
     public void PolicyMaximumShrinkCount()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 1, ShrinkCount: 1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 2, ShrinkCount: 2));
-        var deliberator = new Deliberator(DeliberationPolicy.MaximumShrinkCount, null);
+        var deliberator = new Deliberator(Deliberation.MaximumShrinkCount());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(2, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MinimumWarnings)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MinimumWarnings)}`")]
     public void PolicyMinimumWarnings()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(Seed: 2))
             .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddWarningDeposition(new WarningDeposition(new AllInputsIrrelevantWarning())));
-        var deliberator = new Deliberator(DeliberationPolicy.MinimumWarnings, null);
+        var deliberator = new Deliberator(Deliberation.MinimumWarnings());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(1, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MaximumExecutionsShrunk)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MaximumExecutionsShrunk)}`")]
     public void PolicyMaximumExecutionsShrunk()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 3, Seed: 1))
             .AddExecutionDeposition(new ExecutionDeposition(1));
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 2, Seed: 2))
             .AddExecutionDeposition(new ExecutionDeposition(1));
-        var deliberator = new Deliberator(DeliberationPolicy.MaximumExecutionsShrunk, null);
+        var deliberator = new Deliberator(Deliberation.MaximumExecutionsShrunk());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(1, deliberator.GetCaseFile().Seed);
     }
 
     [Fact]
-    [DocContent($"- `{nameof(DeliberationPolicy)}.{nameof(DeliberationPolicy.MaximumDistinctPassedExpectations)}`")]
+    [DocContent($"- `{nameof(Deliberation)}.{nameof(Deliberation.MaximumDistinctPassedExpectations)}`")]
     public void PolicyMaximumDistinctPassedExpectations()
     {
         var caseFile1 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 3, Seed: 1))
@@ -216,7 +216,7 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
         var caseFile2 = CaseFile.From(new FailureInfo(), new RunInfo(OriginalRunExecutionCount: 2, Seed: 2))
             .AddPassedExpectationDeposition(new PassedExpectation("One", 1))
             .AddPassedExpectationDeposition(new PassedExpectation("Two", 1));
-        var deliberator = new Deliberator(DeliberationPolicy.MaximumDistinctPassedExpectations, null);
+        var deliberator = new Deliberator(Deliberation.MaximumDistinctPassedExpectations());
         deliberator.Check(caseFile1);
         deliberator.Check(caseFile2);
         Assert.Equal(2, deliberator.GetCaseFile().Seed);

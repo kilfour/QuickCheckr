@@ -28,7 +28,7 @@ public static class CheckrOfTRun
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
         var findings = new Findings();
-        var deliberator = new Deliberator(config.DeliberationPolicy, config.DeliberationTarget);
+        var deliberator = new Deliberator(config.Deliberation);
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
@@ -36,7 +36,7 @@ public static class CheckrOfTRun
             findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {
-                if (config.DeliberationPolicy != null)
+                if (config.Deliberation != null)
                 {
                     deliberator.Check(caseFile);
                     if (deliberator.TargetReached())
@@ -46,7 +46,7 @@ public static class CheckrOfTRun
                     ReportCaseFile(executionsPerRun, config, caseFile);
             }
         }
-        if (config.DeliberationPolicy != null && deliberator.HasCaseFile)
+        if (config.Deliberation != null && deliberator.HasCaseFile)
             ReportCaseFile(executionsPerRun, config, deliberator.GetCaseFile());
         else
             ReportCaseFileSummary(config, findings);

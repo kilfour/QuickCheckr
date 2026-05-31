@@ -15,3 +15,20 @@ In addition a sub folder is created containing the evidence vault files:
 `evidence.qv` contains a list of all failing seeds, whenever a test fails, the seed is added to this file.
 
 This *evidence* can later be used to potentially solve *Cold Cases*.  
+## When the Checkr passes.
+QuickCheckr provides the following *findings* about the run:  
+
+**The Checkr:**  
+```csharp
+Checkr.Expect("Always Passes", () => true);
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ 5 Runs
+ ------------------------------------------------------------
+ Passed Expectations
+ - Always Passes: 50x
+ ------------------------------------------------------------
+```

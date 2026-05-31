@@ -1,6 +1,5 @@
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.F_TestFrameworkIntegration;
 using QuickPulse.Explains;
@@ -11,7 +10,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 [DocFileHeader("Putting a Case on the Board")]
 [DocLink(typeof(RunningACheckr))]
 [DocLink(typeof(Configuration))]
-[DocLink(typeof(TheEvidenceVault))]
 [DocLink(typeof(GatheringEvidence))]
 [DocContent(
 @"This chapter takes you through the different options on how to run, configure and rerun Checkrs.

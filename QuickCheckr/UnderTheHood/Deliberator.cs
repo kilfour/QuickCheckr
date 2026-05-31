@@ -1,11 +1,12 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class Deliberator(Func<CaseFile, int>? scoringFunction, int? deliberationTarget)
+public class Deliberator(Deliberation? deliberation)
 {
-    private readonly Func<CaseFile, int>? scoringFunction = scoringFunction;
-    private readonly int? deliberationTarget = deliberationTarget;
+    private readonly Func<CaseFile, int>? scoringFunction = deliberation?.Score;
+    private readonly int? deliberationTarget = deliberation?.Target;
     private DeliberatedCaseFile? current = null;
 
     public bool HasCaseFile => current is not null;

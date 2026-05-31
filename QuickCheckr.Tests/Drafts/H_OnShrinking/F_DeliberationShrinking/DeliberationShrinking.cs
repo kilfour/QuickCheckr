@@ -91,7 +91,7 @@ but the element values are considered irrelevant (*wrong*).")]
 
     [CodeExample]
     private static CheckrConfig ConfigureShrinkCount(CheckrConfig config)
-        => config with { DeliberationPolicy = DeliberationPolicy.MinimumShrinkCount };
+        => config with { Deliberation = Deliberation.MinimumShrinkCount() };
 
     private static void Verify_DeliberatedGreedyFixed(Article article)
     {

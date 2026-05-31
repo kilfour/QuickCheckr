@@ -1,21 +1,15 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;
 
+namespace QuickCheckr.Tests.Docs.K_Evidence.B_ColdCases;
 
-namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.D_TheEvidenceVault;
 
 [DocFile]
-[DocLink(typeof(PuttingACaseOnTheBoard))]
-[DocLink(typeof(Configuration))]
-[DocLink(typeof(GatheringEvidence))]
-[DocContent("[The Board][PuttingACaseOnTheBoard] | [Previous][Configuration] | [Next][GatheringEvidence]  \n")]
-public class TheEvidenceVault : BaseTest
+public class A_ColdCases : BaseTest
 {
     private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
 
@@ -38,7 +32,7 @@ public class TheEvidenceVault : BaseTest
     [DocContent(
 @"Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.")]
-    [DocExample(typeof(TheEvidenceVault), nameof(RunColdCasesReview))]
+    [DocExample(typeof(A_ColdCases), nameof(RunColdCasesReview))]
     [DocContent("This will create a report per seed in the evidence vault.")]
     public void ReviewingColdCases()
     {
@@ -99,7 +93,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
 @"The method mentioned above is usefull for regression testing, but sometimes,
 there is no need to keep the evidence around after the culprit is found.  
 In this case we use:")]
-    [DocExample(typeof(TheEvidenceVault), nameof(RunCloseResolvedColdCases))]
+    [DocExample(typeof(A_ColdCases), nameof(RunCloseResolvedColdCases))]
     [DocContent(
 @"If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.")]
     public void ClosingColdCases()

@@ -2,8 +2,7 @@
 
 
 ### Doing
-* consolidate CheckrOfTConductInvestigations and CheckrOfTGatherEvidence
-  * Test maxStoredCaseFilesReached in Inquiry
+
 * Shrink Log
 * ShrinkableAct consolidation
 * Reused the name `GatheringEvidence` for the new casefile producing workflow.
@@ -11,21 +10,8 @@
 
 
 ### Todo
-* Added Deliberator: 
-  Maybe change it to an overseer (CaseOfficer) and move all the *Case Scoped* logic in there.  
-  This could get rid of `Duplicate code in CheckrOfTGatherEvidence and Vault`, I think.
-  Recap : 
-    * Execution Scope: 1 Execution.
-    * Run Scope: 1 Run, possibly many Executions.
-    * Case Scope: Multiple Runs.  
-      Can lead to :
-        * Failing Run => CaseFile
-        * All Runs Pass => Case Summary
-    * Investigation Scope:
-      * Multiple Cases investigated, only through GatherEvidence for now.
-      * We could expand this.  
-        For instance:  
-        > Hey Deskofficer, give me three reports different reports with one execution, ASAP !   
+* consolidate CheckrOfTConductInvestigations and CheckrOfTGatherEvidence
+  * Test maxStoredCaseFilesReached in Inquiry
 
 
 ### Wish List
@@ -42,8 +28,11 @@
 * Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
 * Removed warnings for unchecked conditional expectations.  
   The implementation could not reliably detect all unchecked expectations in composed Checkrs, potentially creating false confidence.
-* Added a consolidated report for GatherEvidence(...) and Conduct( n.Investigations(), ...)
+* Consolidated GatherEvidence(...) and Conduct( n.Investigations(), ...)  
+  GatherEvidence is now a special customizable case of Conduct.
 * Removed the *evidence-log* vault file.
+* Moved config's `DeliberationPolicy` and `DeliberationTarget` into a new class `Deliberation`.  
+  Renamed all occurences of *DeliberationPolicy* to *Deliberation*.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
