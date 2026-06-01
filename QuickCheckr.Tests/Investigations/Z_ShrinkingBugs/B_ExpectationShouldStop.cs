@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
 public class B_ExpectationShouldStop : CheckrTest<B_ExpectationShouldStop>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

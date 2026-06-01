@@ -60,6 +60,11 @@ public static class Style
     public static Flow<Flow> Caption(this Flow<Flow> other, string label) =>
         other.Then(Caption(label));
 
+    public static Flow<Flow> CaptionWidth(string label) =>
+        Pulse.Trace($"{label + ":",-25}:");
+    public static Flow<Flow> CaptionWidth(this Flow<Flow> other, string label) =>
+        other.Then(CaptionWidth(label));
+
     public static Flow<Flow> Exclaim(string label) =>
         Pulse.Trace($"!! {label}");
     public static Flow<Flow> Exclaim(this Flow<Flow> other, string label) =>
@@ -76,4 +81,9 @@ public static class Style
             Pulse.ToFlow(InterspersedPrimed, input));
     public static Flow<Flow> Interspersed(this Flow<Flow> other, IEnumerable<string> input) =>
         other.Then(Interspersed(input));
+
+    public static Flow<Flow> Parenthesized(Flow<Flow> inner) =>
+        Pulse.Trace("(").Then(inner).Then(Pulse.Trace(")"));
+    public static Flow<Flow> Parenthesized(this Flow<Flow> other, Flow<Flow> inner) =>
+        other.Then(Parenthesized(inner));
 }

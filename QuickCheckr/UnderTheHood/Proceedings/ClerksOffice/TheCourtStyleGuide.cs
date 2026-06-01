@@ -89,7 +89,7 @@ public static class TheCourtStyleGuide
             .ToFlow(FinalTrace, /**/ execution.FinalTraceDepositions)
             .ToFlow(Warning,    /**/ execution.GetWarningDepositionsForReport());
 
-    private static Flow<Flow> Execution(CollapsableExecutionDeposition input) =>
+    public static Flow<Flow> Execution(CollapsableExecutionDeposition input) =>
         Execution(input, input.ExecutionDeposition);
 
     private static Flow<Flow> FailedVerification(FailedVerificationDeposition input)
@@ -156,68 +156,12 @@ public static class TheCourtStyleGuide
                 .ToFlow(Failure, caseFile.FailureDeposition);
     }
 
-    private static Flow<Flow> PassedExpectations(IEnumerable<PassedExpectation> input) =>
+    public static Flow<Flow> PassedExpectations(IEnumerable<PassedExpectation> input) =>
         Pulse
             .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input)
             .DrawLine();
 
-    public static Flow<Flow> InquiryCaseFile(CaseFile caseFile)
-    {
-        var originalExecutionCountText = $"{caseFile.OriginalRunExecutionCount} {Pluralize(caseFile.OriginalRunExecutionCount, "execution")}";
-        var executionCountText = $"{caseFile.ExecutionCount} {Pluralize(caseFile.ExecutionCount, "execution")}";
-        var shrinkCountText = $" (after {caseFile.ShrinkCount} {Pluralize(caseFile.ShrinkCount, "shrink")})";
-        return
-            Style
-                .DoubleLine()
-                .OnNewLine().Trace($"Seed:                    {caseFile.Seed}")
-                .OnNewLine().Trace($"Original failing run:    {originalExecutionCountText}")
-                .OnNewLine().Trace($"Failure:                 {caseFile.FailureDeposition.GetFailureDescription()}")
-                .When(caseFile.ShrinkCount > 0,
-                    Style
-                        .OnNewLine()
-                        .Trace($"Minimal failing case:    ")
-                        .Trace(executionCountText)
-                        .Trace(shrinkCountText))
-                .ToFlow(Execution, caseFile.CollapseExecutions())
-                .DoubleLine()
-                .NewLine();
-    }
 
-    private static Flow<Flow> InquiryPassedExpectations(IEnumerable<PassedExpectation> input) =>
-        Pulse
-            .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input);
-
-    public static Flow<Flow> InquiryHeaderCount(this Flow<Flow> other, int count, string label, string suffix) =>
-        other.Then(
-            Style
-                .OnNewLine()
-                .Trace(count)
-                .Space()
-                .Trace(label)
-                .Space()
-                .Pluralize(count, suffix));
-    public static Flow<Flow> Inquiry(Inquiry input) =>
-        Style
-            .DrawTopLine()
-            .InquiryHeaderCount(input.NumberOfRuns, "Total", "Run")
-            .InquiryHeaderCount(input.FailureCount, "Failed", "Run")
-            .InquiryHeaderCount(input.DistinctFailureCount, "Distinct", "Failure")
-            .DrawLine()
-            .NewLine()
-            .ToFlow(InquiryCaseFile, input.DistinctFailures)
-            .NewLine()
-            .DoubleLine()
-            .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(InquiryPassedExpectations, input.PassedExpectationDepositions)
-            .DoubleLine();
-
-    public static Flow<Flow> Summary(Findings input) =>
-        Style
-            .DrawTopLine()
-            .OnNewLine().Trace(input.NumberOfRuns).Space().Pluralize(input.NumberOfRuns, "Run")
-            .DrawLine()
-            .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(PassedExpectations, input.PassedExpectationDepositions);
 
     public static Flow<Flow> CaseFile(CaseFile input)
     {
@@ -237,8 +181,8 @@ public static class TheCourtStyleGuide
                 .Prime(() => decorum).Dissipate()
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
-                .OnType((Inquiry a) => Inquiry(a), () => input)
-                .OnType((Findings a) => Summary(a), () => input)
+                .OnType((Inquiry a) => TheInquiry.Flow(a), () => input)
+                .OnType((Findings a) => TheFindings.Flow(a), () => input)
                 .OnType((CaseFile a) => CaseFile(a), () => input);
     }
 }
