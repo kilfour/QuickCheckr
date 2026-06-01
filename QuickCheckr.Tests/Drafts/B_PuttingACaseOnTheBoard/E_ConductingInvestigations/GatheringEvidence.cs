@@ -1,6 +1,7 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
+using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
@@ -16,6 +17,7 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 [DocExample(typeof(GatheringEvidence), nameof(RunGatherEvidence))]
 [DocContent(
 @"When you use the above method the following steps are taken:
+- An *investigation* requires`FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.
 - The existing evidence from the vault is loaded (if available), the seeds are run, and the failing casefiles are kept in memory.
 - Next we run the specified number of Investigations, and any new failing case file is added to the in-memory list.
 - A DeskOfficer compares the casefiles for similarities, only keeping the different ones.
@@ -37,5 +39,13 @@ public class GatheringEvidence
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
         checkr.Conduct(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
             cfg => cfg with { FileAs = "GatheringEvidence" });
+
+    [Fact]
+    public void RunTest()
+    {
+        Assert.Throws<VaultNotConfiguredException>(
+            () => GatheringEvidenceCheckr.TheCheckr()
+                .Conduct(1.Investigations(), 1.Runs(), 1.ExecutionsPerRun(), a => a));
+    }
 
 }

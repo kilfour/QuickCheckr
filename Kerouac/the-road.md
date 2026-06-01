@@ -11,7 +11,6 @@
 
 ### Todo
 * make every public method that runs a checkr throw on failure
-* check if vault and conduct require FileAs => throw if not configured ?
   
 
 ### Done/Ready for Changelog after review
@@ -19,11 +18,12 @@
 * Removed warnings for unchecked conditional expectations.  
   The implementation could not reliably detect all unchecked expectations in composed Checkrs, potentially creating false confidence.
 * Consolidated `GatherEvidence(...)` and `Conduct( n.Investigations(), ...)` 
-  GatherEvidence is now a special customizable case of Conduct.
+  GatherEvidence is removed and can now be expressed as a special customizable case of Conduct.
 * Removed the *evidence-log* vault file.
 * Moved config's `DeliberationPolicy` and `DeliberationTarget` into a new class `Deliberation`.  
   Renamed all occurences of *DeliberationPolicy* to *Deliberation*.
-* `Conduct( n.Investigations(), ...)` now takes into account *Deliberation* parameters too.
+* `Conduct(n.Investigations(), ...)` now takes into account *Deliberation* parameters too.
+* `Conduct(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
 * `ReviewColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
 * `CloseColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
 
