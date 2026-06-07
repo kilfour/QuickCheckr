@@ -24,7 +24,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
             return HandleFailure();
         var passedExpectations = State.EvidenceRecorder.PassedExpectations
             .Select(a => new PassedExpectation(a.Key, a.Value));
-        return CaseFile.Passed([.. passedExpectations]);
+        return CaseFile.Passed(State.FuzzrState.Seed, [.. passedExpectations]);
     }
 
     private CaseFile HandleFailure()

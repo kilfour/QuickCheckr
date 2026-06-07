@@ -22,6 +22,9 @@ public static class CheckrOfTRunColdCases
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
         var vault = Vault.From(config);
         var caseFiles = vault.Check(checkr, config, closeResolved);
-        // config.Custodian.FileRecord(ReportPath.Main(config), new Findings().Add([.. caseFiles]), config.Clerk.File);
+        var review = new ColdCasesReview().Add([.. caseFiles]);
+        config.Custodian.FileRecord(ReportPath.Main(config), review, config.Clerk.File);
+        if (caseFiles.Any(a => a.HasEvidence))
+            throw new FalsifiableException(review, config.Clerk.File);
     }
 }

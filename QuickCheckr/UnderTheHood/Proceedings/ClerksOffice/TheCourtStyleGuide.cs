@@ -181,8 +181,10 @@ public static class TheCourtStyleGuide
                 .Prime(() => decorum).Dissipate()
                 .Prime(() => new Joiner()).Dissipate()
                 .Prime(() => new MaxLabel(0)).Dissipate()
-                .OnType((Inquiry a) => TheInquiry.Flow(a), () => input)
+                .OnType((CaseFile a) => CaseFile(a), () => input)
                 .OnType((Findings a) => TheFindings.Flow(a), () => input)
-                .OnType((CaseFile a) => CaseFile(a), () => input);
+                .OnType((Inquiry a) => TheInquiry.Flow(a), () => input)
+                .OnType((ColdCasesReview a) => TheColdCasesReview.Flow(a), () => input)
+                ;
     }
 }

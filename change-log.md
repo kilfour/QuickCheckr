@@ -149,3 +149,28 @@
   * Added a new (opt-in) `ShrinkMode.Actions` to configuration.
   * Added a temporary `ShrinkableAct` combinator,
     which later likely will replace the current `Act`.
+
+## 0.2.0: Watching the Detectives
+
+Investigation workflows, cold-case review, vault configuration safety, and consistent reporting behavior.
+
+### Changed
+- Consolidated `GatherEvidence(...)` and `Conduct(n.Investigations(), ...)`.
+  `GatherEvidence(...)` has been removed and can now be expressed as a customizable case of `Conduct(...)`.
+- Removed the `evidence-log` vault file.
+- Moved `DeliberationPolicy` and `DeliberationTarget` into the new `Deliberation` configuration class.
+- Renamed occurrences of `DeliberationPolicy` to `Deliberation`.
+- `Conduct(n.Investigations(), ...)` now takes `Deliberation` parameters into account.
+- Removed warnings for unchecked conditional expectations because composed `Checkr`s could not be detected reliably enough.
+
+### Added
+- `ReviewColdCases(...)` now persists a summary report.
+- `CloseColdCases(...)` now persists a summary report.
+- Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
+
+### Fixed / Hardened
+- `Conduct(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+- `ReviewColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+- `CloseColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+- `ReviewColdCases(...)` now throws if an existing seed still fails.
+- `CloseColdCases(...)` now throws if an existing seed still fails.

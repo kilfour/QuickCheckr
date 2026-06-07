@@ -61,7 +61,7 @@ public static class Style
         other.Then(Caption(label));
 
     public static Flow<Flow> CaptionWidth(string label) =>
-        Pulse.Trace($"{label + ":",-25}:");
+        Pulse.Trace($"{label + ":",-25}");
     public static Flow<Flow> CaptionWidth(this Flow<Flow> other, string label) =>
         other.Then(CaptionWidth(label));
 

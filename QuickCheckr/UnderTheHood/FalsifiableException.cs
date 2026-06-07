@@ -11,12 +11,6 @@ public class FalsifiableException : Exception
 {
     public IRecord TheCaseFile { get; private set; }
 
-    public FalsifiableException(Inquiry inquiry, Func<IRecord, Flow<Flow>> styleGuide)
-        : base(Environment.NewLine + TheClerk.Transcribes(inquiry, styleGuide))
-    {
-        TheCaseFile = inquiry;
-    }
-
     public FalsifiableException(CaseFile caseFile, Func<IRecord, Flow<Flow>> styleGuide)
         : base(Environment.NewLine + TheClerk.Transcribes(AddTestMethodInfo(caseFile), styleGuide))
     {
@@ -29,11 +23,23 @@ public class FalsifiableException : Exception
         TheCaseFile = caseFile;
     }
 
+    public FalsifiableException(ColdCasesReview review, Func<IRecord, Flow<Flow>> styleGuide)
+        : base(Environment.NewLine + TheClerk.Transcribes(review, styleGuide))
+    {
+        TheCaseFile = review;
+    }
+
+    public FalsifiableException(Inquiry inquiry, Func<IRecord, Flow<Flow>> styleGuide)
+        : base(Environment.NewLine + TheClerk.Transcribes(inquiry, styleGuide))
+    {
+        TheCaseFile = inquiry;
+    }
+
     private static CaseFile AddTestMethodInfo(CaseFile caseFile)
     {
         var assembly = typeof(Case).Assembly;
         var trace = new StackTrace(fNeedFileInfo: true);
-        foreach (var frame in trace.GetFrames() ?? Array.Empty<StackFrame>())
+        foreach (var frame in trace.GetFrames() ?? [])
         {
             var file = frame.GetFileName();
             if (!string.IsNullOrEmpty(file))

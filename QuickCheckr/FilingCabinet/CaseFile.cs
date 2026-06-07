@@ -108,9 +108,9 @@ public class CaseFile : IRecord
         => FailureDeposition.GetFailureDescription();
 
     public static CaseFile Empty() => new();
-    public static CaseFile Passed(List<PassedExpectation> passedExpectations)
+    public static CaseFile Passed(int seed, List<PassedExpectation> passedExpectations)
     {
-        var caseFile = new CaseFile();
+        var caseFile = new CaseFile { Seed = seed };
         caseFile.PassedExpectations.AddRange(passedExpectations);
         return caseFile;
     }

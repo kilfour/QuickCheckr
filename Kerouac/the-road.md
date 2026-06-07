@@ -1,31 +1,16 @@
-## 0.2.0: Watching the Detectives
+## 0.x.x: ...
 
 
 ### Doing
 * ShrinkableAct consolidation 
   Needs a decision, maybe not for 0.2.0
-* Add a summary report for cold case stuff.
 
 ### To Test
-* Move all evidence related stuff (vault and conduct) to Tests.Doc and ensure full coverage
+* Expand/Rework authoring for the new reports.
 
 ### Todo
-* make every public method that runs a checkr throw on failure
-  
 
 ### Done/Ready for Changelog after review
-* Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
-* Removed warnings for unchecked conditional expectations.  
-  The implementation could not reliably detect all unchecked expectations in composed Checkrs, potentially creating false confidence.
-* Consolidated `GatherEvidence(...)` and `Conduct( n.Investigations(), ...)` 
-  GatherEvidence is removed and can now be expressed as a special customizable case of Conduct.
-* Removed the *evidence-log* vault file.
-* Moved config's `DeliberationPolicy` and `DeliberationTarget` into a new class `Deliberation`.  
-  Renamed all occurences of *DeliberationPolicy* to *Deliberation*.
-* `Conduct(n.Investigations(), ...)` now takes into account *Deliberation* parameters too.
-* `Conduct(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
-* `ReviewColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
-* `CloseColdCases(...)` now throws `VaultNotConfiguredException` if `FileAs` is not supplied.
 
 ## 0.3.0 : All Aboard
 * More in-built reducers

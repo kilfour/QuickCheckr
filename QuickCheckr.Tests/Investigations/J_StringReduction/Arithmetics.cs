@@ -139,17 +139,27 @@ public class Arithmetics
         Assert.True(runner.EndOfText);
     }
 
-    [Fact(Skip = "Fails with 32-9")]
-    public void AllChaotic()
+    [Fact]
+    public void Ordering_Matters()
     {
         var selectr =
             from lhs in Stringr.AtleastOnce(char.IsDigit).Editable()
             from op in Stringr.Once('+', '-').Editable()
             from rhs in Stringr.AtleastOnce(char.IsDigit).Editable()
-            from replaceRhs in rhs.Replace(t => lhs.Text)
             from replaceLhs in lhs.Replace(t => rhs.Text)
             from replaceOp in op.Replace(t => "-")
+            from replaceRhs in rhs.Replace(t => lhs.Text)
             select Selection.Defined;
-        Assert.Equal("39-2", RunAll(selectr, "39+2"));
+        Assert.Equal("2-39", RunAll(selectr, "39+2"));
+
+        selectr =
+           from lhs in Stringr.AtleastOnce(char.IsDigit).Editable()
+           from op in Stringr.Once('+', '-').Editable()
+           from rhs in Stringr.AtleastOnce(char.IsDigit).Editable()
+           from replaceRhs in rhs.Replace(t => lhs.Text)
+           from replaceLhs in lhs.Replace(t => rhs.Text)
+           from replaceOp in op.Replace(t => "-")
+           select Selection.Defined;
+        Assert.Equal("32-9", RunAll(selectr, "39+2"));
     }
 }

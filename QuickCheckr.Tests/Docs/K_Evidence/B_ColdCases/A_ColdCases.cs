@@ -3,6 +3,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -40,8 +41,9 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     {
         var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
-        RunColdCasesReview(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian }));
+        Assert.Throws<FalsifiableException>(() =>
+            RunColdCasesReview(Checkr.Expect("Fails", () => false),
+                cfg => Configure(cfg with { Custodian = custodian })));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
@@ -59,8 +61,9 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     {
         var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
-        RunColdCasesReview(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian }));
+        Assert.Throws<FalsifiableException>(() =>
+            RunColdCasesReview(Checkr.Expect("Fails", () => false),
+                cfg => Configure(cfg with { Custodian = custodian })));
 
         var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
         var article = TheJournalist.Unearths(caseFile);
@@ -90,24 +93,42 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
         Assert.Equal(1, article.PassedExpectation(1).Read().TimesPassed);
     }
 
-    // [Fact]
-    // [DocContent("- The main report contains a summary of the case files.")]
-    // public void ReviewingColdCases_Summary()
-    // {
-    //     var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
-    //     var checkr =
-    //         from input in Checkr.Input("input", Fuzzr.Bool())
-    //         from expect in Checkr.Expect("input is true", () => input)
-    //         select Case.Closed;
+    [Fact]
+    [DocContent("- The main report contains a summary of the case files.")]
+    public void ReviewingColdCases_Summary()
+    {
+        var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
+        var checkr =
+            from input in Checkr.Input("input", Fuzzr.Bool())
+            from expect in Checkr.Expect("input is true", () => input)
+            select Case.Closed;
 
-    //     RunColdCasesReview(checkr,
-    //         cfg => Configure(cfg with { Custodian = custodian }));
+        Assert.Throws<FalsifiableException>(() =>
+            RunColdCasesReview(checkr,
+                cfg => Configure(cfg with { Custodian = custodian })));
 
-    //     var record = custodian.Records.Values.Single(a => a is Findings);
-    //     var article = TheJournalist.Unearths(record);
+        var record = custodian.Records.Values.Single(a => a is ColdCasesReview);
+        var article = TheJournalist.Unearths(record);
 
-    //     // WriteReport(article, "temp.txt", true);
-    // }
+        // TODO TEST CONTENT
+
+        WriteReport(article, "Example.txt", false);
+    }
+
+    [Fact]
+    [DocContent("- `ReviewColdCases` throws a `FalsifiableException` if any previous seed still fails.")]
+    public void ReviewingColdCases_ThrowsIfAtleastOneFailed()
+    {
+        var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
+        var checkr =
+            from input in Checkr.Input("input", Fuzzr.Bool())
+            from expect in Checkr.Expect("input is true", () => input)
+            select Case.Closed;
+
+        Assert.Throws<FalsifiableException>(
+            () => RunColdCasesReview(checkr,
+            cfg => Configure(cfg with { Custodian = custodian })));
+    }
 
     [Fact]
     [DocContent("- `ReviewColdCases` requires `FileAs`. If this is not configured it throws a `VaultNotConfiguredException`.")]
@@ -130,8 +151,9 @@ In this case we use:")]
     {
         var custodian = new InMemoryCustodian([new VaultEntry(1862095796, 1)]);
 
-        RunCloseResolvedColdCases(Checkr.Expect("Fails", () => false),
-            cfg => Configure(cfg with { Custodian = custodian }));
+        Assert.Throws<FalsifiableException>(() =>
+            RunCloseResolvedColdCases(Checkr.Expect("Fails", () => false),
+                cfg => Configure(cfg with { Custodian = custodian })));
 
         Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
@@ -173,6 +195,42 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
 
         Assert.Empty(custodian.Records.Where(a => a.Value is CaseFile));
         Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
+    }
+
+    [Fact]
+    [DocContent("- The main report contains a summary of the case files.")]
+    public void ClosingColdCases_Summary()
+    {
+        var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
+        var checkr =
+            from input in Checkr.Input("input", Fuzzr.Bool())
+            from expect in Checkr.Expect("input is true", () => input)
+            select Case.Closed;
+
+        Assert.Throws<FalsifiableException>(() => RunCloseResolvedColdCases(checkr,
+            cfg => Configure(cfg with { Custodian = custodian })));
+
+        var record = custodian.Records.Values.Single(a => a is ColdCasesReview);
+        var article = TheJournalist.Unearths(record);
+
+        // TODO TEST CONTENT
+
+        WriteReport(article, "Example_Closing.txt", true);
+    }
+
+    [Fact]
+    [DocContent("- `CloseResolvedColdCases` throws a `FalsifiableException` if any previous seed still fails.")]
+    public void ClosingColdCases_ThrowsIfAtleastOneFailed()
+    {
+        var custodian = new InMemoryCustodian([new VaultEntry(1, 1), new VaultEntry(2, 1)]); // 1 fails, 2 passes
+        var checkr =
+            from input in Checkr.Input("input", Fuzzr.Bool())
+            from expect in Checkr.Expect("input is true", () => input)
+            select Case.Closed;
+
+        Assert.Throws<FalsifiableException>(
+            () => RunCloseResolvedColdCases(checkr,
+            cfg => Configure(cfg with { Custodian = custodian })));
     }
 
     [Fact]

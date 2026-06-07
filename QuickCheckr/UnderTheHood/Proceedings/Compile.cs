@@ -10,13 +10,6 @@ namespace QuickCheckr.UnderTheHood.Proceedings
 {
     public static class Compile
     {
-        public static CaseFile PassedExpectations(IReadOnlyDictionary<string, int> passedExpectations)
-        {
-            var caseFile = CaseFile.Empty();
-            AddPassedExpectations(passedExpectations, caseFile);
-            return caseFile;
-        }
-
         public static CaseFile TheCaseFile(Dossier dossier, Memory memory, ManOfWealthAndTaste inputPrinter)
         {
             var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo);
