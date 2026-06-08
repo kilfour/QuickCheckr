@@ -40,6 +40,7 @@ public static class TheInquiry
             .OnNewLine()
                 .CaptionWidth("Original failing run")
                 .Trace(caseFile.OriginalRunExecutionCount)
+                .Space()
                 .Pluralize(caseFile.OriginalRunExecutionCount, "execution")
             .OnNewLine().CaptionWidth("Failure").Trace(caseFile.FailureDeposition.GetFailureDescription())
             .When(caseFile.ShrinkCount > 0,

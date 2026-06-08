@@ -184,7 +184,6 @@ public static class TheCourtStyleGuide
                 .OnType((CaseFile a) => CaseFile(a), () => input)
                 .OnType((Findings a) => TheFindings.Flow(a), () => input)
                 .OnType((Inquiry a) => TheInquiry.Flow(a), () => input)
-                .OnType((ColdCasesReview a) => TheColdCasesReview.Flow(a), () => input)
-                ;
+                .OnType((ColdCasesReview a) => TheColdCasesReview.Flow(a), () => input);
     }
 }
