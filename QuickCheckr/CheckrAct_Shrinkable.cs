@@ -73,6 +73,7 @@ public static partial class Checkr
 public class ActResult<T>
 {
     private readonly bool notExecuted = false;
+    public bool HasExecuted => !notExecuted;
     private readonly T? result;
     public T Result
     {

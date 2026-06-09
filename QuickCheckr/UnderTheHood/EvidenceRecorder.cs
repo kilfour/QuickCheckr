@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class EvidenceRecorder
+public class EvidenceRecorder(Pathologist pathologist)
 {
     public bool IsReplay { get; private set; }
     public void StartReplay()
@@ -42,6 +42,7 @@ public class EvidenceRecorder
 
     public void ExpectationCrashed(string key, Exception exception)
     {
+        pathologist.Inform("ExpectationCrashed", key, exception.GetType().Name);
         if (IsReplay)
         {
             // currentFailed = true;
@@ -55,6 +56,7 @@ public class EvidenceRecorder
     public ExpectationFailure FailingExpectation { get; private set; } = ExpectationFailure.Empty;
     public void ExpectationFailed(ExpectationFailure failure, int executionId)
     {
+        pathologist.Inform("ExpectationFailed", failure.Key, executionId);
         if (IsReplay)
         {
 

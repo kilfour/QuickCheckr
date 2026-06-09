@@ -2,7 +2,6 @@ using System.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Archiving;
 
 namespace QuickCheckr;
 
@@ -27,31 +26,9 @@ public static class CheckrOfTRun
         int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config);
-        if (findings.FalsifyingCaseFile is { } caseFile)
-            ReportCaseFile(executionsPerRun, config, caseFile);
-        else
-            ReportCaseFileSummary(config, findings);
+        var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, []);
+        SpokesPerson.Announce(config, findings, executionsPerRun);
         return findings;
-    }
-
-    [StackTraceHidden]
-    private static void ReportCaseFile(ExecutionCount executionsPerRun, CheckrRunnerConfig config, CaseFile caseFile)
-    {
-        if (!string.IsNullOrWhiteSpace(config.FileAs))
-        {
-            config.Custodian.FileRecord(ReportPath.Main(config), caseFile, config.Clerk.File);
-            Vault.From(config).AddSeed(caseFile.Seed, executionsPerRun.NumberOfExecutions);
-        }
-        throw new FalsifiableException(caseFile, config.Clerk.File);
-    }
-
-    private static void ReportCaseFileSummary(CheckrRunnerConfig config, Findings findings)
-    {
-        if (!string.IsNullOrWhiteSpace(config.FileAs))
-        {
-            config.Custodian.FileRecord(ReportPath.Main(config), findings, config.Clerk.File);
-        }
     }
 
     /// <summary>

@@ -6,6 +6,7 @@ public class TraceRun(
 {
     public void Run(bool trace)
     {
+        using var _ = State.Pathologist.Examine("TraceRun");
         State.StartReplay();
         State.Memory.Tracing = trace;
         State.Memory.IsConfigRun = true;

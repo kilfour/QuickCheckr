@@ -12,6 +12,7 @@ public class InputShrinker(
 {
     public int Run()
     {
+        using var _ = State.Pathologist.Examine("InputShrinking");
         var shrinkCount = 0;
         foreach (var (executionId, executionMemory) in State.Memory.Entries())
         {

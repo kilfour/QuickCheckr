@@ -13,6 +13,7 @@ public static class TheCatcher
         }
         catch (CheckrWasNotExecuted)
         {
+            state.Pathologist.Inform("CheckrWasNotExecuted");
             return CheckrResult.Default<T>(state);
         }
         catch (Exception exception)

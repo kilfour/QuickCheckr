@@ -1,20 +1,51 @@
-using QuickPulse.Show;
 using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood;
 
 public class Pathologist
 {
-    public static Pathologist FromArtery(IArtery? artery) =>
-        artery is null ? new() : new() { IsWatching = true, artery = artery };
+    public static Pathologist From(List<string> focuses) =>
+        focuses.Count > 0 ? new() { IsWatching = true, focuses = focuses } : new();
 
     public bool IsWatching { get; private set; }
-    public void Examine<T>(object? obj) => Examine(typeof(T).Name, obj);
-    public void Examine(string source, object? obj) => artery?.Absorb(new Observation(source, Introduce.This(obj!)));
-    private record Observation(string Source, object? Value);
+    private List<string> focuses = [];
+    private readonly FileLogArtery artery = FileLog.Write("pathology-results.log");
+    private readonly Stack<string> path = new();
+
+    public void Inform(params object[] paths)
+    {
+        using var _ = Examine(paths);
+    }
+
+    public PathologyScope Examine(params object[] paths)
+    {
+        if (!IsWatching)
+            return default;
+        var newPath = string.Join('-', paths);
+        path.Push(newPath);
+        var source = string.Join('-', path.Reverse());
+        if (focuses.Any(a => source.StartsWith(a)))
+            artery.Absorb(source);
+        return new PathologyScope(this);
+    }
+
+    public void Pop()
+    {
+        path.Pop();
+    }
 
     private Pathologist() { }
-    private IArtery? artery;
+}
+
+public readonly struct PathologyScope : IDisposable
+{
+    private readonly Pathologist? pathologist;
+
+    public PathologyScope(Pathologist? pathologist)
+        => this.pathologist = pathologist;
+
+    public void Dispose()
+        => pathologist?.Pop();
 }
 
 

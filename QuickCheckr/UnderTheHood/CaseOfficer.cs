@@ -8,13 +8,14 @@ public class CaseOfficer
         CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        CheckrRunnerConfig config)
+        CheckrRunnerConfig config,
+        List<string> focuses)
     {
         var findings = new Findings();
         var deliberator = new Deliberator(config.Deliberation);
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions);
+            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, focuses);
             var caseFile = runner.Run();
             findings.Add(caseFile);
             if (caseFile.HasEvidence)

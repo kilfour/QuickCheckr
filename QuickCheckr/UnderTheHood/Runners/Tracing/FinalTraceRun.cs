@@ -6,6 +6,7 @@ public class FinalTraceRun(
 {
     public void Run()
     {
+        using var _ = State.Pathologist.Examine("FinalTraceRun");
         State.StartReplay();
         State.Memory.FinalTrace = true;
         foreach (var id in State.Memory.Numbers)

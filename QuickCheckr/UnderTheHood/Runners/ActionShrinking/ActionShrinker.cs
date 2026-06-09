@@ -6,6 +6,7 @@ public class ActionShrinker(
 {
     public int Run()
     {
+        using var _ = State.Pathologist.Examine("ActionShrinking");
         var shrinkCount = 0;
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {

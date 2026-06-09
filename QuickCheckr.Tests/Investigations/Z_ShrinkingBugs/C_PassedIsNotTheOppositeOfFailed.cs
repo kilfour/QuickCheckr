@@ -23,7 +23,7 @@ public class C_PassedIsNotTheOppositeOfFailed : CheckrTest<C_PassedIsNotTheOppos
     public override void Example() =>
         Run(1724204120, 20.ExecutionsPerRun());
 
-    protected override CheckrConfig Configure(CheckrConfig config) => config with { DebugArtery = FileLog.Write("debug.log") };
+    //protected override CheckrConfig Configure(CheckrConfig config) => config with { DebugArtery = FileLog.Write("debug.log") };
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
