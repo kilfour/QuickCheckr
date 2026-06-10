@@ -9,6 +9,22 @@ public class LongTermMemory
     }
 
     // --------------------------------------------------------------------------
+    // Variables
+    private readonly Dictionary<string, object> variables = [];
+    public void StoreLongTermVariable(string key, object value)
+        => variables[key] = value;
+    public T GetLongTermVariable<T>(string key, T defaultValue)
+    {
+        if (variables.TryGetValue(key, out var value))
+        {
+            return (T)value;
+        }
+        return defaultValue;
+    }
+
+    // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Stashed
     private MemoryBank stashed = new();
     public T StoreStashed<T>(string key, Func<T> factory)

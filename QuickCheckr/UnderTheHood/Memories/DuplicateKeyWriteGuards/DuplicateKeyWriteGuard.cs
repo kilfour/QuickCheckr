@@ -46,7 +46,12 @@ public class DuplicateKeyWriteGuardForPoolTraces : DuplicateKeyWriteGuard
 
 public class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard
 {
-    public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfWhen"]) { }
+    public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfWhen", "Checkr.Sequence"]) { }
+}
+
+public class DuplicateKeyWriteGuardForLongTermVariables : DuplicateKeyWriteGuard
+{
+    public DuplicateKeyWriteGuardForLongTermVariables() : base(["Checkr.Sequence"]) { }
 }
 
 public class DuplicateKeyWriteGuardForStashed : DuplicateKeyWriteGuard

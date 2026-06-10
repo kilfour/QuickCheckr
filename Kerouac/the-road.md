@@ -9,6 +9,7 @@
 * Expand/Rework authoring for the new reports.
 
 ### Todo
+- fix Sequence => LongTermVar
 
 ### Done/Ready for Changelog after review
 * Added Diagnostics

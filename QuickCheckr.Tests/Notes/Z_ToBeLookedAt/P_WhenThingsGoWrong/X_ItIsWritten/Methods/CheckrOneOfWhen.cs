@@ -41,6 +41,7 @@ The following Checkrs write to the this bank:
 
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
+- 'Checkr.Sequence'
 ";
 
     [Fact]
@@ -78,5 +79,6 @@ The following Checkrs write to the this bank:
 
 - 'Checkr.OneOf'
 - 'Checkr.OneOfWhen'
+- 'Checkr.Sequence'
 ";
 }

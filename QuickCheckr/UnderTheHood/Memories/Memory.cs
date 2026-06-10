@@ -74,6 +74,12 @@ public class Memory
     // == 
     public LongTermMemory LongTermMemory { get; } = new();
     // --------------------------------------------------------------------------
+    // Variables
+    public void StoreLongTermVariable(string key, object value)
+        => LongTermMemory.StoreLongTermVariable(KeyGuardian.LongTermVariables.Check(key), value);
+    public T GetLongTermVariable<T>(string key, T defaultValue)
+        => LongTermMemory.GetLongTermVariable<T>(key, defaultValue);
+    // --------------------------------------------------------------------------
     // Stashed
     public T StoreStashed<T>(string key, Func<T> factory)
         => LongTermMemory.StoreStashed(KeyGuardian.Stash.Check(key), factory);
