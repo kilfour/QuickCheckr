@@ -15,7 +15,7 @@ public class ActionShrinker(
             if (actionKeys.Count < 1) continue;
             foreach (var key in actionKeys)
             {
-                using var ___ = State.Pathologist.Examine("Action", key);
+                using var ___ = State.Pathologist.Examine("Checking", "Action", key);
                 shortTermMemory.RemoveAction(key);
                 ExecuteRun();
                 if (State.EvidenceRecorder.Failed())
@@ -25,6 +25,7 @@ public class ActionShrinker(
                 }
                 else
                 {
+                    State.Pathologist.Inform("Kept");
                     shortTermMemory.StoreAction(key);
                 }
             }
