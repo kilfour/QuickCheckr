@@ -30,12 +30,12 @@ public class CheckrState
         int desiredNumberOfExecutions,
         int maxStepsPerReducer,
         int? seed,
-        List<string> focuses)
+        Microtome microtome)
     {
         this.desiredNumberOfExecutions = desiredNumberOfExecutions;
         FuzzrState = seed is null ? new() : new(seed.Value);
         MaxStepsPerReducer = maxStepsPerReducer;
-        Pathologist = Pathologist.From(focuses);
+        Pathologist = new Pathologist(microtome);
         EvidenceRecorder = new(Pathologist);
     }
 

@@ -18,8 +18,8 @@ public static partial class Checkr
     /// Captures the value produced by an asynchronous function without adding an action to the report.  
     /// Use when awaiting a helper computation that should influence the script but not appear as an action.
     /// </summary>
-    public static CheckrOf<T> Capture<T>(Task<T> func) =>
+    public static CheckrOf<T> Capture<T>(Func<Task<T>> func) =>
         state => TheCatcher.InTheCheckr(state,
-            () => CheckrResult.Some(state, func.GetAwaiter().GetResult()),
+            () => CheckrResult.Some(state, func().GetAwaiter().GetResult()),
             ex => state.EvidenceRecorder.RecordFailure(ex));
 }

@@ -10,10 +10,10 @@ using QuickCheckr.UnderTheHood.Runners.Tracing;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions, List<string> focuses)
+public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions, Microtome microtome)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, focuses);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, microtome);
 
     public int Seed => State.FuzzrState.Seed;
 

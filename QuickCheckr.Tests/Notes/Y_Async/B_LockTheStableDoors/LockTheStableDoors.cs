@@ -113,8 +113,8 @@ public class LockTheStableDoors : BaseTest
     private static readonly CheckrOf<Case> AssignCoachToCourse =
         from service in Trackr.GetStashed<InMemoryCoachCourseService>()
         from pool in Trackr.OneOfPool<CoachBy, CourseBy>("Coach to assign", (coach, course) =>
-            from coaches in Checkr.Capture(service.GetCoachesAsync())
-            from courses in Checkr.Capture(service.GetCoursesAsync())
+            from coaches in Checkr.Capture(service.GetCoachesAsync)
+            from courses in Checkr.Capture(service.GetCoursesAsync)
             from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
             from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
             from valid in Checkr.When(() => dbCoach.IsSuitableFor(dbCourse), // we can do better than this, i'm sure ;-)
@@ -126,7 +126,7 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
         from service in Trackr.GetStashed<InMemoryCoachCourseService>()
-        from coaches in Checkr.Capture(service.GetCoachesAsync())
+        from coaches in Checkr.Capture(service.GetCoachesAsync)
         from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
             () => coaches.All(
@@ -139,7 +139,7 @@ public class LockTheStableDoors : BaseTest
     [CodeExample]
     private static readonly CheckrOf<Case> TheCheckr =
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
-        from dbCourses in Checkr.Capture(service.GetCoursesAsync())
+        from dbCourses in Checkr.Capture(service.GetCoursesAsync)
         from operations in Checkr.OneOfWhen(
             Trackr.PoolWhen<CoachBy>(a => a.Count() < 10, CreateCoach),
             Trackr.PoolWhen<CoachBy>(a => a.Any(), UpdateCoachSkills),

@@ -2,15 +2,12 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class Pathologist
+public class Pathologist(Microtome microtome)
 {
-    public static Pathologist From(List<string> focuses) =>
-        focuses.Count > 0 ? new() { IsWatching = true, focuses = focuses } : new();
+    private readonly Microtome microtome = microtome;
+    public bool IsWatching { get; } = !microtome.IsEmpty;
 
-    public bool IsWatching { get; private set; }
-    private List<string> focuses = [];
-    private readonly FileLogArtery artery = FileLog.Write("pathology-results.log");
-    private readonly Stack<string> path = new();
+    private readonly List<string> path = [];
 
     public void Inform(params object[] paths)
     {
@@ -22,31 +19,16 @@ public class Pathologist
         if (!IsWatching)
             return default;
         var newPath = string.Join('-', paths);
-        path.Push(newPath);
-        var source = string.Join('-', path.Reverse());
-        if (focuses.Any(a => source.StartsWith(a)))
-            artery.Absorb(source);
+        path.Add(newPath);
+        microtome.Observe([.. path]);
         return new PathologyScope(this);
     }
 
     public void Pop()
     {
-        path.Pop();
+        if (path.Count == 0)
+            throw new InvalidOperationException("Cannot pop an empty pathology path.");
+        path.RemoveAt(path.Count - 1);
     }
-
-    private Pathologist() { }
 }
-
-public readonly struct PathologyScope : IDisposable
-{
-    private readonly Pathologist? pathologist;
-
-    public PathologyScope(Pathologist? pathologist)
-        => this.pathologist = pathologist;
-
-    public void Dispose()
-        => pathologist?.Pop();
-}
-
-
 

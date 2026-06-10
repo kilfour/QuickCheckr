@@ -10,14 +10,17 @@ public class ActionShrinker(
         var shrinkCount = 0;
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
+            using var __ = State.Pathologist.Examine("Execution", executionId);
             var actionKeys = shortTermMemory.GetActions();
             if (actionKeys.Count < 1) continue;
             foreach (var key in actionKeys)
             {
+                using var ___ = State.Pathologist.Examine("Action", key);
                 shortTermMemory.RemoveAction(key);
                 ExecuteRun();
                 if (State.EvidenceRecorder.Failed())
                 {
+                    State.Pathologist.Inform("FailedAndRemoved");
                     shrinkCount++;
                 }
                 else

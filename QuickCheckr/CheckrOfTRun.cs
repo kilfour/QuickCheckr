@@ -26,7 +26,7 @@ public static class CheckrOfTRun
         int? seed = null)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, []);
+        var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, Microtome.Empty);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return findings;
     }

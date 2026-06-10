@@ -9,13 +9,13 @@ public class CaseOfficer
         RunCount runs,
         ExecutionCount executionsPerRun,
         CheckrRunnerConfig config,
-        List<string> focuses)
+        Microtome microtome)
     {
         var findings = new Findings();
         var deliberator = new Deliberator(config.Deliberation);
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, focuses);
+            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, microtome);
             var caseFile = runner.Run();
             findings.Add(caseFile);
             if (caseFile.HasEvidence)

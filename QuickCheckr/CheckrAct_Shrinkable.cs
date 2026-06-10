@@ -23,7 +23,10 @@ public static partial class Checkr
             if (!state.EvidenceRecorder.IsReplay) // HACK
                 state.Memory.StoreAction(key);
             if (ActionNeedsToBeSkipped(key, state))
+            {
+                state.Pathologist.Inform("Action", key, "SKIPPED");
                 return CheckrResult.Some(state, ActResult<T>.NotExecuted);
+            }
             return TheCatcher.InTheCheckr(state,
                 () => CheckrResult.Some(state, ActResult<T>.Executed(func())),
                 ex => state.EvidenceRecorder.RecordFailure(ex));

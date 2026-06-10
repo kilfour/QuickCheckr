@@ -13,10 +13,10 @@ public static class AutopsyRunner
         int seed,
         ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        List<string> focuses)
+        Microtome microtome)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var findings = CaseOfficer.Investigate(checkr, 1.Runs(), executionsPerRun, config, focuses);
+        var findings = CaseOfficer.Investigate(checkr, 1.Runs(), executionsPerRun, config, microtome);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return findings;
     }
