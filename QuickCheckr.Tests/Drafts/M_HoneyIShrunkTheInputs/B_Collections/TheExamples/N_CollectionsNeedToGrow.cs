@@ -21,7 +21,7 @@ public class N_CollectionsNeedToGrow : CheckrTest<N_CollectionsNeedToGrow>
     [DocReportHeader]
     [DocReport]
     public override void Example()
-        => Run(482835926);
+        => Run(() => TheCheckr().Run(482835926));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

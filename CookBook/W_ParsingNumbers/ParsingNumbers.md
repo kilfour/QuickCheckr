@@ -41,7 +41,7 @@ select Case.Closed;
 
 **The Configuration:**  
 ```csharp
-protected override CheckrConfig Configure(CheckrConfig config)
+private CheckrConfig Configure(CheckrConfig config)
     => config with
     {
         Deliberation = new Deliberation(cf => cf.InputsNamed<string>("Expression", a => a.Length), 4),

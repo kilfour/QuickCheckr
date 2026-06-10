@@ -17,7 +17,7 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1000847613);
+    public override void Example() => Run(() => TheCheckr().Run(1000847613));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

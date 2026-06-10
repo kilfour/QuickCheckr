@@ -16,7 +16,7 @@ public class B_ReduceMinimizeString : CheckrTest<B_ReduceMinimizeString>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1834440365);
+    public override void Example() => Run(() => TheCheckr().Run(1834440365));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

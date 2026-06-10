@@ -17,7 +17,7 @@ public class B_CustomEnumerations : CheckrTest<B_CustomEnumerations>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1735186993);
+        Run(() => TheCheckr().Run(1735186993));
 
     enum SoundCheck { One, Two } // [CodeExample] not valid ?
 

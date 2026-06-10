@@ -18,7 +18,7 @@ public class Q_ObjectOfLists : CheckrTest<Q_ObjectOfLists>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1000.Runs());
+        Run(() => TheCheckr().Run(1622405126));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
@@ -38,7 +38,17 @@ public class Q_ObjectOfLists : CheckrTest<Q_ObjectOfLists>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("First list does not contain 42.", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(6, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Museum", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ A: [ 42 ] }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }", article.Execution(1).Trace(1).Read().Value);
     }
 
     public record Museum(List<int> A, List<int> B, List<int> C);

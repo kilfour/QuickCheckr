@@ -15,7 +15,7 @@ public class F_MultipleRelevantElements : CheckrTest<F_MultipleRelevantElements>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(500957855);
+    [DocReport] public override void Example() => Run(() => TheCheckr().Run(500957855));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -47,7 +47,7 @@ they allow shrinking to be guided by values that are semantically meaningful for
 "
     )]
     public override void Example() =>
-        Run(1895340861);
+        Run(() => TheCheckr().Run(1895340861));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

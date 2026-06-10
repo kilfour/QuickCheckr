@@ -22,7 +22,7 @@ public class TheNeedlerPattern : CheckrTest<TheNeedlerPattern>
     [DocHeader("Where to go from here:")]
     [DocRawFile("taskr-todo.md")]
     public override void Example()
-        => Run(307579878, 10.ExecutionsPerRun());
+        => Run(() => TheCheckr().Run(307579878, 10.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

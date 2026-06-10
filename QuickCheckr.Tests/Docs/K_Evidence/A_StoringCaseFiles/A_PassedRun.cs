@@ -22,13 +22,13 @@ public class A_PassedRun : CheckrTest<A_PassedRun>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(5.Runs(), 10.ExecutionsPerRun());
+    public override void Example() => TheCheckr().Run(5.Runs(), 10.ExecutionsPerRun(), Configure);
 
     private const string FileName = @".quickcheckr\MyQuickCheckrTest\report.qr";
 
     private readonly InMemoryCustodian custodian = new([]);
 
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { FileAs = "MyQuickCheckrTest", Custodian = custodian };
 
     protected override void Verify(Article article)

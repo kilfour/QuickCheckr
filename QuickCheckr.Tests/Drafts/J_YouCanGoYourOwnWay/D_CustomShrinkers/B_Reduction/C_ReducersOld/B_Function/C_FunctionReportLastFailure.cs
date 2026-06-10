@@ -16,7 +16,7 @@ public class C_FunctionReportLastFailure : CheckrTest<C_FunctionReportLastFailur
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1681332589);
+    public override void Example() => Run(() => TheCheckr().Run(1681332589));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

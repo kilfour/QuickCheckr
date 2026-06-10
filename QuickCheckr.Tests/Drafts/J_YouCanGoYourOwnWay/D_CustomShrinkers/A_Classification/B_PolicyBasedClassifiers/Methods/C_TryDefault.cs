@@ -27,10 +27,10 @@ public class C_TryDefault : CheckrTest<C_TryDefault>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(161541321, 2.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun(), Configure));
 
     [CodeSnippet]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { WarningLevel = WarningLevel.Verbose };
 
     [CodeSnippet]

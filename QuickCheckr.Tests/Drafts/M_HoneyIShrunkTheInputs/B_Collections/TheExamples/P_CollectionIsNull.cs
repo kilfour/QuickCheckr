@@ -20,10 +20,10 @@ public class P_CollectionIsNull : CheckrTest<P_CollectionIsNull>
     [DocReportHeader]
     [DocReport]
     public override void Example()
-        => Run(849984174);
+        => Run(() => TheCheckr().Run(849984174, Configure));
 
     [CodeSnippet]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { WarningLevel = WarningLevel.Verbose };
 
     [CodeSnippet]

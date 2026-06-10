@@ -17,7 +17,7 @@ public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(960262083);
+        Run(() => TheCheckr().Run(960262083));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

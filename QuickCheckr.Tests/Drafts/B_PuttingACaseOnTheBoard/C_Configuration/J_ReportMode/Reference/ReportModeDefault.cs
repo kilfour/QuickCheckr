@@ -20,11 +20,11 @@ public class ReportModeDefault : CheckrTest<ReportModeDefault>
     {
         Assert.True(ReportMode.Default.HasFlag(ReportMode.Trace));
         Assert.True(ReportMode.Default.HasFlag(ReportMode.StackTrace));
-        Run(1964562926, 2.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(1964562926, 2.ExecutionsPerRun(), Configure));
     }
 
     [CodeExample]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { ReportMode = ReportMode.Default };
 
     protected override CheckrOf<Case> TheCheckr()

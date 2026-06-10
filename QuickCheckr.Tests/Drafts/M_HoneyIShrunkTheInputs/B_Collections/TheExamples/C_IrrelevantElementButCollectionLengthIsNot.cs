@@ -29,7 +29,7 @@ without introducing noise from element-level changes that could not affect the o
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1393576429);
+    public override void Example() => Run(() => TheCheckr().Run(1393576429));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

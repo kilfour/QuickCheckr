@@ -1,6 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
-using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -10,8 +9,7 @@ namespace QuickCheckr.Tests.Drafts.H_OnShrinking.D_InputReduction;
 [DocFile]
 [DocLink(typeof(OnShrinking))]
 [DocLink(typeof(InputShrinking))]
-[DocLink(typeof(DeliberationShrinking))]
-[DocContent("[On Shrinking][OnShrinking] | [Previous][InputShrinking] | [Next][DeliberationShrinking]  \n")]
+[DocContent("[On Shrinking][OnShrinking] | [Previous][InputShrinking] | \n")]
 [DocContent(
 @"After InputShrinking has classified an input as either relevant or irrelevant, any registered *reducers*
 are run on a relevant input (example below).  
@@ -51,7 +49,7 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
 ")]
-    public override void Example() => Run(1684147193, 10.ExecutionsPerRun());
+    public override void Example() => Run(() => TheCheckr().Run(1684147193, 10.ExecutionsPerRun()));
 
     [CodeExample]
     public class Account

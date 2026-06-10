@@ -22,7 +22,7 @@ public class A_TryKeep : CheckrTest<A_TryKeep>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(161541321, 2.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

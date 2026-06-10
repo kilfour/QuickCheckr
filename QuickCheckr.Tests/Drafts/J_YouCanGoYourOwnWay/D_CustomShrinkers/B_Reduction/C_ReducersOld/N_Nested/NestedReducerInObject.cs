@@ -26,7 +26,7 @@ public class NestedReducerInObject : CheckrTest<NestedReducerInObject>
     [DocReport]
     [DocContent("")]
     [DocContent("")]
-    public override void Example() => Run(686899245);
+    public override void Example() => Run(() => TheCheckr().Run(686899245));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

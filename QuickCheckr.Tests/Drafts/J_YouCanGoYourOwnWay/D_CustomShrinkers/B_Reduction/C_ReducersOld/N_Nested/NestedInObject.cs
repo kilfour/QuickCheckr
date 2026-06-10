@@ -26,7 +26,7 @@ public class NestedInObject : CheckrTest<NestedInObject>
     [DocReport]
     [DocContent("")]
     [DocContent("")]
-    public override void Example() => Run(1930190827);
+    public override void Example() => Run(() => TheCheckr().Run(1930190827));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

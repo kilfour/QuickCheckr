@@ -20,7 +20,7 @@ public class A_MaxStepsExceeded : CheckrTest<A_MaxStepsExceeded>
     [DocConfigure]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1719639579);
+    public override void Example() => Run(() => TheCheckr().Run(1719639579, Configure));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
@@ -29,7 +29,7 @@ public class A_MaxStepsExceeded : CheckrTest<A_MaxStepsExceeded>
          select Case.Closed;
 
     [CodeSnippet]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { MaxStepsPerReducer = 10, ShrinkMode = config.ShrinkMode | ShrinkMode.Reduction };
 
     protected override void Verify(Article article)

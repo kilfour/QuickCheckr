@@ -16,7 +16,7 @@ public class ListContainingNullValues : CheckrTest<ListContainingNullValues>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1833095082);
+    public override void Example() => Run(() => TheCheckr().Run(1833095082));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

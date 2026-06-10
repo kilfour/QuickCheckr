@@ -20,7 +20,7 @@ public class ParentChildInvariant : CheckrTest<ParentChildInvariant>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(483645165);
+        Run(() => TheCheckr().Run(483645165));
 
     [CodeExample]
     record Account(int Balance, int CreditLimit);

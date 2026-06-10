@@ -20,7 +20,7 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 3)]
-    public override void Example() => Run(695266907);
+    public override void Example() => Run(() => TheCheckr().Run(695266907));
 
     private static List<Product> ProductsForSale() =>
         [ new() { Id = new Guid("b1c88a3c-444e-4776-a5c4-c660a75e9365")

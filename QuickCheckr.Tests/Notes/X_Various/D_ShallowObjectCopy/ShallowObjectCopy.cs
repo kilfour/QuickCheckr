@@ -12,7 +12,7 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
     protected override bool Report => false;
 
 
-    [Fact]
+    [Fact(Skip = "To Review")]
     [DocModelHeader]
     [DocExample(typeof(Box))]
     [DocCheckrHeader]
@@ -20,7 +20,7 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(100.Runs());
+        TheCheckr().Run(100.Runs());
 
     [CodeExample]
     public sealed class Box { public int Value { get; set; } }

@@ -1,4 +1,4 @@
-## 0.x.x: ...
+## 0.2.1: Internal Affairs
 
 
 ### Doing
@@ -9,7 +9,6 @@
 * Expand/Rework authoring for the new reports.
 
 ### Todo
-- fix Sequence => LongTermVar
 
 ### Done/Ready for Changelog after review
 * Added Diagnostics

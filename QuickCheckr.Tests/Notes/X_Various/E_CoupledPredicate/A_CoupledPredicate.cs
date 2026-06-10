@@ -19,7 +19,7 @@ public class A_CoupledPredicate : CheckrTest<A_CoupledPredicate>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(2017105380);
+        Run(() => TheCheckr().Run(2017105380));
 
     [CodeExample]
     record Pair(int A, int B);

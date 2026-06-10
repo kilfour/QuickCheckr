@@ -19,7 +19,7 @@ public class B_ExpectationShouldStop : CheckrTest<B_ExpectationShouldStop>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(1.ExecutionsPerRun()));
 
     public class Thing { public int Answer { get; set; } = 42; }
 

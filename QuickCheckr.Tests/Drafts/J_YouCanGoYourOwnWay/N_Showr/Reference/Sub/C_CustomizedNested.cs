@@ -18,7 +18,7 @@ public class C_CustomizedNested : CheckrTest<C_CustomizedNested>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1611568796);
+        Run(() => TheCheckr().Run(1611568796));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -2,7 +2,6 @@ using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Drafts.H_OnShrinking.F_DeliberationShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -11,7 +10,6 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.C_Objects.TheExamples;
 
 [DocFile]
-[DocLink(typeof(DeliberationShrinking))]
 public class E_CheckingNulls : BaseTest
 {
     private static CheckrConfig ConfigureNoStackTrace(CheckrConfig cfg)
@@ -156,7 +154,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     }
 
     [Fact]
-    [DocContent("Or, we can solve the issue using a [`DeliberationPolicy`][DeliberationShrinking] that limits the number of warnings:")]
+    [DocContent("Or, we can solve the issue using a `DeliberationPolicy` that limits the number of warnings:")]
     [DocExample(typeof(E_CheckingNulls), nameof(Configure))]
     [DocCodeFile("E_CheckingNulls_Deliberated.txt", "text")]
     [DocContent(

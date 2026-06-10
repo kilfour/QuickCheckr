@@ -20,10 +20,10 @@ It only makes sense to activate this if ShrinkMode.Inputs is enabled.
 This option is disabled by default.")]
     [DocReport]
     public override void Example()
-        => Run(2145473476, 3.ExecutionsPerRun());
+        => Run(() => TheCheckr().Run(2145473476, 3.ExecutionsPerRun(), Configure));
 
     [CodeExample]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { ShrinkMode = ShrinkMode.Inputs | ShrinkMode.Reduction };
 
     protected override CheckrOf<Case> TheCheckr()

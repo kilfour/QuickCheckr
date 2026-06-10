@@ -17,10 +17,10 @@ public class ReportModeStackTrace : CheckrTest<ReportModeStackTrace>
     [DocContent("Includes the StackTrace in the failure description if an exception is thrown.")]
     [DocReport]
     public override void Example()
-        => Run(1964562926, 2.ExecutionsPerRun());
+        => Run(() => TheCheckr().Run(1964562926, 2.ExecutionsPerRun(), Configure));
 
     [CodeExample]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { ReportMode = ReportMode.StackTrace };
 
     protected override CheckrOf<Case> TheCheckr()

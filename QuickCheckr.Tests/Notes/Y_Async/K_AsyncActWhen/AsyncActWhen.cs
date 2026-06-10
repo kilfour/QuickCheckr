@@ -20,7 +20,7 @@ public class AsyncActWhen : CheckrTest<AsyncActWhen>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run();
+        Run(() => TheCheckr().Run());
 
     [CodeSnippet]
     [CodeRemove("return")]

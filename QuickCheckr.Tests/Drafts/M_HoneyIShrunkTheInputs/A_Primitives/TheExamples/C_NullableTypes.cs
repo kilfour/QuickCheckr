@@ -17,7 +17,7 @@ public class C_NullableTypes : CheckrTest<C_NullableTypes>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(393010076);
+    public override void Example() => Run(() => TheCheckr().Run(393010076));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

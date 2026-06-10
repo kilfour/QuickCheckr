@@ -77,9 +77,9 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
 There is no guesswork.")]
     [DocInclude(typeof(ChoosingTheNextMoveShrunk))]
     [DocInclude(typeof(ChoosingTheNextMoveConditional))]
-    public override void Example() => Run(971854269, 10.ExecutionsPerRun());
+    public override void Example() => Run(() => TheCheckr().Run(971854269, 10.ExecutionsPerRun(), Configure));
 
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with
         {
             ShrinkMode = ShrinkMode.None,

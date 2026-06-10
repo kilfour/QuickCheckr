@@ -19,7 +19,7 @@ public class AllInputsShrunk : CheckrTest<AllInputsShrunk>
     [DocContent("")]
     [DocContent("")]
     public override void Example() =>
-        Run(1098916919);
+        Run(() => TheCheckr().Run(1098916919));
 
 
     [CodeSnippet]

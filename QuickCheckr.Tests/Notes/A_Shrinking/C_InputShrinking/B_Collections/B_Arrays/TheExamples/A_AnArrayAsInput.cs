@@ -20,7 +20,7 @@ we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array."
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(27506614);
+    public override void Example() => Run(() => TheCheckr().Run(27506614));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

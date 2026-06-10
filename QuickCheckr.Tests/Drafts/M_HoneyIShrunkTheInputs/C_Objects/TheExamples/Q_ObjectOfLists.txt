@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Q_ObjectOfLists.cs:58:1
+ Location:                Q_ObjectOfLists.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 6 shrinks)
  Seed:                    1622405126
  ------------------------------------------------------------
   Executed:
-   - Input: Museum   = { A: [ 42 ] }
-   - Trace: Original = { A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }
+   - Museum   = { A: [ 42 ] }
+   - Original = { A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

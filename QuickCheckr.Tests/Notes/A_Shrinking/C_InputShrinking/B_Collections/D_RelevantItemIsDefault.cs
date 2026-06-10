@@ -16,7 +16,7 @@ public class D_RelevantItemIsDefault : CheckrTest<D_RelevantItemIsDefault>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(820833320);
+    [DocReport] public override void Example() => Run(() => TheCheckr().Run(820833320));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

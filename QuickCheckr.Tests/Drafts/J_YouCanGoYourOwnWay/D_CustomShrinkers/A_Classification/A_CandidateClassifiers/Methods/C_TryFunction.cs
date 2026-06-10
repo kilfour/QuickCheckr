@@ -21,7 +21,7 @@ public class C_TryFunction : CheckrTest<C_TryFunction>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(161541321, 2.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

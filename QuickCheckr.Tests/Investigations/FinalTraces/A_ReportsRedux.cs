@@ -19,9 +19,9 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1883509239);
+        Run(() => TheCheckr().Run(1883509239, Configure));
 
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { ReportMode = config.ReportMode | ReportMode.FinalTrace };
 
     [CodeSnippet]

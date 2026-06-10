@@ -15,7 +15,7 @@ public class G_RelevantElementAndSize : CheckrTest<G_RelevantElementAndSize>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(1374380958);
+    [DocReport] public override void Example() => Run(() => TheCheckr().Run(1374380958));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

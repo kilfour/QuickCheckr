@@ -18,7 +18,7 @@ public class J_Tuples : CheckrTest<J_Tuples>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(751254928);
+        Run(() => TheCheckr().Run(751254928));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -18,7 +18,7 @@ public class D_TryFuzzr : CheckrTest<D_TryFuzzr>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(161541321, 2.ExecutionsPerRun());
+        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

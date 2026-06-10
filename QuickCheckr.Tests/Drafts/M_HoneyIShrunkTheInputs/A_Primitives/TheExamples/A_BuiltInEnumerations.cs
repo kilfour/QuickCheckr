@@ -17,7 +17,7 @@ public class A_BuiltInEnumerations : CheckrTest<A_BuiltInEnumerations>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(2083214969);
+        Run(() => TheCheckr().Run(2083214969));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

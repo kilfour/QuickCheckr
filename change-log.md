@@ -174,3 +174,5 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
 - `CloseColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
 - `ReviewColdCases(...)` now throws if an existing seed still fails.
 - `CloseColdCases(...)` now throws if an existing seed still fails.
+
+## 0.2.1: Internal Affairs

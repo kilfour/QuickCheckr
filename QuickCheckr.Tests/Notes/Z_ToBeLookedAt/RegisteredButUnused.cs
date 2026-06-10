@@ -22,10 +22,10 @@ public class RegisteredButUnused : CheckrTest<RegisteredButUnused>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(1681332589);
+    public override void Example() => Run(() => TheCheckr().Run(1681332589, Configure));
 
     [CodeSnippet]
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => config with { WarningLevel = WarningLevel.Debug };
 
     [CodeSnippet]

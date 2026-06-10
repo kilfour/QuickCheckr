@@ -16,7 +16,7 @@ public class A_ExpectMessage : CheckrTest<A_ExpectMessage>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run();
+    public override void Example() => Run(() => TheCheckr().Run());
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -36,7 +36,7 @@ public class ListReverse : CheckrTest<ListReverse>
             => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
     }
 
-    protected override CheckrConfig Configure(CheckrConfig config)
+    private CheckrConfig Configure(CheckrConfig config)
         => Config.NoLabels(config);
 
     [Fact]
@@ -46,7 +46,7 @@ public class ListReverse : CheckrTest<ListReverse>
     [DocCheckr]
     [DocBoldHeader("The Report")]
     [DocReport]
-    public override void Example() => Run(498116108);
+    public override void Example() => Run(() => TheCheckr().Run(498116108, Configure));
 
     [CodeSnippet]
     private static FuzzrOf<List<int>> ListFuzzr() =>

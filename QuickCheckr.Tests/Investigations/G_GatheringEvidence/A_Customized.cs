@@ -33,8 +33,4 @@ public class A_Customized : QCTest<A_Customized>
         from input in Checkr.Input("Input", Fuzzr.String(Fuzzr.Char('a', 'c'), 0, 3))
         from expect in Checkr.Expect("does not contain a", () => !input.Contains('a'))
         select Case.Closed;
-
-    protected override void Verify(Article article)
-    {
-    }
 }

@@ -33,7 +33,7 @@ So after *Execution Shrinking*, the result is:
 ")]
     [DocReport]
     public override void Example()
-        => Run(669391953, 3.ExecutionsPerRun());
+        => Run(() => TheCheckr().Run(669391953, 3.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

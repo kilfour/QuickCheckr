@@ -16,7 +16,7 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(816312044);
+    [DocReport] public override void Example() => Run(() => TheCheckr().Run(816312044));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
