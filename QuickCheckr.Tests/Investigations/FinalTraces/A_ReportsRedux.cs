@@ -21,20 +21,8 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
     [DocReport]
     public override void Example()
     {
-        Run(() =>
-        {
-            var journalist = new Journalist();
-            TheCheckr().Configure(a => Configure(a, journalist)).Run(1883509239);
-            return journalist.GetRecord();
-        });
+        Document(a => a.Configure(a => a with { ReportMode = a.ReportMode | ReportMode.FinalTrace }).Run(1883509239));
     }
-
-    private CheckrConfig Configure(CheckrConfig config, Journalist journalist)
-        => config with
-        {
-            Custodian = journalist,
-            ReportMode = config.ReportMode | ReportMode.FinalTrace
-        };
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

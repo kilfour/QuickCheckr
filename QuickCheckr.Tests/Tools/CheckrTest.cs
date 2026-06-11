@@ -4,6 +4,7 @@ using QuickCheckr.Authoring;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
@@ -23,6 +24,22 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
     protected abstract CheckrOf<Case> TheCheckr();
 
     [StackTraceHidden]
+    protected void Document(
+        Action<ConfiguredCheckr> runCheckr,
+        [CallerFilePath] string callerPath = "")
+    {
+        var journalist = new Journalist();
+        try
+        {
+            runCheckr(TheCheckr().Configure(a => a with { FileAs = "Test", Custodian = journalist }));
+        }
+        catch (FalsifiableException) { }
+        var article = TheJournalist.Unearths(journalist.GetRecord());
+        ProcessArticle(article, callerPath);
+        Verify(article);
+    }
+
+    [StackTraceHidden]
     protected void Run(
         Func<IRecord> run,
         [CallerFilePath] string callerPath = "")
@@ -31,54 +48,4 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
         ProcessArticle(article, callerPath);
         Verify(article);
     }
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Exposes(
-    //         () => TheCheckr().Run(Configure))
-    //         , callerPath);
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     int seed,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Exposes(
-    //         () => TheCheckr().Run(seed, Configure))
-    //         , callerPath);
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     ExecutionCount executionCount,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Exposes(
-    //         () => TheCheckr().Run(executionCount, Configure))
-    //         , callerPath);
-
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     int seed,
-    //     ExecutionCount executionCount,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Investigates(
-    //         () => TheCheckr().Run(seed, executionCount, Configure))
-    //         , callerPath);
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     RunCount runCount,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Investigates(
-    //         () => TheCheckr().Run(runCount, Configure))
-    //         , callerPath);
-
-    // [StackTraceHidden]
-    // protected void Run(
-    //     RunCount runCount,
-    //     ExecutionCount executionCount,
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Investigates(
-    //         () => TheCheckr().Run(runCount, executionCount, Configure))
-    //         , callerPath);
 }
