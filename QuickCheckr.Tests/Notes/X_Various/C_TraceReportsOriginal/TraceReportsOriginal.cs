@@ -17,7 +17,7 @@ public class TraceReportsOriginal : CheckrTest<TraceReportsOriginal>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1468295090));
+        Document(a => a.Run(1468295090));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

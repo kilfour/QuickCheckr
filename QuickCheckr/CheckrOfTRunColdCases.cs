@@ -9,19 +9,19 @@ namespace QuickCheckr;
 public static class CheckrOfTRunColdCases
 {
     [StackTraceHidden]
-    public static void ReviewColdCases(this CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> configure)
-        => Check(checkr, configure, false);
+    public static void ReviewColdCases(this ConfiguredCheckr configuredCheckr)
+        => Check(configuredCheckr, false);
 
     [StackTraceHidden]
-    public static void CloseResolvedColdCases(this CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> configure)
-        => Check(checkr, configure, true);
+    public static void CloseResolvedColdCases(this ConfiguredCheckr configuredCheckr)
+        => Check(configuredCheckr, true);
 
     [StackTraceHidden]
-    private static void Check(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> configure, bool closeResolved)
+    private static void Check(ConfiguredCheckr configuredCheckr, bool closeResolved)
     {
-        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
+        var config = new CheckrRunnerConfig(configuredCheckr.Config);
         var vault = Vault.From(config);
-        var caseFiles = vault.Check(checkr, config, closeResolved);
+        var caseFiles = vault.Check(configuredCheckr.Checkr, config, closeResolved);
         var review = new ColdCasesReview().Add([.. caseFiles]);
         config.Custodian.FileRecord(config.FileAs, review, config.Clerk.File);
         if (caseFiles.Any(a => a.HasEvidence))

@@ -22,7 +22,7 @@ public class A_ColdCases : BaseTest
 
     [CodeSnippet]
     private static void RunColdCasesReview(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
-        checkr.ReviewColdCases(Configure);
+        checkr.Configure(Configure).ReviewColdCases();
 
     [Fact]
     [DocHeader("Reviewing Cold Cases")]
@@ -127,7 +127,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
     public void ReviewingColdCases_ThrowsIfFileAsIsNotConfigured()
     {
         Assert.Throws<VaultNotConfiguredException>(
-            () => Checkr.Expect("Fails", () => false).ReviewColdCases(a => a));
+            () => Checkr.Expect("Fails", () => false).Configure(a => a).ReviewColdCases());
     }
 
     [Fact]
@@ -165,7 +165,7 @@ In this case we use:")]
 
     [CodeSnippet]
     private static void RunCloseResolvedColdCases(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
-        checkr.CloseResolvedColdCases(Configure);
+        checkr.Configure(Configure).CloseResolvedColdCases();
 
     [Fact]
     [DocContent(
@@ -225,6 +225,6 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
     public void ClosingColdCases_ThrowsIfFileAsIsNotConfigured()
     {
         Assert.Throws<VaultNotConfiguredException>(
-            () => Checkr.Expect("Fails", () => false).CloseResolvedColdCases(a => a));
+            () => Checkr.Expect("Fails", () => false).Configure(a => a).CloseResolvedColdCases());
     }
 }
