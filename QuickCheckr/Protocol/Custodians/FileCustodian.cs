@@ -8,22 +8,45 @@ namespace QuickCheckr.Protocol.Custodians;
 
 public abstract class FileCustodian : ICustodian
 {
-    public void FileRecord(string path, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
-        => GetFileLogArtery(path).ClearFile().Absorb(TheClerk.Transcribes(record, styleGuide));
+    const string MainFolder = ".quickcheckr";
+    const string EvidenceFolder = "vault";
 
-    public void RemoveRecord(string path) => RemoveFile(path);
+    private static string GetReportFilename(string name)
+        => Path.Combine(MainFolder, name, "report.qr");
 
-    public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
+    private static string GetVaultPath(string name, string filename)
+        => Path.Combine(MainFolder, name, EvidenceFolder, filename);
+
+    private static string GetEvidenceFilename(string name, int seed)
+        => GetVaultPath(name, $"report_{seed}.qr");
+
+    private static string GetVaultEntriesFilename(string name)
+        => GetVaultPath(name, "evidence.qv");
+
+    public void FileRecord(string name, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
+        => GetFileLogArtery(GetReportFilename(name))
+            .ClearFile()
+            .Absorb(TheClerk.Transcribes(record, styleGuide));
+
+    public void FileEvidence(string name, int seed, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
+        => GetFileLogArtery(GetEvidenceFilename(name, seed))
+            .ClearFile()
+            .Absorb(TheClerk.Transcribes(record, styleGuide));
+
+    public void RemoveEvidence(string name, int seed) => RemoveFile(GetEvidenceFilename(name, seed));
+
+    public void StoreVaultEntries(string name, IEnumerable<VaultEntry> entries)
     {
+        var path = GetVaultEntriesFilename(name);
         if (entries.Any())
             GetFileLogArtery(path).ClearFile().Absorb([.. entries.Select(a => $"{a.Seed},{a.ExecutionsPerRun}")]);
         else
             RemoveFile(path);
     }
 
-    public HashSet<VaultEntry> RetrieveVaultEntries(string path)
+    public HashSet<VaultEntry> RetrieveVaultEntries(string name)
     {
-        var realPath = GetRealPath(path);
+        var realPath = GetRealPath(GetVaultEntriesFilename(name));
         return File.Exists(realPath) ? [.. File.ReadAllLines(realPath).Select(ParseVaultEntry)] : [];
     }
 

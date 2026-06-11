@@ -9,8 +9,23 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
 {
     public Dictionary<string, IRecord> Records { get; private set; } = [];
 
-    public void FileRecord(string path, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
-        => Records[path] = record;
+    public void FileRecord(string name, IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
+        => Records[name] = record;
+
+    public void FileEvidence(string name, int seed, IRecord record, Func<IRecord, Flow<Flow>> clerk)
+        => Records[EvidenceFilename(name, seed)] = record;
+
+    private static string EvidenceFilename(string name, int seed)
+    {
+        return $"{name}_{seed}";
+    }
+
+    public void RemoveEvidence(string name, int seed)
+    {
+        var path = EvidenceFilename(name, seed);
+        RemoveFileCalledWith = path;
+        Records.Remove(path);
+    }
 
     public string RemoveFileCalledWith { get; private set; } = string.Empty;
     public void RemoveRecord(string path)
@@ -19,14 +34,12 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
         Records.Remove(path);
     }
 
-    public string EvidenceFileName { get; private set; } = string.Empty;
     public HashSet<VaultEntry> Entries { get; private set; } = StartingEvidence;
-    public void StoreVaultEntries(string path, IEnumerable<VaultEntry> entries)
+    public void StoreVaultEntries(string name, IEnumerable<VaultEntry> entries)
     {
-        EvidenceFileName = path;
         Entries = [.. entries];
     }
 
-    public HashSet<VaultEntry> RetrieveVaultEntries(string path)
+    public HashSet<VaultEntry> RetrieveVaultEntries(string name)
         => Entries;
 }

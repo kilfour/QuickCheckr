@@ -20,12 +20,6 @@ public class A_ColdCases : BaseTest
     private static CheckrConfig Configure(CheckrConfig config)
         => config with { FileAs = "MyQuickCheckrTest" };
 
-    private static string DefaultEvidenceFileName()
-        => @".quickcheckr\MyQuickCheckrTest\vault\evidence.qv";
-
-    private static string DefaultReportFileName(int seed)
-        => @$".quickcheckr\MyQuickCheckrTest\vault\report_{seed}.qr";
-
     [CodeSnippet]
     private static void RunColdCasesReview(CheckrOf<Case> checkr, Func<CheckrConfig, CheckrConfig> Configure) =>
         checkr.ReviewColdCases(Configure);
@@ -45,9 +39,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
             RunColdCasesReview(Checkr.Expect("Fails", () => false),
                 cfg => Configure(cfg with { Custodian = custodian })));
 
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
-
+        Assert.Equal("MyQuickCheckrTest_1862095796", custodian.Records.Single(a => a.Value is CaseFile).Key);
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
@@ -155,8 +147,7 @@ In this case we use:")]
             RunCloseResolvedColdCases(Checkr.Expect("Fails", () => false),
                 cfg => Configure(cfg with { Custodian = custodian })));
 
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.Records.Single(a => a.Value is CaseFile).Key));
+        Assert.Equal("MyQuickCheckrTest_1862095796", custodian.Records.Single(a => a.Value is CaseFile).Key);
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();
@@ -188,13 +179,9 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
         RunCloseResolvedColdCases(Checkr.Expect("Fails", () => true),
             cfg => Configure(cfg with { Custodian = custodian }));
 
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
-
         Assert.Empty(custodian.Entries);
-        // FILE DELETED is untested as this is handled by specific Custodians
-
         Assert.Empty(custodian.Records.Where(a => a.Value is CaseFile));
-        Assert.Equal(Normalize(DefaultReportFileName(1862095796)), Normalize(custodian.RemoveFileCalledWith));
+        Assert.Equal("MyQuickCheckrTest_1862095796", custodian.RemoveFileCalledWith);
     }
 
     [Fact]

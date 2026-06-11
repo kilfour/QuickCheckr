@@ -21,7 +21,7 @@ public static class SpokesPerson
     {
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
-            config.Custodian.FileRecord(ReportPath.Main(config), caseFile, config.Clerk.File);
+            config.Custodian.FileRecord(config.FileAs, caseFile, config.Clerk.File);
             Vault.From(config).AddSeed(caseFile.Seed, executionsPerRun.NumberOfExecutions);
         }
         throw new FalsifiableException(caseFile, config.Clerk.File);
@@ -31,7 +31,7 @@ public static class SpokesPerson
     {
         if (!string.IsNullOrWhiteSpace(config.FileAs))
         {
-            config.Custodian.FileRecord(ReportPath.Main(config), findings, config.Clerk.File);
+            config.Custodian.FileRecord(config.FileAs, findings, config.Clerk.File);
         }
     }
 }

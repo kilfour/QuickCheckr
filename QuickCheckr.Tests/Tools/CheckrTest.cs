@@ -8,7 +8,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
 
-public abstract class CheckrTest<T> : QCTest<T>
+public abstract class CheckrTest<T> : QuickCheckrTest<T>
 {
     protected class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");

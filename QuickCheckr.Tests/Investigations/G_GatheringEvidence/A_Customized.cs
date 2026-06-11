@@ -6,7 +6,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
 
 // [DocFile]
-public class A_Customized : QCTest<A_Customized>
+public class A_Customized : QuickCheckrTest<A_Customized>
 {
     protected override bool Asserts => false;
     protected override bool Report => true;

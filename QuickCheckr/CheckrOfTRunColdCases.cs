@@ -23,7 +23,7 @@ public static class CheckrOfTRunColdCases
         var vault = Vault.From(config);
         var caseFiles = vault.Check(checkr, config, closeResolved);
         var review = new ColdCasesReview().Add([.. caseFiles]);
-        config.Custodian.FileRecord(ReportPath.Main(config), review, config.Clerk.File);
+        config.Custodian.FileRecord(config.FileAs, review, config.Clerk.File);
         if (caseFiles.Any(a => a.HasEvidence))
             throw new FalsifiableException(review, config.Clerk.File);
     }

@@ -12,18 +12,15 @@ public static class Vault
 
 public class EvidenceVault(CheckrRunnerConfig config)
 {
-    const string EvidenceFolder = "vault";
 
-    private readonly string evidencePath = GetVaultPath(config.FileAs, "evidence.qv");
     private HashSet<VaultEntry> entries = [];
     private readonly ICustodian custodian = config.Custodian;
 
-    public static string GetVaultPath(string fileAs, string filename)
-        => Path.Combine(ReportPath.MainFolder, fileAs, EvidenceFolder, filename);
+
 
     public IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
     {
-        entries = custodian.RetrieveVaultEntries(evidencePath);
+        entries = custodian.RetrieveVaultEntries(config.FileAs);
         var caseFiles = new List<CaseFile>();
         foreach (var entry in entries)
         {
@@ -33,7 +30,7 @@ public class EvidenceVault(CheckrRunnerConfig config)
             {
                 if (!string.IsNullOrWhiteSpace(config.FileAs))
                 {
-                    custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.Clerk.File);
+                    custodian.FileEvidence(config.FileAs, entry.Seed, caseFile, config.Clerk.File);
                 }
             }
             else
@@ -41,15 +38,15 @@ public class EvidenceVault(CheckrRunnerConfig config)
                 if (closeResolved)
                 {
                     Remove(entry);
-                    custodian.RemoveRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"));
+                    custodian.RemoveEvidence(config.FileAs, entry.Seed);
                 }
-                else if (!string.IsNullOrWhiteSpace(config.FileAs))
+                else
                 {
-                    custodian.FileRecord(GetVaultPath(config.FileAs, $"report_{entry.Seed}.qr"), caseFile, config.Clerk.File);
+                    custodian.FileEvidence(config.FileAs, entry.Seed, caseFile, config.Clerk.File);
                 }
             }
         }
-        custodian.StoreVaultEntries(evidencePath, entries);
+        custodian.StoreVaultEntries(config.FileAs, entries);
         return caseFiles;
     }
 
@@ -61,12 +58,12 @@ public class EvidenceVault(CheckrRunnerConfig config)
     private void Add(VaultEntry vaultEntry)
     {
         entries.Add(vaultEntry);
-        custodian.StoreVaultEntries(evidencePath, entries);
+        custodian.StoreVaultEntries(config.FileAs, entries);
     }
 
     private void Remove(VaultEntry vaultEntry)
     {
         entries.Remove(vaultEntry);
-        custodian.StoreVaultEntries(evidencePath, entries);
+        custodian.StoreVaultEntries(config.FileAs, entries);
     }
 }

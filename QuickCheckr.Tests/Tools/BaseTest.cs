@@ -9,7 +9,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Tools;
 
-public abstract class BaseTest : QCTest
+public abstract class BaseTest : DocAttributeBaseTest
 {
     private const string basePath = @"C:\Code\";
     private readonly bool writeAllToDisk = false;

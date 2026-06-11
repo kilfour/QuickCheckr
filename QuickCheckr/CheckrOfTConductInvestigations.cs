@@ -51,12 +51,12 @@ public static class CheckrOfTConductInvestigations
         {
             if (!string.IsNullOrWhiteSpace(config.FileAs))
             {
-                config.Custodian.FileRecord(EvidenceVault.GetVaultPath(config.FileAs, $"report_{caseFile.Seed}.qr"), caseFile, config.Clerk.File);
+                config.Custodian.FileEvidence(config.FileAs, caseFile.Seed, caseFile, config.Clerk.File);
             }
             vault.AddSeed(caseFile.Seed, caseFile.OriginalRunExecutionCount);
         }
         inquiry.AddDistinctFailure([.. caseFiles]);
-        config.Custodian.FileRecord(ReportPath.Main(config), inquiry, config.Clerk.File);
+        config.Custodian.FileRecord(config.FileAs, inquiry, config.Clerk.File);
         if (inquiry.DistinctFailureCount > 0)
             throw new FalsifiableException(inquiry, config.Clerk.File);
         return inquiry;

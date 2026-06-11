@@ -11,8 +11,6 @@ namespace QuickCheckr.Tests.Docs.K_Evidence.A_StoringCaseFiles;
 [DocFile]
 public class FilingEvidence : BaseTest
 {
-    private static string Normalize(string path) => path.Replace('\\', '/').Replace("//", "/");
-
     [CodeExample]
     private static CheckrConfig Configure(CheckrConfig config)
         => config with { FileAs = "MyQuickCheckrTest" };
@@ -34,7 +32,7 @@ public class FilingEvidence : BaseTest
         TheJournalist.Exposes(() =>
             Checkr.Expect("Fails", () => false).Run(cfg =>
                 Configure(cfg with { Custodian = custodian })));
-        Assert.Equal(Normalize(DefaultFileName()), Normalize(custodian.Records.Keys.Single()));
+        Assert.Equal("MyQuickCheckrTest", custodian.Records.Keys.Single());
     }
 
 
@@ -60,8 +58,6 @@ This *evidence* can later be used to potentially solve *Cold Cases*.
         TheJournalist.Exposes(() =>
             Checkr.Expect("Fails", () => false).Run(1862095796, cfg =>
                 Configure(cfg with { Custodian = custodian })));
-
-        Assert.Equal(Normalize(DefaultEvidenceFileName()), Normalize(custodian.EvidenceFileName));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();

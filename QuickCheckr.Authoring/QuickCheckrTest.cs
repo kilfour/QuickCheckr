@@ -8,27 +8,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Authoring;
 
-public abstract class QCTest
-{
-    protected class DocBoldHeaderAttribute(string header) :
-        DocContentAttribute($"\n**{header}:**");
-    protected class DocModelHeaderAttribute() :
-        DocBoldHeaderAttribute("The Model");
-    protected class DocReportHeaderAttribute() :
-        DocBoldHeaderAttribute("The Report");
-    protected class DocReportExcerptHeaderAttribute() :
-        DocBoldHeaderAttribute("Report Excerpt");
-    protected class DocConfigureHeaderAttribute() :
-        DocBoldHeaderAttribute("The Configuration");
-    protected class DocCheckrHeaderAttribute() :
-        DocBoldHeaderAttribute("The Checkr");
-    protected class DocFuzzrHeaderAttribute() :
-        DocBoldHeaderAttribute("The Fuzzr");
-    protected class DocFileCodeHeaderAttribute(string code)
-    : DocFileHeaderAttribute(code.Replace("<", "&lt;").Replace(">", "&gt;"));
-}
-
-public abstract class QCTest<T> : QCTest
+public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
 {
     protected virtual bool WriteAllReportsToDisk => false;
     protected virtual bool Asserts => false;
