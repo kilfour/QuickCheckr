@@ -32,8 +32,10 @@ So after *Action Shrinking*, the result is:
     [DocCodeFile("ActionShrinking.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Configure(a => a with { ShrinkMode = ShrinkMode.ExceptReduction }).Run());
+        var article = Journalist.Investigate(GetCheckr(), a => a
+            .Configure(a => a with { ShrinkMode = ShrinkMode.ExceptReduction })
+            .Run());
+
         WriteAsserts(article);
         WriteReport<ActionShrinking>(article, false);
         Verify(article);
@@ -62,8 +64,10 @@ So after *Action Shrinking*, the result is:
     [Fact]
     public void Elaborating() // Shrinkable act deals with default values correctly
     {
-        var article = TheJournalist.Exposes(() =>
-            Elaborating_Checkr().Configure(a => a with { ShrinkMode = ShrinkMode.All }).Run());
+        var article = Journalist.Investigate(Elaborating_Checkr(), a => a
+            .Configure(a => a with { ShrinkMode = ShrinkMode.All })
+            .Run());
+
         WriteAsserts(article);
         WriteReport(article, "Elaborating.txt", false);
         Assert.Equal("Act returns true", article.FailureDescription());

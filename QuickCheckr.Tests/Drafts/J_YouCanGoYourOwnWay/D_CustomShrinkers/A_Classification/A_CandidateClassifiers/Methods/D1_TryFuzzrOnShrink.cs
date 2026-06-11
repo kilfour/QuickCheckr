@@ -17,7 +17,7 @@ public class D1_TryFuzzrOnShrink : CheckrTest<D1_TryFuzzrOnShrink>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
+        Document(a => a.Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

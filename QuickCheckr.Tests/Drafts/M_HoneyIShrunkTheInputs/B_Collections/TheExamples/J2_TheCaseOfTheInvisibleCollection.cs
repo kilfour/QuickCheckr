@@ -17,7 +17,7 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(169301180, 2.ExecutionsPerRun()));
+    public override void Example() => Document(a => a.Run(169301180, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

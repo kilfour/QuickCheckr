@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
@@ -58,7 +59,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
                 cfg => Configure(cfg with { Custodian = custodian })));
 
         var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
-        var article = TheJournalist.Unearths(caseFile);
+        var article = new Article(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
@@ -76,7 +77,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
             cfg => Configure(cfg with { Custodian = custodian }));
 
         var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
-        var article = TheJournalist.Unearths(caseFile);
+        var article = new Article(caseFile);
 
         Assert.Equal("", article.FailureDescription());
         Assert.Equal(1, article.Total().PassedExpectations());
@@ -100,7 +101,7 @@ This is done by calling `ReviewColdCases` on the Checkr instance, passing in the
                 cfg => Configure(cfg with { Custodian = custodian })));
 
         var record = custodian.Records.Values.Single(a => a is ColdCasesReview);
-        var article = TheJournalist.Unearths(record);
+        var article = new Article(record);
 
         // TODO TEST CONTENT
 
@@ -155,7 +156,7 @@ In this case we use:")]
         Assert.Equal(1, entry.ExecutionsPerRun);
 
         var caseFile = custodian.Records.Values.Single(a => a is CaseFile);
-        var article = TheJournalist.Unearths(caseFile);
+        var article = new Article(caseFile);
 
         Assert.Equal("Fails", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
@@ -198,7 +199,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
             cfg => Configure(cfg with { Custodian = custodian })));
 
         var record = custodian.Records.Values.Single(a => a is ColdCasesReview);
-        var article = TheJournalist.Unearths(record);
+        var article = new Article(record);
 
         // TODO TEST CONTENT
 

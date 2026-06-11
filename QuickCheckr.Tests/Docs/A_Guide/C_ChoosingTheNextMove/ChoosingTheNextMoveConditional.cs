@@ -30,7 +30,7 @@ public class ChoosingTheNextMoveConditional : CheckrTest<ChoosingTheNextMoveCond
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.")]
     [DocContent("\n[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]")]
-    public override void Example() => Run(() => TheCheckr().Run(356083796, 2.ExecutionsPerRun()));
+    public override void Example() => Document(a => a.Run(356083796, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

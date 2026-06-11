@@ -18,7 +18,7 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1892439403));
+        Document(a => a.Run(1892439403));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -19,7 +19,7 @@ public class A_Custom : CheckrTest<A_Custom>
     [DocExample(typeof(CustomTowardsZero))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(211010750));
+    public override void Example() => Document(a => a.Run(211010750));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

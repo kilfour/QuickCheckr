@@ -30,8 +30,10 @@ RunInt(6)            // bug ends with ""1221"" and `a == 6` → fail
     [DocCodeFile("D_MultipleMethods.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1292206393, 60.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+
+            .Run(1292206393, 60.ExecutionsPerRun()));
+
         WriteAsserts(article, false);
         WriteReport<D_MultipleMethods>(article, false);
         Verify(article);

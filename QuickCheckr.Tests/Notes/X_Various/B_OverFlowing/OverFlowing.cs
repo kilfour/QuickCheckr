@@ -20,8 +20,10 @@ public class OverFlowing : BaseTest
     [DocCodeFile("OverFlowing.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1990927690, 10.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+                .Configure(cfg => cfg with { })
+                .Run(1990927690, 10.ExecutionsPerRun()));
+
         WriteAsserts(article, false);
         WriteReport<OverFlowing>(article, false);
         Verify(article);

@@ -17,7 +17,7 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(1000847613));
+    public override void Example() => Document(a => a.Run(1000847613));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
@@ -34,7 +34,7 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
     // [DocCodeFile("D_IrrelevantObjects.txt", "text")]
     // public void RunTest()
     // {
-    //     var article = TheJournalist.Exposes(() =>
+    //     var article = Journalist.Investigate(GetCheckr(), a => a
     //         GetCheckr().Run(1000847613));
     //     WriteAsserts(article);
     //     WriteReport<D_IrrelevantObjects>(article);

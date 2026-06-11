@@ -51,7 +51,7 @@ Generating a valid booking is easy, and then we just use that one to generate an
     [DocReportHeader]
     [DocContent("And ofcourse, there's an edge-case.")]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(511619818));
+    public override void Example() => Document(a => a.Run(511619818));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

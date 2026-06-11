@@ -18,7 +18,7 @@ public class H1_NestedCollectionsInnerCount : CheckrTest<H1_NestedCollectionsInn
     [DocReportHeader]
     [DocReport]
     public override void Example()
-        => Run(() => TheCheckr().Run(1860909202));
+        => Document(a => a.Run(1860909202));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

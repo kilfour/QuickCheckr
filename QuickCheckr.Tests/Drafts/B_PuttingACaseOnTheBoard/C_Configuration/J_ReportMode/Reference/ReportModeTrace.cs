@@ -17,7 +17,7 @@ public class ReportModeTrace : CheckrTest<ReportModeTrace>
     [DocContent("Only traces.")]
     [DocReport]
     public override void Example()
-        => Run(() => TheCheckr().Configure(a => Configure(a)).Run(1964562926, 2.ExecutionsPerRun()));
+        => Document(a => a.Configure(a => Configure(a)).Run(1964562926, 2.ExecutionsPerRun()));
 
     [CodeExample]
     private CheckrConfig Configure(CheckrConfig config)

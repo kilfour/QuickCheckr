@@ -15,8 +15,7 @@ public class B_NestedObjects : BaseTest
     [DocCodeFile("B_NestedObjects.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(803555194));
+        var article = Journalist.Investigate(GetCheckr(), a => a.Run(803555194));
         WriteAsserts(article);
         WriteReport<B_NestedObjects>(article);
         Verify(article);

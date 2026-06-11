@@ -20,7 +20,7 @@ public class B_TryCollection : CheckrTest<B_TryCollection>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(899182715));
+        Document(a => a.Run(899182715));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

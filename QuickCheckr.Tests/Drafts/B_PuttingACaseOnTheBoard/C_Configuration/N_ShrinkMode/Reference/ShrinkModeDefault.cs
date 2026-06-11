@@ -24,7 +24,7 @@ public class ShrinkModeDefault : CheckrTest<ShrinkModeDefault>
 
     [Fact]
     public override void Example()
-        => Run(() => TheCheckr().Configure(a => Configure(a)).Run(2145473476, 3.ExecutionsPerRun()));
+        => Document(a => a.Configure(a => Configure(a)).Run(2145473476, 3.ExecutionsPerRun()));
 
     [CodeExample]
     private CheckrConfig Configure(CheckrConfig config)

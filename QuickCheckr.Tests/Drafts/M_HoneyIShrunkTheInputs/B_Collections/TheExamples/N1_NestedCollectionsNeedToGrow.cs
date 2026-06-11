@@ -20,7 +20,7 @@ public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNee
     [DocReportHeader]
     [DocReport]
     public override void Example()
-        => Run(() => TheCheckr().Run(482835926));
+        => Document(a => a.Run(482835926));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -29,8 +29,8 @@ public class FilingEvidence : BaseTest
     public void ReportLocation()
     {
         var custodian = new InMemoryCustodian([]);
-        TheJournalist.Exposes(() =>
-            Checkr.Expect("Fails", () => false).Configure(a => Configure(a with { Custodian = custodian })).Run());
+        Journalist.Investigate(Checkr.Expect("Fails", () => false), a => a
+            .Configure(a => Configure(a with { Custodian = custodian })).Run());
         Assert.Equal("MyQuickCheckrTest", custodian.Records.Keys.Single());
     }
 
@@ -54,8 +54,8 @@ This *evidence* can later be used to potentially solve *Cold Cases*.
     public void EvidenceLocation()
     {
         var custodian = new InMemoryCustodian([]);
-        TheJournalist.Exposes(() =>
-            Checkr.Expect("Fails", () => false).Configure(a => a with { FileAs = "My Test Name", Custodian = custodian }).Run(1862095796));
+        Journalist.Investigate(Checkr.Expect("Fails", () => false), a => a
+            .Configure(a => a with { FileAs = "My Test Name", Custodian = custodian }).Run(1862095796));
 
         Assert.Single(custodian.Entries);
         var entry = custodian.Entries.Single();

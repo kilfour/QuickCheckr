@@ -19,8 +19,9 @@ public class A_ExecutionIdMatters : BaseTest
     [DocCodeFile("A_ExecutionIdMatters.txt", "text")]
     public void RunTestNoShrinking()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Configure(cfg => cfg with { ShrinkMode = ShrinkMode.None }).Run(4.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+                .Configure(cfg => cfg with { ShrinkMode = ShrinkMode.None })
+                .Run(4.ExecutionsPerRun()));
         Assert.Equal(4, article.Total().Executions());
         WriteReport<A_ExecutionIdMatters>(article, false);
         Assert.Equal(4, article.Execution(4).Read().ExecutionId);
@@ -46,8 +47,10 @@ So now, **Execution Id Matters**.
     [DocInclude(typeof(B_AlsoForExceptions))]
     public void RunTestShrinking()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1012196536, 4.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+                .Configure(cfg => cfg with { ShrinkMode = ShrinkMode.None })
+                .Run(1012196536, 4.ExecutionsPerRun()));
+
         WriteReport(article, "A_ExecutionIdMattersShrinking.txt", false);
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(4, article.Execution(3).Read().ExecutionId);

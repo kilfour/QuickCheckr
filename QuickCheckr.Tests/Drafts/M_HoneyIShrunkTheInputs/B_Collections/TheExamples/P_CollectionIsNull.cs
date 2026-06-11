@@ -20,7 +20,7 @@ public class P_CollectionIsNull : CheckrTest<P_CollectionIsNull>
     [DocReportHeader]
     [DocReport]
     public override void Example()
-        => Run(() => TheCheckr().Configure(a => Configure(a)).Run(849984174));
+        => Document(a => a.Configure(a => Configure(a)).Run(849984174));
 
     [CodeSnippet]
     private CheckrConfig Configure(CheckrConfig config)

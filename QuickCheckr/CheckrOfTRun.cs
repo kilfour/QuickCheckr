@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 
@@ -8,7 +7,7 @@ namespace QuickCheckr;
 public static class CheckrOfTRun
 {
     [StackTraceHidden]
-    private static IRecord Run(
+    private static CheckrOf<Case> Run(
         this CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
@@ -18,75 +17,88 @@ public static class CheckrOfTRun
         var config = new CheckrRunnerConfig(checkrConfig) with { Seed = seed };
         var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, Microtome.Empty);
         SpokesPerson.Announce(config, findings, executionsPerRun);
-        return findings;
+        return checkr;
     }
 
     [StackTraceHidden]
-    public static IRecord Run(this CheckrOf<Case> checkr)
+    private static ConfiguredCheckr Run(
+        this ConfiguredCheckr configuredCheckr,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        int? seed = null)
+    {
+        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed };
+        var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, Microtome.Empty);
+        SpokesPerson.Announce(config, findings, executionsPerRun);
+        return configuredCheckr;
+    }
+
+    [StackTraceHidden]
+    public static CheckrOf<Case> Run(this CheckrOf<Case> checkr)
         => Run(checkr, 1.Runs(), 1.ExecutionsPerRun());
 
     [StackTraceHidden]
-    public static IRecord Run(this ConfiguredCheckr configuredCheckr)
-        => Run(configuredCheckr.Checkr, 1.Runs(), 1.ExecutionsPerRun(), configuredCheckr.Config);
+    public static ConfiguredCheckr Run(this ConfiguredCheckr configuredCheckr)
+        => Run(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun());
 
 
     [StackTraceHidden]
-    public static IRecord Run(this CheckrOf<Case> checkr, RunCount runs)
+    public static CheckrOf<Case> Run(this CheckrOf<Case> checkr, RunCount runs)
         => Run(checkr, runs, 1.ExecutionsPerRun());
 
     [StackTraceHidden]
-    public static IRecord Run(this ConfiguredCheckr configuredCheckr, RunCount runs)
-        => Run(configuredCheckr.Checkr, runs, 1.ExecutionsPerRun(), configuredCheckr.Config);
+    public static ConfiguredCheckr Run(this ConfiguredCheckr configuredCheckr, RunCount runs)
+        => Run(configuredCheckr, runs, 1.ExecutionsPerRun());
 
 
     [StackTraceHidden]
-    public static IRecord Run(this CheckrOf<Case> checkr, ExecutionCount executionsPerRun)
+    public static CheckrOf<Case> Run(this CheckrOf<Case> checkr, ExecutionCount executionsPerRun)
         => Run(checkr, 1.Runs(), executionsPerRun);
 
     [StackTraceHidden]
-    public static IRecord Run(this ConfiguredCheckr configuredCheckr, ExecutionCount executionsPerRun)
-        => Run(configuredCheckr.Checkr, 1.Runs(), executionsPerRun, configuredCheckr.Config);
+    public static ConfiguredCheckr Run(this ConfiguredCheckr configuredCheckr, ExecutionCount executionsPerRun)
+        => Run(configuredCheckr, 1.Runs(), executionsPerRun);
 
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static CheckrOf<Case> Run(
         this CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun)
             => Run(checkr, runs, executionsPerRun, CheckrConfig.Default());
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static ConfiguredCheckr Run(
         this ConfiguredCheckr configuredCheckr,
         RunCount runs,
         ExecutionCount executionsPerRun)
-            => Run(configuredCheckr.Checkr, runs, executionsPerRun, configuredCheckr.Config);
+            => Run(configuredCheckr, runs, executionsPerRun);
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static CheckrOf<Case> Run(
         this CheckrOf<Case> checkr,
         int seed,
         ExecutionCount executionsPerRun)
             => Run(checkr, 1.Runs(), executionsPerRun, CheckrConfig.Default(), seed);
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static ConfiguredCheckr Run(
         this ConfiguredCheckr configuredCheckr,
         int seed,
         ExecutionCount executionsPerRun)
-        => Run(configuredCheckr.Checkr, 1.Runs(), executionsPerRun, configuredCheckr.Config, seed);
+        => Run(configuredCheckr, 1.Runs(), executionsPerRun, seed);
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static CheckrOf<Case> Run(
         this CheckrOf<Case> checkr,
         int seed)
             => Run(checkr, 1.Runs(), 1.ExecutionsPerRun(), CheckrConfig.Default(), seed);
 
     [StackTraceHidden]
-    public static IRecord Run(
+    public static ConfiguredCheckr Run(
         this ConfiguredCheckr configuredCheckr,
         int seed)
-        => Run(configuredCheckr.Checkr, 1.Runs(), 1.ExecutionsPerRun(), configuredCheckr.Config, seed);
+        => Run(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun(), seed);
 
     /// <summary>
     /// Converts an integer into a <see cref="RunCount"/>.  

@@ -71,7 +71,7 @@ because the test loses the state of the `BugHouse` between every run.")]
     [CodeSnippet]
     private static void RunBugHouseCheckr()
     {
-        BugHouseCheckr.Configure(a => Configure(a)).Run(1854571642, 10.ExecutionsPerRun());
+        BugHouseCheckr.Run(1854571642, 10.ExecutionsPerRun());
     }
 
     [Fact]
@@ -151,7 +151,7 @@ the failure only emerges when several executions act on the *same* object.
 ")]
     public void CheckingTheBugHouse()
     {
-        var article = TheJournalist.Exposes(RunBugHouseCheckr);
+        var article = Journalist.Investigate(BugHouseCheckr, a => a.Run(1854571642, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<TheStashRunsAndExecutions>(article, false);
         Verify(article);

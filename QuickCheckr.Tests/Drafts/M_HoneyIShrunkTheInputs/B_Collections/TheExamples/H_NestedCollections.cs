@@ -15,7 +15,7 @@ public class H_NestedCollections : CheckrTest<H_NestedCollections>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(() => TheCheckr().Run(146712596));
+    [DocReport] public override void Example() => Document(a => a.Run(146712596));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

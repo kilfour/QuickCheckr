@@ -19,7 +19,7 @@ public class CheckrSequenceAllNeeded : CheckrTest<CheckrSequenceAllNeeded>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(10.ExecutionsPerRun()));
+        Document(a => a.Run(10.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -20,7 +20,7 @@ public class A_MaxStepsExceeded : CheckrTest<A_MaxStepsExceeded>
     [DocConfigure]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Configure(a => Configure(a)).Run(1719639579));
+    public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(1719639579));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

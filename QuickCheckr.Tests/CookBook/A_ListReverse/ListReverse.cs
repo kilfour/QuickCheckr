@@ -46,7 +46,7 @@ public class ListReverse : CheckrTest<ListReverse>
     [DocCheckr]
     [DocBoldHeader("The Report")]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Configure(a => Configure(a)).Run(498116108));
+    public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(498116108));
 
     [CodeSnippet]
     private static FuzzrOf<List<int>> ListFuzzr() =>

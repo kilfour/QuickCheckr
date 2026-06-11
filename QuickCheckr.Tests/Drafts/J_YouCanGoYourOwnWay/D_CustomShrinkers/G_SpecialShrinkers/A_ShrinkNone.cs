@@ -24,7 +24,7 @@ It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings w
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
+        Document(a => a.Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

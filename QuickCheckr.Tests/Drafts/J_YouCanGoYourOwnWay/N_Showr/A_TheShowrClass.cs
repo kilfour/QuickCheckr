@@ -24,8 +24,10 @@ public class A_TheShowrClass : BaseTest
     [Fact]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(344916298, 2.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+                .Configure(cfg => cfg with { })
+                .Run(344916298, 2.ExecutionsPerRun()));
+
         WriteAsserts(article, false);
         WriteReport<A_TheShowrClass>(article, false);
         Verify(article);

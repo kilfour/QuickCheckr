@@ -16,7 +16,7 @@ public class B_FunctionStopOnFirstPassedAlternative : CheckrTest<B_FunctionStopO
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(1681332589));
+    public override void Example() => Document(a => a.Run(1681332589));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

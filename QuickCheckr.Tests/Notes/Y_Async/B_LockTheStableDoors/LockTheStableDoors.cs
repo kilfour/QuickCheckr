@@ -27,8 +27,10 @@ public class LockTheStableDoors : BaseTest
     [DocCodeFile("LockTheStableDoors.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            TheCheckr.Run(1511313504, 20.ExecutionsPerRun()));
+        var article = Journalist.Investigate(TheCheckr, a => a
+
+                .Run(1511313504, 20.ExecutionsPerRun()));
+
         WriteAsserts(article, false);
         WriteReport<LockTheStableDoors>(article, false);
         Verify(article);

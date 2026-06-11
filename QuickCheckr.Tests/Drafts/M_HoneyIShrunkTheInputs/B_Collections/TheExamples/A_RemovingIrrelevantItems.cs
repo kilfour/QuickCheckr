@@ -18,7 +18,7 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
     [DocReportHeader]
     [DocReport]
     [DocContent(@"Even if the original list was long and varied, QuickCheckr isolates the single relevant element:")]
-    public override void Example() => Run(() => TheCheckr().Run(1833095082));
+    public override void Example() => Document(a => a.Run(1833095082));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

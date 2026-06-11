@@ -49,7 +49,7 @@ In the example here, `0` was tried, but it made the test pass, so the previously
 QuickCheckr comes with a small number of built-in reducers, but it is relatively easy to implement your own.  
 Depending on demand, the library of reducers might grow fast.
 ")]
-    public override void Example() => Run(() => TheCheckr().Run(1684147193, 10.ExecutionsPerRun()));
+    public override void Example() => Document(a => a.Run(1684147193, 10.ExecutionsPerRun()));
 
     [CodeExample]
     public class Account

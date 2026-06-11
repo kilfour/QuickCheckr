@@ -17,7 +17,7 @@ public class C1_TryFunctionOnShrink : CheckrTest<C1_TryFunctionOnShrink>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(161541321, 2.ExecutionsPerRun()));
+        Document(a => a.Run(161541321, 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

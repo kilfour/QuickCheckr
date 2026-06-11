@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 
@@ -31,20 +30,10 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
         var journalist = new Journalist();
         try
         {
-            runCheckr(TheCheckr().Configure(a => a with { FileAs = "Test", Custodian = journalist }));
+            runCheckr(TheCheckr().Configure(a => a with { FileAs = "WhistleBlower", Custodian = journalist }));
         }
         catch (FalsifiableException) { }
-        var article = TheJournalist.Unearths(journalist.GetRecord());
-        ProcessArticle(article, callerPath);
-        Verify(article);
-    }
-
-    [StackTraceHidden]
-    protected void Run(
-        Func<IRecord> run,
-        [CallerFilePath] string callerPath = "")
-    {
-        var article = TheJournalist.Investigates(run);
+        var article = journalist.GetArticle();
         ProcessArticle(article, callerPath);
         Verify(article);
     }

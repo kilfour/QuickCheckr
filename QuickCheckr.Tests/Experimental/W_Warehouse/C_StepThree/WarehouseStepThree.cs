@@ -3,6 +3,7 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;
@@ -25,8 +26,13 @@ public class WarehouseStepThree : BaseTest
     [DocCodeFile("WarehouseStepThree.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Investigates(() =>
-            TheCheckr.Configure(Config.NoLabels).Run(1764635658, 20.ExecutionsPerRun()));
+        var journalist = new Journalist();
+        try
+        {
+            TheCheckr.Run(1764635658, 20.ExecutionsPerRun());
+        }
+        catch (FalsifiableException) { }
+        var article = journalist.GetArticle();
         WriteAsserts(article, false);
         WriteReport<WarehouseStepThree>(article, false);
         Verify(article);

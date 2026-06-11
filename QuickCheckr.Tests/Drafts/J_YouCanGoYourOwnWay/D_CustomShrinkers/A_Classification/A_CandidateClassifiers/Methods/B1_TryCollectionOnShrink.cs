@@ -17,7 +17,7 @@ public class B1_TryCollectionOnShrink : CheckrTest<B1_TryCollectionOnShrink>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(899182715));
+        Document(a => a.Run(899182715));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

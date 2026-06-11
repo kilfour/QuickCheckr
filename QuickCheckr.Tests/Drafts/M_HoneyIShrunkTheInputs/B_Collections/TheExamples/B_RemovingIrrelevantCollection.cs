@@ -20,7 +20,7 @@ is irrelevant for the failure, QuickCheckr will remove it.")]
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(2014608033));
+    public override void Example() => Document(a => a.Run(2014608033));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

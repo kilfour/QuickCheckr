@@ -15,8 +15,7 @@ public class TrackrVerify : BaseTest
     [DocCodeFile("TrackrVerify.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(293407282, 20.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a.Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TrackrVerify>(article);
         Verify(article);
@@ -49,8 +48,8 @@ public class TrackrVerify : BaseTest
     [DocCodeFile("TrackrVerifyMultiple.txt", "text")]
     public void Multiple()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr_Multiple().Run(293407282, 20.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr_Multiple(), a => a
+            .Run(293407282, 20.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport(article, "TrackrVerifyMultiple.txt");
         VerifyMultiple(article);

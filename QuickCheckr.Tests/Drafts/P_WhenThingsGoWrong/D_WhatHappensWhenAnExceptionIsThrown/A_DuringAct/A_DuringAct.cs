@@ -20,7 +20,7 @@ public class A_DuringAct : CheckrTest<A_DuringAct>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(1.Runs(), 2.ExecutionsPerRun()));
+    public override void Example() => Document(a => a.Run(1.Runs(), 2.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -17,7 +17,7 @@ public class ShrinkModeNone : CheckrTest<ShrinkModeNone>
     [DocContent("QuickCheckr reports the original failing run.")]
     [DocReport]
     public override void Example()
-        => Run(() => TheCheckr().Configure(a => Configure(a)).Run(2145473476, 3.ExecutionsPerRun()));
+        => Document(a => a.Configure(a => Configure(a)).Run(2145473476, 3.ExecutionsPerRun()));
 
     [CodeExample]
     private CheckrConfig Configure(CheckrConfig config)

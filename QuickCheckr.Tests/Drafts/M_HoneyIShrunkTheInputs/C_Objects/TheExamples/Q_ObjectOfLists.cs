@@ -18,7 +18,7 @@ public class Q_ObjectOfLists : CheckrTest<Q_ObjectOfLists>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1622405126));
+        Document(a => a.Run(1622405126));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

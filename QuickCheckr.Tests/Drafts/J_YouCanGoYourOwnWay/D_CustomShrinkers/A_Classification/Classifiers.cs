@@ -35,7 +35,7 @@ It is a bit of a contrived example as the default classifiers handle this case j
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1521363987));
+        Document(a => a.Run(1521363987));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

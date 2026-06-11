@@ -28,8 +28,10 @@ public class AStatefulList : BaseTest
     [DocCodeFile("AStatefulList.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(254875886, 10.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+
+            .Run(254875886, 10.ExecutionsPerRun()));
+
         WriteAsserts(article, false);
         WriteReport<AStatefulList>(article, false);
         Verify(article);

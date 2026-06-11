@@ -21,7 +21,7 @@ public class B_PropertySetterThrows : CheckrTest<B_PropertySetterThrows>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(() => TheCheckr().Run(662847995, 1.ExecutionsPerRun()));
+    public override void Example() => Document(a => a.Run(662847995, 1.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

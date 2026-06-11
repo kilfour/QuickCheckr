@@ -18,7 +18,7 @@ public class L_TuplesAgain : CheckrTest<L_TuplesAgain>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(751254928));
+        Document(a => a.Run(751254928));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

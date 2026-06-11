@@ -27,7 +27,7 @@ public class Objects
     //             })
     //             select Acid.Test;
 
-    //         var article = TheJournalist.Exposes(() => QState.Run(script)
+    //         var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //             .WithOneRun()
     //             .AndOneExecutionPerRun());
 
@@ -54,7 +54,7 @@ public class Objects
     //             })
     //             select Acid.Test;
 
-    //         var article = TheJournalist.Exposes(() => QState.Run(script)
+    //         var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //             .WithOneRun()
     //             .And(30.ExecutionsPerRun()));
 
@@ -84,7 +84,7 @@ public class Objects
     //         })
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
 
@@ -111,7 +111,7 @@ public class Objects
     //         from foo in "act".Act(() => { throw new Exception(); })
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
 
@@ -138,7 +138,7 @@ public class Objects
     //         })
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
     //     var inputEntry = article.Execution(1).Input(1).Read();
@@ -168,7 +168,7 @@ public class Objects
     //             })
     //             select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
 
@@ -206,7 +206,7 @@ public class Objects
     //             })
     //             select Acid.Test;
 
-    //         var article = TheJournalist.Exposes(() => QState.Run(script)
+    //         var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
     //         var inputEntry = article.Execution(1).Input(1).Read();
@@ -252,7 +252,7 @@ public class Objects
     //             && input.MyThirdProperty == result.MyThirdProperty)
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
     //     var inputEntry = article.Execution(1).Input(1).Read();
@@ -287,7 +287,7 @@ public class Objects
     //             && input.MyThirdProperty == result.MyThirdProperty)
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
 
@@ -324,7 +324,7 @@ public class Objects
     //             && input.MyFourthProperty == result.MyFourthProperty)
     //         select Acid.Test;
 
-    //     var article = TheJournalist.Exposes(() => QState.Run(script)
+    //     var article = Journalist.Investigate(GetCheckr(), a => a QState.Run(script)
     //         .WithOneRun()
     //         .And(50.ExecutionsPerRun()));
 

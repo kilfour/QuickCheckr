@@ -18,7 +18,7 @@ public class K_ACollectionOfObjects : CheckrTest<K_ACollectionOfObjects>
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(() => TheCheckr().Run(849984174));
+    [DocReport] public override void Example() => Document(a => a.Run(849984174));
 
     [CodeExample]
     public class Thing

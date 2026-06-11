@@ -19,7 +19,7 @@ public class A_GreedIsNotGood : CheckrTest<A_GreedIsNotGood>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1.ExecutionsPerRun()));
+        Document(a => a.Run(1.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

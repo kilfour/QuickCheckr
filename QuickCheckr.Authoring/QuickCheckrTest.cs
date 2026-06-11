@@ -57,7 +57,7 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
     private void WriteAsserts(Article article)
     {
         if (Asserts)
-            TheJournalist.Transcribes(article);
+            Journalist.Transcribe(article);
     }
 
     private void ExplainMe()

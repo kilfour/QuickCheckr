@@ -27,8 +27,10 @@ public class TheElementRemover : BaseTest
     [Fact]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(438724296));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+
+                .Run(438724296));
+
         WriteAsserts(article);
         WriteReport<TheElementRemover>(article);
         Verify(article);

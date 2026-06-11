@@ -18,7 +18,7 @@ public class OnPath : CheckrTest<OnPath>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(1.Runs()));
+        Document(a => a.Run(1.Runs()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -16,7 +16,7 @@ public class F_None : CheckrTest<F_None>
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 3)]
-    public override void Example() => Run(() => TheCheckr().Run(695266907));
+    public override void Example() => Document(a => a.Run(695266907));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

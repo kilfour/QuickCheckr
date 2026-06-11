@@ -30,8 +30,10 @@ Run( a = 6 ) // count == 3 → fail
     [DocCodeFile("B_ThirdTimesTheHarm.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(766917706, 50.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+
+            .Run(766917706, 50.ExecutionsPerRun()));
+
         WriteAsserts(article);
         WriteReport<B_ThirdTimesTheHarm>(article);
         Verify(article);

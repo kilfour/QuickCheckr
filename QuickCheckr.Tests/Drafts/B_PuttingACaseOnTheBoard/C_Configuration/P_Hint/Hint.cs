@@ -17,7 +17,7 @@ it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` exten
 public static class Hint
 {
     [CodeExample]
-    public static IRecord FileThis(
+    public static void FileThis(
         this CheckrOf<Case> checkr,
         [CallerFilePath] string filePath = "",
         [CallerMemberName] string testName = "")

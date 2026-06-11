@@ -17,7 +17,7 @@ public class CheckrActCarefullyWhen : CheckrTest<CheckrActCarefullyWhen>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(625676917, 3.ExecutionsPerRun()));
+        Document(a => a.Run(625676917, 3.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

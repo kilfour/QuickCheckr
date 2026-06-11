@@ -16,7 +16,7 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
-    [DocReport] public override void Example() => Run(() => TheCheckr().Run(2077876521));
+    [DocReport] public override void Example() => Document(a => a.Run(2077876521));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

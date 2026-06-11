@@ -18,7 +18,7 @@ public class A_Default : CheckrTest<A_Default>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(844205832));
+        Document(a => a.Run(844205832));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

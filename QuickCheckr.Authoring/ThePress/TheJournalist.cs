@@ -15,12 +15,28 @@ namespace QuickCheckr.Authoring.ThePress;
 
 public class Journalist : ICustodian
 {
+    public static Article Investigate(CheckrOf<Case> checkr, Action<ConfiguredCheckr> runCheckr)
+    {
+        var journalist = new Journalist();
+        try
+        {
+            runCheckr(checkr.Configure(a => a with { FileAs = "WhistleBlower", Custodian = journalist }));
+        }
+        catch (FalsifiableException) { }
+        return journalist.GetArticle();
+    }
+
     private IRecord? record;
 
     public IRecord GetRecord()
         => record is null
             ? ComputerSays.No<IRecord>("The journalist could not obtain any information.")
             : record;
+
+    public Article GetArticle()
+        => record is null
+            ? ComputerSays.No<Article>("The journalist could not obtain any information.")
+            : new(record);
 
     public Dictionary<string, IRecord> Evidence { get; private set; } = [];
 
@@ -57,41 +73,8 @@ public class Journalist : ICustodian
 
     public HashSet<VaultEntry> RetrieveVaultEntries(string name)
         => Entries;
-}
 
-public static class TheJournalist
-{
-    [StackTraceHidden]
-    public static Article Unearths(IRecord record) => new(record);
-
-    [StackTraceHidden]
-    public static Article Exposes(Action run)
-    {
-        try
-        {
-            run();
-        }
-        catch (FalsifiableException ex)
-        {
-            return Unearths(ex.TheCaseFile);
-        }
-        throw new InvalidOperationException("Expected FalsifiableException, but none was thrown.");
-    }
-
-    [StackTraceHidden]
-    public static Article Investigates(Func<IRecord> run)
-    {
-        try
-        {
-            return Unearths(run());
-        }
-        catch (FalsifiableException ex)
-        {
-            return Unearths(ex.TheCaseFile);
-        }
-    }
-
-    public static void Transcribes(Article article) =>
+    public static void Transcribe(Article article) =>
         Signal.From<Article>(TheEditor.ProofReads)
             .SetArtery(FileLog.Write())
             .Pulse(article);

@@ -52,8 +52,10 @@ So, in the previous example, after *Input Shrinking*, the result is:
     [DocCodeFile("InputShrinking.txt", "text")]
     public void Example()
     {
-        var article = TheJournalist.Exposes(() =>
-            Example_Check().Run(165641598));
+        var article = Journalist.Investigate(Example_Two_Check(), a => a
+                .Configure(cfg => cfg with { })
+                .Run(165641598));
+
         WriteAsserts(article);
         WriteReport(article, "InputShrinking.txt");
         Verify(article);
@@ -94,8 +96,10 @@ Result:
     [DocContent("Many more examples focused on shrinking behaviour can be found [here][HoneyIShrunkTheInputs].")]
     public void Example_Two()
     {
-        var article = TheJournalist.Exposes(() =>
-            Example_Two_Check().Run(231122398));
+        var article = Journalist.Investigate(Example_Two_Check(), a => a
+                .Configure(cfg => cfg with { })
+                .Run(231122398));
+
         WriteAsserts(article);
         WriteReport(article, "InputShrinking_Two.txt");
         Verify_Two(article);

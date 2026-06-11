@@ -39,7 +39,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     [DocContent("This Fuzzr generates a valid numeric expression string of variable length.  \n *Some Examples:*")]
     [DocCodeFile("ExpressionExamples.txt", "text")]
     public override void Example() =>
-        Run(() => TheCheckr().Configure(a => Configure(a)).Run(640099888));
+        Document(a => a.Configure(a => Configure(a)).Run(640099888));
 
     [CodeExample]
     private CheckrConfig Configure(CheckrConfig config)

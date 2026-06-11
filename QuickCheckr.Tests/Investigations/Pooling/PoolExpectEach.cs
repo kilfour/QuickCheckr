@@ -17,7 +17,7 @@ public class PoolExpectEach : CheckrTest<PoolExpectEach>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => TheCheckr().Run(10.ExecutionsPerRun()));
+        Document(a => a.Run(10.ExecutionsPerRun()));
 
     public class Thing;
     public class OtherThing;

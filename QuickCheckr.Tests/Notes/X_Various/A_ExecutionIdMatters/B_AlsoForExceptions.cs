@@ -16,8 +16,10 @@ public class B_AlsoForExceptions : BaseTest
     [DocCodeFile("B_AlsoForExceptions.txt", "text")]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(4.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a
+
+            .Run(4.ExecutionsPerRun()));
+
         WriteReport<B_AlsoForExceptions>(article, false);
         Assert.Equal(3, article.Total().Executions());
         Assert.Equal(4, article.Execution(3).Read().ExecutionId);
