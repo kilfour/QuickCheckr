@@ -115,7 +115,7 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     public void RunTest_Deliberated()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(), Configure));
+            GetCheckr().Configure(a => Configure(a)).Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "DeliberationPolicyMinimal.txt", false);
         Verify_Deliberated(article);

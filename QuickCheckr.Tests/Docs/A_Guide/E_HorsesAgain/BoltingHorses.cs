@@ -83,11 +83,10 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     )]
     public void RunTest()
     {
-        var article = TheJournalist.Exposes(() => TheCheckr.Run(1473455315, 20.ExecutionsPerRun(),
-            a => a with
-            {
-                WarningLevel = WarningLevel.None
-            }));
+        var article = TheJournalist.Exposes(() =>
+            TheCheckr
+                .Configure(a => a with { WarningLevel = WarningLevel.None })
+                .Run(1473455315, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<BoltingHorses>(article, false);
         Verify(article);

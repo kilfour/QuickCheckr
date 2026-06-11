@@ -69,7 +69,9 @@ There is no guesswork.")]
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1684147193, 10.ExecutionsPerRun(), a => a with { ShrinkMode = ShrinkMode.Inputs }));
+            GetCheckr()
+                .Configure(a => a with { ShrinkMode = ShrinkMode.Inputs })
+                .Run(1684147193, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<ChoosingTheNextMove>(article, false);
         Verify(article);

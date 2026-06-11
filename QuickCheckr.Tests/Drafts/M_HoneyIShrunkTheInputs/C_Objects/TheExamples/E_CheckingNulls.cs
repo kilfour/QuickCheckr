@@ -32,7 +32,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(358877731, ConfigureNoStackTrace));
+            GetCheckr().Configure(ConfigureNoStackTrace).Run(358877731));
         WriteAsserts(article, false);
         WriteReport<E_CheckingNulls>(article, false);
         Verify(article);
@@ -81,7 +81,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     public void RunTest_NotShrinkingNull()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1269557792, ConfigureNoStackTrace));
+            GetCheckr().Configure(ConfigureNoStackTrace).Run(1269557792));
         WriteAsserts(article, false);
         WriteReport(article, "E_CheckingNulls_NotShrinkingNull.txt", false);
         Verify_NotShrinkingNull(article);
@@ -113,7 +113,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     public void RunTest_Alternative()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr_Alternative().Run(1269557792, ConfigureNoStackTrace));
+            GetCheckr_Alternative().Configure(ConfigureNoStackTrace).Run(1269557792));
         WriteAsserts(article, false);
         WriteReport(article, "E_CheckingNulls_Alternative.txt", false);
         Verify_Alternative(article);
@@ -163,7 +163,7 @@ so the warning can be ignored.
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.")]
     public void RunTest_WithDeliberationPolicy()
     {
-        var article = TheJournalist.Exposes(() => GetCheckr().Run(75.Runs(), a => ConfigureNoStackTrace(Configure(a))));
+        var article = TheJournalist.Exposes(() => GetCheckr().Configure(a => ConfigureNoStackTrace(Configure(a))).Run(75.Runs()));
         WriteAsserts(article, false);
         WriteReport(article, "E_CheckingNulls_Deliberated.txt", false);
         Verify_Deliberated(article);

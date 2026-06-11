@@ -2,6 +2,7 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Experimental.F_TheBroadcaster.SimpleModel;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Experimental.F_TheBroadcaster;
@@ -18,8 +19,7 @@ public partial class TheBroadcasterTest : BaseTest
     public void AllInOne()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(100.Runs(), 10.ExecutionsPerRun(),
-                a => a with { Deliberation = Deliberation.MinimumExecutions() }));
+            GetCheckr().Configure(a => a with { Deliberation = Deliberation.MinimumExecutions() }).Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<TheBroadcasterTest>(article, false);
     }

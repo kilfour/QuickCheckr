@@ -144,7 +144,10 @@ public class RunningACheckr : BaseTest
     [Fact]
     [DocContent(
 @"All of the methods mentioned above can take an optional parameter `Func<CheckrConfig, CheckrConfig> configure`
-which allows for controlling specific aspects of the Checkr run.")]
+which allows for controlling specific aspects of the Checkr run.
+
+
+!!!!!! THIS HAS COMPLETELY CHANGED !!!!!!!!")]
     [DocContent("\n[The Board][PuttingACaseOnTheBoard] | [Previous][TestFrameworkIntegration] | [Next][Configuration]")]
     public void WithConfigurations()
     {
@@ -153,44 +156,44 @@ which allows for controlling specific aspects of the Checkr run.")]
         var executionCount = new Cell<int>(0);
         var checkr = GetCheckr(runCount, executionCount);
 
-        checkr.Run(a => a);
+        checkr.Run();
         Assert.Equal(1, runCount.Value);
         Assert.Equal(1, executionCount.Value);
 
         runCount.Value = 0;
         executionCount.Value = 0;
-        checkr.Run(5.Runs(), a => a);
+        checkr.Run(5.Runs());
         Assert.Equal(5, runCount.Value);
         Assert.Equal(1, executionCount.Value);
 
         runCount.Value = 0;
         executionCount.Value = 0;
-        checkr.Run(5.ExecutionsPerRun(), a => a);
+        checkr.Run(5.ExecutionsPerRun());
         Assert.Equal(1, runCount.Value);
         Assert.Equal(5, executionCount.Value);
 
         runCount.Value = 0;
         executionCount.Value = 0;
-        checkr.Run(3.Runs(), 5.ExecutionsPerRun(), a => a);
+        checkr.Run(3.Runs(), 5.ExecutionsPerRun());
         Assert.Equal(3, runCount.Value);
         Assert.Equal(5, executionCount.Value);
 
         runCount.Value = 0;
         executionCount.Value = 0;
-        checkr.Run(424242, a => a);
+        checkr.Run(424242);
         Assert.Equal(1, runCount.Value);
         Assert.Equal(1, executionCount.Value);
         var article = TheJournalist.Exposes(
-            () => Checkr.Expect("Fails", () => false).Run(424242, a => a));
+            () => Checkr.Expect("Fails", () => false).Run(424242));
         Assert.Equal(424242, article.Seed());
 
         runCount.Value = 0;
         executionCount.Value = 0;
-        checkr.Run(424242, 5.ExecutionsPerRun(), a => a);
+        checkr.Run(424242, 5.ExecutionsPerRun());
         Assert.Equal(1, runCount.Value);
         Assert.Equal(5, executionCount.Value);
         article = TheJournalist.Exposes(
-            () => Checkr.Expect("Fails", () => false).Run(424242, 5.ExecutionsPerRun(), a => a));
+            () => Checkr.Expect("Fails", () => false).Run(424242, 5.ExecutionsPerRun()));
         Assert.Equal(424242, article.Seed());
     }
 }

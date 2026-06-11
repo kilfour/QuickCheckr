@@ -22,7 +22,7 @@ public class WarehouseStepTwo : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>
-            GetCheckr().Run(1344312712, 20.ExecutionsPerRun(), Config.NoLabels));
+            GetCheckr().Configure(Config.NoLabels).Run(1344312712, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepTwo>(article, false);
         Verify(article);

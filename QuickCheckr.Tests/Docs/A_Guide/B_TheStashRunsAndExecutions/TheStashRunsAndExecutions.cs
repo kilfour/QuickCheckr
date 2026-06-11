@@ -71,7 +71,7 @@ because the test loses the state of the `BugHouse` between every run.")]
     [CodeSnippet]
     private static void RunBugHouseCheckr()
     {
-        BugHouseCheckr.Run(1854571642, 10.ExecutionsPerRun(), Configure);
+        BugHouseCheckr.Configure(a => Configure(a)).Run(1854571642, 10.ExecutionsPerRun());
     }
 
     [Fact]

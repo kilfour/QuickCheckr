@@ -20,7 +20,7 @@ public class A_ExecutionIdMatters : BaseTest
     public void RunTestNoShrinking()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(4.ExecutionsPerRun(), cfg => cfg with { ShrinkMode = ShrinkMode.None }));
+            GetCheckr().Configure(cfg => cfg with { ShrinkMode = ShrinkMode.None }).Run(4.ExecutionsPerRun()));
         Assert.Equal(4, article.Total().Executions());
         WriteReport<A_ExecutionIdMatters>(article, false);
         Assert.Equal(4, article.Execution(4).Read().ExecutionId);

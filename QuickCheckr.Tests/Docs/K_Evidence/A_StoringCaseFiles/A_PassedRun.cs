@@ -22,7 +22,7 @@ public class A_PassedRun : CheckrTest<A_PassedRun>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => TheCheckr().Run(5.Runs(), 10.ExecutionsPerRun(), Configure);
+    public override void Example() => TheCheckr().Configure(a => Configure(a)).Run(5.Runs(), 10.ExecutionsPerRun());
 
     private const string FileName = @".quickcheckr\MyQuickCheckrTest\report.qr";
 

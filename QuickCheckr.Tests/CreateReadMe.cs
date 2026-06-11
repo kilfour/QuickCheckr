@@ -23,7 +23,7 @@ public class CreateReadMe : BaseTest
     public void Example()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1141724745, 100.ExecutionsPerRun(), a => a with { ReportMode = a.ReportMode & ~ReportMode.StackTrace }));
+            GetCheckr().Configure(a => a with { ReportMode = a.ReportMode & ~ReportMode.StackTrace }).Run(1141724745, 100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<CreateReadMe>(article, false);
         Verify(article);

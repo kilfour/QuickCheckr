@@ -19,7 +19,7 @@ public class SystemTypes : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(1487819190, 1.ExecutionsPerRun(), a => a with { WarningLevel = WarningLevel.Debug }));
+            GetCheckr().Configure(a => a with { WarningLevel = WarningLevel.Debug }).Run(1487819190, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<SystemTypes>(article, false);
         Verify(article);

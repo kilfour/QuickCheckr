@@ -1,3 +1,4 @@
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
@@ -18,11 +19,22 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Run(() => TheCheckr().Run(1883509239, Configure));
+    public override void Example()
+    {
+        Run(() =>
+        {
+            var journalist = new Journalist();
+            TheCheckr().Configure(a => Configure(a, journalist)).Run(1883509239);
+            return journalist.GetRecord();
+        });
+    }
 
-    private CheckrConfig Configure(CheckrConfig config)
-        => config with { ReportMode = config.ReportMode | ReportMode.FinalTrace };
+    private CheckrConfig Configure(CheckrConfig config, Journalist journalist)
+        => config with
+        {
+            Custodian = journalist,
+            ReportMode = config.ReportMode | ReportMode.FinalTrace
+        };
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

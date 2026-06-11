@@ -37,8 +37,7 @@ public class GatheringEvidenceObservation : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GatheringEvidenceCheckr.TheCheckr().Run(1652806413, 20.ExecutionsPerRun(),
-                cfg => cfg with { ShrinkMode = ShrinkMode.None }));
+            GatheringEvidenceCheckr.TheCheckr().Configure(a => a with { ShrinkMode = ShrinkMode.None }).Run(1652806413, 20.ExecutionsPerRun()));
         WriteReport(article, "GatheringEvidenceObservation.txt", true);
     }
 }

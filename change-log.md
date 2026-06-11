@@ -155,24 +155,45 @@
 Investigation workflows, cold-case review, vault configuration safety, and consistent reporting behavior.
 
 ### Changed
-- Consolidated `GatherEvidence(...)` and `Conduct(n.Investigations(), ...)`.
+* Consolidated `GatherEvidence(...)` and `Conduct(n.Investigations(), ...)`.
   `GatherEvidence(...)` has been removed and can now be expressed as a customizable case of `Conduct(...)`.
-- Removed the `evidence-log` vault file.
-- Moved `DeliberationPolicy` and `DeliberationTarget` into the new `Deliberation` configuration class.
-- Renamed occurrences of `DeliberationPolicy` to `Deliberation`.
-- `Conduct(n.Investigations(), ...)` now takes `Deliberation` parameters into account.
-- Removed warnings for unchecked conditional expectations because composed `Checkr`s could not be detected reliably enough.
+* Removed the `evidence-log` vault file.
+* Moved `DeliberationPolicy` and `DeliberationTarget` into the new `Deliberation` configuration class.
+* Renamed occurrences of `DeliberationPolicy` to `Deliberation`.
+* `Conduct(n.Investigations(), ...)` now takes `Deliberation` parameters into account.
+* Removed warnings for unchecked conditional expectations because composed `Checkr`s could not be detected reliably enough.
 
 ### Added
-- `ReviewColdCases(...)` now persists a summary report.
-- `CloseColdCases(...)` now persists a summary report.
-- Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
+* `ReviewColdCases(...)` now persists a summary report.
+* `CloseColdCases(...)` now persists a summary report.
+* Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
 
 ### Fixed / Hardened
-- `Conduct(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
-- `ReviewColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
-- `CloseColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
-- `ReviewColdCases(...)` now throws if an existing seed still fails.
-- `CloseColdCases(...)` now throws if an existing seed still fails.
+* `Conduct(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+* `ReviewColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+* `CloseColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
+* `ReviewColdCases(...)` now throws if an existing seed still fails.
+* `CloseColdCases(...)` now throws if an existing seed still fails.
 
 ## 0.2.1: Internal Affairs
+* Added Diagnostics support.
+  * When enabled, QuickCheckr records the structure of it's decision-making.
+  * Checkrs can then add structured diagnostic information during execution.
+  * Diagnostics output can easily be configured using filters.
+  * Diagnostics output can be redirect by supplying a QuickPulse `IArtery`.
+* Redesigned the `ICustodian` API
+  * Seperated main reports from seed-specific evidence.
+    * Added `FileEvidence` and `RemoveEvidence` methods.
+    * `RemoveRecord` has been removed.
+  * Replaced path-based storage with a standardized name-based structure.
+  ```text
+  .quickcheckr/
+  └── <name>/
+      ├── report.qr
+      └── vault/
+          ├── evidence.qv
+          └── report_<seed>.qr
+  ```
+* Simplified *Configuration*
+  * Removed the various `.Run(...)` overloads.
+  * Added a `Configure` extension method for `CheckrOf<T>`.

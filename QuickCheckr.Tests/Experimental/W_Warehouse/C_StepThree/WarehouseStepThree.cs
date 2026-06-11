@@ -26,7 +26,7 @@ public class WarehouseStepThree : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Investigates(() =>
-            TheCheckr.Run(1764635658, 20.ExecutionsPerRun(), Config.NoLabels));
+            TheCheckr.Configure(Config.NoLabels).Run(1764635658, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepThree>(article, false);
         Verify(article);

@@ -18,7 +18,7 @@ public class UnknownPrimitives : BaseTest
     public void RunTest()
     {
         var article = TheJournalist.Exposes(() =>
-            GetCheckr().Run(746257211, 1.ExecutionsPerRun(), a => a with { WarningLevel = WarningLevel.Verbose }));
+            GetCheckr().Configure(a => a with { WarningLevel = WarningLevel.Verbose }).Run(746257211, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<UnknownPrimitives>(article, false);
         Verify(article);

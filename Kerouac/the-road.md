@@ -11,7 +11,8 @@
 ### Todo
 
 ### Done/Ready for Changelog after review
-* Added Diagnostics
+
+
 
 ## 0.3.0 : All Aboard
 * More in-built reducers
