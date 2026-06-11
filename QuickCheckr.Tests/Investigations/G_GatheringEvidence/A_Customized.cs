@@ -21,12 +21,13 @@ public class A_Customized : QuickCheckrTest<A_Customized>
     [DocReport]
     [CodeSnippet]
     public void Example() =>
-        TheCheckr().Conduct(
-            20.Investigations(),
-            20.Runs(),
-            1.ExecutionsPerRun(),
-            a => a with { FileAs = "Gathering Evidence" },
-            Directive.Default with { ClassifyBy = a => a.GetInput<string>("Input").Contains('c') ? 1 : 0 });
+        TheCheckr()
+            .Configure(a => a with { FileAs = "Gathering Evidence" })
+            .Conduct(
+                20.Investigations(),
+                20.Runs(),
+                1.ExecutionsPerRun(),
+                Directive.Default with { ClassifyBy = a => a.GetInput<string>("Input").Contains('c') ? 1 : 0 });
 
     [CodeSnippet]
     private CheckrOf<Case> TheCheckr() =>

@@ -81,11 +81,10 @@ public class ReduceTowardsIntTests : BaseTest
                 select Case.Closed)
             select Case.Closed;
         // checkr.Run(100.Runs(), a => a with { FileAs = "ReduceTowardsInt" });
-        checkr.Conduct(
+        checkr.Configure(a => a with { FileAs = "ReduceTowardsInt" }).Conduct(
             1000.Investigations(),
             10.Runs(),
-            1.ExecutionsPerRun(),
-            a => a with { FileAs = "ReduceTowardsInt" });
+            1.ExecutionsPerRun());
     }
 
     private static string GetTrace(Reduction model, Reduction sut) =>

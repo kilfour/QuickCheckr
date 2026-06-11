@@ -37,15 +37,17 @@ public class GatheringEvidence
 {
     [CodeSnippet]
     private static void RunGatherEvidence(CheckrOf<Case> checkr) =>
-        checkr.Conduct(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun(),
-            cfg => cfg with { FileAs = "GatheringEvidence" });
+        checkr
+            .Configure(cfg => cfg with { FileAs = "GatheringEvidence" })
+            .Conduct(50.Investigations(), 3.Runs(), 10.ExecutionsPerRun());
 
     [Fact]
     public void RunTest()
     {
         Assert.Throws<VaultNotConfiguredException>(
             () => GatheringEvidenceCheckr.TheCheckr()
-                .Conduct(1.Investigations(), 1.Runs(), 1.ExecutionsPerRun(), a => a));
+                .Configure(a => a)
+                .Conduct(1.Investigations(), 1.Runs(), 1.ExecutionsPerRun()));
     }
 
 }

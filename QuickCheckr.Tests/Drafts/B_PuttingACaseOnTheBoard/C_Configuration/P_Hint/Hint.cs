@@ -31,6 +31,7 @@ public static class Hint
         this CheckrOf<Case> checkr,
         [CallerFilePath] string filePath = "",
         [CallerMemberName] string testName = "")
-        => checkr.Conduct(100.Investigations(), 10.Runs(), 20.ExecutionsPerRun(),
-            cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" });
+        => checkr
+            .Configure(cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" })
+            .Conduct(100.Investigations(), 10.Runs(), 20.ExecutionsPerRun());
 }

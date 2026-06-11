@@ -10,30 +10,28 @@ public static class CheckrOfTConductInvestigations
 {
     [StackTraceHidden]
     public static IRecord Conduct(
-        this CheckrOf<Case> checkr,
+        this ConfiguredCheckr configuredCheckr,
         InvestigationCount maxInvestigations,
         RunCount runs,
-        ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure)
-        => checkr.Conduct(maxInvestigations, runs, executionsPerRun, configure, Directive.Default);
+        ExecutionCount executionsPerRun)
+        => configuredCheckr.Conduct(maxInvestigations, runs, executionsPerRun, Directive.Default);
 
     [StackTraceHidden]
     public static IRecord Conduct(
-        this CheckrOf<Case> checkr,
+        this ConfiguredCheckr configuredCheckr,
         InvestigationCount maxInvestigations,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        Func<CheckrConfig, CheckrConfig> configure,
         Directive directive)
     {
-        var config = new CheckrRunnerConfig(configure(CheckrConfig.Default()));
+        var config = new CheckrRunnerConfig(configuredCheckr.Config);
         var vault = Vault.From(config);
-        var caseFiles = vault.Check(checkr, config, false).ToList();
+        var caseFiles = vault.Check(configuredCheckr.Checkr, config, false).ToList();
         var inquiry = new Inquiry().Add([.. caseFiles]);
         var stop = NeedsToStop(directive, caseFiles, inquiry);
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, Microtome.Empty);
+            var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, Microtome.Empty);
             inquiry.Add([.. findings.CaseFiles]);
             if (findings.FalsifyingCaseFile is { } caseFile)
             {
