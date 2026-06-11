@@ -1,5 +1,3 @@
-using QuickPulse.Arteries;
-
 namespace QuickCheckr.UnderTheHood;
 
 public class Pathologist(Microtome microtome)

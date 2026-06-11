@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using QuickCheckr.FilingCabinet;
-using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
 

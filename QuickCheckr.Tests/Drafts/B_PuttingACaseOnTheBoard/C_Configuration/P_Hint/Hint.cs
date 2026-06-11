@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using QuickCheckr.FilingCabinet;
-using QuickCheckr.Protocol;
 using QuickPulse.Explains;
 
 
