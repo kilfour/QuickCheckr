@@ -12,6 +12,7 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
 {
     protected virtual bool WriteAllReportsToDisk => false;
     protected virtual bool Asserts => false;
+    protected virtual bool PassedExpectationsContains => false;
     protected virtual bool Report => false;
     protected virtual bool Explain => false;
 
@@ -57,7 +58,7 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
     private void WriteAsserts(Article article)
     {
         if (Asserts)
-            Journalist.Transcribe(article);
+            Journalist.Transcribe(article, PassedExpectationsContains);
     }
 
     private void ExplainMe()

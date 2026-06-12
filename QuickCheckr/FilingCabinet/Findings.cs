@@ -21,7 +21,7 @@ public class Findings : IRecord
     }
 
     public int NumberOfRuns => caseFiles.Count;
-    public List<PassedExpectation> PassedExpectationDepositions =>
+    public List<PassedExpectation> PassedExpectations =>
         [.. caseFiles
             .SelectMany(cf => cf.PassedExpectations)
             .GroupBy(ps => ps.Label)

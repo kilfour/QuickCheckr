@@ -49,7 +49,7 @@ public abstract class BaseTest : DocAttributeBaseTest
         bool writeToDisk = false)
     {
         if (writeToDisk && !writeAllToDisk)
-            Journalist.Transcribe(article);
+            Journalist.Transcribe(article, true);
     }
 
     protected static void ExplainMe<T>(bool writeToDisk = false)

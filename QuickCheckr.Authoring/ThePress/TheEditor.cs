@@ -78,7 +78,12 @@ public static class TheEditor
         from warnings in Pulse.ToFlow(Warning, Enumerable.Range(1, executionDeposition.WarningDepositions.Count).Select(a => (index, a)))
         select Flow.Continue;
 
-    private static Flow<Flow> PassedExpectation(int index) =>
+    private static Flow<Flow> PassedExpectations(IReadOnlyList<string> labels) =>
+        Emit("var passedExpectationLabels = article.PassedExpectationLabels();")
+            .Emit($"Assert.Equal({labels.Count}, passedExpectationLabels.Count);")
+            .ToFlow((string a) => Emit($"Assert.Contains(\"{a}\", passedExpectationLabels);"), labels);
+
+    private static Flow<Flow> PassedExpectationStrict(int index) =>
         from article in Pulse.Draw<Article>()
         let passedExpectationDeposition = article.PassedExpectation(index).Read()
         from label in Emit($"Assert.Equal(\"{passedExpectationDeposition.Label}\", article.PassedExpectation({index}).Read().Label);")
@@ -90,7 +95,7 @@ public static class TheEditor
         from _1 in Emit($"Assert.Equal(\"{article.FailingExpectationMessages()[index]}\", article.FailingExpectationMessages()[{index}]);")
         select Flow.Continue;
 
-    public static Flow<Flow> ProofReads(Article article) =>
+    public static Flow<Flow> ProofReads(Article article, bool passedExpectationsContains) =>
         from prime in Pulse.Prime(() => article)
         from failedExpectation in EmitIf(
             article.FailureDescription() is not null,
@@ -126,6 +131,9 @@ public static class TheEditor
         from shrinkCount in Emit(
             $"Assert.Equal({article.ShrinkCount}, article.ShrinkCount);")
         from executions in Pulse.ToFlow(Execution, Enumerable.Range(1, article.Total().Executions()))
-        from passedExpectations in Pulse.ToFlow(PassedExpectation, Enumerable.Range(1, article.Total().PassedExpectations()))
+        from passedExpectations in
+            passedExpectationsContains
+                ? Pulse.ToFlow(PassedExpectations, article.PassedExpectationLabels())
+                : Pulse.ToFlow(PassedExpectationStrict, Enumerable.Range(1, article.Total().PassedExpectations()))
         select Flow.Continue;
 }

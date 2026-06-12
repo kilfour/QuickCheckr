@@ -11,5 +11,5 @@ public static class TheFindings
             .OnNewLine().Trace(input.NumberOfRuns).Space().Pluralize(input.NumberOfRuns, "Run")
             .DrawLine()
             .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(TheCourtStyleGuide.PassedExpectations, input.PassedExpectationDepositions);
+            .ToFlow(TheCourtStyleGuide.PassedExpectations, input.PassedExpectations);
 }

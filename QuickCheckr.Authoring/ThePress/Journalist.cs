@@ -89,8 +89,8 @@ public class Journalist : ICustodian
     public HashSet<VaultEntry> RetrieveVaultEntries(string name)
         => Entries;
 
-    public static void Transcribe(Article article) =>
-        Signal.From<Article>(TheEditor.ProofReads)
+    public static void Transcribe(Article article, bool passedExpectationsContains) =>
+        Signal.From<Article>(a => TheEditor.ProofReads(a, passedExpectationsContains))
             .SetArtery(FileLog.Write())
             .Pulse(article);
 }

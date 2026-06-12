@@ -51,7 +51,15 @@ public class Article(IRecord record)
     {
         return record is CaseFile
             ? new(caseFile!.PassedExpectations[number - 1])
-            : new(((Findings)record).PassedExpectationDepositions[number - 1]);
+            : new(((Findings)record).PassedExpectations[number - 1]);
+    }
+
+    [StackTraceHidden]
+    public IReadOnlyList<string> PassedExpectationLabels()
+    {
+        return record is CaseFile file
+            ? [.. file.PassedExpectations.Select(a => a.Label)]
+            : [.. ((Findings)record).PassedExpectations.Select(a => a.Label)];
 
     }
 
