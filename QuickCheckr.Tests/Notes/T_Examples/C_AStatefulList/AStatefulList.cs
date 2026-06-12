@@ -28,7 +28,7 @@ public class AStatefulList : BaseTest
     [DocCodeFile("AStatefulList.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(254875886, 10.ExecutionsPerRun()));
 

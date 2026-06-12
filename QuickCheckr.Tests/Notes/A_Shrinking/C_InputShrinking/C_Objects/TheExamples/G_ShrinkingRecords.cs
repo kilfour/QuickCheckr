@@ -15,7 +15,7 @@ public class G_ShrinkingRecords : BaseTest
     [DocCodeFile("G_ShrinkingRecords.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1121486451));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1121486451));
         WriteAsserts(article);
         WriteReport<G_ShrinkingRecords>(article);
         Verify(article);

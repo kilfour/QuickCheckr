@@ -26,7 +26,7 @@ public class WarehouseStepThree : BaseTest
     [DocCodeFile("WarehouseStepThree.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(TheCheckr, a => a.Run(1764635658, 20.ExecutionsPerRun()));
+        var article = Journalist.Publish(TheCheckr, a => a.Run(1764635658, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepThree>(article, false);
         Verify(article);

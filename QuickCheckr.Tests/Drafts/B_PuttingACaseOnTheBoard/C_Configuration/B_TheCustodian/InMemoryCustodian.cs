@@ -20,16 +20,10 @@ public class InMemoryCustodian(HashSet<VaultEntry> StartingEvidence) : ICustodia
         return $"{name}_{seed}";
     }
 
+    public string RemoveFileCalledWith { get; private set; } = string.Empty;
     public void RemoveEvidence(string name, int seed)
     {
         var path = EvidenceFilename(name, seed);
-        RemoveFileCalledWith = path;
-        Records.Remove(path);
-    }
-
-    public string RemoveFileCalledWith { get; private set; } = string.Empty;
-    public void RemoveRecord(string path)
-    {
         RemoveFileCalledWith = path;
         Records.Remove(path);
     }

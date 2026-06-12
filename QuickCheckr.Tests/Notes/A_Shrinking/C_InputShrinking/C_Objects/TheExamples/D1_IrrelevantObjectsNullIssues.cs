@@ -21,7 +21,7 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
     [DocCodeFile("D1_IrrelevantObjectsNullIssues.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(346547347));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(346547347));
         WriteAsserts(article);
         WriteReport<D1_IrrelevantObjectsNullIssues>(article);
         Verify(article);

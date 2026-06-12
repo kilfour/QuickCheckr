@@ -67,7 +67,7 @@ public class DeliberationPolicyTests : BaseTest
     [DocCodeFile("DeliberationPolicy.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Run(1920827676, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<DeliberationPolicyTests>(article, false);
@@ -114,7 +114,7 @@ Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:"
     [DocContent("The following predefined policies are available")]
     public void RunTest_Deliberated()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Configure(a => Configure(a)).Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "DeliberationPolicyMinimal.txt", false);

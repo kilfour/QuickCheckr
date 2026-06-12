@@ -15,15 +15,20 @@ namespace QuickCheckr.Authoring.ThePress;
 
 public class Journalist : ICustodian
 {
-    public static Article Investigate(CheckrOf<Case> checkr, Action<ConfiguredCheckr> runCheckr)
+    public static Article Publish(CheckrOf<Case> checkr, Action<ConfiguredCheckr> runCheckr)
     {
         var journalist = new Journalist();
+        journalist.Investigate(checkr, runCheckr);
+        return journalist.GetArticle();
+    }
+
+    public void Investigate(CheckrOf<Case> checkr, Action<ConfiguredCheckr> runCheckr)
+    {
         try
         {
-            runCheckr(checkr.Configure(a => a with { FileAs = "WhistleBlower", Custodian = journalist }));
+            runCheckr(checkr.Configure(a => a with { FileAs = "WhistleBlower", Custodian = this }));
         }
         catch (FalsifiableException) { }
-        return journalist.GetArticle();
     }
 
     private IRecord? record;
@@ -51,16 +56,10 @@ public class Journalist : ICustodian
         return $"{name}_{seed}";
     }
 
+    public string RemoveFileCalledWith { get; private set; } = string.Empty;
     public void RemoveEvidence(string name, int seed)
     {
         var path = EvidenceFilename(name, seed);
-        RemoveFileCalledWith = path;
-        Evidence.Remove(path);
-    }
-
-    public string RemoveFileCalledWith { get; private set; } = string.Empty;
-    public void RemoveRecord(string path)
-    {
         RemoveFileCalledWith = path;
         Evidence.Remove(path);
     }

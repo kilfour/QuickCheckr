@@ -24,7 +24,7 @@ public class A_TheShowrClass : BaseTest
     [Fact]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
                 .Run(344916298, 2.ExecutionsPerRun()));
 
         WriteAsserts(article, false);

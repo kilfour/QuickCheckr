@@ -68,7 +68,7 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
 There is no guesswork.")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
                 .Configure(a => a with { ShrinkMode = ShrinkMode.Inputs })
                 .Run(1684147193, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
@@ -108,7 +108,7 @@ There is no guesswork.")]
 ")]
     public void RunTest_Shrunk()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1684147193, 10.ExecutionsPerRun()));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1684147193, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "ChoosingTheNextMoveShrunk.txt", false);
         Verify_Shrunk(article);
@@ -165,7 +165,7 @@ For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes 
     [DocContent("\n[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]")]
     public void RunTest_Conditional()
     {
-        var article = Journalist.Investigate(GetConditionalCheckr(), a => a
+        var article = Journalist.Publish(GetConditionalCheckr(), a => a
             .Run(356083796, 2.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "ChoosingTheNextConditional.txt", false);

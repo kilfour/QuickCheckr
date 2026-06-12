@@ -111,7 +111,7 @@ public class RunningACheckr : BaseTest
     [Fact]
     public void SeedOnlySet()
     {
-        var article = Journalist.Investigate(
+        var article = Journalist.Publish(
             Checkr.Expect("Fails", () => false),
             a => a.Run(424242));
         Assert.Equal(424242, article.Seed());
@@ -137,7 +137,7 @@ public class RunningACheckr : BaseTest
     [Fact]
     public void SeedSet()
     {
-        var article = Journalist.Investigate(Checkr.Expect("Fails", () => false),
+        var article = Journalist.Publish(Checkr.Expect("Fails", () => false),
             a => a.Run(424242, 5.ExecutionsPerRun()));
         Assert.Equal(424242, article.Seed());
     }
@@ -184,7 +184,7 @@ which allows for controlling specific aspects of the Checkr run.
         checkr.Run(424242);
         Assert.Equal(1, runCount.Value);
         Assert.Equal(1, executionCount.Value);
-        var article = Journalist.Investigate(Checkr.Expect("Fails", () => false),
+        var article = Journalist.Publish(Checkr.Expect("Fails", () => false),
             a => a.Run(424242));
         Assert.Equal(424242, article.Seed());
 
@@ -193,7 +193,7 @@ which allows for controlling specific aspects of the Checkr run.
         checkr.Run(424242, 5.ExecutionsPerRun());
         Assert.Equal(1, runCount.Value);
         Assert.Equal(5, executionCount.Value);
-        article = Journalist.Investigate(Checkr.Expect("Fails", () => false),
+        article = Journalist.Publish(Checkr.Expect("Fails", () => false),
             a => a.Run(424242, 5.ExecutionsPerRun()));
         Assert.Equal(424242, article.Seed());
     }

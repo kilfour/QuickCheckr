@@ -23,7 +23,7 @@ public class WarehouseStepOne : BaseTest
     [DocExample(typeof(WarehouseStepOne), nameof(OrderRequestFuzzr))]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Configure(a => Config.NoLabels(a) with { })
             .Run(1344312712, 20.ExecutionsPerRun()));
 

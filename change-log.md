@@ -177,12 +177,13 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
 
 ## 0.2.1: Internal Affairs
 * Added Diagnostics support.
-  * When enabled, QuickCheckr records the structure of it's decision-making.
+  * When enabled, QuickCheckr records the structure of its decision-making.
   * Checkrs can then add structured diagnostic information during execution.
   * Diagnostics output can easily be configured using filters.
-  * Diagnostics output can be redirect by supplying a QuickPulse `IArtery`.
+  * Diagnostics output can be redirected by supplying a QuickPulse `IArtery`.  
+    `IArtery` is QuickPulse's output sink abstraction.
 * Redesigned the `ICustodian` API
-  * Seperated main reports from seed-specific evidence.
+  * Separated main reports from seed-specific evidence.
     * Added `FileEvidence` and `RemoveEvidence` methods.
     * `RemoveRecord` has been removed.
   * Replaced path-based storage with a standardized name-based structure.
@@ -194,6 +195,12 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
           ├── evidence.qv
           └── report_<seed>.qr
   ```
-* Simplified *Configuration*
-  * Removed the various `.Run(...)` overloads.
+* Simplified Configuration
+  * Removed the various configuration `.Run(...)` overloads.
   * Added a `Configure` extension method for `CheckrOf<T>`.
+* Improved method chaining.
+  * `CheckrOf<Case>.Run(...)`
+  * `ReviewColdCases(...)`
+  * `CloseColdCases(...)`
+  * `CheckrOf<Case>.Conduct(...)`  
+  now return the executed checkr, allowing these methods to be chained.

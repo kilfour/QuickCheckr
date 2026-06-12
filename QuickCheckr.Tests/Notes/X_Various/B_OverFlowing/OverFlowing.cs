@@ -20,7 +20,7 @@ public class OverFlowing : BaseTest
     [DocCodeFile("OverFlowing.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
                 .Run(1990927690, 10.ExecutionsPerRun()));
 
         WriteAsserts(article, false);

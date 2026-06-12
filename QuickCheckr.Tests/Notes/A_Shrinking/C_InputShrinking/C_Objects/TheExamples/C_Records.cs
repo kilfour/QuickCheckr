@@ -16,7 +16,7 @@ public class C_Records : BaseTest
     [DocCodeFile("C_Records.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1556090131));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1556090131));
         WriteAsserts(article);
         WriteReport<C_Records>(article);
         Verify(article);

@@ -83,7 +83,7 @@ Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     )]
     public void RunTest()
     {
-        var article = Journalist.Investigate(TheCheckr, a => a
+        var article = Journalist.Publish(TheCheckr, a => a
                 .Configure(a => a with { WarningLevel = WarningLevel.None })
                 .Run(1473455315, 20.ExecutionsPerRun()));
         WriteAsserts(article, false);

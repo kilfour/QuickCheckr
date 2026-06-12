@@ -151,7 +151,7 @@ the failure only emerges when several executions act on the *same* object.
 ")]
     public void CheckingTheBugHouse()
     {
-        var article = Journalist.Investigate(BugHouseCheckr, a => a.Run(1854571642, 10.ExecutionsPerRun()));
+        var article = Journalist.Publish(BugHouseCheckr, a => a.Run(1854571642, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<TheStashRunsAndExecutions>(article, false);
         Verify(article);

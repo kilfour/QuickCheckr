@@ -17,7 +17,7 @@ public partial class TheBroadcasterTest : BaseTest
     [DocCodeFile("TheBroadcasterTest.txt")]
     public void AllInOne()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Configure(a => a with { Deliberation = Deliberation.MinimumExecutions() }).Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<TheBroadcasterTest>(article, false);

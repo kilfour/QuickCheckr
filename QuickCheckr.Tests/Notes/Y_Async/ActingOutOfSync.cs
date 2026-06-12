@@ -16,7 +16,7 @@ public class ActingOutOfSync : BaseTest
     [DocCodeFile("ActingOutOfSync.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
                 .Run(367926403));
 

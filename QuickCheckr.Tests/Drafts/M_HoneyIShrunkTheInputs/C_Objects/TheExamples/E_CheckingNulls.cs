@@ -31,7 +31,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
 ")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Configure(a => ConfigureNoStackTrace(a) with { })
             .Run(358877731, 20.ExecutionsPerRun()));
 
@@ -82,7 +82,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     [DocCodeFile("E_CheckingNulls_NotShrinkingNull.txt", "text")]
     public void RunTest_NotShrinkingNull()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
             .Configure(a => ConfigureNoStackTrace(a) with { })
             .Run(1269557792));
 
@@ -116,7 +116,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     [DocCodeFile("E_CheckingNulls_Alternative.txt", "text")]
     public void RunTest_Alternative()
     {
-        var article = Journalist.Investigate(GetCheckr_Alternative(), a => a
+        var article = Journalist.Publish(GetCheckr_Alternative(), a => a
             .Configure(a => ConfigureNoStackTrace(a) with { })
             .Run(1269557792));
 
@@ -169,7 +169,7 @@ so the warning can be ignored.
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.")]
     public void RunTest_WithDeliberationPolicy()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
                 .Configure(cfg => ConfigureNoStackTrace(cfg with { }))
                 .Run(75.ExecutionsPerRun()));
 

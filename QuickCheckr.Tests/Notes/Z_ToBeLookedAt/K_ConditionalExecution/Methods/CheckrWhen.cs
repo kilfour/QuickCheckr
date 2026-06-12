@@ -14,7 +14,7 @@ public class CheckrWhen : BaseTest
     [DocExample(typeof(CheckrWhen), nameof(GetCheckr))]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(625676917, 3.ExecutionsPerRun()));
 

@@ -18,7 +18,7 @@ public class SystemTypes : BaseTest
     [DocCodeFile("SystemTypes.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
                 .Configure(cfg => cfg with { WarningLevel = WarningLevel.Debug })
                 .Run(1487819190, 1.ExecutionsPerRun()));
 
@@ -58,7 +58,7 @@ public class SystemTypes : BaseTest
     [DocCodeFile("SystemTypesSolution.txt", "text")]
     public void RunTestSolution()
     {
-        var article = Journalist.Investigate(GetCheckrSolution(), a => a
+        var article = Journalist.Publish(GetCheckrSolution(), a => a
                 .Run(350297528, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "SystemTypesSolution.txt", false);

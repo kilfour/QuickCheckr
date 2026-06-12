@@ -39,7 +39,7 @@ Run( a = 1 ) // count == 2 && a == 1 → fail
     [DocCodeFile("A_DelayedDetonation.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
                 .Run(1914853878, 10.ExecutionsPerRun()));
 

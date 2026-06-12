@@ -16,7 +16,7 @@ public class B_AlsoForExceptions : BaseTest
     [DocCodeFile("B_AlsoForExceptions.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(4.ExecutionsPerRun()));
 

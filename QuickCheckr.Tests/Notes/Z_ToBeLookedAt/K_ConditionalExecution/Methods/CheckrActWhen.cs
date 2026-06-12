@@ -13,7 +13,7 @@ public class CheckrActWhen : BaseTest
     [DocExample(typeof(CheckrActWhen), nameof(GetCheckr))]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(625676917, 3.ExecutionsPerRun()));
 
@@ -57,7 +57,7 @@ public class CheckrActWhen : BaseTest
     [DocExample(typeof(CheckrActWhen), nameof(GetCheckrTask))]
     public void RunTestTask()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(625676917, 3.ExecutionsPerRun()));
 

@@ -27,13 +27,7 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
         Action<ConfiguredCheckr> runCheckr,
         [CallerFilePath] string callerPath = "")
     {
-        var journalist = new Journalist();
-        try
-        {
-            runCheckr(TheCheckr().Configure(a => a with { FileAs = "WhistleBlower", Custodian = journalist }));
-        }
-        catch (FalsifiableException) { }
-        var article = journalist.GetArticle();
+        var article = Journalist.Publish(TheCheckr(), runCheckr);
         ProcessArticle(article, callerPath);
         Verify(article);
     }

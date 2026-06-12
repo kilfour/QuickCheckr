@@ -67,7 +67,7 @@ A common mistake, and the verifier pointed it out in above report.
 either the final state satisfies all verifications or it doesn't.")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1273117969, 100.ExecutionsPerRun()));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1273117969, 100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<TheLoadedDie>(article, false);
         Verify(article);

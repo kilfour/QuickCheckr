@@ -136,7 +136,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
     [DocCodeFile("InPoolsWeTrust.txt", "text")]
     public void AllTogetherNow()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1444257086, 10.ExecutionsPerRun()));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1444257086, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<InPoolsWeTrust>(article, false);
         Verify(article);

@@ -30,7 +30,7 @@ Run( a != 6 ) // skip first inc, >=3 → +1 → 5 → fail
     [DocCodeFile("B_ThirdTimesTheHarm.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
+        var article = Journalist.Publish(GetCheckr(), a => a
 
             .Run(1141724745, 100.ExecutionsPerRun()));
 

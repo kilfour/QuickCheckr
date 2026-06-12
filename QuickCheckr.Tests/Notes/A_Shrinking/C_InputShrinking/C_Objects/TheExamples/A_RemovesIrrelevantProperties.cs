@@ -17,7 +17,7 @@ public class A_RemovesIrrelevantProperties : BaseTest
     [DocCodeFile("A_RemovesIrrelevantProperties.txt", "text")]
     public void RunTest()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a.Run(488581569));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(488581569));
         WriteAsserts(article);
         WriteReport<A_RemovesIrrelevantProperties>(article);
         Verify(article);
