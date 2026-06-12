@@ -31,6 +31,22 @@ public class Journalist : ICustodian
         catch (FalsifiableException) { }
     }
 
+    public static Article Publish(ConfiguredCheckr configuredCheckr, Action<ConfiguredCheckr> runCheckr)
+    {
+        var journalist = new Journalist();
+        journalist.Investigate(configuredCheckr, runCheckr);
+        return journalist.GetArticle();
+    }
+
+    public void Investigate(ConfiguredCheckr configuredCheckr, Action<ConfiguredCheckr> runCheckr)
+    {
+        try
+        {
+            runCheckr(configuredCheckr.Configure(a => a with { FileAs = "WhistleBlower", Custodian = this }));
+        }
+        catch (FalsifiableException) { }
+    }
+
     private IRecord? record;
 
     public IRecord GetRecord()
