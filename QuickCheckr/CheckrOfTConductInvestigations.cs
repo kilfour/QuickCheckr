@@ -30,7 +30,7 @@ public static class CheckrOfTConductInvestigations
         var stop = NeedsToStop(directive, caseFiles, inquiry);
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, Microtome.Empty);
+            var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty);
             inquiry.Add([.. findings.CaseFiles]);
             if (findings.FalsifyingCaseFile is { } caseFile)
             {

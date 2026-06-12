@@ -9,7 +9,7 @@ public class CaseOfficer
         RunCount runs,
         ExecutionCount executionsPerRun,
         CheckrRunnerConfig config,
-        Microtome microtome)
+        AutopsyProbe microtome)
     {
         var findings = new Findings();
         var deliberator = new Deliberator(config.Deliberation);

@@ -8,16 +8,29 @@ namespace QuickCheckr.Diagnostics;
 public static class AutopsyRunner
 {
     [StackTraceHidden]
-    public static IRecord Autopsy(
+    public static CheckrOf<Case> Autopsy(
         this CheckrOf<Case> checkr,
         int seed,
         ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        Microtome microtome)
+        AutopsyProbe microtome)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
         var findings = CaseOfficer.Investigate(checkr, 1.Runs(), executionsPerRun, config, microtome);
         SpokesPerson.Announce(config, findings, executionsPerRun);
-        return findings;
+        return checkr;
+    }
+
+    [StackTraceHidden]
+    public static ConfiguredCheckr Autopsy(
+        this ConfiguredCheckr configuredCheckr,
+        int seed,
+        ExecutionCount executionsPerRun,
+        AutopsyProbe microtome)
+    {
+        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed };
+        var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, 1.Runs(), executionsPerRun, config, microtome);
+        SpokesPerson.Announce(config, findings, executionsPerRun);
+        return configuredCheckr;
     }
 }

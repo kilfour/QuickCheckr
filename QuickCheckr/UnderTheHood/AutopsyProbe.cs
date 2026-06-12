@@ -4,12 +4,12 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class Microtome
+public class AutopsyProbe
 {
     private readonly Signal<IReadOnlyList<string>>? signal;
     public bool IsEmpty => signal is null;
-    private Microtome() { }
-    private Microtome(IArtery artery, Func<IReadOnlyList<string>, bool>? filter)
+    private AutopsyProbe() { }
+    private AutopsyProbe(IArtery artery, Func<IReadOnlyList<string>, bool>? filter)
     {
         static Flow<Flow> TraceFlow(IReadOnlyList<string> a) => Pulse.Trace(Prepare(a));
         signal = filter is null
@@ -18,13 +18,13 @@ public class Microtome
         signal.SetArtery(artery);
     }
     private static IArtery DefaultArtery() => FileLog.Write("autopsy-report.log");
-    public static Microtome Empty => new();
-    public static Microtome Default => new(DefaultArtery(), null);
-    public static Microtome From(IArtery artery, Func<IReadOnlyList<string>, bool>? filter = null)
+    public static AutopsyProbe Empty => new();
+    public static AutopsyProbe Default => new(DefaultArtery(), null);
+    public static AutopsyProbe From(IArtery artery, Func<IReadOnlyList<string>, bool>? filter = null)
         => new(artery, filter);
-    public static Microtome StartsWith(string filter)
+    public static AutopsyProbe StartsWith(string filter)
         => new(DefaultArtery(), a => Prepare(a).StartsWith(filter));
-    public static Microtome Contains(string filter)
+    public static AutopsyProbe Contains(string filter)
         => new(DefaultArtery(), a => Prepare(a).Contains(filter));
 
     public static string Prepare(IReadOnlyList<string> strings)
@@ -42,7 +42,7 @@ public class Microtome
 
     private Func<IReadOnlyList<string>, bool>[] focuses = [];
 
-    public Microtome BreakOn(params Func<IReadOnlyList<string>, bool>[] focuses)
+    public AutopsyProbe BreakOn(params Func<IReadOnlyList<string>, bool>[] focuses)
     {
         this.focuses = focuses;
         return this;

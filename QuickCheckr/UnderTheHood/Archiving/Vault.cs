@@ -24,7 +24,7 @@ public class EvidenceVault(CheckrRunnerConfig config)
         var caseFiles = new List<CaseFile>();
         foreach (var entry in entries)
         {
-            var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun, Microtome.Empty).Run();
+            var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun, AutopsyProbe.Empty).Run();
             caseFiles.Add(caseFile);
             if (caseFile.HasEvidence)
             {

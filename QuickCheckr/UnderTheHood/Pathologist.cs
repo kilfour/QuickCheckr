@@ -1,8 +1,8 @@
 namespace QuickCheckr.UnderTheHood;
 
-public class Pathologist(Microtome microtome)
+public class Pathologist(AutopsyProbe microtome)
 {
-    private readonly Microtome microtome = microtome;
+    private readonly AutopsyProbe microtome = microtome;
     public bool IsWatching { get; } = !microtome.IsEmpty;
 
     private readonly List<string> path = [];

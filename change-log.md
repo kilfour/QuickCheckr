@@ -199,8 +199,9 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
   * Removed the various configuration `.Run(...)` overloads.
   * Added a `Configure` extension method for `CheckrOf<T>`.
 * Improved method chaining.
-  * `CheckrOf<Case>.Run(...)`
+  * `Run(...)`
   * `ReviewColdCases(...)`
   * `CloseColdCases(...)`
-  * `CheckrOf<Case>.Conduct(...)`  
+  * `Conduct(...)`  
+  * `Autopsy(...)`
   now return the executed checkr, allowing these methods to be chained.

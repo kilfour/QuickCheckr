@@ -30,7 +30,7 @@ public class CheckrState
         int desiredNumberOfExecutions,
         int maxStepsPerReducer,
         int? seed,
-        Microtome microtome)
+        AutopsyProbe microtome)
     {
         this.desiredNumberOfExecutions = desiredNumberOfExecutions;
         FuzzrState = seed is null ? new() : new(seed.Value);
