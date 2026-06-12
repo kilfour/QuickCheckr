@@ -47,9 +47,7 @@ So now, **Execution Id Matters**.
     [DocInclude(typeof(B_AlsoForExceptions))]
     public void RunTestShrinking()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
-                .Configure(cfg => cfg with { ShrinkMode = ShrinkMode.None })
-                .Run(1012196536, 4.ExecutionsPerRun()));
+        var article = Journalist.Investigate(GetCheckr(), a => a.Run(1012196536, 4.ExecutionsPerRun()));
 
         WriteReport(article, "A_ExecutionIdMattersShrinking.txt", false);
         Assert.Equal(3, article.Total().Executions());

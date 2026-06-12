@@ -21,7 +21,6 @@ public class OverFlowing : BaseTest
     public void RunTest()
     {
         var article = Journalist.Investigate(GetCheckr(), a => a
-                .Configure(cfg => cfg with { })
                 .Run(1990927690, 10.ExecutionsPerRun()));
 
         WriteAsserts(article, false);

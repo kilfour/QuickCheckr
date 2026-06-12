@@ -58,8 +58,7 @@ public class SystemTypes : BaseTest
     [DocCodeFile("SystemTypesSolution.txt", "text")]
     public void RunTestSolution()
     {
-        var article = Journalist.Investigate(GetCheckr(), a => a
-                .Configure(cfg => cfg with { })
+        var article = Journalist.Investigate(GetCheckrSolution(), a => a
                 .Run(350297528, 1.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "SystemTypesSolution.txt", false);

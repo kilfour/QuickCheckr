@@ -25,7 +25,6 @@ public class A_TheShowrClass : BaseTest
     public void RunTest()
     {
         var article = Journalist.Investigate(GetCheckr(), a => a
-                .Configure(cfg => cfg with { })
                 .Run(344916298, 2.ExecutionsPerRun()));
 
         WriteAsserts(article, false);

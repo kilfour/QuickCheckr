@@ -52,8 +52,7 @@ So, in the previous example, after *Input Shrinking*, the result is:
     [DocCodeFile("InputShrinking.txt", "text")]
     public void Example()
     {
-        var article = Journalist.Investigate(Example_Two_Check(), a => a
-                .Configure(cfg => cfg with { })
+        var article = Journalist.Investigate(Example_Check(), a => a
                 .Run(165641598));
 
         WriteAsserts(article);
@@ -97,7 +96,6 @@ Result:
     public void Example_Two()
     {
         var article = Journalist.Investigate(Example_Two_Check(), a => a
-                .Configure(cfg => cfg with { })
                 .Run(231122398));
 
         WriteAsserts(article);
