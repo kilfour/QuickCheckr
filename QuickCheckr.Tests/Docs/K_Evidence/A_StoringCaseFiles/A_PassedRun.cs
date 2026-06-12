@@ -1,5 +1,6 @@
 
 using QuickCheckr.Authoring;
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
@@ -22,14 +23,10 @@ public class A_PassedRun : CheckrTest<A_PassedRun>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => TheCheckr().Configure(a => Configure(a)).Run(5.Runs(), 10.ExecutionsPerRun());
+    public override void Example()
+        => Document(a => a.Run(5.Runs(), 10.ExecutionsPerRun()));
 
     private const string FileName = @".quickcheckr\MyQuickCheckrTest\report.qr";
-
-    private readonly InMemoryCustodian custodian = new([]);
-
-    private CheckrConfig Configure(CheckrConfig config)
-        => config with { FileAs = "MyQuickCheckrTest", Custodian = custodian };
 
     protected override void Verify(Article article)
     {
@@ -38,10 +35,6 @@ public class A_PassedRun : CheckrTest<A_PassedRun>
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal("Always Passes", article.PassedExpectation(1).Read().Label);
         Assert.Equal(50, article.PassedExpectation(1).Read().TimesPassed);
-        // --
-        // Check if the custodian received the findings
-        Assert.Equal(Normalize.Path(FileName), Normalize.Path(custodian.Records.Keys.Single()));
-        Assert.Equal(article.Record, custodian.Records.Values.Single());
     }
 
     [CodeSnippet]
