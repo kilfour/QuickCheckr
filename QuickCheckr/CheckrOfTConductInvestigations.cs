@@ -8,7 +8,7 @@ namespace QuickCheckr;
 public static class CheckrOfTConductInvestigations
 {
     [StackTraceHidden]
-    public static IRecord Conduct(
+    public static ConfiguredCheckr Conduct(
         this ConfiguredCheckr configuredCheckr,
         InvestigationCount maxInvestigations,
         RunCount runs,
@@ -16,7 +16,7 @@ public static class CheckrOfTConductInvestigations
         => configuredCheckr.Conduct(maxInvestigations, runs, executionsPerRun, Directive.Default);
 
     [StackTraceHidden]
-    public static IRecord Conduct(
+    public static ConfiguredCheckr Conduct(
         this ConfiguredCheckr configuredCheckr,
         InvestigationCount maxInvestigations,
         RunCount runs,
@@ -56,7 +56,7 @@ public static class CheckrOfTConductInvestigations
         config.Custodian.FileRecord(config.FileAs, inquiry, config.Clerk.File);
         if (inquiry.DistinctFailureCount > 0)
             throw new FalsifiableException(inquiry, config.Clerk.File);
-        return inquiry;
+        return configuredCheckr;
     }
 
     private static bool NeedsToStop(Directive directive, List<CaseFile> caseFiles, Inquiry inquiry)

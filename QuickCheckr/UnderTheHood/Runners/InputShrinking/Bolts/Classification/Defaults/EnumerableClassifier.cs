@@ -75,10 +75,18 @@ public class EnumerableClassifier : Classifier
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    if (verifier.RunPassed(info.ExecutionId, info.Key, fuzzr(context.State.FuzzrState).Value)!)
+                    try
                     {
-                        return new CollectionRelevant(values);
+                        if (verifier.RunPassed(info.ExecutionId, info.Key, fuzzr(context.State.FuzzrState).Value)!)
+                        {
+                            return new CollectionRelevant(values);
+                        }
                     }
+                    catch (QuickFuzzr.UnderTheHood.WhenThingsGoWrong.UniqueValueExhaustedException)
+                    {
+                        i = 11;
+                    }
+
                 }
             }
         }
