@@ -8,15 +8,15 @@ namespace QuickCheckr;
 public static class CheckrOfTRunColdCases
 {
     [StackTraceHidden]
-    public static void ReviewColdCases(this ConfiguredCheckr configuredCheckr)
+    public static ConfiguredCheckr ReviewColdCases(this ConfiguredCheckr configuredCheckr)
         => Check(configuredCheckr, false);
 
     [StackTraceHidden]
-    public static void CloseResolvedColdCases(this ConfiguredCheckr configuredCheckr)
+    public static ConfiguredCheckr CloseResolvedColdCases(this ConfiguredCheckr configuredCheckr)
         => Check(configuredCheckr, true);
 
     [StackTraceHidden]
-    private static void Check(ConfiguredCheckr configuredCheckr, bool closeResolved)
+    private static ConfiguredCheckr Check(ConfiguredCheckr configuredCheckr, bool closeResolved)
     {
         var config = new CheckrRunnerConfig(configuredCheckr.Config);
         var vault = Vault.From(config);
@@ -25,5 +25,6 @@ public static class CheckrOfTRunColdCases
         config.Custodian.FileRecord(config.FileAs, review, config.Clerk.File);
         if (caseFiles.Any(a => a.HasEvidence))
             throw new FalsifiableException(review, config.Clerk.File);
+        return configuredCheckr;
     }
 }
