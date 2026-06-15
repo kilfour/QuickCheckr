@@ -26,6 +26,10 @@ public class AutopsyProbe
         => new(DefaultArtery(), a => Prepare(a).StartsWith(filter));
     public static AutopsyProbe Contains(string filter)
         => new(DefaultArtery(), a => Prepare(a).Contains(filter));
+    public static AutopsyProbe ExecutionShrinking
+        => new(DefaultArtery(), a => Prepare(a).StartsWith("ExecutionShrinking"));
+    public static AutopsyProbe ActionShrinking
+        => new(DefaultArtery(), a => Prepare(a).StartsWith("ActionShrinking"));
 
     public static string Prepare(IReadOnlyList<string> strings)
         => string.Join('.', strings);

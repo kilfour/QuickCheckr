@@ -4,8 +4,8 @@ namespace QuickCheckr;
 
 public class PoolElement<T>(int id, T? value)
 {
-    private readonly int id = id;
-
+    //private readonly int id = id;
+    public int Id => id;
     public T Value => value!;
 
     public CheckrOf<Case> Replace(T element) =>
