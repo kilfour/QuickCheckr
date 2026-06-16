@@ -1,0 +1,18 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C_PoolReplayIdentity.cs:21:1
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    1068736263
+ ------------------------------------------------------------
+  Executed: Create Thing 2
+   - Thing   = Thing-2
+   - Counter = 2
+ ------------------------------------------------------------
+  Executed:
+   - Use Thing    = Thing-2
+   - Counter      = 3
+   - Pool Element = 2:1
+ ====================================================
+  !! Expectation Failed: Second pool element fails
+ ====================================================

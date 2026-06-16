@@ -9,6 +9,8 @@
 * Expand/Rework authoring for the new reports.
 
 ### Todo
+* Improve error message when OneOf cannot select an option
+* Improve error message when Pool OneOf and related can not select an option
 
 ### Done/Ready for Changelog after review
 

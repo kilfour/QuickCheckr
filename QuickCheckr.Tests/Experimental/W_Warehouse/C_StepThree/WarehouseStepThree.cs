@@ -3,7 +3,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Experimental.W_Warehouse.A_StepOne.Model;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Show;

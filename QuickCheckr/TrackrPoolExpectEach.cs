@@ -25,7 +25,7 @@ public static partial class Trackr
         Func<T, bool> expectation) =>
         state =>
         {
-            using var _ = state.Pathologist.Examine("PoolExpectEach");
+            // using var _ = state.Pathologist.Examine("PoolExpectEach");
             var candidates = state.Memory.GetPoolDictionary<T>().ToList();
             if (candidates.Count == 0)
                 return CheckrResult.CaseOnly(state);
@@ -37,11 +37,11 @@ public static partial class Trackr
                     failed = [.. candidates
                     .Where(a => !expectation(a.Value))
                     .Select(a => $"{typeof(T).Name}-{a.Key}")];
+                    // state.Pathologist.Inform("Message", string.Join("|", failed));
                     return failed.Count == 0;
                 },
                 true,
                 () => failed);
-            failed.ForEach(a => state.Pathologist.Inform(a));
             return expect(state);
         };
 

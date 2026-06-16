@@ -1,3 +1,5 @@
+using QuickCheckr.Diagnostics;
+
 namespace QuickCheckr.UnderTheHood;
 
 public class Pathologist(AutopsyProbe microtome)

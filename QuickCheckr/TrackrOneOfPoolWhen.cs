@@ -41,7 +41,9 @@ public static partial class Trackr
             state.Memory.StorePoolTrace(key, () => $"( {typeof(T1).Name}-{id1}, {typeof(T2).Name}-{id2} )");
             var (result1, value1) = state.Memory.GetFromPool<T1>(id1);
             var (result2, value2) = state.Memory.GetFromPool<T2>(id2);
-            if (result1 && result2) return CheckrResult.Some(state, checkr(new PoolElement<T1>(id1, value1), new PoolElement<T2>(id2, value2))(state).Value);
-            return CheckrResult.CaseOnly(state);
+            if (!result1 || !result2) return CheckrResult.CaseOnly(state);
+            // todo: evaluate once
+            if (!predicate(value1!, value2!)) return CheckrResult.CaseOnly(state);
+            return CheckrResult.Some(state, checkr(new PoolElement<T1>(id1, value1), new PoolElement<T2>(id2, value2))(state).Value);
         };
 }

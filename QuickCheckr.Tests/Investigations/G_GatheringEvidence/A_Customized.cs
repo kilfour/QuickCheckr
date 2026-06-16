@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
 public class A_Customized : QuickCheckrTest<A_Customized>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact(Skip = "WIP, Touches the file system")]

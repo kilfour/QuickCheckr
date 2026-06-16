@@ -1,0 +1,22 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                E_PoolReplayIdentityComplex.cs:21:1
+ Original failing run:    4 executions
+ Minimal failing case:    3 executions (after 1 shrink)
+ Seed:                    204955625
+ ------------------------------------------------------------
+  Executed: Create Thing 2
+   - Thing   = Int32-2
+   - Counter = 2
+ ------------------------------------------------------------
+  Executed: 
+   - Update Thing = Int32-2
+   - Counter      = 3
+ ------------------------------------------------------------
+  Executed:
+   - Use Thing    = Int32-2
+   - Counter      = 4
+   - Pool Element = 2:1
+ ====================================================
+  !! Expectation Failed: Second pool element fails
+ ====================================================

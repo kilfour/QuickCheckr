@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;

@@ -1,0 +1,29 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                F_PoolReplayIdentityBossFight.cs:28:1
+ Original failing run:    6 executions
+ Minimal failing case:    5 executions (after 1 shrink)
+ Seed:                    769948390
+ ------------------------------------------------------------
+  Executed: Create Thing 1
+   - Thing   = ThingInfo-1
+   - Counter = 1
+ ------------------------------------------------------------
+  Executed: Create Other Thing 2
+   - Other Thing = OtherThingInfo-2
+   - Counter     = 3
+ ------------------------------------------------------------
+  Executed: Update
+   - Update Other Thing = OtherThingInfo-2
+   - Counter            = 4
+ ------------------------------------------------------------
+  Executed: Assign
+   - Assignable Pair = ( ThingInfo-1, OtherThingInfo-2 )
+   - Counter         = 5
+ ------------------------------------------------------------
+  Executed:
+   - Counter = 6
+ =========================================
+  !! Expectation Failed: Assigned to 42
+       OtherThingInfo-2
+ =========================================

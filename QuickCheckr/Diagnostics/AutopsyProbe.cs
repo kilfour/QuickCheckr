@@ -1,8 +1,8 @@
-using System.Diagnostics;
+using QuickCheckr.Diagnostics.Bolts;
 using QuickPulse;
 using QuickPulse.Arteries;
 
-namespace QuickCheckr.UnderTheHood;
+namespace QuickCheckr.Diagnostics;
 
 public class AutopsyProbe
 {
@@ -17,7 +17,7 @@ public class AutopsyProbe
             : Signal.From<IReadOnlyList<string>>(a => Pulse.ToFlowIf(filter(a), TraceFlow, () => a));
         signal.SetArtery(artery);
     }
-    private static IArtery DefaultArtery() => FileLog.Write("autopsy-report.log");
+    private static FileLogArtery DefaultArtery() => FileLog.Write("autopsy-report.log");
     public static AutopsyProbe Empty => new();
     public static AutopsyProbe Default => new(DefaultArtery(), null);
     public static AutopsyProbe From(IArtery artery, Func<IReadOnlyList<string>, bool>? filter = null)
@@ -31,24 +31,36 @@ public class AutopsyProbe
     public static AutopsyProbe ActionShrinking
         => new(DefaultArtery(), a => Prepare(a).StartsWith("ActionShrinking"));
 
-    public static string Prepare(IReadOnlyList<string> strings)
+    private static string Prepare(IReadOnlyList<string> strings)
         => string.Join('.', strings);
 
     public void Observe(IReadOnlyList<string> paths)
     {
         signal?.Pulse(paths);
-        foreach (var focus in focuses)
+        if (focuses.Count > 0)
         {
-            if (focus(paths))
-                Debugger.Break();
+            var path = Prepare(paths);
+            var currentFocuses = focuses.ToList();
+            foreach (var focus in currentFocuses)
+            {
+                if (path.StartsWith(focus))
+                {
+                    focuses.Remove(focus);
+                    action();
+                }
+            }
         }
     }
 
-    private Func<IReadOnlyList<string>, bool>[] focuses = [];
+    private record Focus(string Path, bool NeedsBreak);
 
-    public AutopsyProbe BreakOn(params Func<IReadOnlyList<string>, bool>[] focuses)
+    private Action action = () => { };
+    private List<string> focuses = [];
+
+    public AutopsyProbe On(Action action, params AutopsyPathBuilder[] builders)
     {
-        this.focuses = focuses;
+        this.action = action;
+        focuses = [.. builders.Select(a => Prepare(a.Parts))];
         return this;
     }
 }

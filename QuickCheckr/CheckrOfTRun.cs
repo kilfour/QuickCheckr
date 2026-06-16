@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 

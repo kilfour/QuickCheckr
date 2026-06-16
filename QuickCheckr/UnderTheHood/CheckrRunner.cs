@@ -1,3 +1,4 @@
+using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.Protocol;

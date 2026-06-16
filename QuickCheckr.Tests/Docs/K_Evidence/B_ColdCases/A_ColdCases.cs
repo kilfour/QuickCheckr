@@ -1,4 +1,3 @@
-using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;

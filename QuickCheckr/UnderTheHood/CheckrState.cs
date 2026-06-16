@@ -1,3 +1,4 @@
+using QuickCheckr.Diagnostics;
 using QuickCheckr.UnderTheHood.Memories;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Formatters;
 using QuickFuzzr.UnderTheHood;
