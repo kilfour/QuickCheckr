@@ -1,12 +1,12 @@
-## 0.2.1: Internal Affairs
+## 0.2.2: ...
 
 
 ### Doing
 * ShrinkableAct consolidation 
-  Needs a decision, maybe not for 0.2.0
+  Needs a decision, ...
 
 ### To Test
-* Expand/Rework authoring for the new reports.
+
 
 ### Todo
 * Improve error message when OneOf cannot select an option

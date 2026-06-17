@@ -1,11 +1,5 @@
 namespace QuickCheckr.Diagnostics.Bolts;
 
-public static class AutopsyPaths
-{
-    public static PassPath ExecutionShrinking
-        => new([AutopsyPath.ExecutionShrinking]);
-}
-
 public abstract record AutopsyPathBuilder(IReadOnlyList<string> Parts)
 {
     protected IReadOnlyList<string> Add(string part)
@@ -34,6 +28,18 @@ public record FailedAndRemovedPath(IReadOnlyList<string> Parts) : AutopsyPathBui
 {
     public FinishedPath FailedAndRemoved
         => new(Add(AutopsyPath.FailedAndRemoved));
+}
+
+public record InputCheckingPath(IReadOnlyList<string> Parts) : AutopsyPathBuilder(Parts)
+{
+    public InputPath Checking(int executionId)
+        => new(Add(AutopsyPath.Checking(executionId)));
+}
+
+public record InputPath(IReadOnlyList<string> Parts) : AutopsyPathBuilder(Parts)
+{
+    public FinishedPath Input(string key)
+        => new(Add(AutopsyPath.Input(key)));
 }
 
 public record FinishedPath(IReadOnlyList<string> Parts) : AutopsyPathBuilder(Parts);

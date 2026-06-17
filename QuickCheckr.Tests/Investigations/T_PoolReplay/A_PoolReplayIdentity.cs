@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
+namespace QuickCheckr.Tests.Investigations.T_PoolReplay;
 
 [DocFile]
-public class C_PoolReplayIdentity : CheckrTest<C_PoolReplayIdentity>
+public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

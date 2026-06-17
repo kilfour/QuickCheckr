@@ -201,7 +201,7 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
 * Improved method chaining.
   * `Run(...)`
   * `ReviewColdCases(...)`
-  * `CloseColdCases(...)`
+  * `CloseResolvedColdCases(...)`
   * `Conduct(...)`  
   * `Autopsy(...)`
-  now return the executed checkr, allowing these methods to be chained.
+  now return the checkr instance, allowing these methods to be chained.

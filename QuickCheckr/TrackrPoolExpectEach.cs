@@ -25,10 +25,11 @@ public static partial class Trackr
         Func<T, bool> expectation) =>
         state =>
         {
-            // using var _ = state.Pathologist.Examine("PoolExpectEach");
+            using var _ = state.Pathologist.Examine("PoolExpectEach");
             var candidates = state.Memory.GetPoolDictionary<T>().ToList();
             if (candidates.Count == 0)
                 return CheckrResult.CaseOnly(state);
+            state.Pathologist.Inform(string.Join("/", candidates.Select(a => a.Key)));
             List<string> failed = [];
             var expect = Evaluate.Expect(
                 key,

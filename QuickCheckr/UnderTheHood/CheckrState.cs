@@ -31,12 +31,12 @@ public class CheckrState
         int desiredNumberOfExecutions,
         int maxStepsPerReducer,
         int? seed,
-        AutopsyProbe microtome)
+        AutopsyProbe autopsyProbe)
     {
         this.desiredNumberOfExecutions = desiredNumberOfExecutions;
         FuzzrState = seed is null ? new() : new(seed.Value);
         MaxStepsPerReducer = maxStepsPerReducer;
-        Pathologist = new Pathologist(microtome);
+        Pathologist = new Pathologist(autopsyProbe, this);
         EvidenceRecorder = new(Pathologist);
     }
 

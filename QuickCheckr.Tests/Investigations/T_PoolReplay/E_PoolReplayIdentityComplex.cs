@@ -3,10 +3,10 @@ using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigsations.Z_ShrinkingBdugs;
+namespace QuickCheckr.Tests.Investigations.T_PoolReplay;
 
 [DocFile]
-public class D_PoolReplayIdentityDynamic : CheckrTest<D_PoolReplayIdentityDynamic>
+public class E_PoolReplayIdentityComplex : CheckrTest<E_PoolReplayIdentityComplex>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -18,7 +18,7 @@ public class D_PoolReplayIdentityDynamic : CheckrTest<D_PoolReplayIdentityDynami
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Document(a => a.Run(1573337201, 3.ExecutionsPerRun()));
+        Document(a => a.Run(204955625, 4.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
@@ -36,11 +36,14 @@ public class D_PoolReplayIdentityDynamic : CheckrTest<D_PoolReplayIdentityDynami
                 select Case.Closed),
 
             Checkr.Option(() => counter == 3,
+                Trackr.OneOfPool<int>("Update Thing", a => Checkr.Act("", () => { factory.GetById(a.Value).Extra = 42; }))),
+
+            Checkr.Option(() => counter == 4,
                 Trackr.OneOfPool<int>("Use Thing", thing =>
                     from trace in Checkr.Trace("Pool Element", () => $"{thing.Id}:{thing.Value}")
                     from expect in Checkr.Expect(
                         "Second pool element fails",
-                        () => !(factory.GetById(thing.Value).Extra == 0))
+                        () => !(factory.GetById(thing.Value).Extra == 42))
                     select Case.Closed)))
         select Case.Closed;
 

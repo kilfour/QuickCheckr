@@ -1,18 +1,16 @@
-using System.Diagnostics;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Diagnostics;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
+namespace QuickCheckr.Tests.Investigations.T_PoolReplay;
 
 [DocFile]
 public class F_PoolReplayIdentityBossFight : CheckrTest<F_PoolReplayIdentityBossFight>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     [DocModelHeader]
@@ -24,12 +22,7 @@ public class F_PoolReplayIdentityBossFight : CheckrTest<F_PoolReplayIdentityBoss
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        //Document(a => a.Run(769948390, 6.ExecutionsPerRun()));
-        Document(a => a.Autopsy(769948390, 6.ExecutionsPerRun(),
-            AutopsyProbe.ExecutionShrinking
-                .On(() => Debugger.Break(),
-                    AutopsyOf.ExecutionShrinking.Pass(1).Checking(2).Executing(4),
-                    AutopsyOf.ExecutionShrinking.Pass(1).Checking(2).Executing(6))));
+        Document(a => a.Run(769948390, 6.ExecutionsPerRun()));
 
     public record ThingInfo(int ThingId);
     public record OtherThingInfo(int OtherThingId);
@@ -82,7 +75,41 @@ public class F_PoolReplayIdentityBossFight : CheckrTest<F_PoolReplayIdentityBoss
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("Assigned to 42", article.FailureDescription());
+        Assert.Equal("OtherThingInfo-2", article.FailingExpectationMessages()[0]);
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(5, article.Total().Executions());
+        Assert.Equal(4, article.Total().Actions());
+        Assert.Equal(5, article.Total().Inputs());
+        Assert.Equal(4, article.Total().PoolTraces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Create Thing 1", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Counter", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("1", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("Thing", article.Execution(1).PoolTrace(1).Read().Label);
+        Assert.Equal("ThingInfo-1", article.Execution(1).PoolTrace(1).Read().Value);
+        Assert.Equal(3, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Create Other Thing 2", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Counter", article.Execution(2).Input(1).Read().Label);
+        Assert.Equal("3", article.Execution(2).Input(1).Read().Value);
+        Assert.Equal("Other Thing", article.Execution(2).PoolTrace(1).Read().Label);
+        Assert.Equal("OtherThingInfo-2", article.Execution(2).PoolTrace(1).Read().Value);
+        Assert.Equal(4, article.Execution(3).Read().ExecutionId);
+        Assert.Equal("Update", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("Counter", article.Execution(3).Input(1).Read().Label);
+        Assert.Equal("4", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Update Other Thing", article.Execution(3).PoolTrace(1).Read().Label);
+        Assert.Equal("OtherThingInfo-2", article.Execution(3).PoolTrace(1).Read().Value);
+        Assert.Equal(5, article.Execution(4).Read().ExecutionId);
+        Assert.Equal("Assign", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("Counter", article.Execution(4).Input(1).Read().Label);
+        Assert.Equal("5", article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("Assignable Pair", article.Execution(4).PoolTrace(1).Read().Label);
+        Assert.Equal("( ThingInfo-1, OtherThingInfo-2 )", article.Execution(4).PoolTrace(1).Read().Value);
+        Assert.Equal(6, article.Execution(5).Read().ExecutionId);
+        Assert.Equal("Counter", article.Execution(5).Input(1).Read().Label);
+        Assert.Equal("6", article.Execution(5).Input(1).Read().Value);
     }
 
     [CodeExample]

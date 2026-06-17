@@ -3,7 +3,7 @@ using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.Z_ShrinkingBugs;
+namespace QuickCheckr.Tests.Investigations.T_PoolReplay;
 
 [DocFile]
 public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable : CheckrTest<G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable>
