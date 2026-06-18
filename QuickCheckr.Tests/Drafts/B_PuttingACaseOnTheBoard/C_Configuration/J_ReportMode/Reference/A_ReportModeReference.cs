@@ -13,7 +13,6 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_Re
 [DocInclude(typeof(ReportModeDefault))]
 [DocInclude(typeof(ReportModeNone))]
 [DocInclude(typeof(ReportModeTrace))]
-[DocInclude(typeof(ReportModeLabels))]
 [DocInclude(typeof(ReportModeFinalTrace))]
 [DocContent("**Hint:** You can use bit-wise operations to manipulate `ReportMode`:")]
 [DocExample(typeof(A_ReportModeReference), nameof(BitWiseOperationExample))]

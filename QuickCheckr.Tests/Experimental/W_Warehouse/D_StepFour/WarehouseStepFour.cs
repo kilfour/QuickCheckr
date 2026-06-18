@@ -24,7 +24,7 @@ public class WarehouseStepFour : BaseTest
     public void RunTest()
     {
         var article = Journalist.Publish(
-            TheCheckr, a => a.Configure(Config.NoLabels).Run(42, 50.ExecutionsPerRun()));
+            TheCheckr, a => a.Run(42, 50.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<WarehouseStepFour>(article, false);
         Verify(article);

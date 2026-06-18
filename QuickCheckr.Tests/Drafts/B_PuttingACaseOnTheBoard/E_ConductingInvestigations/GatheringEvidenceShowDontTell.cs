@@ -28,7 +28,6 @@ public class GatheringEvidenceShowDontTell : BaseTest
             .Configure(cfg => cfg with
             {
                 FileAs = "GatheringEvidence",
-                ReportMode = cfg.ReportMode & ~ReportMode.Labels,
                 Custodian = Custodian.Local()
             })
             .Conduct(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun());
