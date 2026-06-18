@@ -44,8 +44,7 @@ select Case.Closed;
 private CheckrConfig Configure(CheckrConfig config)
     => config with
     {
-        Deliberation = new Deliberation(cf => cf.InputsNamed<string>("Expression", a => a.Length), 4),
-        ReportMode = config.ReportMode & ~ReportMode.Labels
+        Deliberation = new Deliberation(cf => cf.InputsNamed<string>("Expression", a => a.Length), 4)
     };
 ```
 

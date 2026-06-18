@@ -3,7 +3,7 @@
 Once an evidence vault exists the seeds therein contained can be reviewed.  
 This is done by calling `ReviewColdCases` on the Checkr instance, passing in the same configuration used to create the evidence vault.  
 ```csharp
-checkr.ReviewColdCases(Configure);
+checkr.Configure(Configure).ReviewColdCases();
 ```
 This will create a report per seed in the evidence vault.  
 - For every failing seed the report will look like the by now familiar failure report.  
@@ -16,7 +16,7 @@ The method mentioned above is usefull for regression testing, but sometimes,
 there is no need to keep the evidence around after the culprit is found.  
 In this case we use:  
 ```csharp
-checkr.CloseResolvedColdCases(Configure);
+checkr.Configure(Configure).CloseResolvedColdCases();
 ```
 If the seeds stored in the vault still all result in failure, the behaviour is exactly the same as `ReviewColdCases`.  
 If however a run for a given seed no longer fails, the seed is removed from the evidence vault,
