@@ -35,5 +35,5 @@ public class A_ReportModeReference : BaseTest
 
     [CodeSnippet]
     private static CheckrConfig BitWiseOperationExample(CheckrConfig config) =>
-        config with { ReportMode = config.ReportMode & ~ReportMode.StackTrace };
+        config with { ReportMode = config.ReportMode & ~ReportMode.Trace };
 }

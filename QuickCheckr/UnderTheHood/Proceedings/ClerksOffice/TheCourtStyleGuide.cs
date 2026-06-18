@@ -28,7 +28,7 @@ public static class TheCourtStyleGuide
                 .Space()
                 .When(labeled, Style.Caption(type).Space())
                 .Trace($"{label.PadRight(maxLabel.Length, ' ')} = {value}")
-        select QuickPulse.Flow.Continue;
+        select Flow.Continue;
 
     private static Flow<Flow> Trace(TraceDeposition input) =>
         Labeled("Trace", input.Label, input.Value);
@@ -49,7 +49,7 @@ public static class TheCourtStyleGuide
             .Trace("Redux")
             .Trace(new string(' ', Math.Max(3, maxLabel.Length - 2)))
             .Trace(input.Redux.Value!)
-        select QuickPulse.Flow.Continue;
+        select Flow.Continue;
 
     private static Flow<Flow> Input(InputDeposition input) =>
         from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
@@ -67,7 +67,7 @@ public static class TheCourtStyleGuide
                     .Trace(new string(' ', maxLabel.Length + spaces))
                     .Trace(input.Original.Value!))
             .ToFlowIf(input.Redux.HasValue, Redux, () => input)
-        select QuickPulse.Flow.Continue;
+        select Flow.Continue;
 
     private static Flow<Flow> Actions(IEnumerable<ActionDeposition> input) =>
         Style.Interspersed(input.Select(a => a.Label));
@@ -117,10 +117,14 @@ public static class TheCourtStyleGuide
     }
 
     private static Flow<Flow> Exception(FailedExceptionDeposition input) =>
-        Style
-            .DoubleLine()
-            .OnNewLine().Indent(1).Exclaim(input.Message)
-            .DoubleLine();
+        from withStackTrace in Pulse.Draw<Decorum, bool>(a => a.StackTrace)
+        let message = withStackTrace ? input.StackTrace : input.FailureDescription
+        from _ in
+            Style
+                .DoubleLine()
+                .OnNewLine().Indent(1).Exclaim(message)
+                .DoubleLine()
+        select Flow.Continue;
 
     private static Flow<Flow> Failure(FailureDeposition input) =>
         Pulse
@@ -174,7 +178,7 @@ public static class TheCourtStyleGuide
             .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectations);
     }
 
-    public static Flow<Flow> Flow(IRecord input, Decorum decorum)
+    public static Flow<Flow> Record(IRecord input, Decorum decorum)
     {
         return
             Pulse

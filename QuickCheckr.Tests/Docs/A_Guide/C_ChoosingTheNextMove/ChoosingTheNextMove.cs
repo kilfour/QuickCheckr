@@ -82,8 +82,7 @@ There is no guesswork.")]
     private CheckrConfig Configure(CheckrConfig config)
         => config with
         {
-            ShrinkMode = ShrinkMode.None,
-            ReportMode = config.ReportMode & ~ReportMode.StackTrace
+            ShrinkMode = ShrinkMode.None
         };
 
 

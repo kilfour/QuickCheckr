@@ -39,7 +39,7 @@ public class Article(IRecord record)
     public string GetExceptionMessage()
     {
         if (caseFile is null) return string.Empty;
-        return (caseFile.FailureDeposition as FailedExceptionDeposition)?.Message ?? string.Empty;
+        return (caseFile.FailureDeposition as FailedExceptionDeposition)?.FailureDescription ?? string.Empty;
     }
 
     [StackTraceHidden]

@@ -22,8 +22,7 @@ public class CreateReadMe : BaseTest
     [DocRawFile("CreateReadme-footer.md")]
     public void Example()
     {
-        var article = Journalist.Publish(GetCheckr(), a => a
-            .Configure(a => a with { ReportMode = a.ReportMode & ~ReportMode.StackTrace }).Run(1141724745, 100.ExecutionsPerRun()));
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(1141724745, 100.ExecutionsPerRun()));
         WriteAsserts(article);
         WriteReport<CreateReadMe>(article, false);
         Verify(article);

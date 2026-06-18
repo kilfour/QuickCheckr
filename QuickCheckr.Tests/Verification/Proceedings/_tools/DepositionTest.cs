@@ -18,7 +18,7 @@ public abstract class DepositionTest
                 RunInfo: new RunInfo(10, 1, 12345678),
                 PassedExpectations: new Dictionary<string, int>(),
                 UseMemoryForInputReporting: false,
-                ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
+                ReportMode: ReportMode.Default,
                 WarningLevel: WarningLevel.Debug
             );
 

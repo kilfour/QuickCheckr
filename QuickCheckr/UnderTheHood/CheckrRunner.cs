@@ -63,8 +63,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                     new FailureInfo(
                         State.EvidenceRecorder.FailingExpectation,
                         State.EvidenceRecorder.FailingVerify,
-                        State.EvidenceRecorder.Exception,
-                        config.ReportMode.HasFlag(ReportMode.StackTrace)),
+                        State.EvidenceRecorder.Exception),
                 RunInfo:
                     new RunInfo(
                         originalRunExecutionCount,

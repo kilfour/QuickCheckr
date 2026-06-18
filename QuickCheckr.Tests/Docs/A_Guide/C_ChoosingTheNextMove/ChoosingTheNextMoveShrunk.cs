@@ -21,14 +21,7 @@ public class ChoosingTheNextMoveShrunk : CheckrTest<ChoosingTheNextMoveShrunk>
 * Only one execution was *relevant*.
 * The relevant action was a `Withdraw`.
 ")]
-    public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(971854269, 10.ExecutionsPerRun()));
-
-    private CheckrConfig Configure(CheckrConfig config)
-        => config with
-        {
-            ReportMode = config.ReportMode & ~ReportMode.StackTrace
-        };
-
+    public override void Example() => Document(a => a.Run(971854269, 10.ExecutionsPerRun()));
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() => ChoosingTheNextMove.GetCheckr();
 

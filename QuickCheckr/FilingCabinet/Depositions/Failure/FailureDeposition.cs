@@ -12,9 +12,7 @@ public abstract record FailureDeposition
         if (failureInfo.Exception is not null)
         {
             var message = $"{failureInfo.Exception.GetType().Name}: {failureInfo.Exception.Message}";
-            return failureInfo.IncludeStackTrace
-                ? new FailedExceptionDeposition(failureInfo.Exception.ToString(), message)
-                : new FailedExceptionDeposition(message, message);
+            return new FailedExceptionDeposition(message, failureInfo.Exception.ToString());
         }
         if (failureInfo.FailingExpectation is not null && !string.IsNullOrEmpty(failureInfo.FailingExpectation.Key))
             return new FailedExpectationDeposition(failureInfo.FailingExpectation.Key, failureInfo.FailingExpectation.Message);

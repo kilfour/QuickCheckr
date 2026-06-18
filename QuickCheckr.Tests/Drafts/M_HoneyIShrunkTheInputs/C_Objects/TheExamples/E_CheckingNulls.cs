@@ -13,7 +13,7 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.C_Objects.TheExamples
 public class E_CheckingNulls : BaseTest
 {
     private static CheckrConfig ConfigureNoStackTrace(CheckrConfig cfg)
-        => cfg with { ReportMode = cfg.ReportMode & ~ReportMode.StackTrace, WarningLevel = WarningLevel.Verbose };
+        => cfg with { WarningLevel = WarningLevel.Verbose };
 
     [Fact]
     [DocContent("**The Model:**")]
