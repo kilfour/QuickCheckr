@@ -29,6 +29,9 @@ public class Memory
         return ShortTermMemory.NextExecution();
     }
 
+    public void DisposeStash()
+        => LongTermMemory.DisposeStash();
+
     public int Reset()
     {
         KeyGuardian = new();

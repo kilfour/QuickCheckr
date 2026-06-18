@@ -15,6 +15,7 @@ public class TraceRun(
             State.Memory.GotoExecution(id);
             Check(State);
         }
+        State.Memory.DisposeStash();
         State.Memory.IsConfigRun = false;
         State.Memory.Tracing = false;
     }

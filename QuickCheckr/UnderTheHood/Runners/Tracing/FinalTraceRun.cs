@@ -14,6 +14,7 @@ public class FinalTraceRun(
             State.Memory.GotoExecution(id);
             Check(State);
         }
+        State.Memory.DisposeStash();
         State.Memory.FinalTrace = false;
     }
 }

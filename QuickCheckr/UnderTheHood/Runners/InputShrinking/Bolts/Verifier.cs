@@ -19,8 +19,10 @@ public class Verifier(CheckrState State,
                     State.Memory.GotoExecution(id);
                     Check(State);
                 }
+                State.Memory.DisposeStash();
             }
         }
+
         return State.EvidenceRecorder.Failed();
     }
 
@@ -37,6 +39,7 @@ public class Verifier(CheckrState State,
                 State.Memory.GotoExecution(id);
                 Check(State);
             }
+            State.Memory.DisposeStash();
         }
         return State.EvidenceRecorder.Failed();
     }

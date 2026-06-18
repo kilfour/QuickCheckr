@@ -9,8 +9,12 @@ public class InitialRun(CheckrState State, CheckrOf<Case> Check)
         {
             State.Memory.StartNewExecution();
             Check(State);
-            if (State.EvidenceRecorder.Failed()) return;
+            if (State.EvidenceRecorder.Failed())
+            {
+                State.Memory.DisposeStash();
+                return;
+            }
         }
-
+        State.Memory.DisposeStash();
     }
 }

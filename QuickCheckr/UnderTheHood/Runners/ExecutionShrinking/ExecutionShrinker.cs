@@ -52,6 +52,7 @@ public class ExecutionShrinker(
                 Check(State);
                 executionId = State.Memory.NextExecution();
             }
+            State.Memory.DisposeStash();
         }
     }
 }

@@ -1,5 +1,5 @@
 ## 0.2.2: ...
-
+* Added *Disposable Stash*.
 
 ### Doing
 * ShrinkableAct consolidation 

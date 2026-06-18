@@ -41,5 +41,6 @@ public class ActionShrinker(
             Check(State);
             executionId = State.Memory.NextExecution();
         }
+        State.Memory.DisposeStash();
     }
 }

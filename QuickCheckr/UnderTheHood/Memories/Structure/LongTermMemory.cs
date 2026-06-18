@@ -8,6 +8,17 @@ public class LongTermMemory
         pools = new();
     }
 
+    public void DisposeStash()
+    {
+        foreach (var item in stashed.Values.Values)
+        {
+            if (item is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+        }
+    }
+
     // --------------------------------------------------------------------------
     // Variables
     private readonly Dictionary<string, object> variables = [];
