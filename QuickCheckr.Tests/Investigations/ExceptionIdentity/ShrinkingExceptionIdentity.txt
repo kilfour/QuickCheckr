@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ShrinkingExceptionIdentity.cs:22:1
+ Original failing run:    2 executions
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    313451859
+ ------------------------------------------------------------
+  Executed: 2
+ ============================
+  !! Expectation Failed: 2
+ ============================

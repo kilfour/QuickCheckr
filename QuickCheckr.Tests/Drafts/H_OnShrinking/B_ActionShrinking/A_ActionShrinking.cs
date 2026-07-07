@@ -16,11 +16,11 @@ It is not common to have multiple Actions in one execution, but it is possible, 
 *Note:* This is still a very experimental feature, hence the opt-in.
 
 In the same vein as with *Execution Shrinking*, Actions are also evaluated and judged to be relevant for the failure.")]
-public class ActionShrinking : BaseTest
+public class A_ActionShrinking : BaseTest
 {
     [Fact]
     [DocContent("The following simple example fails on the third action.")]
-    [DocExample(typeof(ActionShrinking), nameof(GetCheckr))]
+    [DocExample(typeof(A_ActionShrinking), nameof(GetCheckr))]
     [DocContent(
 @"
 Execution 1 - Action 1: noop  
@@ -37,7 +37,7 @@ So after *Action Shrinking*, the result is:
             .Run());
 
         WriteAsserts(article);
-        WriteReport<ActionShrinking>(article, false);
+        WriteReport<A_ActionShrinking>(article, false);
         Verify(article);
     }
 
