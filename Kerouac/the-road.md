@@ -11,6 +11,8 @@
 ### Todo
 * Improve error message when OneOf cannot select an option
 * Improve error message when Pool OneOf and related can not select an option
+* Check Exception handling during shrinking for PoolElement.Replace and related
+* Make Task Acts Lazy
 
 ### Done/Ready for Changelog after review
 
