@@ -2,10 +2,9 @@ using QuickCheckr.Diagnostics;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class Pathologist(AutopsyProbe microtome, CheckrState state)
+public class Pathologist(AutopsyProbe autopsyProbe, CheckrState state)
 {
-    private readonly AutopsyProbe microtome = microtome;
-    public bool IsWatching { get; } = !microtome.IsEmpty;
+    public bool IsWatching { get; } = !autopsyProbe.IsEmpty;
 
     private readonly List<string> path = [];
 
@@ -20,7 +19,7 @@ public class Pathologist(AutopsyProbe microtome, CheckrState state)
             return default;
         var newPath = string.Join('-', paths);
         path.Add(newPath);
-        microtome.Observe(state, [.. path]);
+        autopsyProbe.Observe(state, [.. path]);
         return new PathologyScope(this);
     }
 

@@ -10,13 +10,13 @@ public class CaseOfficer
         RunCount runs,
         ExecutionCount executionsPerRun,
         CheckrRunnerConfig config,
-        AutopsyProbe microtome)
+        AutopsyProbe autopsyProbe)
     {
         var findings = new Findings();
         var deliberator = new Deliberator(config.Deliberation);
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
-            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, microtome);
+            var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, autopsyProbe);
             var caseFile = runner.Run();
             findings.Add(caseFile);
             if (caseFile.HasEvidence)

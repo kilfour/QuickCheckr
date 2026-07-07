@@ -12,10 +12,10 @@ public static class AutopsyRunner
         int seed,
         ExecutionCount executionsPerRun,
         Func<CheckrConfig, CheckrConfig> configure,
-        AutopsyProbe microtome)
+        AutopsyProbe autopsyProbe)
     {
         var config = new CheckrRunnerConfig(configure(CheckrConfig.Default())) with { Seed = seed };
-        var findings = CaseOfficer.Investigate(checkr, 1.Runs(), executionsPerRun, config, microtome);
+        var findings = CaseOfficer.Investigate(checkr, 1.Runs(), executionsPerRun, config, autopsyProbe);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return checkr;
     }
@@ -25,10 +25,10 @@ public static class AutopsyRunner
         this ConfiguredCheckr configuredCheckr,
         int seed,
         ExecutionCount executionsPerRun,
-        AutopsyProbe microtome)
+        AutopsyProbe autopsyProbe)
     {
         var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed };
-        var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, 1.Runs(), executionsPerRun, config, microtome);
+        var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, 1.Runs(), executionsPerRun, config, autopsyProbe);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return configuredCheckr;
     }
