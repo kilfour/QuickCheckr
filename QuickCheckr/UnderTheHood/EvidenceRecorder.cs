@@ -60,7 +60,7 @@ public class EvidenceRecorder(Pathologist pathologist)
         if (IsReplay)
         {
 
-            if (FailingExpectation.Key == failure.Key && failingExecutionId == executionId)
+            if (FailingExpectation.IsEquivalentTo(failure) && failingExecutionId == executionId)
                 currentFailed = true;
             else
                 failedOnWrongExecutionId = true;
