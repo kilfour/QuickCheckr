@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkingExceptionIdentity.cs:22:1
+ Location:                A_ShrinkingExceptionIdentity.cs:22:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    743406629

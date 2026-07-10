@@ -1,5 +1,6 @@
 ## 0.2.2: ...
 * Added *Disposable Stash*.
+* ExpectThrewExactly<TException>
 
 ### Doing
 * ShrinkableAct consolidation 
@@ -14,6 +15,7 @@
 * Check Exception handling during shrinking for PoolElement.Replace and related
 * Make Task Acts Lazy
 * QuickCheckr.Tests.Investigations.ExceptionIdentity
+* Explicit run scoped Configr 
 
 ### Done/Ready for Changelog after review
 
