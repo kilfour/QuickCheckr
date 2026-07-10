@@ -31,7 +31,14 @@ public class DuplicateKeyWriteGuardForActs : DuplicateKeyWriteGuard
 public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForExpectations()
-        : base(["Checkr.Expect", "Trackr.Expect", "Trackr.Verify", "Trackr.StopWhenProven"]) { }
+        : base(
+            [ "Checkr.Expect"
+            , "Checkr.ExpectWhen"
+            , "Checkr.ExpectThrewExactly"
+            , "Trackr.Expect"
+            , "Trackr.Verify"
+            , "Trackr.StopWhenProven"])
+    { }
 }
 
 public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
