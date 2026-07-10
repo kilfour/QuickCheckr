@@ -1,6 +1,5 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;

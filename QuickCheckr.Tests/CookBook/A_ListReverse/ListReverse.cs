@@ -1,6 +1,5 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
