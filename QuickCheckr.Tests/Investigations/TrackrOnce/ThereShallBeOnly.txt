@@ -1,0 +1,16 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ThereShallBeOnly.cs:22:1
+ Original failing run:    6 executions
+ Minimal failing case:    1 execution (after 5 shrinks)
+ Seed:                    59881302
+ ------------------------------------------------------------
+  Executed:
+   - Counter-1 = 6
+ ========================================
+  !! Expectation Failed: counter1 <= 5
+ ========================================
+ Passed Expectations
+ - counter1 <= 5: 5x
+ - counter2 <= 1: 1x
+ ------------------------------------------------------------

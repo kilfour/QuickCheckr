@@ -1,6 +1,7 @@
 ## 0.2.2: ...
 * Added *Disposable Stash*.
 * ExpectThrewExactly<TException>
+* Trackr.Once
 
 ### Doing
 * ShrinkableAct consolidation 

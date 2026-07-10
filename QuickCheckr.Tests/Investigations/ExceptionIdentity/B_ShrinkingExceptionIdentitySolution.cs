@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Investigations.ExceptionIdentity;
 public class B_ShrinkingExceptionIdentitySolution : CheckrTest<B_ShrinkingExceptionIdentitySolution>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
