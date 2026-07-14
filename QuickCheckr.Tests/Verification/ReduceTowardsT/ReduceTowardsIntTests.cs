@@ -1,3 +1,4 @@
+using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -27,7 +28,7 @@ public class ReduceTowardsIntTests
     [Fact]
     public void ToZeroOrg()
     {
-        var result = ReductionRunner.ForReducer(new TypeReducerOption<int>(Reduce.Towards(0)).ReducerFactory(), "", "", 42, a => true, whistleblower);
+        var result = TestReductionRunner.ForReducer(Reduce.Towards(0), 42, a => true);
         var step = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(0, step.Result);
     }
@@ -43,7 +44,7 @@ public class ReduceTowardsIntTests
     [Fact]
     public void ToZeroStoppedOrg()
     {
-        var result = ReductionRunner.ForReducer(new TypeReducerOption<int>(Reduce.Towards(0)).ReducerFactory(), "", "", 1, a => (int)a != 0, whistleblower);
+        var result = TestReductionRunner.ForReducer(Reduce.Towards(0), 1, a => (int)a != 0, whistleblower);
         var step = Assert.IsType<Reduction.Stop>(result);
         Assert.Equal(1, step.Result);
     }
