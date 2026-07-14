@@ -2,6 +2,7 @@
 * Added *Disposable Stash*.
 * ExpectThrewExactly<TException>
 * Trackr.Once
+* MinimizeString Reducer : null is now a minimal value
 
 ### Doing
 * ShrinkableAct consolidation 

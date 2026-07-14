@@ -12,6 +12,9 @@ public static partial class Reduce
         private int index = 0;
         public Reduction Reduce(ReductionResult result)
         {
+            if (result.Value is null)
+                return new Reduction.Stop(result.Value!);
+
             var str = result.ValueAs<string>();
             if (result.Passed)
                 index++;
