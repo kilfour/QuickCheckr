@@ -24,7 +24,7 @@ public class FuzzrConfig : CheckrTest<FuzzrConfig>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from _ in Checkr.Input("Config", Configr.Primitive(Fuzzr.Constant<string>(null!)))
+        from _ in Trackr.Configr(Configr.Primitive(Fuzzr.Constant<string>(null!)))
         from thing in Checkr.Input("Thing", Fuzzr.One<Thing>())
         from expect in Checkr.Expect("Not Null", () => thing.CanBeNull is not null)
         select Case.Closed;
@@ -34,13 +34,11 @@ public class FuzzrConfig : CheckrTest<FuzzrConfig>
         Assert.Equal("Not Null", article.FailureDescription());
         Assert.Equal("", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(2, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Config", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ }", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("Thing", article.Execution(1).Input(2).Read().Label);
-        Assert.Equal("{ CanBeNull: null }", article.Execution(1).Input(2).Read().Value);
+        Assert.Equal("Thing", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ CanBeNull: null }", article.Execution(1).Input(1).Read().Value);
     }
 
     [CodeExample]

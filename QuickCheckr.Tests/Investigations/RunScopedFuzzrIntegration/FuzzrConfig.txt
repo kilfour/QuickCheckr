@@ -1,12 +1,11 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                FuzzrConfig.cs:22:1
+ Location:                FuzzrConfig.cs:23:1
  Original failing run:    1 execution
  Seed:                    1493113936
  ------------------------------------------------------------
   Executed:
-   - Config = { }
-   - Thing  = { CanBeNull: null }
+   - Thing = { CanBeNull: null }
  ===================================
   !! Expectation Failed: Not Null
  ===================================
