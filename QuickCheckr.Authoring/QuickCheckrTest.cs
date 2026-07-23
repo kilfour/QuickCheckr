@@ -51,7 +51,7 @@ public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest
         verifier(article);
     }
 
-    private void ProcessArticle(Article article, string callerPath)
+    protected void ProcessArticle(Article article, string callerPath)
     {
         WriteAsserts(article);
         WriteReport(article, callerPath);

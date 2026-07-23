@@ -16,6 +16,8 @@ public static partial class Checkr
     public static CheckrOf<Case> OneOf(string key, params CheckrOf<Case>[] scripts) =>
         state =>
         {
+            if (scripts.Length == 0)
+                throw new ArgumentException("You need to provide atleast one Checkr.", nameof(scripts));
             var index = state.Memory.StoreVariable(key,
                 () => Fuzzr.Int(0, scripts.Length)(state.FuzzrState).Value);
             return scripts[index](state);

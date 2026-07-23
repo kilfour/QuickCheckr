@@ -2,9 +2,7 @@ using QuickCheckr;
 using QuickCheckr.StringReduction;
 using QuickCheckr.StringReduction.Nuts;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
-using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.Tests.Investigations.J_StringReduction;
 
