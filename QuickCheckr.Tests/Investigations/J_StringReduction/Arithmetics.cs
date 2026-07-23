@@ -14,6 +14,16 @@ public class Arithmetics
     }
 
     [Fact]
+    public void KeepOneChar()
+    {
+        var selectr =
+            from lhs in Stringr.Once()
+            from op in Stringr.Once().Remove()
+            select Selection.Defined;
+        Assert.Equal("a", RunAll(selectr, "abcde"));
+    }
+
+    [Fact]
     public void RemoveOpAndRhs()
     {
         var selectr =

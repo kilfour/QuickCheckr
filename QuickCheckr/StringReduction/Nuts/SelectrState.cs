@@ -7,18 +7,21 @@ public class SelectrState(string text)
     public int Offset { get; private set; } = 0;
     public string Text { get; private set; } = text;
     public int Advance(int by = 1) => Index += by;
-    public int Restart(int at) => Index = at;
+    public bool Changed { get; set; } = false;
+    public void Restart(int at) { Index = at; Changed = false; }
     public bool InBounds(int offset = 0) => Index + offset >= 0 && Index + offset < Text.Length;
     public bool OutOfBounds(int offset = 0) => !InBounds(offset);
 
     public void Remove(StringSlice slice)
     {
+        Changed = true;
         Text = Text.Remove(slice.Start, slice.Length);
         Index -= slice.Length;
     }
 
     public void Replace(StringSlice slice, string replacement)
     {
+        Changed = true;
         Text = Text[..(slice.Start + Offset)] + replacement + Text[(slice.Start + slice.Length + Offset)..]; ;
         Index -= slice.Length;
         Index += replacement.Length;
@@ -26,6 +29,7 @@ public class SelectrState(string text)
 
     public void LateReplace(StringSlice slice, string replacement)
     {
+        Changed = true;
         Text = Text[..(slice.Start + Offset)] + replacement + Text[(slice.Start + slice.Length + Offset)..]; ;
         Index -= slice.Length;
         Index += replacement.Length;

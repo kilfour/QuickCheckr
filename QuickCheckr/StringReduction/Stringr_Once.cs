@@ -5,9 +5,12 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class Stringr
 {
-    public static SelectrOf<ITextSelection> Once(params char[] options) =>
-        Once(a => options.Contains(a));
-
+    public static SelectrOf<ITextSelection> Once(params char[] options)
+    {
+        if (options.Length == 0)
+            return Once(_ => true);
+        return Once(a => options.Contains(a));
+    }
 
     public static SelectrOf<ITextSelection> Once(Func<char, bool> predicate) =>
         state =>

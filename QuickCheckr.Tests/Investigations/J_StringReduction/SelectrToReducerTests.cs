@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.StringReduction;
 using QuickCheckr.StringReduction.Nuts;
+using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -9,19 +10,10 @@ namespace QuickCheckr.Tests.Investigations.J_StringReduction;
 
 public class SelectrToReducerTests
 {
-    public class WhistleblowerSpy : IReductionWhistleblower
+    private static Reduction Act(Func<Reducer<string>> reducerFactory, string input, Func<object?, bool>? failTest = null)
     {
-        public int MaxStepsPerReducer => 1024;
-        public void Warn(string key, Func<Warning> factory) { }
-    }
-
-    private readonly WhistleblowerSpy whistleblower = new();
-
-    private Reduction Act(Func<Reducer<string>> reducerFactory, string input, Func<object?, bool>? failTest = null)
-    {
-        var reducer = new TypeReducerOption<string>(reducerFactory).ReducerFactory();
         var predicate = failTest ?? (a => true);
-        var result = ReductionRunner.ForReducer(reducer, "", "", input, predicate, whistleblower);
+        var result = TestReductionRunner.ForReducer(reducerFactory, input, predicate);
         return result;
     }
 

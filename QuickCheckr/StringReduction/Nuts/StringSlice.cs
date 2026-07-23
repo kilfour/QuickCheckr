@@ -11,6 +11,7 @@ public record StringSlice(int Start, int Length, string Text) : ITextSelection, 
     {
         return state =>
         {
+            state.Changed = true;
             var replacement = replacementFactory(Text);
             state.LateReplace(this, replacement);
             return SelectrResult.Some(state, this as IEditable);

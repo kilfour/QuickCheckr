@@ -17,7 +17,11 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
                 if (state.RunStopped)
                     state.RestoreText();
                 else
+                {
+                    if (!EndOfText && state.Changed)
+                        state.Restart(outerIndex);
                     return state.Text;
+                }
                 state.Advance();
             }
             if (EndOfText)
@@ -31,4 +35,6 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
 
     public bool EndOfText =>
         state.Index >= state.Text.Length;
+
+    public bool Changed => state.Changed;
 }
