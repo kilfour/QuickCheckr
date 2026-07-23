@@ -1,6 +1,6 @@
 ``` bash
 
-$Name = "QuickPersistr"
+$Name = "QuickSpecr"
 
 $libName = $Name
 $testName = "${Name}.Tests"

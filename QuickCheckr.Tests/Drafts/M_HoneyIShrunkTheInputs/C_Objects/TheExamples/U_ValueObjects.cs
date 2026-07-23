@@ -1,10 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Protocol;
 using QuickCheckr.StringReduction;
-using QuickCheckr.StringReduction.Nuts;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -31,9 +28,7 @@ public class U_ValueObjects : CheckrTest<U_ValueObjects>
             Fuzzr.String().Select(a => new BookTitle(a)),
             Shrink.OnType<BookTitle>(s => s.Simplify(
                 Reduce.Map(
-                    (from _ in Stringr.Once().Remove()
-                     from rem in Stringr.Once()
-                     select Selection.Defined).Reduce(),
+                    Reduce.MinimizeStringTo(1),
                     (BookTitle title) => title.Value,
                     (_, value) => new BookTitle(value)))))
         from traceOne in Checkr.Trace("Original", () => input)
@@ -42,7 +37,18 @@ public class U_ValueObjects : CheckrTest<U_ValueObjects>
 
     protected override void Verify(Article article)
     {
-
+        Assert.Equal("Does not contain a.", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(1, article.Total().Traces());
+        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("Value Object", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ Number: 42, Value: \"cxwufaml\" }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Number: 42, Value: \"a\" }", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("{ Number: 42, Value: \"cxwufaml\" }", article.Execution(1).Trace(1).Read().Value);
     }
 
     public record BookTitle

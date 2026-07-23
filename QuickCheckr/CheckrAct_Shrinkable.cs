@@ -39,9 +39,9 @@ public static partial class Checkr
             () => { action(); return new DelayedResult(); },
             ex => new DelayedResult(ex));
 
-    public static CheckrOf<ActResult<DelayedResult>> ShrinkableActCarefully(string key, Task action)
+    public static CheckrOf<ActResult<DelayedResult>> ShrinkableActCarefully(string key, Func<Task> action)
         => TryShrinkableCapture(key,
-            () => { action.GetAwaiter().GetResult(); return new DelayedResult(); },
+            () => { action().GetAwaiter().GetResult(); return new DelayedResult(); },
             ex => new DelayedResult(ex));
 
     public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Func<T> func)
@@ -49,9 +49,9 @@ public static partial class Checkr
             () => new DelayedResult<T>(func()),
             ex => new DelayedResult<T>(ex));
 
-    public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Task<T> func)
+    public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Func<Task<T>> func)
         => TryShrinkableCapture(key,
-            () => new DelayedResult<T>(func.GetAwaiter().GetResult()),
+            () => new DelayedResult<T>(func().GetAwaiter().GetResult()),
             ex => new DelayedResult<T>(ex));
 
     private static CheckrOf<ActResult<T>> TryShrinkableCapture<T>(string key, Func<T> func, Func<Exception, T> onError) =>

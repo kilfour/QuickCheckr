@@ -2,11 +2,13 @@
  Test:                    Example
  Location:                U_ValueObjects.cs:26:1
  Original failing run:    1 execution
- Seed:                    194935385
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1108652583
  ------------------------------------------------------------
   Executed:
-   - Value Object = { Number: 42, Value: "auksy" }
-   - Original     = { Number: 42, Value: "auksy" }
+   - Value Object = { Number: 42, Value: "cxwufaml" }
+     Redux          { Number: 42, Value: "a" }
+   - Original     = { Number: 42, Value: "cxwufaml" }
  ==============================================
   !! Expectation Failed: Does not contain a.
  ==============================================
