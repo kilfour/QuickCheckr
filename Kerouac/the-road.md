@@ -2,6 +2,7 @@
 * Added *Disposable Stash*.
 * ExpectThrewExactly<TException>
 * Trackr.Once
+* Trackr.Configr : allows for *preloading* a QuickFuzzr configuration (a `FuzzrOf<Intent>`)
 * MinimizeString Reducer : null is now a minimal value
 
 ### Doing

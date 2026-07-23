@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                U_ValueObjects.cs:26:1
+ Original failing run:    1 execution
+ Seed:                    1642956879
+ ------------------------------------------------------------
+  Executed:
+   - Value Object = { Number: 42, Value: "abqdp" }
+   - Original     = { Number: 42, Value: "abqdp" }
+ ==============================================
+  !! Expectation Failed: Does not contain a.
+ ==============================================
