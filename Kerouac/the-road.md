@@ -4,6 +4,8 @@
 * Trackr.Once
 * Trackr.Configr : allows for *preloading* a QuickFuzzr configuration (a `FuzzrOf<Intent>`)
 * MinimizeString Reducer : null is now a minimal value
+* Reduce.MinimizeStringTo
+* Reduce.Map
 
 ### Doing
 * ShrinkableAct consolidation 
@@ -17,8 +19,7 @@
 * Improve error message when Pool OneOf and related can not select an option
 * Check Exception handling during shrinking for PoolElement.Replace and related
 * Make Task Acts Lazy
-* QuickCheckr.Tests.Investigations.ExceptionIdentity
-* Explicit run scoped Configr 
+* Exception in reducer => Ploef
 
 ### Done/Ready for Changelog after review
 

@@ -1,9 +1,8 @@
 using System.Diagnostics;
 using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;
 
-namespace QuickCheckr;
+namespace QuickCheckr.UnderTheHood;
 
 public static class SpokesPerson
 {
