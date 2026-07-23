@@ -1,14 +1,16 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Authoring;
 
-public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
+public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest
 {
     protected virtual bool WriteAllReportsToDisk => false;
     protected virtual bool Asserts => false;
@@ -20,12 +22,36 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
         CourtClerk.Default();
 
     protected class DocReport([CallerFilePath] string path = "") :
-        DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", 0, -1, path);
+        DocCodeFileAttribute($"{typeof(TTestClass).Name}.txt", "text", 0, -1, path);
 
     protected class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
-        DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", skiplines, numberOfLines, path);
+        DocCodeFileAttribute($"{typeof(TTestClass).Name}.txt", "text", skiplines, numberOfLines, path);
 
-    protected virtual void ProcessArticle(Article article, string callerPath)
+    [StackTraceHidden]
+    protected void Document(
+        CheckrOf<Case> checkr,
+        Action<ConfiguredCheckr> runCheckr,
+        Action<Article> verifier,
+        [CallerFilePath] string callerPath = "")
+    {
+        var article = Journalist.Publish(checkr, runCheckr);
+        ProcessArticle(article, callerPath);
+        verifier(article);
+    }
+
+    [StackTraceHidden]
+    protected void Document(
+        ConfiguredCheckr checkr,
+        Action<ConfiguredCheckr> runCheckr,
+        Action<Article> verifier,
+        [CallerFilePath] string callerPath = "")
+    {
+        var article = Journalist.Publish(checkr, runCheckr);
+        ProcessArticle(article, callerPath);
+        verifier(article);
+    }
+
+    private void ProcessArticle(Article article, string callerPath)
     {
         WriteAsserts(article);
         WriteReport(article, callerPath);
@@ -35,7 +61,7 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
     private void WriteReport(
         Article article,
         string callerPath)
-            => DoTheWriting(article, typeof(T).Name + ".txt", callerPath);
+            => DoTheWriting(article, typeof(TTestClass).Name + ".txt", callerPath);
 
     private void DoTheWriting(Article article, string filename, string callerPath)
     {
@@ -48,7 +74,7 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
                 article.CaseFile.TestMethodInfoDeposition! with
                 {
                     MethodName = "Example",
-                    SourceFile = $"{typeof(T).Name}.cs"
+                    SourceFile = $"{typeof(TTestClass).Name}.cs"
                 });
         }
         var report = TheClerk.Transcribes(article.Record, Clerk.File);
@@ -64,6 +90,6 @@ public abstract class QuickCheckrTest<T> : DocAttributeBaseTest
     private void ExplainMe()
     {
         if (!Explain) return;
-        QuickPulse.Explains.Explain.OnlyThis<T>("temp-" + typeof(T).Name + ".md");
+        QuickPulse.Explains.Explain.OnlyThis<TTestClass>("temp-" + typeof(TTestClass).Name + ".md");
     }
 }

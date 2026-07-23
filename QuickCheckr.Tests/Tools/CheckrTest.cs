@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring;
-using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
@@ -26,9 +25,5 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
     protected void Document(
         Action<ConfiguredCheckr> runCheckr,
         [CallerFilePath] string callerPath = "")
-    {
-        var article = Journalist.Publish(TheCheckr(), runCheckr);
-        ProcessArticle(article, callerPath);
-        Verify(article);
-    }
+        => Document(TheCheckr(), runCheckr, Verify, callerPath);
 }
