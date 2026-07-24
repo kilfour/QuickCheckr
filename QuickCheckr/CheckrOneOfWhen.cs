@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
 namespace QuickCheckr;
@@ -23,7 +24,12 @@ public static partial class Checkr
                     .Where(a => a.condition())
                     .Select(a => a.ix);
             var index = state.Memory.StoreVariable(key,
-                () => Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value);
+                () =>
+                {
+                    if (!validScriptIndexes.Any())
+                        throw new NoCheckrsAvailableException();
+                    return Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value;
+                });
             var checkr = checkrs[index];
             if (checkr.condition())
                 return checkrs[index].checkr(state);

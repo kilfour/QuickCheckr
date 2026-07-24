@@ -6,6 +6,7 @@ using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickFuzzr.UnderTheHood.WhenThingsGoWrong;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
@@ -68,7 +69,7 @@ public class InPoolsWeTrust : BaseTest
     [DocHeader("Using random elements from a Pool")]
     [DocExample(typeof(InPoolsWeTrust), nameof(UseRandom))]
     public void UsingIt() =>
-        Assert.Throws<OneOfEmptyOptionsException>(() => UseRandom().Run());
+        Assert.Throws<EmptyPoolException>(() => UseRandom().Run());
 
     [CodeSnippet]
     private static CheckrOf<Case> UseRandom() =>
@@ -86,7 +87,7 @@ Therefore, the operations are defined on the wrapper object.
 *Remove:*")]
     [DocExample(typeof(InPoolsWeTrust), nameof(Remove))]
     public void Removing()
-        => Assert.Throws<OneOfEmptyOptionsException>(() => Remove().Run());
+        => Assert.Throws<EmptyPoolException>(() => Remove().Run());
 
     [CodeSnippet]
     private static CheckrOf<Case> Remove() =>
@@ -98,7 +99,7 @@ Therefore, the operations are defined on the wrapper object.
 @"*Replace:*")]
     [DocExample(typeof(InPoolsWeTrust), nameof(Replace))]
     public void Replacing() =>
-        Assert.Throws<OneOfEmptyOptionsException>(() => Replace().Run());
+        Assert.Throws<EmptyPoolException>(() => Replace().Run());
 
     [CodeSnippet]
     private static CheckrOf<Case> Replace() =>
@@ -116,7 +117,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
 ")]
     [DocExample(typeof(InPoolsWeTrust), nameof(PoolWhen))]
     public void Conditionally() =>
-        Assert.Throws<OneOfEmptyOptionsException>(() => (
+        Assert.Throws<EmptyPoolException>(() => (
             from option in PoolWhen()
             from unconditionally in option.checkr
             select Case.Closed).Run());

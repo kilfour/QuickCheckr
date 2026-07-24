@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
 namespace QuickCheckr;
@@ -15,7 +16,13 @@ public static partial class Trackr
         state =>
         {
             var id = state.Memory.StoreVariable(key,
-                () => Fuzzr.OneOf(state.Memory.GetPoolIds<T>())(state.FuzzrState).Value);
+                () =>
+                {
+                    var poolIds = state.Memory.GetPoolIds<T>();
+                    if (!poolIds.Any())
+                        throw new EmptyPoolException(key, typeof(T));
+                    return Fuzzr.OneOf(poolIds)(state.FuzzrState).Value;
+                });
             state.Memory.StorePoolTrace(key, () => $"{typeof(T).Name}-{id}");
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)

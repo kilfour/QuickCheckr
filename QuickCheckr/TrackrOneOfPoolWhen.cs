@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
 namespace QuickCheckr;
@@ -12,7 +13,13 @@ public static partial class Trackr
         state =>
         {
             var id = state.Memory.StoreVariable(key,
-                () => Fuzzr.OneOf(state.Memory.GetPoolIds(predicate))(state.FuzzrState).Value);
+                () =>
+                {
+                    var poolIds = state.Memory.GetPoolIds(predicate);
+                    if (!poolIds.Any())
+                        throw new NoMatchingPoolElementException(key, typeof(T));
+                    return Fuzzr.OneOf(poolIds)(state.FuzzrState).Value;
+                });
             state.Memory.StorePoolTrace(key, () => $"{typeof(T).Name}-{id}");
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
@@ -37,7 +44,12 @@ public static partial class Trackr
                 where predicate(t1.Value, t2.Value)
                 select (t1.Key, t2.Key);
             var (id1, id2) = state.Memory.StoreVariable($"{key}",
-                () => Fuzzr.OneOf(combined).WithDefault((-1, -1))(state.FuzzrState).Value);
+                () =>
+                {
+                    if (!combined.Any())
+                        throw new NoMatchingPoolElementException(key, typeof(T1), typeof(T2));
+                    return Fuzzr.OneOf(combined)(state.FuzzrState).Value;
+                });
             state.Memory.StorePoolTrace(key, () => $"( {typeof(T1).Name}-{id1}, {typeof(T2).Name}-{id2} )");
             var (result1, value1) = state.Memory.GetFromPool<T1>(id1);
             var (result2, value2) = state.Memory.GetFromPool<T2>(id2);

@@ -7,6 +7,8 @@
 * Reduce.MinimizeStringTo
 * Reduce.Map
 * Act & ShrinkableAct with Task argument are now all lazy
+* Improved error message when OneOf cannot select an option
+* Improved error message when Pool OneOf and related can not select an option
 
 ### Doing
 * ShrinkableAct consolidation 
@@ -16,8 +18,6 @@
 
 
 ### Todo
-* Improve error message when OneOf cannot select an option
-* Improve error message when Pool OneOf and related can not select an option
 * Check Exception handling during shrinking for PoolElement.Replace and related
 * Exception in reducer => Ploef
 
