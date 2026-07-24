@@ -38,7 +38,7 @@ public class B_NestedObjects : BaseTest
         return
             from input in Checkr.Input("Universe",
                 from _ in Configr.Primitive(Fuzzr.Constant("Answer me"))
-                from __ in Configr.Primitive(Fuzzr.Int())
+                from __ in Configr.Primitive(Fuzzr.Int(1, 100))
                 from thing in Fuzzr.One<TheUniverse>()
                 select thing)
             from expect in Checkr.ExpectWhen("It's not 42",

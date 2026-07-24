@@ -205,3 +205,5 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
   * `Conduct(...)`  
   * `Autopsy(...)`
   now return the checkr instance, allowing these methods to be chained.
+
+  ## 0.2.2: Alarms and No Surprises

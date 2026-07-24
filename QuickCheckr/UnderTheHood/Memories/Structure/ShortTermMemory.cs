@@ -2,6 +2,7 @@ using QuickCheckr;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
+using QuickFuzzr.UnderTheHood;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
