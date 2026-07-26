@@ -9,6 +9,7 @@
 * Act & ShrinkableAct with Task argument are now all lazy
 * Improved error message when OneOf cannot select an option
 * Improved error message when Pool OneOf and related can not select an option
+* Added message overloads to Trackr.Verify
 
 ### Doing
 * ShrinkableAct consolidation 

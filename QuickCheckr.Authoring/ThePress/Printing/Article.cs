@@ -27,7 +27,12 @@ public class Article(IRecord record)
     public List<string> FailingExpectationMessages()
     {
         if (caseFile is null) return [];
-        return (caseFile.FailureDeposition as FailedExpectationDeposition)?.Messages ?? [];
+        return caseFile.FailureDeposition switch
+        {
+            FailedExpectationDeposition expectation => expectation.Messages,
+            FailedVerificationDeposition verification => verification.Messages,
+            _ => []
+        };
     }
 
     public string FailureDescription()

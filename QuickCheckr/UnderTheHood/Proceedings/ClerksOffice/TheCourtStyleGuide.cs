@@ -99,6 +99,7 @@ public static class TheCourtStyleGuide
         return Style
             .DoubleLineOf(length)
             .OnNewLine().Indent(1).Exclaim(text)
+            .ToFlow(FailedExpectationMessage, input.Messages)
             .DoubleLineOf(length);
     }
 

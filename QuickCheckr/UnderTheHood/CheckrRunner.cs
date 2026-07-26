@@ -33,7 +33,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
 
-        if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerify))
+        if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerification.Key))
             return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
@@ -62,7 +62,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 FailureInfo:
                     new FailureInfo(
                         State.EvidenceRecorder.FailingExpectation,
-                        State.EvidenceRecorder.FailingVerify,
+                        State.EvidenceRecorder.FailingVerification,
                         State.EvidenceRecorder.Exception),
                 RunInfo:
                     new RunInfo(

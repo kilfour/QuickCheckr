@@ -16,8 +16,11 @@ public abstract record FailureDeposition
         }
         if (failureInfo.FailingExpectation is not null && !string.IsNullOrEmpty(failureInfo.FailingExpectation.Key))
             return new FailedExpectationDeposition(failureInfo.FailingExpectation.Key, failureInfo.FailingExpectation.Message);
-        if (!string.IsNullOrEmpty(failureInfo.Verification))
-            return new FailedVerificationDeposition(failureInfo.Verification!);
+        if (failureInfo.FailingVerification is not null &&
+            !string.IsNullOrEmpty(failureInfo.FailingVerification.Key))
+            return new FailedVerificationDeposition(
+                failureInfo.FailingVerification.Key,
+                failureInfo.FailingVerification.Messages);
         return new FailedNoneDeposition();
     }
 };

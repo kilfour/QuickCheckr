@@ -1,4 +1,5 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickCheckr.Tests.Verification.Proceedings.CaseFileReporting.AssayerDepositions;
@@ -10,7 +11,9 @@ public class VerifyingDepositionsTests : DepositionTest
     [Fact]
     public void One()
     {
-        var caseFile = CaseFile.From(new FailureInfo(Verification: "Some Invariant"), Dossier.RunInfo with { ShrinkCount = 0 });
+        var caseFile = CaseFile.From(
+            new FailureInfo(FailingVerification: new VerificationFailure("Some Invariant", [])),
+            Dossier.RunInfo with { ShrinkCount = 0 });
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal(" Original failing run:    10 executions", reader.NextLine());

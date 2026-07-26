@@ -72,14 +72,14 @@ public class EvidenceRecorder(Pathologist pathologist)
         runFailed = true;
     }
 
-    public string FailingVerify { get; private set; } = string.Empty;
-    public void VerificationFailed(string key)
+    public VerificationFailure FailingVerification { get; private set; } = VerificationFailure.Empty;
+    public void VerificationFailed(VerificationFailure failure)
     {
         if (IsReplay)
         {
             throw new InvalidOperationException("Can't shrink on verification failure.");
         }
-        FailingVerify = key;
+        FailingVerification = failure;
         runFailed = true;
     }
 

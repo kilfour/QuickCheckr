@@ -1,13 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_ExpectWhenMessage.cs:25:1
+ Location:                D_ExpectWhenMessages.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1370925842
+ Seed:                    879207939
  ------------------------------------------------------------
   Executed:
    - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Always fails
        answer = 42
+       second message
  =======================================

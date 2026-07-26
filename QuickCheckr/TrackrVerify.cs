@@ -8,7 +8,19 @@ public static partial class Trackr
     /// Evaluates a named condition only on the final execution of a run.  
     /// Use when an assertion depends on the cumulative state built up across all executions.
     /// </summary>
-    public static CheckrOf<Case> Verify(string key, Func<bool> condition) =>
+    public static CheckrOf<Case> Verify(string key, Func<bool> condition)
+        => InnerVerify(key, condition, () => []);
+
+    public static CheckrOf<Case> Verify(string key, Func<bool> condition, Func<string> message)
+        => InnerVerify(key, condition, () => [message()]);
+
+    public static CheckrOf<Case> Verify(string key, Func<bool> condition, Func<List<string>>? messages)
+        => InnerVerify(key, condition, messages);
+
+    private static CheckrOf<Case> InnerVerify(
+        string key,
+        Func<bool> condition,
+        Func<List<string>>? messages) =>
         state =>
         {
             state.Memory.KeyGuardian.Expects.Check(key);
@@ -17,7 +29,8 @@ public static partial class Trackr
             bool passed = condition();
             if (!passed)
             {
-                state.EvidenceRecorder.VerificationFailed(key);
+                state.EvidenceRecorder.VerificationFailed(
+                    new VerificationFailure(key, messages?.Invoke() ?? []));
             }
             else
             {
@@ -47,7 +60,8 @@ public static partial class Trackr
             }
             if (!passed)
             {
-                state.EvidenceRecorder.VerificationFailed(key + ": " + string.Join(", ", strings));
+                state.EvidenceRecorder.VerificationFailed(
+                    new VerificationFailure(key + ": " + string.Join(", ", strings), []));
             }
             else
             {
