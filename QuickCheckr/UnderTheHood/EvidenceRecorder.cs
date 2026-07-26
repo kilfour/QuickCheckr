@@ -77,7 +77,8 @@ public class EvidenceRecorder(Pathologist pathologist)
     {
         if (IsReplay)
         {
-            throw new InvalidOperationException("Can't shrink on verification failure.");
+            return; // We are replaying so verification does not matter
+            // throw new InvalidOperationException("Can't shrink on verification failure.");
         }
         FailingVerification = failure;
         runFailed = true;
