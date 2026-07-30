@@ -180,7 +180,7 @@ Any existing previous reports for runs that now pass are deleted, and if the evi
             cfg => Configure(cfg with { Custodian = custodian }));
 
         Assert.Empty(custodian.Entries);
-        Assert.Empty(custodian.Records.Where(a => a.Value is CaseFile));
+        Assert.DoesNotContain(custodian.Records, a => a.Value is CaseFile);
         Assert.Equal("MyQuickCheckrTest_1862095796", custodian.RemoveFileCalledWith);
     }
 

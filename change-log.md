@@ -206,4 +206,23 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
   * `Autopsy(...)`
   now return the checkr instance, allowing these methods to be chained.
 
-  ## 0.2.2: Alarms and No Surprises
+## 0.2.2: Alarms and No Surprises
+
+Smaller composability and diagnostics improvements, with safer task execution and more flexible reducers.
+
+### Added
+* Added disposable stash support. Stashed values implementing `IDisposable` are now disposed after each run.
+* Added `Checkr.ExpectThrewExactly<TException>(...)`.
+* Added `Trackr.Once(...)` for work that should run only once.
+* Added `Trackr.Configr(...)`, allowing a preconfigured QuickFuzzr `FuzzrOf<Intent>` to be loaded into a run.
+* Added `Reduce.MinimizeStringTo(...)`.
+* Added `Reduce.Map(...)`.
+* Added message overloads to `Trackr.Verify(...)`.
+
+### Changed
+* Task-based `Act` and `ShrinkableAct` overloads are now lazy. Tasks are created only when the action is executed.
+* `Reduce.MinimizeString(...)` now treats `null` as a minimal value and tries replacing text with `"a"`.
+
+### Improved diagnostics
+* Improved errors when `OneOf` or `OneOfWhen` cannot select an option.
+* Improved errors when pool-based `OneOf` operations cannot select a matching element.

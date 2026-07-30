@@ -16,7 +16,7 @@ public class D_ExpectWhenMessages : CheckrTest<D_ExpectWhenMessages>
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Document(a => a.Run());
+    public override void Example() => Document(a => a.Run(1183209470));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

@@ -1,35 +1,22 @@
-## 0.2.2: ...
-* Added *Disposable Stash*.
-* ExpectThrewExactly<TException>
-* Trackr.Once
-* Trackr.Configr : allows for *preloading* a QuickFuzzr configuration (a `FuzzrOf<Intent>`)
-* MinimizeString Reducer : 
-  * null is now a minimal value
-  * now also tries 'a' as replacement
-* Reduce.MinimizeStringTo
-* Reduce.Map
-* Act & ShrinkableAct with Task argument are now all lazy
-* Improved error message when OneOf cannot select an option
-* Improved error message when Pool OneOf and related can not select an option
-* Added message overloads to Trackr.Verify
+## 0.2.3: ...
+
 
 ### Doing
-* ShrinkableAct consolidation 
-  Needs a decision, ...
 
 ### To Test
 
 
 ### Todo
-* better asserts for findings and inquiry
-* Check Exception handling during shrinking for PoolElement.Replace and related
-* Exception in reducer => Ploef
+* Add better assertions for findings and inquiries in Editor.
+* Check exception handling during shrinking for `PoolElement.Replace` and related operations.
+* Decide how reducer exceptions should be handled.
+* Decide whether and how to consolidate `ShrinkableAct`.
 
 ### Done/Ready for Changelog after review
 
 
 
-## 0.3.0 : All Aboard
+## 0.3.0: All Aboard
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
