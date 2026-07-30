@@ -19,6 +19,7 @@
 
 
 ### Todo
+* better asserts for findings and inquiry
 * Check Exception handling during shrinking for PoolElement.Replace and related
 * Exception in reducer => Ploef
 

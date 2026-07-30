@@ -14,7 +14,7 @@ public class Inquiry : IRecord
     public int FailureCount => caseFiles.Count(a => a.HasEvidence);
     public int DistinctFailureCount => distinctFailures.Count;
 
-    public List<PassedExpectation> PassedExpectationDepositions =>
+    public List<PassedExpectation> PassedExpectations =>
         [.. caseFiles
             .SelectMany(cf => cf.PassedExpectations)
             .GroupBy(ps => ps.Label)

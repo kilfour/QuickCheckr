@@ -18,7 +18,7 @@ public static class TheInquiry
             .NewLine()
             .DoubleLine()
             .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(InquiryPassedExpectations, input.PassedExpectationDepositions)
+            .ToFlow(InquiryPassedExpectations, input.PassedExpectations)
             .DoubleLine();
 
     private static Flow<Flow> InquiryHeaderCount(this Flow<Flow> other, int count, string label, string suffix) =>

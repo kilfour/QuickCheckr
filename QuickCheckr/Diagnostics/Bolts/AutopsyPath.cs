@@ -20,6 +20,10 @@ public class AutopsyPath
     // InputShrinking
     public const string InputShrinking = "InputShrinking";
     public static string Input(string key) => $"Input-{key}";
+
+    // -------------------------------------------------------------------------------------------
+    // InputReduction
+    public const string InputReduction = "InputReduction";
 }
 
 

@@ -56,7 +56,9 @@ public class Article(IRecord record)
     {
         return record is CaseFile
             ? new(caseFile!.PassedExpectations[number - 1])
-            : new(((Findings)record).PassedExpectations[number - 1]);
+            : record is Inquiry inquiry
+                ? new(inquiry!.PassedExpectations[number - 1])
+                : new(((Findings)record).PassedExpectations[number - 1]);
     }
 
     [StackTraceHidden]

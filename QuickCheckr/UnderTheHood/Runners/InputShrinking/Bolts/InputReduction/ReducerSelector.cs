@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Diagnostics.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -58,6 +59,7 @@ public class ReducerSelector
 
     public static InputClassification Reduce(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
     {
+        using var ___ = context.State.Pathologist.Examine(AutopsyPath.InputReduction);
 
         if (classification is CollectionRelevant collectionRelevant)
         {
