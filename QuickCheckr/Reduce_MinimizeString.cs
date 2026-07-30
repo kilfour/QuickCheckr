@@ -13,6 +13,8 @@ public static partial class Reduce
     private class MinimizeStringFactory(int minLength)
     {
         private int index = 0;
+        private bool replacing = false;
+
         public Reduction Reduce(ReductionResult result)
         {
             if (result.Value is null)
@@ -22,7 +24,19 @@ public static partial class Reduce
             if (str.Length <= minLength)
                 return new Reduction.Stop(result.Value!);
             if (result.Passed)
-                index++;
+            {
+                if (replacing)
+                {
+                    replacing = false;
+                    index++;
+                }
+                else
+                {
+                    replacing = true;
+                    return new Reduction.Next(str[..index] + 'a' + str[(index + 1)..]);
+                }
+            }
+
             if (index >= str.Length)
                 return new Reduction.Stop(str);
             return new Reduction.Next(str.Remove(index, 1));

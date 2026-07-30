@@ -3,7 +3,9 @@
 * ExpectThrewExactly<TException>
 * Trackr.Once
 * Trackr.Configr : allows for *preloading* a QuickFuzzr configuration (a `FuzzrOf<Intent>`)
-* MinimizeString Reducer : null is now a minimal value
+* MinimizeString Reducer : 
+  * null is now a minimal value
+  * now also tries 'a' as replacement
 * Reduce.MinimizeStringTo
 * Reduce.Map
 * Act & ShrinkableAct with Task argument are now all lazy

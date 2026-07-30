@@ -42,12 +42,12 @@
 
   <ItemGroup>
     <PackageReference Include="QuickFuzzr" Version="0.2.1" />
-    <PackageReference Include="QuickPulse.Show" Version="0.1.16" />
+    <!-- <PackageReference Include="QuickPulse.Show" Version="0.1.16" /> -->
   </ItemGroup>
 
   <ItemGroup>
     <!-- <ProjectReference Include="..\..\QuickFuzzr\QuickFuzzr\QuickFuzzr.csproj" /> -->
-    <!-- <ProjectReference Include="..\..\QuickPulse.Show\QuickPulse.Show\QuickPulse.Show.csproj" /> -->
+    <ProjectReference Include="..\..\QuickPulse.Show\QuickPulse.Show\QuickPulse.Show.csproj" />
   </ItemGroup>
 
 </Project>
