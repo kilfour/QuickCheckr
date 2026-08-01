@@ -13,8 +13,11 @@
 * Decide whether and how to consolidate `ShrinkableAct`.
 
 ### Done/Ready for Changelog after review
-
-
+* Refactored `Stringr` internals while preserving the string-reduction DSL.
+  * Added a categorized verification suite and retired the redundant investigation tests.
+  * Made selection success explicit in `SelectrResult` and represented empty matches as zero-length selections.
+  * Replaced mutable stop signaling and fragmented snapshots with full-state transactional rollback and an explicit candidate-search runner.
+  * Fixed nested `Or` rollback, balanced-range nesting, failed projection short-circuiting, zero-width/no-op progress, rejected-candidate rollback, and leaked deferred-replacement offsets.
 
 ## 0.3.0: All Aboard
 * More in-built reducers
@@ -64,7 +67,6 @@
 * Depositions external project: Challenges in CsCheck, FsCheck and QuickCheckr
 * Improve nested collection shrinking/regrowth  
   (current model struggles when classification collapses to empty).
-* Stringr => use Result.Stop instead of State.RunStopped
 
 ## Skipped Tests
 * 2 for Configuration InternalAffairs: Work in progress, not too important right now.
