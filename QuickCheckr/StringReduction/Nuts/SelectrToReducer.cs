@@ -3,8 +3,15 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.StringReduction.Nuts;
 
+/// <summary>
+/// Provides reducer integration for completed Stringr scripts.
+/// </summary>
 public static class SelectrToReducer
 {
+    /// <summary>
+    /// Converts a completed Stringr selector into a fresh string reducer factory.
+    /// Use when registering a Stringr script outside the <c>Shrink.OnType</c> builder API.
+    /// </summary>
     public static Func<Reducer<string>> Reduce(this SelectrOf<Selection> selector) =>
         () => new ReductionSession(selector).Step;
 

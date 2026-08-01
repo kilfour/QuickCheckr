@@ -1,5 +1,9 @@
 namespace QuickCheckr.StringReduction.Nuts;
 
+/// <summary>
+/// Executes a completed Stringr script and searches the input for successive reduction candidates.
+/// Use <see cref="Next"/> until <see cref="EndOfText"/> indicates that no further candidates remain.
+/// </summary>
 public class SelectrRun(SelectrOf<Selection> selectr, string text)
 {
     private readonly SelectrState state = new(text);
@@ -9,6 +13,10 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
     private int candidateSearchStart;
     private bool hasCandidateCheckpoint;
 
+    /// <summary>
+    /// Returns the next changed candidate, or the current text after the search is exhausted.
+    /// Candidates are cumulative unless the current candidate is rejected.
+    /// </summary>
     public string Next()
     {
         hasCandidateCheckpoint = false;
@@ -51,6 +59,10 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
         return state.Text;
     }
 
+    /// <summary>
+    /// Rejects the most recently returned candidate and resumes searching from the preceding text.
+    /// Used by reducer integration when a candidate causes the failing property to pass.
+    /// </summary>
     public void RejectCandidate()
     {
         if (!hasCandidateCheckpoint)
@@ -62,7 +74,13 @@ public class SelectrRun(SelectrOf<Selection> selectr, string text)
         hasCandidateCheckpoint = false;
     }
 
+    /// <summary>
+    /// Indicates that the selector has no further candidate to produce.
+    /// </summary>
     public bool EndOfText => finished;
 
+    /// <summary>
+    /// Indicates whether the current selection attempt performed an editing operation.
+    /// </summary>
     public bool Changed => state.Changed;
 }

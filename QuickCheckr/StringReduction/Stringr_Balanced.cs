@@ -5,6 +5,10 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class Stringr
 {
+    /// <summary>
+    /// Selects a balanced range, including its opening and closing delimiters.
+    /// Nested ranges using the same delimiters are included in the selection.
+    /// </summary>
     public static SelectrOf<ITextSelection> Balanced(char left, char right) =>
         state =>
         {

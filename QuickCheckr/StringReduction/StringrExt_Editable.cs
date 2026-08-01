@@ -4,6 +4,10 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class StringrExtensions
 {
+    /// <summary>
+    /// Retains the selected range so it can be replaced by a later query step.
+    /// Use when a replacement depends on text captured elsewhere in the same LINQ query.
+    /// </summary>
     public static SelectrOf<IEditable> Editable(this SelectrOf<ITextSelection> selectr) =>
         state =>
         {

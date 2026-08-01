@@ -5,6 +5,10 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class StringrExtensions
 {
+    /// <summary>
+    /// Selects with the left alternative, falling back to the right alternative when it does not match.
+    /// Changes made by a failed alternative are rolled back before the next alternative is attempted.
+    /// </summary>
     public static SelectrOf<ITextSelection> Or(this SelectrOf<ITextSelection> left, SelectrOf<ITextSelection> right) =>
         state =>
         {

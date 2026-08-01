@@ -4,6 +4,10 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class StringrExtensions
 {
+    /// <summary>
+    /// Replaces the selected range using its selected text.
+    /// Use to normalize or simplify a match as soon as it is selected.
+    /// </summary>
     public static SelectrOf<ITextSelection> Replace(
         this SelectrOf<ITextSelection> selectr,
         Func<string, string> replacementFactory) =>

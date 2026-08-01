@@ -5,9 +5,17 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class Stringr
 {
+    /// <summary>
+    /// Selects zero or more consecutive characters included in the supplied options.
+    /// Produces an empty selection when the current character is not included.
+    /// </summary>
     public static SelectrOf<ITextSelection> Optional(params char[] options) =>
         Optional(a => options.Contains(a));
 
+    /// <summary>
+    /// Selects zero or more consecutive characters satisfying the supplied predicate.
+    /// Use for optional runs such as whitespace around another selection.
+    /// </summary>
     public static SelectrOf<ITextSelection> Optional(Func<char, bool> predicate) =>
         state =>
         {

@@ -4,6 +4,10 @@ namespace QuickCheckr.StringReduction;
 
 public static partial class StringrExtensions
 {
+    /// <summary>
+    /// Removes the selected range from each candidate produced by the script.
+    /// Use to simplify an input by deleting matched text.
+    /// </summary>
     public static SelectrOf<ITextSelection> Remove(this SelectrOf<ITextSelection> selectr) =>
         state =>
         {
