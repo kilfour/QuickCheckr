@@ -10,35 +10,43 @@ public static partial class Stringr
         {
             if (state.OutOfBounds())
                 return SelectrResult.Default<ITextSelection>(state);
+
             if (state.Text[state.Index] != left)
-            {
-                state.RunStopped = true;
                 return SelectrResult.Default<ITextSelection>(state);
-            }
-            var length = 1;
-            int depth = 1;
-            int maxDepth = 1;
-            while (state.InBounds(length + 1) && depth != 0)
+
+            var depth = 0;
+            var maximumDepth = 0;
+            var closingIndex = -1;
+            for (var index = state.Index; index < state.Text.Length; index++)
             {
-                length++;
-                if (state.Text[state.Index + length] == left)
+                if (state.Text[index] == left)
                 {
                     depth++;
-                    maxDepth++;
+                    maximumDepth = Math.Max(maximumDepth, depth);
                 }
-                if (state.Text[state.Index + length] == right)
+
+                if (state.Text[index] == right)
+                {
                     depth--;
+
+                    if (depth == 0)
+                    {
+                        closingIndex = index;
+                        break;
+                    }
+                }
             }
-            if (state.OutOfBounds(length) || state.Text[state.Index + length] != right)
-            {
-                state.RunStopped = true;
+
+            if (closingIndex < 0)
                 return SelectrResult.Default<ITextSelection>(state);
-            }
-            var result = SelectrResult.Some(state, StringSlice.From(state.Index, length + 1, state.Text));
-            if (maxDepth == 1)
-                state.Advance(length + 1);
+
+            var length = closingIndex - state.Index + 1;
+            var result = SelectrResult.Some(state, StringSlice.From(state.Index, length, state.Text));
+            if (maximumDepth == 1)
+                state.Advance(length);
             else
                 state.Advance();
+
             return result;
         };
 }

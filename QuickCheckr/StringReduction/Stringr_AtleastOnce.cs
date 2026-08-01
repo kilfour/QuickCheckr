@@ -14,10 +14,13 @@ public static partial class Stringr
             var length = 0;
             while (state.InBounds(length) && predicate(state.Text[state.Index + length]))
                 length++;
-            state.RunStopped = length == 0;
-            var result = length > 0
-                ? SelectrResult.Some(state, StringSlice.From(state.Index, length, state.Text))
-                : SelectrResult.Default<ITextSelection>(state);
+
+            if (length == 0)
+                return SelectrResult.Default<ITextSelection>(state);
+
+            var result = SelectrResult.Some<ITextSelection>(
+                state,
+                StringSlice.From(state.Index, length, state.Text));
             state.Advance(length);
             return result;
         };

@@ -9,8 +9,11 @@ public static partial class StringrExtensions
         Func<string, string> replacementFactory) =>
         state =>
         {
-            var selection = selectr(state).Value;
-            if (selection == null) return SelectrResult.Default<ITextSelection>(state);
+            var result = selectr(state);
+            if (!result.Succeeded)
+                return SelectrResult.Default<ITextSelection>(state);
+
+            var selection = result.Value;
             var replacement = replacementFactory(selection.Text);
             state.Replace(selection.AsSlice(), replacement);
             return SelectrResult.Some(state, selection);

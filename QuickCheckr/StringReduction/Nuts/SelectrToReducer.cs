@@ -6,38 +6,39 @@ namespace QuickCheckr.StringReduction.Nuts;
 public static class SelectrToReducer
 {
     public static Func<Reducer<string>> Reduce(this SelectrOf<Selection> selector) =>
-        () => new Factory(selector).Reduce;
+        () => new ReductionSession(selector).Step;
 
-    private class Factory(SelectrOf<Selection> selectr)
+    private sealed class ReductionSession(SelectrOf<Selection> selector)
     {
-        private SelectrRun? run = null;
-        private bool witnessed = false;
-        private bool initialized = false;
-        private string lastFailure = "";
-        public Reduction Reduce(ReductionResult result)
+        private SelectrRun? run;
+        private bool witnessedPass;
+        private string lastFailingValue = string.Empty;
+
+        public Reduction Step(ReductionResult result)
         {
-            var str = result.ValueAs<string>();
-            if (!initialized)
+            if (run is null)
             {
-                initialized = true;
-                lastFailure = str;
-                run = selectr.Run(str);
+                lastFailingValue = result.ValueAs<string>();
+                run = selector.Run(lastFailingValue);
             }
-            if (result.Passed)
-                witnessed = true;
+            else if (result.Passed)
+            {
+                witnessedPass = true;
+                run.RejectCandidate();
+            }
             else
             {
-                lastFailure = str;
+                lastFailingValue = result.ValueAs<string>();
             }
 
-            if (run!.EndOfText)
-            {
-                if (witnessed)
-                    return new Reduction.Stop(lastFailure);
-                return new Reduction.Unbounded(lastFailure);
-            }
+            if (run.EndOfText)
+                return Complete();
 
-            return new Reduction.Next(run!.Next());
+            return new Reduction.Next(run.Next());
         }
+
+        private Reduction Complete() => witnessedPass
+            ? new Reduction.Stop(lastFailingValue)
+            : new Reduction.Unbounded(lastFailingValue);
     }
 }

@@ -8,24 +8,25 @@ public static class Selectr_ToLinq
         this SelectrOf<TValueOne> script,
         Func<TValueOne, TValueTwo> selector) =>
             state =>
-                {
-                    if (state.RunStopped)
-                        return SelectrResult.Default<TValueTwo>(state);
-                    return SelectrResult.Some(state, selector(script(state).Value));
-                };
+            {
+                var result = script(state);
+                if (!result.Succeeded)
+                    return SelectrResult.Default<TValueTwo>(state);
+
+                return SelectrResult.Some(state, selector(result.Value));
+            };
 
     public static SelectrOf<TResult> SelectMany<TSource, TResult>(
         this SelectrOf<TSource> source,
         Func<TSource, SelectrOf<TResult>> selector) =>
             state =>
-                {
-                    if (state.RunStopped)
-                        return SelectrResult.Default<TResult>(state);
-                    var result = source(state);
-                    if (state.RunStopped)
-                        return SelectrResult.Default<TResult>(state);
-                    return selector(result.Value)(state);
-                };
+            {
+                var result = source(state);
+                if (!result.Succeeded)
+                    return SelectrResult.Default<TResult>(state);
+
+                return selector(result.Value)(state);
+            };
 
     public static SelectrOf<TValueThree> SelectMany<TValueOne, TValueTwo, TValueThree>(
         this SelectrOf<TValueOne> script,
