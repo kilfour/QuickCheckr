@@ -9,6 +9,8 @@ public static class DefaultReducersRegistry
         {
             {typeof(int), () => Convert(Reduce.TowardsZero)},
             {typeof(short), () => Convert(Reduce.ShortTowardsZero)},
+            {typeof(decimal), () => Convert(Reduce.Towards(0m, 2))},
+            {typeof(double), () => Convert(Reduce.Towards(0d, 2))},
             {typeof(string), () => Convert(Reduce.MinimizeString)}
         };
 

@@ -13,6 +13,8 @@
 * Decide whether and how to consolidate `ShrinkableAct`.
 
 ### Done/Ready for Changelog after review
+* Added `Reduce.Towards(decimal target, int precision = 28)` with configurable decimal-place precision and overflow-safe reduction across the full `decimal` range.
+* Added `Reduce.Towards(double target, int precision = 15)` with configurable decimal-place precision and efficient IEEE-754 range reduction.
 * Refactored `Stringr` internals while preserving the string-reduction DSL.
   * Added a categorized verification suite and retired the redundant investigation tests.
   * Made selection success explicit in `SelectrResult` and represented empty matches as zero-length selections.

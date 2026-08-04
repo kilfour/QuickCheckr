@@ -31,7 +31,8 @@ public class AutopsyProbe
         => new(DefaultArtery(), a => Prepare(a).StartsWith(AutopsyPath.ExecutionShrinking));
     public static AutopsyProbe ActionShrinking
         => new(DefaultArtery(), a => Prepare(a).StartsWith(AutopsyPath.ActionShrinking));
-
+    public static AutopsyProbe InputShrinking
+       => new(DefaultArtery(), a => Prepare(a).StartsWith(AutopsyPath.InputShrinking));
     private static string Prepare(IReadOnlyList<string> strings)
         => string.Join('.', strings);
 
