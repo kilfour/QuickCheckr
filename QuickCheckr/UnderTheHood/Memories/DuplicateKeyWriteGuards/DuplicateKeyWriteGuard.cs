@@ -33,6 +33,7 @@ public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
     public DuplicateKeyWriteGuardForExpectations()
         : base(
             [ "Checkr.Expect"
+            , "Checkr.ExpectEquals"
             , "Checkr.ExpectWhen"
             , "Checkr.ExpectThrewExactly"
             , "Trackr.Expect"

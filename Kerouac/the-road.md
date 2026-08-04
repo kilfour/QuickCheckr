@@ -13,6 +13,8 @@
 * Decide whether and how to consolidate `ShrinkableAct`.
 
 ### Done/Ready for Changelog after review
+* Added `Checkr.ExpectEquals<T>(...)`, with expected and actual values rendered by the configured trace formatter when equality fails.
+* Added a formatter-aware `Checkr.Expect(...)` overload for building custom failure messages with the configured trace formatter.
 * Added `Reduce.Towards(decimal target, int precision = 28)` with configurable decimal-place precision and overflow-safe reduction across the full `decimal` range.
 * Added `Reduce.Towards(double target, int precision = 15)` with configurable decimal-place precision and efficient IEEE-754 range reduction.
 * Refactored `Stringr` internals while preserving the string-reduction DSL.

@@ -40,6 +40,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 
 - 'Checkr.Expect'
+- 'Checkr.ExpectEquals'
 - 'Checkr.ExpectWhen'
 - 'Checkr.ExpectThrewExactly'
 - 'Trackr.Expect'
