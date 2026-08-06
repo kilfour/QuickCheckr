@@ -14,27 +14,27 @@ public class ClassifierSelector
         var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
         if (shrinkers is not null)
         {
-            var traversal = shrinkers
-                .Where(shrinker => shrinker.Traversals.Length != 0)
+            var classifier = shrinkers
+                .Where(shrinker => shrinker.Classifiers.Length != 0)
                 .FirstOrDefault(shrinker => shrinker.Condition(info));
-            if (traversal is not null)
+            if (classifier is not null)
             {
-                classification = TraversalSelector.Traverse(
+                classification = ClassifyCustom(
                     info,
-                    context,
-                    traversal.Traversals);
+                    classifier.Classifiers,
+                    context);
             }
             else
             {
-                var classifier = shrinkers
-                    .Where(shrinker => shrinker.Classifiers.Length != 0)
+                var traversal = shrinkers
+                    .Where(shrinker => shrinker.Traversals.Length != 0)
                     .FirstOrDefault(shrinker => shrinker.Condition(info));
-                if (classifier is not null)
+                if (traversal is not null)
                 {
-                    classification = ClassifyCustom(
+                    classification = TraversalSelector.Traverse(
                         info,
-                        classifier.Classifiers,
-                        context);
+                        context,
+                        traversal.Traversals);
                 }
             }
         }

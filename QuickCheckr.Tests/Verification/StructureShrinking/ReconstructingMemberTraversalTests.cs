@@ -117,6 +117,68 @@ public class ReconstructingMemberTraversalTests
             article.Execution(1).Warning(1).Read().Value);
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Explicit_classifier_takes_precedence_over_same_type_traversal(
+        bool traversalFirst)
+    {
+        var original = new Box([1, 42, 2]);
+        var keep = Shrink.Keep<Box>();
+        Shrinker[] shrinkers = traversalFirst
+            ? [BoxTraversal, keep]
+            : [keep, BoxTraversal];
+        var checkr =
+            from box in Checkr.Input(
+                "Box",
+                Fuzzr.Constant(original),
+                shrinkers)
+            from expect in Checkr.Expect(
+                "Expectation",
+                () => !box.Values.Contains(42))
+            select Case.Closed;
+
+        var article = Journalist.Publish(
+            checkr,
+            configured => configured.Run(1.ExecutionsPerRun()));
+
+        var input = article.Execution(1).Input(1).Read();
+        Assert.Equal("{ Values: [ 1, 42, 2 ] }", input.Value);
+        Assert.Same(original, input.InputValue);
+    }
+
+    [Fact]
+    public void Traversal_uses_custom_classifiers_for_nested_member_values()
+    {
+        var classifierWasCalled = false;
+        var classifyInts = Shrink.OnType<int>(
+            classification => classification.Classify(
+                Try.Function<int>(_ =>
+                {
+                    classifierWasCalled = true;
+                    return [0];
+                })));
+        var checkr =
+            from box in Checkr.Input(
+                "Box",
+                Fuzzr.Constant(new Box([1, 42, 2])),
+                BoxTraversal,
+                classifyInts)
+            from expect in Checkr.Expect(
+                "Expectation",
+                () => !box.Values.Contains(42))
+            select Case.Closed;
+
+        var article = Journalist.Publish(
+            checkr,
+            configured => configured.Run(1.ExecutionsPerRun()));
+
+        Assert.True(classifierWasCalled);
+        Assert.Equal(
+            "{ Values: [ 42 ] }",
+            article.Execution(1).Input(1).Read().Value);
+    }
+
     private static Article Run(Box original, Func<Box, bool> expectation)
     {
         var checkr =
