@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -8,7 +9,8 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 [DocFile]
 [DocContent(
 @"A configured traversal overlays the default object handling. Unconfigured writable
-members use default traversal; unconfigured read-only members are retained as opaque values.")]
+members use default traversal. Unconfigured read-only members are retained as opaque values
+and produce a verbose warning because QuickCheckr cannot prove them irrelevant.")]
 public class F_UnconfiguredReadOnlyMemberIsRetained
     : CheckrTest<F_UnconfiguredReadOnlyMemberIsRetained>
 {
@@ -20,7 +22,9 @@ public class F_UnconfiguredReadOnlyMemberIsRetained
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Document(configured => configured.Run(1.ExecutionsPerRun()));
+        Document(configured => configured
+            .Configure(config => config with { WarningLevel = WarningLevel.Verbose })
+            .Run(1.ExecutionsPerRun()));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
@@ -49,6 +53,10 @@ public class F_UnconfiguredReadOnlyMemberIsRetained
         var retained = Assert.IsType<Request>(input.InputValue);
         Assert.NotNull(retained.Note);
         Assert.Equal("irrelevant", retained.Note.Text);
+        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(
+            "Read-only member of type 'Note' at 'Request.Note' has no configured traversal and was retained as an opaque value.",
+            article.Execution(1).Warning(1).Read().Value);
     }
 
     public sealed class Request(int code, Note? note)

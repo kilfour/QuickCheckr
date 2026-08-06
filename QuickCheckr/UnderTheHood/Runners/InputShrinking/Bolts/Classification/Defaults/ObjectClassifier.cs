@@ -114,6 +114,12 @@ public class ObjectClassifier : Classifier
         ShrinkingInfo info,
         PropertyInfo propertyInfo)
     {
+        var path = $"{info.Path}.{propertyInfo.Name}";
+        context.Warn(
+            path,
+            () => new OpaqueReadOnlyMemberWarning(
+                propertyInfo.PropertyType,
+                path));
         var parent = context.State.Memory.GetCurrentInputValue(
             info.ExecutionId,
             info.Key);

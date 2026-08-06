@@ -14,7 +14,7 @@
 
 ### Done/Ready for Changelog after review
 * Added custom reconstruction traversal with `Shrink.OnType<T>(traversal => traversal.Using(...))` and `Traversal.Member(...)`, allowing immutable and getter-only models to reconstruct their parent while nested members shrink.
-  * Configured members overlay normal object traversal; unspecified writable members keep the default traversal and unspecified read-only members are retained as opaque values.
+  * Configured members overlay normal object traversal; unspecified writable members keep the default traversal and unspecified read-only members are retained as opaque values with a verbose warning.
   * Nested reducer values are propagated through reconstructed collections so the reported Redux and materialized Redux value remain consistent.
 * Added `Checkr.ExpectEquals<T>(...)`, with expected and actual values rendered by the configured trace formatter when equality fails.
 * Added a formatter-aware `Checkr.Expect(...)` overload for building custom failure messages with the configured trace formatter.

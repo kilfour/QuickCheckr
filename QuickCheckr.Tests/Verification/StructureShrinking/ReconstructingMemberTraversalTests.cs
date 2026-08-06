@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -102,12 +103,18 @@ public class ReconstructingMemberTraversalTests
 
         var article = Journalist.Publish(
             checkr,
-            configured => configured.Run(1.ExecutionsPerRun()));
+            configured => configured
+                .Configure(config => config with { WarningLevel = WarningLevel.Verbose })
+                .Run(1.ExecutionsPerRun()));
 
         var input = article.Execution(1).Input(1).Read();
         Assert.Equal("{ Code: 42, Note: { Text: \"retained\" } }", input.Value);
         var retained = Assert.IsType<Request>(input.InputValue);
         Assert.Same(note, retained.Note);
+        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(
+            "Read-only member of type 'Note' at 'Request.Note' has no configured traversal and was retained as an opaque value.",
+            article.Execution(1).Warning(1).Read().Value);
     }
 
     private static Article Run(Box original, Func<Box, bool> expectation)
