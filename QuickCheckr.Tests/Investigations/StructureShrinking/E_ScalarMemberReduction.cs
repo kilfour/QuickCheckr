@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"A collapser can expose a scalar member as well as a collection. The ordinary
+@"A traversal can expose a scalar member as well as a collection. The ordinary
 integer reducer minimizes the member, and the replacement function reconstructs its parent.")]
 public class E_ScalarMemberReduction : CheckrTest<E_ScalarMemberReduction>
 {
@@ -30,8 +30,8 @@ public class E_ScalarMemberReduction : CheckrTest<E_ScalarMemberReduction>
             "Limit",
             Fuzzr.Constant(new Limit(999)),
             Shrink.OnType<Limit>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         limit => limit.Value,
                         (limit, value) => new Limit(value)))))
         from expect in Checkr.Expect(

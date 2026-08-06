@@ -5,10 +5,10 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Verification.StructureShrinking;
 
-public class ReconstructingMemberCollapserTests
+public class ReconstructingMemberTraversalTests
 {
     [Fact]
-    public void Collapses_a_getter_only_collection_by_reconstructing_its_parent()
+    public void Traverses_a_getter_only_collection_by_reconstructing_its_parent()
     {
         var original = new Box([1, 42, 2]);
 
@@ -18,14 +18,14 @@ public class ReconstructingMemberCollapserTests
 
         var input = article.Execution(1).Input(1).Read();
         Assert.Equal("{ Values: [ 42 ] }", input.Value);
-        var collapsed = Assert.IsType<Box>(input.InputValue);
-        Assert.Equal([42], collapsed.Values);
-        Assert.NotSame(original, collapsed);
+        var reconstructed = Assert.IsType<Box>(input.InputValue);
+        Assert.Equal([42], reconstructed.Values);
+        Assert.NotSame(original, reconstructed);
         Assert.Equal([1, 42, 2], original.Values);
     }
 
     [Fact]
-    public void Composes_reconstructing_collapsers_for_nested_getter_only_members()
+    public void Composes_reconstructing_traversals_for_nested_getter_only_members()
     {
         var original = new OuterBox(new Box([1, 42, 2]));
         var checkr =
@@ -33,11 +33,11 @@ public class ReconstructingMemberCollapserTests
                 "Outer Box",
                 Fuzzr.Constant(original),
                 Shrink.OnType<OuterBox>(
-                    collapse => collapse.Using(
-                        collapse.Member(
+                    traversal => traversal.Using(
+                        traversal.Member(
                             outer => outer.Inner,
                             (outer, inner) => new OuterBox(inner)))),
-                BoxCollapser)
+                BoxTraversal)
             from expect in Checkr.Expect(
                 "Expectation",
                 () => !outer.Inner.Values.Contains(42))
@@ -49,8 +49,8 @@ public class ReconstructingMemberCollapserTests
 
         var input = article.Execution(1).Input(1).Read();
         Assert.Equal("{ Inner: { Values: [ 42 ] } }", input.Value);
-        var collapsed = Assert.IsType<OuterBox>(input.InputValue);
-        Assert.Equal([42], collapsed.Inner.Values);
+        var reconstructed = Assert.IsType<OuterBox>(input.InputValue);
+        Assert.Equal([42], reconstructed.Inner.Values);
         Assert.Equal([1, 42, 2], original.Inner.Values);
     }
 
@@ -62,8 +62,8 @@ public class ReconstructingMemberCollapserTests
                 "Mixed Box",
                 Fuzzr.Constant(new MixedBox([1, 42, 2]) { Code = 42 }),
                 Shrink.OnType<MixedBox>(
-                    collapse => collapse.Using(
-                        collapse.Member(
+                    traversal => traversal.Using(
+                        traversal.Member(
                             box => box.Values,
                             (box, values) => new MixedBox(values) { Code = box.Code }))))
             from expect in Checkr.Expect(
@@ -77,9 +77,9 @@ public class ReconstructingMemberCollapserTests
 
         var input = article.Execution(1).Input(1).Read();
         Assert.Equal("{ Code: 42, Values: [ 42 ] }", input.Value);
-        var collapsed = Assert.IsType<MixedBox>(input.InputValue);
-        Assert.Equal(42, collapsed.Code);
-        Assert.Equal([42], collapsed.Values);
+        var reconstructed = Assert.IsType<MixedBox>(input.InputValue);
+        Assert.Equal(42, reconstructed.Code);
+        Assert.Equal([42], reconstructed.Values);
     }
 
     [Fact]
@@ -91,8 +91,8 @@ public class ReconstructingMemberCollapserTests
                 "Request",
                 Fuzzr.Constant(new Request(42, note)),
                 Shrink.OnType<Request>(
-                    collapse => collapse.Using(
-                        collapse.Member(
+                    traversal => traversal.Using(
+                        traversal.Member(
                             request => request.Code,
                             (request, code) => new Request(code, request.Note)))))
             from expect in Checkr.Expect(
@@ -116,7 +116,7 @@ public class ReconstructingMemberCollapserTests
             from box in Checkr.Input(
                 "Box",
                 Fuzzr.Constant(original),
-                BoxCollapser)
+                BoxTraversal)
             from expect in Checkr.Expect("Expectation", () => expectation(box))
             select Case.Closed;
 
@@ -125,10 +125,10 @@ public class ReconstructingMemberCollapserTests
             configured => configured.Run(1.ExecutionsPerRun()));
     }
 
-    private static readonly Shrinker BoxCollapser =
+    private static readonly Shrinker BoxTraversal =
         Shrink.OnType<Box>(
-            collapse => collapse.Using(
-                collapse.Member(
+            traversal => traversal.Using(
+                traversal.Member(
                     box => box.Values,
                     (box, values) => new Box(values))));
 

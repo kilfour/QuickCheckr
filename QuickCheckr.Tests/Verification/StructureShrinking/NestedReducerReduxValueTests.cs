@@ -14,8 +14,8 @@ public class NestedReducerReduxValueTests
                 "Box",
                 Fuzzr.Constant(new Box([999])),
                 Shrink.OnType<Box>(
-                    collapse => collapse.Using(
-                        collapse.Member(
+                    traversal => traversal.Using(
+                        traversal.Member(
                             box => box.Values,
                             (box, values) => new Box(values)))))
             from expect in Checkr.Expect(

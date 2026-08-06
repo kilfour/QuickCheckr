@@ -1,6 +1,6 @@
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
-public interface ICollapseOption
+public interface ITraversalOption
 {
     Type TargetType { get; }
     string MemberName { get; }
@@ -9,7 +9,7 @@ public interface ICollapseOption
     object Replace(object target, object? member);
 }
 
-public abstract record CollapseOption<T> : ICollapseOption
+public abstract record TraversalOption<T> : ITraversalOption
 {
     public Type TargetType => typeof(T);
     public abstract string MemberName { get; }
@@ -18,11 +18,11 @@ public abstract record CollapseOption<T> : ICollapseOption
     public abstract object Replace(object target, object? member);
 }
 
-public sealed record MemberCollapseOption<T, TMember>(
+public sealed record MemberTraversalOption<T, TMember>(
     string Name,
     Func<T, TMember> Getter,
     Func<T, TMember, T> Replacer)
-    : CollapseOption<T>
+    : TraversalOption<T>
 {
     public override string MemberName => Name;
     public override Type MemberType => typeof(TMember);

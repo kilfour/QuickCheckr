@@ -1,5 +1,5 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
@@ -21,8 +21,8 @@ public static partial class Shrink
         => When(s => { }, reducersFactory);
 
     public static Shrinker OnType<T>(
-        Func<CollapseBuilder<T>, ICollapseOption[]> collapsersFactory)
-        => When(s => { }, collapsersFactory);
+        Func<TraversalBuilder<T>, ITraversalOption[]> traversalsFactory)
+        => When(s => { }, traversalsFactory);
 }
 
 

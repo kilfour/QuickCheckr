@@ -7,7 +7,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"A configured collapser overlays the default object handling. Unconfigured writable
+@"A configured traversal overlays the default object handling. Unconfigured writable
 members use default traversal; unconfigured read-only members are retained as opaque values.")]
 public class F_UnconfiguredReadOnlyMemberIsRetained
     : CheckrTest<F_UnconfiguredReadOnlyMemberIsRetained>
@@ -28,8 +28,8 @@ public class F_UnconfiguredReadOnlyMemberIsRetained
             "Request",
             Fuzzr.Constant(new Request(42, new Note("irrelevant"))),
             Shrink.OnType<Request>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         request => request.Code,
                         (request, code) => new Request(code, request.Note)))))
         from expect in Checkr.Expect(

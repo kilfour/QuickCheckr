@@ -30,8 +30,8 @@ public class D_RejectedReconstruction : CheckrTest<D_RejectedReconstruction>
             "Schedule",
             Fuzzr.Constant(new NonEmptySchedule([1, 42])),
             Shrink.OnType<NonEmptySchedule>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         schedule => schedule.Slots,
                         (schedule, slots) => new NonEmptySchedule(slots)))))
         from expect in Checkr.Expect(
@@ -47,9 +47,9 @@ public class D_RejectedReconstruction : CheckrTest<D_RejectedReconstruction>
             article.Execution(1).Input(1).Read().Value);
         Assert.True(NonEmptySchedule.RejectedReconstructions > 0);
 
-        var collapsed = Assert.IsType<NonEmptySchedule>(
+        var reconstructed = Assert.IsType<NonEmptySchedule>(
             article.Execution(1).Input(1).Read().InputValue);
-        Assert.Equal([42], collapsed.Slots);
+        Assert.Equal([42], reconstructed.Slots);
     }
 
     public sealed class NonEmptySchedule

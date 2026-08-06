@@ -7,8 +7,8 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"A custom collapser describes structure without taking over classification.
-The replacement function reconstructs the immutable parent whenever its collection changes.")]
+@"A custom traversal describes how to reconstruct immutable structure while nested
+values continue to use their normal classification and reduction.")]
 public class A_ReconstructingMember : CheckrTest<A_ReconstructingMember>
 {
     protected override bool Report => true;
@@ -27,8 +27,8 @@ public class A_ReconstructingMember : CheckrTest<A_ReconstructingMember>
             "Parcel",
             Fuzzr.Constant(new Parcel([1, 42, 2])),
             Shrink.OnType<Parcel>(
-                collapse => collapse.Using(
-                    Collapse.Member(
+                traversal => traversal.Using(
+                    Traversal.Member(
                         (Parcel parcel) => parcel.Values,
                         (parcel, values) => new Parcel(values)))))
         from expect in Checkr.Expect(

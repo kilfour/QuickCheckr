@@ -7,8 +7,8 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"A single collapser can expose several members. Each replacement receives the
-latest reconstructed parent, so collapses made to earlier members are retained.")]
+@"A single traversal can expose several members. Each replacement receives the
+latest reconstructed parent, so changes made to earlier members are retained.")]
 public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
 {
     protected override bool Report => true;
@@ -29,11 +29,11 @@ public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
                 [1, 42, 2],
                 ["noise", "required", "extra"])),
             Shrink.OnType<Manifest>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         manifest => manifest.Codes,
                         (manifest, codes) => new Manifest(codes, manifest.Tags)),
-                    collapse.Member(
+                    traversal.Member(
                         manifest => manifest.Tags,
                         (manifest, tags) => new Manifest(manifest.Codes, tags)))))
         from expect in Checkr.Expect(
@@ -50,10 +50,10 @@ public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
             "{ Codes: [ 42 ], Tags: [ \"required\" ] }",
             article.Execution(1).Input(1).Read().Value);
 
-        var collapsed = Assert.IsType<Manifest>(
+        var reconstructed = Assert.IsType<Manifest>(
             article.Execution(1).Input(1).Read().InputValue);
-        Assert.Equal([42], collapsed.Codes);
-        Assert.Equal(["required"], collapsed.Tags);
+        Assert.Equal([42], reconstructed.Codes);
+        Assert.Equal(["required"], reconstructed.Tags);
     }
 
     public sealed class Manifest(

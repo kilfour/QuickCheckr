@@ -7,8 +7,8 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"Collapsers compose recursively. The outer collapser reconstructs the envelope,
-while the inner collapser exposes and reconstructs its getter-only collection.")]
+@"Traversals compose recursively. The outer traversal reconstructs the envelope,
+while the inner traversal exposes and reconstructs its getter-only collection.")]
 public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
 {
     protected override bool Report => true;
@@ -27,13 +27,13 @@ public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
             "Envelope",
             Fuzzr.Constant(new Envelope(new Payload([1, 42, 2]))),
             Shrink.OnType<Envelope>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         envelope => envelope.Payload,
                         (envelope, payload) => new Envelope(payload)))),
             Shrink.OnType<Payload>(
-                collapse => collapse.Using(
-                    collapse.Member(
+                traversal => traversal.Using(
+                    traversal.Member(
                         payload => payload.Values,
                         (payload, values) => new Payload(values)))))
         from expect in Checkr.Expect(
@@ -48,9 +48,9 @@ public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
             "{ Payload: { Values: [ 42 ] } }",
             article.Execution(1).Input(1).Read().Value);
 
-        var collapsed = Assert.IsType<Envelope>(
+        var reconstructed = Assert.IsType<Envelope>(
             article.Execution(1).Input(1).Read().InputValue);
-        Assert.Equal([42], collapsed.Payload.Values);
+        Assert.Equal([42], reconstructed.Payload.Values);
     }
 
     public sealed class Envelope(Payload payload)

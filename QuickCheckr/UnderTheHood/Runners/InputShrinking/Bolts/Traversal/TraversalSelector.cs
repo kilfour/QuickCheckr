@@ -4,14 +4,14 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defau
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
 
-namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
+namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
-public static class CollapserSelector
+public static class TraversalSelector
 {
-    public static InputClassification Collapse(
+    public static InputClassification Traverse(
         ShrinkingInfo info,
         ShrinkingContext context,
-        IEnumerable<ICollapseOption> options)
+        IEnumerable<ITraversalOption> options)
     {
         if (info.Value is null)
         {
@@ -59,7 +59,7 @@ public static class CollapserSelector
     private static InputClassification ClassifyOption(
         ShrinkingInfo info,
         ShrinkingContext context,
-        ICollapseOption option)
+        ITraversalOption option)
     {
         var parent = context.State.Memory.GetCurrentInputValue(
             info.ExecutionId,
