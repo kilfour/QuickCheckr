@@ -13,6 +13,9 @@
 * Decide whether and how to consolidate `ShrinkableAct`.
 
 ### Done/Ready for Changelog after review
+* Added structure collapsing with `Shrink.OnType<T>(collapse => collapse.Using(...))` and `Collapse.Member(...)`, allowing immutable and getter-only models to reconstruct their parent while nested members shrink.
+  * Configured members overlay normal object traversal; unspecified writable members keep the default traversal and unspecified read-only members are retained as opaque values.
+  * Nested reducer values are propagated through collapsed collections so the reported Redux and materialized Redux value remain consistent.
 * Added `Checkr.ExpectEquals<T>(...)`, with expected and actual values rendered by the configured trace formatter when equality fails.
 * Added a formatter-aware `Checkr.Expect(...)` overload for building custom failure messages with the configured trace formatter.
 * Added `Reduce.Towards(decimal target, int precision = 28)` with configurable decimal-place precision and overflow-safe reduction across the full `decimal` range.
@@ -89,10 +92,6 @@
 
 
 ## Ideas
-* *Shrinker*
-    1. Classifier: decides whether input is relevant
-    2. Reducer: tries to find a minimal value
-    3. NEW : Collapser: simplifies structure
 * Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
   Or maybe an object with an OnFail tracing method 
 * Add 'Witness' (candidate that made the run pass) to Redux 
