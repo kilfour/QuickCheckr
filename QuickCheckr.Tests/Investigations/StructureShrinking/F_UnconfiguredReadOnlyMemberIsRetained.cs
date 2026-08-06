@@ -7,10 +7,10 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 
 [DocFile]
 [DocContent(
-@"This documents a missing Collapser capability. The optional note is irrelevant,
-but Member only exposes it for traversal; it does not propose null as a structural candidate.")]
-public class F_OptionalMemberIsNotCollapsed
-    : CheckrTest<F_OptionalMemberIsNotCollapsed>
+@"A configured collapser overlays the default object handling. Unconfigured writable
+members use default traversal; unconfigured read-only members are retained as opaque values.")]
+public class F_UnconfiguredReadOnlyMemberIsRetained
+    : CheckrTest<F_UnconfiguredReadOnlyMemberIsRetained>
 {
     protected override bool Report => true;
 
@@ -31,10 +31,7 @@ public class F_OptionalMemberIsNotCollapsed
                 collapse => collapse.Using(
                     collapse.Member(
                         request => request.Code,
-                        (request, code) => new Request(code, request.Note)),
-                    collapse.Member(
-                        request => request.Note,
-                        (request, note) => new Request(request.Code, note)))))
+                        (request, code) => new Request(code, request.Note)))))
         from expect in Checkr.Expect(
             "Code is not 42",
             () => request.Code != 42)

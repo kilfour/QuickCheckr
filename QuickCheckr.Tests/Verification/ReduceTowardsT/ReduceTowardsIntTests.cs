@@ -64,47 +64,4 @@ public class ReduceTowardsIntTests
         var step = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(5, step.Result);
     }
-
-    [Fact(Skip = "wip")]
-    public void Oracle()
-    {
-        var checkr =
-            from start in Checkr.Input("Start", Fuzzr.Int())
-            from target in Checkr.Input("Target", Fuzzr.Int())
-            from stop in Checkr.Input("Stop", Fuzzr.Int())
-            from model in Checkr.Act("Model", () => RunModel(start, target, stop))
-            from sut in Checkr.ActCarefully("Sut", () => RunSut(start, target, stop))
-            from noExc in Checkr.When(() => !sut.Threw,
-                from stopMatch in Checkr.Expect("Matches", () => Equals(model, sut.Value))
-                from traceType in Checkr.Trace("Types", () => $"Model: {model.GetType().Name}, Sut: {sut.Value?.GetType().Name}")
-                from trace in Checkr.Trace("Results", () => GetTrace(model, sut.Value!))
-                select Case.Closed)
-            select Case.Closed;
-        // checkr.Run(100.Runs(), a => a with { FileAs = "ReduceTowardsInt" });
-        checkr.Configure(a => a with { FileAs = "ReduceTowardsInt" }).Conduct(
-            1000.Investigations(),
-            10.Runs(),
-            1.ExecutionsPerRun());
-    }
-
-    private static string GetTrace(Reduction model, Reduction sut) =>
-        $"{GetReductionResult(model)} /= {GetReductionResult(sut)}";
-
-    private static object GetReductionResult(Reduction reduction) =>
-        reduction switch
-        {
-            Reduction.Stop stop => stop.Result,
-            Reduction.Unbounded unbounded => unbounded.Result,
-            _ => throw new InvalidOperationException()
-        };
-
-    private Reduction RunSut(int start, int target, int stop) =>
-        ReductionRunner.ForReducer(
-            new ReduceTowards<int>(target).Step, "", "",
-                start, a => (int)a != stop, whistleblower);
-
-    private Reduction RunModel(int start, int target, int stop) =>
-        ReductionRunner.ForReducer(
-            new TypeReducerOption<int>(Reduce.Towards(target)).ReducerFactory(), "", "",
-                start, a => (int)a != stop, whistleblower);
 }

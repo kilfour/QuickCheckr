@@ -32,14 +32,7 @@ public class ObjectClassifier : Classifier
     private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
     {
         var actualType = info.ActualType;
-        var properties = actualType
-            .GetProperties(MyBinding.Flags)
-            .Where(p =>
-                p.CanRead &&
-                p.GetIndexParameters().Length == 0 &&
-                p.SetMethod is not null &&
-                p.SetMethod.IsPublic)
-            .ToList();
+        var properties = GetDefaultProperties(actualType);
         if (properties.Count == 0)
         {
             context.Warn(info.Path, () => new NoPropertiesWarning(info.Type, info.Path));
@@ -48,12 +41,36 @@ public class ObjectClassifier : Classifier
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)
         {
-            values[property.Name] = HandleProperty(context, info, property);
+            values[property.Name] = ClassifyProperty(context, info, property);
         }
 
+        return ClassifyMembers(actualType, context, values);
+    }
+
+    internal static IReadOnlyList<PropertyInfo> GetReadableProperties(Type actualType) =>
+        actualType
+            .GetProperties(MyBinding.Flags)
+            .Where(p =>
+                p.CanRead &&
+                p.GetIndexParameters().Length == 0)
+            .ToList();
+
+    internal static IReadOnlyList<PropertyInfo> GetDefaultProperties(Type actualType) =>
+        GetReadableProperties(actualType)
+            .Where(CanTraverse)
+            .ToList();
+
+    internal static bool CanTraverse(PropertyInfo propertyInfo) =>
+        propertyInfo.SetMethod is not null &&
+        propertyInfo.SetMethod.IsPublic;
+
+    internal static InputClassification ClassifyMembers(
+        Type actualType,
+        ShrinkingContext context,
+        Dictionary<string, InputClassification> values)
+    {
         if (values.Any(a => a.Value is InputRelevant))
         {
-
             if (context.State.ClassificationFormatter.ObjectClassificationFormats.TryGetValue(actualType, out var format))
                 return new ObjectRelevant(values, CustomizedPrinting.GetReport(format, values));
             return new ObjectRelevant(values, GetReport(values));
@@ -69,14 +86,38 @@ public class ObjectClassifier : Classifier
             members.Where(a => a.Value is InputRelevant)
                 .Select(kvp => $"{kvp.Key}: {(kvp.Value as InputRelevant)!.Report}"))} }}";
 
-    private static InputClassification HandleProperty(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
+    internal static InputClassification ClassifyProperty(
+        ShrinkingContext context,
+        ShrinkingInfo info,
+        PropertyInfo propertyInfo)
     {
-        var propertyValue = propertyInfo.GetValue(info.Value);
+        var parent = context.State.Memory.GetCurrentInputValue(
+            info.ExecutionId,
+            info.Key);
+        var propertyValue = propertyInfo.GetValue(parent);
         var swapper = new ObjectPropertyLens(propertyInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
-            var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
+            var childInfo = info with
+            {
+                Parent = info with { Value = parent },
+                Value = propertyValue,
+                Path = $"{info.Path}.{propertyInfo.Name}",
+                Type = propertyInfo.PropertyType
+            };
             return new ClassifierSelector().Classify(childInfo, context);
         }
+    }
+
+    internal static InputClassification RetainProperty(
+        ShrinkingContext context,
+        ShrinkingInfo info,
+        PropertyInfo propertyInfo)
+    {
+        var parent = context.State.Memory.GetCurrentInputValue(
+            info.ExecutionId,
+            info.Key);
+        return InputRelevant.Create(
+            context.PrintInput(propertyInfo.GetValue(parent)));
     }
 }

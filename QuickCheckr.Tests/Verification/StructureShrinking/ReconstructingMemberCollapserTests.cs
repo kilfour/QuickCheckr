@@ -54,6 +54,62 @@ public class ReconstructingMemberCollapserTests
         Assert.Equal([1, 42, 2], original.Inner.Values);
     }
 
+    [Fact]
+    public void Uses_default_traversal_for_unconfigured_writable_members()
+    {
+        var checkr =
+            from box in Checkr.Input(
+                "Mixed Box",
+                Fuzzr.Constant(new MixedBox([1, 42, 2]) { Code = 42 }),
+                Shrink.OnType<MixedBox>(
+                    collapse => collapse.Using(
+                        collapse.Member(
+                            box => box.Values,
+                            (box, values) => new MixedBox(values) { Code = box.Code }))))
+            from expect in Checkr.Expect(
+                "Expectation",
+                () => !(box.Code == 42 && box.Values.Contains(42)))
+            select Case.Closed;
+
+        var article = Journalist.Publish(
+            checkr,
+            configured => configured.Run(1.ExecutionsPerRun()));
+
+        var input = article.Execution(1).Input(1).Read();
+        Assert.Equal("{ Code: 42, Values: [ 42 ] }", input.Value);
+        var collapsed = Assert.IsType<MixedBox>(input.InputValue);
+        Assert.Equal(42, collapsed.Code);
+        Assert.Equal([42], collapsed.Values);
+    }
+
+    [Fact]
+    public void Retains_unconfigured_read_only_members_as_opaque_values()
+    {
+        var note = new Note("retained");
+        var checkr =
+            from request in Checkr.Input(
+                "Request",
+                Fuzzr.Constant(new Request(42, note)),
+                Shrink.OnType<Request>(
+                    collapse => collapse.Using(
+                        collapse.Member(
+                            request => request.Code,
+                            (request, code) => new Request(code, request.Note)))))
+            from expect in Checkr.Expect(
+                "Expectation",
+                () => request.Code != 42)
+            select Case.Closed;
+
+        var article = Journalist.Publish(
+            checkr,
+            configured => configured.Run(1.ExecutionsPerRun()));
+
+        var input = article.Execution(1).Input(1).Read();
+        Assert.Equal("{ Code: 42, Note: { Text: \"retained\" } }", input.Value);
+        var retained = Assert.IsType<Request>(input.InputValue);
+        Assert.Same(note, retained.Note);
+    }
+
     private static Article Run(Box original, Func<Box, bool> expectation)
     {
         var checkr =
@@ -84,5 +140,22 @@ public class ReconstructingMemberCollapserTests
     private sealed class OuterBox(Box inner)
     {
         public Box Inner { get; } = inner;
+    }
+
+    private sealed class MixedBox(IEnumerable<int> values)
+    {
+        public List<int> Values { get; } = [.. values];
+        public int Code { get; set; }
+    }
+
+    private sealed class Request(int code, Note note)
+    {
+        public int Code { get; } = code;
+        public Note Note { get; } = note;
+    }
+
+    private sealed class Note(string text)
+    {
+        public string Text { get; } = text;
     }
 }

@@ -56,7 +56,10 @@ public class EnumerableClassifier : Classifier
                     using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                     {
                         var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
-                        values.Add(selector.Classify(childInfo, context));
+                        var classification = selector.Classify(childInfo, context);
+                        values.Add(classification);
+                        if (classification is InputRelevant { Redux.HasValue: true } relevant)
+                            theList[ix] = relevant.Redux.Value!.Value;
                     }
                 }
             }

@@ -6,7 +6,7 @@ namespace QuickCheckr.Tests.Verification.StructureShrinking;
 
 public class NestedReducerReduxValueTests
 {
-    [Fact(Skip = "wip")]
+    [Fact]
     public void Nested_reducer_redux_value_matches_its_report()
     {
         var checkr =
