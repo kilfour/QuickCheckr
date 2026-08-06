@@ -27,6 +27,8 @@ public class ExecutionMemory
 
     public TypedValue GetInput(string key)
        => inputs.Values[key];
+    public object? GetCurrentInputValue(string key)
+        => inputs.GetCurrentValue(key);
     public IReadOnlyDictionary<string, TypedValue> GetInputValues()
         => inputs.Values.Select(a => (a.Key, a.Value)).ToDictionary(a => a.Key, a => a.Value);
     public IReadOnlyDictionary<string, TypedValue> GetInputs() => inputs.Values;

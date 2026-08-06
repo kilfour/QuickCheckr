@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C_MultipleMembers.cs:22:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 4 shrinks)
+ Seed:                    1133012726
+ ------------------------------------------------------------
+  Executed:
+   - Manifest = { Codes: [ 42 ], Tags: [ "required" ] }
+ ======================================================================
+  !! Expectation Failed: Required code and tag cannot occur together
+ ======================================================================

@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
@@ -14,12 +15,14 @@ public static partial class Shrink
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
         => new(GetCondition(condition),
             classifiersFactory(new ClassificationBuilder<T>()),
+            [],
             [.. reducersFactory(new ReducerBuilder<T>()).Select(a => new TypeReducerOption<T>(a))]);
 
     public static Shrinker When<T>(
         Action<IShrinkerConditionBuilder<T>> condition,
         Func<ReducerBuilder<T>, Func<Reducer<T>>[]> reducersFactory)
         => new(GetCondition(condition),
+            [],
             [],
             [.. reducersFactory(new ReducerBuilder<T>()).Select(a => new TypeReducerOption<T>(a))]);
 
@@ -28,6 +31,15 @@ public static partial class Shrink
         Func<ClassificationBuilder<T>, ClassificationOption<T>[]> classifiersFactory)
         => new(GetCondition(condition),
             classifiersFactory(new ClassificationBuilder<T>()),
+            [],
+            []);
+
+    public static Shrinker When<T>(
+        Action<IShrinkerConditionBuilder<T>> condition,
+        Func<CollapseBuilder<T>, ICollapseOption[]> collapsersFactory)
+        => new(GetCondition(condition),
+            [],
+            collapsersFactory(new CollapseBuilder<T>()),
             []);
 
     private static Func<ShrinkingInfo, bool> GetCondition<T>(

@@ -45,6 +45,14 @@ public class OverlayMemoryBank
         return new DisposableAction(() => swappers.Pop());
     }
 
+    public object? GetCurrentValue(string key)
+    {
+        object? current = Get<object>(key);
+        foreach (var lens in swappers.Reverse())
+            current = lens.Get(current!);
+        return current;
+    }
+
     public IDisposable ScopedSwap(string key, object value)
         => ScopedSwap(swappers, key, value);
 

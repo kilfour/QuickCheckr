@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                A_ReconstructingMember.cs:22:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1421778162
+ ------------------------------------------------------------
+  Executed:
+   - Parcel = { Values: [ 42 ] }
+ ==============================================
+  !! Expectation Failed: Does not contain 42
+ ==============================================

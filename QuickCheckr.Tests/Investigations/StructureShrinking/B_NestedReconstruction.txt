@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_NestedReconstruction.cs:22:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1725437542
+ ------------------------------------------------------------
+  Executed:
+   - Envelope = { Payload: { Values: [ 42 ] } }
+ ======================================================
+  !! Expectation Failed: Payload does not contain 42
+ ======================================================

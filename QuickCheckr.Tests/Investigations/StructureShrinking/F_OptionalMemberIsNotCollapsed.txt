@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                F_OptionalMemberIsNotCollapsed.cs:23:1
+ Original failing run:    1 execution
+ Seed:                    685961244
+ ------------------------------------------------------------
+  Executed:
+   - Request = { Code: 42, Note: { Text: "irrelevant" } }
+ =========================================
+  !! Expectation Failed: Code is not 42
+ =========================================

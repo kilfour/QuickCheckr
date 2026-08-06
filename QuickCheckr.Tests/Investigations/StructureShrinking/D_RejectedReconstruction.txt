@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                D_RejectedReconstruction.cs:24:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    397532280
+ ------------------------------------------------------------
+  Executed:
+   - Schedule = { Slots: [ 42 ] }
+ =======================================================
+  !! Expectation Failed: Schedule does not contain 42
+ =======================================================

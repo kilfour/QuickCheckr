@@ -134,6 +134,8 @@ public class Memory
     }
     public FuzzrOf<object>? GetFuzzr(int executionId, string key)
         => ShortTermMemory.GetFuzzr(executionId, key);
+    public object? GetCurrentInputValue(int executionId, string key)
+        => ShortTermMemory.GetCurrentInputValue(executionId, key);
     // Input Showrs
     public void StoreInputShowr(Func<ManOfWealthAndTaste> showr)
     {
