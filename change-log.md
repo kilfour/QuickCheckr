@@ -1,3 +1,20 @@
+## 0.2.3: Walk This Way
+
+Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.
+
+* Added custom reconstruction traversal with `Shrink.OnType<T>(traversal => traversal.Using(...))` and `Traversal.Member(...)`, allowing immutable and getter-only models to reconstruct their parent while nested members shrink.
+  * Configured members overlay normal object traversal; unspecified writable members keep the default traversal and unspecified read-only members are retained as opaque values with a verbose warning.
+  * Nested reducer values are propagated through reconstructed collections so the reported Redux and materialized Redux value remain consistent.
+* Added `Checkr.ExpectEquals<T>(...)`, with expected and actual values rendered by the configured trace formatter when equality fails.
+* Added a formatter-aware `Checkr.Expect(...)` overload for building custom failure messages with the configured trace formatter.
+* Added `Reduce.Towards(decimal target, int precision = 28)` with configurable decimal-place precision and overflow-safe reduction across the full `decimal` range.
+* Added `Reduce.Towards(double target, int precision = 15)` with configurable decimal-place precision and efficient IEEE-754 range reduction.
+* Refactored `Stringr` internals while preserving the string-reduction DSL.
+  * Added a categorized verification suite and retired the redundant investigation tests.
+  * Made selection success explicit in `SelectrResult` and represented empty matches as zero-length selections.
+  * Replaced mutable stop signaling and fragmented snapshots with full-state transactional rollback and an explicit candidate-search runner.
+  * Fixed nested `Or` rollback, balanced-range nesting, failed projection short-circuiting, zero-width/no-op progress, rejected-candidate rollback, and leaked deferred-replacement offsets.
+
 ## 0.2.2: Alarms and No Surprises
 
 Smaller composability and diagnostics improvements, with safer task execution and more flexible reducers.

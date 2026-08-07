@@ -12,15 +12,14 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
     protected override bool Report => false;
 
 
-    [Fact(Skip = "To Review")]
+    [Fact]
     [DocModelHeader]
     [DocExample(typeof(Box))]
     [DocCheckrHeader]
     [DocCheckr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        TheCheckr().Run(100.Runs());
+    public override void Example() => Document(a => a.Run(458149048));
 
     [CodeExample]
     public sealed class Box { public int Value { get; set; } }
@@ -35,6 +34,15 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
 
     protected override void Verify(Article article)
     {
+        Assert.Equal("Value must be >= 0", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(1, article.Total().Executions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
+        Assert.Equal("box", article.Execution(1).Input(1).Read().Label);
+        Assert.Equal("{ Value: -9 }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ Value: -1 }", article.Execution(1).Input(1).Read().Redux.Value);
 
     }
 }

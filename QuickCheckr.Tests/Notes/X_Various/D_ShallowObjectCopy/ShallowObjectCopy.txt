@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShallowObjectCopy.cs:54:1
+ Location:                ShallowObjectCopy.cs:22:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    458149048
  ------------------------------------------------------------
   Executed:
-   - Input: box   = { Value: -9 }
-            Redux   { Value: -1 }
+   - box   = { Value: -9 }
+     Redux   { Value: -1 }
  =============================================
   !! Expectation Failed: Value must be >= 0
  =============================================
