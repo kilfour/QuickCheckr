@@ -4,14 +4,29 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <Version>0.2.3</Version>
+    <Authors>Kilfour</Authors>
+
+    <IsPackable>true</IsPackable>
+
+    <PackageId>QuickCheckr.Authoring</PackageId>
+    <Title>QuickCheckr Authoring</Title>
+    <Description>Companion package for authoring QuickCheckr-based tests in dependent libraries. Intended primarily for internal test projects.</Description>
+    <PackageTags>QuickCheckr;testing;test-infrastructure;authoring;internal</PackageTags>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/kilfour/QuickCheckr</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <PackageProjectUrl>https://github.com/kilfour/QuickCheckr</PackageProjectUrl>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="QuickCheckr" Version="0.2.3" />
     <PackageReference Include="QuickPulse.Explains" Version="0.3.17" />  
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\QuickCheckr\QuickCheckr.csproj" />
   </ItemGroup>
   
 </Project>

@@ -29,6 +29,26 @@ public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest
 
     [StackTraceHidden]
     protected void Document(
+        Action<Journalist> runCheckr,
+        [CallerFilePath] string callerPath = "")
+        => Document(runCheckr, _ => { }, callerPath);
+
+    [StackTraceHidden]
+    protected void Document(
+        Action<Journalist> runCheckr,
+        Action<Article> verifier,
+        [CallerFilePath] string callerPath = "")
+    {
+        var journalist = new Journalist();
+        try { runCheckr(journalist); }
+        catch (FalsifiableException) { }
+        var article = journalist.GetArticle();
+        ProcessArticle(article, callerPath);
+        verifier(article);
+    }
+
+    [StackTraceHidden]
+    protected void Document(
         CheckrOf<Case> checkr,
         Action<ConfiguredCheckr> runCheckr,
         Action<Article> verifier,
