@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 values continue to use their normal classification and reduction.")]
 public class A_ReconstructingMember : CheckrTest<A_ReconstructingMember>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 latest reconstructed parent, so changes made to earlier members are retained.")]
 public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

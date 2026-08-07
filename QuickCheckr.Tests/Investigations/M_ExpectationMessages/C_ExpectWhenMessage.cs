@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Investigations.M_ExpectationMessages;
 public class C_ExpectWhenMessage : CheckrTest<C_ExpectWhenMessage>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

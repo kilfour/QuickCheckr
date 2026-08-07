@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 would create an invalid object, that structural candidate is rejected and shrinking continues.")]
 public class D_RejectedReconstruction : CheckrTest<D_RejectedReconstruction>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

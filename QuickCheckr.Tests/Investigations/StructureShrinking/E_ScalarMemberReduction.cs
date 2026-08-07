@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 integer reducer minimizes the member, and the replacement function reconstructs its parent.")]
 public class E_ScalarMemberReduction : CheckrTest<E_ScalarMemberReduction>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

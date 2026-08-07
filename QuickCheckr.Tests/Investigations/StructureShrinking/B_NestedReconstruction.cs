@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Investigations.StructureShrinking;
 while the inner traversal exposes and reconstructs its getter-only collection.")]
 public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]

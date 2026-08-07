@@ -8,8 +8,8 @@ namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
 [DocFile]
 public class A_Customized : CheckrTest<A_Customized>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact(Skip = "non deterministic by nature")]

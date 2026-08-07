@@ -14,7 +14,7 @@ and produce a verbose warning because QuickCheckr cannot prove them irrelevant."
 public class F_UnconfiguredReadOnlyMemberIsRetained
     : CheckrTest<F_UnconfiguredReadOnlyMemberIsRetained>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
 
     [Fact]
     [DocCheckrHeader]
