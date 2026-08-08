@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                D2_CollapsingOnlyWherePossible.cs:19:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    346547347
+ ------------------------------------------------------------
+  Executed:
+   - Turtle       = { Down: { Down: { Down: null } } }
+   - Other Turtle = { Down: null }
+   - Turtle       = { Down: { Down: { Down: null } } }
+   - Other Turtle = { Down: { Down: null } }
+ ============================================================
+  !! Expectation Failed: Turtle Ends on 'TurtlesAllTheWay'
+ ============================================================

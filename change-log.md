@@ -1,4 +1,9 @@
-## 0.2.4: Collapsing New Buildings
+## 0.2.4: Collapsing New Buildings (*not yet released*)
+Structural shrinking can now remove failure-irrelevant recursive wrappers before ordinary member classification.
+* Added `Shrink.Collapse<T>(...)` for supplying one or more descendant selectors.
+  * A selected descendant replaces its parent only when replay confirms that the failure survives.
+  * Successful collapses are repeated, allowing an entire chain to contract to its minimal failing descendant.
+  * Rejected candidates leave the current structure intact, and reference cycles are detected by identity.
 
 ## 0.2.3: Walk This Way
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.

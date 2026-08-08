@@ -33,7 +33,6 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
-        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Turtle", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Down: { Down: { Down: null } } }", article.Execution(1).Input(1).Read().Value);

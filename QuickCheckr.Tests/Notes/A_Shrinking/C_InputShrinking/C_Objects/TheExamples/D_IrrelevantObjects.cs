@@ -24,22 +24,9 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
         from person in Checkr.Input("Person", Fuzzr.One<Person>())
         from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
         from tracePerson in Checkr.Trace("Person", () => person)
-        from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
+        from traceOtherPerson in Checkr.Trace("Other Person", () => otherPerson)
         from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
         select Case.Closed;
-
-
-    // [Fact]
-    // [DocExample(typeof(D_IrrelevantObjects), nameof(GetCheckr))]
-    // [DocCodeFile("D_IrrelevantObjects.txt", "text")]
-    // public void RunTest()
-    // {
-    //     var article = Journalist.Investigate(GetCheckr(), a => a
-    //         GetCheckr().Run(1000847613));
-    //     WriteAsserts(article);
-    //     WriteReport<D_IrrelevantObjects>(article);
-    //     Verify(article);
-    // }
 
     protected override void Verify(Article article)
     {
@@ -47,7 +34,6 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
-        // Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Person", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Age: 18 }", article.Execution(1).Input(1).Read().Value);
@@ -56,19 +42,6 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
         Assert.Equal("Other Person", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("{ Name: \"hdpjy\", Age: 85 }", article.Execution(1).Trace(2).Read().Value);
     }
-
-    // [CodeSnippet]
-    // [CodeRemove("return")]
-    // private static CheckrOf<Case> GetCheckr()
-    // {
-    //     return
-    //         from person in Checkr.Input("Person", Fuzzr.One<Person>())
-    //         from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
-    //         from tracePerson in Checkr.Trace("Person", () => person)
-    //         from traceOtherTurtle in Checkr.Trace("Other Person", () => otherPerson)
-    //         from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
-    //         select Case.Closed;
-    // }
 
     public class Person
     {
