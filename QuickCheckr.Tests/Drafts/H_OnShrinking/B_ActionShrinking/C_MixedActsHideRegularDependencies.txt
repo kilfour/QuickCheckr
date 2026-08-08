@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C_MixedActsHideRegularDependencies.cs:30:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1489110479
+ ------------------------------------------------------------
+  Executed: Explode
+ ============================================================
+  !! InvalidOperationException: BOOM
+ ============================================================
