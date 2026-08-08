@@ -1,7 +1,7 @@
+## 0.2.4: Collapsing New Buildings
+
 ## 0.2.3: Walk This Way
-
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.
-
 * Added custom reconstruction traversal with `Shrink.OnType<T>(traversal => traversal.Using(...))` and `Traversal.Member(...)`, allowing immutable and getter-only models to reconstruct their parent while nested members shrink.
   * Configured members overlay normal object traversal; unspecified writable members keep the default traversal and unspecified read-only members are retained as opaque values with a verbose warning.
   * Nested reducer values are propagated through reconstructed collections so the reported Redux and materialized Redux value remain consistent.
@@ -16,7 +16,6 @@ Immutable-model traversal, richer expectations, broader numeric reduction, and s
   * Fixed nested `Or` rollback, balanced-range nesting, failed projection short-circuiting, zero-width/no-op progress, rejected-candidate rollback, and leaked deferred-replacement offsets.
 
 ## 0.2.2: Alarms and No Surprises
-
 Smaller composability and diagnostics improvements, with safer task execution and more flexible reducers.
 
 ### Added
@@ -27,14 +26,13 @@ Smaller composability and diagnostics improvements, with safer task execution an
 * Added `Reduce.MinimizeStringTo(...)`.
 * Added `Reduce.Map(...)`.
 * Added message overloads to `Trackr.Verify(...)`.
-
 ### Changed
 * Task-based `Act` and `ShrinkableAct` overloads are now lazy. Tasks are created only when the action is executed.
 * `Reduce.MinimizeString(...)` now treats `null` as a minimal value and tries replacing text with `"a"`.
-
 ### Improved diagnostics
 * Improved errors when `OneOf` or `OneOfWhen` cannot select an option.
 * Improved errors when pool-based `OneOf` operations cannot select a matching element.
+
 ## 0.2.1: Internal Affairs
 * Added Diagnostics support.
   * When enabled, QuickCheckr records the structure of its decision-making.
@@ -67,9 +65,7 @@ Smaller composability and diagnostics improvements, with safer task execution an
   now return the checkr instance, allowing these methods to be chained.
 
 ## 0.2.0: Watching the Detectives
-
 Investigation workflows, cold-case review, vault configuration safety, and consistent reporting behavior.
-
 ### Changed
 * Consolidated `GatherEvidence(...)` and `Conduct(n.Investigations(), ...)`.
   `GatherEvidence(...)` has been removed and can now be expressed as a customizable case of `Conduct(...)`.
@@ -78,12 +74,10 @@ Investigation workflows, cold-case review, vault configuration safety, and consi
 * Renamed occurrences of `DeliberationPolicy` to `Deliberation`.
 * `Conduct(n.Investigations(), ...)` now takes `Deliberation` parameters into account.
 * Removed warnings for unchecked conditional expectations because composed `Checkr`s could not be detected reliably enough.
-
 ### Added
 * `ReviewColdCases(...)` now persists a summary report.
 * `CloseColdCases(...)` now persists a summary report.
 * Added defensive handling during scoped swaps to prevent failing property setters from aborting shrinking.
-
 ### Fixed / Hardened
 * `Conduct(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
 * `ReviewColdCases(...)` now throws `VaultNotConfiguredException` when `FileAs` is not supplied.
