@@ -17,6 +17,8 @@ public interface IReductionWhistleblower : IWhistleblower, IReductionSettings;
 public record ShrinkingContext(CheckrState State, CheckrOf<Case> Check, bool UseDefaultReducers)
     : IReductionWhistleblower, IWhistleblower, IReductionSettings
 {
+    public int CollapseCount { get; set; }
+
     public Verifier Verifier => new(State, Check);
 
     public int MaxStepsPerReducer => State.MaxStepsPerReducer;

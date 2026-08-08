@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C_UsingCollapser.cs:20:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1374960450
+ ------------------------------------------------------------
+  Executed:
+   - lister = { Values: [ 11, 72, 27 ], Child: null }
+ ==========================================================
+  !! Expectation Failed: no list sum > 100 && count >= 2
+ ==========================================================

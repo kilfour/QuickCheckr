@@ -1,6 +1,7 @@
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
@@ -10,6 +11,7 @@ public class ClassifierSelector
 {
     public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {
+        info = CollapserSelector.Collapse(info, context);
         InputClassification? classification = null;
         var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
         if (shrinkers is not null)

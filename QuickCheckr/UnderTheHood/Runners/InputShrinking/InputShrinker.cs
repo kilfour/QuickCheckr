@@ -25,8 +25,9 @@ public class InputShrinker(
             {
                 using var ___ = State.Pathologist.Examine(AutopsyPath.Input(key));
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
-                var classification = new ClassifierSelector().Classify(info, new ShrinkingContext(State, Check, useDefaultReducers));
-                shrinkCount += IrrelevantCount.From(classification);
+                var context = new ShrinkingContext(State, Check, useDefaultReducers);
+                var classification = new ClassifierSelector().Classify(info, context);
+                shrinkCount += context.CollapseCount + IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
                 if (classification is InputRelevant)
                 {
