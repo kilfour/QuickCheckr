@@ -11,6 +11,8 @@
 * Check exception handling during shrinking for `PoolElement.Replace` and related operations.
 * Decide how reducer exceptions should be handled.
 * Decide whether and how to consolidate `ShrinkableAct`.
+* CompositeCustodian/Clerk ?
+* Revisit the Generate Unit Test idea ?
 
 ### Done/Ready for Changelog after review
 
