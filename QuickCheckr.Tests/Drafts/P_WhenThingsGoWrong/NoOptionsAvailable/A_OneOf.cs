@@ -1,5 +1,4 @@
 using QuickCheckr.Authoring;
-using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 

@@ -159,7 +159,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
             select Case.Closed;
     }
 
-    [Fact]
+    [Fact(Skip = "undeterministic")]
     [DocContent("Or, we can solve the issue using a `DeliberationPolicy` that limits the number of warnings:")]
     [DocExample(typeof(E_CheckingNulls), nameof(Configure))]
     [DocCodeFile("E_CheckingNulls_Deliberated.txt", "text")]

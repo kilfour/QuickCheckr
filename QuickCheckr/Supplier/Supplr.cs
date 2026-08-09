@@ -1,25 +1,22 @@
 using QuickFuzzr;
+using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.Supplier;
 
-public static class Supplr
+public static partial class Supplr
 {
-    /// <summary>
-    /// Describes integers in the range [minimum, maximum), following QuickFuzzr's
-    /// minimum-inclusive and maximum-exclusive range semantics.
-    /// </summary>
-    public static SupplrOf<int> Int(int minimum, int maximum)
+    public static SupplrOf<int> Int(int min, int max)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(minimum, maximum);
-
-        return new SupplrOf<int>(
-            Fuzzr.Int(minimum, maximum),
-            value => SimplifyTowardsMinimum(value, minimum));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(min, max);
+        return s => new SupplrResult<int>(s, new IntRange(min, max));
     }
 
-    private static IEnumerable<int> SimplifyTowardsMinimum(int value, int minimum)
-    {
-        while (value > minimum)
-            yield return --value;
-    }
+    // public static SupplrOf<T> One<T>()
+    // {
+    //     return state => SupplrResult.Some(
+    //         state,
+    //         new DerivedDefinition<T>(
+    //             () => s => (IResult<T>)Result.Unit(s),
+    //             state.GetShrinkers<T>));
+    // }
 }

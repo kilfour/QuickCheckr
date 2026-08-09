@@ -15,7 +15,7 @@ remaining labels and its body always executes. Consequently its label can be rem
 the action itself causes the failure.")]
 public class B_RegularActsAreNotSkipped : CheckrTest<B_RegularActsAreNotSkipped>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

@@ -1,4 +1,5 @@
 using QuickCheckr.Supplier;
+using QuickFuzzr;
 
 namespace QuickCheckr;
 
@@ -12,12 +13,28 @@ public static partial class Checkr
     {
         ArgumentNullException.ThrowIfNull(supplr);
 
-        var shrinker = Shrink.OnType<T>(
-            classification => classification.Classify(
-                Try.Function(supplr.Simplifications)),
-            reduction => reduction.Simplify(
-                Reduce.Function(supplr.Simplifications)));
+        var definition = supplr.Resolve();
+        return state =>
+        {
+            var result = HandleInput(state, key, definition.GetFuzzr());
+            state.Memory.StoreShrinkers(key, definition.GetShrinkers());
+            return result;
+        };
+    }
 
-        return Input(key, supplr.Fuzzr, shrinker);
+    public static CheckrOf<T> Input<T>(string key, SupplrOf<Intent> supplr)
+    {
+        ArgumentNullException.ThrowIfNull(supplr);
+
+        var definition = supplr.Resolve();
+        return state =>
+        {
+            var result = HandleInput(state, key,
+                from _ in definition.GetFuzzr()
+                from one in Fuzzr.One<T>()
+                select one);
+            state.Memory.StoreShrinkers(key, definition.GetShrinkers());
+            return result;
+        };
     }
 }

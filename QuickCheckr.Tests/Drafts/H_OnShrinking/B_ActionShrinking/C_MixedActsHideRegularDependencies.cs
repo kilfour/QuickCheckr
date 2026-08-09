@@ -14,7 +14,7 @@ has been removed. `Explode` is shrinkable: removing its label really skips its b
 run pass, so it must be retained.")]
 public class C_MixedActsHideRegularDependencies : CheckrTest<C_MixedActsHideRegularDependencies>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                D_SupplrCompositionClassification.cs:22:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1656426057
+ ------------------------------------------------------------
+  Executed:
+   - Composed = { A: 19 }
+ ================================
+  !! Expectation Failed: Fails
+ ================================

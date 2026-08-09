@@ -5,7 +5,6 @@ using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
-using QuickFuzzr.UnderTheHood.WhenThingsGoWrong;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 

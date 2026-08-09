@@ -2,7 +2,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickFuzzr;
-using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Verification.StructureShrinking;
 

@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_IntegerClassification.cs:22:1
+ Original failing run:    1 execution
+ Seed:                    1656426057
+ ------------------------------------------------------------
+  Executed:
+   - Age = 79
+ ================================
+  !! Expectation Failed: Fails
+ ================================

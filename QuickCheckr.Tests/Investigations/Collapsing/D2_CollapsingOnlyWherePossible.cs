@@ -7,7 +7,7 @@ namespace QuickCheckr.Tests.Investigations.Collapsing;
 
 public class D2_CollapsingOnlyWherePossible : CheckrTest<D2_CollapsingOnlyWherePossible>
 {
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

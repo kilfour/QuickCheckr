@@ -2,7 +2,6 @@ using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 using QuickCheckr.UnderTheHood.Warnings;
-using QuickFuzzr;
 
 namespace QuickCheckr.Tests.Verification.ReduceTowardsT;
 
