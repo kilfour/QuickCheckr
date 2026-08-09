@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Investigations.Collapsing;
 public class B_UsingDeliberation : CheckrTest<B_UsingDeliberation>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
