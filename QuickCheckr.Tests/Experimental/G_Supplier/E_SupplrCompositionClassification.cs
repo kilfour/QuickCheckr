@@ -11,7 +11,7 @@ namespace QuickCheckr.Tests.Experimental.G_Supplier;
 [DocFile]
 [DocContent(
     "TODO.")]
-public class D_SupplrCompositionClassification : CheckrTest<D_SupplrCompositionClassification>
+public class E_SupplrCompositionClassification : CheckrTest<E_SupplrCompositionClassification>
 {
     protected override bool Report => false;
     protected override bool Asserts => false;
