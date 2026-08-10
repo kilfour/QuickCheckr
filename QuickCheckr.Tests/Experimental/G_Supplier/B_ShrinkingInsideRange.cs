@@ -20,7 +20,7 @@
 
 //     [CodeSnippet]
 //     protected override CheckrOf<Case> TheCheckr() =>
-//         from age in Checkr.Input("Age", Supplr.Int(18, 80))
+//         from age in CheckrX.Input("Age", Supplr.Int(18, 80))
 //         from expect in Checkr.Expect("Age is 18", () => age == 18)
 //         select Case.Closed;
 

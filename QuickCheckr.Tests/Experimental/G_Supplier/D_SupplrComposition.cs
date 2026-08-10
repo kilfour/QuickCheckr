@@ -22,7 +22,7 @@ public class D_SupplrComposition : CheckrTest<D_SupplrComposition>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from composed in Checkr.Input<Composed>("Composed",
+        from composed in CheckrX.Input<Composed>("Composed",
             from a in Supplr<Composed>.Property(a => a.A, Supplr.Int(10, 20))
             from b in Supplr<Composed>.Property(a => a.B, Supplr.Int(20, 30))
             select Intent.Fixed)

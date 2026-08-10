@@ -9,7 +9,14 @@ internal sealed class DerivedDefinition<T>(
 {
     public FuzzrOf<T> GetFuzzr() => fuzzrFactory();
 
-    public Shrinker[] GetShrinkers() => shrinkerFactory?.Invoke() ?? [];
+    public Shrinker[] GetShrinkers()
+    {
+        var shrinkers = shrinkerFactory?.Invoke() ?? [];
+        return shrinkers.Length != 0
+            ? shrinkers
+            : [Shrink.OnType<T>(classification =>
+                classification.Classify(Try.Fuzzr(GetFuzzr())))];
+    }
 
     public IEnumerable<T> GetAlternatives(T original) => [];
 }

@@ -19,11 +19,10 @@ public class F_ComplexSupplrComposition : CheckrTest<F_ComplexSupplrComposition>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from composed in Checkr.Input<Composed>("Composed",
-            from aProp in Supplr<Composed>.Property(a => a.A, Supplr.Int(10, 20))
-            from bProp in Supplr<Composed>.Property(a => a.B, Supplr.Int(20, 30))
-                // from bProp in Supplr<Composed>.Property(a => a.B, Supplr.Int(aProp or aProp.?(), 30))
-            select Intent.Fixed)
+        from composed in CheckrX.Input("Composed",
+            from a in Supplr.Int(10, 20)
+            from b in Supplr.Int(a, 30)
+            select new Composed { A = a, B = b })
         from expectA in Checkr.Expect("A is inside its supplied range",
             () => composed.A >= 10 && composed.A < 20)
         from expectB in Checkr.Expect("B is inside its supplied range",

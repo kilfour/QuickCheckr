@@ -24,8 +24,8 @@ public class E_SupplrCompositionClassification : CheckrTest<E_SupplrCompositionC
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from composed in Checkr.Input<Composed>("Composed", ComposedSupplr())
-        from irrelevant in Checkr.Input<Composed>("Irrelevant", ComposedSupplr())
+        from composed in CheckrX.Input<Composed>("Composed", ComposedSupplr())
+        from irrelevant in CheckrX.Input<Composed>("Irrelevant", ComposedSupplr())
         from expect in Checkr.Expect("Fails", () => composed.A == 10)
         select Case.Closed;
 
@@ -46,8 +46,8 @@ public class E_SupplrCompositionClassification : CheckrTest<E_SupplrCompositionC
         var composedCollector = new List<(int A, int B)>();
         var irrelevantCollector = new List<(int A, int B)>();
         var checkr =
-            from composed in Checkr.Input<Composed>("Composed", ComposedSupplr())
-            from irrelevant in Checkr.Input<Composed>("Irrelevant", ComposedSupplr())
+            from composed in CheckrX.Input<Composed>("Composed", ComposedSupplr())
+            from irrelevant in CheckrX.Input<Composed>("Irrelevant", ComposedSupplr())
             from perform in Checkr.Perform(() =>
             {
                 composedCollector.Add((composed.A, composed.B));

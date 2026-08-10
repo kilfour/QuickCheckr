@@ -7,7 +7,7 @@ namespace QuickCheckr.Tests.Experimental.G_Supplier;
 
 [DocFile]
 [DocContent(
-    "A Supplr describes a valid domain and can be passed directly to `Checkr.Input`.")]
+    "A Supplr describes a valid domain and can be passed directly to `CheckrX.Input`.")]
 public class A_IntegerRange : CheckrTest<A_IntegerRange>
 {
     protected override bool Report => false;
@@ -20,7 +20,7 @@ public class A_IntegerRange : CheckrTest<A_IntegerRange>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from age in Checkr.Input("Age", Supplr.Int(18, 80))
+        from age in CheckrX.Input("Age", Supplr.Int(18, 80))
         from expect in Checkr.Expect(
             "Age is inside its supplied range",
             () => age >= 18 && age < 80)

@@ -1,9 +1,11 @@
 using QuickCheckr.Supplier;
+using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;
 
 namespace QuickCheckr;
 
-public static partial class Checkr
+public static partial class CheckrX
 {
     /// <summary>
     /// Creates an input from a domain-aware supplier. Generation and shrinking are
@@ -37,4 +39,14 @@ public static partial class Checkr
             return result;
         };
     }
+
+    private static CheckrResult<T> HandleInput<T>(CheckrState state, string key, FuzzrOf<T> fuzzr)
+    {
+        try { return CheckrResult.Some(state, GetValue(key, () => fuzzr, state)!); }
+        catch (DuplicateKeyWriteException) { throw; }
+        catch (Exception exception) { throw new InputFuzzrThrewException(key, exception); }
+    }
+
+    private static T? GetValue<T>(string key, Func<FuzzrOf<T>> factory, CheckrState state)
+        => state.Memory.StoreInputFuzzr(key, factory, () => factory()(state.FuzzrState).Value);
 }

@@ -23,8 +23,8 @@ public class B_IntegerClassification : CheckrTest<B_IntegerClassification>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from age in Checkr.Input("Age", Supplr.Int(18, 80))
-        from irrelevant in Checkr.Input("Irrelevant", Supplr.Int(18, 80))
+        from age in CheckrX.Input("Age", Supplr.Int(18, 80))
+        from irrelevant in CheckrX.Input("Irrelevant", Supplr.Int(18, 80))
         from expect in Checkr.Expect("Fails", () => age == 20)
         select Case.Closed;
 
@@ -46,8 +46,8 @@ public class B_IntegerClassification : CheckrTest<B_IntegerClassification>
         var ageCollector = new List<int>();
         var irrelevantCollector = new List<int>();
         var checkr =
-            from age in Checkr.Input("Age", Supplr.Int(18, 80))
-            from irrelevant in Checkr.Input("Irrelevant", Supplr.Int(18, 80))
+            from age in CheckrX.Input("Age", Supplr.Int(18, 80))
+            from irrelevant in CheckrX.Input("Irrelevant", Supplr.Int(18, 80))
             from perform in Checkr.Perform(() => { ageCollector.Add(age); irrelevantCollector.Add(irrelevant); })
             from expect in Checkr.Expect("Fails", () => age == 0)
             select Case.Closed;

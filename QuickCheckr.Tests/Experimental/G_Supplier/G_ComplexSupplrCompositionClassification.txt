@@ -1,0 +1,10 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                G_ComplexSupplrCompositionClassification.cs:23:1
+ Original failing run:    1 execution
+ Seed:                    1656426057
+ ------------------------------------------------------------
+  Executed
+ ================================
+  !! Expectation Failed: Fails
+ ================================
