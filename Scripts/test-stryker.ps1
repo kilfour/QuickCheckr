@@ -1,0 +1,1 @@
+dotnet stryker --config-file stryker-config.json --skip-version-check

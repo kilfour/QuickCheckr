@@ -57,3 +57,8 @@ nuget.md
 
 DocsSinglePages/
 *.lscache
+
+# Test Artifacts
+TestCoverage/
+TestReport/
+StrykerOutput/

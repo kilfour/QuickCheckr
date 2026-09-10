@@ -8,6 +8,7 @@
 
 
 ### Todo
+* Investigate/Fix eating the exceptions in `Memory.ScopedSwap`.
 * Add better assertions for findings and inquiries in Editor.
 * Check exception handling during shrinking for `PoolElement.Replace` and related operations.
 * Decide how reducer exceptions should be handled.

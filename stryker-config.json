@@ -1,0 +1,17 @@
+{
+    "stryker-config": {
+        "project": "QuickCheckr/QuickCheckr.csproj",
+        "test-projects": [
+            "QuickCheckr.Tests/QuickCheckr.Tests.csproj"
+        ],
+        "reporters": [
+            "html",
+            "progress"
+        ],
+        "thresholds": {
+            "high": 100,
+            "low": 80,
+            "break": 0
+        }
+    }
+}
