@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:169:1
+ Location:                Drafts\Q_Tracing\FormerInTheGuide.cs:24:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    769641533
  ------------------------------------------------------------
   Executed:
-   - Input: Input            = 42
-   - Trace: Irrelevant Input = 47
+   - Input            = 42
+   - Irrelevant Input = 47
  ======================================
   !! Expectation Failed: Input /= 42
  ======================================

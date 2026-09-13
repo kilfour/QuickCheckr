@@ -23,7 +23,6 @@ For this one, we're going to look at a real bug found in the wild, which is demo
 > This is the kind of bug QuickCheckr is built to find.
 
 *So, here we go:*  
-We are going to  use a simplified version of the [`HorsesForCourses`](https://github.com/kilfour/HorsesForCourses/blob/main/README.md) domain.  
 
 The invariant we are checking is : 
 - *Any coach assigned a course must have the required skills to teach that course*.

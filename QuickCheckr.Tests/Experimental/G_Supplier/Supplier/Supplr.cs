@@ -1,6 +1,3 @@
-using QuickFuzzr;
-using QuickFuzzr.UnderTheHood;
-
 namespace QuickCheckr.Supplier;
 
 public static partial class Supplr

@@ -106,35 +106,6 @@ That's basically the same thing as before, because **QuickCheckr does not report
 > This behaviour is key. 
 > QuickCheckr actively removes noise from the failing case.  
 > => Less cognitive load. More signal.  
-## Not Without a Trace
-QuickCheckr's *shrinking* can sometimes seem magical. Not a problem in this simple test,
-but when you are writing a more complex test, it is always helpful to see what's really going on.
-
-QuickCheckr is built with transparency and discoverability as a first class concern:  
-```csharp
-var check =
-    from input in Checkr.Input("Input", Fuzzr.Int())
-    from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from expect in Checkr.Expect("Input /= 42", () => input != 42)
-    from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
-    select Case.Closed;
-```
-By adding a `Checkr.Trace` to the `LINQ` chain, we get the following report:  
-```text
-------------------------------------------------------------
- Test:                    NotWithoutATrace
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:169:1
- Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    769641533
- ------------------------------------------------------------
-  Executed:
-   - Input: Input            = 42
-   - Trace: Irrelevant Input = 47
- ======================================
-  !! Expectation Failed: Input /= 42
- ======================================
-```
 ## Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
 ```csharp

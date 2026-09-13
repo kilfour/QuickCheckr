@@ -1,5 +1,4 @@
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Protocol;
 using QuickCheckr.StringReduction;
 using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
 using QuickCheckr.Tests.Tools;
