@@ -8,7 +8,7 @@ using QuickPulse.Show.Bolts;
 namespace QuickCheckr.UnderTheHood.Memories;
 
 
-public class Memory
+internal sealed class Memory
 {
     public KeyGuardian KeyGuardian = new();
     public int StartNewExecution()

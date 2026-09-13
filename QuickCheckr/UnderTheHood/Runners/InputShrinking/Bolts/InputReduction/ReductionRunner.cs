@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-public static class ReductionRunner
+internal static class ReductionRunner
 {
     public static Reduction ForReducer(
         Func<ReductionResult, Reduction> reducer,

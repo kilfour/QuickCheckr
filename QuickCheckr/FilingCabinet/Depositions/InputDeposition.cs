@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record InputDeposition(string Label, object Value)
+public sealed record InputDeposition(string Label, object Value)
 {
     public object? InputValue { get; init; } = default!;
     public Type Type { get; init; } = default!;

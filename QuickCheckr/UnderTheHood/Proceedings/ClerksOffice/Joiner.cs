@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public record Joiner
+internal sealed record Joiner
 {
     private bool isFirst = true;
     public Joiner Start() => this with { isFirst = true };

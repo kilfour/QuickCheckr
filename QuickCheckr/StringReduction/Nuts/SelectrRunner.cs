@@ -4,7 +4,7 @@ namespace QuickCheckr.StringReduction.Nuts;
 /// Executes a completed Stringr script and searches the input for successive reduction candidates.
 /// Use <see cref="Next"/> until <see cref="EndOfText"/> indicates that no further candidates remain.
 /// </summary>
-public class SelectrRun(SelectrOf<Selection> selectr, string text)
+public sealed class SelectrRun(SelectrOf<Selection> selectr, string text)
 {
     private readonly SelectrState state = new(text);
     private int searchStart;

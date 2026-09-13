@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
+internal sealed class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
 {
     public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {

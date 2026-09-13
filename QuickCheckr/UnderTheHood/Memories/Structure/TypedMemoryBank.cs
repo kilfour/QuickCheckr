@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class TypedMemoryBank<T>
+internal sealed class TypedMemoryBank<T>
 {
     private readonly Dictionary<string, T> values = [];
     public IReadOnlyDictionary<string, T> Values => values;

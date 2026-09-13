@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
 
-public class EnumClassifier : Classifier
+internal sealed class EnumClassifier : Classifier
 {
     public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {

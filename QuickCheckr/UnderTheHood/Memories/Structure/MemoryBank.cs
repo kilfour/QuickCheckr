@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class MemoryBank
+internal sealed class MemoryBank
 {
     private readonly Dictionary<string, object?> values = [];
     public IReadOnlyDictionary<string, object?> Values => values;

@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class EmptyPoolException(string key, Type valueType)
+public sealed class EmptyPoolException(string key, Type valueType)
     : QuickCheckrException(BuildMessage(key, valueType))
 {
     private static string BuildMessage(string key, Type valueType) =>

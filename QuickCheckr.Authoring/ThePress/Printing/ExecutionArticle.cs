@@ -4,9 +4,16 @@ using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
 namespace QuickCheckr.Authoring.ThePress.Printing;
 
-public class ExecutionArticle(CollapsableExecutionDeposition collapsableExecutionDeposition)
-    : AbstractArticle<ExecutionDeposition>(collapsableExecutionDeposition.ExecutionDeposition)
+public sealed class ExecutionArticle : AbstractArticle<ExecutionDeposition>
 {
+    private readonly CollapsableExecutionDeposition collapsableExecutionDeposition;
+
+    internal ExecutionArticle(CollapsableExecutionDeposition collapsableExecutionDeposition)
+        : base(collapsableExecutionDeposition.ExecutionDeposition)
+    {
+        this.collapsableExecutionDeposition = collapsableExecutionDeposition;
+    }
+
     [StackTraceHidden]
     public ActionArticle Action(int number)
         => new(deposition.ActionDepositions[number - 1]);

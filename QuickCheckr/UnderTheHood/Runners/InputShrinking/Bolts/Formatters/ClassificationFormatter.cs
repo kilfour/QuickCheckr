@@ -3,11 +3,14 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Formatters;
 
-public class ClassificationFormatter
+/// <summary>
+/// Configures how values and members are rendered while reporting input classifications.
+/// </summary>
+public sealed class ClassificationFormatter
 {
     public ManOfWealthAndTaste InputPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
-    public Dictionary<Type, ObjectClassificationFormat> ObjectClassificationFormats { get; } = [];
+    internal Dictionary<Type, ObjectClassificationFormat> ObjectClassificationFormats { get; } = [];
 
     public ObjectClassificationFormatter<T> For<T>()
     {

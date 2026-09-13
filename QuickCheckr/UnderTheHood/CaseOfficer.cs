@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CaseOfficer
+internal static class CaseOfficer
 {
     public static Findings Investigate(
         CheckrOf<Case> checkr,

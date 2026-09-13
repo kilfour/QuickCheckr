@@ -1,12 +1,12 @@
 namespace QuickCheckr.UnderTheHood.Dispatching;
 
-public static class HandlerResult
+internal static class HandlerResult
 {
     public static HandlerResult<T> Unhandled<T>() => default;
     public static HandlerResult<T> Handled<T>(T output) => new(true, output);
 }
 
-public readonly record struct HandlerResult<T>
+internal readonly record struct HandlerResult<T>
 {
     private readonly T output;
 

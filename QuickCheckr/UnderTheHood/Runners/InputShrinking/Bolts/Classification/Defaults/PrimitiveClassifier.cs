@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class PrimitiveClassifier : Classifier
+internal sealed class PrimitiveClassifier : Classifier
 {
     public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {

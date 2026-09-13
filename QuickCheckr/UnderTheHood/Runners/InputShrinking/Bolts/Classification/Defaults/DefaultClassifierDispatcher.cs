@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class DefaultClassifierDispatcher()
+internal sealed class DefaultClassifierDispatcher()
         : FirstMatchDispatcher<ShrinkingInfo, ShrinkingContext, InputClassification>(
             [ new PrimitiveClassifier()
             , new EnumClassifier()

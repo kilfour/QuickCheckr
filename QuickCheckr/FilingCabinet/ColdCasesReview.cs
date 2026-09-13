@@ -2,11 +2,13 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.FilingCabinet;
 
-public class ColdCasesReview : IRecord
+public sealed class ColdCasesReview : IRecord
 {
+    internal ColdCasesReview() { }
+
     private readonly List<CaseFile> caseFiles = [];
     public IReadOnlyList<CaseFile> CaseFiles => caseFiles;
-    public ColdCasesReview Add(params CaseFile[] newCaseFiles)
+    internal ColdCasesReview Add(params CaseFile[] newCaseFiles)
     {
         foreach (var caseFile in newCaseFiles)
             caseFiles.Add(caseFile);

@@ -3,7 +3,7 @@ using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public record CompositeEmptyCollectionWarning(IEnumerable<string> Entries) : Warning(WarningLevel.Debug)
+internal sealed record CompositeEmptyCollectionWarning(IEnumerable<string> Entries) : Warning(WarningLevel.Debug)
 {
     public override string Message =>
 @$"Empty {Noun(Entries.Count())} deemed irrelevant at:

@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public static class Combine
+internal static class Combine
 {
     public static CheckrOf<Case> Checkrs(IEnumerable<CheckrOf<Case>> checks) =>
         checks

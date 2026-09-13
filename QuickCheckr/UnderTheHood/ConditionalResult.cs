@@ -1,6 +1,9 @@
 namespace QuickCheckr.UnderTheHood;
 
-public class ConditionalResult<T>
+/// <summary>
+/// Represents a value produced by a conditional step, including the case where that step was skipped.
+/// </summary>
+public sealed class ConditionalResult<T>
 {
     private readonly bool notExecuted = false;
     private readonly T? value;
@@ -14,10 +17,10 @@ public class ConditionalResult<T>
         }
     }
     private ConditionalResult() { notExecuted = true; }
-    public ConditionalResult(T? value) => this.value = value;
+    internal ConditionalResult(T? value) => this.value = value;
     private static ConditionalResult<T> NotExecuted() => new() { };
 
-    public static CheckrResult<ConditionalResult<T>> AsCheckrResult(
+    internal static CheckrResult<ConditionalResult<T>> AsCheckrResult(
         CheckrState state,
         Func<bool> predicate,
         Func<T?> factory) => predicate()

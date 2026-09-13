@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
-public class MemoryLens(
+internal class MemoryLens(
         Func<object, object> get,
         Func<object, object, object> set)
 {

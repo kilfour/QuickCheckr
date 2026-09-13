@@ -2,14 +2,14 @@ using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public abstract record ReplayOutcome
+internal abstract record ReplayOutcome
 {
     public sealed record FailurePreserved : ReplayOutcome;
     public sealed record Passed : ReplayOutcome;
     public sealed record CandidateRejected(Exception Exception) : ReplayOutcome;
 }
 
-public class Verifier(CheckrState State,
+internal class Verifier(CheckrState State,
     CheckrOf<Case> Check)
 {
     public virtual bool RunPassed(int executionId, string key, object value)

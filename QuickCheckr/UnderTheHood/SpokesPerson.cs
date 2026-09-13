@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Archiving;
 
 namespace QuickCheckr.UnderTheHood;
 
-public static class SpokesPerson
+internal static class SpokesPerson
 {
     [StackTraceHidden]
     public static void Announce(CheckrRunnerConfig config, Findings findings, ExecutionCount executionsPerRun)

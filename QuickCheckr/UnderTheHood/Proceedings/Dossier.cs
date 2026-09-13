@@ -2,7 +2,7 @@ using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood.Proceedings;
 
-public record Dossier(
+internal sealed record Dossier(
     FailureInfo FailureInfo,
     RunInfo RunInfo,
     IReadOnlyDictionary<string, int> PassedExpectations,

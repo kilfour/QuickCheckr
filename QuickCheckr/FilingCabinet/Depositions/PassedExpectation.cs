@@ -1,3 +1,3 @@
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record PassedExpectation(string Label, int TimesPassed);
+public sealed record PassedExpectation(string Label, int TimesPassed);

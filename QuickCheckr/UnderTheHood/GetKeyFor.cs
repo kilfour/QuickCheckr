@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public static class GetKeyFor
+internal static class GetKeyFor
 {
     public static string CheckrOneOf => "Checkr|OneOf|Default|QuickCheckr|Key";
     public static string CheckrOneOfWhen => "Checkr|OneOfWhen|Default|QuickCheckr|Key";

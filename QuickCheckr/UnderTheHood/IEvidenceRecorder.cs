@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public interface IEvidenceRecorder
+internal interface IEvidenceRecorder
 {
     void Append(string evidence);
     void Clear();

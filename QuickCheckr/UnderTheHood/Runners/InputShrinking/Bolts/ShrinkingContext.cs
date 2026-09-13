@@ -2,19 +2,19 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public interface IWhistleblower
+internal interface IWhistleblower
 {
     void Warn(string key, Func<Warning> factory);
 }
 
-public interface IReductionSettings
+internal interface IReductionSettings
 {
     int MaxStepsPerReducer { get; }
 }
 
-public interface IReductionWhistleblower : IWhistleblower, IReductionSettings;
+internal interface IReductionWhistleblower : IWhistleblower, IReductionSettings;
 
-public record ShrinkingContext(CheckrState State, CheckrOf<Case> Check, bool UseDefaultReducers)
+internal sealed record ShrinkingContext(CheckrState State, CheckrOf<Case> Check, bool UseDefaultReducers)
     : IReductionWhistleblower, IWhistleblower, IReductionSettings
 {
     public int CollapseCount { get; set; }

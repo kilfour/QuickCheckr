@@ -1,3 +1,3 @@
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class DelayedResultNullValueAccessedException : Exception;
+public sealed class DelayedResultNullValueAccessedException : Exception;

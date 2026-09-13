@@ -23,7 +23,7 @@ namespace QuickCheckr.FilingCabinet;
 //     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
 // }
 
-public class CaseFile : IRecord
+public sealed class CaseFile : IRecord
 {
     public bool HasEvidence => FailureDeposition is not FailedNoneDeposition;
     public FailureDeposition FailureDeposition { get; init; }
@@ -71,7 +71,7 @@ public class CaseFile : IRecord
 
     public int Seed { get; init; }
 
-    protected CaseFile()
+    private CaseFile()
     {
         FailureDeposition = new FailedNoneDeposition();
     }
@@ -84,18 +84,18 @@ public class CaseFile : IRecord
         Seed = runInfo.Seed;
     }
 
-    public static CaseFile From(FailureInfo failureInfo, RunInfo runInfo)
+    internal static CaseFile From(FailureInfo failureInfo, RunInfo runInfo)
         => new(FailureDeposition.From(failureInfo), runInfo);
 
     public List<ExecutionDeposition> ExecutionDepositions { get; } = [];
-    public CaseFile AddExecutionDeposition(ExecutionDeposition executionDepostion)
+    internal CaseFile AddExecutionDeposition(ExecutionDeposition executionDepostion)
     {
         ExecutionDepositions.Add(executionDepostion);
         return this;
     }
 
     public TestMethodInfoDeposition? TestMethodInfoDeposition { get; private set; }
-    public CaseFile AddTestMethodDisposition(TestMethodInfoDeposition testMethodInfoDeposition)
+    internal CaseFile AddTestMethodDisposition(TestMethodInfoDeposition testMethodInfoDeposition)
     {
         TestMethodInfoDeposition = testMethodInfoDeposition;
         return this;
@@ -104,8 +104,8 @@ public class CaseFile : IRecord
     public string GetFailure()
         => FailureDeposition.GetFailureDescription();
 
-    public static CaseFile Empty() => new();
-    public static CaseFile Passed(int seed, List<PassedExpectation> passedExpectations)
+    internal static CaseFile Empty() => new();
+    internal static CaseFile Passed(int seed, List<PassedExpectation> passedExpectations)
     {
         var caseFile = new CaseFile { Seed = seed };
         caseFile.PassedExpectations.AddRange(passedExpectations);
@@ -113,7 +113,7 @@ public class CaseFile : IRecord
     }
 
     public List<PassedExpectation> PassedExpectations { get; init; } = [];
-    public CaseFile AddPassedExpectationDeposition(PassedExpectation passedExpectationDepositions)
+    internal CaseFile AddPassedExpectationDeposition(PassedExpectation passedExpectationDepositions)
     {
         PassedExpectations.Add(passedExpectationDepositions);
         return this;

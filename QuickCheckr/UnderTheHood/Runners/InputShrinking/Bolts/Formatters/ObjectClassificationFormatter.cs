@@ -2,12 +2,21 @@ using System.Linq.Expressions;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Formatters;
 
-public class ObjectClassificationFormatter<T>(
-    ClassificationFormatter classificationFormatter,
-    ObjectClassificationFormat format)
+/// <summary>
+/// Configures the shape and member formatting used to render values of <typeparamref name="T"/> in classification reports.
+/// </summary>
+public sealed class ObjectClassificationFormatter<T>
 {
-    private readonly ClassificationFormatter classificationFormatter = classificationFormatter;
-    private readonly ObjectClassificationFormat format = format;
+    private readonly ClassificationFormatter classificationFormatter;
+    private readonly ObjectClassificationFormat format;
+
+    internal ObjectClassificationFormatter(
+        ClassificationFormatter classificationFormatter,
+        ObjectClassificationFormat format)
+    {
+        this.classificationFormatter = classificationFormatter;
+        this.format = format;
+    }
 
     public ObjectClassificationFormatter<T> HidePropertyNames()
     {

@@ -1,6 +1,6 @@
 namespace QuickCheckr.Diagnostics.Bolts;
 
-public class AutopsyPath
+public static class AutopsyPath
 {
     // -------------------------------------------------------------------------------------------
     // ExecutionShrinking

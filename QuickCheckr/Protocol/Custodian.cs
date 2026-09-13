@@ -4,7 +4,10 @@ using QuickCheckr.Protocol.Custodians;
 namespace QuickCheckr.Protocol;
 
 
-public class Custodian
+/// <summary>
+/// Creates the built-in custodians used to store reports and retained evidence.
+/// </summary>
+public static class Custodian
 {
     public static ICustodian Default => new DefaultCustodian();
     public static ICustodian Empty => new EmptyCustodian();

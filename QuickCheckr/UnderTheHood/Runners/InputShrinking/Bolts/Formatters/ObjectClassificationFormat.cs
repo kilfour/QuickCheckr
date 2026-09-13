@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Formatters;
 
-public class ObjectClassificationFormat
+internal sealed class ObjectClassificationFormat
 {
     public bool HidePropertyNames { get; set; }
     public string LeftBound { get; set; } = "{";

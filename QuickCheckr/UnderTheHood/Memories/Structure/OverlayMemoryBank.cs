@@ -3,7 +3,7 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class OverlayMemoryBank
+internal sealed class OverlayMemoryBank
 {
     private readonly Dictionary<string, TypedValue> values = [];
     public IReadOnlyDictionary<string, TypedValue> Values => values;

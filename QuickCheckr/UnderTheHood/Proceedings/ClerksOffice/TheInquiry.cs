@@ -4,7 +4,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class TheInquiry
+internal static class TheInquiry
 {
     public static Flow<Flow> Flow(Inquiry input) =>
         Style

@@ -7,7 +7,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification;
 
-public class ClassifierSelector
+internal sealed class ClassifierSelector
 {
     public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
     {

@@ -3,7 +3,7 @@ using QuickPulse.Instruments;
 
 namespace QuickCheckr.Protocol.Custodians;
 
-public class DefaultCustodian : FileCustodian
+public sealed class DefaultCustodian : FileCustodian
 {
     protected override string GetRealPath(string path)
         => Path.Combine(SolutionLocator.FindSolutionRoot()!, path);

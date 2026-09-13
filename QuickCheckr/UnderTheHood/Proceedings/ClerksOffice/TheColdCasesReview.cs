@@ -3,7 +3,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class TheColdCasesReview
+internal static class TheColdCasesReview
 {
     public static Flow<Flow> Flow(ColdCasesReview input) =>
         Style

@@ -4,7 +4,7 @@ namespace QuickCheckr.StringReduction.Nuts;
 /// Holds the mutable text and cursor used while executing a Stringr selector.
 /// Custom selectors receive this state through <see cref="SelectrOf{T}"/> and should report their outcome with <see cref="SelectrResult"/>.
 /// </summary>
-public class SelectrState(string text)
+public sealed class SelectrState(string text)
 {
     /// <summary>
     /// The current cursor position in <see cref="Text"/>.

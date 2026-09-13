@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 
 namespace QuickCheckr.UnderTheHood.Memories;
 
-public class KeyGuardian
+internal sealed class KeyGuardian
 {
     public readonly DuplicateKeyWriteGuardForInputs Inputs = new();
     public readonly DuplicateKeyWriteGuardForActs Acts = new();

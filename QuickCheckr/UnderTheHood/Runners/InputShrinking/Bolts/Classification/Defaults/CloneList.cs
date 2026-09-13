@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public static class CloneList
+internal static class CloneList
 {
     public static IList AsOriginalType(object value)
     {

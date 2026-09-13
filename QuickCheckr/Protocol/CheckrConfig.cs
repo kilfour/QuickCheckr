@@ -7,7 +7,7 @@ namespace QuickCheckr.Protocol;
 /// Defines the configuration applied when running a Checkr.  
 /// Use to control seeding, shrinking, diagnostics, and how evidence is recorded.
 /// </summary>
-public record CheckrConfig
+public sealed record CheckrConfig
 {
     /// <summary>
     /// Returns the default configuration for a Checkr run.  

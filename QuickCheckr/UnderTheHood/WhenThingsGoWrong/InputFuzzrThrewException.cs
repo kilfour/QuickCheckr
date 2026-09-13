@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class InputFuzzrThrewException(string key, Exception exception)
+public sealed class InputFuzzrThrewException(string key, Exception exception)
     : QuickCheckrException(BuildMessage(key, exception.GetType().Name!), exception)
 {
     private static string BuildMessage(string key, string type)

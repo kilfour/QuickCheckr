@@ -2,8 +2,10 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.FilingCabinet;
 
-public class Inquiry : IRecord
+public sealed class Inquiry : IRecord
 {
+    internal Inquiry() { }
+
     private readonly List<CaseFile> caseFiles = [];
     public IReadOnlyList<CaseFile> CaseFiles => caseFiles;
 
@@ -20,14 +22,14 @@ public class Inquiry : IRecord
             .GroupBy(ps => ps.Label)
             .Select(g => new PassedExpectation(g.Key, g.Sum(ps => ps.TimesPassed)))];
 
-    public Inquiry Add(params CaseFile[] newCaseFiles)
+    internal Inquiry Add(params CaseFile[] newCaseFiles)
     {
         foreach (var caseFile in newCaseFiles)
             caseFiles.Add(caseFile);
         return this;
     }
 
-    public Inquiry AddDistinctFailure(params CaseFile[] newCaseFiles)
+    internal Inquiry AddDistinctFailure(params CaseFile[] newCaseFiles)
     {
         foreach (var caseFile in newCaseFiles)
         {
@@ -37,5 +39,5 @@ public class Inquiry : IRecord
     }
 
     public bool MaxStoredCaseFilesReached { get; private set; } = false;
-    public bool Stop() => MaxStoredCaseFilesReached = true;
+    internal bool Stop() => MaxStoredCaseFilesReached = true;
 }

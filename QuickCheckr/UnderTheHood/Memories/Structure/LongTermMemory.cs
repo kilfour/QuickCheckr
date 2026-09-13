@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class LongTermMemory
+internal sealed class LongTermMemory
 {
     public void Reset()
     {

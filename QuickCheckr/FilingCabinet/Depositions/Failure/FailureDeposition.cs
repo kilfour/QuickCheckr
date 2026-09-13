@@ -7,7 +7,7 @@ public abstract record FailureDeposition
 {
     public abstract string GetFailureDescription();
 
-    public static FailureDeposition From(FailureInfo failureInfo)
+    internal static FailureDeposition From(FailureInfo failureInfo)
     {
         if (failureInfo.Exception is not null)
         {

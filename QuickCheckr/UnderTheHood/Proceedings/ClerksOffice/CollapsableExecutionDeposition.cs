@@ -2,7 +2,7 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public record CollapsableExecutionDeposition(ExecutionDeposition ExecutionDeposition)
+internal sealed record CollapsableExecutionDeposition(ExecutionDeposition ExecutionDeposition)
 {
     public int Times { get; private set; } = 1;
     public bool Collapsed(ExecutionDeposition other)

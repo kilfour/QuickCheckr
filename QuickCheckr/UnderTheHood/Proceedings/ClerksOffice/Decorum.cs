@@ -1,5 +1,5 @@
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public record Decorum(
+internal sealed record Decorum(
     bool Labels = false,
     bool StackTrace = false);

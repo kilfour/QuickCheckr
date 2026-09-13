@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public record ShrinkingInfo(
+internal sealed record ShrinkingInfo(
         int ExecutionId,
         string Key,
         object? Value,

@@ -2,7 +2,7 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.Protocol.Custodians;
 
-public class LocalCustodian(string callerPath) : FileCustodian
+public sealed class LocalCustodian(string callerPath) : FileCustodian
 {
     private readonly string basePath = Path.GetDirectoryName(callerPath)!;
 

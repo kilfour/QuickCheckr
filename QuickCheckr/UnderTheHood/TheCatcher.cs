@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public static class TheCatcher
+internal static class TheCatcher
 {
     public static CheckrResult<T> InTheCheckr<T>(
         CheckrState state,

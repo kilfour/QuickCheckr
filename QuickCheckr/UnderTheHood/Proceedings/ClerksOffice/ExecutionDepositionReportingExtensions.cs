@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class ExecutionDepositionReportingExtensions
+internal static class ExecutionDepositionReportingExtensions
 {
     public static IEnumerable<WarningDeposition> GetWarningDepositionsForReport(this ExecutionDeposition executionDeposition)
     {

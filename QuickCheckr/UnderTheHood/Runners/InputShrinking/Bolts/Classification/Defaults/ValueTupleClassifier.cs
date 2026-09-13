@@ -9,7 +9,7 @@ using QuickFuzzr.UnderTheHood;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class ValueTupleClassifier : Classifier
+internal sealed class ValueTupleClassifier : Classifier
 {
     public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {

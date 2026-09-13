@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOptionKeep>
+internal sealed class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOptionKeep>
 {
     protected override InputClassification GetClassification(
         IClassificationOptionKeep option,

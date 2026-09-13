@@ -7,7 +7,7 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class ShortTermMemory
+internal sealed class ShortTermMemory
 {
     private readonly Dictionary<int, ExecutionMemory> memories = [];
     private ExecutionMemory Current => memories[CurrentExecutionNumber];

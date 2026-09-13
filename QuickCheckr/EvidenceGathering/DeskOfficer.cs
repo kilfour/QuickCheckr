@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.EvidenceGathering;
 
-public class DeskOfficer
+internal sealed class DeskOfficer
 {
     public static bool AreCaseFilesSimilar(CaseFile caseFile, CaseFile other, bool ordered)
     {
@@ -99,7 +99,7 @@ public class DeskOfficer
     }
 }
 
-public static class CaseFileFingerprints
+internal static class CaseFileFingerprints
 {
     public static string FingerPrint(CaseFile caseFile, bool ordered = false)
     {

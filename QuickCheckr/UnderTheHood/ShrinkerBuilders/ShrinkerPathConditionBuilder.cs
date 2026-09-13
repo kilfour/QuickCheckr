@@ -3,6 +3,9 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
+/// <summary>
+/// Continues a member path used to constrain a shrinking strategy for <typeparamref name="TRoot"/>.
+/// </summary>
 public interface IShrinkerPathConditionBuilder<TRoot, T>
 {
     IShrinkerPathConditionBuilder<TRoot, TParent> As<TParent>(Expression<Func<TParent, T>> selector);
@@ -12,7 +15,7 @@ public interface IShrinkerPathConditionBuilder<TRoot, T>
     public IShrinkerConditionBuilder<TRoot> Target();
 }
 
-public class ShrinkerPathConditionBuilder<TRoot, T>(
+internal sealed class ShrinkerPathConditionBuilder<TRoot, T>(
     ShrinkerConditionBuilder<TRoot> shrinkerConditionBuilder,
     List<string> currentPath) : IShrinkerPathConditionBuilder<TRoot, T>
 {

@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet;
 namespace QuickCheckr.UnderTheHood;
 
 
-public class Deliberator(
+internal sealed class Deliberator(
     Func<CaseFile, int> scoringFunction,
     int? deliberationTarget = null)
 {

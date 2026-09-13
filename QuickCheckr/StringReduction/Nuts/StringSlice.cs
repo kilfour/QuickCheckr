@@ -6,7 +6,7 @@ namespace QuickCheckr.StringReduction.Nuts;
 /// Represents a concrete range selected from a string.
 /// The captured text remains available when the range is edited later in a query.
 /// </summary>
-public record StringSlice(int Start, int Length, string Text) : ITextSelection, IEditable
+public sealed record StringSlice(int Start, int Length, string Text) : ITextSelection, IEditable
 {
     /// <summary>
     /// Creates a slice from the supplied input range and captures its text.

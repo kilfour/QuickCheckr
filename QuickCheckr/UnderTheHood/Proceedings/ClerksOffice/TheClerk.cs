@@ -4,7 +4,7 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class TheClerk
+internal static class TheClerk
 {
     public static string Transcribes(IRecord record, Func<IRecord, Flow<Flow>> styleGuide)
     {

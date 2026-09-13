@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners.ActionShrinking;
 
-public class ActionShrinker(
+internal sealed class ActionShrinker(
     CheckrState State,
     CheckrOf<Case> Check)
 {

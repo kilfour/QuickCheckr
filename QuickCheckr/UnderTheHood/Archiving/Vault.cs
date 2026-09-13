@@ -4,14 +4,14 @@ using QuickCheckr.Protocol.Custodians;
 
 namespace QuickCheckr.UnderTheHood.Archiving;
 
-public class VaultNotConfiguredException : Exception;
-public static class Vault
+internal sealed class VaultNotConfiguredException : Exception;
+internal static class Vault
 {
     public static EvidenceVault From(CheckrRunnerConfig config)
         => string.IsNullOrWhiteSpace(config.FileAs) ? throw new VaultNotConfiguredException() : new EvidenceVault(config);
 }
 
-public class EvidenceVault(CheckrRunnerConfig config)
+internal sealed class EvidenceVault(CheckrRunnerConfig config)
 {
 
     private HashSet<VaultEntry> entries = [];

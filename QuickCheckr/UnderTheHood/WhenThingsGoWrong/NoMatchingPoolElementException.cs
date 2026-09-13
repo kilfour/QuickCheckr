@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class NoMatchingPoolElementException : QuickCheckrException
+public sealed class NoMatchingPoolElementException : QuickCheckrException
 {
     public NoMatchingPoolElementException(string key, Type valueType)
         : base(BuildMessage(key, valueType))

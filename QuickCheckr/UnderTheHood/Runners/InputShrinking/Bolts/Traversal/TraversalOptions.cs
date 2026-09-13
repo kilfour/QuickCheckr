@@ -1,5 +1,8 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
+/// <summary>
+/// Describes a member that QuickCheckr can traverse and reconstruct while shrinking an object.
+/// </summary>
 public interface ITraversalOption
 {
     Type TargetType { get; }
@@ -9,6 +12,9 @@ public interface ITraversalOption
     object Replace(object target, object? member);
 }
 
+/// <summary>
+/// Describes a member traversal for objects of type <typeparamref name="T"/>.
+/// </summary>
 public abstract record TraversalOption<T> : ITraversalOption
 {
     public Type TargetType => typeof(T);
@@ -18,6 +24,9 @@ public abstract record TraversalOption<T> : ITraversalOption
     public abstract object Replace(object target, object? member);
 }
 
+/// <summary>
+/// Traverses a selected member and reconstructs its containing object after the member is reduced.
+/// </summary>
 public sealed record MemberTraversalOption<T, TMember>(
     string Name,
     Func<T, TMember> Getter,

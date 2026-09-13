@@ -3,7 +3,7 @@ using QuickCheckr.Protocol.Custodians;
 
 namespace QuickCheckr.UnderTheHood;
 
-public record CheckrRunnerConfig
+internal sealed record CheckrRunnerConfig
 {
     public CheckrRunnerConfig(CheckrConfig config)
     {

@@ -72,7 +72,10 @@ public static partial class Checkr
         };
 }
 
-public class ActResult<T>
+/// <summary>
+/// Represents the outcome of an action that may be skipped while shrinking a case.
+/// </summary>
+public sealed class ActResult<T>
 {
     private readonly bool notExecuted = false;
     public bool HasExecuted => !notExecuted;
@@ -88,6 +91,6 @@ public class ActResult<T>
     }
     private ActResult() { notExecuted = true; }
     private ActResult(T result) => this.result = result;
-    public static ActResult<T> NotExecuted => new() { };
-    public static ActResult<T> Executed(T value) => new(value) { };
+    internal static ActResult<T> NotExecuted => new() { };
+    internal static ActResult<T> Executed(T value) => new(value) { };
 }

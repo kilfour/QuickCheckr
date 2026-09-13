@@ -2,10 +2,12 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.FilingCabinet;
 
-public class Findings : IRecord
+public sealed class Findings : IRecord
 {
+    internal Findings() { }
+
     public CaseFile? FalsifyingCaseFile { get; private set; } = null;
-    public Findings AddFalsifyingCaseFile(CaseFile falsifyingCaseFile)
+    internal Findings AddFalsifyingCaseFile(CaseFile falsifyingCaseFile)
     {
         FalsifyingCaseFile = falsifyingCaseFile;
         return this;
@@ -13,7 +15,7 @@ public class Findings : IRecord
 
     private readonly List<CaseFile> caseFiles = [];
     public IReadOnlyList<CaseFile> CaseFiles => caseFiles;
-    public Findings Add(params CaseFile[] newCaseFiles)
+    internal Findings Add(params CaseFile[] newCaseFiles)
     {
         foreach (var caseFile in newCaseFiles)
             caseFiles.Add(caseFile);

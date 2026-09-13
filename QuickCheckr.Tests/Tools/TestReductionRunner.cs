@@ -4,16 +4,16 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.Tests.Tools;
 
-public class TestReductionRunner
+internal static class TestReductionRunner
 {
-    public class WhistleblowerSpy : IReductionWhistleblower
+    internal sealed class WhistleblowerSpy : IReductionWhistleblower
     {
         public int MaxStepsPerReducer => 1024;
 
         public void Warn(string key, Func<Warning> factory) { }
     }
 
-    public static Reduction ForReducer<T>(
+    internal static Reduction ForReducer<T>(
         Func<Reducer<T>> reducerFactory,
         T? value,
         Func<object, bool> failTest,

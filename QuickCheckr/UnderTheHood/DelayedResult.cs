@@ -2,18 +2,21 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood;
 
+/// <summary>
+/// Captures whether a carefully executed action threw and, when it did, the resulting exception.
+/// </summary>
 public class DelayedResult
 {
-    public bool Threw { get; init; }
-    public Exception? Exception { get; init; }
+    public bool Threw { get; }
+    public Exception? Exception { get; }
 
-    public DelayedResult()
+    internal DelayedResult()
     {
         Threw = false;
         Exception = null;
     }
 
-    public DelayedResult(Exception exception)
+    internal DelayedResult(Exception exception)
     {
         Threw = true;
         Exception = exception;
@@ -56,7 +59,10 @@ public class DelayedResult
     }
 }
 
-public class DelayedResult<T> : DelayedResult
+/// <summary>
+/// Captures either the value or exception produced by a carefully executed function.
+/// </summary>
+public sealed class DelayedResult<T> : DelayedResult
 {
     private readonly T? value;
     public T? Value
@@ -81,13 +87,13 @@ public class DelayedResult<T> : DelayedResult
         }
     }
 
-    public DelayedResult(T value) : base()
+    internal DelayedResult(T value) : base()
         => this.value = value;
 
-    public DelayedResult(Exception exception) : base(exception) { }
+    internal DelayedResult(Exception exception) : base(exception) { }
 
     private readonly bool isNone = false;
     private DelayedResult() { isNone = true; }
 
-    public static DelayedResult<T> None() => new() { };
+    internal static DelayedResult<T> None() => new() { };
 }

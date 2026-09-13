@@ -7,29 +7,32 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrState
+/// <summary>
+/// Represents the execution context passed between custom Checkr steps.
+/// </summary>
+public sealed class CheckrState
 {
-    public State FuzzrState { get; init; }
-    public Memory Memory { get; init; } = new();
-    public EvidenceRecorder EvidenceRecorder { get; init; }
-    public ManOfWealthAndTaste Editor { get; set; } =
+    internal State FuzzrState { get; init; }
+    internal Memory Memory { get; init; } = new();
+    internal EvidenceRecorder EvidenceRecorder { get; init; }
+    internal ManOfWealthAndTaste Editor { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
-    public ManOfWealthAndTaste ReductionPrinter { get; set; } =
+    internal ManOfWealthAndTaste ReductionPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
-    public ClassificationFormatter ClassificationFormatter { get; set; } = new();
+    internal ClassificationFormatter ClassificationFormatter { get; set; } = new();
 
-    public int StartReplay()
+    internal int StartReplay()
     {
         EvidenceRecorder.StartReplay();
         return Memory.Reset();
     }
 
-    public bool IsInitialRun => !EvidenceRecorder.IsReplay;
+    internal bool IsInitialRun => !EvidenceRecorder.IsReplay;
 
     private bool runStopped = false;
     private readonly int desiredNumberOfExecutions;
 
-    public CheckrState(
+    internal CheckrState(
         int desiredNumberOfExecutions,
         int maxStepsPerReducer,
         int? seed,
@@ -42,13 +45,13 @@ public class CheckrState
         EvidenceRecorder = new(Pathologist);
     }
 
-    public bool RunStopped => runStopped;
+    internal bool RunStopped => runStopped;
 
-    public int MaxStepsPerReducer { get; }
+    internal int MaxStepsPerReducer { get; }
 
-    public void StopRun() { runStopped = true; }
+    internal void StopRun() { runStopped = true; }
 
-    public bool IsThisTheRunsLastExecution()
+    internal bool IsThisTheRunsLastExecution()
     {
         if (EvidenceRecorder.IsReplay)
             return Memory.ShortTermMemory.CurrentExecutionNumber
@@ -56,5 +59,5 @@ public class CheckrState
         return Memory.ShortTermMemory.CurrentExecutionNumber == desiredNumberOfExecutions;
     }
 
-    public Pathologist Pathologist { get; }
+    internal Pathologist Pathologist { get; }
 }

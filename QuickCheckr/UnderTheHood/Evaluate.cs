@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public static class Evaluate
+internal static class Evaluate
 {
     public static CheckrOf<Case> Expect(
         string key,

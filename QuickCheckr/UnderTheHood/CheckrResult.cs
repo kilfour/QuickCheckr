@@ -1,7 +1,23 @@
 ﻿namespace QuickCheckr.UnderTheHood;
 
-public record CheckrResult<TValue>(CheckrState State, TValue Value);
+/// <summary>
+/// Carries a Checkr step's value together with the execution state passed to the next step.
+/// </summary>
+public sealed record CheckrResult<TValue>
+{
+    internal CheckrResult(CheckrState state, TValue value)
+    {
+        State = state;
+        Value = value;
+    }
 
+    internal CheckrState State { get; }
+    internal TValue Value { get; }
+}
+
+/// <summary>
+/// Creates results for custom <see cref="CheckrOf{T}"/> steps.
+/// </summary>
 public static class CheckrResult
 {
 	public static CheckrResult<TValue> Some<TValue>(CheckrState state, TValue value) =>

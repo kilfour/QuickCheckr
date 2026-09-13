@@ -4,7 +4,7 @@ namespace QuickCheckr.StringReduction.Nuts;
 /// Reports the value and outcome of a Stringr selection step.
 /// Successful results may contain an empty text selection; inspect <see cref="Succeeded"/> rather than testing the value for null.
 /// </summary>
-public record SelectrResult<TValue>(SelectrState State, TValue Value, bool Succeeded);
+public sealed record SelectrResult<TValue>(SelectrState State, TValue Value, bool Succeeded);
 
 /// <summary>
 /// Creates successful and failed results for custom Stringr selectors.

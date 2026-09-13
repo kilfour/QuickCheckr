@@ -1,6 +1,6 @@
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record ExecutionDeposition
+public sealed record ExecutionDeposition
 {
     public int ExecutionId { get; }
 

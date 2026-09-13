@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood.Memories.DuplicateKeyWriteGuards;
 
-public class DuplicateKeyWriteGuard(IEnumerable<string> checkrs)
+internal class DuplicateKeyWriteGuard(IEnumerable<string> checkrs)
 {
     private readonly List<string> keysWritten = [];
     public IReadOnlyCollection<string> KeysWritten => keysWritten;
@@ -18,17 +18,17 @@ public class DuplicateKeyWriteGuard(IEnumerable<string> checkrs)
     }
 }
 
-public class DuplicateKeyWriteGuardForInputs : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForInputs : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForInputs() : base(["Checkr.Input"]) { }
 }
 
-public class DuplicateKeyWriteGuardForActs : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForActs : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForActs() : base(["Checkr.Act", "Checkr.ActCarefully"]) { }
 }
 
-public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForExpectations()
         : base(
@@ -42,32 +42,32 @@ public class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteGuard
     { }
 }
 
-public class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForTraces : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForTraces() : base(["Checkr.Trace", "Checkr.TraceWhen"]) { }
 }
 
-public class DuplicateKeyWriteGuardForPoolTraces : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForPoolTraces : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForPoolTraces() : base(["Trackr.ToPool", "..."]) { }
 }
 
-public class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForVariables : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForVariables() : base(["Checkr.OneOf", "Checkr.OneOfWhen", "Checkr.Sequence"]) { }
 }
 
-public class DuplicateKeyWriteGuardForLongTermVariables : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForLongTermVariables : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForLongTermVariables() : base(["Checkr.Sequence"]) { }
 }
 
-public class DuplicateKeyWriteGuardForStashed : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForStashed : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForStashed() : base(["Trackr.Stashed"]) { }
 }
 
-public class DuplicateKeyWriteGuardForPools : DuplicateKeyWriteGuard
+internal sealed class DuplicateKeyWriteGuardForPools : DuplicateKeyWriteGuard
 {
     public DuplicateKeyWriteGuardForPools() : base(["Trackr.PoolFor"]) { }
 }

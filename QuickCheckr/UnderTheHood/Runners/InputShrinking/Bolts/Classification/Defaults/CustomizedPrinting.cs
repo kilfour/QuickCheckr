@@ -5,7 +5,7 @@ using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public static class CustomizedPrinting
+internal static class CustomizedPrinting
 {
     public static string GetReduxReport(
         ObjectClassificationFormat format,

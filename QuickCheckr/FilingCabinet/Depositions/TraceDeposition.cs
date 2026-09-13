@@ -1,3 +1,3 @@
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record TraceDeposition(string Label, string Value);
+public sealed record TraceDeposition(string Label, string Value);

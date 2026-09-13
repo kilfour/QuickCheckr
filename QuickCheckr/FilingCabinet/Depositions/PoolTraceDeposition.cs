@@ -1,3 +1,3 @@
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record PoolTraceDeposition(string Label, string Value);
+public sealed record PoolTraceDeposition(string Label, string Value);

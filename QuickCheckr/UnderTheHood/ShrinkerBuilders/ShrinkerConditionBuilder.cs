@@ -3,6 +3,9 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
 namespace QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
+/// <summary>
+/// Builds value and member-path conditions for applying a shrinking strategy to <typeparamref name="T"/>.
+/// </summary>
 public interface IShrinkerConditionBuilder<T>
 {
     IShrinkerConditionBuilder<T> Value(Func<T, bool> predicate);
@@ -11,7 +14,7 @@ public interface IShrinkerConditionBuilder<T>
         where TParentDerived : TParentBase;
 }
 
-public class ShrinkerConditionBuilder<T>() : IShrinkerConditionBuilder<T>
+internal sealed class ShrinkerConditionBuilder<T>() : IShrinkerConditionBuilder<T>
 {
     public List<Func<ShrinkingInfo, bool>> Predicates { get; } = [];
     public IShrinkerConditionBuilder<T> Value(Func<T, bool> predicate)

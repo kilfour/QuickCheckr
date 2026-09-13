@@ -12,7 +12,7 @@ public abstract class DepositionTest
 {
     protected virtual bool IgnoreVerdictHeader { get; init; } = true;
     protected virtual bool IgnoreFailingExpectation { get; init; } = true;
-    protected Dossier Dossier { get; } =
+    private protected Dossier Dossier { get; } =
         new Dossier(
                 FailureInfo: new FailureInfo(FailingExpectation: new ExpectationFailure("Some Invariant", [])),
                 RunInfo: new RunInfo(10, 1, 12345678),

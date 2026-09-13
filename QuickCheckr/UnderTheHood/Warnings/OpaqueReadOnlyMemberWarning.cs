@@ -2,7 +2,7 @@ using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood.Warnings;
 
-public record OpaqueReadOnlyMemberWarning(Type Type, string Path)
+public sealed record OpaqueReadOnlyMemberWarning(Type Type, string Path)
     : Warning(WarningLevel.Verbose)
 {
     public override string Message =>

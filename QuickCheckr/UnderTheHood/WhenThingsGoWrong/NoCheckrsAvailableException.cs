@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class NoCheckrsAvailableException()
+public sealed class NoCheckrsAvailableException()
     : QuickCheckrException(
         @"Checkr.OneOfWhen could not choose a Checkr because none of the conditions evaluated to true.
 

@@ -6,7 +6,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
-public class ReducerSelector
+internal sealed class ReducerSelector
 {
     private static string GetCollectionReport(IEnumerable<InputClassification> elements)
     {

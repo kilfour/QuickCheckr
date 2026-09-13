@@ -4,7 +4,10 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
-public class ReducerBuilder<T>
+/// <summary>
+/// Selects the reducers used to simplify inputs of type <typeparamref name="T"/>.
+/// </summary>
+public sealed class ReducerBuilder<T>
 {
     public Func<Reducer<T>>[] Simplify(params Func<Reducer<T>>[] reducers)
         => reducers;

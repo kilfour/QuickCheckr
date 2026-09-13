@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong.Abstractions;
 
 namespace QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
-public class DuplicateKeyWriteException(string key, IEnumerable<string> checkrs)
+public sealed class DuplicateKeyWriteException(string key, IEnumerable<string> checkrs)
     : QuickCheckrException(BuildMessage(key, checkrs))
 {
     private static string BuildMessage(string key, IEnumerable<string> checkrs)

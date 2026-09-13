@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public static class ExceptionIs
+internal static class ExceptionIs
 {
     public static bool NotEquivalent(Exception? expected, Exception? actual)
         => !Equivalent(expected, actual);

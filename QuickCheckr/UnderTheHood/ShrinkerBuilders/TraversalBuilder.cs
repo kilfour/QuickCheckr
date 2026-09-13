@@ -3,7 +3,10 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
 namespace QuickCheckr.UnderTheHood.ShrinkerBuilders;
 
-public class TraversalBuilder<T>
+/// <summary>
+/// Selects the members traversed while shrinking inputs of type <typeparamref name="T"/>.
+/// </summary>
+public sealed class TraversalBuilder<T>
 {
     public ITraversalOption[] Using(params TraversalOption<T>[] traversals) =>
         traversals;

@@ -5,7 +5,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class TheCourtStyleGuide
+internal static class TheCourtStyleGuide
 {
     private record MaxLabel(int Length);
 

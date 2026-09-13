@@ -1,3 +1,3 @@
 namespace QuickCheckr.UnderTheHood;
 
-public class CheckrWasNotExecuted : Exception;
+internal sealed class CheckrWasNotExecuted : Exception;

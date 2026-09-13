@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public abstract class CustomClassifier<T>
+internal abstract class CustomClassifier<T>
     : FirstMatchHandler<IClassificationOption, CustomShrinkingContext, InputClassification>
 {
     public override HandlerResult<InputClassification> TryHandle(IClassificationOption input, CustomShrinkingContext customContext)

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace QuickCheckr.UnderTheHood;
 
-public static class Reflect
+internal static class Reflect
 {
     public static MemberInfo AsMemberInfo<TTarget, TMember>(this Expression<Func<TTarget, TMember>> expression)
     {

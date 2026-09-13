@@ -2,7 +2,7 @@ using QuickCheckr.Diagnostics;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class Pathologist(AutopsyProbe autopsyProbe, CheckrState state)
+internal sealed class Pathologist(AutopsyProbe autopsyProbe, CheckrState state)
 {
     public bool IsWatching { get; } = !autopsyProbe.IsEmpty;
 

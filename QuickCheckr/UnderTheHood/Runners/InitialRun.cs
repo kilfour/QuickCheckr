@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners;
 
-public class InitialRun(CheckrState State, CheckrOf<Case> Check)
+internal sealed class InitialRun(CheckrState State, CheckrOf<Case> Check)
 {
     public void Run(int numberOfExecutions)
     {

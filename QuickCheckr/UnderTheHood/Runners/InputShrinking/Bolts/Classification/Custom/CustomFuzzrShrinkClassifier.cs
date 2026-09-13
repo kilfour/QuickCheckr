@@ -3,7 +3,7 @@ using QuickFuzzr;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomFuzzrShrinkClassifier : CustomClassifier<IClassificationOptionFuzzr>
+internal sealed class CustomFuzzrShrinkClassifier : CustomClassifier<IClassificationOptionFuzzr>
 {
     protected override InputClassification GetClassification(IClassificationOptionFuzzr option, CustomShrinkingContext customContext)
         => new CustomClassifierRunner(a => GetValues(customContext.Context, option)).Classify(customContext.Info, customContext.Context);

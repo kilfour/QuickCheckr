@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification;
 
-public static class IrrelevantCount
+internal static class IrrelevantCount
 {
     public static int From(InputClassification classification) =>
         ((classification is InputRelevant inputRelevant)

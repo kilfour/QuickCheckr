@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 
-public static class DefaultReducersRegistry
+internal static class DefaultReducersRegistry
 {
     public static readonly Dictionary<Type, Func<Func<ReductionResult, Reduction>>> ReducerFactories =
         new()

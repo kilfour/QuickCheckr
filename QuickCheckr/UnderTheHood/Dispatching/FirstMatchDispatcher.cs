@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Dispatching;
 
-public class FirstMatchDispatcher<TIn, TContext, TOut>(
+internal class FirstMatchDispatcher<TIn, TContext, TOut>(
     IEnumerable<FirstMatchHandler<TIn, TContext, TOut>> handlers,
     FirstMatchFallback<TIn, TContext, TOut> fallback)
 {

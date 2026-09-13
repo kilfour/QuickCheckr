@@ -5,10 +5,10 @@ using QuickPulse.Arteries;
 
 namespace QuickCheckr.Diagnostics;
 
-public class AutopsyProbe
+public sealed class AutopsyProbe
 {
     private readonly Signal<IReadOnlyList<string>>? signal;
-    public bool IsEmpty => signal is null;
+    internal bool IsEmpty => signal is null;
     private AutopsyProbe() { }
     private AutopsyProbe(IArtery artery, Func<IReadOnlyList<string>, bool>? filter)
     {
@@ -19,7 +19,7 @@ public class AutopsyProbe
         signal.SetArtery(artery);
     }
     private static FileLogArtery DefaultArtery() => FileLog.Write("autopsy-report.log");
-    public static AutopsyProbe Empty => new();
+    internal static AutopsyProbe Empty => new();
     public static AutopsyProbe Default => new(DefaultArtery(), null);
     public static AutopsyProbe From(IArtery artery, Func<IReadOnlyList<string>, bool>? filter = null)
         => new(artery, filter);
@@ -36,7 +36,7 @@ public class AutopsyProbe
     private static string Prepare(IReadOnlyList<string> strings)
         => string.Join('.', strings);
 
-    public void Observe(CheckrState state, IReadOnlyList<string> paths)
+    internal void Observe(CheckrState state, IReadOnlyList<string> paths)
     {
         signal?.Pulse(paths);
         if (focuses.Count > 0)

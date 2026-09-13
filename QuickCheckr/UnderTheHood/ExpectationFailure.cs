@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood;
 
-public record ExpectationFailure(
+internal sealed record ExpectationFailure(
     string Key,
     List<string> Message,
     ExceptionFailureIdentity? Identity = null)
@@ -17,7 +17,7 @@ public record ExpectationFailure(
     }
 }
 
-public record ExceptionFailureIdentity(Exception? Exception)
+internal sealed record ExceptionFailureIdentity(Exception? Exception)
 {
     public bool IsEquivalentTo(ExceptionFailureIdentity other)
         => ExceptionIs.Equivalent(Exception, other.Exception)

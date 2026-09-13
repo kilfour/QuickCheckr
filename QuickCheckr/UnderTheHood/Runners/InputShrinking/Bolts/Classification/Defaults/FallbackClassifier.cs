@@ -4,7 +4,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingContext, InputClassification>
+internal sealed class FallbackClassifier : FirstMatchFallback<ShrinkingInfo, ShrinkingContext, InputClassification>
 {
     public override InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
     {

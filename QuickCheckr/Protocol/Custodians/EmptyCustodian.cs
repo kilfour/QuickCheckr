@@ -4,7 +4,7 @@ using QuickPulse;
 
 namespace QuickCheckr.Protocol.Custodians;
 
-public class EmptyCustodian : ICustodian
+public sealed class EmptyCustodian : ICustodian
 {
     public void FileEvidence(string name, int seed, IRecord record, Func<IRecord, Flow<Flow>> clerk) { }
     public void FileRecord(string name, IRecord record, Func<IRecord, Flow<Flow>> clerk) { }

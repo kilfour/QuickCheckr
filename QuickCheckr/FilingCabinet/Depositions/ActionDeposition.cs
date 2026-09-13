@@ -1,3 +1,3 @@
 namespace QuickCheckr.FilingCabinet.Depositions;
 
-public record ActionDeposition(string Label);
+public sealed record ActionDeposition(string Label);

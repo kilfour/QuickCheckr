@@ -7,7 +7,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Defaults;
 
-public class EnumerableClassifier : Classifier
+internal sealed class EnumerableClassifier : Classifier
 {
     public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
     {

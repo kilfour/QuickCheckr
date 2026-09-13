@@ -6,7 +6,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
-public static class TraversalSelector
+internal static class TraversalSelector
 {
     public static InputClassification Traverse(
         ShrinkingInfo info,

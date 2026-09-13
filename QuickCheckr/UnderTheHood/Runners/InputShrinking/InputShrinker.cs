@@ -6,7 +6,7 @@ using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking;
 
-public class InputShrinker(
+internal sealed class InputShrinker(
     CheckrState State,
     CheckrOf<Case> Check,
     bool useDefaultReducers)

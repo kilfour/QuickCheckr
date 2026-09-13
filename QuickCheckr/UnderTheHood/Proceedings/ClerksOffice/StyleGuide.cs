@@ -2,7 +2,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class Style
+internal static class Style
 {
     public static Flow<Flow> Pluralize(int count, string str) =>
         Pulse.Trace(count > 1 ? $"{str}s" : str);

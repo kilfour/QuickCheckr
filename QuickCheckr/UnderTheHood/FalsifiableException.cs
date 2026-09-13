@@ -7,7 +7,10 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class FalsifiableException : Exception
+/// <summary>
+/// Represents a falsified Checkr run and exposes the record that explains the failure.
+/// </summary>
+public sealed class FalsifiableException : Exception
 {
     public IRecord TheCaseFile { get; private set; }
 

@@ -2,7 +2,7 @@ using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.UnderTheHood;
 
-public class EvidenceRecorder(Pathologist pathologist)
+internal sealed class EvidenceRecorder(Pathologist pathologist)
 {
     public bool IsReplay { get; private set; }
     public void StartReplay()

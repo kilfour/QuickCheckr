@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners.Tracing;
 
-public class TraceRun(
+internal sealed class TraceRun(
     CheckrState State,
     CheckrOf<Case> Check)
 {

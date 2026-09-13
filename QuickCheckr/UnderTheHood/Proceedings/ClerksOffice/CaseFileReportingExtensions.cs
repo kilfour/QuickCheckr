@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet.Depositions;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-public static class CaseFileReportingExtensions
+internal static class CaseFileReportingExtensions
 {
     public static List<CollapsableExecutionDeposition> CollapseExecutions(this CaseFile caseFile)
     {

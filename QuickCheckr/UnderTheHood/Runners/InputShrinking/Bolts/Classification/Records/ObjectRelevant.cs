@@ -1,4 +1,4 @@
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 
-public record ObjectRelevant(Dictionary<string, InputClassification> Members, string Report)
+internal sealed record ObjectRelevant(Dictionary<string, InputClassification> Members, string Report)
     : InputRelevant(Report, Maybe<Redux>.Nothing());

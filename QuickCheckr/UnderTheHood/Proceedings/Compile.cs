@@ -8,7 +8,7 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Proceedings
 {
-    public static class Compile
+internal static class Compile
     {
         public static CaseFile TheCaseFile(Dossier dossier, Memory memory, ManOfWealthAndTaste inputPrinter)
         {

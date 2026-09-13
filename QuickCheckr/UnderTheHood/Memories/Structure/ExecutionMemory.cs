@@ -8,7 +8,7 @@ using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories.Structure;
 
-public class ExecutionMemory
+internal sealed class ExecutionMemory
 {
     // --------------------------------------------------------------------------
     // Case Selection

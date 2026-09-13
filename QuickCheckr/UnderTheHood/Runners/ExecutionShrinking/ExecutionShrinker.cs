@@ -2,7 +2,7 @@ using QuickCheckr.Diagnostics.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Runners.ExecutionShrinking;
 
-public class ExecutionShrinker(
+internal sealed class ExecutionShrinker(
     CheckrState State,
     CheckrOf<Case> Check)
 {

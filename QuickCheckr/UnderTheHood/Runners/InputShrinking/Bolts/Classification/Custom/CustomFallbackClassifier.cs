@@ -3,7 +3,7 @@ using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Recor
 
 namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Custom;
 
-public class CustomFallbackClassifier : FirstMatchCollectionFallback<CustomShrinkingContext, InputClassification>
+internal sealed class CustomFallbackClassifier : FirstMatchCollectionFallback<CustomShrinkingContext, InputClassification>
 {
     public override InputClassification Handle(CustomShrinkingContext context)
     {

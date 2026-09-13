@@ -1,6 +1,6 @@
 namespace QuickCheckr.UnderTheHood.Runners;
 
-public class CaseSelectionRun(
+internal sealed class CaseSelectionRun(
     CheckrState State,
     CheckrOf<Case> Check,
     bool Deliberate,
