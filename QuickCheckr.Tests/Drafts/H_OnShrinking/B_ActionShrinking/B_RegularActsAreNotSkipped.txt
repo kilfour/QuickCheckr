@@ -1,11 +1,10 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_RegularActsAreNotSkipped.cs:31:1
+ Location:                B_RegularActsAreNotSkipped.cs:28:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    593203923
  ------------------------------------------------------------
-  Executed
+  Executed: Act One, Act Two
  ============================================================
   !! InvalidOperationException: BOOM
  ============================================================

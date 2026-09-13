@@ -173,6 +173,12 @@ public class Memory
     // Actions
     public void StoreAction(string key)
         => ShortTermMemory.StoreAction(KeyGuardian.Acts.Check(key));
+    public void StoreShrinkableAction(string key)
+    {
+        var checkedKey = KeyGuardian.Acts.Check(key);
+        ShortTermMemory.StoreAction(checkedKey);
+        ShortTermMemory.StoreShrinkableAction(checkedKey);
+    }
     public IReadOnlyList<string> GetActions() => ShortTermMemory.GetActions();
     // --------------------------------------------------------------------------
     // Traces

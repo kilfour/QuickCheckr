@@ -126,6 +126,8 @@ public class ShortTermMemory
     // Actions
     public void StoreAction(string key)
         => Current.StoreAction(key);
+    public void StoreShrinkableAction(string key)
+        => Current.StoreShrinkableAction(key);
     public IReadOnlyList<string> GetActions() => Current.GetActions();
     // --------------------------------------------------------------------------
     // Traces

@@ -20,7 +20,7 @@ public static partial class Checkr
         state =>
         {
             if (state.IsInitialRun)
-                state.Memory.StoreAction(key);
+                state.Memory.StoreShrinkableAction(key);
             if (ActionNeedsToBeSkipped(key, state))
             {
                 state.Pathologist.Inform("Action", key, "SKIPPED");
@@ -58,7 +58,7 @@ public static partial class Checkr
         state =>
         {
             if (state.IsInitialRun)
-                state.Memory.StoreAction(key);
+                state.Memory.StoreShrinkableAction(key);
             if (ActionNeedsToBeSkipped(key, state))
                 return CheckrResult.Some(state, ActResult<T>.NotExecuted);
             try

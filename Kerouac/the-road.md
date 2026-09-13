@@ -11,7 +11,6 @@
 * Investigate/Fix eating the exceptions in `Memory.ScopedSwap`.
 * Check exception handling during shrinking for `PoolElement.Replace` and related operations.
 * Decide how reducer exceptions should be handled.
-* Decide whether and how to consolidate `ShrinkableAct`.
 * Remove flaky Collection Regrowth feature and add a message for the dev telling him to enable specific Deliberation Policy.
 * Document and settle on design of the Custom Shrinking API
 

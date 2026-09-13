@@ -11,7 +11,7 @@ public class ActionShrinker(
         foreach (var (executionId, shortTermMemory) in State.Memory.Entries())
         {
             using var __ = State.Pathologist.Examine("Execution", executionId);
-            var actionKeys = shortTermMemory.GetActions();
+            var actionKeys = shortTermMemory.GetShrinkableActions();
             if (actionKeys.Count < 1) continue;
             foreach (var key in actionKeys)
             {

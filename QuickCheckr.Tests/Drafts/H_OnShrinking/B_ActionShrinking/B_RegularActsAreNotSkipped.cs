@@ -7,12 +7,10 @@ namespace QuickCheckr.Tests.Drafts.H_OnShrinking.B_ActionShrinking;
 
 [DocFile]
 [DocContent(
-@"Action shrinking can only skip actions created with `Checkr.ShrinkableAct`.
+@"Action shrinking only evaluates actions created with `Checkr.ShrinkableAct`.
 
-A regular `Checkr.Act` still records an action label during the original run, so the action
-shrinker will consider that label. During replay, however, a regular act does not consult the
-remaining labels and its body always executes. Consequently its label can be removed even when
-the action itself causes the failure.")]
+A regular `Checkr.Act` remains in the report and continues to execute during replay, preserving
+both the action itself and any dependencies that pass through it.")]
 public class B_RegularActsAreNotSkipped : CheckrTest<B_RegularActsAreNotSkipped>
 {
     protected override bool Report => false;
@@ -24,9 +22,8 @@ public class B_RegularActsAreNotSkipped : CheckrTest<B_RegularActsAreNotSkipped>
     [DocReportHeader]
     [DocReport]
     [DocContent(
-@"Both action labels disappear and count as shrinks, but `Act Two` continues to execute and
-throw during every replay. The resulting report therefore contains the exception without the
-action that produced it.")]
+@"Neither regular action is considered as a shrinking candidate, so the report retains both the
+irrelevant first action and the second action that throws.")]
     public override void Example() =>
         Document(configured => configured
             .Configure(config => config with { ShrinkMode = ShrinkMode.Actions })
@@ -42,7 +39,9 @@ action that produced it.")]
     {
         Assert.Equal("InvalidOperationException: BOOM", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(0, article.Total().Actions());
-        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(2, article.Total().Actions());
+        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal("Act One", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Act Two", article.Execution(1).Action(2).Read().Label);
     }
 }

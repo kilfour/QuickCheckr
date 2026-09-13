@@ -137,6 +137,9 @@ public class ExecutionMemory
     public void StoreAction(string key) => actions.Add(key);
     public void RemoveAction(string key) => actions.Remove(key);
     public IReadOnlyList<string> GetActions() => [.. actions.Order()];
+    private readonly HashSet<string> shrinkableActions = [];
+    public void StoreShrinkableAction(string key) => shrinkableActions.Add(key);
+    public IReadOnlyList<string> GetShrinkableActions() => [.. shrinkableActions.Order()];
     // --------------------------------------------------------------------------
 
 

@@ -4,6 +4,7 @@
 * Added `Checkr.Deliberate(() => executionScore)`, `Trackr.Deliberate(caseFile => runScore)`, and `Trackr.DeliberateUntil(target)` for declaring counterexample selection directly inside a Checkr.
 * Added `Checkr.Distinguish(() => value)` for declaring distinct failure categories inside a Checkr.
 * Removed configuration-based deliberation; run-level policies are now declared with `Trackr.Deliberate(...)`.
+* Fixed action shrinking so ordinary `Checkr.Act` steps remain in the report and only `Checkr.ShrinkableAct` steps are evaluated as removal candidates.
 
 ## 0.2.3: Walk This Way
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.
