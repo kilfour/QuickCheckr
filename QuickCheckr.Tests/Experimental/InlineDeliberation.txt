@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                InlineDeliberation.cs:17:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    764624976
+ ------------------------------------------------------------
+  Executed:
+   - The List = [ 1, 0 ]
+ ========================================================================
+  !! Expectation Failed: No two different indexes point to each other.
+ ========================================================================

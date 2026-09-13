@@ -102,6 +102,35 @@ public class Memory
     public ShortTermMemory ShortTermMemory { get; } = new();
     public bool IsConfigRun { get; set; } = false;
     // --------------------------------------------------------------------------
+    // Case Selection
+    private bool hasDeliberation;
+    private bool hasDistinction;
+    internal bool Deliberating { get; set; }
+    internal bool Distinguishing { get; set; }
+    internal bool HasDeliberation => hasDeliberation;
+    internal bool HasDistinction => hasDistinction;
+    internal void StoreDeliberation(Func<int> score)
+    {
+        hasDeliberation = true;
+        if (Deliberating)
+            ShortTermMemory.StoreDeliberation(score());
+    }
+    internal void StoreDeliberationTarget(int target)
+    {
+        if (Deliberating)
+            ShortTermMemory.StoreDeliberationTarget(target);
+    }
+    internal void StoreDistinction(Func<object?> distinction)
+    {
+        hasDistinction = true;
+        if (Distinguishing)
+            ShortTermMemory.StoreDistinction(distinction());
+    }
+    internal void ClearCaseSelection()
+        => ShortTermMemory.ClearCaseSelection();
+    internal CaseSelectionResult? GetCaseSelection()
+        => ShortTermMemory.GetCaseSelection();
+    // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
     {

@@ -40,25 +40,22 @@ public class CaseFile : IRecord
     public int TraceCount => ExecutionDepositions.Sum(a => a.TraceDepositions.Count);
     public int WarningCount => ExecutionDepositions.Sum(a => a.WarningDepositions.Count);
     public int PassedExpectationCount => PassedExpectations.Count;
+    public int? DeliberationScore { get; private set; }
+    public int? DeliberationTarget { get; private set; }
+    internal object? Distinction { get; private set; }
+    internal bool HasDistinction => Distinction is not null;
 
-
-    public T GetInput<T>(string key)
+    internal CaseFile AddDeliberation(int score, int? target)
     {
-        return (T)ExecutionDepositions
-            .SelectMany(a => a.InputDepositions)
-            .Where(a => a.Label == key)
-            .Select(a => a.GetReduxOrValueAsObject())
-            .First();
+        DeliberationScore = score;
+        DeliberationTarget = target;
+        return this;
     }
 
-    public int InputsNamed<T>(string key, Func<T, int> calculateScore)
+    internal CaseFile AddDistinction(object distinction)
     {
-        if (!HasEvidence) return int.MaxValue;
-        return ExecutionDepositions
-            .SelectMany(a => a.InputDepositions)
-            .Where(a => a.Label == key)
-            .Select(a => a.GetReduxOrValueAsObject())
-            .Sum(a => calculateScore((T)a));
+        Distinction = distinction;
+        return this;
     }
 
     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning

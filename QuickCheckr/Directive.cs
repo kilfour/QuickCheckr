@@ -7,8 +7,8 @@ public sealed record Directive
 {
     public static Directive Default { get; } = new();
 
-    public Func<CaseFile, object> ClassifyBy { get; init; }
-        = a => CaseFileFingerprints.FingerPrint(a);
+    public Func<CaseFile, object> Distinguish { get; init; }
+        = a => a.Distinction ?? CaseFileFingerprints.FingerPrint(a);
 
     public int? MaxCaseFiles { get; init; }
 

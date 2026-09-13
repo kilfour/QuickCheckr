@@ -1,6 +1,8 @@
 ## 0.2.4: Collapsing New Buildings (*not yet released*)
 * Added `Shrink.Collapse<T>(...)` for supplying one or more descendant selectors.
 * Replaced silent scoped-swap exception handling with an explicit rejected-candidate replay outcome.
+* Added `Checkr.Deliberate(() => score)` and `Checkr.DeliberateUntil(target)` for declaring counterexample selection directly inside a Checkr.
+* Added `Checkr.Distinguish(() => value)` for declaring distinct failure categories inside a Checkr.
 
 ## 0.2.3: Walk This Way
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.

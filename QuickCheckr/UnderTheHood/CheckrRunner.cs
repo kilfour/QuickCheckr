@@ -34,7 +34,10 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         var shrinkCount = 0;
 
         if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerification.Key))
+        {
+            RunCaseSelection();
             return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
+        }
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
             shrinkCount += new ExecutionShrinker(State, Check).Run();
@@ -50,7 +53,17 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
         if (config.ReportMode.HasFlag(ReportMode.FinalTrace))
             new FinalTraceRun(State, Check).Run();
 
+        RunCaseSelection();
+
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
+    }
+
+    private void RunCaseSelection()
+    {
+        var deliberate = State.Memory.HasDeliberation && config.Deliberation is null;
+        var distinguish = State.Memory.HasDistinction;
+        if (deliberate || distinguish)
+            new CaseSelectionRun(State, Check, deliberate, distinguish).Run();
     }
 
     private CaseFile CompileTheCaseFile(
@@ -74,6 +87,15 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
                 ReportMode: config.ReportMode,
                 WarningLevel: config.WarningLevel
             );
-        return Compile.TheCaseFile(dossier, State.Memory, State.ClassificationFormatter.InputPrinter);
+        var caseFile = Compile.TheCaseFile(
+            dossier,
+            State.Memory,
+            State.ClassificationFormatter.InputPrinter);
+        var selection = State.Memory.GetCaseSelection();
+        if (selection?.DeliberationScore is { } score)
+            caseFile.AddDeliberation(score, selection.DeliberationTarget);
+        if (selection?.Distinction is { } distinction)
+            caseFile.AddDistinction(distinction);
+        return caseFile;
     }
 }

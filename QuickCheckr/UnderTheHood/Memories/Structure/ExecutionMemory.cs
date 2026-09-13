@@ -11,6 +11,31 @@ namespace QuickCheckr.UnderTheHood.Memories.Structure;
 public class ExecutionMemory
 {
     // --------------------------------------------------------------------------
+    // Case Selection
+    private readonly List<int> deliberationScores = [];
+    private int? deliberationTarget;
+    private readonly List<object?> distinctions = [];
+    internal void StoreDeliberation(int score)
+        => deliberationScores.Add(score);
+    internal IReadOnlyList<int> GetDeliberationScores() => deliberationScores;
+    internal void StoreDeliberationTarget(int target)
+    {
+        if (deliberationTarget.HasValue)
+            throw new InvalidOperationException(
+                "Checkr.DeliberateUntil may only be used once per execution.");
+        deliberationTarget = target;
+    }
+    internal int? GetDeliberationTarget() => deliberationTarget;
+    internal void StoreDistinction(object? distinction)
+        => distinctions.Add(distinction);
+    internal IReadOnlyList<object?> GetDistinctions() => distinctions;
+    internal void ClearCaseSelection()
+    {
+        deliberationScores.Clear();
+        deliberationTarget = null;
+        distinctions.Clear();
+    }
+    // --------------------------------------------------------------------------
     // Inputs
     private readonly OverlayMemoryBank inputs = new();
     public T? StoreInput<T>(string key, Func<T> factory)
@@ -198,4 +223,28 @@ public class ExecutionMemory
     public IReadOnlyList<Warning> GetWarnings()
         => [.. warnings.Values.Values];
     // --------------------------------------------------------------------------
+}
+
+internal sealed record CaseSelectionResult(
+    int? DeliberationScore,
+    int? DeliberationTarget,
+    DistinctionKey? Distinction);
+
+internal sealed class DistinctionKey(IReadOnlyList<object?> values) : IEquatable<DistinctionKey>
+{
+    private readonly IReadOnlyList<object?> values = values;
+
+    public bool Equals(DistinctionKey? other)
+        => other is not null && values.SequenceEqual(other.values);
+
+    public override bool Equals(object? obj)
+        => Equals(obj as DistinctionKey);
+
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+        foreach (var value in values)
+            hash.Add(value);
+        return hash.ToHashCode();
+    }
 }

@@ -33,15 +33,21 @@ public static class CheckrOfTConductInvestigations
         {
             var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty);
             inquiry.Add([.. findings.CaseFiles]);
-            if (findings.FalsifyingCaseFile is { } caseFile)
+            foreach (var caseFile in Candidates(findings))
             {
                 if (directive.Reject != null && directive.Reject(caseFile))
                     continue;
-                if (!caseFiles.Any(a => Equals(directive.ClassifyBy(a), directive.ClassifyBy(caseFile))))
-                {
+
+                var currentIndex = caseFiles.FindIndex(
+                    current => Equals(directive.Distinguish(current), directive.Distinguish(caseFile)));
+                if (currentIndex == -1)
                     caseFiles.Add(caseFile);
-                }
+                else if (IsPreferred(caseFile, caseFiles[currentIndex], config))
+                    caseFiles[currentIndex] = caseFile;
+
                 stop = NeedsToStop(directive, caseFiles, inquiry);
+                if (stop)
+                    break;
             }
         }
 
@@ -64,6 +70,39 @@ public static class CheckrOfTConductInvestigations
     {
         return directive.MaxCaseFiles is { } max && caseFiles.Count >= max && inquiry.Stop();
     }
+
+    private static IEnumerable<CaseFile> Candidates(Findings findings)
+    {
+        var failingCaseFiles = findings.CaseFiles.Where(caseFile => caseFile.HasEvidence).ToList();
+        return failingCaseFiles.Any(caseFile => caseFile.HasDistinction)
+            ? failingCaseFiles
+            : findings.FalsifyingCaseFile is { } caseFile
+                ? [caseFile]
+                : [];
+    }
+
+    private static bool IsPreferred(
+        CaseFile candidate,
+        CaseFile current,
+        CheckrRunnerConfig config)
+    {
+        if (config.Deliberation is { } deliberation)
+        {
+            var currentScore = deliberation.Score(current);
+            return !TargetReached(currentScore, deliberation.Target) &&
+                   deliberation.Score(candidate) < currentScore;
+        }
+
+        if (candidate.DeliberationScore is not { } candidateScore ||
+            current.DeliberationScore is not { } inlineCurrentScore)
+            return false;
+
+        return !TargetReached(inlineCurrentScore, current.DeliberationTarget) &&
+               candidateScore < inlineCurrentScore;
+    }
+
+    private static bool TargetReached(int score, int? target)
+        => target.HasValue && score <= target.Value;
 
     public static InvestigationCount Investigations(this int numberOfInvestigations) => new(numberOfInvestigations);
 

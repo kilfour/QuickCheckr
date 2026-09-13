@@ -39,14 +39,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     [DocContent("This Fuzzr generates a valid numeric expression string of variable length.  \n *Some Examples:*")]
     [DocCodeFile("ExpressionExamples.txt", "text")]
     public override void Example() =>
-        Document(a => a.Configure(a => Configure(a)).Run(640099888));
-
-    [CodeExample]
-    private CheckrConfig Configure(CheckrConfig config)
-        => config with
-        {
-            Deliberation = new Deliberation(cf => cf.InputsNamed<string>("Expression", a => a.Length), 4)
-        };
+        Document(a => a.Run(640099888));
 
     private readonly char[] operators = ['+', '-', '*', '/', '^'];
 
@@ -69,6 +62,8 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
                 select Selection.Defined,
                 // clean up unary minus noise
                 Stringr.AtleastOnce('-').Replace(t => "-").Defined())))
+        from deliberate in Checkr.Deliberate(() => input.Length)
+        from until in Checkr.DeliberateUntil(4)
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
         from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")

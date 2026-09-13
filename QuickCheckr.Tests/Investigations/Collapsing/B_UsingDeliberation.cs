@@ -17,12 +17,7 @@ public class B_UsingDeliberation : CheckrTest<B_UsingDeliberation>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Document(a => a
-            .Configure(cfg => cfg with
-            {
-                Deliberation = new(cf => GetDepth(cf.GetInput<Lister>("lister")), 1)
-            })
-            .Run(100.Runs()));
+        Document(a => a.Run(100.Runs()));
 
     private int GetDepth(Lister lister)
     {
@@ -34,6 +29,8 @@ public class B_UsingDeliberation : CheckrTest<B_UsingDeliberation>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from lister in Checkr.Input("lister", ListerFuzzr)
+        from deliberation in Checkr.Deliberate(() => GetDepth(lister))
+        from until in Checkr.DeliberateUntil(1)
         from expect in Checkr.Expect("no list sum > 100 && count >= 2", () => CheckLister(lister))
         select Case.Closed;
 

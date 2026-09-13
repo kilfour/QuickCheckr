@@ -62,6 +62,44 @@ public class ShortTermMemory
         => memories.Select(kv => (kv.Key, kv.Value));
 
     // --------------------------------------------------------------------------
+    // Case Selection
+    internal void StoreDeliberation(int score)
+        => Current.StoreDeliberation(score);
+    internal void StoreDeliberationTarget(int target)
+        => Current.StoreDeliberationTarget(target);
+    internal void StoreDistinction(object? distinction)
+        => Current.StoreDistinction(distinction);
+    internal void ClearCaseSelection()
+    {
+        foreach (var memory in memories.Values)
+            memory.ClearCaseSelection();
+    }
+    internal CaseSelectionResult? GetCaseSelection()
+    {
+        var scores = memories.Values
+            .SelectMany(memory => memory.GetDeliberationScores())
+            .ToList();
+        var distinctions = memories.Values
+            .SelectMany(memory => memory.GetDistinctions())
+            .ToList();
+        if (scores.Count == 0 && distinctions.Count == 0)
+            return null;
+
+        var targets = memories.Values
+            .Select(memory => memory.GetDeliberationTarget())
+            .Where(target => target.HasValue)
+            .Distinct()
+            .ToList();
+        if (targets.Count > 1)
+            throw new InvalidOperationException(
+                "Checkr.DeliberateUntil must use the same target in every execution.");
+
+        return new CaseSelectionResult(
+            scores.Count == 0 ? null : scores.Sum(),
+            targets.SingleOrDefault(),
+            distinctions.Count == 0 ? null : new DistinctionKey(distinctions));
+    }
+    // --------------------------------------------------------------------------
     // Inputs
     public T? StoreInput<T>(string key, Func<T> factory)
         => Current.StoreInput(key, factory);
