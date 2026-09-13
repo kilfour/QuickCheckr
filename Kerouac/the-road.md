@@ -2,19 +2,26 @@
 
 
 ### Doing
-* Supplr Experiment
+
 
 ### To Test
 
 
 ### Todo
 * Investigate/Fix eating the exceptions in `Memory.ScopedSwap`.
-* Add better assertions for findings and inquiries in Editor.
 * Check exception handling during shrinking for `PoolElement.Replace` and related operations.
 * Decide how reducer exceptions should be handled.
 * Decide whether and how to consolidate `ShrinkableAct`.
+* Remove flaky Collection Regrowth feature and add a message for the dev telling him to enable specific Deliberation Policy.
+* Document and settle on design of the Custom Shrinking API
+
+**nice to have:**
+* Add better assertions for findings and inquiries in Editor.
 * CompositeCustodian/Clerk ?
 * Revisit the Generate Unit Test idea ?
+
+
+
 
 ### Done/Ready for Changelog after review
 
@@ -85,6 +92,7 @@
 
 
 ## Ideas
+* Supplr Experiment
 * Expect returns Passed / Failed / NotExecuted => allows for (easier) conditional tracing
   Or maybe an object with an OnFail tracing method 
 * Add 'Witness' (candidate that made the run pass) to Redux 

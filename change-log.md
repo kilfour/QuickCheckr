@@ -4,6 +4,10 @@ Structural shrinking can now remove failure-irrelevant recursive wrappers before
   * A selected descendant replaces its parent only when replay confirms that the failure survives.
   * Successful collapses are repeated, allowing an entire chain to contract to its minimal failing descendant.
   * Rejected candidates leave the current structure intact, and reference cycles are detected by identity.
+* Replaced silent scoped-swap exception handling with an explicit rejected-candidate replay outcome.
+  * Property setters and reconstruction functions may reject speculative shrink candidates without aborting shrinking.
+  * Exceptions outside candidate application continue to propagate, while rejected candidates remain visible in diagnostics.
+  * Partially applied testimony swaps are rolled back when a later candidate is rejected.
 
 ## 0.2.3: Walk This Way
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.

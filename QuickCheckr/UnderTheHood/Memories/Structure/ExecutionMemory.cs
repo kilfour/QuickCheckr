@@ -49,24 +49,30 @@ public class ExecutionMemory
     public IDisposable WithTestimony(string key, object value)
     {
         var disposables = new List<IDisposable>();
-        // foreach (var item in lenses)
-        // {
-        //     foreach (var lens in item.Value)
-        //         disposables.Add(inputs.ScopedSwap(lens.Lenses, key, lens.Witness!));
-        // }
-        if (lenses.TryGetValue(key, out List<Testimony>? testimonies))
+        try
         {
-            foreach (var item in testimonies)
+            if (lenses.TryGetValue(key, out List<Testimony>? testimonies))
             {
-                disposables.Add(inputs.ScopedSwap(item.Lenses, key, item.Witness!));
+                foreach (var item in testimonies)
+                {
+                    disposables.Add(inputs.ScopedSwap(item.Lenses, key, item.Witness!));
+                }
             }
+            disposables.Add(inputs.ScopedSwap(key, value));
         }
-        disposables.Add(inputs.ScopedSwap(key, value));
-        return new DisposableAction(() =>
+        catch
         {
-            foreach (var disposable in disposables)
-                disposable.Dispose();
-        });
+            DisposeInReverseOrder(disposables);
+            throw;
+        }
+
+        return new DisposableAction(() => DisposeInReverseOrder(disposables));
+    }
+
+    private static void DisposeInReverseOrder(List<IDisposable> disposables)
+    {
+        for (var index = disposables.Count - 1; index >= 0; index--)
+            disposables[index].Dispose();
     }
     // --------------------------------------------------------------------------
 

@@ -47,20 +47,32 @@ public class EnumerableClassifier : Classifier
             }
             theList.Insert(ix, before);
             substitute = CloneList.GetSubstituteForType(info.Type, theList);
-            var disposable = context.State.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute);
-            if (disposable is not null)
+            IDisposable disposable;
+            try
             {
-                using (disposable)
+                disposable = context.State.Memory.ScopedSwap(info.ExecutionId, info.Key, substitute);
+            }
+            catch (CandidateRejectedException exception)
+            {
+                context.State.Pathologist.Inform(
+                    "CandidateRejected",
+                    info.Key,
+                    exception.Rejection.GetType().Name);
+                values.Add(InputRelevant.Create(context.PrintInput(before)));
+                index++;
+                continue;
+            }
+
+            using (disposable)
+            {
+                var swapper = new ListLens(elementType, ix);
+                using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                 {
-                    var swapper = new ListLens(elementType, ix);
-                    using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
-                    {
-                        var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
-                        var classification = selector.Classify(childInfo, context);
-                        values.Add(classification);
-                        if (classification is InputRelevant { Redux.HasValue: true } relevant)
-                            theList[ix] = relevant.Redux.Value!.Value;
-                    }
+                    var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
+                    var classification = selector.Classify(childInfo, context);
+                    values.Add(classification);
+                    if (classification is InputRelevant { Redux.HasValue: true } relevant)
+                        theList[ix] = relevant.Redux.Value!.Value;
                 }
             }
             index++;

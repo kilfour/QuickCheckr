@@ -18,23 +18,42 @@ public class PrimitiveClassifier : Classifier
     {
         var verifier = new Verifier(context.State, context.Check);
         var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.NormalizedType));
-        var primitiveVals = PrimitiveValues[primitiveKey];
-        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
+        var candidates = PrimitiveValues[primitiveKey]
+            .Where(x => !Equals(x, info.Value))
+            .ToList();
+        foreach (var candidate in candidates)
         {
-            if (verifier.RunPassed(info.ExecutionId, info.Key, candidate))
+            if (verifier.Run(info.ExecutionId, info.Key, candidate) is ReplayOutcome.Passed)
             {
                 return InputRelevant.Create(context.PrintInput(info.Value));
             }
         }
-        foreach (var candidate in primitiveVals.Where(x => !Equals(x, info.Value)))
+
+        object? witness = null;
+        var hasWitness = false;
+        var rejectedCandidate = false;
+        foreach (var candidate in candidates)
         {
-            //var witness = primitiveVals.First();
-            if (verifier.TestimonyPassed(info.ExecutionId, info.Key, candidate))
+            switch (verifier.Testimony(info.ExecutionId, info.Key, candidate))
             {
-                return InputRelevant.Create(context.PrintInput(info.Value));
+                case ReplayOutcome.Passed:
+                    return InputRelevant.Create(context.PrintInput(info.Value));
+                case ReplayOutcome.FailurePreserved when !hasWitness:
+                    witness = candidate;
+                    hasWitness = true;
+                    break;
+                case ReplayOutcome.CandidateRejected:
+                    rejectedCandidate = true;
+                    break;
             }
         }
-        context.State.Memory.Testify(info.ExecutionId, info.Key, primitiveVals.First());
+
+        if (!hasWitness)
+            return rejectedCandidate
+                ? InputRelevant.Create(context.PrintInput(info.Value))
+                : new InputAssumedIrrelevant();
+
+        context.State.Memory.Testify(info.ExecutionId, info.Key, witness!);
         return new InputAssumedIrrelevant();
     }
 
