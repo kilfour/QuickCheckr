@@ -62,3 +62,5 @@ DocsSinglePages/
 TestCoverage/
 TestReport/
 StrykerOutput/
+
+.env

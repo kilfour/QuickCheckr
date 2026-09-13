@@ -1,4 +1,4 @@
-## 0.2.4: Collapsing New Buildings (*not yet released*)
+## 0.3.0: Collapsing New Buildings (*not yet released*)
 * Added `Shrink.Collapse<T>(...)` for supplying one or more descendant selectors.
 * Replaced silent scoped-swap exception handling with an explicit rejected-candidate replay outcome.
 * Added `Checkr.Deliberate(() => executionScore)`, `Trackr.Deliberate(caseFile => runScore)`, and `Trackr.DeliberateUntil(target)` for declaring counterexample selection directly inside a Checkr.

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <QuickCheckrPackageVersion>0.0.0-smoke</QuickCheckrPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QuickCheckr" Version="$(QuickCheckrPackageVersion)" />
+  </ItemGroup>
+
+</Project>
