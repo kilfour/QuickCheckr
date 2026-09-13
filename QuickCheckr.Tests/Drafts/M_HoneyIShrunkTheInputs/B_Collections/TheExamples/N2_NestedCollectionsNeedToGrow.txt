@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                N2_NestedCollectionsNeedToGrow.cs:32:1
+ Location:                N2_NestedCollectionsNeedToGrow.cs:25:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    482835926
  ------------------------------------------------------------
   Executed:
-   - Input: Museum   = { A: [ 74, 41, 59 ] }
-            Redux      { A: [ ] }
-   - Trace: Original = { A: [ 74, 41, 59 ] }
+   - Museum   = { A: [ 74, 41, 59 ] }
+     Redux      { A: [ ] }
+   - Original = { A: [ 74, 41, 59 ] }
    - WARNING: No witness for reducer at 'Museum.A'.
  ==========================================
   !! Expectation Failed: List count >= 4

@@ -5,6 +5,7 @@
 * Added `Checkr.Distinguish(() => value)` for declaring distinct failure categories inside a Checkr.
 * Removed configuration-based deliberation; run-level policies are now declared with `Trackr.Deliberate(...)`.
 * Fixed action shrinking so ordinary `Checkr.Act` steps remain in the report and only `Checkr.ShrinkableAct` steps are evaluated as removal candidates.
+* Removed implicit collection regrowth from default shrinking. Empty collections deemed irrelevant now recommend an explicit non-empty witness with `Shrink.Values(...)` or opt-in sampling with `Shrink.Fuzzr(...)`.
 
 ## 0.2.3: Walk This Way
 Immutable-model traversal, richer expectations, broader numeric reduction, and sturdier string shrinking.

@@ -1,13 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                N_CollectionsNeedToGrow.cs:32:1
+ Location:                N_CollectionsNeedToGrow.cs:25:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    482835926
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ ]
-   - Trace: Original = [ 74, 41, 59 ]
+   - List     = [ 74, 41, 59 ]
+   - Original = [ 74, 41, 59 ]
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================

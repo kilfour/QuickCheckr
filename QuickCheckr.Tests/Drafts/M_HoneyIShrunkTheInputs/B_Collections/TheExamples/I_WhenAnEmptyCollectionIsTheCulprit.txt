@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:32:1
+ Location:                I_WhenAnEmptyCollectionIsTheCulprit.cs:19:1
  Original failing run:    1 execution
  Seed:                    2077876521
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ ]
-   - Trace: Original = [ ]
+   - List     = [ ]
+   - Original = [ ]
  ============================================
   !! Expectation Failed: List is not empty
  ============================================

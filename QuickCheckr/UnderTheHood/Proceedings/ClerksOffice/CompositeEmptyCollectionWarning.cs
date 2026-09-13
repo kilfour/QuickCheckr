@@ -7,7 +7,8 @@ public record CompositeEmptyCollectionWarning(IEnumerable<string> Entries) : War
 {
     public override string Message =>
 @$"Empty {Noun(Entries.Count())} deemed irrelevant at:
-{string.Join(Environment.NewLine, Entries)}";
+{string.Join(Environment.NewLine, Entries)}
+       {EmptyCollectionWarning.Suggestion}";
 
     private static string Noun(int count) => count == 1 ? "collection" : "collections";
 }

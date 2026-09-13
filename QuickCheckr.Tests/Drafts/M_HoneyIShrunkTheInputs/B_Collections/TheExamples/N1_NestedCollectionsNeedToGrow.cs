@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
@@ -11,7 +12,7 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExam
 public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNeedToGrow>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -36,12 +37,15 @@ public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNee
         Assert.Equal("List count >= 4", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Traces());
-        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(2, article.Total().Warnings());
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("{ A: [ 74, 41, 59 ] }", article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal(
+            $"Empty collection deemed irrelevant at input 'Museum'. {EmptyCollectionWarning.Suggestion}",
+            article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(2).Read().Value);
     }
 
     public record Museum(IEnumerable<int> A);

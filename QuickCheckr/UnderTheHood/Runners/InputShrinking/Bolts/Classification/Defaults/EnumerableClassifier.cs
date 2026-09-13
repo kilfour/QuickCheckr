@@ -29,7 +29,6 @@ public class EnumerableClassifier : Classifier
         var verifier = new Verifier(context.State, context.Check);
         var theList = CloneList.AsOriginalType(info.Value!);
         var values = new List<InputClassification>();
-        var elementCount = theList.Count;
         var elementType = GetElementType(info.Type);
         int index = 0;
         int indexKey = -1;
@@ -82,29 +81,8 @@ public class EnumerableClassifier : Classifier
         {
             return new CollectionRelevant(values);
         }
-        if (info.Key == info.Path)
-        {
-            var substitute = CloneList.GetSubstituteForType(info.Type, theList);
-            var fuzzr = context.State.Memory.GetFuzzr(info.ExecutionId, info.Key);
-            if (fuzzr is not null)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    try
-                    {
-                        if (verifier.RunPassed(info.ExecutionId, info.Key, fuzzr(context.State.FuzzrState).Value)!)
-                        {
-                            return new CollectionRelevant(values);
-                        }
-                    }
-                    catch (QuickFuzzr.UnderTheHood.WhenThingsGoWrong.UniqueValueExhaustedException)
-                    {
-                        i = 11;
-                    }
-
-                }
-            }
-        }
+        if (!context.State.Memory.HasClassifier(info))
+            context.Warn(info.Path, () => new EmptyCollectionWarning(info.Key, info.Path));
         return new InputAssumedIrrelevant();
     }
 

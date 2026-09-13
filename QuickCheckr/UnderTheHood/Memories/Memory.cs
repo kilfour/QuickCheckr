@@ -3,7 +3,6 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Warnings;
-using QuickFuzzr;
 using QuickPulse.Show.Bolts;
 
 namespace QuickCheckr.UnderTheHood.Memories;
@@ -148,17 +147,6 @@ public class Memory
         }
         return value;
     }
-    public T? StoreInputFuzzr<T>(string key, Func<FuzzrOf<T>> fuzzrFactory, Func<T> factory)
-    {
-        var value = ShortTermMemory.StoreInputFuzzr(KeyGuardian.Inputs.Check(key), fuzzrFactory, factory);
-        if (IsConfigRun)
-        {
-            ShortTermMemory.StoreOriginal(key, value);
-        }
-        return value;
-    }
-    public FuzzrOf<object>? GetFuzzr(int executionId, string key)
-        => ShortTermMemory.GetFuzzr(executionId, key);
     public object? GetCurrentInputValue(int executionId, string key)
         => ShortTermMemory.GetCurrentInputValue(executionId, key);
     // Input Showrs

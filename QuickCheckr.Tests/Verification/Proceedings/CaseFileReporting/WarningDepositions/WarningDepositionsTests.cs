@@ -44,7 +44,7 @@ public class WarningDepositionsTests : DepositionTest
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Executed:", reader.NextLine());
-        Assert.Equal("   - WARNING: Empty collection deemed irrelevant at input 'Input'.", reader.NextLine());
+        Assert.Equal($"   - WARNING: Empty collection deemed irrelevant at input 'Input'. {EmptyCollectionWarning.Suggestion}", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -60,6 +60,7 @@ public class WarningDepositionsTests : DepositionTest
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - WARNING: Empty collection deemed irrelevant at:", reader.NextLine());
         Assert.Equal("       Input: 0, 3", reader.NextLine());
+        Assert.Equal($"       {EmptyCollectionWarning.Suggestion}", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -75,6 +76,7 @@ public class WarningDepositionsTests : DepositionTest
         Assert.Equal("  Executed:", reader.NextLine());
         Assert.Equal("   - WARNING: Empty collection deemed irrelevant at:", reader.NextLine());
         Assert.Equal("       Input: Cars, Bikes", reader.NextLine());
+        Assert.Equal($"       {EmptyCollectionWarning.Suggestion}", reader.NextLine());
         EndOfContent(reader);
     }
 
@@ -95,6 +97,7 @@ public class WarningDepositionsTests : DepositionTest
         Assert.Equal("       InputOne", reader.NextLine());
         Assert.Equal("       InputTwo: 0, 3", reader.NextLine());
         Assert.Equal("       InputThree: Cars, Bikes", reader.NextLine());
+        Assert.Equal($"       {EmptyCollectionWarning.Suggestion}", reader.NextLine());
         EndOfContent(reader);
     }
 }

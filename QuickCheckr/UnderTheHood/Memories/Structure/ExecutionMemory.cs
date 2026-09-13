@@ -3,7 +3,6 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
-using QuickFuzzr;
 using QuickFuzzr.UnderTheHood;
 using QuickPulse.Show.Bolts;
 
@@ -47,15 +46,6 @@ public class ExecutionMemory
     private readonly OverlayMemoryBank inputs = new();
     public T? StoreInput<T>(string key, Func<T> factory)
         => inputs.Store(key, factory);
-
-    private readonly MemoryBank fuzzrs = new();
-    public T? StoreInputFuzzr<T>(string key, Func<FuzzrOf<T>> fuzzrFactory, Func<T> factory)
-    {
-        fuzzrs.Store(key, () => fuzzrFactory().AsObject());
-        return inputs.Store(key, factory);
-    }
-    public FuzzrOf<object>? GetFuzzr(string key)
-        => fuzzrs.Get<FuzzrOf<object>>(key);
 
     public TypedValue GetInput(string key)
        => inputs.Values[key];

@@ -1,13 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                N1_NestedCollectionsNeedToGrow.cs:32:1
+ Location:                N1_NestedCollectionsNeedToGrow.cs:24:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    482835926
  ------------------------------------------------------------
   Executed:
-   - Trace: Original = { A: [ 74, 41, 59 ] }
+   - Original = { A: [ 74, 41, 59 ] }
    - WARNING: All inputs were considered irrelevant.
+   - WARNING: Empty collection deemed irrelevant at input 'Museum'. If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================
