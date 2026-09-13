@@ -30,7 +30,7 @@ public class B_UsingDeliberation : CheckrTest<B_UsingDeliberation>
     protected override CheckrOf<Case> TheCheckr() =>
         from lister in Checkr.Input("lister", ListerFuzzr)
         from deliberation in Checkr.Deliberate(() => GetDepth(lister))
-        from until in Checkr.DeliberateUntil(1)
+        from until in Trackr.DeliberateUntil(1)
         from expect in Checkr.Expect("no list sum > 100 && count >= 2", () => CheckLister(lister))
         select Case.Closed;
 

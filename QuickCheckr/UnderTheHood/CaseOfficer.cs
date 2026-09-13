@@ -1,6 +1,5 @@
 using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
-using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood;
 
@@ -14,10 +13,7 @@ public class CaseOfficer
         AutopsyProbe autopsyProbe)
     {
         var findings = new Findings();
-        Deliberator? deliberator = config.Deliberation is null
-            ? null
-            : new Deliberator(config.Deliberation);
-        var inlineDeliberation = false;
+        Deliberator? deliberator = null;
         int? inlineTarget = null;
         CaseFile? firstDistinguishedCaseFile = null;
         for (int i = 0; i < runs.NumberOfRuns; i++)
@@ -29,18 +25,16 @@ public class CaseOfficer
             {
                 if (deliberator is null && caseFile.DeliberationScore.HasValue)
                 {
-                    inlineDeliberation = true;
                     inlineTarget = caseFile.DeliberationTarget;
                     deliberator = new Deliberator(
-                        new Deliberation(
-                            candidate => candidate.DeliberationScore ?? int.MaxValue,
-                            caseFile.DeliberationTarget));
+                        candidate => candidate.DeliberationScore ?? int.MaxValue,
+                        caseFile.DeliberationTarget);
                 }
-                else if (inlineDeliberation &&
+                else if (deliberator is not null &&
                          caseFile.DeliberationTarget != inlineTarget)
                 {
                     throw new InvalidOperationException(
-                        "Checkr.DeliberateUntil must use the same target in every run.");
+                        "Trackr.DeliberateUntil must use the same target in every run.");
                 }
 
                 if (deliberator is not null)

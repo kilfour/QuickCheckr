@@ -12,7 +12,6 @@ public record CheckrRunnerConfig
         ShrinkMode = config.ShrinkMode;
         ReportMode = config.ReportMode;
         WarningLevel = config.WarningLevel;
-        Deliberation = config.Deliberation;
         Clerk = config.Clerk;
         MaxStepsPerReducer = config.MaxStepsPerReducer;
     }
@@ -23,7 +22,6 @@ public record CheckrRunnerConfig
     public ShrinkMode ShrinkMode { get; }
     public ReportMode ReportMode { get; }
     public WarningLevel WarningLevel { get; }
-    public Deliberation? Deliberation { get; }
     public ITranscribe Clerk { get; }
     public int MaxStepsPerReducer { get; }
 }

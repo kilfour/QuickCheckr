@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -13,16 +14,21 @@ public class ExecutionMemory
     // --------------------------------------------------------------------------
     // Case Selection
     private readonly List<int> deliberationScores = [];
+    private readonly List<Func<CaseFile, int>> runDeliberationScores = [];
     private int? deliberationTarget;
     private readonly List<object?> distinctions = [];
     internal void StoreDeliberation(int score)
         => deliberationScores.Add(score);
     internal IReadOnlyList<int> GetDeliberationScores() => deliberationScores;
+    internal void StoreRunDeliberation(Func<CaseFile, int> score)
+        => runDeliberationScores.Add(score);
+    internal IReadOnlyList<Func<CaseFile, int>> GetRunDeliberationScores()
+        => runDeliberationScores;
     internal void StoreDeliberationTarget(int target)
     {
         if (deliberationTarget.HasValue)
             throw new InvalidOperationException(
-                "Checkr.DeliberateUntil may only be used once per execution.");
+                "Trackr.DeliberateUntil may only be used once per run.");
         deliberationTarget = target;
     }
     internal int? GetDeliberationTarget() => deliberationTarget;
@@ -32,6 +38,7 @@ public class ExecutionMemory
     internal void ClearCaseSelection()
     {
         deliberationScores.Clear();
+        runDeliberationScores.Clear();
         deliberationTarget = null;
         distinctions.Clear();
     }
@@ -226,7 +233,8 @@ public class ExecutionMemory
 }
 
 internal sealed record CaseSelectionResult(
-    int? DeliberationScore,
+    int? ExecutionDeliberationScore,
+    IReadOnlyList<Func<CaseFile, int>> RunDeliberationScores,
     int? DeliberationTarget,
     DistinctionKey? Distinction);
 

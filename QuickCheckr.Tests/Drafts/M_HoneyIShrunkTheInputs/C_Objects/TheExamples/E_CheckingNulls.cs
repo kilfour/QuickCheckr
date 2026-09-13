@@ -160,8 +160,8 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     }
 
     [Fact(Skip = "undeterministic")]
-    [DocContent("Or, we can solve the issue using a `DeliberationPolicy` that limits the number of warnings:")]
-    [DocExample(typeof(E_CheckingNulls), nameof(Configure))]
+    [DocContent("Or, we can deliberate over runs and prefer the one with the fewest warnings:")]
+    [DocExample(typeof(E_CheckingNulls), nameof(GetDeliberatedCheckr))]
     [DocCodeFile("E_CheckingNulls_Deliberated.txt", "text")]
     [DocContent(
 @"As you can see the warning is still there for `Universe.Everything` but this is a relevant input,
@@ -169,7 +169,7 @@ so the warning can be ignored.
 Deliberation did succeed in removing the `Universe.Irrelevant` input from the report.")]
     public void RunTest_WithDeliberationPolicy()
     {
-        var article = Journalist.Publish(GetCheckr(), a => a
+        var article = Journalist.Publish(GetDeliberatedCheckr(), a => a
                 .Configure(cfg => ConfigureNoStackTrace(cfg with { }))
                 .Run(75.ExecutionsPerRun()));
 
@@ -179,8 +179,10 @@ Deliberation did succeed in removing the `Universe.Irrelevant` input from the re
     }
 
     [CodeExample]
-    private static CheckrConfig Configure(CheckrConfig config)
-        => config with { Deliberation = Deliberation.MinimumWarnings() };
+    private static CheckrOf<Case> GetDeliberatedCheckr() =>
+        from deliberate in Trackr.Deliberate(Deliberation.MinimumWarnings())
+        from check in GetCheckr()
+        select Case.Closed;
 
     private static void Verify_Deliberated(Article article)
     {

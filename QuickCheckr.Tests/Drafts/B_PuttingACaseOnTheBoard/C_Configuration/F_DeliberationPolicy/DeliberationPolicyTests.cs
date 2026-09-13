@@ -16,7 +16,7 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.F_De
 //[DocFile]
 [DocContent(
 @"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
-Configuring a *DeliberationPolicy* allows us to instruct the Shrinker to explore the input further in a directed fasion.  
+Declaring run-level deliberation inside the Checkr allows us to explore the input further in a directed fashion.
 
 In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal fail-case.
 
@@ -99,23 +99,25 @@ public class DeliberationPolicyTests : BaseTest
     }
 
     [CodeExample]
-    private static CheckrConfig Configure(CheckrConfig config)
-        => config with { Deliberation = Deliberation.MinimumExecutions() };
+    private static CheckrOf<Case> GetDeliberatedCheckr() =>
+        from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
+        from check in GetCheckr()
+        select Case.Closed;
 
 
     [Fact]
     [DocContent(
 @"As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
 
-Let's add a *DeliberationPolicy*, looking for a fail-case with less executions:")]
-    [DocExample(typeof(DeliberationPolicyTests), nameof(Configure))]
+Let's deliberate over the completed runs, looking for a fail-case with less executions:")]
+    [DocExample(typeof(DeliberationPolicyTests), nameof(GetDeliberatedCheckr))]
     [DocContent("Running this test now, with `100.Runs()` and `10.ExecutionsPerRun()` consistently produces a two execution failure.")]
     [DocCodeFile("DeliberationPolicyMinimal.txt", "text")]
     [DocContent("The following predefined policies are available")]
     public void RunTest_Deliberated()
     {
-        var article = Journalist.Publish(GetCheckr(), a => a
-            .Configure(a => Configure(a)).Run(100.Runs(), 10.ExecutionsPerRun()));
+        var article = Journalist.Publish(GetDeliberatedCheckr(), a => a
+            .Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport(article, "DeliberationPolicyMinimal.txt", false);
         Verify_Deliberated(article);

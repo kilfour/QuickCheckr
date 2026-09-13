@@ -8,7 +8,7 @@ because I did not feel like combing through all the code looking for bugs manual
 **Demonstrates:**
 - Oracle style testing
 - Custom Reducers
-- Custom Deliberation Policies
+- Inline deliberation
   
 
 **The Checkr:**  
@@ -30,6 +30,8 @@ from input in Checkr.Input("Expression",
         select Selection.Defined,
         // clean up unary minus noise
         Stringr.AtleastOnce('-').Replace(t => "-").Defined())))
+from deliberate in Checkr.Deliberate(() => input.Length)
+from until in Trackr.DeliberateUntil(4)
 from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
 from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
 from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
@@ -37,15 +39,6 @@ from match in Checkr.ExpectWhen("Match",
     () => !double.IsNaN(oracleResult),
     () => oracleResult == result)
 select Case.Closed;
-```
-
-**The Configuration:**  
-```csharp
-private CheckrConfig Configure(CheckrConfig config)
-    => config with
-    {
-        Deliberation = new Deliberation(cf => cf.InputsNamed<string>("Expression", a => a.Length), 4)
-    };
 ```
 
 **The Report:**  

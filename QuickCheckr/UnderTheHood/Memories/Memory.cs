@@ -1,4 +1,5 @@
 using QuickCheckr.UnderTheHood.Memories.Structure;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickCheckr.UnderTheHood.Warnings;
@@ -115,9 +116,15 @@ public class Memory
         if (Deliberating)
             ShortTermMemory.StoreDeliberation(score());
     }
-    internal void StoreDeliberationTarget(int target)
+    internal void StoreRunDeliberation(Func<CaseFile, int> score, bool isLastExecution)
     {
-        if (Deliberating)
+        hasDeliberation = true;
+        if (Deliberating && isLastExecution)
+            ShortTermMemory.StoreRunDeliberation(score);
+    }
+    internal void StoreDeliberationTarget(int target, bool isLastExecution)
+    {
+        if (Deliberating && isLastExecution)
             ShortTermMemory.StoreDeliberationTarget(target);
     }
     internal void StoreDistinction(Func<object?> distinction)

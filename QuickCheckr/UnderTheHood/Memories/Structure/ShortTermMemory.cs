@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Warnings;
 using QuickFuzzr;
@@ -65,6 +66,8 @@ public class ShortTermMemory
     // Case Selection
     internal void StoreDeliberation(int score)
         => Current.StoreDeliberation(score);
+    internal void StoreRunDeliberation(Func<CaseFile, int> score)
+        => Current.StoreRunDeliberation(score);
     internal void StoreDeliberationTarget(int target)
         => Current.StoreDeliberationTarget(target);
     internal void StoreDistinction(object? distinction)
@@ -82,7 +85,10 @@ public class ShortTermMemory
         var distinctions = memories.Values
             .SelectMany(memory => memory.GetDistinctions())
             .ToList();
-        if (scores.Count == 0 && distinctions.Count == 0)
+        var runScores = memories.Values
+            .SelectMany(memory => memory.GetRunDeliberationScores())
+            .ToList();
+        if (scores.Count == 0 && runScores.Count == 0 && distinctions.Count == 0)
             return null;
 
         var targets = memories.Values
@@ -92,10 +98,11 @@ public class ShortTermMemory
             .ToList();
         if (targets.Count > 1)
             throw new InvalidOperationException(
-                "Checkr.DeliberateUntil must use the same target in every execution.");
+                "Trackr.DeliberateUntil must use the same target throughout the run.");
 
         return new CaseSelectionResult(
             scores.Count == 0 ? null : scores.Sum(),
+            runScores,
             targets.SingleOrDefault(),
             distinctions.Count == 0 ? null : new DistinctionKey(distinctions));
     }

@@ -23,7 +23,7 @@ public class InlineDeliberation : CheckrTest<InlineDeliberation>
             from enumerable in Fuzzr.Int(0, length - 1).Many(length)
             select enumerable.ToList())
         from deliberate in Checkr.Deliberate(() => list.Count)
-        from until in Checkr.DeliberateUntil(2)
+        from until in Trackr.DeliberateUntil(2)
         from expect in Checkr.Expect(
             "No two different indexes point to each other.",
             () => list.All(

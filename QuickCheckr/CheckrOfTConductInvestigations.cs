@@ -42,7 +42,7 @@ public static class CheckrOfTConductInvestigations
                     current => Equals(directive.Distinguish(current), directive.Distinguish(caseFile)));
                 if (currentIndex == -1)
                     caseFiles.Add(caseFile);
-                else if (IsPreferred(caseFile, caseFiles[currentIndex], config))
+                else if (IsPreferred(caseFile, caseFiles[currentIndex]))
                     caseFiles[currentIndex] = caseFile;
 
                 stop = NeedsToStop(directive, caseFiles, inquiry);
@@ -83,16 +83,8 @@ public static class CheckrOfTConductInvestigations
 
     private static bool IsPreferred(
         CaseFile candidate,
-        CaseFile current,
-        CheckrRunnerConfig config)
+        CaseFile current)
     {
-        if (config.Deliberation is { } deliberation)
-        {
-            var currentScore = deliberation.Score(current);
-            return !TargetReached(currentScore, deliberation.Target) &&
-                   deliberation.Score(candidate) < currentScore;
-        }
-
         if (candidate.DeliberationScore is not { } candidateScore ||
             current.DeliberationScore is not { } inlineCurrentScore)
             return false;

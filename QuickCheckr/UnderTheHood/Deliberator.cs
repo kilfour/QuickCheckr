@@ -1,26 +1,20 @@
 using QuickCheckr.FilingCabinet;
-using QuickCheckr.Protocol;
 
 namespace QuickCheckr.UnderTheHood;
 
 
-public class Deliberator(Deliberation? deliberation)
+public class Deliberator(
+    Func<CaseFile, int> scoringFunction,
+    int? deliberationTarget = null)
 {
     private record DeliberatedCaseFile(CaseFile CaseFile, int Score);
 
-    private readonly Func<CaseFile, int>? scoringFunction = deliberation?.Score;
-    private readonly int? deliberationTarget = deliberation?.Target;
     private DeliberatedCaseFile? current = null;
 
     public bool HasCaseFile => current is not null;
 
     public void Check(CaseFile caseFile)
     {
-        if (scoringFunction is null)
-        {
-            current = new(caseFile, 0);
-            return;
-        }
         var score = scoringFunction(caseFile);
         if (current is null)
         {

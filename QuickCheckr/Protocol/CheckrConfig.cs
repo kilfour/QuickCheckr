@@ -23,12 +23,9 @@ public record CheckrConfig
                 ShrinkMode = ShrinkMode.Default,
                 ReportMode = ReportMode.Default,
                 WarningLevel = WarningLevel.Important,
-                Deliberation = null,
                 MaxStepsPerReducer = 1024
             };
     }
-
-    public required Deliberation? Deliberation { get; init; }
 
     /// <summary>
     /// Controls how shrinking behaves for this run.  

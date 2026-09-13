@@ -24,7 +24,7 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 - And finally, all evidence and reports are saved to the vault.
 
 **Note:** An *Investigation* is a new kind of scope.  
-Running a Checkr in the *normal* way will always produce one report, even if used with a DeliberationPolicy.  
+Running a Checkr in the *normal* way will always produce one report, even if it declares deliberation.
 When you're gathering evidence, a report is generated per Investigation. This allows for finding different bugs in the same system,
 or for documenting the different ways a single bug can manifest.
 

@@ -60,7 +60,7 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
 
     private void RunCaseSelection()
     {
-        var deliberate = State.Memory.HasDeliberation && config.Deliberation is null;
+        var deliberate = State.Memory.HasDeliberation;
         var distinguish = State.Memory.HasDistinction;
         if (deliberate || distinguish)
             new CaseSelectionRun(State, Check, deliberate, distinguish).Run();
@@ -92,8 +92,13 @@ public class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int n
             State.Memory,
             State.ClassificationFormatter.InputPrinter);
         var selection = State.Memory.GetCaseSelection();
-        if (selection?.DeliberationScore is { } score)
+        if (selection is not null &&
+            (selection.ExecutionDeliberationScore.HasValue || selection.RunDeliberationScores.Count != 0))
+        {
+            var score = selection.ExecutionDeliberationScore ?? 0;
+            score += selection.RunDeliberationScores.Sum(calculate => calculate(caseFile));
             caseFile.AddDeliberation(score, selection.DeliberationTarget);
+        }
         if (selection?.Distinction is { } distinction)
             caseFile.AddDistinction(distinction);
         return caseFile;

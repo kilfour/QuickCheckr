@@ -18,7 +18,7 @@ public partial class TheBroadcasterTest : BaseTest
     public void AllInOne()
     {
         var article = Journalist.Publish(GetCheckr(), a => a
-            .Configure(a => a with { Deliberation = Deliberation.MinimumExecutions() }).Run(100.Runs(), 10.ExecutionsPerRun()));
+            .Run(100.Runs(), 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
         WriteReport<TheBroadcasterTest>(article, false);
     }
@@ -29,6 +29,7 @@ public partial class TheBroadcasterTest : BaseTest
         return
             from factory in Trackr.Stashed(() => new TestClientProxyFactory())
             from broadcaster in Trackr.Stashed(() => new Broadcaster(factory))
+            from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
             from _ in Checkr.OneOfWhen(
 
                 // 1) Register

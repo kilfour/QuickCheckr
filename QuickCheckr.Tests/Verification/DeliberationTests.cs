@@ -13,7 +13,7 @@ public class DeliberationTests
         var check =
             from first in Checkr.Deliberate(() => 2)
             from second in Checkr.Deliberate(() => 3)
-            from until in Checkr.DeliberateUntil(5)
+            from until in Trackr.DeliberateUntil(5)
             from expect in Checkr.Expect("always fails", () => false)
             select Case.Closed;
 
@@ -32,8 +32,8 @@ public class DeliberationTests
     {
         var check =
             from deliberate in Checkr.Deliberate(() => 5)
-            from first in Checkr.DeliberateUntil(2)
-            from second in Checkr.DeliberateUntil(3)
+            from first in Trackr.DeliberateUntil(2)
+            from second in Trackr.DeliberateUntil(3)
             from expect in Checkr.Expect("always fails", () => false)
             select Case.Closed;
 
@@ -45,7 +45,7 @@ public class DeliberationTests
                 AutopsyProbe.Empty).Run());
 
         Assert.Equal(
-            "Checkr.DeliberateUntil may only be used once per execution.",
+            "Trackr.DeliberateUntil may only be used once per run.",
             exception.Message);
     }
 
@@ -70,9 +70,11 @@ public class DeliberationTests
     [Fact]
     public void PassingCasesDoNotEvaluateTheScore()
     {
-        var scoreCalls = 0;
+        var executionScoreCalls = 0;
+        var runScoreCalls = 0;
         var check =
-            from deliberate in Checkr.Deliberate(() => ++scoreCalls)
+            from executionScore in Checkr.Deliberate(() => ++executionScoreCalls)
+            from runScore in Trackr.Deliberate(_ => ++runScoreCalls)
             from expect in Checkr.Expect("always passes", () => true)
             select Case.Closed;
 
@@ -82,7 +84,8 @@ public class DeliberationTests
             1,
             AutopsyProbe.Empty).Run();
 
-        Assert.Equal(0, scoreCalls);
+        Assert.Equal(0, executionScoreCalls);
+        Assert.Equal(0, runScoreCalls);
     }
 
     [Fact]
@@ -121,7 +124,7 @@ public class DeliberationTests
                 currentScore = scores.Dequeue();
 
             Checkr.Deliberate(() => currentScore)(state);
-            Checkr.DeliberateUntil(2)(state);
+            Trackr.DeliberateUntil(2)(state);
             return Checkr.Expect("always fails", () => false)(state);
         };
 
@@ -137,33 +140,55 @@ public class DeliberationTests
     }
 
     [Fact]
-    public void ConfiguredDeliberationOverridesInlineDeliberation()
+    public void ExecutionAndRunScoresAreAddedTogether()
     {
-        var runs = 0;
-        var scoreCalls = 0;
-        CheckrOf<Case> check = state =>
-        {
-            if (!state.EvidenceRecorder.IsReplay)
-                runs++;
+        var runScoreCalls = 0;
+        var check =
+            from executionScore in Checkr.Deliberate(() => 2)
+            from runScore in Trackr.Deliberate(caseFile =>
+            {
+                runScoreCalls++;
+                return caseFile.ExecutionCount + 2;
+            })
+            from until in Trackr.DeliberateUntil(5)
+            from expect in Checkr.Expect("always fails", () => false)
+            select Case.Closed;
 
-            Checkr.Deliberate(() => ++scoreCalls)(state);
-            Checkr.DeliberateUntil(0)(state);
-            return Checkr.Expect("always fails", () => false)(state);
-        };
-        var config = CheckrConfig.Default() with
-        {
-            Deliberation = Deliberation.MinimumExecutions()
-        };
-
-        var findings = CaseOfficer.Investigate(
+        var caseFile = new CheckrRunner(
             check,
-            3.Runs(),
-            1.ExecutionsPerRun(),
-            new CheckrRunnerConfig(config),
-            AutopsyProbe.Empty);
+            new CheckrRunnerConfig(CheckrConfig.Default()),
+            1,
+            AutopsyProbe.Empty).Run();
 
-        Assert.Equal(3, findings.NumberOfRuns);
-        Assert.Equal(3, runs);
-        Assert.Equal(0, scoreCalls);
+        Assert.Equal(5, caseFile.DeliberationScore);
+        Assert.Equal(5, caseFile.DeliberationTarget);
+        Assert.Equal(1, runScoreCalls);
+    }
+
+    [Fact]
+    public void ExecutionScoresAreAddedPerExecutionAndRunScoresOncePerRun()
+    {
+        var runScoreCalls = 0;
+        var check =
+            from executionScore in Checkr.Deliberate(() => 2)
+            from runScore in Trackr.Deliberate(caseFile =>
+            {
+                runScoreCalls++;
+                return caseFile.ExecutionCount;
+            })
+            from until in Trackr.DeliberateUntil(9)
+            from verify in Trackr.Verify("always fails", () => false)
+            select Case.Closed;
+        var config = CheckrConfig.Default() with { ShrinkMode = ShrinkMode.None };
+
+        var caseFile = new CheckrRunner(
+            check,
+            new CheckrRunnerConfig(config),
+            3,
+            AutopsyProbe.Empty).Run();
+
+        Assert.Equal(9, caseFile.DeliberationScore);
+        Assert.Equal(9, caseFile.DeliberationTarget);
+        Assert.Equal(1, runScoreCalls);
     }
 }
