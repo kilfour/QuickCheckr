@@ -19,7 +19,7 @@ public static partial class Checkr
     private static CheckrOf<ActResult<T>> TryShrinkableCatch<T>(string key, Func<T> func) =>
         state =>
         {
-            if (!state.EvidenceRecorder.IsReplay) // HACK
+            if (state.IsInitialRun)
                 state.Memory.StoreAction(key);
             if (ActionNeedsToBeSkipped(key, state))
             {
@@ -57,7 +57,7 @@ public static partial class Checkr
     private static CheckrOf<ActResult<T>> TryShrinkableCapture<T>(string key, Func<T> func, Func<Exception, T> onError) =>
         state =>
         {
-            if (!state.EvidenceRecorder.IsReplay) // HACK
+            if (state.IsInitialRun)
                 state.Memory.StoreAction(key);
             if (ActionNeedsToBeSkipped(key, state))
                 return CheckrResult.Some(state, ActResult<T>.NotExecuted);

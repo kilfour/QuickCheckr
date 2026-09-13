@@ -9,7 +9,7 @@ public static partial class Checkr
         {
             // if (ActionNeedsToBeSkipped(key, state))
             //      throw new CheckrWasNotExecuted();
-            if (!state.EvidenceRecorder.IsReplay) // HACK
+            if (state.IsInitialRun)
                 state.Memory.StoreAction(key);
             return TheCatcher.InTheCheckr(state,
                 () => CheckrResult.Some(state, func()),

@@ -24,6 +24,8 @@ public class CheckrState
         return Memory.Reset();
     }
 
+    public bool IsInitialRun => !EvidenceRecorder.IsReplay;
+
     private bool runStopped = false;
     private readonly int desiredNumberOfExecutions;
 
