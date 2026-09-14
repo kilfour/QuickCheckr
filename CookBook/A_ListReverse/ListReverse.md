@@ -39,8 +39,6 @@ select Case.Closed;
 ```
 
 **The Report:**  
-
-**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example

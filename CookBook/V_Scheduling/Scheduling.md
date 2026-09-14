@@ -72,6 +72,8 @@ So this model is a scheduling thingy, with a validation function that verifies w
 
 The Checkr itself is remarkably simple:
   
+
+**The Checkr:**  
 ```csharp
 from bookingOne in Checkr.Input("Booking One", TheFuzzr.ValidBooking)
 from bookingTwo in Checkr.Input("Booking Two", TheFuzzr.NonOverlappingBooking(bookingOne))
