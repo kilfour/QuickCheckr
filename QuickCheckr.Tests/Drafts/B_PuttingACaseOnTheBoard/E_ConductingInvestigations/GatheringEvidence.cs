@@ -1,6 +1,5 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;

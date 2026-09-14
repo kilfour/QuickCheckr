@@ -8,10 +8,27 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Configures operations and observations for a model-based Testr.
 /// Use after supplying both the model and the system under test.
 /// </summary>
-public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model, Func<U> sut)
+public sealed class WithSut<T, U>
 {
-    private readonly Func<T> model = model;
-    private readonly Func<U> sut = sut;
+    private readonly string testName;
+    private readonly bool useBuiltInReducers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<T> model;
+    private readonly Func<U> sut;
+
+    internal WithSut(
+        string testName,
+        bool useBuiltInReducers,
+        CheckrOf<Case>[] formatters,
+        Func<T> model,
+        Func<U> sut)
+    {
+        this.testName = testName;
+        this.useBuiltInReducers = useBuiltInReducers;
+        this.formatters = formatters;
+        this.model = model;
+        this.sut = sut;
+    }
 
     private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations = [];
 
@@ -322,6 +339,14 @@ public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Ca
         if (operations.Count == 0)
             throw new InvalidOperationException("No operations defined. Add at least one .Operation(...) before calling Observe(...).");
         return new(testName, useBuiltInReducers, formatters, model, sut, verifyReturnValues, operations,
-            Observation.From(label, observe, ((Tracer<T, U>)trace(new Tracer<T, U>())).TraceCheckr));
+            Observation.From(label, observe, ConfigureTrace(trace)));
+    }
+
+    private static Func<T, U, CheckrOf<Case>> ConfigureTrace(
+        Func<ITracer<T, U>, ITracer<T, U>> configure)
+    {
+        var tracer = new Tracer<T, U>();
+        configure(tracer);
+        return tracer.TraceCheckr;
     }
 }

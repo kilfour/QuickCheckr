@@ -10,19 +10,39 @@ namespace QuickTestr.Bolts.Builders.Property;
 /// Runs a property-based Testr against generated inputs.
 /// Use for Testrs defined with a boolean invariant through Assert.
 /// </summary>
-public class TestrPropertyRunner<TInput>(
-    FuzzrOf<TInput> fuzzr,
-    Shrinker[] shrinkers,
-    CheckrOf<Case>[] formatters,
-    Func<TInput, bool> invariant,
-    Func<TInput, int>? deliberation,
-    int? deliberationTarget,
-    string testName,
-    bool useBuiltInReducers) : TestrRunner<TInput>
+public sealed class TestrPropertyRunner<TInput> : TestrRunner<TInput>
 {
-    protected override string TestName { get; } = testName;
+    private readonly FuzzrOf<TInput> fuzzr;
+    private readonly Shrinker[] shrinkers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<TInput, bool> invariant;
+    private readonly Func<TInput, int>? deliberation;
+    private readonly int? deliberationTarget;
+    private readonly bool useBuiltInReducers;
 
-    protected override CheckrOf<Case> GetCheckr(
+    internal TestrPropertyRunner(
+        FuzzrOf<TInput> fuzzr,
+        Shrinker[] shrinkers,
+        CheckrOf<Case>[] formatters,
+        Func<TInput, bool> invariant,
+        Func<TInput, int>? deliberation,
+        int? deliberationTarget,
+        string testName,
+        bool useBuiltInReducers)
+    {
+        this.fuzzr = fuzzr;
+        this.shrinkers = shrinkers;
+        this.formatters = formatters;
+        this.invariant = invariant;
+        this.deliberation = deliberation;
+        this.deliberationTarget = deliberationTarget;
+        this.useBuiltInReducers = useBuiltInReducers;
+        TestName = testName;
+    }
+
+    internal override string TestName { get; }
+
+    internal override CheckrOf<Case> GetCheckr(
         Func<TInput, object>? distinguish = null,
         Func<TInput, bool>? rejectCaseWhen = null) =>
         from showr in Showr.ForInput()
@@ -45,7 +65,7 @@ public class TestrPropertyRunner<TInput>(
         from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)
         select Case.Closed;
 
-    protected override Func<CheckrConfig, CheckrConfig> GetConfig()
+    internal override Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
         {

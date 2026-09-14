@@ -11,7 +11,7 @@ namespace QuickTestr.Bolts.ClerksOffice;
 /// Provides the built-in report style guides used by QuickTestr model-based tests.
 /// Use when comparing a System Under Test (SUT) against a reference model.
 /// </summary>
-public class ModelClerk : ITranscribe
+internal sealed class ModelClerk : ITranscribe
 {
     /// <summary>
     /// Formats a case file using the model-based QuickTestr report style.

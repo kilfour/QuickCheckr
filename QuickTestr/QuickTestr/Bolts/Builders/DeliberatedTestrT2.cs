@@ -9,16 +9,37 @@ namespace QuickTestr.Bolts.Builders;
 /// Completes a Testr after deliberation has been configured.
 /// Use to finish the definition with either a property assertion or an oracle comparison.
 /// </summary>
-public class DeliberatedTestrT2<TInput1, TInput2>(
-    FuzzrOf<TInput1> fuzzrOfT1,
-    FuzzrOf<TInput2> fuzzrOfT2,
-    Shrinker[] shrinkers,
-    CheckrOf<Case>[] formatters,
-    Func<TInput1, TInput2, int>? deliberation,
-    int? deliberationTarget,
-    string testName,
-    bool useBuiltInReducers)
+public sealed class DeliberatedTestrT2<TInput1, TInput2>
 {
+    private readonly FuzzrOf<TInput1> fuzzrOfT1;
+    private readonly FuzzrOf<TInput2> fuzzrOfT2;
+    private readonly Shrinker[] shrinkers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<TInput1, TInput2, int>? deliberation;
+    private readonly int? deliberationTarget;
+    private readonly string testName;
+    private readonly bool useBuiltInReducers;
+
+    internal DeliberatedTestrT2(
+        FuzzrOf<TInput1> fuzzrOfT1,
+        FuzzrOf<TInput2> fuzzrOfT2,
+        Shrinker[] shrinkers,
+        CheckrOf<Case>[] formatters,
+        Func<TInput1, TInput2, int>? deliberation,
+        int? deliberationTarget,
+        string testName,
+        bool useBuiltInReducers)
+    {
+        this.fuzzrOfT1 = fuzzrOfT1;
+        this.fuzzrOfT2 = fuzzrOfT2;
+        this.shrinkers = shrinkers;
+        this.formatters = formatters;
+        this.deliberation = deliberation;
+        this.deliberationTarget = deliberationTarget;
+        this.testName = testName;
+        this.useBuiltInReducers = useBuiltInReducers;
+    }
+
     /// <summary>
     /// Defines the property that must hold for generated inputs.
     /// Use for direct property-based testing after adding deliberation settings.

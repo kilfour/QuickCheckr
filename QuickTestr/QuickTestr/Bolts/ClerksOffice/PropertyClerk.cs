@@ -11,7 +11,7 @@ namespace QuickTestr.Bolts.ClerksOffice;
 /// Provides the built-in report style guides used by QuickTestr.
 /// Use when you want the standard compact formatting for property-based cases.
 /// </summary>
-public class PropertyClerk : ITranscribe
+internal sealed class PropertyClerk : ITranscribe
 {
     /// <summary>
     /// Formats a case file using the property-based QuickTestr report style.

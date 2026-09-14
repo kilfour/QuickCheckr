@@ -7,17 +7,40 @@ namespace QuickTestr.Bolts.Builders.Oracle;
 /// Completes an oracle-based Testr after the expected behavior has been defined.
 /// Use to provide the implementation that should match the trusted model.
 /// </summary>
-public class OracleTestrT2<TInput1, TInput2, TResult>(
-    FuzzrOf<TInput1> fuzzrOfT1,
-    FuzzrOf<TInput2> fuzzrOfT2,
-    Shrinker[] shrinkers,
-    CheckrOf<Case>[] formatters,
-    Func<TInput1, TInput2, TResult> expected,
-    Func<TInput1, TInput2, int>? deliberation,
-    int? deliberationTarget,
-    string testName,
-    bool useBuiltInReducers)
+public sealed class OracleTestrT2<TInput1, TInput2, TResult>
 {
+    private readonly FuzzrOf<TInput1> fuzzrOfT1;
+    private readonly FuzzrOf<TInput2> fuzzrOfT2;
+    private readonly Shrinker[] shrinkers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<TInput1, TInput2, TResult> expected;
+    private readonly Func<TInput1, TInput2, int>? deliberation;
+    private readonly int? deliberationTarget;
+    private readonly string testName;
+    private readonly bool useBuiltInReducers;
+
+    internal OracleTestrT2(
+        FuzzrOf<TInput1> fuzzrOfT1,
+        FuzzrOf<TInput2> fuzzrOfT2,
+        Shrinker[] shrinkers,
+        CheckrOf<Case>[] formatters,
+        Func<TInput1, TInput2, TResult> expected,
+        Func<TInput1, TInput2, int>? deliberation,
+        int? deliberationTarget,
+        string testName,
+        bool useBuiltInReducers)
+    {
+        this.fuzzrOfT1 = fuzzrOfT1;
+        this.fuzzrOfT2 = fuzzrOfT2;
+        this.shrinkers = shrinkers;
+        this.formatters = formatters;
+        this.expected = expected;
+        this.deliberation = deliberation;
+        this.deliberationTarget = deliberationTarget;
+        this.testName = testName;
+        this.useBuiltInReducers = useBuiltInReducers;
+    }
+
     /// <summary>
     /// Defines the implementation that should match the expected result.
     /// Use to finish an oracle-style Testr and obtain a runnable comparison.

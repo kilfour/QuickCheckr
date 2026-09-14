@@ -1,6 +1,7 @@
 ### 0.1.0: Bringing It All Back Home
 * Added seeded debug runs with `AutopsyProbe` support.
 * Improved oracle diagnostics by recording inputs and results and displaying `null` results explicitly.
+* Reduced the public extension surface by sealing fluent types, hiding their constructors, and internalizing implementation helpers.
 
 ### 0.0.7: This Year's Model
 * Added initial support for model-based testing.

@@ -8,10 +8,14 @@ namespace QuickTestr.Bolts.Builders;
 /// Starts the fluent configuration of a Testr.
 /// Use to opt into case-file storage or move on to input generation.
 /// </summary>
-public class NamedTestr(string testName)
+public sealed class NamedTestr
 {
+    private readonly string testName;
     private bool useBuiltInReducers = true;
     private CheckrOf<Case>[] formatters = [];
+
+    internal NamedTestr(string testName)
+        => this.testName = testName;
 
     /// <summary>
     /// Disables the built-in value reduction step during shrinking.

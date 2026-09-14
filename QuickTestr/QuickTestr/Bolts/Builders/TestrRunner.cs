@@ -13,9 +13,11 @@ namespace QuickTestr.Bolts.Builders;
 /// </summary>
 public abstract class TestrRunner<TInput>
 {
-    protected string fileName = string.Empty;
-    protected virtual string TestName { get; } = string.Empty;
-    protected ICustodian? custodian;
+    internal string fileName = string.Empty;
+    internal virtual string TestName { get; } = string.Empty;
+    internal ICustodian? custodian;
+
+    internal TestrRunner() { }
 
     /// <summary>
     /// Runs the Testr using the default number of runs.
@@ -127,8 +129,8 @@ public abstract class TestrRunner<TInput>
     private Func<CheckrConfig, CheckrConfig> AddFileAsToConfig()
         => a => GetConfig()(a) with { FileAs = TestName };
 
-    protected abstract CheckrOf<Case> GetCheckr(
+    internal abstract CheckrOf<Case> GetCheckr(
         Func<TInput, object>? distinguish = null,
         Func<TInput, bool>? rejectCaseWhen = null);
-    protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();
+    internal abstract Func<CheckrConfig, CheckrConfig> GetConfig();
 }

@@ -11,20 +11,42 @@ namespace QuickTestr.Bolts.Builders.Oracle;
 /// Runs an oracle-based Testr by comparing expected and actual behavior.
 /// Use for Testrs defined through Expected and Actual.
 /// </summary>
-public class TestrOracleRunner<TInput, TResult>(
-    FuzzrOf<TInput> fuzzr,
-    Shrinker[] shrinkers,
-    CheckrOf<Case>[] formatters,
-    Func<TInput, TResult> Expected,
-    Func<TInput, TResult> Actual,
-    Func<TInput, int>? Deliberation,
-    int? DeliberationTarget,
-    string testName,
-    bool UseBuiltInReducers) : TestrRunner<TInput>
+public sealed class TestrOracleRunner<TInput, TResult> : TestrRunner<TInput>
 {
-    protected override string TestName { get; } = testName;
+    private readonly FuzzrOf<TInput> fuzzr;
+    private readonly Shrinker[] shrinkers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<TInput, TResult> Expected;
+    private readonly Func<TInput, TResult> Actual;
+    private readonly Func<TInput, int>? Deliberation;
+    private readonly int? DeliberationTarget;
+    private readonly bool UseBuiltInReducers;
 
-    protected override CheckrOf<Case> GetCheckr(
+    internal TestrOracleRunner(
+        FuzzrOf<TInput> fuzzr,
+        Shrinker[] shrinkers,
+        CheckrOf<Case>[] formatters,
+        Func<TInput, TResult> expected,
+        Func<TInput, TResult> actual,
+        Func<TInput, int>? deliberation,
+        int? deliberationTarget,
+        string testName,
+        bool useBuiltInReducers)
+    {
+        this.fuzzr = fuzzr;
+        this.shrinkers = shrinkers;
+        this.formatters = formatters;
+        Expected = expected;
+        Actual = actual;
+        Deliberation = deliberation;
+        DeliberationTarget = deliberationTarget;
+        UseBuiltInReducers = useBuiltInReducers;
+        TestName = testName;
+    }
+
+    internal override string TestName { get; }
+
+    internal override CheckrOf<Case> GetCheckr(
         Func<TInput, object>? distinguish = null,
         Func<TInput, bool>? rejectCaseWhen = null) =>
         from showr in Showr.ForInput()
@@ -82,7 +104,7 @@ public class TestrOracleRunner<TInput, TResult>(
         return false;
     }
 
-    protected override Func<CheckrConfig, CheckrConfig> GetConfig()
+    internal override Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
         {

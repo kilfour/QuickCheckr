@@ -6,19 +6,19 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Represents a state comparison used in model-based testing.
 /// Use to capture an invariant that should hold between the model and the system under test.
 /// </summary>
-public record Observation<T, U>(Func<T, U, CheckrOf<Case>> Observe);
+internal sealed record Observation<T, U>(Func<T, U, CheckrOf<Case>> Observe);
 
 /// <summary>
 /// Creates model-based observations from labeled predicates.
 /// Use when you want to define reusable checks between the model and the system under test.
 /// </summary>
-public static class Observation
+internal static class Observation
 {
     /// <summary>
     /// Creates an observation from a labeled predicate and optional trace output.
     /// Use when a model-based assertion should emit extra evidence on failure.
     /// </summary>
-    public static Observation<T, U> From<T, U>(string label, Func<T, U, bool> observe, Func<T, U, CheckrOf<Case>>? trace = null)
+    internal static Observation<T, U> From<T, U>(string label, Func<T, U, bool> observe, Func<T, U, CheckrOf<Case>>? trace = null)
         => new((m, s) =>
         {
             if (trace is not null)
@@ -35,4 +35,4 @@ public static class Observation
 /// Represents a model-based operation and its accompanying trace.
 /// Use when you need to package a state transition together with its diagnostic output.
 /// </summary>
-public record Operation<T, U>(Func<T, U, CheckrOf<Case>> Operate, Func<T, U, CheckrOf<Case>> Trace);
+internal sealed record Operation<T, U>(Func<T, U, CheckrOf<Case>> Operate, Func<T, U, CheckrOf<Case>> Trace);

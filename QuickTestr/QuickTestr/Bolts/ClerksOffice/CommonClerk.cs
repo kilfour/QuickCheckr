@@ -6,7 +6,7 @@ using QuickPulse;
 
 namespace QuickTestr.Bolts.ClerksOffice;
 
-public static class CommonClerk
+internal static class CommonClerk
 {
 
     /// <summary>

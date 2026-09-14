@@ -6,7 +6,7 @@ using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
+namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 
 [DocFileHeader("Distinguishing Failures")]
 [DocContent(

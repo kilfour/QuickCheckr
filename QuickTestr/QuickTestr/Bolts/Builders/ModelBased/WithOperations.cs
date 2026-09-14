@@ -11,18 +11,37 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Completes a model-based Testr after operations and an initial observation are defined.
 /// Use when adding more observations or running the configured model-based check.
 /// </summary>
-public class WithOperations<T, U>(
-    string testName,
-    bool useBuiltInReducers,
-    CheckrOf<Case>[] formatters,
-    Func<T> model,
-    Func<U> sut,
-    bool verifyReturnValues,
-    List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
-    Observation<T, U> observation)
+public sealed class WithOperations<T, U>
 {
     private string fileName = string.Empty;
     private ICustodian? custodian;
+    private readonly bool useBuiltInReducers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly bool verifyReturnValues;
+    private readonly Func<T> model;
+    private readonly Func<U> sut;
+    private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations;
+    private readonly List<Observation<T, U>> observations;
+
+    internal WithOperations(
+        string testName,
+        bool useBuiltInReducers,
+        CheckrOf<Case>[] formatters,
+        Func<T> model,
+        Func<U> sut,
+        bool verifyReturnValues,
+        List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
+        Observation<T, U> observation)
+    {
+        TestName = testName;
+        this.useBuiltInReducers = useBuiltInReducers;
+        this.formatters = formatters;
+        this.model = model;
+        this.sut = sut;
+        this.verifyReturnValues = verifyReturnValues;
+        this.operations = operations;
+        observations = [observation];
+    }
 
     /// <summary>
     /// Persists case files for this Testr under its test name.
@@ -39,7 +58,7 @@ public class WithOperations<T, U>(
     /// Gets the display name of this Testr.
     /// Use when you need the configured name for reporting or storage.
     /// </summary>
-    public string TestName { get; } = testName;
+    public string TestName { get; }
 
     /// <summary>
     /// Adds another observation to the model-based Testr.
@@ -57,7 +76,7 @@ public class WithOperations<T, U>(
     /// </summary>
     public WithOperations<T, U> Observe(string label, Func<T, U, bool> observe, Func<ITracer<T, U>, ITracer<T, U>> trace)
     {
-        observations.Add(Observation.From(label, observe, ((Tracer<T, U>)trace(new Tracer<T, U>())).TraceCheckr));
+        observations.Add(Observation.From(label, observe, ConfigureTrace(trace)));
         return this;
     }
 
@@ -112,11 +131,6 @@ public class WithOperations<T, U>(
         };
     }
 
-    private readonly Func<T> model = model;
-    private readonly Func<U> sut = sut;
-    private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations = operations;
-    private readonly List<Observation<T, U>> observations = [observation];
-
     private CheckrOf<Case> GetCheckr()
     {
         var checkr =
@@ -128,5 +142,13 @@ public class WithOperations<T, U>(
             from obs in Combine.Checkrs(observations.Select(a => a.Observe(m, s)))
             select Case.Closed;
         return checkr;
+    }
+
+    private static Func<T, U, CheckrOf<Case>> ConfigureTrace(
+        Func<ITracer<T, U>, ITracer<T, U>> configure)
+    {
+        var tracer = new Tracer<T, U>();
+        configure(tracer);
+        return tracer.TraceCheckr;
     }
 }

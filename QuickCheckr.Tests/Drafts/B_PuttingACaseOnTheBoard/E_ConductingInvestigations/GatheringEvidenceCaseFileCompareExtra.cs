@@ -3,7 +3,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
+namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 
 public class GatheringEvidenceCaseFileCompareExtra
 {

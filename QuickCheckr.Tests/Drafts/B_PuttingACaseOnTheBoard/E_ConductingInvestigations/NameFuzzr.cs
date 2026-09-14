@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickFuzzr;
 
-namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
+namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 
 public static class NameFuzzr
 {

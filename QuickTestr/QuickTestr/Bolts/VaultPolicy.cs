@@ -5,7 +5,7 @@ namespace QuickTestr.Bolts;
 /// Use to control which failures are considered distinct, how many are kept,
 /// or which inputs should be skipped.
 /// </summary>
-public record VaultPolicy<TInput>(
+public sealed record VaultPolicy<TInput>(
     Func<TInput, object> ClassifyBy,
     int? MaxStoredFailures = 10,
     Func<TInput, bool>? SkipWhen = null)

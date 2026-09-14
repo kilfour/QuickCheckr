@@ -11,7 +11,7 @@ namespace QuickTestr.Bolts.ClerksOffice;
 /// Provides the built-in report style guides used by QuickTestr.
 /// Use when you want the standard compact formatting for oracle-based cases.
 /// </summary>
-public class OracleClerk : ITranscribe
+internal sealed class OracleClerk : ITranscribe
 {
     /// <summary>
     /// Formats a case file using the oracle QuickTestr report style.

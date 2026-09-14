@@ -9,14 +9,30 @@ namespace QuickTestr.Bolts.Builders;
 /// Configures how a generated input should be reduced, formatted, or evaluated.
 /// Use to refine shrinking behavior before defining the actual assertion or oracle.
 /// </summary>
-public class InputTestrT2<T1, T2>(
-    string testName,
-    bool useBuiltInReducers,
-    CheckrOf<Case>[] formatters,
-    FuzzrOf<T1> fuzzrOfT1,
-    FuzzrOf<T2> fuzzrOfT2,
-    Shrinker[] shrinkers)
+public sealed class InputTestrT2<T1, T2>
 {
+    private readonly string testName;
+    private readonly bool useBuiltInReducers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly FuzzrOf<T1> fuzzrOfT1;
+    private readonly FuzzrOf<T2> fuzzrOfT2;
+    private readonly Shrinker[] shrinkers;
+
+    internal InputTestrT2(
+        string testName,
+        bool useBuiltInReducers,
+        CheckrOf<Case>[] formatters,
+        FuzzrOf<T1> fuzzrOfT1,
+        FuzzrOf<T2> fuzzrOfT2,
+        Shrinker[] shrinkers)
+    {
+        this.testName = testName;
+        this.useBuiltInReducers = useBuiltInReducers;
+        this.formatters = formatters;
+        this.fuzzrOfT1 = fuzzrOfT1;
+        this.fuzzrOfT2 = fuzzrOfT2;
+        this.shrinkers = shrinkers;
+    }
 
     /// <summary>
     /// Adds a deliberation score used to guide shrinking.

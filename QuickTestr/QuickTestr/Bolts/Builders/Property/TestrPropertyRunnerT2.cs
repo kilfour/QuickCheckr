@@ -10,20 +10,42 @@ namespace QuickTestr.Bolts.Builders.Property;
 /// Runs a property-based Testr against generated inputs.
 /// Use for Testrs defined with a boolean invariant through Assert.
 /// </summary>
-public class TestrPropertyRunnerT2<TInput1, TInput2>(
-    FuzzrOf<TInput1> fuzzrOfT1,
-    FuzzrOf<TInput2> fuzzrOfT2,
-    Shrinker[] shrinkers,
-    CheckrOf<Case>[] formatters,
-    Func<TInput1, TInput2, bool> Invariant,
-    Func<TInput1, TInput2, int>? Deliberation,
-    int? DeliberationTarget,
-    string testName,
-    bool UseBuiltInReducers) : TestrRunner<(TInput1, TInput2)>
+public sealed class TestrPropertyRunnerT2<TInput1, TInput2> : TestrRunner<(TInput1, TInput2)>
 {
-    protected override string TestName { get; } = testName;
+    private readonly FuzzrOf<TInput1> fuzzrOfT1;
+    private readonly FuzzrOf<TInput2> fuzzrOfT2;
+    private readonly Shrinker[] shrinkers;
+    private readonly CheckrOf<Case>[] formatters;
+    private readonly Func<TInput1, TInput2, bool> invariant;
+    private readonly Func<TInput1, TInput2, int>? deliberation;
+    private readonly int? deliberationTarget;
+    private readonly bool useBuiltInReducers;
 
-    protected override CheckrOf<Case> GetCheckr(
+    internal TestrPropertyRunnerT2(
+        FuzzrOf<TInput1> fuzzrOfT1,
+        FuzzrOf<TInput2> fuzzrOfT2,
+        Shrinker[] shrinkers,
+        CheckrOf<Case>[] formatters,
+        Func<TInput1, TInput2, bool> invariant,
+        Func<TInput1, TInput2, int>? deliberation,
+        int? deliberationTarget,
+        string testName,
+        bool useBuiltInReducers)
+    {
+        this.fuzzrOfT1 = fuzzrOfT1;
+        this.fuzzrOfT2 = fuzzrOfT2;
+        this.shrinkers = shrinkers;
+        this.formatters = formatters;
+        this.invariant = invariant;
+        this.deliberation = deliberation;
+        this.deliberationTarget = deliberationTarget;
+        this.useBuiltInReducers = useBuiltInReducers;
+        TestName = testName;
+    }
+
+    internal override string TestName { get; }
+
+    internal override CheckrOf<Case> GetCheckr(
         Func<(TInput1, TInput2), object>? distinguish = null,
         Func<(TInput1, TInput2), bool>? rejectCaseWhen = null) =>
         from showr in Showr.ForInput()
@@ -36,24 +58,24 @@ public class TestrPropertyRunnerT2<TInput1, TInput2>(
             () => rejectCaseWhen is not null,
             Checkr.RejectCaseWhen(() => rejectCaseWhen!(input)))
         from deliberate in Checkr.When(
-            () => Deliberation is not null,
-            Checkr.Deliberate(() => Deliberation!(input.Item1, input.Item2)))
+            () => deliberation is not null,
+            Checkr.Deliberate(() => deliberation!(input.Item1, input.Item2)))
         from deliberateUntil in Checkr.When(
-            () => DeliberationTarget.HasValue,
-            Trackr.DeliberateUntil(DeliberationTarget.GetValueOrDefault()))
-        from run in Checkr.ActCarefully("Run", () => Invariant(input.Item1, input.Item2))
-        from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input.Item1, input.Item2)))
+            () => deliberationTarget.HasValue,
+            Trackr.DeliberateUntil(deliberationTarget.GetValueOrDefault()))
+        from run in Checkr.ActCarefully("Run", () => invariant(input.Item1, input.Item2))
+        from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => invariant(input.Item1, input.Item2)))
         from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)
         select Case.Closed;
 
-    protected override Func<CheckrConfig, CheckrConfig> GetConfig()
+    internal override Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
         {
             FileAs = fileName,
             Clerk = new PropertyClerk(),
             Custodian = custodian is null ? Custodian.Default : custodian,
-            ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
+            ShrinkMode = useBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode
         };
     }
