@@ -1,17 +1,17 @@
 ## 0.3.0: Collapsing New Buildings
 
-
 ### Doing
 
 ### To Test
 
+- Check exception handling during shrinking for `PoolElement.Replace` and related operations.
+- Verify reducer exceptions leave shrinking in a valid state.
 
-### Todo
-* Action shrinking still makes a single ordered pass. Removing a later action can make an earlier retained action removable, but it is not reconsidered, so the result can remain order-dependent.
-* Check exception handling during shrinking for `PoolElement.Replace` and related operations.
-* Decide how reducer exceptions should be handled.
-* Document and settle on design of the Custom Shrinking API
-* Async overloads still block synchronously.
+### Later
+
+- Rework and document the custom shrinking API.
+- Reconsider removed actions until action shrinking reaches a fixed point.
+- Replace synchronously blocking async overloads with genuine async execution.
 
 **nice to have:**
 * Add better assertions for findings and inquiries in Editor.
