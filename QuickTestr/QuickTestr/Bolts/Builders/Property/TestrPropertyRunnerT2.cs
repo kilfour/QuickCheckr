@@ -27,6 +27,12 @@ public class TestrPropertyRunnerT2<TInput1, TInput2>(
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", Fuzzr.Tuple(fuzzrOfT1, fuzzrOfT2), shrinkers)
+        from deliberate in Checkr.When(
+            () => Deliberation is not null,
+            Checkr.Deliberate(() => Deliberation!(input.Item1, input.Item2)))
+        from deliberateUntil in Checkr.When(
+            () => DeliberationTarget.HasValue,
+            Trackr.DeliberateUntil(DeliberationTarget.GetValueOrDefault()))
         from run in Checkr.ActCarefully("Run", () => Invariant(input.Item1, input.Item2))
         from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input.Item1, input.Item2)))
         from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)

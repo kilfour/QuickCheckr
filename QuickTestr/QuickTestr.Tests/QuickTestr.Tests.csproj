@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="QuickCheckr.Authoring" Version="0.2.3" />
+    <!-- <PackageReference Include="QuickCheckr.Authoring" Version="0.2.3" /> -->
     <!-- <PackageReference Include="QuickPulse.Explains" Version="0.3.17" /> -->
   </ItemGroup>
 

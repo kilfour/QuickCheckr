@@ -28,6 +28,12 @@ public class TestrOracleRunnerT2<TInput1, TInput2, TResult>(
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", Fuzzr.Tuple(fuzzrOfT1, fuzzrOfT2), shrinkers)
+        from deliberate in Checkr.When(
+            () => deliberation is not null,
+            Checkr.Deliberate(() => deliberation!(input.Item1, input.Item2)))
+        from deliberateUntil in Checkr.When(
+            () => deliberationTarget.HasValue,
+            Trackr.DeliberateUntil(deliberationTarget.GetValueOrDefault()))
         from expected in Checkr.ActCarefully("Expected", () => expected(input.Item1, input.Item2))
         from actual in Checkr.ActCarefully("Actual", () => actual(input.Item1, input.Item2))
         from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expected.Threw && expected.HasValue, () => expected.Value)

@@ -29,6 +29,12 @@ public class TestrOracleRunner<TInput, TResult>(
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
         from noteInput in Autopsy.Note("Input", () => input)
+        from deliberate in Checkr.When(
+            () => Deliberation is not null,
+            Checkr.Deliberate(() => Deliberation!(input)))
+        from deliberateUntil in Checkr.When(
+            () => DeliberationTarget.HasValue,
+            Trackr.DeliberateUntil(DeliberationTarget.GetValueOrDefault()))
         from expected in Checkr.ActCarefully("Expected", () => Expected(input))
         from actual in Checkr.ActCarefully("Actual", () => Actual(input))
         from traceExpected in Trace("Expected", expected)
