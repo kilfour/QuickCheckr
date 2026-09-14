@@ -10,4 +10,4 @@ Explain.This<Documentation>("QuickTestr/Docs/doc.md");
 Explain.This<DantesCalculator>("QuickTestr/Examples/dantes-calculator.md");
 Explain.This<NotesRoot>("QuickTestr/DocsSinglePages/notes.md");
 
-Explain.OnlyThis<CreateReadme>("README.md");
+Explain.OnlyThis<CreateReadme>("QuickTestr/README.md");
