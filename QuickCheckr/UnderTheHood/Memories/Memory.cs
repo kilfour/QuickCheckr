@@ -70,7 +70,7 @@ internal sealed class Memory
     public void StoreLongTermVariable(string key, object value)
         => LongTermMemory.StoreLongTermVariable(KeyGuardian.LongTermVariables.Check(key), value);
     public T GetLongTermVariable<T>(string key, T defaultValue)
-        => LongTermMemory.GetLongTermVariable<T>(key, defaultValue);
+        => LongTermMemory.GetLongTermVariable(key, defaultValue);
     // --------------------------------------------------------------------------
     // Stashed
     public T StoreStashed<T>(string key, Func<T> factory)

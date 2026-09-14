@@ -2,7 +2,6 @@ using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
-using QuickPulse.Show;
 using QuickTestr.Bolts;
 using QuickTestr.Tests.Tools;
 

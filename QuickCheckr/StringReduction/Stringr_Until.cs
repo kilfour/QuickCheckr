@@ -23,7 +23,7 @@ public static partial class Stringr
             while (state.InBounds(length) && !predicate(state.Text[state.Index + length]))
                 length++;
 
-            var result = SelectrResult.Some<ITextSelection>(
+            var result = SelectrResult.Some(
                 state,
                 StringSlice.From(state.Index, length, state.Text));
             state.Advance(length);

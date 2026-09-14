@@ -19,7 +19,7 @@ public class C_NullableTypes : CheckrTest<C_NullableTypes>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from input in Checkr.Input("Input", Fuzzr.Constant<Nullable<int>>(null!))
+        from input in Checkr.Input("Input", Fuzzr.Constant<int?>(null!))
         from expect in Checkr.Expect("Fails", () => input.HasValue)
         select Case.Closed;
 
