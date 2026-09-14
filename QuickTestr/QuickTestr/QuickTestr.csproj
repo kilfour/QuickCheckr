@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <Version>0.0.7</Version>
+    <Authors>Kilfour</Authors>
+
+    <PackageId>QuickTestr</PackageId>
+    <Title>QuickTestr</Title>
+    <Description>A small, opinionated property-based, oracle-based, and model-based testing DSL for C#, built on QuickCheckr. Define inputs, assert invariants, and get reproducible, shrunk counterexamples.</Description>
+    <PackageTags>fuzzing;testing;property-based-testing;oracle-based-testing;model-based-testing</PackageTags>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/kilfour/QuickTestr</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <PackageProjectUrl>https://github.com/kilfour/QuickTestr</PackageProjectUrl>
+
+    <!-- NuGet metadata -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+
+    <!-- Docs & symbols -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- SourceLink / determinism / validation -->
+    <!-- <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <EnablePackageValidation>true</EnablePackageValidation> -->
+
+    <NeutralLanguage>en</NeutralLanguage>
+
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" />
+    <None Include="$(MSBuildThisFileDirectory)..\icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <!-- <PackageReference Include="QuickCheckr" Version="0.2.3" /> -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\QuickCheckr\QuickCheckr.csproj" />
+  </ItemGroup>
+  
+</Project>

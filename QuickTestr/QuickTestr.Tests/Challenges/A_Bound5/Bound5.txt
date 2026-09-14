@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+  The sum of all values is less than 5 * 256.
+  Seed: 472166887
+ ------------------------------------------------------------
+  Falsified:
+    Input = ( _, _, _, [ -23457 ], [ -25242 ] )
+    Redux = ( _, _, _, [ -7527 ], [ -25242 ] )
+
+  Original:
+    ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
+
+  WARNING: Empty collection deemed irrelevant at:
+       Input.Item: 1, 2, 3
+       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
+ ------------------------------------------------------------

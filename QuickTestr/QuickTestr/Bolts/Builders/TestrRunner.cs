@@ -1,0 +1,135 @@
+using System.Diagnostics;
+using QuickCheckr;
+using QuickCheckr.Diagnostics;
+using QuickCheckr.Protocol;
+using QuickCheckr.Protocol.Custodians;
+
+
+namespace QuickTestr.Bolts.Builders;
+
+/// <summary>
+/// Provides the shared execution and vault behavior for concrete Testr runners.
+/// Use as the base implementation for property-based and oracle-based runner types.
+/// </summary>
+public abstract class TestrRunner<TInput>
+{
+    protected string fileName = string.Empty;
+    protected virtual string TestName { get; } = string.Empty;
+    protected ICustodian? custodian;
+
+    /// <summary>
+    /// Runs the Testr using the default number of runs.
+    /// Use for the normal execution path when you do not need explicit configuration.
+    /// </summary>
+    [StackTraceHidden]
+    public TestrRunner<TInput> Run()
+        => Run(100.Runs());
+
+    /// <summary>
+    /// Runs the Testr using the specified seed.
+    /// Use when you want a reproducible execution of a known case.
+    /// </summary>
+    [StackTraceHidden]
+    public TestrRunner<TInput> Run(int seed)
+    {
+        GetCheckr().Configure(GetConfig()).Run(seed);
+        return this;
+    }
+
+
+    /// <summary>
+    /// Runs the Testr using the specified number of runs.
+    /// Use when you want to control how much search effort is spent.
+    /// </summary>
+    [StackTraceHidden]
+    public TestrRunner<TInput> Run(RunCount tries)
+    {
+        GetCheckr().Configure(GetConfig()).Run(tries);
+        return this;
+    }
+
+    /// <summary>
+    /// Persists case files for this Testr under its test name.
+    /// Use when you want to inspect or clean up stored cases later through the vault workflow.
+    /// </summary>
+    public TestrRunner<TInput> StoreCaseFiles(ICustodian? custodian = null)
+    {
+        fileName = TestName;
+        this.custodian = custodian;
+        return this;
+    }
+
+    /// <summary>
+    /// Searches for distinct failing cases and stores them in the vault.
+    /// Use when you want a representative set of different failing inputs for the same Testr.
+    /// Inputs are grouped by value and a limited set of failures (10) is retained.
+    /// </summary>
+    public TestrRunner<TInput> FillVault(
+        SearchCount searchCount,
+        RunCount runs) =>
+            FillVault(searchCount, runs, VaultPolicy<TInput>.Default);
+
+    /// <summary>
+    /// Searches for distinct failing cases and stores them in the vault using a custom policy.
+    /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
+    /// </summary>
+    public TestrRunner<TInput> FillVault(
+        SearchCount searchCount,
+        RunCount runs,
+        VaultPolicy<TInput> policy)
+    {
+        GetCheckr()
+            .Configure(AddFileAsToConfig())
+            .Conduct(
+            searchCount.NumberOfSearches.Investigations(),
+            runs,
+            1.ExecutionsPerRun());//,
+                                  // new Directive
+                                  // {
+                                  //     Distinguish = (a) => policy.ClassifyBy(a.GetInput<TInput>("Input")),
+                                  //     MaxCaseFiles = policy.MaxStoredFailures,
+                                  //     Reject = policy.SkipWhen != null
+                                  //         ? a => policy.SkipWhen(a.GetInput<TInput>("Input")) : null
+                                  // });
+        return this;
+    }
+
+
+    /// <summary>
+    /// Re-runs the stored vault cases and reports which ones still fail.
+    /// Use to review persisted seeds after code changes or fixes.
+    /// </summary>
+    public TestrRunner<TInput> InspectVault()
+    {
+        GetCheckr()
+            .Configure(AddFileAsToConfig())
+            .ReviewColdCases();
+        return this;
+    }
+
+
+    /// <summary>
+    /// Removes or closes vault cases that no longer reproduce.
+    /// Use to keep the vault focused on still-relevant failures.
+    /// </summary>
+    public TestrRunner<TInput> CleanupVault()
+    {
+        GetCheckr()
+            .Configure(AddFileAsToConfig())
+            .CloseResolvedColdCases();
+        return this;
+    }
+
+    public TestrRunner<TInput> Debug(int seed, AutopsyProbe autopsyProbe)
+    {
+        GetCheckr().Configure(GetConfig()).Autopsy(seed, 1.ExecutionsPerRun(), autopsyProbe);
+        return this;
+    }
+
+
+    private Func<CheckrConfig, CheckrConfig> AddFileAsToConfig()
+        => a => GetConfig()(a) with { FileAs = TestName };
+
+    protected abstract CheckrOf<Case> GetCheckr();
+    protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();
+}

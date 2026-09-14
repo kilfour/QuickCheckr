@@ -1,0 +1,21 @@
+ ------------------------------------------------------------
+  Tuple2 can deconstruct
+  Seed: 649859307
+ ------------------------------------------------------------
+  Falsified:
+
+    Input = ( _, 31 )
+      Observed:
+        Expected = 37
+        Actual   = 31
+
+    Redux = ( _, 0 )
+      Observed:
+        Expected = 37
+        Actual   = 0
+
+  Original:
+    ( 37, 31 )
+
+  WARNING: No witness for reducer at 'Input.Item2'.
+ ------------------------------------------------------------

@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ - Null: Threw 'ComputerSaysNo': 1x
+ - Null: Message Equals 'Title is required.': 1x
+ - Empty: Threw 'ComputerSaysNo': 1x
+ - Empty: Message Equals 'Title is required.': 1x
+ - Whitespace: Threw 'ComputerSaysNo': 1x
+ - Whitespace: Message Equals 'Title is required.': 1x
+ - Too Long: Threw 'ComputerSaysNo': 1x
+ - Too Long: Message Equals 'Title cannot be longer than 100 characters.': 1x
+ - Accepts: 50x
+ - Results: 1x
+ ------------------------------------------------------------

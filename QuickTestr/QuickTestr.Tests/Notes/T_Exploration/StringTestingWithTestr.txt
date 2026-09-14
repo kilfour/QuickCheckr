@@ -1,0 +1,37 @@
+ ------------------------------------------------------------
+ 239 Total Runs
+ 200 Failed Runs
+ 4 Distinct Failures
+ ------------------------------------------------------------
+
+ ============================================================
+ Seed:                    105900849
+Failure:                 ComputerSaysNo: Title cannot be longer than 100 characters.
+    Input = "fpqpprakevehcocqkbgzkorimlothinvuxbxzgaosmaxvzlxlnqldezrxhcddhcwiimfneqdbrgxnumnzqiusbrqyjarexkkkeommgkgwmkmxbedupdnzidgrvheeyzdhvnifaatgbyfqftwewxouxlcaivqyfbymgfbovyuojgxkxpmckzibljjkliwfjuazztjari"
+    Redux = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+ ============================================================
+
+ ============================================================
+ Seed:                    631860029
+Failure:                 ComputerSaysNo: Title is required.
+    Input = ""
+ ============================================================
+
+ ============================================================
+ Seed:                    2066079017
+Failure:                 ComputerSaysNo: Title is required.
+    Input = null
+ ============================================================
+
+ ============================================================
+ Seed:                    836952288
+Failure:                 Create Book Title
+    Input = "\tgldhqfknckimoufcavtnfn\r\n"
+    Redux = "a\n"
+ ============================================================
+
+
+ ============================================================
+ Passed Expectations
+ - Create Book Title: 39x
+ ============================================================
