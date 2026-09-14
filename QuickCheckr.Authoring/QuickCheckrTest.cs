@@ -10,13 +10,12 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Authoring;
 
-public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest
+public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest<TTestClass>
 {
     protected virtual bool WriteAllReportsToDisk => false;
     protected virtual bool Asserts => false;
     protected virtual bool PassedExpectationsContains => false;
     protected virtual bool Report => false;
-    protected virtual bool Explain => false;
 
     protected virtual ITranscribe Clerk =>
         CourtClerk.Default();
@@ -105,11 +104,5 @@ public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest
     {
         if (Asserts)
             Journalist.Transcribe(article, PassedExpectationsContains);
-    }
-
-    private void ExplainMe()
-    {
-        if (!Explain) return;
-        QuickPulse.Explains.Explain.OnlyThis<TTestClass>("temp-" + typeof(TTestClass).Name + ".md");
     }
 }
