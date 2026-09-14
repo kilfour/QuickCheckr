@@ -1,8 +1,9 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.K_Evidence.A_StoringCaseFiles;
+namespace QuickCheckr.Tests.Drafts.K_Evidence.A_StoringCaseFiles;
 
 
 [DocFileHeader("When the Checkr passes.")]

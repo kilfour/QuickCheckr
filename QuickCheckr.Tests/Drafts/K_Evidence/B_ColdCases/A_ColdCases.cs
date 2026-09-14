@@ -8,7 +8,7 @@ using QuickCheckr.UnderTheHood.Archiving;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Docs.K_Evidence.B_ColdCases;
+namespace QuickCheckr.Tests.Drafts.K_Evidence.B_ColdCases;
 
 
 [DocFile]
