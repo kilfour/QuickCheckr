@@ -12,9 +12,7 @@ public class A_ExpectMessage : CheckrTest<A_ExpectMessage>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(435330806));
 

@@ -7,6 +7,7 @@ using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse.Arteries;
 using QuickPulse.Explains;
+using QuickPulse.Explains.Abstractions;
 
 namespace QuickCheckr.Authoring;
 
@@ -20,8 +21,15 @@ public abstract class QuickCheckrTest<TTestClass> : DocAttributeBaseTest<TTestCl
     protected virtual ITranscribe Clerk =>
         CourtClerk.Default();
 
-    protected class DocReport([CallerFilePath] string path = "") :
-        DocCodeFileAttribute($"{typeof(TTestClass).Name}.txt", "text", 0, -1, path);
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    protected sealed class DocReportAttribute([CallerFilePath] string path = "") : Attribute, IDocAttribute
+    {
+        public IEnumerable<DocFragmentAttribute> Expand()
+        {
+            yield return new DocBoldHeaderAttribute("The Report");
+            yield return new DocCodeFileAttribute($"{typeof(TTestClass).Name}.txt", "text", 0, -1, path);
+        }
+    }
 
     protected class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(TTestClass).Name}.txt", "text", skiplines, numberOfLines, path);

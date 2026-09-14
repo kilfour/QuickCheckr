@@ -18,9 +18,7 @@ public class ChoosingTheNextMoveConditional : CheckrTest<ChoosingTheNextMoveCond
 
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocHeader("Recap")]
     [DocContent(

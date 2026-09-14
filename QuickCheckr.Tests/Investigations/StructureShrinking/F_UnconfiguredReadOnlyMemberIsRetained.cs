@@ -17,9 +17,7 @@ public class F_UnconfiguredReadOnlyMemberIsRetained
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(configured => configured

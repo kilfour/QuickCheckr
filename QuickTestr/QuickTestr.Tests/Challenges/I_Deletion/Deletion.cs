@@ -31,7 +31,6 @@ public class Deletion : QuickTestrPropertyTest<Deletion>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

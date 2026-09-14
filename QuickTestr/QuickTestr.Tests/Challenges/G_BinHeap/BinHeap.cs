@@ -29,7 +29,6 @@ public class BinHeap : QuickTestrPropertyTest<BinHeap>
     [DocTestr]
     [DocFuzzrHeader]
     [DocExample(typeof(BinHeap), nameof(TheFuzzr))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

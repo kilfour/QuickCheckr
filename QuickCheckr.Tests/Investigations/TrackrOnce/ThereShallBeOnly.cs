@@ -13,9 +13,7 @@ public class ThereShallBeOnly : CheckrTest<ThereShallBeOnly>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(10.ExecutionsPerRun()));

@@ -22,7 +22,6 @@ public class Test3 : QuickTestrPropertyTest<Test3>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

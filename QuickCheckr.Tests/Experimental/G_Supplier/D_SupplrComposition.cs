@@ -14,7 +14,6 @@ public class D_SupplrComposition : CheckrTest<D_SupplrComposition>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(100.ExecutionsPerRun()));

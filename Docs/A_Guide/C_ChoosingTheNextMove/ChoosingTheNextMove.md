@@ -55,6 +55,8 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
   
 ## Seeing Which Branches Were Chosen
 Running the Checkr without shrinking yields a report similar to this:  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
@@ -84,6 +86,8 @@ This shows us that **QuickCheckr records the branch actually taken for each exec
 There is no guesswork.  
 ## Shrinking Branching Behaviour
 And if we let the QuickCheckr shrinker do its work:  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example

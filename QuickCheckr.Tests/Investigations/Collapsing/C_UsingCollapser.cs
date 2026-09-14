@@ -12,9 +12,7 @@ public class C_UsingCollapser : CheckrTest<C_UsingCollapser>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1374960450));

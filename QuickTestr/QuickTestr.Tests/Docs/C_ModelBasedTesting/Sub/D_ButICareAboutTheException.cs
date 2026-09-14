@@ -19,7 +19,6 @@ When activating *strict mode* a mismatch in exceptions do fail the model test.
 [DocExample(typeof(NameCollector))]
 [DocTestrHeader]
 [DocTestr]
-[DocReportHeader]
 [DocReport]
 public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAboutTheException>
 {

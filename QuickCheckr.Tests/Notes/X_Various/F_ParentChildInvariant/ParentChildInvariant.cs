@@ -15,9 +15,7 @@ public class ParentChildInvariant : CheckrTest<ParentChildInvariant>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Account))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(483645165));

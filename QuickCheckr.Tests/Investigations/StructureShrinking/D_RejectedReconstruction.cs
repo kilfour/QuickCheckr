@@ -14,9 +14,7 @@ public class D_RejectedReconstruction : CheckrTest<D_RejectedReconstruction>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example()
     {

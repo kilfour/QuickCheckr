@@ -14,7 +14,6 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(Calculator))]
 [DocTestrHeader]
 [DocTestr]
-[DocReportHeader]
 [DocReport]
 public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
 {

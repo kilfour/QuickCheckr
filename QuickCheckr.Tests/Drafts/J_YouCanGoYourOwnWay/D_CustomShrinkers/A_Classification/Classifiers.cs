@@ -30,9 +30,7 @@ public class Classifiers : CheckrTest<Classifiers>
     [DocContent(
 @"The following example demonstrates how the various classifiers can be used chained.    
 It is a bit of a contrived example as the default classifiers handle this case just fine.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1521363987));

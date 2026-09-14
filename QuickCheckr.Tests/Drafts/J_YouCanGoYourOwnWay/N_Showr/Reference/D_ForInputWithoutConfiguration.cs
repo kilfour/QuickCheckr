@@ -11,7 +11,6 @@ public class D_ForInputWithoutConfiguration : CheckrTest<D_ForInputWithoutConfig
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 4)]

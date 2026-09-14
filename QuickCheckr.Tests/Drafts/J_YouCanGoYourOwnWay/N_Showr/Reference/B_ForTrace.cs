@@ -13,7 +13,6 @@ public class B_ForTrace : CheckrTest<B_ForTrace>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 3)]

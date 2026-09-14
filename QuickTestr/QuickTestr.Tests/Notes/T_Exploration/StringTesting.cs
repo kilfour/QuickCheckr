@@ -15,7 +15,6 @@ namespace QuickTestr.Tests.Notes.T_Exploration;
 [DocFile]
 [DocBoldHeader("The StringTestr")]
 [DocExample(typeof(StringTesting), nameof(GetStringTestr))]
-[DocReportHeader]
 [DocReport]
 public class StringTesting : QuickCheckrTest<StringTesting>
 {

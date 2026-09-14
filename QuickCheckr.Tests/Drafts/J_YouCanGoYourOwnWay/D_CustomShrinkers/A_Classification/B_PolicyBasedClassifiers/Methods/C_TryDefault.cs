@@ -22,9 +22,7 @@ public class C_TryDefault : CheckrTest<C_TryDefault>
     [Fact]
     [DocConfigureHeader]
     [DocConfigure]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Configure(a => Configure(a)).Run(161541321, 2.ExecutionsPerRun()));

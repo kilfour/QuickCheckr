@@ -17,7 +17,6 @@ public class E_SupplrCompositionClassification : CheckrTest<E_SupplrCompositionC
     protected override bool Asserts => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(1656426057));

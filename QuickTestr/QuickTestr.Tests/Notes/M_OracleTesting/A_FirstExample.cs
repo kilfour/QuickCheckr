@@ -20,7 +20,6 @@ public class A_FirstExample : QuickTestrOracleTest<A_FirstExample>
     [DocExample(typeof(A_FirstExample), nameof(AddCorrect))]
     [DocBoldHeader("Actual")]
     [DocExample(typeof(A_FirstExample), nameof(AddBuggy))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

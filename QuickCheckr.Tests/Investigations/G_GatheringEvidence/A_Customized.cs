@@ -16,9 +16,7 @@ public class A_Customized : CheckrTest<A_Customized>
     [DocContent("Test skipped: non deterministic by nature")]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(A_Customized), nameof(Example))]
-    [DocCheckrHeader]
     [DocExample(typeof(A_Customized), nameof(TheCheckr))]
-    [DocReportHeader]
     [DocReport]
     [CodeSnippet]
     public override void Example() =>

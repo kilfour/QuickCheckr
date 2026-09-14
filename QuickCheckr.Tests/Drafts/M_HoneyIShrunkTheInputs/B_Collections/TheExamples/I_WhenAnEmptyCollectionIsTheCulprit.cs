@@ -13,9 +13,7 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(2077876521));
 
     [CodeSnippet]

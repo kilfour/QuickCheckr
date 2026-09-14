@@ -14,9 +14,7 @@ public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(configured => configured.Run(1.ExecutionsPerRun()));

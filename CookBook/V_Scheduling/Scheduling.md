@@ -179,9 +179,9 @@ public class TheFuzzr
     }
 }
 ```
+And ofcourse, there's an edge-case.  
 
 **The Report:**  
-And ofcourse, there's an edge-case.  
 ```text
 ------------------------------------------------------------
  Test:                    Example

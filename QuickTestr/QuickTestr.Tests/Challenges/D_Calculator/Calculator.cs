@@ -38,7 +38,6 @@ public class Calculator : QuickTestrPropertyTest<Calculator>
     [DocExample(typeof(Calculator), nameof(TheFormatr))]
     [DocBoldHeader("The Helper")]
     [DocExample(typeof(Calculator), nameof(DepthOf))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

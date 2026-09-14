@@ -12,9 +12,7 @@ public class A_SketchingThingsOut : CheckrTest<A_SketchingThingsOut>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1374960450));

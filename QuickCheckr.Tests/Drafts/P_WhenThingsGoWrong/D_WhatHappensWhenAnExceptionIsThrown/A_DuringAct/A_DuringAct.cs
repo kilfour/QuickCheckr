@@ -16,9 +16,7 @@ public class A_DuringAct : CheckrTest<A_DuringAct>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(1.Runs(), 2.ExecutionsPerRun()));
 

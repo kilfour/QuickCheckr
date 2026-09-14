@@ -4,6 +4,7 @@ using QuickCheckr.Authoring;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
+using QuickPulse.Explains.Abstractions;
 
 namespace QuickCheckr.Tests.Tools;
 
@@ -12,8 +13,15 @@ public abstract class CheckrTest<T> : QuickCheckrTest<T>
     protected class DocConfigureAttribute() :
         DocExampleAttribute(typeof(T), "Configure");
 
-    public class DocCheckrAttribute() :
-        DocExampleAttribute(typeof(T), "TheCheckr");
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    protected sealed class DocCheckrAttribute() : Attribute, IDocAttribute
+    {
+        public IEnumerable<DocFragmentAttribute> Expand()
+        {
+            yield return new DocBoldHeaderAttribute("The Checkr");
+            yield return new DocExampleAttribute(typeof(T), "TheCheckr");
+        }
+    }
 
     public abstract void Example();
 

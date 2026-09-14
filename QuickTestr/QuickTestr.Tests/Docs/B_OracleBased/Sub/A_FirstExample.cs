@@ -21,7 +21,6 @@ public class A_FirstExample : QuickTestrOracleTest<A_FirstExample>
     [DocContent("This implementation silently breaks when `a > 42`.")]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

@@ -13,9 +13,7 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
 
     [Fact]
     [DocContent("Just making sure `default` values, `0` in this case, get handled correctly.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(816312044));
 
     [CodeSnippet]

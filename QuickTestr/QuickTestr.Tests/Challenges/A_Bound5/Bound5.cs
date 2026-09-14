@@ -30,7 +30,6 @@ public class Bound5 : QuickTestrPropertyTest<Bound5>
     [DocExample(typeof(Bound5), nameof(ShortList))]
     [DocBoldHeader("The Helpers")]
     [DocExample(typeof(H))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

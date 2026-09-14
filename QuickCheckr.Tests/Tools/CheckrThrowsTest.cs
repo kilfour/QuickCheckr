@@ -29,7 +29,7 @@ public abstract class CheckrThrowsTest<T> : DocAttributeBaseTest<T>
     {
         public IEnumerable<DocFragmentAttribute> Expand()
         {
-            yield return new DocCheckrHeaderAttribute();
+            yield return new DocBoldHeaderAttribute("The Checkr");
             yield return new DocExampleAttribute(typeof(T), "TheCheckr");
         }
     }

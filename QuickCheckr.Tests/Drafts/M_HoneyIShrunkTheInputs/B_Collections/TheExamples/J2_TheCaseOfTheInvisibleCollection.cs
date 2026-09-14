@@ -13,9 +13,7 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(169301180, 2.ExecutionsPerRun()));
 

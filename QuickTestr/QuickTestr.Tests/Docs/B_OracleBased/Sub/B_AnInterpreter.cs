@@ -18,7 +18,6 @@ public class B_AnInterpreter : QuickTestrOracleTest<B_AnInterpreter>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     [DocBoldHeader("Domain Aware String Reduction Rules")]
     [DocExample(typeof(Remove))]

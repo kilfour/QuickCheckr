@@ -17,7 +17,6 @@ public class G_ComplexSupplrCompositionClassification :
     protected override bool Asserts => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(1656426057));

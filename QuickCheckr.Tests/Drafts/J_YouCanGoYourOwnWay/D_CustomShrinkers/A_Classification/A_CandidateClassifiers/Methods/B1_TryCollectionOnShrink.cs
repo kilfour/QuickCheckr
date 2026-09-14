@@ -12,9 +12,7 @@ public class B1_TryCollectionOnShrink : CheckrTest<B1_TryCollectionOnShrink>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(899182715));

@@ -21,7 +21,6 @@ public class B_WhatIfItThrows : QuickTestrOracleTest<B_WhatIfItThrows>
     [DocExample(typeof(B_WhatIfItThrows), nameof(AddCorrect))]
     [DocBoldHeader("Actual")]
     [DocExample(typeof(B_WhatIfItThrows), nameof(AddBuggy))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

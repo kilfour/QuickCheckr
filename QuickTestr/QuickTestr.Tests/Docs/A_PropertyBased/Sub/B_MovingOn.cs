@@ -30,7 +30,6 @@ public class B_MovingOn : QuickTestrPropertyTest<B_MovingOn>
 - `Deliberate(a => a.Count, 2)`: This is a *Deliberation Policy*. It helps escape local minima during shrinking. In this case, we're looking for smaller lists.
 - The compositional abilities of QuickFuzzr allow us to generate only valid indexes, keeping inputs structurally sound.
 """)]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

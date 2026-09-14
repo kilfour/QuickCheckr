@@ -13,9 +13,7 @@ public class D_PoolReplayIdentityDynamic : CheckrTest<D_PoolReplayIdentityDynami
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1573337201, 3.ExecutionsPerRun()));

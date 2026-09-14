@@ -12,9 +12,7 @@ public class A_Chained : CheckrTest<A_Chained>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(1681332589));
 

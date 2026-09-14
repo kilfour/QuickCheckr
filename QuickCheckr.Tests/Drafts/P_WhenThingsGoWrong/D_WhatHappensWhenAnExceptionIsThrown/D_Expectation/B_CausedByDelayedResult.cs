@@ -9,7 +9,6 @@ namespace QuickCheckr.Tests.Investigations.A_ExpectationExceptions.Sub;
 public class B_CausedByDelayedResult : BaseTest
 {
     [Fact]
-    [DocCheckrHeader]
     [DocExample(typeof(B_CausedByDelayedResult), nameof(GetCheckr))]
     [DocBoldHeader("Message:")]
     [DocExample(typeof(B_CausedByDelayedResult), nameof(Message))]

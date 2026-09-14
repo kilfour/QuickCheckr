@@ -13,9 +13,7 @@ public class C_CustomizedNested : CheckrTest<C_CustomizedNested>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1611568796));

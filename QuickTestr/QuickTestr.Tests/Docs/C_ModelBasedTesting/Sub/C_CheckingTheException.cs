@@ -20,7 +20,6 @@ They only matter if they lead to an observed state mismatch.
 [DocExample(typeof(NameCollector))]
 [DocTestrHeader]
 [DocTestr]
-[DocReportHeader]
 [DocReport]
 public class C_CheckingTheException : QuickTestrModelRunTest<C_CheckingTheException>
 {

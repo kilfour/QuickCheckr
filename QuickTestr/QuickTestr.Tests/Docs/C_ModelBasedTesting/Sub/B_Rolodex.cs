@@ -16,7 +16,6 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(Person))]
 [DocTestrHeader]
 [DocTestr]
-[DocReportHeader]
 [DocReport]
 public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
 {

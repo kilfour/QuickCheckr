@@ -13,9 +13,7 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1892439403));

@@ -15,9 +15,7 @@ public class FuzzrConfig : CheckrTest<FuzzrConfig>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Thing))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1493113936));

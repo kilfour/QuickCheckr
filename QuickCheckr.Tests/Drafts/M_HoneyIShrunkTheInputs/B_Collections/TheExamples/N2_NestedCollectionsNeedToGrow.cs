@@ -17,9 +17,7 @@ public class N2_NestedCollectionsNeedToGrow : CheckrTest<N2_NestedCollectionsNee
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example()
         => Document(a => a.Run(482835926));

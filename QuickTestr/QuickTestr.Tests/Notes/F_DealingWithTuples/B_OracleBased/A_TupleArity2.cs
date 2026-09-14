@@ -16,7 +16,6 @@ public class A_TupleArity2 : QuickTestrOracleTest<A_TupleArity2>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

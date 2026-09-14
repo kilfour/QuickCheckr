@@ -17,9 +17,7 @@ public class B_PropertySetterThrows : CheckrTest<B_PropertySetterThrows>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(662847995, 1.ExecutionsPerRun()));
 

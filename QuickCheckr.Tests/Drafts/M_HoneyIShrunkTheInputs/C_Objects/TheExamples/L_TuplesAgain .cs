@@ -13,9 +13,7 @@ public class L_TuplesAgain : CheckrTest<L_TuplesAgain>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(751254928));

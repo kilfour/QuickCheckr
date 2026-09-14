@@ -30,7 +30,6 @@ public class NestedLists : QuickTestrPropertyTest<NestedLists>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

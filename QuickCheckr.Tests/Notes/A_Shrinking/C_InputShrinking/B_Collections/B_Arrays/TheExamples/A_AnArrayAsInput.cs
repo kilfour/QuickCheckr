@@ -16,9 +16,7 @@ public class A_AnArrayAsInput : CheckrTest<A_AnArrayAsInput>
 @"Seeing as all inputs are provided by QuickFuzzr,
 and the default generated enumerable underlying type is a list,
 we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(27506614));
 

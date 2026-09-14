@@ -48,7 +48,6 @@ The only slightly tricky bit is the `NonOverlappingTimeSlot` part, I reckon.
 Generating a valid booking is easy, and then we just use that one to generate another, non-overlapping, booking:
 ")]
     [DocCodeFile("TheFuzzr.cs", "csharp", 5)]
-    [DocReportHeader]
     [DocContent("And ofcourse, there's an edge-case.")]
     [DocReport]
     public override void Example() => Document(a => a.Run(511619818));

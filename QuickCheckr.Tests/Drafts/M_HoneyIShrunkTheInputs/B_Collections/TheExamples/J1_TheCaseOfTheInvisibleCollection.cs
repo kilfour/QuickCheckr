@@ -21,9 +21,7 @@ public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvi
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Thing))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(169301180, 2.ExecutionsPerRun()));
 

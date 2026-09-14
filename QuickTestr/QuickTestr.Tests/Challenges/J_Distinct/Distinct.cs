@@ -29,7 +29,6 @@ public class Distinct : QuickTestrPropertyTest<Distinct>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

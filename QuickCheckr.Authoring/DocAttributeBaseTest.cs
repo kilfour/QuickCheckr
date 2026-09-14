@@ -28,14 +28,12 @@ public abstract class DocAttributeBaseTest<TTestClass>
         DocContentAttribute($"\n**{header}:**");
     protected class DocModelHeaderAttribute() :
         DocBoldHeaderAttribute("The Model");
-    protected class DocReportHeaderAttribute() :
-        DocBoldHeaderAttribute("The Report");
     protected class DocReportExcerptHeaderAttribute() :
         DocBoldHeaderAttribute("Report Excerpt");
     protected class DocConfigureHeaderAttribute() :
         DocBoldHeaderAttribute("The Configuration");
-    protected class DocCheckrHeaderAttribute() :
-        DocBoldHeaderAttribute("The Checkr");
+    // protected class DocCheckrHeaderAttribute() :
+    //     DocBoldHeaderAttribute("The Checkr");
     protected class DocFuzzrHeaderAttribute() :
         DocBoldHeaderAttribute("The Fuzzr");
     protected class DocFileCodeHeaderAttribute(string code)

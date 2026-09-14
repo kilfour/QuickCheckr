@@ -13,7 +13,6 @@ public class A_IntegerRange : CheckrTest<A_IntegerRange>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(100.ExecutionsPerRun()));

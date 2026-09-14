@@ -21,7 +21,6 @@ public class A_FirstTry : QuickTestrPropertyTest<A_FirstTry>
     [DocTestr]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(A_FirstTry), nameof(RunIt))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

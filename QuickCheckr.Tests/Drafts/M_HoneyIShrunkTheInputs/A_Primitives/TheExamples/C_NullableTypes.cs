@@ -13,9 +13,7 @@ public class C_NullableTypes : CheckrTest<C_NullableTypes>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(393010076));
 

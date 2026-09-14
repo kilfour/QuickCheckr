@@ -17,9 +17,7 @@ public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable :
     [DocExample(typeof(Thing))]
     [DocExample(typeof(OtherThing))]
     [DocExample(typeof(ThingFactory))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(769948390, 6.ExecutionsPerRun()));

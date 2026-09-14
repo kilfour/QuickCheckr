@@ -16,7 +16,6 @@ public class C_TheShowrClassContextAware : CheckrTest<C_TheShowrClassContextAwar
     [Fact]
     [DocModelHeader]
     [DocCodeFile("C_TheShowrClassContextAwareModel.cs", "csharp", 2)]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 3)]

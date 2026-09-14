@@ -13,9 +13,7 @@ public class D_RelevantItemIsDefault : CheckrTest<D_RelevantItemIsDefault>
 
     [Fact]
     [DocContent("Just making sure `default` values, `0` in this case, get handled correctly.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(820833320));
 
     [CodeSnippet]

@@ -14,9 +14,7 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example()
     {

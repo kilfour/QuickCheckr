@@ -43,7 +43,6 @@ The chain reads from top to bottom:
 This test fails because the implementation disagrees with the property above 42.
 QuickTestr then reduces the failing value to the boundary where the bug begins.
 """)]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

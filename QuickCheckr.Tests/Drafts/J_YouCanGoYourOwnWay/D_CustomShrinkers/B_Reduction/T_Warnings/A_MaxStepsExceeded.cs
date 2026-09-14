@@ -14,11 +14,9 @@ public class A_MaxStepsExceeded : CheckrTest<A_MaxStepsExceeded>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocConfigureHeader]
     [DocConfigure]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(1719639579));
 

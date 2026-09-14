@@ -40,7 +40,6 @@ public class ListReverse : CheckrTest<ListReverse>
     [DocExample(typeof(ListReverse), nameof(ListFuzzr))]
     [DocBoldHeader("The Checkr")]
     [DocCheckr]
-    [DocBoldHeader("The Report")]
     [DocReport]
     public override void Example() => Document(a => a.Run(498116108));
 

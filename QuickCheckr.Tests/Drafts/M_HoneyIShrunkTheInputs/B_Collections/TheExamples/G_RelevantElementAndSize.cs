@@ -12,9 +12,7 @@ public class G_RelevantElementAndSize : CheckrTest<G_RelevantElementAndSize>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(1374380958));
 
     [CodeSnippet]

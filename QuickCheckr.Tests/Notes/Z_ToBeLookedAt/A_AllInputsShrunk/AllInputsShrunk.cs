@@ -12,9 +12,7 @@ public class AllInputsShrunk : CheckrTest<AllInputsShrunk>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocContent("")]
     [DocContent("")]

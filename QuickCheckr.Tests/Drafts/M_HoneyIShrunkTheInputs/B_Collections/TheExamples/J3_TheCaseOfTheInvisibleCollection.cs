@@ -15,7 +15,6 @@ public class J3_TheCaseOfTheInvisibleCollection : CheckrTest<J3_TheCaseOfTheInvi
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() => Document(a => a.Run(169301180, 2.ExecutionsPerRun()));
 

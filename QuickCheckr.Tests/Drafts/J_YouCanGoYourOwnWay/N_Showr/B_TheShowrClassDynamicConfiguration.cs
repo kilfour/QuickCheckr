@@ -13,7 +13,6 @@ public class B_TheShowrClassDynamicConfiguration : CheckrTest<B_TheShowrClassDyn
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 4)]

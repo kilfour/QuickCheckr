@@ -13,7 +13,6 @@ public class E_ForAll : CheckrTest<E_ForAll>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 4)]

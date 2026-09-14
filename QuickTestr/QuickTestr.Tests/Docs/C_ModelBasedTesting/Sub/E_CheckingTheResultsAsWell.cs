@@ -14,7 +14,6 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(IdentityCounter))]
 [DocTestrHeader]
 [DocTestr]
-[DocReportHeader]
 [DocReport]
 public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheResultsAsWell>
 {

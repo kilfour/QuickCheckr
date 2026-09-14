@@ -27,7 +27,6 @@ public class LargeUnionList : QuickTestrPropertyTest<LargeUnionList>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

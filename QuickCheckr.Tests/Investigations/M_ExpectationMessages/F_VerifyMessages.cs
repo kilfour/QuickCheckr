@@ -12,9 +12,7 @@ public class F_VerifyMessages : CheckrTest<F_VerifyMessages>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run());
 

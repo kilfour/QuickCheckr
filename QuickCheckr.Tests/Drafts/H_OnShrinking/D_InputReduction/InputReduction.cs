@@ -31,12 +31,10 @@ public class InputReduction : CheckrTest<InputReduction>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Account))]
-    [DocCheckrHeader]
     [DocContent(
 @$"We're running the same checkr, with the same seed.
 The only difference is the addition of `{nameof(Reduce)}.{nameof(Reduce.TowardsZero)}` in the `Checkr.Input` argument list.")]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocContent(
 @"And as you can see it does exactly what it says on the tin. 

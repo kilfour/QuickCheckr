@@ -18,9 +18,7 @@ public class RegisteredButUnused : CheckrTest<RegisteredButUnused>
     [Fact]
     [DocConfigureHeader]
     [DocConfigure]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(1681332589));
 

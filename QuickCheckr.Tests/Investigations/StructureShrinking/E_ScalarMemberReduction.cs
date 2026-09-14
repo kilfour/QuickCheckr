@@ -15,9 +15,7 @@ public class E_ScalarMemberReduction : CheckrTest<E_ScalarMemberReduction>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(configured => configured

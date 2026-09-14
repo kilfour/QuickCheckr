@@ -12,9 +12,7 @@ public class A_FirstShrinker : CheckrTest<A_FirstShrinker>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocHeader("Explaining the Example, TODO: REVIEW THIS TEST/DOC")]
     [DocContent(

@@ -12,9 +12,7 @@ public class D1_TryFuzzrOnShrink : CheckrTest<D1_TryFuzzrOnShrink>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(161541321, 2.ExecutionsPerRun()));

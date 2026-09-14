@@ -30,7 +30,6 @@ public class LengthList : QuickTestrPropertyTest<LengthList>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

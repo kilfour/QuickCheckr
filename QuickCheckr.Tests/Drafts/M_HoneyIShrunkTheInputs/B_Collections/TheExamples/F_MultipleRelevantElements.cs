@@ -12,9 +12,7 @@ public class F_MultipleRelevantElements : CheckrTest<F_MultipleRelevantElements>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(500957855));
 
     [CodeSnippet]

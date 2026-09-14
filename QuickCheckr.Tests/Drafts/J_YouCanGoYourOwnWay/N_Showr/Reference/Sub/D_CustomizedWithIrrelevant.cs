@@ -13,9 +13,7 @@ public class D_CustomizedWithIrrelevant : CheckrTest<D_CustomizedWithIrrelevant>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1611568796));

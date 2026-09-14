@@ -12,9 +12,7 @@ public class D_ExpectWhenMessages : CheckrTest<D_ExpectWhenMessages>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(1183209470));
 

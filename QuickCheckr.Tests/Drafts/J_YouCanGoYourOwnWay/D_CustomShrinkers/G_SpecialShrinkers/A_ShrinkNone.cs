@@ -12,7 +12,6 @@ public class A_ShrinkNone : CheckrTest<A_ShrinkNone>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocContent(
 @"`Shrink.None` is a custom shrinker that explicitly marks an input as irrelevant and therefore not worth shrinking.
@@ -21,7 +20,6 @@ It is primarily a performance tool: when a branch is known not to influence the 
 This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
 It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings when that irrelevance is intentional and understood.
 ")]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(161541321, 2.ExecutionsPerRun()));

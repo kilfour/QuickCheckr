@@ -15,9 +15,7 @@ public class A_PassedRun : CheckrTest<A_PassedRun>
 
     [Fact]
     [DocContent("QuickCheckr provides the following *findings* about the run:")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example()
         => Document(a => a.Run(5.Runs(), 10.ExecutionsPerRun()));

@@ -12,9 +12,7 @@ public class B_UsingDeliberation : CheckrTest<B_UsingDeliberation>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(100.Runs()));

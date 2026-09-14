@@ -15,9 +15,7 @@ public class P_CollectionIsNull : CheckrTest<P_CollectionIsNull>
     [Fact]
     [DocConfigureHeader]
     [DocConfigure]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example()
         => Document(a => a.Configure(a => Configure(a)).Run(849984174));

@@ -16,9 +16,7 @@ public class B_RemovingIrrelevantCollection : CheckrTest<B_RemovingIrrelevantCol
     [DocContent(
 @"Ofcourse a collection itself is just an input like another, so if it, as a whole,
 is irrelevant for the failure, QuickCheckr will remove it.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(2014608033));
 

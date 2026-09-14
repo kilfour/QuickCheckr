@@ -21,7 +21,6 @@ public class B_Oracled : QuickTestrOracleTest<B_Oracled>
     [DocTestr]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(B_Oracled), nameof(RunIt))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

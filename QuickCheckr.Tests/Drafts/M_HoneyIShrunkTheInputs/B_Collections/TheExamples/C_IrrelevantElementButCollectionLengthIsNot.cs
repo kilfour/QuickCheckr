@@ -25,9 +25,7 @@ removing elements, and converging toward the smallest list that still violates t
 This yields minimal, focused shrinking artifacts:
 the report shows only the structural signal that mattered (here: the list being *too long*),
 without introducing noise from element-level changes that could not affect the outcome anyway.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(1393576429));
 

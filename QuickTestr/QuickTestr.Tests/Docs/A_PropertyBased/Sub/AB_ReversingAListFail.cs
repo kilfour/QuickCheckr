@@ -19,7 +19,6 @@ That passes, which isn't very interesting.
 Let's break it by moving all `42`s to the end.
 """)]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

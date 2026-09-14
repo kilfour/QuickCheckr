@@ -12,7 +12,6 @@ public class F_ComplexSupplrComposition : CheckrTest<F_ComplexSupplrComposition>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(100.ExecutionsPerRun()));

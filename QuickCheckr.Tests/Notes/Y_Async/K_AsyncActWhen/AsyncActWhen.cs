@@ -15,9 +15,7 @@ public class AsyncActWhen : CheckrTest<AsyncActWhen>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Flip))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run());

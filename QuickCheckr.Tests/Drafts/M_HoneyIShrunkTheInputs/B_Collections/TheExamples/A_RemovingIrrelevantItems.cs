@@ -13,9 +13,7 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
 
     [Fact]
     [DocContent("Consider a test that forbids the value `7`.")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocContent(@"Even if the original list was long and varied, QuickCheckr isolates the single relevant element:")]
     public override void Example() => Document(a => a.Run(1833095082));

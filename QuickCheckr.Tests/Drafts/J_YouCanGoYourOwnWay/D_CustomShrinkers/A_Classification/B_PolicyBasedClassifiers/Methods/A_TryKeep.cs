@@ -17,9 +17,7 @@ public class A_TryKeep : CheckrTest<A_TryKeep>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(161541321, 2.ExecutionsPerRun()));

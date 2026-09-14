@@ -13,9 +13,7 @@ public class A_Default : CheckrTest<A_Default>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(844205832));

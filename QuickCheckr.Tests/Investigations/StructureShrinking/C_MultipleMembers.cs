@@ -14,9 +14,7 @@ public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(configured => configured.Run(1.ExecutionsPerRun()));

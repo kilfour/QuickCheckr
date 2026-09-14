@@ -14,9 +14,7 @@ public class A_ReconstructingMember : CheckrTest<A_ReconstructingMember>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(configured => configured.Run(1.ExecutionsPerRun()));

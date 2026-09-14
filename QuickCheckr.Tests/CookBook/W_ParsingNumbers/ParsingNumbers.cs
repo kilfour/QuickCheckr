@@ -27,9 +27,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
 - Custom Reducers
 - Inline deliberation
 ")]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocBoldHeader("The Fuzzr")]
     [DocExample(typeof(ParseFuzzr))]

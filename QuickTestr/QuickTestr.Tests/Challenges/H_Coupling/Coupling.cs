@@ -23,7 +23,6 @@ public class Coupling : QuickTestrPropertyTest<Coupling>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

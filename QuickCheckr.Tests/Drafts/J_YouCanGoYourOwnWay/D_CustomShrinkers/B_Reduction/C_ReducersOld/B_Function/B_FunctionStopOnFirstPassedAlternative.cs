@@ -12,9 +12,7 @@ public class B_FunctionStopOnFirstPassedAlternative : CheckrTest<B_FunctionStopO
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(1681332589));
 

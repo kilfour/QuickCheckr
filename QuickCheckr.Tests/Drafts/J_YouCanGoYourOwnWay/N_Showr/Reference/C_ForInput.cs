@@ -13,7 +13,6 @@ public class C_ForInput : CheckrTest<C_ForInput>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 4)]

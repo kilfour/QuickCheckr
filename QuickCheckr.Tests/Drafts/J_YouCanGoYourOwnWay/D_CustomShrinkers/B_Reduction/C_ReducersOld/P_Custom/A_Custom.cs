@@ -13,11 +13,9 @@ public class A_Custom : CheckrTest<A_Custom>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocBoldHeader("Reducer")]
     [DocExample(typeof(CustomTowardsZero))]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(211010750));
 

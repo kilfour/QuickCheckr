@@ -13,9 +13,7 @@ public class E_PoolReplayIdentityComplex : CheckrTest<E_PoolReplayIdentityComple
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(204955625, 4.ExecutionsPerRun()));

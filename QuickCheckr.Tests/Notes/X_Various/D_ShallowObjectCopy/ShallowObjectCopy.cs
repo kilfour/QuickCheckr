@@ -15,9 +15,7 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Box))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document(a => a.Run(458149048));
 

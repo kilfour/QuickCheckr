@@ -15,9 +15,7 @@ public class K_ACollectionOfObjects : CheckrTest<K_ACollectionOfObjects>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Thing))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport] public override void Example() => Document(a => a.Run(849984174));
 
     [CodeExample]

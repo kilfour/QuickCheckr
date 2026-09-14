@@ -21,7 +21,6 @@ public class ReverseList : QuickTestrPropertyTest<ReverseList>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

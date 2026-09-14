@@ -17,9 +17,7 @@ public class C_MixedActsHideRegularDependencies : CheckrTest<C_MixedActsHideRegu
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocContent(
 @"The report retains both `Prepare` and `Explode`. Only `Explode` is evaluated as a shrinking

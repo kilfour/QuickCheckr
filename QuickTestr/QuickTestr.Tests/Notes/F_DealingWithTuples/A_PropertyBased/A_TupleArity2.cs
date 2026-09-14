@@ -16,7 +16,6 @@ public class A_TupleArity2 : QuickTestrPropertyTest<A_TupleArity2>
     [Fact]
     [DocTestrHeader]
     [DocTestr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() => Document();
 

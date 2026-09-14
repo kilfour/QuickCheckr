@@ -17,9 +17,7 @@ public class B_RegularActsAreNotSkipped : CheckrTest<B_RegularActsAreNotSkipped>
     protected override bool Explain => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     [DocContent(
 @"Neither regular action is considered as a shrinking candidate, so the report retains both the

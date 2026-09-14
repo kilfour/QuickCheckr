@@ -12,9 +12,7 @@ public class B_CustomEnumerations : CheckrTest<B_CustomEnumerations>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(1735186993));

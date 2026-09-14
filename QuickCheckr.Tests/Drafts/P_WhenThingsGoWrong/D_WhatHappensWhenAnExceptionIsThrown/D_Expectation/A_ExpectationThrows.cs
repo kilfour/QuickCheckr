@@ -12,7 +12,6 @@ It is wrapped in an ExpectationThrowsException through InnerException and the ex
 public class A_ExpectationThrows : BaseTest
 {
     [Fact]
-    [DocCheckrHeader]
     [DocExample(typeof(A_ExpectationThrows), nameof(GetCheckr))]
     [DocBoldHeader("Message:")]
     [DocExample(typeof(A_ExpectationThrows), nameof(Message))]

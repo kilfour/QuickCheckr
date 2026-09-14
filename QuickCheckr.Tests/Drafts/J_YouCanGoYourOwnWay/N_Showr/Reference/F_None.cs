@@ -12,7 +12,6 @@ public class F_None : CheckrTest<F_None>
     protected override bool Report => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     [DocReportExcerptHeader]
     [DocReportExcerpt(6, 3)]

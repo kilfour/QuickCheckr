@@ -16,7 +16,6 @@ public class B_IntegerClassification : CheckrTest<B_IntegerClassification>
     protected override bool Asserts => false;
 
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
     public override void Example() =>
         Document(configured => configured.Run(1656426057));

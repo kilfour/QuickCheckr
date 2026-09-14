@@ -14,9 +14,7 @@ public class B_CoupledPredicate : CheckrTest<B_CoupledPredicate>
     [Fact]
     [DocModelHeader]
     [DocExample(typeof(Pair))]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocReportHeader]
     [DocReport]
     public override void Example() =>
         Document(a => a.Run(2017105380));
