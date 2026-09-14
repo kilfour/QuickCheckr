@@ -1,16 +1,12 @@
-## 0.3.0: Collapsing New Buildings
+## 0.4.0: ...
 
 ### Doing
 
 ### To Test
-- Check exception handling during shrinking for `PoolElement.Replace` and related operations.
-- Verify reducer exceptions leave shrinking in a valid state.
 
-### Later
-
+### To Do
 - Rework and document the custom shrinking API.
-- Reconsider removed actions until action shrinking reaches a fixed point.
-- Replace synchronously blocking async overloads with genuine async execution.
+
 
 **nice to have:**
 * Add better assertions for findings and inquiries in Editor.
@@ -18,6 +14,19 @@
 * Revisit the Generate Unit Test idea ?
 
 
+## 0.x.x: ..
+
+
+### To Test
+- Check exception handling during shrinking for `PoolElement.Replace` and related operations.
+- Verify reducer exceptions leave shrinking in a valid state.
+
+### Todo
+- Reconsider removed actions until action shrinking reaches a fixed point.
+- Replace synchronously blocking async overloads with genuine async execution.
+
+**nice to have:**
+* Add better assertions for findings and inquiries in Editor.
 
 
 ### Done/Ready for Changelog after review
