@@ -1,4 +1,5 @@
-﻿using QuickCheckr.Tests.CookBook;
+﻿using QuickCheckr.Tests;
+using QuickCheckr.Tests.CookBook;
 using QuickCheckr.Tests.Docs;
 using QuickCheckr.Tests.Drafts;
 using QuickCheckr.Tests.Experimental;
@@ -7,7 +8,7 @@ using QuickCheckr.Tests.Notes;
 using QuickPulse.Explains;
 
 
-// Explain.OnlyThis<CreateReadMe>("README.md");
+Explain.OnlyThis<CreateReadMe>("README.md");
 
 Explain.These<CookBook>("CookBook/");
 Explain.These<Documentation>("Docs/");
