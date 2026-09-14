@@ -4,7 +4,8 @@ internal sealed class CaseSelectionRun(
     CheckrState State,
     CheckrOf<Case> Check,
     bool Deliberate,
-    bool Distinguish)
+    bool Distinguish,
+    bool RejectCases)
 {
     public void Run()
     {
@@ -13,6 +14,7 @@ internal sealed class CaseSelectionRun(
         State.Memory.ClearCaseSelection();
         State.Memory.Deliberating = Deliberate;
         State.Memory.Distinguishing = Distinguish;
+        State.Memory.RejectingCases = RejectCases;
         try
         {
             foreach (var id in State.Memory.Numbers)
@@ -26,6 +28,7 @@ internal sealed class CaseSelectionRun(
         {
             State.Memory.Deliberating = false;
             State.Memory.Distinguishing = false;
+            State.Memory.RejectingCases = false;
         }
     }
 }

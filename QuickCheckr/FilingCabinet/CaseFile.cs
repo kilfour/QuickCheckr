@@ -2,26 +2,11 @@ using QuickCheckr;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.FilingCabinet.Depositions.Failure;
 using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.UnderTheHood.Memories.Structure;
 using QuickCheckr.UnderTheHood.Warnings;
 
 namespace QuickCheckr.FilingCabinet;
 
-
-// public interface ICaseFileSummary
-// {
-//     int OriginalRunExecutionCount { get; }
-//     int ExecutionCount { get; }
-//     int ShrinkCount { get; }
-//     public int ActionCount { get; }
-//     public int InputCount { get; }
-//     public int PoolTraceCount { get; }
-//     public int TraceCount { get; }
-//     public int WarningCount { get; }
-//     public int PassedExpectationCount { get; }
-//     public T GetInput<T>(string key);
-//     public int InputsNamed<T>(string key, Func<T, int> calculateScore);
-//     public int WarningsOf<T>(Func<T, int> calculateScore) where T : Warning;
-// }
 
 public sealed class CaseFile : IRecord
 {
@@ -42,8 +27,14 @@ public sealed class CaseFile : IRecord
     public int PassedExpectationCount => PassedExpectations.Count;
     public int? DeliberationScore { get; private set; }
     public int? DeliberationTarget { get; private set; }
-    internal object? Distinction { get; private set; }
+    /// <summary>
+    /// Gets the values declared by <see cref="Checkr.Distinguish{T}(Func{T})"/>
+    /// for this failing case.
+    /// </summary>
+    public IReadOnlyList<object?> Distinctions => Distinction?.Values ?? [];
+    internal DistinctionKey? Distinction { get; private set; }
     internal bool HasDistinction => Distinction is not null;
+    internal bool Rejected { get; private set; }
 
     internal CaseFile AddDeliberation(int score, int? target)
     {
@@ -52,9 +43,15 @@ public sealed class CaseFile : IRecord
         return this;
     }
 
-    internal CaseFile AddDistinction(object distinction)
+    internal CaseFile AddDistinction(DistinctionKey distinction)
     {
         Distinction = distinction;
+        return this;
+    }
+
+    internal CaseFile Reject()
+    {
+        Rejected = true;
         return this;
     }
 

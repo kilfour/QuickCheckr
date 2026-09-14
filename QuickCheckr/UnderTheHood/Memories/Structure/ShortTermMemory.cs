@@ -71,6 +71,8 @@ internal sealed class ShortTermMemory
         => Current.StoreDeliberationTarget(target);
     internal void StoreDistinction(object? distinction)
         => Current.StoreDistinction(distinction);
+    internal void StoreCaseRejection(bool reject)
+        => Current.StoreCaseRejection(reject);
     internal void ClearCaseSelection()
     {
         foreach (var memory in memories.Values)
@@ -87,7 +89,10 @@ internal sealed class ShortTermMemory
         var runScores = memories.Values
             .SelectMany(memory => memory.GetRunDeliberationScores())
             .ToList();
-        if (scores.Count == 0 && runScores.Count == 0 && distinctions.Count == 0)
+        var rejectCase = memories.Values
+            .SelectMany(memory => memory.GetCaseRejections())
+            .Any(reject => reject);
+        if (scores.Count == 0 && runScores.Count == 0 && distinctions.Count == 0 && !rejectCase)
             return null;
 
         var targets = memories.Values
@@ -103,7 +108,8 @@ internal sealed class ShortTermMemory
             scores.Count == 0 ? null : scores.Sum(),
             runScores,
             targets.SingleOrDefault(),
-            distinctions.Count == 0 ? null : new DistinctionKey(distinctions));
+            distinctions.Count == 0 ? null : new DistinctionKey(distinctions),
+            rejectCase);
     }
     // --------------------------------------------------------------------------
     // Inputs

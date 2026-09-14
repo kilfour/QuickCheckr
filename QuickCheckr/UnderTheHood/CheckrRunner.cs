@@ -62,8 +62,9 @@ internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig conf
     {
         var deliberate = State.Memory.HasDeliberation;
         var distinguish = State.Memory.HasDistinction;
-        if (deliberate || distinguish)
-            new CaseSelectionRun(State, Check, deliberate, distinguish).Run();
+        var rejectCases = State.Memory.HasCaseRejection;
+        if (deliberate || distinguish || rejectCases)
+            new CaseSelectionRun(State, Check, deliberate, distinguish, rejectCases).Run();
     }
 
     private CaseFile CompileTheCaseFile(
@@ -101,6 +102,8 @@ internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig conf
         }
         if (selection?.Distinction is { } distinction)
             caseFile.AddDistinction(distinction);
+        if (selection?.RejectCase == true)
+            caseFile.Reject();
         return caseFile;
     }
 }

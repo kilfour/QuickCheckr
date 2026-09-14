@@ -105,10 +105,13 @@ internal sealed class Memory
     // Case Selection
     private bool hasDeliberation;
     private bool hasDistinction;
+    private bool hasCaseRejection;
     internal bool Deliberating { get; set; }
     internal bool Distinguishing { get; set; }
+    internal bool RejectingCases { get; set; }
     internal bool HasDeliberation => hasDeliberation;
     internal bool HasDistinction => hasDistinction;
+    internal bool HasCaseRejection => hasCaseRejection;
     internal void StoreDeliberation(Func<int> score)
     {
         hasDeliberation = true;
@@ -131,6 +134,12 @@ internal sealed class Memory
         hasDistinction = true;
         if (Distinguishing)
             ShortTermMemory.StoreDistinction(distinction());
+    }
+    internal void StoreCaseRejection(Func<bool> reject)
+    {
+        hasCaseRejection = true;
+        if (RejectingCases)
+            ShortTermMemory.StoreCaseRejection(reject());
     }
     internal void ClearCaseSelection()
         => ShortTermMemory.ClearCaseSelection();

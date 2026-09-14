@@ -3,6 +3,7 @@
 * Replaced silent scoped-swap exception handling with an explicit rejected-candidate replay outcome.
 * Added `Checkr.Deliberate(() => executionScore)`, `Trackr.Deliberate(caseFile => runScore)`, and `Trackr.DeliberateUntil(target)` for declaring counterexample selection directly inside a Checkr.
 * Added `Checkr.Distinguish(() => value)` for declaring distinct failure categories inside a Checkr.
+* Added `Checkr.RejectCaseWhen(() => condition)` for excluding uninteresting failing cases after shrinking while continuing the search.
 * Removed configuration-based deliberation; run-level policies are now declared with `Trackr.Deliberate(...)`.
 * Fixed action shrinking so ordinary `Checkr.Act` steps remain in the report and only `Checkr.ShrinkableAct` steps are evaluated as removal candidates.
 * Removed implicit collection regrowth from default shrinking. Empty collections deemed irrelevant now recommend an explicit non-empty witness with `Shrink.Values(...)` or opt-in sampling with `Shrink.Fuzzr(...)`.

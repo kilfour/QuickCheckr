@@ -23,6 +23,9 @@ internal static class CaseOfficer
             findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {
+                if (caseFile.Rejected)
+                    continue;
+
                 if (deliberator is null && caseFile.DeliberationScore.HasValue)
                 {
                     inlineTarget = caseFile.DeliberationTarget;

@@ -1,10 +1,11 @@
 using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
+using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
 using QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExamples;
 using QuickCheckr.UnderTheHood.Archiving;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
+namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 
 [DocFile]
 [DocLink(typeof(PuttingACaseOnTheBoard))]
@@ -31,6 +32,7 @@ or for documenting the different ways a single bug can manifest.
 As stated above, similar CaseFiles are not reported in order to increase the signal to noise ratio.  
 ")]
 [DocInclude(typeof(GatheringEvidenceCaseFileCompare), true)]
+[DocInclude(typeof(GatheringEvidenceDistinguish))]
 [DocInclude(typeof(GatheringEvidenceShowDontTell))]
 [DocInclude(typeof(GatheringEvidenceObservation))]
 public class GatheringEvidence

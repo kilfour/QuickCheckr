@@ -24,11 +24,19 @@ public class TestrOracleRunner<TInput, TResult>(
 {
     protected override string TestName { get; } = testName;
 
-    protected override CheckrOf<Case> GetCheckr() =>
+    protected override CheckrOf<Case> GetCheckr(
+        Func<TInput, object>? distinguish = null,
+        Func<TInput, bool>? rejectCaseWhen = null) =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
         from noteInput in Autopsy.Note("Input", () => input)
+        from distinguishCase in Checkr.When(
+            () => distinguish is not null,
+            Checkr.Distinguish(() => distinguish!(input)))
+        from rejectCase in Checkr.When(
+            () => rejectCaseWhen is not null,
+            Checkr.RejectCaseWhen(() => rejectCaseWhen!(input)))
         from deliberate in Checkr.When(
             () => Deliberation is not null,
             Checkr.Deliberate(() => Deliberation!(input)))

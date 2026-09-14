@@ -16,6 +16,7 @@ internal sealed class ExecutionMemory
     private readonly List<Func<CaseFile, int>> runDeliberationScores = [];
     private int? deliberationTarget;
     private readonly List<object?> distinctions = [];
+    private readonly List<bool> caseRejections = [];
     internal void StoreDeliberation(int score)
         => deliberationScores.Add(score);
     internal IReadOnlyList<int> GetDeliberationScores() => deliberationScores;
@@ -34,12 +35,16 @@ internal sealed class ExecutionMemory
     internal void StoreDistinction(object? distinction)
         => distinctions.Add(distinction);
     internal IReadOnlyList<object?> GetDistinctions() => distinctions;
+    internal void StoreCaseRejection(bool reject)
+        => caseRejections.Add(reject);
+    internal IReadOnlyList<bool> GetCaseRejections() => caseRejections;
     internal void ClearCaseSelection()
     {
         deliberationScores.Clear();
         runDeliberationScores.Clear();
         deliberationTarget = null;
         distinctions.Clear();
+        caseRejections.Clear();
     }
     // --------------------------------------------------------------------------
     // Inputs
@@ -229,14 +234,15 @@ internal sealed record CaseSelectionResult(
     int? ExecutionDeliberationScore,
     IReadOnlyList<Func<CaseFile, int>> RunDeliberationScores,
     int? DeliberationTarget,
-    DistinctionKey? Distinction);
+    DistinctionKey? Distinction,
+    bool RejectCase);
 
 internal sealed class DistinctionKey(IReadOnlyList<object?> values) : IEquatable<DistinctionKey>
 {
-    private readonly IReadOnlyList<object?> values = values;
+    internal IReadOnlyList<object?> Values { get; } = values;
 
     public bool Equals(DistinctionKey? other)
-        => other is not null && values.SequenceEqual(other.values);
+        => other is not null && Values.SequenceEqual(other.Values);
 
     public override bool Equals(object? obj)
         => Equals(obj as DistinctionKey);
@@ -244,7 +250,7 @@ internal sealed class DistinctionKey(IReadOnlyList<object?> values) : IEquatable
     public override int GetHashCode()
     {
         var hash = new HashCode();
-        foreach (var value in values)
+        foreach (var value in Values)
             hash.Add(value);
         return hash.ToHashCode();
     }

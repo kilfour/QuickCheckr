@@ -78,19 +78,16 @@ public abstract class TestrRunner<TInput>
         RunCount runs,
         VaultPolicy<TInput> policy)
     {
-        GetCheckr()
+        GetCheckr(policy.ClassifyBy, policy.SkipWhen)
             .Configure(AddFileAsToConfig())
             .Conduct(
-            searchCount.NumberOfSearches.Investigations(),
-            runs,
-            1.ExecutionsPerRun());//,
-                                  // new Directive
-                                  // {
-                                  //     Distinguish = (a) => policy.ClassifyBy(a.GetInput<TInput>("Input")),
-                                  //     MaxCaseFiles = policy.MaxStoredFailures,
-                                  //     Reject = policy.SkipWhen != null
-                                  //         ? a => policy.SkipWhen(a.GetInput<TInput>("Input")) : null
-                                  // });
+                searchCount.NumberOfSearches.Investigations(),
+                runs,
+                1.ExecutionsPerRun(),
+                new Directive
+                {
+                    MaxCaseFiles = policy.MaxStoredFailures
+                });
         return this;
     }
 
@@ -130,6 +127,8 @@ public abstract class TestrRunner<TInput>
     private Func<CheckrConfig, CheckrConfig> AddFileAsToConfig()
         => a => GetConfig()(a) with { FileAs = TestName };
 
-    protected abstract CheckrOf<Case> GetCheckr();
+    protected abstract CheckrOf<Case> GetCheckr(
+        Func<TInput, object>? distinguish = null,
+        Func<TInput, bool>? rejectCaseWhen = null);
     protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();
 }

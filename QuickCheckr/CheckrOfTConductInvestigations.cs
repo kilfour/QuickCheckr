@@ -26,8 +26,11 @@ public static class CheckrOfTConductInvestigations
     {
         var config = new CheckrRunnerConfig(configuredCheckr.Config);
         var vault = Vault.From(config);
-        var caseFiles = vault.Check(configuredCheckr.Checkr, config, false).ToList();
-        var inquiry = new Inquiry().Add([.. caseFiles]);
+        var checkedCaseFiles = vault.Check(configuredCheckr.Checkr, config, false).ToList();
+        var caseFiles = checkedCaseFiles
+            .Where(caseFile => caseFile.HasEvidence && !caseFile.Rejected)
+            .ToList();
+        var inquiry = new Inquiry().Add([.. checkedCaseFiles]);
         var stop = NeedsToStop(directive, caseFiles, inquiry);
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
@@ -73,7 +76,9 @@ public static class CheckrOfTConductInvestigations
 
     private static IEnumerable<CaseFile> Candidates(Findings findings)
     {
-        var failingCaseFiles = findings.CaseFiles.Where(caseFile => caseFile.HasEvidence).ToList();
+        var failingCaseFiles = findings.CaseFiles
+            .Where(caseFile => caseFile.HasEvidence && !caseFile.Rejected)
+            .ToList();
         return failingCaseFiles.Any(caseFile => caseFile.HasDistinction)
             ? failingCaseFiles
             : findings.FalsifyingCaseFile is { } caseFile

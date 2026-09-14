@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.B_RunningACheckr;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_GatheringEvidence;
+using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.F_TestFrameworkIntegration;
 using QuickPulse.Explains;
 
