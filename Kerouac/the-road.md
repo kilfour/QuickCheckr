@@ -3,7 +3,6 @@
 ### Doing
 
 ### To Test
-
 - Check exception handling during shrinking for `PoolElement.Replace` and related operations.
 - Verify reducer exceptions leave shrinking in a valid state.
 
@@ -24,7 +23,7 @@
 ### Done/Ready for Changelog after review
 
 
-## 0.3.0: All Aboard
+## 0....: All Aboard
 * More in-built reducers
 * Generic types in warnings show `IEnumerable``1` => meh
 * WarningDepositionsTests EmptyCollections_Nested 
