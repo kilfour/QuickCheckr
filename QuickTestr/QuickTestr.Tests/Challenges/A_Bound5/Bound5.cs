@@ -20,7 +20,7 @@ which would look something like ([-32768], [-1], [], [], []).
 public class Bound5 : QuickTestrPropertyTest<Bound5>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

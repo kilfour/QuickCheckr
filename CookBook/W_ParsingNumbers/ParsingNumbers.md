@@ -64,14 +64,18 @@ select Case.Closed;
 public class ParseFuzzr
 {
     public static FuzzrOf<string> Expression(int maxDepth = 4) => Expr(maxDepth);
+
     public static readonly FuzzrOf<string> Number = from i in Fuzzr.Int(1, 4) select i.ToString();
     private static readonly FuzzrOf<string> AddOp = Fuzzr.OneOf("+", "-");
     private static readonly FuzzrOf<string> MulOp = Fuzzr.OneOf("*", "/");
     private static readonly FuzzrOf<string> PowOp = Fuzzr.Constant("^");
+
     private static readonly FuzzrOf<string> WS =
         from chs in Fuzzr.Constant(' ').Many(1)
         select new string([.. chs]);
+
     private static readonly FuzzrOf<string> UnaryOp = Fuzzr.OneOf("-");
+
     private static FuzzrOf<string> Primary(int maxDepth) =>
         maxDepth <= 0
         ? Number
@@ -86,6 +90,7 @@ public class ParseFuzzr
             from inner in Primary(maxDepth - 1)
             select op + ws + inner
           );
+
     private static FuzzrOf<string> Factor(int maxDepth) =>
         from a in Primary(maxDepth)
         from tail in maxDepth <= 0
@@ -98,6 +103,7 @@ public class ParseFuzzr
                   from b in Factor(maxDepth - 1)
                   select w1 + op + w2 + b)
         select a + tail;
+
     private static FuzzrOf<string> Term(int maxDepth) =>
         from head in Factor(maxDepth)
         from pieces in (
@@ -108,6 +114,7 @@ public class ParseFuzzr
             select w1 + op + w2 + rhs
         ).Many(0, 3)
         select head + string.Concat(pieces);
+
     private static FuzzrOf<string> Expr(int maxDepth) =>
         from depth in Fuzzr.Int(0, maxDepth)
         from head in Term(depth)

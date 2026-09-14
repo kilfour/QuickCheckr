@@ -13,7 +13,7 @@ An explicit non-empty witness makes the collection's relevance deterministic.")]
 public class N_CollectionsNeedToGrow : CheckrTest<N_CollectionsNeedToGrow>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

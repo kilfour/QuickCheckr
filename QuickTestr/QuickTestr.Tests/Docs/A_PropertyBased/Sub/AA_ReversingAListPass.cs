@@ -11,7 +11,7 @@ namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 public class AA_ReversingAListPass : QuickTestrPropertyTest<AA_ReversingAListPass>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

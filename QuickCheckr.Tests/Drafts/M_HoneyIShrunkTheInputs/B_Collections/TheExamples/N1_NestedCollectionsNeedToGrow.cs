@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Drafts.M_HoneyIShrunkTheInputs.B_Collections.TheExam
 public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNeedToGrow>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

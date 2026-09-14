@@ -19,7 +19,7 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

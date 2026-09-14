@@ -10,8 +10,8 @@ namespace QuickTestr.Tests.Notes.T_Exploration;
 
 public class StringTestingWithTestr : QuickTestrPropertyTest<StringTestingWithTestr>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact(Skip = "experiment")]
@@ -61,10 +61,4 @@ public class StringTestingWithTestr : QuickTestrPropertyTest<StringTestingWithTe
         from firstChar in Fuzzr.Char()
         from rest in Fuzzr.OneOf(Fuzzr.Char(), Fuzzr.Char('0', '9')).Many(1, 10)
         select new string([.. rest.Prepend(firstChar)]);
-
-    [Fact]
-    public void Foo()
-    {
-        AlphaNumeric(3, 20).Many(20).Generate().PulseToQuickLog();
-    }
 }

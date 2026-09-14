@@ -13,7 +13,7 @@ Adding a reducer as well, just to check whether the empty list also fails.")]
 public class N2_NestedCollectionsNeedToGrow : CheckrTest<N2_NestedCollectionsNeedToGrow>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]

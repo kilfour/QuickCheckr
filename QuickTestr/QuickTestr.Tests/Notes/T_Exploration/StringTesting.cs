@@ -20,8 +20,8 @@ namespace QuickTestr.Tests.Notes.T_Exploration;
 public class StringTesting : QuickCheckrTest<StringTesting>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     protected override ITranscribe Clerk => new StringTestrClerk();
 

@@ -13,6 +13,7 @@ public class TheReverser
 {
     public static List<int> Reverses(List<int> list)
         => [.. HideTheAnswer(list.AsEnumerable()).Reverse()];
+
     private static IEnumerable<int> HideTheAnswer(IEnumerable<int> list)
         => list.Where(a => a != 42).Concat(list.Where(a => a == 42));
 }

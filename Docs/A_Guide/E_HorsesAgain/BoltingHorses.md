@@ -18,16 +18,21 @@ And here's the domain model:
 public class Coach(string name)
 {
     public string Name { get; init; } = name;
+
     public IReadOnlySet<string> Skills => skills;
     private readonly HashSet<string> skills = [];
+
     public IReadOnlyList<Course> AssignedCourses => assignedCourses;
     private readonly List<Course> assignedCourses = [];
+
     public void UpdateSkills(IEnumerable<string> newSkills)
     {
         skills.Clear();
         foreach (var s in newSkills) skills.Add(s);
     }
+
     public bool IsSuitableFor(Course course) => course.RequiredSkills.All(Skills.Contains);
+
     public void AssignCourse(Course course) => assignedCourses.Add(course);
 }
 ```
@@ -36,14 +41,17 @@ public class Coach(string name)
 public class Course(string name)
 {
     public string Name { get; init; } = name;
+
     public IReadOnlySet<string> RequiredSkills => requiredSkills;
     private readonly HashSet<string> requiredSkills = [];
     public Coach? AssignedCoach { get; private set; }
+
     public void UpdateRequiredSkills(IEnumerable<string> newSkills)
     {
         requiredSkills.Clear();
         foreach (var s in newSkills) requiredSkills.Add(s);
     }
+
     public void AssignCoach(Coach coach)
     {
         if (!coach.IsSuitableFor(this)) // this enforces the invariant

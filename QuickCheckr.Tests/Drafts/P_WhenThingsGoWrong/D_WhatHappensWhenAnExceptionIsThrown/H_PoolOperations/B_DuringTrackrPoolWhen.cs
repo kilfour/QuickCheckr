@@ -1,5 +1,3 @@
-using QuickCheckr;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
@@ -14,32 +12,26 @@ Whenever an excecption occurs during the execution of the condition in `Trackr.P
 """)]
 public class B_DuringTrackrPoolWhen : CheckrThrowsTest<B_DuringTrackrPoolWhen>
 {
-    protected override bool Explain => true;
-
-    [CodeSnippet]
-    protected override Type ExceptionType => typeof(ComputerSaysNo);
-
-    [CodeSnippet]
-    protected override string Message => "Boom";
-
     [Fact]
-    [DocCheckrHeader]
     [DocCheckr]
-    [DocExceptionType]
-    [DocMessage]
+    [DocException]
     public override void Example() => Document(a => a.Run());
+
+    protected override void Verify(string expected, string actual)
+    {
+        Assert.Equal(expected, actual);
+    }
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Trackr.ToPool("answer", () => 42)
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<int>(
-                _ => ComputerSays.No<bool>("Boom"),
-                CheckrResult.CaseOnly))
+            Trackr.PoolWhen<int>(_ => ComputerSays.No<bool>("Boom"), CheckrResult.CaseOnly))
         select Case.Closed;
 
-    protected override void Verify(string message)
-    {
-        Assert.Equal(Message, message);
-    }
+    [CodeExceptionType]
+    protected override Type ExceptionType() => typeof(ComputerSaysNo);
+
+    [CodeExceptionMessage]
+    protected override string Message() => "Boom";
 }
