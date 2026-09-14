@@ -1,4 +1,4 @@
-## Next version: 0.0.7 : This Year's Model
+## Next version: 0.1.0 : Bringing It All Back Home
  
 ### Doing
 
@@ -32,24 +32,3 @@
   - Subtract: removed by shrinker
   - Clear: executed 1x
   ```
-
-### Wish List
-* Auto DeliberationPolicy for Testr
-  Derive default deliberation policy from input type
-  
-### Done/Ready for Changelog after review
-* Upgraded QuickCheckr dependency, taking advantage of the new Reporting `Clerk`.
-
-## 0.0.8 : ...
-
-## Skipped Tests
-
-## Future Doc Work
-
-## Ideas
-
-## Refactoring Targets 
-
-### Already Considered
-
-## Other
