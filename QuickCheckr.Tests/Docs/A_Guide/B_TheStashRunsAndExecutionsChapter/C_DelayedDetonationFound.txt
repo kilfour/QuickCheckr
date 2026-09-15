@@ -1,0 +1,18 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                C_DelayedDetonationFound.cs:94:1
+ Original failing run:    3 executions
+ Minimal failing case:    3 executions (after 2 shrinks)
+ Seed:                    1854571642
+ ------------------------------------------------------------
+  Executed: BugHouse.DelayedDetonation (2 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: BugHouse.DelayedDetonation
+   - Int = 1
+ ============================================================
+  !! Exception: I'm sorry, Dave, I'm afraid I can't do that.
+ ============================================================
+ Passed Expectations
+ - Returns true: 2x
+ ------------------------------------------------------------

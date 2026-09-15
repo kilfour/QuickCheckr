@@ -1,5 +1,5 @@
 # Choosing the Next Move
-|[◀][TheStashRunsAndExecutions]|[△][Guide]|[▶][InPoolsWeTrust]|
+|[◀][A_TheStashRunsAndExecutions]|[△][Guide]|[▶][InPoolsWeTrust]|
 |---|---|---|  
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
@@ -161,6 +161,6 @@ select Case.Closed;
 
 [Guide]: ../Guide.md
 
-[TheStashRunsAndExecutions]: ../B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md
+[A_TheStashRunsAndExecutions]: ../B_TheStashRunsAndExecutionsChapter/A_TheStashRunsAndExecutions.md
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md

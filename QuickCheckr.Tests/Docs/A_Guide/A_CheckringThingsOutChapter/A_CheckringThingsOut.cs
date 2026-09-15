@@ -1,8 +1,5 @@
-using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Tools;
-using QuickCheckr.UnderTheHood;
-using QuickFuzzr;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOutChapter;

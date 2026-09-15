@@ -27,7 +27,7 @@ but it also explores sequences of actions and reduces failures to the smallest s
 
 [CheckringThingsOut]: A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 
-[TheStashRunsAndExecutions]: B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md
+[TheStashRunsAndExecutions]: B_TheStashRunsAndExecutionsChapter/A_TheStashRunsAndExecutions.md
 
 [ChoosingTheNextMove]: C_ChoosingTheNextMove/ChoosingTheNextMove.md
 

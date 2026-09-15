@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr.Tests.Concurrency;
@@ -29,7 +28,8 @@ public class SynchronizationContextTests
             }
             catch (Exception error) { completion.TrySetException(error); }
             finally { SynchronizationContext.SetSynchronizationContext(null); }
-        }) { IsBackground = true, Name = "QuickCheckr synchronization context regression" };
+        })
+        { IsBackground = true, Name = "QuickCheckr synchronization context regression" };
 
         // A regression can block the dedicated thread, but cannot strand the test runner.
         thread.Start();
