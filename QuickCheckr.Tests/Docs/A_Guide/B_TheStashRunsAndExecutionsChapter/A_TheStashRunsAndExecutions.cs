@@ -8,18 +8,18 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
+namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 
 [DocFile]
 [DocLink(typeof(InPoolsWeTrust), "InPoolsWeTrust")]
 [DocFileHeader("The Stash, Runs and Executions")]
-[DocNavigation(typeof(Guide), typeof(A_CheckringThingsOutChapter.A_CheckringThingsOut), typeof(ChoosingTheNextMove))]
+[DocNavigation(typeof(Guide), typeof(A_CheckringThingsOut), typeof(ChoosingTheNextMove))]
 [DocContent(
 @"In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  
 Consider:")]
 [DocExample(typeof(BugHouse))]
-public class TheStashRunsAndExecutions : BaseTest
+public class A_TheStashRunsAndExecutions : BaseTest
 {
     [CodeExample]
     public class BugHouse
@@ -42,7 +42,7 @@ public class TheStashRunsAndExecutions : BaseTest
 
     [Fact]
     [DocContent("If we want to test it and write a Checkr like so:")]
-    [DocExample(typeof(TheStashRunsAndExecutions), nameof(FaultyBugHouseCheckr))]
+    [DocExample(typeof(A_TheStashRunsAndExecutions), nameof(FaultyBugHouseCheckr))]
     [DocContent(
 @"The test will always pass, even if we increase the amount of runs to infinity,
 because the test loses the state of the `BugHouse` between every run.")]
@@ -76,9 +76,9 @@ because the test loses the state of the `BugHouse` between every run.")]
    This allows us to *capture* the state of the `BugHouse`.  
    
 **The Updated Checkr:**")]
-    [DocExample(typeof(TheStashRunsAndExecutions), nameof(BugHouseCheckr))]
+    [DocExample(typeof(A_TheStashRunsAndExecutions), nameof(BugHouseCheckr))]
     [DocContent("**Running It:**")]
-    [DocExample(typeof(TheStashRunsAndExecutions), nameof(RunBugHouseCheckr))]
+    [DocExample(typeof(A_TheStashRunsAndExecutions), nameof(RunBugHouseCheckr))]
     [DocContent("**The Report:**")]
     [DocCodeFile("TheStashRunsAndExecutions.txt", "text")]
     [DocContent(
@@ -146,7 +146,7 @@ the failure only emerges when several executions act on the *same* object.
     {
         var article = Journalist.Publish(BugHouseCheckr, a => a.Run(1854571642, 10.ExecutionsPerRun()));
         WriteAsserts(article, false);
-        WriteReport<TheStashRunsAndExecutions>(article, false);
+        WriteReport<A_TheStashRunsAndExecutions>(article, false);
         Verify(article);
     }
 

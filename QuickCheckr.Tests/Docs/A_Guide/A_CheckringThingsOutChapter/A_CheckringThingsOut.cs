@@ -1,5 +1,5 @@
 using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
+using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOutChapter;
 
 [DocFile]
 [DocFileHeader("Checkr-ing Things Out")]
-[DocNavigation(typeof(Guide), null, typeof(TheStashRunsAndExecutions))]
+[DocNavigation(typeof(Guide), null, typeof(A_TheStashRunsAndExecutions))]
 [DocContent(
 @"A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.

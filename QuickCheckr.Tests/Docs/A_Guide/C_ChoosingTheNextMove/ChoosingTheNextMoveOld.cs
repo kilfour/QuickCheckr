@@ -1,7 +1,7 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
+using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 
 //[DocFile]
 [DocLink(typeof(Guide))]
-[DocLink(typeof(TheStashRunsAndExecutions))]
+[DocLink(typeof(A_TheStashRunsAndExecutions))]
 [DocLink(typeof(InPoolsWeTrust))]
 [DocFileHeader("Choosing the Next Move")]
 [DocContent("[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  \n")]

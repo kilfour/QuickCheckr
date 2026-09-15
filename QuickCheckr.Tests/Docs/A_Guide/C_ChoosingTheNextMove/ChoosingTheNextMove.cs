@@ -1,6 +1,6 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
+using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 
 [DocFile]
 [DocFileHeader("Choosing the Next Move")]
-[DocNavigation(typeof(Guide), typeof(TheStashRunsAndExecutions), typeof(InPoolsWeTrust))]
+[DocNavigation(typeof(Guide), typeof(A_TheStashRunsAndExecutions), typeof(InPoolsWeTrust))]
 [DocContent(
 @$"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
