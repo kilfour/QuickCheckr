@@ -1,4 +1,13 @@
-## 0.4.0: You Keep Me Hanging On ... Asynchronously
+## 0.4.0: You Keep Me Hanging On ... Asynchronously (not yet released)
+
+* Added end-to-end async/await support across execution, replay, shrinking, tracing, and case selection.
+* Added `RunAsync(...)` overloads, including cancellation support.
+* Task-based actions, captures, performs, and carefully handled actions are now genuinely awaited instead of blocking.
+* Async callbacks now work correctly through shrinking and replay, including exceptions thrown after suspension.
+* Added async stash disposal through `IAsyncDisposable`, while retaining normal `IDisposable` support.
+* Cancellation now propagates separately from falsification and is respected throughout runs and replay.
+* Removed task-instance overloads such as `ActCarefully(string, Task)` and `Perform(Task)`.
+* Synchronous `Run()` remains available for synchronous scripts; use `RunAsync()` for callbacks that may suspend.
 
 
 ## 0.3.0: Collapsing New Buildings
