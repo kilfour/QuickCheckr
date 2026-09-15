@@ -6,12 +6,12 @@ namespace QuickTestr.Tests.Verification.Property;
 
 public class AsyncPropertyTests
 {
-    [Fact(Skip = "Causes a deadlock")]
-    public void AwaitsAnAsyncInvariant()
+    [Fact(Timeout = 10000)]
+    public async Task AwaitsAnAsyncInvariant()
     {
         var attempts = 0;
 
-        Testr.Named("Async property")
+        await Testr.Named("Async property")
             .For(Fuzzr.Constant(42))
             .Assert(async input =>
             {
@@ -19,7 +19,7 @@ public class AsyncPropertyTests
                 attempts++;
                 return input == 42;
             })
-            .Run(1.Runs());
+            .RunAsync(1.Runs());
 
         Assert.Equal(1, attempts);
     }

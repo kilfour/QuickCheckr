@@ -141,7 +141,7 @@ before execution and during replay, waiting for cleanup, and disposal failures.
 The full engine path now supports task-based actions through `RunAsync()`; the
 QuickTestr builder integration and its two skipped tests remain step 5.
 
-### 5. QuickTestr integration
+### 5. QuickTestr integration (implemented; CI verification pending)
 
 - Preserve asynchronous delegates in property and oracle builders, including
   two-input and deliberated variants, instead of blocking them into synchronous delegates.
@@ -149,6 +149,26 @@ QuickTestr builder integration and its two skipped tests remain step 5.
 - Convert the two acceptance tests to `async Task` and `await ...RunAsync()`,
   remove their skips, and verify them on GitHub Actions.
 - Test mixed synchronous/asynchronous oracle sides and suspending falsifications.
+
+QuickTestr now keeps task-returning property and oracle delegates intact through
+single-input, two-input, and deliberated builders. Synchronous delegates are
+adapted to completed tasks when invoked; oracle sides still execute sequentially.
+The shared property/oracle runner exposes cancellable `RunAsync()` overloads for
+the default 100 runs, an explicit run count, and a seed. Model-based runners also
+expose matching asynchronous run overloads and await resource cleanup.
+
+The two formerly deadlocking acceptance tests are enabled and await `RunAsync()`.
+Additional bounded tests exercise suspending falsifications and shrinking across
+all builder variants, mixed oracle sides, post-await exceptions, cancellation,
+run counts, receiver identity, and model resource disposal.
+
+Use `RunAsync()` for suspending callbacks. `Run()`, vault operations, and debugging
+remain synchronous APIs. This step does not add async model-operation or observation
+overloads; the model runner can await the engine and asynchronous stash disposal.
+
+The existing GitHub Actions workflow runs the solution tests on Ubuntu for pull
+requests targeting main and pushes to main. Local verification passes; an actual
+GitHub Actions result remains pending until these changes reach that workflow.
 
 ## Validation
 

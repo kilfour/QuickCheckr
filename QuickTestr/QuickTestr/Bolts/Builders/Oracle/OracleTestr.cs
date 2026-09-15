@@ -12,7 +12,7 @@ public sealed class OracleTestr<T, TResult>
     private readonly FuzzrOf<T> fuzzr;
     private readonly Shrinker[] shrinkers;
     private readonly CheckrOf<Case>[] formatters;
-    private readonly Func<T, TResult> expected;
+    private readonly Func<T, Task<TResult>> expected;
     private readonly Func<T, int>? deliberation;
     private readonly int? deliberationTarget;
     private readonly string testName;
@@ -22,7 +22,7 @@ public sealed class OracleTestr<T, TResult>
         FuzzrOf<T> fuzzr,
         Shrinker[] shrinkers,
         CheckrOf<Case>[] formatters,
-        Func<T, TResult> expected,
+        Func<T, Task<TResult>> expected,
         Func<T, int>? deliberation,
         int? deliberationTarget,
         string testName,
@@ -43,7 +43,7 @@ public sealed class OracleTestr<T, TResult>
     /// Use to finish an oracle-style Testr and obtain a runnable comparison.
     /// </summary>
     public TestrOracleRunner<T, TResult> Actual(Func<T, TResult> actual)
-        => new(fuzzr, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, expected, input => Task.FromResult(actual(input)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous implementation that should match the expected result.
@@ -55,7 +55,7 @@ public sealed class OracleTestr<T, TResult>
             shrinkers,
             formatters,
             expected,
-            input => actual(input).GetAwaiter().GetResult(),
+            actual,
             deliberation,
             deliberationTarget,
             testName,

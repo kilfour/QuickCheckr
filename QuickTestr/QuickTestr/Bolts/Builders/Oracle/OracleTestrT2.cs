@@ -13,7 +13,7 @@ public sealed class OracleTestrT2<TInput1, TInput2, TResult>
     private readonly FuzzrOf<TInput2> fuzzrOfT2;
     private readonly Shrinker[] shrinkers;
     private readonly CheckrOf<Case>[] formatters;
-    private readonly Func<TInput1, TInput2, TResult> expected;
+    private readonly Func<TInput1, TInput2, Task<TResult>> expected;
     private readonly Func<TInput1, TInput2, int>? deliberation;
     private readonly int? deliberationTarget;
     private readonly string testName;
@@ -24,7 +24,7 @@ public sealed class OracleTestrT2<TInput1, TInput2, TResult>
         FuzzrOf<TInput2> fuzzrOfT2,
         Shrinker[] shrinkers,
         CheckrOf<Case>[] formatters,
-        Func<TInput1, TInput2, TResult> expected,
+        Func<TInput1, TInput2, Task<TResult>> expected,
         Func<TInput1, TInput2, int>? deliberation,
         int? deliberationTarget,
         string testName,
@@ -46,7 +46,7 @@ public sealed class OracleTestrT2<TInput1, TInput2, TResult>
     /// Use to finish an oracle-style Testr and obtain a runnable comparison.
     /// </summary>
     public TestrOracleRunnerT2<TInput1, TInput2, TResult> Actual(Func<TInput1, TInput2, TResult> actual)
-        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, (input1, input2) => Task.FromResult(actual(input1, input2)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous implementation that should match the expected result.
@@ -60,7 +60,7 @@ public sealed class OracleTestrT2<TInput1, TInput2, TResult>
             shrinkers,
             formatters,
             expected,
-            (input1, input2) => actual(input1, input2).GetAwaiter().GetResult(),
+            actual,
             deliberation,
             deliberationTarget,
             testName,

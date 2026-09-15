@@ -19,6 +19,28 @@ public abstract class TestrRunner<TInput>
 
     internal TestrRunner() { }
 
+    /// <summary>Awaits the Testr using the default 100 runs. Use for callbacks that may suspend.</summary>
+    [StackTraceHidden]
+    public Task<TestrRunner<TInput>> RunAsync(CancellationToken cancellationToken = default)
+        => RunAsync(100.Runs(), cancellationToken);
+
+    /// <summary>Awaits a reproducible run using the specified seed.</summary>
+    [StackTraceHidden]
+    public async Task<TestrRunner<TInput>> RunAsync(int seed, CancellationToken cancellationToken = default)
+    {
+        await GetCheckr().Configure(GetConfig()).RunAsync(seed, cancellationToken).ConfigureAwait(false);
+        return this;
+    }
+
+    /// <summary>Awaits the specified number of runs, including shrinking and reporting.</summary>
+    [StackTraceHidden]
+    public async Task<TestrRunner<TInput>> RunAsync(RunCount tries, CancellationToken cancellationToken = default)
+    {
+        await GetCheckr().Configure(GetConfig()).RunAsync(tries, cancellationToken).ConfigureAwait(false);
+        return this;
+    }
+
+
     /// <summary>
     /// Runs the Testr using the default number of runs.
     /// Use for the normal execution path when you do not need explicit configuration.

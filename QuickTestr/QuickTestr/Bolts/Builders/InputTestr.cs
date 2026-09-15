@@ -50,7 +50,7 @@ public sealed class InputTestr<T>
     /// Use for direct property-based testing where success is a boolean invariant.
     /// </summary>
     public TestrPropertyRunner<T> Assert(Func<T, bool> invariant)
-        => new(fuzzr, shrinkers, formatters, invariant, null, null, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, input => Task.FromResult(invariant(input)), null, null, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous property that must hold for generated inputs.
@@ -61,7 +61,7 @@ public sealed class InputTestr<T>
             fuzzr,
             shrinkers,
             formatters,
-            input => invariant(input).GetAwaiter().GetResult(),
+            invariant,
             null,
             null,
             testName,
@@ -72,7 +72,7 @@ public sealed class InputTestr<T>
     /// Use when you want to compare a trusted model against another implementation.
     /// </summary>
     public OracleTestr<T, TResult> Expected<TResult>(Func<T, TResult> expected)
-        => new(fuzzr, shrinkers, formatters, expected, null, null, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, input => Task.FromResult(expected(input)), null, null, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous expected result for oracle-style testing.
@@ -83,7 +83,7 @@ public sealed class InputTestr<T>
             fuzzr,
             shrinkers,
             formatters,
-            input => expected(input).GetAwaiter().GetResult(),
+            expected,
             null,
             null,
             testName,

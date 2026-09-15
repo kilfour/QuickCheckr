@@ -116,6 +116,27 @@ public sealed class WithOperations<T, U>
     }
 
 
+    /// <summary>Awaits the model-based Testr using 10 runs of 50 executions.</summary>
+    [StackTraceHidden]
+    public Task<WithOperations<T, U>> RunAsync(CancellationToken cancellationToken = default)
+        => RunAsync(10.Runs(), 50.ExecutionsPerRun(), cancellationToken);
+
+    /// <summary>Awaits the specified run and execution counts, including async stash disposal.</summary>
+    [StackTraceHidden]
+    public async Task<WithOperations<T, U>> RunAsync(RunCount runs, ExecutionCount executionsPerRun, CancellationToken cancellationToken = default)
+    {
+        await GetCheckr().Configure(GetConfig()).RunAsync(runs, executionsPerRun, cancellationToken).ConfigureAwait(false);
+        return this;
+    }
+
+    /// <summary>Awaits a reproducible model-based run using the specified seed.</summary>
+    [StackTraceHidden]
+    public async Task<WithOperations<T, U>> RunAsync(int seed, ExecutionCount executionsPerRun, CancellationToken cancellationToken = default)
+    {
+        await GetCheckr().Configure(GetConfig()).RunAsync(seed, executionsPerRun, cancellationToken).ConfigureAwait(false);
+        return this;
+    }
+
     private Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
