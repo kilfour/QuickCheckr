@@ -28,7 +28,6 @@ public class D_ChoosingTheNextMoveConditional : CheckrTest<D_ChoosingTheNextMove
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.")]
-    [DocContent("\n[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]")]
     public override void Example() => Document(a => a.Run(356083796, 2.ExecutionsPerRun()));
 
     [CodeSnippet]

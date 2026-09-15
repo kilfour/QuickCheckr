@@ -147,10 +147,13 @@ select Case.Closed;
 * All branches operate on the same stashed state.
 * Reports show exactly which branch was chosen.  
 
-[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
+
+[Back to Top][A_ChoosingTheNextMove]  
 
 [Guide]: ../Guide.md
 
 [A_TheStashRunsAndExecutions]: ../B_TheStashRunsAndExecutionsChapter/A_TheStashRunsAndExecutions.md
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
+
+[A_ChoosingTheNextMove]: A_ChoosingTheNextMove.md

@@ -2,8 +2,6 @@ using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
-using QuickPulse.Instruments;
-
 
 namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
@@ -26,4 +24,5 @@ and QuickCheckr picks one at random during each execution.
 [DocInclude(typeof(B_ChoosingTheNextMoveNoShrinking), true)]
 [DocInclude(typeof(C_ChoosingTheNextMoveShrunk))]
 [DocInclude(typeof(D_ChoosingTheNextMoveConditional))]
+[DocBackToTop(typeof(A_ChoosingTheNextMove))]
 public class A_ChoosingTheNextMove;
