@@ -1,6 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOut;
+using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOutChapter;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
@@ -11,12 +11,9 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutions;
 
 [DocFile]
-[DocLink(typeof(InPoolsWeTrust))]
-[DocLink(typeof(Guide))]
-[DocLink(typeof(CheckringThingsOut))]
-[DocLink(typeof(ChoosingTheNextMove))]
+[DocLink(typeof(InPoolsWeTrust), "InPoolsWeTrust")]
 [DocFileHeader("The Stash, Runs and Executions")]
-[DocContent("[Guide][Guide] | [Previous][CheckringThingsOut] | [Next][ChoosingTheNextMove]  \n")]
+[DocNavigation(typeof(Guide), typeof(A_CheckringThingsOutChapter.A_CheckringThingsOut), typeof(ChoosingTheNextMove))]
 [DocContent(
 @"In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.  

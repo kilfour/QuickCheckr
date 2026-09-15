@@ -1,5 +1,5 @@
   - [Guide](A_Guide/Guide.md)
-    - [Checkr-ing Things Out](A_Guide/A_CheckringThingsOut/CheckringThingsOut.md)
+    - [Checkr-ing Things Out](A_Guide/A_CheckringThingsOutChapter/A_CheckringThingsOut.md)
     - [The Stash, Runs and Executions](A_Guide/B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md)
     - [Choosing the Next Move](A_Guide/C_ChoosingTheNextMove/ChoosingTheNextMove.md)
     - [In Pools We Trust](A_Guide/D_InPoolsWeTrust/InPoolsWeTrust.md)

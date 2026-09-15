@@ -1,30 +1,32 @@
 # Checkr-ing Things Out
-[Guide][Guide] | [Next][TheStashRunsAndExecutions]  
-  
+|◀|[△][Guide]|[▶][TheStashRunsAndExecutions]|
+|---|---|---|  
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.  
 ## First Expectation
 Let's start by having a look at the simplest possible Checkr:  
 ```csharp
-public class MinimalCheckr
-{
-    [Fact]
-    public void RunTest()
-        => Checkr.Expect("Always true", () => true).Run();
-}
+[Fact]
+[DocBackToTop(typeof(A_CheckringThingsOut))]
+public void RunTest()
+    => Checkr.Expect("Always true", () => true).Run();
 ```
 Congratulations! You've just checked something out. The test passes and now we know that `true` is always `true`.
-
+  
 So what happens if try to do the opposite?  
+
+**The Checkr:**  
 ```csharp
 Checkr.Expect("Always true", () => false);
 ```
-The test fails and QuickCheckr produces the following report:  
+The test fails and QuickCheckr produces the following:  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Run_ExpectAlwaysFalse
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:64:1
+ Test:                    Example
+ Location:                B_MinimalFailingCheckr.cs:43:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------
@@ -46,12 +48,13 @@ The report shows a run summary containing :
 checkr.Run(1642083259);
 ```
 ## Gathering Input
-Let's add an input to the Checkr, and change our expectation:  
+Let's add an input to the Checkr, and change our expectation.  
+
+**The Checkr:**  
 ```csharp
-var check =
-    from input in Checkr.Input("Input", Fuzzr.Int())
-    from expect in Checkr.Expect("Input /= 42", () => input != 42)
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int())
+from expect in Checkr.Expect("Input /= 42", () => input != 42)
+select Case.Closed;
 ```
 
 *Note:* `Case.Closed` signals the end of the Checkr script.
@@ -59,46 +62,51 @@ A Checkr is evaluated step by step, and `Case.Closed` is the final marker to ind
 
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
-`Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, on average, once every hundred times.  
+`Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, *on average*, once every hundred times.  
 Not ideal, so let's up the run number, like so:  
 ```csharp
-check.Run(200.Runs())
+checkr.Run(200.Runs());
 ```
-Now the test fails consistently:  
+With more runs, the test is more likely to find a failing input.  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:90:1
+ Test:                    Example
+ Location:                C_GatheringInput.cs:32:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input = 42
  ======================================
   !! Expectation Failed: Input /= 42
  ======================================
 ```
 As you can see the input is now included in the report *minimal fail-case*,
 this is because QuickCheckr judged the input to be relevant to the failure.  
-So, if we add another input to the Checkr, one which does not influence the failure:  
+Now, if we add another input to the Checkr, one which does not influence the failure.  
+
+**The Checkr:**  
 ```csharp
-var check =
-    from input in Checkr.Input("Input", Fuzzr.Int())
-    from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
-    from expect in Checkr.Expect("Input /= 42", () => input != 42)
-    select Case.Closed;
+from input in Checkr.Input("Input", Fuzzr.Int())
+from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
+from expect in Checkr.Expect("Input /= 42", () => input != 42)
+select Case.Closed;
 ```
-The following happens:  
+The following happens.  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:132:1
+ Test:                    Example
+ Location:                D_AddingAnotherInput.cs:23:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input = 42
  ======================================
   !! Expectation Failed: Input /= 42
  ======================================
@@ -109,34 +117,41 @@ That's basically the same thing as before, because **QuickCheckr does not report
 > => Less cognitive load. More signal.  
 ## Time to Act!
 Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?  
+
+**The Checkr:**  
 ```csharp
-var check =
-    from one in Checkr.Input("One", Fuzzr.Int())
-    from two in Checkr.Input("Two", Fuzzr.Int())
-    from three in Checkr.Input("Three", Fuzzr.Int())
-    from sum in Checkr.Act("One plus Three", () => one + three)
-    from expect in Checkr.Expect("Sum /= 42", () => sum != 42)
-    select Case.Closed;
+from one in Checkr.Input("One", Fuzzr.Int())
+from two in Checkr.Input("Two", Fuzzr.Int())
+from three in Checkr.Input("Three", Fuzzr.Int())
+from sum in Checkr.Act("One plus Three", () => one + three)
+from expect in Checkr.Expect("Sum /= 42", () => sum != 42)
+select Case.Closed;
 ```
 Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.  
-And here's the report:  
+
+**The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:209:1
+ Test:                    Example
+ Location:                E_TimeToAct.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed: One plus Three
-   - Input: One   = 24
-   - Input: Three = 18
+   - One   = 24
+   - Three = 18
  ====================================
   !! Expectation Failed: Sum /= 42
  ====================================
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
+
+[Back to Top][A_CheckringThingsOut]  
+
 [Guide]: ../Guide.md
 
 [TheStashRunsAndExecutions]: ../B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md
+
+[A_CheckringThingsOut]: A_CheckringThingsOut.md

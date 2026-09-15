@@ -1,6 +1,6 @@
 # In Pools We Trust
-[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  
-  
+|[◀][ChoosingTheNextMove]|[△][Guide]|[▶][BoltingHorses]|
+|---|---|---|  
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  

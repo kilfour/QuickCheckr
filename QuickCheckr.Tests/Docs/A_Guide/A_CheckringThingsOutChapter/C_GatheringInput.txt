@@ -1,11 +1,11 @@
  ------------------------------------------------------------
- Test:                    AddingAnInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:90:1
+ Test:                    Example
+ Location:                C_GatheringInput.cs:32:1
  Original failing run:    1 execution
  Seed:                    127648209
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input = 42
  ======================================
   !! Expectation Failed: Input /= 42
  ======================================

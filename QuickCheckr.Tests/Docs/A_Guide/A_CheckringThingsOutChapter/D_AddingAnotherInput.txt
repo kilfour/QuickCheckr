@@ -1,12 +1,12 @@
  ------------------------------------------------------------
- Test:                    AddingAnotherInput
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:132:1
+ Test:                    Example
+ Location:                D_AddingAnotherInput.cs:23:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    127648209
  ------------------------------------------------------------
   Executed:
-   - Input: Input = 42
+   - Input = 42
  ======================================
   !! Expectation Failed: Input /= 42
  ======================================

@@ -1,6 +1,6 @@
 # Choosing the Next Move
-[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  
-  
+|[◀][TheStashRunsAndExecutions]|[△][Guide]|[▶][InPoolsWeTrust]|
+|---|---|---|  
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
 

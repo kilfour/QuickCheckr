@@ -25,7 +25,7 @@ but it also explores sequences of actions and reduces failures to the smallest s
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.  
 
-[CheckringThingsOut]: A_CheckringThingsOut/CheckringThingsOut.md
+[CheckringThingsOut]: A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 
 [TheStashRunsAndExecutions]: B_TheStashRunsAndExecutions/TheStashRunsAndExecutions.md
 

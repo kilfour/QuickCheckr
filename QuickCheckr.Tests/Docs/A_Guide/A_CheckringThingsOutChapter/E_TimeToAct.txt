@@ -1,13 +1,13 @@
  ------------------------------------------------------------
- Test:                    TimeToAct
- Location:                Docs\A_Guide\A_CheckringThingsOut\CheckringThingsOut.cs:209:1
+ Test:                    Example
+ Location:                E_TimeToAct.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1642083259
  ------------------------------------------------------------
   Executed: One plus Three
-   - Input: One   = 24
-   - Input: Three = 18
+   - One   = 24
+   - Three = 18
  ====================================
   !! Expectation Failed: Sum /= 42
  ====================================

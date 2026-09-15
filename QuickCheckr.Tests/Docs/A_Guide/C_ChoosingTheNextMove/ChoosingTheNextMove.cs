@@ -11,11 +11,8 @@ using QuickPulse.Instruments;
 namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 
 [DocFile]
-[DocLink(typeof(Guide))]
-[DocLink(typeof(TheStashRunsAndExecutions))]
-[DocLink(typeof(InPoolsWeTrust))]
 [DocFileHeader("Choosing the Next Move")]
-[DocContent("[Guide][Guide] | [Previous][TheStashRunsAndExecutions] | [Next][InPoolsWeTrust]  \n")]
+[DocNavigation(typeof(Guide), typeof(TheStashRunsAndExecutions), typeof(InPoolsWeTrust))]
 [DocContent(
 @$"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.

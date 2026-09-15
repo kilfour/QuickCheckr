@@ -12,10 +12,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 
 
 [DocFile]
-[DocLink(typeof(Guide))]
-[DocLink(typeof(ChoosingTheNextMove))]
-[DocLink(typeof(BoltingHorses))]
-[DocContent("[Guide][Guide] | [Previous][ChoosingTheNextMove] | [Next][BoltingHorses]  \n")]
+[DocNavigation(typeof(Guide), typeof(ChoosingTheNextMove), typeof(BoltingHorses))]
 [DocContent(
 @"
 **Pools** let QuickCheckr accumulate multiple objects across executions.  

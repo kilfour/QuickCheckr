@@ -40,4 +40,4 @@ but it also explores sequences of actions and reduces failures to the smallest s
   - An overview of pools and their usage.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.")]
-public class Guide { }
+public class Guide;

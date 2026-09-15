@@ -1,6 +1,7 @@
 ﻿using QuickCheckr.Tests;
 using QuickCheckr.Tests.CookBook;
 using QuickCheckr.Tests.Docs;
+using QuickCheckr.Tests.Docs.A_Guide;
 using QuickCheckr.Tests.Drafts;
 using QuickCheckr.Tests.Experimental;
 using QuickCheckr.Tests.Investigations;
@@ -23,3 +24,4 @@ Explain.This<Drafts>("DocsSinglePages/drafts.md");
 Explain.This<Experimental>("DocsSinglePages/experimental.md");
 Explain.This<Investigations>("DocsSinglePages/investigations.md");
 Explain.This<Notes>("DocsSinglePages/notes.md");
+Explain.This<Guide>("DocsSinglePages/guide.md");
