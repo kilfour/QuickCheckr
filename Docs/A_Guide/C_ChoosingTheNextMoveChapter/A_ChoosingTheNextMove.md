@@ -1,6 +1,7 @@
 # Choosing the Next Move
 |[◀][A_TheStashRunsAndExecutions]|[△][Guide]|[▶][InPoolsWeTrust]|
-|---|---|---|  
+|---|---|---|
+  
 In the previous chapter we mentioned *Pools* and promised to explain how they work.  
 We'll get there soon, but first we need to talk about `Checkr.OneOf`, the tool that lets QuickCheckr explore branching behaviour.
 
@@ -12,9 +13,8 @@ It is the foundational building block for introducing randomness into *what happ
 Instead of describing one action, you describe a *set* of alternative next moves,
 and QuickCheckr picks one at random during each execution.
 
-`OneOf` turns your Checkr into a **state machine explorer**.
-
-Let's keep the model simple:  
+`OneOf` turns your Checkr into a **state machine explorer**.  
+Let's keep the model simple  
 ```csharp
 public class Account
 {
@@ -27,16 +27,6 @@ public class Account
         Balance -= amount;
     }
 }
-```
-## A Checkr With a Choice
-```csharp
-from account in Trackr.Stashed(() => new Account())
-from amount in Checkr.Input("Amount", Fuzzr.Int())
-from operations in Checkr.OneOf(
-    Checkr.Act("Deposit", () => account.Deposit(amount)),
-    Checkr.Act("Withdraw", () => account.WithDraw(amount))
-)
-select Case.Closed;
 ```
 Every execution through this Checkr does the same things:
 
@@ -53,34 +43,34 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
 **Note:**  
 > Any exception thrown during execution of a `Checkr.Act` operation will be caught and considered a failure.
   
-## Seeing Which Branches Were Chosen
+### Seeing Which Branches Were Chosen
 Running the Checkr without shrinking yields a report similar to this:  
 
 **The Report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ChoosingTheNextMove.cs:90:1
+ Location:                B_ChoosingTheNextMoveNoShrinking.cs:43:1
  Original failing run:    5 executions
  Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 55
+   - Amount = 55
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 30
+   - Amount = 30
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 79
+   - Amount = 79
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 21
+   - Amount = 21
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 42
- ===========================================================================
+   - Amount = 42
+ ============================================================
   !! ComputerSaysNo: No answers for you.
- ===========================================================================
+ ============================================================
 ```
 This shows us that **QuickCheckr records the branch actually taken for each execution**.    
 There is no guesswork.  
@@ -91,16 +81,16 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ChoosingTheNextMoveShrunk.cs:73:1
+ Location:                D_ChoosingTheNextMoveShrunk.cs:24:1
  Original failing run:    5 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 42
- ===========================================================================
+   - Amount = 42
+ ============================================================
   !! ComputerSaysNo: No answers for you.
- ===========================================================================
+ ============================================================
 ```
 The shrunk case shows:
 
@@ -136,7 +126,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ChoosingTheNextMoveConditional.cs:73:1
+ Location:                C_ChoosingTheNextMoveConditional.cs:32:1
  Original failing run:    2 executions
  Seed:                    356083796
  ------------------------------------------------------------

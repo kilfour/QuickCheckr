@@ -1,9 +1,10 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
+namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
 [DocFileHeader("On One Condition")]
 [DocContent(
@@ -11,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes an enumerable of `{nameof(Checkr)}.{nameof(Checkr.Option)}` elements.  
 
 **Example:**")]
-public class ChoosingTheNextMoveConditional : CheckrTest<ChoosingTheNextMoveConditional>
+public class C_ChoosingTheNextMoveConditional : CheckrTest<C_ChoosingTheNextMoveConditional>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

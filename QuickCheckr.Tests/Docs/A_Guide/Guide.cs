@@ -1,6 +1,6 @@
 using QuickCheckr.Tests.Docs.A_Guide.A_CheckringThingsOutChapter;
 using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
-using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
+using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickPulse.Explains;
@@ -10,7 +10,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide;
 [DocFile]
 [DocLink(typeof(A_CheckringThingsOut), "CheckringThingsOut")]
 [DocLink(typeof(A_TheStashRunsAndExecutions), "TheStashRunsAndExecutions")]
-[DocLink(typeof(ChoosingTheNextMove), "ChoosingTheNextMove")]
+[DocLink(typeof(A_ChoosingTheNextMove), "ChoosingTheNextMove")]
 [DocLink(typeof(InPoolsWeTrust), "InPoolsWeTrust")]
 [DocLink(typeof(BoltingHorses), "BoltingHorses")]
 [DocContent(

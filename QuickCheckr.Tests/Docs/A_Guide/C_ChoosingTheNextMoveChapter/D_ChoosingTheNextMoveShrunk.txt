@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ChoosingTheNextMoveShrunk.cs:73:1
+ Location:                D_ChoosingTheNextMoveShrunk.cs:24:1
  Original failing run:    5 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    971854269
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 42
- ===========================================================================
+   - Amount = 42
+ ============================================================
   !! ComputerSaysNo: No answers for you.
- ===========================================================================
+ ============================================================

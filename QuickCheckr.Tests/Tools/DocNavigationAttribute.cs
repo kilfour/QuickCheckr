@@ -17,6 +17,7 @@ public sealed class DocNavigationAttribute(Type root, Type? previous, Type? next
 $"""
 |{GetLink("◀", previous)}|[△][{root.Name}]|{GetLink("▶", next)}|
 |---|---|---|
+
 """);
     }
 

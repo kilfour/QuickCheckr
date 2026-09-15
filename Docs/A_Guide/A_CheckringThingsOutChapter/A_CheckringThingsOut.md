@@ -1,6 +1,7 @@
 # Checkr-ing Things Out
 |◀|[△][Guide]|[▶][A_TheStashRunsAndExecutions]|
-|---|---|---|  
+|---|---|---|
+  
 A *Checkr* describes a sequence of steps that QuickCheckr will execute repeatedly.
 Each run goes through the script from top to bottom: generating inputs, performing actions, checking expectations, and collecting diagnostics.
 If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-understand failing case.  

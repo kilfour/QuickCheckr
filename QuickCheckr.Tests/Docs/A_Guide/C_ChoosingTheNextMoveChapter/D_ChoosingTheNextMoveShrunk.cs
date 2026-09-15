@@ -1,12 +1,13 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
 
-namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
+namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
 [DocFileHeader("Shrinking Branching Behaviour")]
-public class ChoosingTheNextMoveShrunk : CheckrTest<ChoosingTheNextMoveShrunk>
+public class D_ChoosingTheNextMoveShrunk : CheckrTest<D_ChoosingTheNextMoveShrunk>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -22,7 +23,7 @@ public class ChoosingTheNextMoveShrunk : CheckrTest<ChoosingTheNextMoveShrunk>
 ")]
     public override void Example() => Document(a => a.Run(971854269, 10.ExecutionsPerRun()));
     [CodeSnippet]
-    protected override CheckrOf<Case> TheCheckr() => ChoosingTheNextMove.GetCheckr();
+    protected override CheckrOf<Case> TheCheckr() => B_ChoosingTheNextMoveNoShrinking.GetCheckr();
 
     protected override void Verify(Article article)
     {

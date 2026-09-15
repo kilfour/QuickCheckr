@@ -1,6 +1,7 @@
 # The Stash, Runs and Executions
-|[◀][A_CheckringThingsOut]|[△][Guide]|[▶][ChoosingTheNextMove]|
-|---|---|---|  
+|[◀][A_CheckringThingsOut]|[△][Guide]|[▶][A_ChoosingTheNextMove]|
+|---|---|---|
+  
 In the previous chapter we upped the run number in order to *fully explore the input space*.  
 But what if it's not the input that causes the issue, but a side-effect.
 
@@ -135,4 +136,4 @@ the failure only emerges when several executions act on the *same* object.
 
 [A_CheckringThingsOut]: ../A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 
-[ChoosingTheNextMove]: ../C_ChoosingTheNextMove/ChoosingTheNextMove.md
+[A_ChoosingTheNextMove]: ../C_ChoosingTheNextMoveChapter/A_ChoosingTheNextMove.md

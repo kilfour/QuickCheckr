@@ -1,55 +1,23 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
-using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
 
+namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
-namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 
-[DocFile]
-[DocFileHeader("Choosing the Next Move")]
-[DocNavigation(typeof(Guide), typeof(A_TheStashRunsAndExecutions), typeof(InPoolsWeTrust))]
-[DocContent(
-@$"In the previous chapter we mentioned *Pools* and promised to explain how they work.  
-We'll get there soon, but first we need to talk about `{nameof(Checkr)}.{nameof(Checkr.OneOf)}`, the tool that lets QuickCheckr explore branching behaviour.
 
-`{nameof(Checkr.OneOf)}` is QuickCheckr's way of saying:
-
-> **""At this step, choose *exactly one* of these possible behaviours and execute it.""**
-
-It is the foundational building block for introducing randomness into *what happens next*.
-Instead of describing one action, you describe a *set* of alternative next moves,
-and QuickCheckr picks one at random during each execution.
-
-`OneOf` turns your Checkr into a **state machine explorer**.
-
-Let's keep the model simple:")]
-[DocExample(typeof(Account))]
-public class ChoosingTheNextMove : CheckrTest<ChoosingTheNextMove>
+public class B_ChoosingTheNextMoveNoShrinking : CheckrTest<B_ChoosingTheNextMoveNoShrinking>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
 
-    [CodeExample]
-    public class Account
-    {
-        public int Balance { get; private set; }
-        public void Deposit(int amount) => Balance += amount;
-        public void WithDraw(int amount)
-        {
-            if (amount == 42)
-                ComputerSays.No("No answers for you.");
-            Balance -= amount;
-        }
-    }
-
     [Fact]
-    [DocHeader("A Checkr With a Choice")]
-    [DocExample(typeof(ChoosingTheNextMove), nameof(GetCheckr))]
+    [DocContent("Let's keep the model simple")]
+    [DocExample(typeof(Account))]
     [DocContent(
 @$"Every execution through this Checkr does the same things:
 
@@ -72,11 +40,9 @@ So across executions, QuickCheckr builds a sequence of deposits and withdrawals,
     [DocContent(
 @"This shows us that **QuickCheckr records the branch actually taken for each execution**.    
 There is no guesswork.")]
-    [DocInclude(typeof(ChoosingTheNextMoveShrunk))]
-    [DocInclude(typeof(ChoosingTheNextMoveConditional))]
     public override void Example() => Document(a => a.Configure(a => Configure(a)).Run(971854269, 10.ExecutionsPerRun()));
 
-    private CheckrConfig Configure(CheckrConfig config)
+    private static CheckrConfig Configure(CheckrConfig config)
         => config with
         {
             ShrinkMode = ShrinkMode.None
@@ -122,5 +88,18 @@ There is no guesswork.")]
         Assert.Equal("Withdraw", article.Execution(5).Action(1).Read().Label);
         Assert.Equal("Amount", article.Execution(5).Input(1).Read().Label);
         Assert.Equal("42", article.Execution(5).Input(1).Read().Value);
+    }
+
+    [CodeExample]
+    public class Account
+    {
+        public int Balance { get; private set; }
+        public void Deposit(int amount) => Balance += amount;
+        public void WithDraw(int amount)
+        {
+            if (amount == 42)
+                ComputerSays.No("No answers for you.");
+            Balance -= amount;
+        }
     }
 }

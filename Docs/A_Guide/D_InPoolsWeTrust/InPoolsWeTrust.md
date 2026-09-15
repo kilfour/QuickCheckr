@@ -1,6 +1,7 @@
 # In Pools We Trust
-|[◀][ChoosingTheNextMove]|[△][Guide]|[▶][BoltingHorses]|
-|---|---|---|  
+|[◀][A_ChoosingTheNextMove]|[△][Guide]|[▶][BoltingHorses]|
+|---|---|---|
+  
 
 **Pools** let QuickCheckr accumulate multiple objects across executions.  
 Where `Stashed` keeps one instance alive, a Pool keeps all created instances, and later actions can pick one at random.  
@@ -120,6 +121,6 @@ select Case.Closed;
 
 [Guide]: ../Guide.md
 
-[ChoosingTheNextMove]: ../C_ChoosingTheNextMove/ChoosingTheNextMove.md
+[A_ChoosingTheNextMove]: ../C_ChoosingTheNextMoveChapter/A_ChoosingTheNextMove.md
 
 [BoltingHorses]: ../E_HorsesAgain/BoltingHorses.md

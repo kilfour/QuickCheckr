@@ -1,18 +1,18 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMove;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
+using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
 namespace QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 
 
 [DocFile]
-[DocNavigation(typeof(Guide), typeof(ChoosingTheNextMove), typeof(BoltingHorses))]
+[DocNavigation(typeof(Guide), typeof(A_ChoosingTheNextMove), typeof(BoltingHorses))]
 [DocContent(
 @"
 **Pools** let QuickCheckr accumulate multiple objects across executions.  

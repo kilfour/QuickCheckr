@@ -29,7 +29,7 @@ but it also explores sequences of actions and reduces failures to the smallest s
 
 [TheStashRunsAndExecutions]: B_TheStashRunsAndExecutionsChapter/A_TheStashRunsAndExecutions.md
 
-[ChoosingTheNextMove]: C_ChoosingTheNextMove/ChoosingTheNextMove.md
+[ChoosingTheNextMove]: C_ChoosingTheNextMoveChapter/A_ChoosingTheNextMove.md
 
 [InPoolsWeTrust]: D_InPoolsWeTrust/InPoolsWeTrust.md
 
