@@ -19,7 +19,6 @@ Consider the following model:")]
 [DocExample(typeof(BugHouse))]
 [DocInclude(typeof(B_DelayedDetonationNotFound), true)]
 [DocInclude(typeof(C_DelayedDetonationFound), true)]
-[DocBackToTop(typeof(A_TheStashRunsAndExecutions))]
 public class A_TheStashRunsAndExecutions
 {
     [CodeExample]

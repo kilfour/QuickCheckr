@@ -24,7 +24,6 @@ public class A_CheckringThingsOut
     [DocInclude(typeof(C_GatheringInput))]
     [DocInclude(typeof(D_AddingAnotherInput), true)]
     [DocInclude(typeof(E_TimeToAct))]
-    [DocBackToTop(typeof(A_CheckringThingsOut))]
     [CodeExample]
     public void RunTest()
         => Checkr.Expect("Always true", () => true).Run();

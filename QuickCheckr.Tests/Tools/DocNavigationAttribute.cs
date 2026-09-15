@@ -28,26 +28,3 @@ $"""
         return $"[{label}][{link.Name}]";
     }
 }
-
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-public sealed class DocBackToTopAttribute(Type type) : Attribute, IDocAttribute
-{
-    public IEnumerable<DocFragmentAttribute> Expand()
-    {
-        yield return new DocLinkAttribute(type);
-        yield return new DocContentAttribute(
-$"""
-
-
-[Back to Top][{type.Name}]
-""");
-    }
-
-    private static string GetLink(string label, Type? link)
-    {
-        if (link is null)
-            return label;
-        return $"[{label}][{link.Name}]";
-    }
-}

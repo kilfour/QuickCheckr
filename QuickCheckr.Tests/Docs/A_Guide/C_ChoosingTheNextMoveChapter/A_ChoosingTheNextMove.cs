@@ -24,5 +24,4 @@ and QuickCheckr picks one at random during each execution.
 [DocInclude(typeof(B_ChoosingTheNextMoveNoShrinking), true)]
 [DocInclude(typeof(C_ChoosingTheNextMoveShrunk))]
 [DocInclude(typeof(D_ChoosingTheNextMoveConditional))]
-[DocBackToTop(typeof(A_ChoosingTheNextMove))]
 public class A_ChoosingTheNextMove;

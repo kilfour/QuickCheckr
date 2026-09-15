@@ -9,7 +9,6 @@ If any execution fails, QuickCheckr shrinks it to the smallest, easiest-to-under
 Let's start by having a look at the simplest possible Checkr:  
 ```csharp
 [Fact]
-[DocBackToTop(typeof(A_CheckringThingsOut))]
 public void RunTest()
     => Checkr.Expect("Always true", () => true).Run();
 ```
@@ -148,11 +147,6 @@ Still a trivial example, but it shows how you can use `Checkr.Act` to start muta
 ```
 As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.  
 
-
-[Back to Top][A_CheckringThingsOut]  
-
 [Guide]: ../Guide.md
 
 [A_TheStashRunsAndExecutions]: ../B_TheStashRunsAndExecutionsChapter/A_TheStashRunsAndExecutions.md
-
-[A_CheckringThingsOut]: A_CheckringThingsOut.md

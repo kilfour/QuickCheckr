@@ -130,9 +130,6 @@ which is exactly what makes the BugHouse example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
-
-[Back to Top][A_TheStashRunsAndExecutions]  
-
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md
 
 [Guide]: ../Guide.md
@@ -140,5 +137,3 @@ the failure only emerges when several executions act on the *same* object.
 [A_CheckringThingsOut]: ../A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 
 [A_ChoosingTheNextMove]: ../C_ChoosingTheNextMoveChapter/A_ChoosingTheNextMove.md
-
-[A_TheStashRunsAndExecutions]: A_TheStashRunsAndExecutions.md
