@@ -28,12 +28,12 @@ public class RunAsyncTests
 
         var result = await (overload switch
         {
-            0 => check.RunAsync(),
-            1 => check.RunAsync(3.Runs()),
-            2 => check.RunAsync(4.ExecutionsPerRun()),
-            3 => check.RunAsync(3.Runs(), 4.ExecutionsPerRun()),
-            4 => check.RunAsync(123, 4.ExecutionsPerRun()),
-            _ => check.RunAsync(123)
+            0 => check.RunAsync(TestContext.Current.CancellationToken),
+            1 => check.RunAsync(3.Runs(), TestContext.Current.CancellationToken),
+            2 => check.RunAsync(4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            3 => check.RunAsync(3.Runs(), 4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            4 => check.RunAsync(123, 4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            _ => check.RunAsync(123, TestContext.Current.CancellationToken)
         });
 
         Assert.Same(check, result);
@@ -68,12 +68,12 @@ public class RunAsyncTests
 
         var result = await (overload switch
         {
-            0 => configured.RunAsync(),
-            1 => configured.RunAsync(3.Runs()),
-            2 => configured.RunAsync(4.ExecutionsPerRun()),
-            3 => configured.RunAsync(3.Runs(), 4.ExecutionsPerRun()),
-            4 => configured.RunAsync(123, 4.ExecutionsPerRun()),
-            _ => configured.RunAsync(123)
+            0 => configured.RunAsync(TestContext.Current.CancellationToken),
+            1 => configured.RunAsync(3.Runs(), TestContext.Current.CancellationToken),
+            2 => configured.RunAsync(4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            3 => configured.RunAsync(3.Runs(), 4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            4 => configured.RunAsync(123, 4.ExecutionsPerRun(), TestContext.Current.CancellationToken),
+            _ => configured.RunAsync(123, TestContext.Current.CancellationToken)
         });
 
         Assert.Same(configured, result);
@@ -96,7 +96,7 @@ public class RunAsyncTests
         check.Run(123, 8.ExecutionsPerRun());
         var expected = values.ToArray();
         values.Clear();
-        await check.RunAsync(123, 8.ExecutionsPerRun());
+        await check.RunAsync(123, 8.ExecutionsPerRun(), TestContext.Current.CancellationToken);
 
         Assert.Equal(expected, values);
     }
@@ -118,7 +118,7 @@ public class RunAsyncTests
 
         var syncFailure = Assert.Throws<FalsifiableException>(() => configured.Run(123));
         // Calling the API returns a task; failure is observed by awaiting it.
-        var pending = configured.RunAsync(123);
+        var pending = configured.RunAsync(123, TestContext.Current.CancellationToken);
         var asyncFailure = await Assert.ThrowsAsync<FalsifiableException>(() => pending);
         var expected = Assert.IsType<CaseFile>(syncFailure.TheCaseFile);
         var actual = Assert.IsType<CaseFile>(asyncFailure.TheCaseFile);
@@ -139,7 +139,7 @@ public class RunAsyncTests
     {
         var check = Checkr.Act("throws", (Action)(() => throw new InvalidOperationException("after invocation")));
 
-        var pending = check.RunAsync();
+        var pending = check.RunAsync(TestContext.Current.CancellationToken);
         var failure = await Assert.ThrowsAsync<FalsifiableException>(() => pending);
 
         Assert.Contains("InvalidOperationException: after invocation", failure.Message);

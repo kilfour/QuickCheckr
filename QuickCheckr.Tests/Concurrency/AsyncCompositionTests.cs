@@ -127,7 +127,7 @@ public class AsyncCompositionTests
                     from after in Checkr.Act("after", () => { continued = true; })
                     select Case.Closed;
 
-        var pending = check.RunAsync(123);
+        var pending = check.RunAsync(123, TestContext.Current.CancellationToken);
         try
         {
             Assert.False(pending.IsCompleted);
@@ -152,7 +152,7 @@ public class AsyncCompositionTests
             return CheckrResult.CaseOnly(state);
         };
 
-        await Bounded(Checkr.When(() => false, nested).Select(_ => Case.Closed).RunAsync());
+        await Bounded(Checkr.When(() => false, nested).Select(_ => Case.Closed).RunAsync(TestContext.Current.CancellationToken));
 
         Assert.Equal(0, calls);
     }
@@ -217,7 +217,7 @@ public class AsyncCompositionTests
 
         var syncFailure = Assert.Throws<FalsifiableException>(() => Create(false).Run(123, 3.ExecutionsPerRun()));
         phases.Clear();
-        var asyncFailure = await Assert.ThrowsAsync<FalsifiableException>(() => Bounded(Create(true).RunAsync(123, 3.ExecutionsPerRun())));
+        var asyncFailure = await Assert.ThrowsAsync<FalsifiableException>(() => Bounded(Create(true).RunAsync(123, 3.ExecutionsPerRun(), TestContext.Current.CancellationToken)));
         var expected = Assert.IsType<CaseFile>(syncFailure.TheCaseFile);
         var actual = Assert.IsType<CaseFile>(asyncFailure.TheCaseFile);
 

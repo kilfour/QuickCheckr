@@ -14,7 +14,7 @@ namespace QuickCheckr.UnderTheHood;
 internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions, AutopsyProbe autopsyProbe)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, autopsyProbe);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, autopsyProbe, config.CancellationToken);
 
     public int Seed => State.FuzzrState.Seed;
 

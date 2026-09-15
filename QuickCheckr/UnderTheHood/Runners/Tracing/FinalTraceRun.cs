@@ -14,12 +14,14 @@ internal sealed class FinalTraceRun(
             foreach (var id in State.Memory.Numbers)
             {
                 State.Memory.GotoExecution(id);
+                State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
+                State.CancellationToken.ThrowIfCancellationRequested();
             }
         }
         finally
         {
-            try { State.Memory.DisposeStash(); }
+            try { await State.Memory.DisposeStashAsync().ConfigureAwait(false); }
             finally { State.Memory.FinalTrace = false; }
         }
     }

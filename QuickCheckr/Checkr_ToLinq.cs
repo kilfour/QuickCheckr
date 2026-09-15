@@ -1,4 +1,4 @@
-﻿using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr;
 
@@ -9,9 +9,11 @@ public static class Checkr_ToLinq
         Func<TValueOne, TValueTwo> selector) =>
             async state =>
                 {
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TValueTwo>(state);
                     var result = await script(state).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TValueTwo>(state);
                     return CheckrResult.Some(state, selector(result.Value));
@@ -22,9 +24,11 @@ public static class Checkr_ToLinq
         Func<TSource, CheckrOf<TResult>> selector) =>
             async state =>
                 {
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TResult>(state);
                     var result = await source(state).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TResult>(state);
                     return await selector(result.Value)(state).ConfigureAwait(false);

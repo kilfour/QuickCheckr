@@ -10,7 +10,8 @@ namespace QuickCheckr;
 /// </summary>
 /// <remarks>
 /// Awaits script execution, including replay and shrinking.
-/// Existing task-based action helpers still block until the next migration step.
+/// Cancellation is cooperative; callbacks must complete before replay state is released.
+/// Use RunAsync for suspending operations; synchronous Run remains a compatibility API.
 /// </remarks>
 public static class CheckrOfTRunAsync
 {
@@ -20,10 +21,12 @@ public static class CheckrOfTRunAsync
         RunCount runs,
         ExecutionCount executionsPerRun,
         CheckrConfig checkrConfig,
-        int? seed)
+        int? seed,
+        CancellationToken cancellationToken)
     {
-        var config = new CheckrRunnerConfig(checkrConfig) with { Seed = seed };
+        var config = new CheckrRunnerConfig(checkrConfig) with { Seed = seed, CancellationToken = cancellationToken };
         var findings = await CaseOfficer.InvestigateAsync(checkr, runs, executionsPerRun, config, AutopsyProbe.Empty).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return checkr;
     }
@@ -33,79 +36,87 @@ public static class CheckrOfTRunAsync
         this ConfiguredCheckr configuredCheckr,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        int? seed)
+        int? seed,
+        CancellationToken cancellationToken)
     {
-        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed };
+        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed, CancellationToken = cancellationToken };
         var findings = await CaseOfficer.InvestigateAsync(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return configuredCheckr;
     }
 
     [StackTraceHidden]
-    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr)
-        => RunAsync(checkr, 1.Runs(), 1.ExecutionsPerRun(), CheckrConfig.Default(), null);
+    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr, CancellationToken cancellationToken = default)
+        => RunAsync(checkr, 1.Runs(), 1.ExecutionsPerRun(), CheckrConfig.Default(), null, cancellationToken);
 
     [StackTraceHidden]
-    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr)
-        => RunAsync(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun(), null);
-
-
-    [StackTraceHidden]
-    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr, RunCount runs)
-        => RunAsync(checkr, runs, 1.ExecutionsPerRun(), CheckrConfig.Default(), null);
-
-    [StackTraceHidden]
-    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr, RunCount runs)
-        => RunAsync(configuredCheckr, runs, 1.ExecutionsPerRun(), null);
+    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr, CancellationToken cancellationToken = default)
+        => RunAsync(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun(), null, cancellationToken);
 
 
     [StackTraceHidden]
-    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr, ExecutionCount executionsPerRun)
-        => RunAsync(checkr, 1.Runs(), executionsPerRun, CheckrConfig.Default(), null);
+    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr, RunCount runs, CancellationToken cancellationToken = default)
+        => RunAsync(checkr, runs, 1.ExecutionsPerRun(), CheckrConfig.Default(), null, cancellationToken);
 
     [StackTraceHidden]
-    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr, ExecutionCount executionsPerRun)
-        => RunAsync(configuredCheckr, 1.Runs(), executionsPerRun, null);
+    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr, RunCount runs, CancellationToken cancellationToken = default)
+        => RunAsync(configuredCheckr, runs, 1.ExecutionsPerRun(), null, cancellationToken);
+
+
+    [StackTraceHidden]
+    public static Task<CheckrOf<Case>> RunAsync(this CheckrOf<Case> checkr, ExecutionCount executionsPerRun, CancellationToken cancellationToken = default)
+        => RunAsync(checkr, 1.Runs(), executionsPerRun, CheckrConfig.Default(), null, cancellationToken);
+
+    [StackTraceHidden]
+    public static Task<ConfiguredCheckr> RunAsync(this ConfiguredCheckr configuredCheckr, ExecutionCount executionsPerRun, CancellationToken cancellationToken = default)
+        => RunAsync(configuredCheckr, 1.Runs(), executionsPerRun, null, cancellationToken);
 
 
     [StackTraceHidden]
     public static Task<CheckrOf<Case>> RunAsync(
         this CheckrOf<Case> checkr,
         RunCount runs,
-        ExecutionCount executionsPerRun)
-            => RunAsync(checkr, runs, executionsPerRun, CheckrConfig.Default(), null);
+        ExecutionCount executionsPerRun,
+        CancellationToken cancellationToken = default)
+            => RunAsync(checkr, runs, executionsPerRun, CheckrConfig.Default(), null, cancellationToken);
 
     [StackTraceHidden]
     public static Task<ConfiguredCheckr> RunAsync(
         this ConfiguredCheckr configuredCheckr,
         RunCount runs,
-        ExecutionCount executionsPerRun)
-            => RunAsync(configuredCheckr, runs, executionsPerRun, null);
+        ExecutionCount executionsPerRun,
+        CancellationToken cancellationToken = default)
+            => RunAsync(configuredCheckr, runs, executionsPerRun, null, cancellationToken);
 
     [StackTraceHidden]
     public static Task<CheckrOf<Case>> RunAsync(
         this CheckrOf<Case> checkr,
         int seed,
-        ExecutionCount executionsPerRun)
-            => RunAsync(checkr, 1.Runs(), executionsPerRun, CheckrConfig.Default(), seed);
+        ExecutionCount executionsPerRun,
+        CancellationToken cancellationToken = default)
+            => RunAsync(checkr, 1.Runs(), executionsPerRun, CheckrConfig.Default(), seed, cancellationToken);
 
     [StackTraceHidden]
     public static Task<ConfiguredCheckr> RunAsync(
         this ConfiguredCheckr configuredCheckr,
         int seed,
-        ExecutionCount executionsPerRun)
-        => RunAsync(configuredCheckr, 1.Runs(), executionsPerRun, seed);
+        ExecutionCount executionsPerRun,
+        CancellationToken cancellationToken = default)
+        => RunAsync(configuredCheckr, 1.Runs(), executionsPerRun, seed, cancellationToken);
 
     [StackTraceHidden]
     public static Task<CheckrOf<Case>> RunAsync(
         this CheckrOf<Case> checkr,
-        int seed)
-            => RunAsync(checkr, 1.Runs(), 1.ExecutionsPerRun(), CheckrConfig.Default(), seed);
+        int seed,
+        CancellationToken cancellationToken = default)
+            => RunAsync(checkr, 1.Runs(), 1.ExecutionsPerRun(), CheckrConfig.Default(), seed, cancellationToken);
 
     [StackTraceHidden]
     public static Task<ConfiguredCheckr> RunAsync(
         this ConfiguredCheckr configuredCheckr,
-        int seed)
-        => RunAsync(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun(), seed);
+        int seed,
+        CancellationToken cancellationToken = default)
+        => RunAsync(configuredCheckr, 1.Runs(), 1.ExecutionsPerRun(), seed, cancellationToken);
 
 }

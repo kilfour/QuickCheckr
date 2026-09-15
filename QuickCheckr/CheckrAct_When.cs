@@ -4,6 +4,13 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
+    /// <summary>Conditionally awaits an action using the run's cancellation token.</summary>
+    public static CheckrOf<ConditionalResult<T>> ActWhen<T>(string key, Func<bool> predicate, Func<CancellationToken, Task<T>> func)
+        => When(predicate, Act(key, func));
+
+    /// <summary>Conditionally awaits an action using the run's cancellation token.</summary>
+    public static CheckrOf<Case> ActWhen(string key, Func<bool> predicate, Func<CancellationToken, Task> action)
+        => state => predicate() ? Act(key, action)(state) : CheckrResult.CaseOnly(state);
 
     /// <summary>
     /// Adds a named action step that only executes when a condition holds, capturing its result for later expectations and traces.

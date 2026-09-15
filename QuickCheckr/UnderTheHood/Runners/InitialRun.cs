@@ -10,14 +10,16 @@ internal sealed class InitialRun(CheckrState State, CheckrOf<Case> Check)
             for (int j = 0; j < numberOfExecutions; j++)
             {
                 State.Memory.StartNewExecution();
+                State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
+                State.CancellationToken.ThrowIfCancellationRequested();
                 if (State.EvidenceRecorder.Failed())
                     return;
             }
         }
         finally
         {
-            State.Memory.DisposeStash();
+            await State.Memory.DisposeStashAsync().ConfigureAwait(false);
         }
     }
 }

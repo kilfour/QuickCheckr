@@ -45,12 +45,14 @@ internal class Verifier(CheckrState State,
                 foreach (var id in State.Memory.Numbers)
                 {
                     State.Memory.GotoExecution(id);
+                    State.CancellationToken.ThrowIfCancellationRequested();
                     await Check(State).ConfigureAwait(false);
+                    State.CancellationToken.ThrowIfCancellationRequested();
                 }
             }
             finally
             {
-                State.Memory.DisposeStash();
+                await State.Memory.DisposeStashAsync().ConfigureAwait(false);
             }
         }
 
@@ -92,12 +94,14 @@ internal class Verifier(CheckrState State,
                 foreach (var id in State.Memory.Numbers)
                 {
                     State.Memory.GotoExecution(id);
+                    State.CancellationToken.ThrowIfCancellationRequested();
                     await Check(State).ConfigureAwait(false);
+                    State.CancellationToken.ThrowIfCancellationRequested();
                 }
             }
             finally
             {
-                State.Memory.DisposeStash();
+                await State.Memory.DisposeStashAsync().ConfigureAwait(false);
             }
         }
         return State.EvidenceRecorder.Failed()

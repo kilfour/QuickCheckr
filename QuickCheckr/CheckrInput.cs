@@ -22,6 +22,7 @@ public static partial class Checkr
     {
         try { return CheckrResult.Some(state, GetValue(key, () => fuzzr, state)!); }
         catch (DuplicateKeyWriteException) { throw; }
+        catch (OperationCanceledException) { throw; }
         catch (Exception exception) { throw new InputFuzzrThrewException(key, exception); }
     }
 

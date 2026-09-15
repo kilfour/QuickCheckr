@@ -21,7 +21,9 @@ public static partial class Checkr
             var checkrs = new (Func<bool> condition, CheckrOf<Case> checkr)[options.Length];
             for (var i = 0; i < options.Length; i++)
             {
+                state.CancellationToken.ThrowIfCancellationRequested();
                 checkrs[i] = (await options[i](state).ConfigureAwait(false)).Value;
+                state.CancellationToken.ThrowIfCancellationRequested();
                 if (state.RunStopped)
                     return CheckrResult.CaseOnly(state);
             }

@@ -51,13 +51,15 @@ internal sealed class ExecutionShrinker(
                 while (executionId > 0)
                 {
                     using var _ = State.Pathologist.Examine(AutopsyPath.Executing(executionId));
+                    State.CancellationToken.ThrowIfCancellationRequested();
                     await Check(State).ConfigureAwait(false);
+                    State.CancellationToken.ThrowIfCancellationRequested();
                     executionId = State.Memory.NextExecution();
                 }
             }
             finally
             {
-                State.Memory.DisposeStash();
+                await State.Memory.DisposeStashAsync().ConfigureAwait(false);
             }
         }
     }

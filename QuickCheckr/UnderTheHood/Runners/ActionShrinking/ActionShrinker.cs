@@ -48,13 +48,15 @@ internal sealed class ActionShrinker(
             var executionId = State.StartReplay();
             while (executionId > 0)
             {
+                State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
+                State.CancellationToken.ThrowIfCancellationRequested();
                 executionId = State.Memory.NextExecution();
             }
         }
         finally
         {
-            State.Memory.DisposeStash();
+            await State.Memory.DisposeStashAsync().ConfigureAwait(false);
         }
     }
 }

@@ -19,7 +19,11 @@ public static partial class Checkr
     /// Use when awaiting a helper computation that should influence the script but not appear as an action.
     /// </summary>
     public static CheckrOf<T> Capture<T>(Func<Task<T>> func) =>
-        state => TheCatcher.InTheCheckr(state,
-            () => CheckrResult.Some(state, func().GetAwaiter().GetResult()),
+        Capture(_ => func());
+
+    /// <summary>Captures an asynchronous value using the run's cancellation token.</summary>
+    public static CheckrOf<T> Capture<T>(Func<CancellationToken, Task<T>> func) =>
+        state => TheCatcher.InTheCheckrAsync(state,
+            async () => CheckrResult.Some(state, await func(state.CancellationToken).ConfigureAwait(false)),
             ex => state.EvidenceRecorder.RecordFailure(ex));
 }

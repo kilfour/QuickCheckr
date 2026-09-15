@@ -103,7 +103,7 @@ cleanup tests now also throw after suspension.
 helpers still contain blocking wrappers; replacing them belongs to step 4.
 QuickTestr integration and its two skipped acceptance tests remain step 5.
 
-### 4. Genuine asynchronous actions
+### 4. Genuine asynchronous actions (implemented)
 
 - Replace blocking task callback wrappers with awaited invocation, including
   conditional and carefully handled actions and exception capture.
@@ -113,6 +113,33 @@ QuickTestr integration and its two skipped acceptance tests remain step 5.
   async lifetime support. Cancellation must remain distinct from a falsifying result.
 - Keep `.Run()` as an explicitly synchronous compatibility API. Do not promise
   deadlock-free use of suspending callbacks through that API; use `RunAsync()`.
+
+Step 4 removes blocking awaits from QuickCheckr's task-based action helpers,
+including conditional, carefully handled, shrinkable, capture, and perform variants.
+`ActCarefully` and `Perform` now also accept task factories. Prefer factories for
+replay: legacy overloads accepting an already-created `Task` await that same task
+again and cannot re-invoke the original operation.
+
+Every `RunAsync` overload accepts an optional final `CancellationToken`. Custom
+steps can read `CheckrState.CancellationToken`; token-aware action/capture/perform
+and shrinkable overloads pass it to callbacks. Execution checks cancellation
+between steps, runs, and replays and before publishing results. An
+`OperationCanceledException` from a callback propagates as cancellation, including
+through carefully handled steps, rather than becoming recorded evidence.
+Cancellation is cooperative: callbacks which ignore the token must complete before
+their replay state and stash are released. No detached tasks or background replay.
+
+All replay/initial-run cleanup now awaits stash disposal. `IAsyncDisposable` takes
+precedence over `IDisposable` for resources implementing both. Cleanup does not use
+the canceled run token, and still attempts remaining resources if one disposal
+fails. A single disposal exception is rethrown unchanged; multiple disposal
+exceptions are aggregated. Existing synchronous stash resources still work.
+
+The Concurrency tests cover genuinely suspended helpers, post-await exceptions,
+conditional/skipped factories, async shrinking with fresh resources, cancellation
+before execution and during replay, waiting for cleanup, and disposal failures.
+The full engine path now supports task-based actions through `RunAsync()`; the
+QuickTestr builder integration and its two skipped tests remain step 5.
 
 ### 5. QuickTestr integration
 

@@ -9,14 +9,26 @@ internal sealed class LongTermMemory
     }
 
     public void DisposeStash()
+        => DisposeStashAsync().GetAwaiter().GetResult();
+
+    public async ValueTask DisposeStashAsync()
     {
-        foreach (var item in stashed.Values.Values)
+        List<Exception>? errors = null;
+        foreach (var item in stashed.Values.Values.ToArray())
         {
-            if (item is IDisposable disposable)
+            try
             {
-                disposable.Dispose();
+                if (item is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                else if (item is IDisposable disposable)
+                    disposable.Dispose();
             }
+            catch (Exception exception) { (errors ??= []).Add(exception); }
         }
+        if (errors is { Count: 1 })
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(errors[0]).Throw();
+        if (errors is { Count: > 1 })
+            throw new AggregateException(errors);
     }
 
     // --------------------------------------------------------------------------

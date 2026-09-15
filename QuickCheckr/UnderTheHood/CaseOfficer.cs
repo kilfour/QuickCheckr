@@ -21,14 +21,17 @@ internal static class CaseOfficer
         CheckrRunnerConfig config,
         AutopsyProbe autopsyProbe)
     {
+        config.CancellationToken.ThrowIfCancellationRequested();
         var findings = new Findings();
         Deliberator? deliberator = null;
         int? inlineTarget = null;
         CaseFile? firstDistinguishedCaseFile = null;
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
+            config.CancellationToken.ThrowIfCancellationRequested();
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, autopsyProbe);
             var caseFile = await runner.RunAsync().ConfigureAwait(false);
+            config.CancellationToken.ThrowIfCancellationRequested();
             findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {

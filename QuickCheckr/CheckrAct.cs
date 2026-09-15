@@ -14,7 +14,7 @@ public static partial class Checkr
     /// Use when you want to await a task as part of the Checkr workflow without exposing async plumbing in your test.
     /// </summary>
     public static CheckrOf<T> Act<T>(string key, Func<Task<T>> func)
-        => TryCatch(key, () => func().GetAwaiter().GetResult());
+        => TryCatchAsync(key, _ => func());
 
     /// <summary>
     /// Adds a named action step to the Checkr script for side-effect-only operations.
@@ -28,5 +28,13 @@ public static partial class Checkr
     /// Use when you want an async operation to be part of the run and visible in the report, without caring about a result value.
     /// </summary>
     public static CheckrOf<Case> Act(string key, Func<Task> action)
-        => TryCatch(key, () => { action().GetAwaiter().GetResult(); return Case.Closed; });
+        => TryCatchAsync(key, async _ => { await action().ConfigureAwait(false); return Case.Closed; });
+
+    /// <summary>Executes an asynchronous action with the run's cancellation token.</summary>
+    public static CheckrOf<T> Act<T>(string key, Func<CancellationToken, Task<T>> func)
+        => TryCatchAsync(key, func);
+
+    /// <summary>Executes an asynchronous action with the run's cancellation token.</summary>
+    public static CheckrOf<Case> Act(string key, Func<CancellationToken, Task> action)
+        => TryCatchAsync(key, async token => { await action(token).ConfigureAwait(false); return Case.Closed; });
 }
