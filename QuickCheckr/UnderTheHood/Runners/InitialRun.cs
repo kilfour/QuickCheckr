@@ -10,7 +10,7 @@ internal sealed class InitialRun(CheckrState State, CheckrOf<Case> Check)
             for (int j = 0; j < numberOfExecutions; j++)
             {
                 State.Memory.StartNewExecution();
-                await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                await Check(State).ConfigureAwait(false);
                 if (State.EvidenceRecorder.Failed())
                     return;
             }

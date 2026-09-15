@@ -20,7 +20,7 @@ internal sealed class CaseSelectionRun(
             foreach (var id in State.Memory.Numbers)
             {
                 State.Memory.GotoExecution(id);
-                await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                await Check(State).ConfigureAwait(false);
             }
         }
         finally

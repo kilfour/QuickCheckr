@@ -65,9 +65,9 @@ the exception.
 Step 2 tests in `Concurrency` verify suspended reduction callbacks and dispatcher
 ordering, exception propagation, stash disposal, and temporary replay state cleanup.
 The public script delegate and async action wrappers are unchanged, so genuinely
-suspending user actions and the QuickTestr deadlock tests still await steps 3–5.
+suspending user actions and the QuickTestr deadlock tests still await steps 3â€“5.
 
-### 3. Awaitable script delegate and composition
+### 3. Awaitable script delegate and composition (implemented)
 
 - Change `CheckrOf<T>` to return `ValueTask<CheckrResult<T>>`.
 - Update LINQ composition, step builders, sequences, choices, pool operations,
@@ -78,6 +78,30 @@ suspending user actions and the QuickTestr deadlock tests still await steps 3–
 
 This is the broadest coordinated step. The shrinking algorithms remain intact;
 the signatures and invocation sites change.
+
+`CheckrOf<T>` now returns `ValueTask<CheckrResult<T>>`. Synchronous result factories
+remain synchronous; a conversion from `CheckrResult<T>` produces a completed
+`ValueTask`, so ordinary synchronous step lambdas need no async state machine.
+Method-group consumers must use an awaitable return signature or wrap the factory
+in a lambda. Direct consumers must await the result, including side-effect-only
+invocations.
+
+LINQ binds and projections await their source and respect a stopped run after
+suspension. Conditional steps, option evaluation, once-only operations, and pool
+selection await nested scripts. Sequence and other simple wrappers forward their
+nested awaitable result directly; shared composition awaits it. Option and pool
+traversal remain sequential.
+
+The temporary `ScriptExecution` adapter has been removed: initial execution and
+all replay loops await the script delegate directly. New `Concurrency` tests cover
+suspended composition, conditional skipping, replay candidate lifetime, and parity
+of shrinking/reporting between synchronous and suspending custom scripts. Replay
+cleanup tests now also throw after suspension.
+
+**Remaining limitation:** Custom async script delegates now work end to end through
+`RunAsync()`. Existing task-based `Act`, `ActCarefully`, `Capture`, and related
+helpers still contain blocking wrappers; replacing them belongs to step 4.
+QuickTestr integration and its two skipped acceptance tests remain step 5.
 
 ### 4. Genuine asynchronous actions
 

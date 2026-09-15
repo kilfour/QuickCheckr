@@ -35,14 +35,14 @@ public class CaseRejectionTests
     {
         var values = new Queue<int>([1, 2]);
         var currentValue = 0;
-        CheckrOf<Case> check = state =>
+        CheckrOf<Case> check = async state =>
         {
             if (!state.EvidenceRecorder.IsReplay)
                 currentValue = values.Dequeue();
 
-            Checkr.RejectCaseWhen(() => currentValue == 1)(state);
-            Checkr.Distinguish(() => currentValue)(state);
-            return Checkr.Expect("always fails", () => false)(state);
+            await Checkr.RejectCaseWhen(() => currentValue == 1)(state).ConfigureAwait(false);
+            await Checkr.Distinguish(() => currentValue)(state).ConfigureAwait(false);
+            return await Checkr.Expect("always fails", () => false)(state).ConfigureAwait(false);
         };
 
         var exception = Assert.Throws<FalsifiableException>(() => check.Run(2.Runs()));

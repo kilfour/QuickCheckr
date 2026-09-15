@@ -26,7 +26,7 @@ public class B_DuringTrackrPoolWhen : CheckrThrowsTest<B_DuringTrackrPoolWhen>
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Trackr.ToPool("answer", () => 42)
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<int>(_ => ComputerSays.No<bool>("Boom"), CheckrResult.CaseOnly))
+            Trackr.PoolWhen<int>(_ => ComputerSays.No<bool>("Boom"), state => CheckrResult.CaseOnly(state)))
         select Case.Closed;
 
     [CodeExceptionType]

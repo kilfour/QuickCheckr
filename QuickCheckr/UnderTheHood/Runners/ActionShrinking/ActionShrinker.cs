@@ -48,7 +48,7 @@ internal sealed class ActionShrinker(
             var executionId = State.StartReplay();
             while (executionId > 0)
             {
-                await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                await Check(State).ConfigureAwait(false);
                 executionId = State.Memory.NextExecution();
             }
         }

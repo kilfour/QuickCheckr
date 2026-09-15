@@ -14,17 +14,17 @@ public class DistinctionTests
         var distinctions = new Queue<bool>([false, true]);
         var currentDistinction = false;
         var distinctionCalls = 0;
-        CheckrOf<Case> check = state =>
+        CheckrOf<Case> check = async state =>
         {
             if (!state.EvidenceRecorder.IsReplay)
                 currentDistinction = distinctions.Dequeue();
 
-            Checkr.Distinguish(() =>
+            await Checkr.Distinguish(() =>
             {
                 distinctionCalls++;
                 return currentDistinction;
-            })(state);
-            return Checkr.Expect("always fails", () => false)(state);
+            })(state).ConfigureAwait(false);
+            return await Checkr.Expect("always fails", () => false)(state).ConfigureAwait(false);
         };
         var custodian = new InMemoryCustodian([]);
         var configured = check.Configure(config => config with
@@ -113,13 +113,13 @@ public class DistinctionTests
     {
         var remaining = new Queue<int>(distinctions);
         var currentDistinction = 0;
-        CheckrOf<Case> check = state =>
+        CheckrOf<Case> check = async state =>
         {
             if (!state.EvidenceRecorder.IsReplay)
                 currentDistinction = remaining.Dequeue();
 
-            Checkr.Distinguish(() => currentDistinction)(state);
-            return Checkr.Expect("always fails", () => false)(state);
+            await Checkr.Distinguish(() => currentDistinction)(state).ConfigureAwait(false);
+            return await Checkr.Expect("always fails", () => false)(state).ConfigureAwait(false);
         };
         var configuredCustodian = new InMemoryCustodian([]);
         custodian = configuredCustodian;

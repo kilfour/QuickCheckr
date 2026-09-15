@@ -24,7 +24,7 @@ public class R_DuringTrackrPoolWhenCollectionCondition : CheckrThrowsTest<R_Duri
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Trackr.ToPool("answer", () => 42)
-        from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int>("Select", (IReadOnlyCollection<int> _) => ComputerSays.No<bool>("Boom"), _ => CheckrResult.CaseOnly))
+        from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int>("Select", (IReadOnlyCollection<int> _) => ComputerSays.No<bool>("Boom"), _ => state => CheckrResult.CaseOnly(state)))
         select Case.Closed;
 
     [CodeExceptionType]

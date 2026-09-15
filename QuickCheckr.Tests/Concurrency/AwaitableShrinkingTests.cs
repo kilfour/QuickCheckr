@@ -122,11 +122,12 @@ public class AwaitableShrinkingTests
         state.Memory.StoreInput("input", () => 42);
         var disposable = new DisposalSpy();
         var expected = new InvalidOperationException("script failed");
-        CheckrOf<Case> check = s =>
+        CheckrOf<Case> check = async s =>
         {
             s.Memory.StoreStashed("resource", () => disposable);
             if (phase is "verification" or "testimony")
                 Assert.Equal(7, s.Memory.GetCurrentInputValue(1, "input"));
+            await Task.Yield();
             throw expected;
         };
 
