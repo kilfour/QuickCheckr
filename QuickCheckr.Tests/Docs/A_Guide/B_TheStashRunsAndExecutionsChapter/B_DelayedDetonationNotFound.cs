@@ -23,7 +23,7 @@ because the test loses the state of the `BugHouse` between every run.")]
     [CodeRemove("A_TheStashRunsAndExecutions.")]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Int", Fuzzr.Int())
-        from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => new A_TheStashRunsAndExecutions.BugHouse().DelayedDetonation(input))
+        from callBugHouse in Checkr.Act("DelayedDetonation", () => new A_TheStashRunsAndExecutions.BugHouse().DelayedDetonation(input))
         from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
         select Case.Closed;
 

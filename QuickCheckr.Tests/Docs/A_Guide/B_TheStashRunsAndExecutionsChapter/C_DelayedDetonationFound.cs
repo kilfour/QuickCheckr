@@ -21,12 +21,12 @@ public class C_DelayedDetonationFound : CheckrTest<C_DelayedDetonationFound>
    This allows us to *capture* the state of the `BugHouse`.")]
     [DocCheckr]
     [DocBoldHeader("Running It")]
-    [DocExample(typeof(A_TheStashRunsAndExecutions), nameof(RunCheckr))]
+    [DocExample(typeof(C_DelayedDetonationFound), nameof(RunCheckr))]
     [DocReport]
     [DocContent(
 @"The shrunk case makes it immediately clear why this Checkr needed multiple executions.  
 
-QuickCheckr shows that the action BugHouse.DelayedDetonation was executed twice without issue,
+QuickCheckr shows that the action DelayedDetonation was executed twice without issue,
 and only on the third execution, where the relevant input `Int = 1` appears, does the exception occur.  
 
 Because the BugHouse instance is stashed, its internal count persisted across executions, allowing the failure to surface.  
@@ -98,7 +98,7 @@ the failure only emerges when several executions act on the *same* object.
     protected override CheckrOf<Case> TheCheckr() =>
         from bugHouse in Trackr.Stashed(() => new A_TheStashRunsAndExecutions.BugHouse())
         from input in Checkr.Input("Int", Fuzzr.Int())
-        from callBugHouse in Checkr.Act("BugHouse.DelayedDetonation", () => bugHouse.DelayedDetonation(input))
+        from callBugHouse in Checkr.Act("DelayedDetonation", () => bugHouse.DelayedDetonation(input))
         from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
         select Case.Closed;
 
@@ -112,9 +112,9 @@ the failure only emerges when several executions act on the *same* object.
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal(2, article.Execution(1).Times);
-        Assert.Equal("BugHouse.DelayedDetonation", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("DelayedDetonation", article.Execution(1).Action(1).Read().Label);
         Assert.Equal(3, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("BugHouse.DelayedDetonation", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("DelayedDetonation", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Int", article.Execution(2).Input(1).Read().Label);
         Assert.Equal("1", article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Returns true", article.PassedExpectation(1).Read().Label);

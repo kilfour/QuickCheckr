@@ -17,6 +17,8 @@ But what if it's not the input that causes the issue, but a side-effect.
 
 Consider the following model:")]
 [DocExample(typeof(BugHouse))]
+[DocInclude(typeof(B_DelayedDetonationNotFound), true)]
+[DocInclude(typeof(C_DelayedDetonationFound), true)]
 public class A_TheStashRunsAndExecutions : BaseTest
 {
     [CodeExample]
