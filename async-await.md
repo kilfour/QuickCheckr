@@ -40,7 +40,7 @@ shrinking, and existing task callback wrappers still execute synchronously.
 Calling `RunAsync()` does not yet fix callbacks that suspend, and the two
 QuickTestr tests remain skipped.
 
-### 2. Awaitable replay and shrinking
+### 2. Awaitable replay and shrinking (implemented)
 
 - Introduce awaitable initial execution, tracing, case selection, execution/action
   shrinking, and input shrinking, replacing the outer runner's synchronous adapter.
@@ -50,6 +50,22 @@ QuickTestr tests remain skipped.
 - Keep memory swaps and replay scopes alive across awaits, and preserve cleanup,
   failure selection, traversal order, and shrink counts.
 - Continue running synchronous scripts until the core delegate changes.
+
+The runner now awaits every replay/shrinking phase. `ScriptExecution.RunAsync()`
+is the single temporary adapter for invoking the still-synchronous script delegate;
+step 3 replaces that adapter when the delegate changes. Async execution paths do
+not call synchronous verifier/reduction wrappers retained for existing internal tests.
+Pure fallback classification and candidate generation remain synchronous.
+
+Replay loops dispose the stash in `finally` blocks, temporary memory scopes span
+awaits, and tracing/case-selection flags reset even if script execution or disposal
+throws. An interrupted action-removal attempt restores the action before propagating
+the exception.
+
+Step 2 tests in `Concurrency` verify suspended reduction callbacks and dispatcher
+ordering, exception propagation, stash disposal, and temporary replay state cleanup.
+The public script delegate and async action wrappers are unchanged, so genuinely
+suspending user actions and the QuickTestr deadlock tests still await steps 3–5.
 
 ### 3. Awaitable script delegate and composition
 

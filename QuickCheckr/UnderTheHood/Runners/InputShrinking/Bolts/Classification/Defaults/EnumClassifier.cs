@@ -6,15 +6,15 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class EnumClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private static bool CanHandle(ShrinkingInfo info) => info.Type.IsEnum;
 
-    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var enumVals = GetEnumValues(info.Type);
@@ -22,7 +22,7 @@ internal sealed class EnumClassifier : Classifier
         var rejectedCandidate = false;
         foreach (var candidate in enumVals.Where(x => !Equals(x, info.Value)))
         {
-            switch (verifier.Run(info.ExecutionId, info.Key, candidate))
+            switch (await verifier.RunAsync(info.ExecutionId, info.Key, candidate).ConfigureAwait(false))
             {
                 case ReplayOutcome.Passed:
                     return InputRelevant.Create(context.PrintInput(info.Value));

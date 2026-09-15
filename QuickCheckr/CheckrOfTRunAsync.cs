@@ -9,7 +9,7 @@ namespace QuickCheckr;
 /// Provides awaitable entry points for running Checkr scripts.
 /// </summary>
 /// <remarks>
-/// During the async migration, scripts and shrinking still execute synchronously.
+/// During the async migration, script callbacks still execute synchronously.
 /// These entry points do not yet make asynchronous action callbacks non-blocking.
 /// </remarks>
 public static class CheckrOfTRunAsync

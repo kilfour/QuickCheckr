@@ -5,11 +5,11 @@ internal class FirstMatchDispatcher<TIn, TContext, TOut>(
     FirstMatchFallback<TIn, TContext, TOut> fallback)
 {
     private readonly IEnumerable<FirstMatchHandler<TIn, TContext, TOut>> chain = [.. handlers];
-    public TOut Dispatch(TIn input, TContext context)
+    public async ValueTask<TOut> DispatchAsync(TIn input, TContext context)
     {
         foreach (var handler in chain)
         {
-            var result = handler.TryHandle(input, context);
+            var result = await handler.TryHandleAsync(input, context).ConfigureAwait(false);
             if (result.HasOutput)
                 return result.Output;
         }

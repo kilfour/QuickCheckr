@@ -11,26 +11,26 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class ValueTupleClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private static bool CanHandle(ShrinkingInfo info) =>
         info.Type.FullName!.StartsWith("System.ValueTuple");
 
-    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (info.Value == null)
         {
             context.Warn(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
-        return HandleProperties(context, info);
+        return await HandlePropertiesAsync(context, info).ConfigureAwait(false);
     }
 
-    private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
+    private static async ValueTask<InputClassification> HandlePropertiesAsync(ShrinkingContext context, ShrinkingInfo info)
     {
         var actualType = info.ActualType;
         var properties = actualType
@@ -60,12 +60,12 @@ internal sealed class ValueTupleClassifier : Classifier
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)
         {
-            values[property.Name] = HandleProperty(context, info, property);
+            values[property.Name] = await HandlePropertyAsync(context, info, property).ConfigureAwait(false);
         }
 
         foreach (var field in fields)
         {
-            values[field.Name] = HandleField(context, info, field);
+            values[field.Name] = await HandleFieldAsync(context, info, field).ConfigureAwait(false);
         }
         if (values.Any(a => a.Value is InputRelevant))
         {
@@ -92,25 +92,25 @@ internal sealed class ValueTupleClassifier : Classifier
         };
 
 
-    private static InputClassification HandleProperty(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
+    private static async ValueTask<InputClassification> HandlePropertyAsync(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
     {
         var propertyValue = propertyInfo.GetValue(info.Value);
         var swapper = new ObjectPropertyLens(propertyInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
-            return new ClassifierSelector().Classify(childInfo, context);
+            return await new ClassifierSelector().ClassifyAsync(childInfo, context).ConfigureAwait(false);
         }
     }
 
-    private static InputClassification HandleField(ShrinkingContext context, ShrinkingInfo info, FieldInfo fieldInfo)
+    private static async ValueTask<InputClassification> HandleFieldAsync(ShrinkingContext context, ShrinkingInfo info, FieldInfo fieldInfo)
     {
         var propertyValue = fieldInfo.GetValue(info.Value);
         var swapper = new ObjectFieldLens(fieldInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{fieldInfo.Name}", Type = fieldInfo.FieldType };
-            return new ClassifierSelector().Classify(childInfo, context);
+            return await new ClassifierSelector().ClassifyAsync(childInfo, context).ConfigureAwait(false);
         }
     }
 }

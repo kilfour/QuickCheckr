@@ -11,25 +11,25 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class ObjectClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private static bool CanHandle(ShrinkingInfo info) => info.Type.IsClass;
 
-    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (info.Value == null)
         {
             context.Warn(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
-        return HandleProperties(context, info);
+        return await HandlePropertiesAsync(context, info).ConfigureAwait(false);
     }
 
-    private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
+    private static async ValueTask<InputClassification> HandlePropertiesAsync(ShrinkingContext context, ShrinkingInfo info)
     {
         var actualType = info.ActualType;
         var properties = GetDefaultProperties(actualType);
@@ -41,7 +41,7 @@ internal sealed class ObjectClassifier : Classifier
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)
         {
-            values[property.Name] = ClassifyProperty(context, info, property);
+            values[property.Name] = await ClassifyPropertyAsync(context, info, property).ConfigureAwait(false);
         }
 
         return ClassifyMembers(actualType, context, values);
@@ -86,7 +86,7 @@ internal sealed class ObjectClassifier : Classifier
             members.Where(a => a.Value is InputRelevant)
                 .Select(kvp => $"{kvp.Key}: {(kvp.Value as InputRelevant)!.Report}"))} }}";
 
-    internal static InputClassification ClassifyProperty(
+    internal static async ValueTask<InputClassification> ClassifyPropertyAsync(
         ShrinkingContext context,
         ShrinkingInfo info,
         PropertyInfo propertyInfo)
@@ -105,7 +105,7 @@ internal sealed class ObjectClassifier : Classifier
                 Path = $"{info.Path}.{propertyInfo.Name}",
                 Type = propertyInfo.PropertyType
             };
-            return new ClassifierSelector().Classify(childInfo, context);
+            return await new ClassifierSelector().ClassifyAsync(childInfo, context).ConfigureAwait(false);
         }
     }
 

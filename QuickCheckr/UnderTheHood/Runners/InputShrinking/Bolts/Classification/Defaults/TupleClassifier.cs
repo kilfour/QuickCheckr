@@ -11,27 +11,27 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class TupleClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private static bool CanHandle(ShrinkingInfo info) =>
         info.Type.IsGenericType
             && info.Type.FullName!.StartsWith("System.Tuple");
 
-    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (info.Value == null)
         {
             context.Warn(info.Path, () => new NullValueWarning(info.Type, info.Path));
             return InputRelevant.Create(context.PrintInput(info.Value));
         }
-        return HandleProperties(context, info);
+        return await HandlePropertiesAsync(context, info).ConfigureAwait(false);
     }
 
-    private static InputClassification HandleProperties(ShrinkingContext context, ShrinkingInfo info)
+    private static async ValueTask<InputClassification> HandlePropertiesAsync(ShrinkingContext context, ShrinkingInfo info)
     {
         var actualType = info.ActualType;
         var properties = actualType
@@ -46,7 +46,7 @@ internal sealed class TupleClassifier : Classifier
         var values = new Dictionary<string, InputClassification>();
         foreach (var property in properties)
         {
-            values[property.Name] = HandleProperty(context, info, property);
+            values[property.Name] = await HandlePropertyAsync(context, info, property).ConfigureAwait(false);
         }
         if (values.Any(a => a.Value is InputRelevant))
         {
@@ -73,14 +73,14 @@ internal sealed class TupleClassifier : Classifier
         };
 
 
-    private static InputClassification HandleProperty(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
+    private static async ValueTask<InputClassification> HandlePropertyAsync(ShrinkingContext context, ShrinkingInfo info, PropertyInfo propertyInfo)
     {
         var propertyValue = propertyInfo.GetValue(info.Value);
         var swapper = new ObjectTuplePropertyLens(propertyInfo);
         using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
         {
             var childInfo = info with { Parent = info, Value = propertyValue, Path = $"{info.Path}.{propertyInfo.Name}", Type = propertyInfo.PropertyType };
-            return new ClassifierSelector().Classify(childInfo, context);
+            return await new ClassifierSelector().ClassifyAsync(childInfo, context).ConfigureAwait(false);
         }
     }
 }

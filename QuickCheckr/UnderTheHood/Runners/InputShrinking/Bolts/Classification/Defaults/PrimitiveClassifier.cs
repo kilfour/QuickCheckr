@@ -5,16 +5,16 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class PrimitiveClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private static bool CanHandle(ShrinkingInfo info) =>
         PrimitiveValues.Keys.Any(k => k.IsAssignableFrom(info.NormalizedType));
 
-    private static InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var primitiveKey = PrimitiveValues.Keys.First(k => k.IsAssignableFrom(info.NormalizedType));
@@ -23,7 +23,7 @@ internal sealed class PrimitiveClassifier : Classifier
             .ToList();
         foreach (var candidate in candidates)
         {
-            if (verifier.Run(info.ExecutionId, info.Key, candidate) is ReplayOutcome.Passed)
+            if (await verifier.RunAsync(info.ExecutionId, info.Key, candidate).ConfigureAwait(false) is ReplayOutcome.Passed)
             {
                 return InputRelevant.Create(context.PrintInput(info.Value));
             }
@@ -34,7 +34,7 @@ internal sealed class PrimitiveClassifier : Classifier
         var rejectedCandidate = false;
         foreach (var candidate in candidates)
         {
-            switch (verifier.Testimony(info.ExecutionId, info.Key, candidate))
+            switch (await verifier.TestimonyAsync(info.ExecutionId, info.Key, candidate).ConfigureAwait(false))
             {
                 case ReplayOutcome.Passed:
                     return InputRelevant.Create(context.PrintInput(info.Value));

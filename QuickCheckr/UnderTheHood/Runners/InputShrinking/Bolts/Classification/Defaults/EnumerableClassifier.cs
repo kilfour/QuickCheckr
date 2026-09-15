@@ -9,17 +9,17 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.D
 
 internal sealed class EnumerableClassifier : Classifier
 {
-    public override HandlerResult<InputClassification> TryHandle(ShrinkingInfo info, ShrinkingContext context)
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (!CanHandle(info)) return Unhandled;
-        return HandlerResult.Handled(Handle(info, context));
+        return HandlerResult.Handled(await HandleAsync(info, context).ConfigureAwait(false));
     }
 
     private ClassifierSelector selector = new();
 
     private static bool CanHandle(ShrinkingInfo info) => typeof(IEnumerable).IsAssignableFrom(info.Type);
 
-    private InputClassification Handle(ShrinkingInfo info, ShrinkingContext context)
+    private async ValueTask<InputClassification> HandleAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         if (info.Value == null)
         {
@@ -39,7 +39,7 @@ internal sealed class EnumerableClassifier : Classifier
             var before = theList[ix];
             theList.RemoveAt(ix);
             var substitute = CloneList.GetSubstituteForType(info.Type, theList);
-            if (verifier.RunFailed(info.ExecutionId, info.Key, substitute!))
+            if (await verifier.RunFailedAsync(info.ExecutionId, info.Key, substitute!).ConfigureAwait(false))
             {
                 values.Add(new ElementAssumedIrrelevant());
                 continue;
@@ -68,7 +68,7 @@ internal sealed class EnumerableClassifier : Classifier
                 using (context.State.Memory.NestedValue(info.ExecutionId, swapper))
                 {
                     var childInfo = info with { Parent = info, Value = before, Path = $"{info.Path}.{index}", Type = elementType };
-                    var classification = selector.Classify(childInfo, context);
+                    var classification = await selector.ClassifyAsync(childInfo, context).ConfigureAwait(false);
                     values.Add(classification);
                     if (classification is InputRelevant { Redux.HasValue: true } relevant)
                         theList[ix] = relevant.Redux.Value!.Value;

@@ -6,18 +6,16 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 internal abstract class CustomClassifier<T>
     : FirstMatchHandler<IClassificationOption, CustomShrinkingContext, InputClassification>
 {
-    public override HandlerResult<InputClassification> TryHandle(IClassificationOption input, CustomShrinkingContext customContext)
-        => ReturnIfRelevant(input, customContext);
-
-    private HandlerResult<InputClassification> ReturnIfRelevant(IClassificationOption input, CustomShrinkingContext ctx)
-    => input is T option
-        ? ReturnIfRelevant(GetClassification(option, ctx))
-        : Unhandled;
+    public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(
+        IClassificationOption input, CustomShrinkingContext customContext)
+        => input is T option
+            ? ReturnIfRelevant(await GetClassificationAsync(option, customContext).ConfigureAwait(false))
+            : Unhandled;
 
     private HandlerResult<InputClassification> ReturnIfRelevant(InputClassification classification)
         => classification is InputAssumedIrrelevant
             ? Unhandled
             : HandlerResult.Handled(classification);
 
-    protected abstract InputClassification GetClassification(T input, CustomShrinkingContext customContext);
+    protected abstract ValueTask<InputClassification> GetClassificationAsync(T input, CustomShrinkingContext customContext);
 }

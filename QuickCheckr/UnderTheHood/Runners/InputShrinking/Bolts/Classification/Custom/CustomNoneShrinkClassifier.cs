@@ -4,6 +4,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 internal sealed class CustomNoneShrinkClassifier : CustomClassifier<IClassificationOptionNone>
 {
-    protected override InputClassification GetClassification(IClassificationOptionNone option, CustomShrinkingContext customContext)
-        => new Unclassified();
+    protected override ValueTask<InputClassification> GetClassificationAsync(IClassificationOptionNone option, CustomShrinkingContext customContext)
+        => new(new Unclassified());
 }

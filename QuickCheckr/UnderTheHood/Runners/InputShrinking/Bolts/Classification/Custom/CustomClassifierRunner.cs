@@ -4,7 +4,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 internal sealed class CustomClassifierRunner(Func<object, IEnumerable<object>> shrinker)
 {
-    public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
+    public async ValueTask<InputClassification> ClassifyAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         var verifier = new Verifier(context.State, context.Check);
         var values = shrinker(info.Value!);
@@ -12,7 +12,7 @@ internal sealed class CustomClassifierRunner(Func<object, IEnumerable<object>> s
         var rejectedCandidate = false;
         foreach (var candidate in values.Where(x => !Equals(x, info.Value)))
         {
-            switch (verifier.Run(info.ExecutionId, info.Key, candidate!))
+            switch (await verifier.RunAsync(info.ExecutionId, info.Key, candidate!).ConfigureAwait(false))
             {
                 case ReplayOutcome.Passed:
                     return InputRelevant.Create(context.PrintInput(info.Value));

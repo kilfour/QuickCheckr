@@ -4,7 +4,7 @@ internal sealed class ActionShrinker(
     CheckrState State,
     CheckrOf<Case> Check)
 {
-    public int Run()
+    public async ValueTask<int> RunAsync()
     {
         using var _ = State.Pathologist.Examine("ActionShrinking");
         var shrinkCount = 0;
@@ -17,7 +17,15 @@ internal sealed class ActionShrinker(
             {
                 using var ___ = State.Pathologist.Examine("Checking", "Action", key);
                 shortTermMemory.RemoveAction(key);
-                ExecuteRun();
+                try
+                {
+                    await ExecuteRunAsync().ConfigureAwait(false);
+                }
+                catch
+                {
+                    shortTermMemory.StoreAction(key);
+                    throw;
+                }
                 if (State.EvidenceRecorder.Failed())
                 {
                     State.Pathologist.Inform("FailedAndRemoved");
@@ -33,14 +41,20 @@ internal sealed class ActionShrinker(
         return shrinkCount;
     }
 
-    private void ExecuteRun()
+    private async ValueTask ExecuteRunAsync()
     {
-        var executionId = State.StartReplay();
-        while (executionId > 0)
+        try
         {
-            Check(State);
-            executionId = State.Memory.NextExecution();
+            var executionId = State.StartReplay();
+            while (executionId > 0)
+            {
+                await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                executionId = State.Memory.NextExecution();
+            }
         }
-        State.Memory.DisposeStash();
+        finally
+        {
+            State.Memory.DisposeStash();
+        }
     }
 }

@@ -11,7 +11,7 @@ internal sealed class InputShrinker(
     CheckrOf<Case> Check,
     bool useDefaultReducers)
 {
-    public int Run()
+    public async ValueTask<int> RunAsync()
     {
         using var _ = State.Pathologist.Examine(AutopsyPath.InputShrinking);
         var shrinkCount = 0;
@@ -26,7 +26,7 @@ internal sealed class InputShrinker(
                 using var ___ = State.Pathologist.Examine(AutopsyPath.Input(key));
                 var info = new ShrinkingInfo(executionId, key, value.Value, key, value.Type);
                 var context = new ShrinkingContext(State, Check, useDefaultReducers);
-                var classification = new ClassifierSelector().Classify(info, context);
+                var classification = await new ClassifierSelector().ClassifyAsync(info, context).ConfigureAwait(false);
                 shrinkCount += context.CollapseCount + IrrelevantCount.From(classification);
                 executionMemory.StoreInputShrinkingClassification(key, classification);
                 if (classification is InputRelevant)

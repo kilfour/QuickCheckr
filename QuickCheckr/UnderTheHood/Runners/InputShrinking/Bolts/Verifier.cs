@@ -12,13 +12,16 @@ internal abstract record ReplayOutcome
 internal class Verifier(CheckrState State,
     CheckrOf<Case> Check)
 {
-    public virtual bool RunPassed(int executionId, string key, object value)
-        => Run(executionId, key, value) is ReplayOutcome.Passed;
+    public virtual async ValueTask<bool> RunPassedAsync(int executionId, string key, object value)
+        => await RunAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.Passed;
 
-    public virtual bool RunFailed(int executionId, string key, object value)
-        => Run(executionId, key, value) is ReplayOutcome.FailurePreserved;
+    public virtual async ValueTask<bool> RunFailedAsync(int executionId, string key, object value)
+        => await RunAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.FailurePreserved;
 
     public virtual ReplayOutcome Run(int executionId, string key, object value)
+        => RunAsync(executionId, key, value).GetAwaiter().GetResult();
+
+    public virtual async ValueTask<ReplayOutcome> RunAsync(int executionId, string key, object value)
     {
         State.StartReplay();
         IDisposable disposable;
@@ -37,12 +40,18 @@ internal class Verifier(CheckrState State,
 
         using (disposable)
         {
-            foreach (var id in State.Memory.Numbers)
+            try
             {
-                State.Memory.GotoExecution(id);
-                Check(State);
+                foreach (var id in State.Memory.Numbers)
+                {
+                    State.Memory.GotoExecution(id);
+                    await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                }
             }
-            State.Memory.DisposeStash();
+            finally
+            {
+                State.Memory.DisposeStash();
+            }
         }
 
         return State.EvidenceRecorder.Failed()
@@ -50,13 +59,16 @@ internal class Verifier(CheckrState State,
             : new ReplayOutcome.Passed();
     }
 
-    public virtual bool TestimonyPassed(int executionId, string key, object value)
-        => Testimony(executionId, key, value) is ReplayOutcome.Passed;
+    public virtual async ValueTask<bool> TestimonyPassedAsync(int executionId, string key, object value)
+        => await TestimonyAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.Passed;
 
-    public virtual bool TestimonyFailed(int executionId, string key, object value)
-        => Testimony(executionId, key, value) is ReplayOutcome.FailurePreserved;
+    public virtual async ValueTask<bool> TestimonyFailedAsync(int executionId, string key, object value)
+        => await TestimonyAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.FailurePreserved;
 
     public virtual ReplayOutcome Testimony(int executionId, string key, object value)
+        => TestimonyAsync(executionId, key, value).GetAwaiter().GetResult();
+
+    public virtual async ValueTask<ReplayOutcome> TestimonyAsync(int executionId, string key, object value)
     {
         State.StartReplay();
         IDisposable disposable;
@@ -75,12 +87,18 @@ internal class Verifier(CheckrState State,
 
         using (disposable)
         {
-            foreach (var id in State.Memory.Numbers)
+            try
             {
-                State.Memory.GotoExecution(id);
-                Check(State);
+                foreach (var id in State.Memory.Numbers)
+                {
+                    State.Memory.GotoExecution(id);
+                    await ScriptExecution.RunAsync(Check, State).ConfigureAwait(false);
+                }
             }
-            State.Memory.DisposeStash();
+            finally
+            {
+                State.Memory.DisposeStash();
+            }
         }
         return State.EvidenceRecorder.Failed()
             ? new ReplayOutcome.FailurePreserved()

@@ -4,6 +4,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 internal sealed class CustomFunctionShrinkClassifier : CustomClassifier<IClassificationOptionFunction>
 {
-    protected override InputClassification GetClassification(IClassificationOptionFunction option, CustomShrinkingContext customContext)
-        => new CustomClassifierRunner(option.GetFunction()).Classify(customContext.Info, customContext.Context);
+    protected override async ValueTask<InputClassification> GetClassificationAsync(IClassificationOptionFunction option, CustomShrinkingContext customContext)
+        => await new CustomClassifierRunner(option.GetFunction()).ClassifyAsync(customContext.Info, customContext.Context).ConfigureAwait(false);
 }
