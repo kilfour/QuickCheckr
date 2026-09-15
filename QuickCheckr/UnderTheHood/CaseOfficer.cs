@@ -11,6 +11,15 @@ internal static class CaseOfficer
         ExecutionCount executionsPerRun,
         CheckrRunnerConfig config,
         AutopsyProbe autopsyProbe)
+        // Synchronous compatibility boundary. The runner still completes synchronously in step 1.
+        => InvestigateAsync(checkr, runs, executionsPerRun, config, autopsyProbe).GetAwaiter().GetResult();
+
+    public static async ValueTask<Findings> InvestigateAsync(
+        CheckrOf<Case> checkr,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        CheckrRunnerConfig config,
+        AutopsyProbe autopsyProbe)
     {
         var findings = new Findings();
         Deliberator? deliberator = null;
@@ -19,7 +28,7 @@ internal static class CaseOfficer
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, autopsyProbe);
-            var caseFile = runner.Run();
+            var caseFile = await runner.RunAsync().ConfigureAwait(false);
             findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {

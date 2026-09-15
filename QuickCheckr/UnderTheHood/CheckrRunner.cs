@@ -18,6 +18,9 @@ internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig conf
 
     public int Seed => State.FuzzrState.Seed;
 
+    // Step 1 adapter: replay and shrinking become awaitable in the next migration step.
+    public ValueTask<CaseFile> RunAsync() => new(Run());
+
     public CaseFile Run()
     {
         new InitialRun(State, Check).Run(numberOfExecutions);
