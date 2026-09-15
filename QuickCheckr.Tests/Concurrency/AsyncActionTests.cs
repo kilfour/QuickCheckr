@@ -15,11 +15,8 @@ public class AsyncActionTests
     [InlineData("act when void")]
     [InlineData("capture")]
     [InlineData("perform")]
-    [InlineData("perform task")]
     [InlineData("careful")]
     [InlineData("careful void")]
-    [InlineData("careful task")]
-    [InlineData("careful void task")]
     [InlineData("careful when")]
     [InlineData("shrinkable")]
     [InlineData("shrinkable void")]
@@ -39,11 +36,8 @@ public class AsyncActionTests
             "act when void" => Checkr.ActWhen("act", () => true, action),
             "capture" => Checkr.Capture(value).Select(v => { Assert.Equal(42, v); return Case.Closed; }),
             "perform" => Checkr.Perform(action),
-            "perform task" => Checkr.Perform(release.Task),
             "careful" => Checkr.ActCarefully("act", value).Select(v => { Assert.Equal(42, v.Value); return Case.Closed; }),
             "careful void" => Checkr.ActCarefully("act", action).Select(v => { Assert.False(v.Threw); return Case.Closed; }),
-            "careful task" => Checkr.ActCarefully("act", release.Task).Select(v => { Assert.Equal(42, v.Value); return Case.Closed; }),
-            "careful void task" => Checkr.ActCarefully("act", (Task)release.Task).Select(v => { Assert.False(v.Threw); return Case.Closed; }),
             "careful when" => Checkr.ActCarefullyWhen("act", () => true, value).Select(v => { Assert.Equal(42, v.Value); return Case.Closed; }),
             "shrinkable" => Checkr.ShrinkableAct("act", value).Select(v => { Assert.Equal(42, v.Result); return Case.Closed; }),
             "shrinkable void" => Checkr.ShrinkableAct("act", action).Select(v => { Assert.True(v.HasExecuted); return Case.Closed; }),

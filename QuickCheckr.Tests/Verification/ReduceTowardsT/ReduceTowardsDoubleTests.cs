@@ -6,18 +6,18 @@ namespace QuickCheckr.Tests.Verification.ReduceTowardsT;
 public class ReduceTowardsDoubleTests
 {
     [Fact]
-    public void ReachesTargetWhenEveryCandidateFails()
+    public async Task ReachesTargetWhenEveryCandidateFails()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(0d), 42.5d, _ => true);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(0d), 42.5d, _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(0d, unbounded.Result);
     }
 
     [Fact]
-    public void StopsAtConfiguredPrecision()
+    public async Task StopsAtConfiguredPrecision()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(0d, precision: 2),
             1d,
             candidate => (double)candidate != 0d);
@@ -27,9 +27,9 @@ public class ReduceTowardsDoubleTests
     }
 
     [Fact]
-    public void ReducesUpAtConfiguredPrecision()
+    public async Task ReducesUpAtConfiguredPrecision()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(100d, precision: 2),
             1d,
             candidate => (double)candidate < 90d);
@@ -39,9 +39,9 @@ public class ReduceTowardsDoubleTests
     }
 
     [Fact]
-    public void ZeroPrecisionBehavesLikeIntegerReduction()
+    public async Task ZeroPrecisionBehavesLikeIntegerReduction()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(100d, precision: 0),
             1d,
             candidate => (double)candidate < 90d);
@@ -51,9 +51,9 @@ public class ReduceTowardsDoubleTests
     }
 
     [Fact]
-    public void HandlesFullFiniteRange()
+    public async Task HandlesFullFiniteRange()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(double.MaxValue),
             double.MinValue,
             _ => true);
@@ -63,9 +63,9 @@ public class ReduceTowardsDoubleTests
     }
 
     [Fact]
-    public void HandlesInfinityAsTarget()
+    public async Task HandlesInfinityAsTarget()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(double.PositiveInfinity),
             0d,
             _ => true);
@@ -75,9 +75,9 @@ public class ReduceTowardsDoubleTests
     }
 
     [Fact]
-    public void TargetAsInitialValueIsUnbounded()
+    public async Task TargetAsInitialValueIsUnbounded()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(12.34d), 12.34d, _ => true);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(12.34d), 12.34d, _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(12.34d, unbounded.Result);

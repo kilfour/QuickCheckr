@@ -6,18 +6,18 @@ namespace QuickCheckr.Tests.Verification.ReduceTowardsT;
 public class ReduceTowardsDecimalTests
 {
     [Fact]
-    public void ReachesTargetWhenEveryCandidateFails()
+    public async Task ReachesTargetWhenEveryCandidateFails()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(0m), 42.5m, _ => true);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(0m), 42.5m, _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(0m, unbounded.Result);
     }
 
     [Fact]
-    public void StopsAtClosestFailingDecimal()
+    public async Task StopsAtClosestFailingDecimal()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(0m),
             1m,
             candidate => (decimal)candidate != 0m);
@@ -27,9 +27,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void StopsAtConfiguredPrecision()
+    public async Task StopsAtConfiguredPrecision()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(0m, precision: 2),
             1m,
             candidate => (decimal)candidate != 0m);
@@ -39,9 +39,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void ReducesUpTowardsTarget()
+    public async Task ReducesUpTowardsTarget()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(100m),
             1m,
             candidate => (decimal)candidate < 90m);
@@ -51,9 +51,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void ReducesUpAtConfiguredPrecision()
+    public async Task ReducesUpAtConfiguredPrecision()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(100m, precision: 2),
             1m,
             candidate => (decimal)candidate < 90m);
@@ -63,9 +63,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void ZeroPrecisionBehavesLikeIntegerReduction()
+    public async Task ZeroPrecisionBehavesLikeIntegerReduction()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(100m, precision: 0),
             1m,
             candidate => (decimal)candidate < 90m);
@@ -75,9 +75,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void HandlesFullDecimalRangeWithoutOverflow()
+    public async Task HandlesFullDecimalRangeWithoutOverflow()
     {
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.Towards(decimal.MaxValue),
             decimal.MinValue,
             _ => true);
@@ -87,9 +87,9 @@ public class ReduceTowardsDecimalTests
     }
 
     [Fact]
-    public void TargetAsInitialValueIsUnbounded()
+    public async Task TargetAsInitialValueIsUnbounded()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(12.34m), 12.34m, _ => true);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(12.34m), 12.34m, _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(12.34m, unbounded.Result);

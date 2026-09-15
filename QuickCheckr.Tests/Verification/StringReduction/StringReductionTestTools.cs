@@ -43,9 +43,9 @@ internal static class StringReductionTestTools
         return candidates;
     }
 
-    public static Reduction Reduce(
+    public static ValueTask<Reduction> ReduceAsync(
         SelectrOf<Selection> selector,
         string input,
         Func<object, bool> failureStillPresent) =>
-        TestReductionRunner.ForReducer(selector.Reduce(), input, failureStillPresent);
+        TestReductionRunner.ForReducerAsync(selector.Reduce(), input, failureStillPresent);
 }

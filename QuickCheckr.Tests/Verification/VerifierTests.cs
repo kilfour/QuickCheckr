@@ -8,7 +8,7 @@ namespace QuickCheckr.Tests.Verification;
 public class VerifierTests
 {
     [Fact]
-    public void PropertySetterFailureRejectsCandidate()
+    public async Task PropertySetterFailureRejectsCandidate()
     {
         var state = CreateState();
         state.Memory.StartNewExecution();
@@ -17,7 +17,7 @@ public class VerifierTests
 
         using (state.Memory.NestedValue(1, new ObjectPropertyLens(property)))
         {
-            var outcome = new Verifier(state, PassingCheck).Run(1, "item", -1);
+            var outcome = await new Verifier(state, PassingCheck).RunAsync(1, "item", -1);
 
             var rejected = Assert.IsType<ReplayOutcome.CandidateRejected>(outcome);
             Assert.IsType<ArgumentOutOfRangeException>(rejected.Exception);
@@ -25,17 +25,17 @@ public class VerifierTests
     }
 
     [Fact]
-    public void MemoryLookupFailureIsNotTreatedAsCandidateRejection()
+    public async Task MemoryLookupFailureIsNotTreatedAsCandidateRejection()
     {
         var state = CreateState();
         state.Memory.StartNewExecution();
         var verifier = new Verifier(state, PassingCheck);
 
-        Assert.Throws<KeyNotFoundException>(() => verifier.Run(2, "missing", 42));
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => verifier.RunAsync(2, "missing", 42).AsTask());
     }
 
     [Fact]
-    public void ExceptionDuringReplayIsNotTreatedAsCandidateRejection()
+    public async Task ExceptionDuringReplayIsNotTreatedAsCandidateRejection()
     {
         var state = CreateState();
         state.Memory.StartNewExecution();
@@ -44,14 +44,14 @@ public class VerifierTests
             state,
             _ => throw new InvalidOperationException("replay failed unexpectedly"));
 
-        var exception = Assert.Throws<InvalidOperationException>(
-            () => verifier.Run(1, "number", 2));
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => verifier.RunAsync(1, "number", 2).AsTask());
 
         Assert.Equal("replay failed unexpectedly", exception.Message);
     }
 
     [Fact]
-    public void RejectedTestimonyRollsBackEarlierAppliedTestimony()
+    public async Task RejectedTestimonyRollsBackEarlierAppliedTestimony()
     {
         var state = CreateState();
         state.Memory.StartNewExecution();
@@ -64,7 +64,7 @@ public class VerifierTests
             state.Memory.Testify(1, "item", -1);
         }
 
-        var outcome = new Verifier(state, PassingCheck).Testimony(1, "item", 30);
+        var outcome = await new Verifier(state, PassingCheck).TestimonyAsync(1, "item", 30);
 
         Assert.IsType<ReplayOutcome.CandidateRejected>(outcome);
         var current = Assert.IsType<PositiveItem>(

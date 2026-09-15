@@ -29,9 +29,6 @@ internal sealed class Memory
         return ShortTermMemory.NextExecution();
     }
 
-    public void DisposeStash()
-        => LongTermMemory.DisposeStash();
-
     public ValueTask DisposeStashAsync() => LongTermMemory.DisposeStashAsync();
 
     public int Reset()

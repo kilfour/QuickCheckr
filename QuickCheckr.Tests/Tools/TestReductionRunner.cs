@@ -13,7 +13,7 @@ internal static class TestReductionRunner
         public void Warn(string key, Func<Warning> factory) { }
     }
 
-    internal static Reduction ForReducer<T>(
+    internal static ValueTask<Reduction> ForReducerAsync<T>(
         Func<Reducer<T>> reducerFactory,
         T? value,
         Func<object, bool> failTest,
@@ -21,12 +21,12 @@ internal static class TestReductionRunner
     {
         var reducer = reducerFactory();
 
-        return ReductionRunner.ForReducer(
+        return ReductionRunner.ForReducerAsync(
             result => reducer(result),
             string.Empty,
             string.Empty,
             value,
-            failTest,
+            candidate => new ValueTask<bool>(failTest(candidate)),
             whistleblower ?? new WhistleblowerSpy());
     }
 }

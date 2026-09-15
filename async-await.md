@@ -21,6 +21,9 @@ shrinking as well as successful execution.
 
 Each step should build and pass its relevant tests before moving on.
 
+The sections below record the migration stages; temporary adapters described in
+earlier stages have since been removed. See API cleanup below for the final shape.
+
 ### 1. Awaitable entry points and outer runners (implemented)
 
 - Add `RunAsync()` overloads matching all existing `Run()` overloads, for both
@@ -54,7 +57,7 @@ QuickTestr tests remain skipped.
 The runner now awaits every replay/shrinking phase. `ScriptExecution.RunAsync()`
 is the single temporary adapter for invoking the still-synchronous script delegate;
 step 3 replaces that adapter when the delegate changes. Async execution paths do
-not call synchronous verifier/reduction wrappers retained for existing internal tests.
+not call the temporary synchronous verifier/reduction wrappers (now removed).
 Pure fallback classification and candidate generation remain synchronous.
 
 Replay loops dispose the stash in `finally` blocks, temporary memory scopes span
@@ -117,8 +120,8 @@ QuickTestr integration and its two skipped acceptance tests remain step 5.
 Step 4 removes blocking awaits from QuickCheckr's task-based action helpers,
 including conditional, carefully handled, shrinkable, capture, and perform variants.
 `ActCarefully` and `Perform` now also accept task factories. Prefer factories for
-replay: legacy overloads accepting an already-created `Task` await that same task
-again and cannot re-invoke the original operation.
+replay: the former overloads accepting an already-created `Task` have been removed.
+Factories start the operation afresh on each invocation.
 
 Every `RunAsync` overload accepts an optional final `CancellationToken`. Custom
 steps can read `CheckrState.CancellationToken`; token-aware action/capture/perform
@@ -170,12 +173,19 @@ The existing GitHub Actions workflow runs the solution tests on Ubuntu for pull
 requests targeting main and pushes to main. Local verification passes; an actual
 GitHub Actions result remains pending until these changes reach that workflow.
 
-## Validation
+## API cleanup
 
-For step 1, cover every public overload, receiver identity, requested counts,
-seeded parity with `.Run()`, configured filing, failure propagation, and shrinking
-parity. Run the existing suites to guard synchronous callers and case selection.
+Removed `ActCarefully(string, Task)`, `ActCarefully<T>(string, Task<T>)`, and
+`Perform(Task)`. Supply a factory instead, for example
+`Checkr.ActCarefully("read", () => ReadAsync())`. This keeps the helper responsible
+for invoking the operation during execution and each replay.
 
-Later steps must add tests that genuinely suspend and bound deadlock regressions
-with test-runner timeouts. Preserve generated reports and existing repository files
-when running documentation-producing tests. Do not parallelize shared replay state.
+Removed synchronous `Verifier.Run`/`Testimony`, `ReductionRunner.ForReducer`, and
+stash-disposal adapters. Their tests now await the asynchronous methods directly.
+
+Retained `Run()` for synchronous scripts and the synchronous vault/debugging APIs.
+Their two internal blocking boundaries (`CaseOfficer.Investigate` and
+`CheckrRunner.Run`) remain intentional. Use `RunAsync()` for suspending callbacks.
+Ordinary synchronous callbacks and completed-result conversions remain useful API,
+not migration scaffolding.
+

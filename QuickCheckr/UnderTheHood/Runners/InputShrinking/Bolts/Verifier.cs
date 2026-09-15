@@ -18,9 +18,6 @@ internal class Verifier(CheckrState State,
     public virtual async ValueTask<bool> RunFailedAsync(int executionId, string key, object value)
         => await RunAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.FailurePreserved;
 
-    public virtual ReplayOutcome Run(int executionId, string key, object value)
-        => RunAsync(executionId, key, value).GetAwaiter().GetResult();
-
     public virtual async ValueTask<ReplayOutcome> RunAsync(int executionId, string key, object value)
     {
         State.StartReplay();
@@ -66,9 +63,6 @@ internal class Verifier(CheckrState State,
 
     public virtual async ValueTask<bool> TestimonyFailedAsync(int executionId, string key, object value)
         => await TestimonyAsync(executionId, key, value).ConfigureAwait(false) is ReplayOutcome.FailurePreserved;
-
-    public virtual ReplayOutcome Testimony(int executionId, string key, object value)
-        => TestimonyAsync(executionId, key, value).GetAwaiter().GetResult();
 
     public virtual async ValueTask<ReplayOutcome> TestimonyAsync(int executionId, string key, object value)
     {

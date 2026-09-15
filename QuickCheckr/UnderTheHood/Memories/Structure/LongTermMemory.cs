@@ -8,9 +8,6 @@ internal sealed class LongTermMemory
         pools = new();
     }
 
-    public void DisposeStash()
-        => DisposeStashAsync().GetAwaiter().GetResult();
-
     public async ValueTask DisposeStashAsync()
     {
         List<Exception>? errors = null;

@@ -17,49 +17,49 @@ public class ReduceTowardsIntTests
     private readonly WhistleblowerSpy whistleblower = new();
 
     [Fact]
-    public void ToZero()
+    public async Task ToZero()
     {
-        var result = ReductionRunner.ForReducer(new ReduceTowards<int>(0).Step, "", "", 42, a => true, whistleblower);
+        var result = await ReductionRunner.ForReducerAsync(new ReduceTowards<int>(0).Step, "", "", 42, a => new ValueTask<bool>(true), whistleblower);
         var step = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(0, step.Result);
     }
 
     [Fact]
-    public void ToZeroOrg()
+    public async Task ToZeroOrg()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(0), 42, a => true);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(0), 42, a => true);
         var step = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(0, step.Result);
     }
 
     [Fact]
-    public void ToZeroStopped()
+    public async Task ToZeroStopped()
     {
-        var result = ReductionRunner.ForReducer(new ReduceTowards<int>(0).Step, "", "", 1, a => (int)a != 0, whistleblower);
+        var result = await ReductionRunner.ForReducerAsync(new ReduceTowards<int>(0).Step, "", "", 1, a => new ValueTask<bool>((int)a != 0), whistleblower);
         var step = Assert.IsType<Reduction.Stop>(result);
         Assert.Equal(1, step.Result);
     }
 
     [Fact]
-    public void ToZeroStoppedOrg()
+    public async Task ToZeroStoppedOrg()
     {
-        var result = TestReductionRunner.ForReducer(Reduce.Towards(0), 1, a => (int)a != 0, whistleblower);
+        var result = await TestReductionRunner.ForReducerAsync(Reduce.Towards(0), 1, a => (int)a != 0, whistleblower);
         var step = Assert.IsType<Reduction.Stop>(result);
         Assert.Equal(1, step.Result);
     }
 
     [Fact]
-    public void GoingUp()
+    public async Task GoingUp()
     {
-        var result = ReductionRunner.ForReducer(new ReduceTowards<int>(100).Step, "", "", 1, a => (int)a < 90, whistleblower);
+        var result = await ReductionRunner.ForReducerAsync(new ReduceTowards<int>(100).Step, "", "", 1, a => new ValueTask<bool>((int)a < 90), whistleblower);
         var step = Assert.IsType<Reduction.Stop>(result);
         Assert.Equal(89, step.Result);
     }
 
     [Fact]
-    public void Checking()
+    public async Task Checking()
     {
-        var result = ReductionRunner.ForReducer(new ReduceTowards<int>(5).Step, "", "", 72, a => (int)a >= 2, whistleblower);
+        var result = await ReductionRunner.ForReducerAsync(new ReduceTowards<int>(5).Step, "", "", 72, a => new ValueTask<bool>((int)a >= 2), whistleblower);
         var step = Assert.IsType<Reduction.Unbounded>(result);
         Assert.Equal(5, step.Result);
     }

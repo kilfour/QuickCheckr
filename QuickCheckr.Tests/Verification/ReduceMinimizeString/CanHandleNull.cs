@@ -6,10 +6,10 @@ namespace QuickCheckr.Tests.Verification.ReduceMinimizeString;
 public class CanHandleNull
 {
     [Fact]
-    public void NullIsAlreadyMinimal()
+    public async Task NullIsAlreadyMinimal()
     {
         var verifierWasCalled = false;
-        var result = TestReductionRunner.ForReducer(
+        var result = await TestReductionRunner.ForReducerAsync(
             Reduce.MinimizeString,
             null,
             _ =>

@@ -6,22 +6,22 @@ namespace QuickCheckr.Tests.Verification.StringReduction;
 public class ReducerTests
 {
     [Fact]
-    public void IsUnboundedWhenEveryCandidateStillFails()
+    public async Task IsUnboundedWhenEveryCandidateStillFails()
     {
         var selector = Stringr.Once('a', 'b').Remove().Defined();
 
-        var reduction = StringReductionTestTools.Reduce(selector, "abc", _ => true);
+        var reduction = await StringReductionTestTools.ReduceAsync(selector, "abc", _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(reduction);
         Assert.Equal("c", unbounded.Result);
     }
 
     [Fact]
-    public void StopsAtTheLastFailingCandidateAfterWitnessingAPass()
+    public async Task StopsAtTheLastFailingCandidateAfterWitnessingAPass()
     {
         var selector = Stringr.Once('a', 'b').Remove().Defined();
 
-        var reduction = StringReductionTestTools.Reduce(
+        var reduction = await StringReductionTestTools.ReduceAsync(
             selector,
             "abc",
             candidate => ((string)candidate).Length >= 2);
@@ -31,11 +31,11 @@ public class ReducerTests
     }
 
     [Fact]
-    public void RejectedCandidateIsRolledBackBeforeSearchingFurtherMatches()
+    public async Task RejectedCandidateIsRolledBackBeforeSearchingFurtherMatches()
     {
         var selector = Stringr.Once(char.IsWhiteSpace).Remove().Defined();
 
-        var reduction = StringReductionTestTools.Reduce(
+        var reduction = await StringReductionTestTools.ReduceAsync(
             selector,
             " a  bc ",
             candidate => ((string)candidate).StartsWith(' '));
@@ -45,23 +45,23 @@ public class ReducerTests
     }
 
     [Fact]
-    public void NoMatchingCandidateReturnsTheOriginalInputAsUnbounded()
+    public async Task NoMatchingCandidateReturnsTheOriginalInputAsUnbounded()
     {
         var selector = Stringr.Once('a').Remove().Defined();
 
-        var reduction = StringReductionTestTools.Reduce(selector, "bbb", _ => true);
+        var reduction = await StringReductionTestTools.ReduceAsync(selector, "bbb", _ => true);
 
         var unbounded = Assert.IsType<Reduction.Unbounded>(reduction);
         Assert.Equal("bbb", unbounded.Result);
     }
 
     [Fact]
-    public void ReducerFactoryCreatesIndependentSessions()
+    public async Task ReducerFactoryCreatesIndependentSessions()
     {
         var selector = Stringr.Once('a').Remove().Defined();
 
-        var first = StringReductionTestTools.Reduce(selector, "a1", _ => true);
-        var second = StringReductionTestTools.Reduce(selector, "a2", _ => true);
+        var first = await StringReductionTestTools.ReduceAsync(selector, "a1", _ => true);
+        var second = await StringReductionTestTools.ReduceAsync(selector, "a2", _ => true);
 
         Assert.Equal("1", Assert.IsType<Reduction.Unbounded>(first).Result);
         Assert.Equal("2", Assert.IsType<Reduction.Unbounded>(second).Result);

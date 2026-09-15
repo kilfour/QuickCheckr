@@ -4,15 +4,6 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 
 internal static class ReductionRunner
 {
-    public static Reduction ForReducer(
-        Func<ReductionResult, Reduction> reducer,
-        string key,
-        string path,
-        object? value,
-        Func<object, bool> failTest,
-        IReductionWhistleblower whistleblower)
-        => ForReducerAsync(reducer, key, path, value, candidate => new ValueTask<bool>(failTest(candidate)), whistleblower).GetAwaiter().GetResult();
-
     public static async ValueTask<Reduction> ForReducerAsync(
         Func<ReductionResult, Reduction> reducer,
         string key,

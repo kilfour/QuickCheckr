@@ -17,14 +17,14 @@ public class ArithmeticReducerTests
         select Selection.Defined;
 
     [Fact]
-    public void CompoundReplacementStopsAtTheLastFailingCandidate()
+    public async Task CompoundReplacementStopsAtTheLastFailingCandidate()
     {
         var selector =
             from selected in Stringr.Once('a', 'b')
             from replaced in Stringr.Once('c', 'd').Replace(_ => selected.Text.ToUpperInvariant())
             select Selection.Defined;
 
-        var reduction = StringReductionTestTools.Reduce(
+        var reduction = await StringReductionTestTools.ReduceAsync(
             selector,
             "--ac--bd--",
             candidate => ((string)candidate).Contains('d'));
@@ -34,9 +34,9 @@ public class ArithmeticReducerTests
     }
 
     [Fact]
-    public void RemovesLeftHandSidesWhileTheFailureMarkerRemains()
+    public async Task RemovesLeftHandSidesWhileTheFailureMarkerRemains()
     {
-        var reduction = StringReductionTestTools.Reduce(
+        var reduction = await StringReductionTestTools.ReduceAsync(
             RemoveLeftHandSideAndOperator,
             "3+2-(3+1#-2)",
             candidate => ((string)candidate).Contains('#'));
@@ -46,9 +46,9 @@ public class ArithmeticReducerTests
     }
 
     [Fact]
-    public void RemovesLeftHandSidesWhenEveryCandidateFails()
+    public async Task RemovesLeftHandSidesWhenEveryCandidateFails()
     {
-        var reduction = StringReductionTestTools.Reduce(
+        var reduction = await StringReductionTestTools.ReduceAsync(
             RemoveLeftHandSideAndOperator,
             "3+2-(3+1#-2)",
             _ => true);
