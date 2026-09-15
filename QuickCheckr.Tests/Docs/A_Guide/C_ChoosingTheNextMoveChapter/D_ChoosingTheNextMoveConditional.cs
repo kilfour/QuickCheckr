@@ -12,7 +12,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes an enumerable of `{nameof(Checkr)}.{nameof(Checkr.Option)}` elements.  
 
 **Example:**")]
-public class C_ChoosingTheNextMoveConditional : CheckrTest<C_ChoosingTheNextMoveConditional>
+public class D_ChoosingTheNextMoveConditional : CheckrTest<D_ChoosingTheNextMoveConditional>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

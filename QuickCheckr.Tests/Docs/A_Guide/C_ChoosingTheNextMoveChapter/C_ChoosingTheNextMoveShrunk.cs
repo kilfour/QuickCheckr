@@ -7,7 +7,7 @@ using QuickPulse.Explains;
 namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
 [DocFileHeader("Shrinking Branching Behaviour")]
-public class D_ChoosingTheNextMoveShrunk : CheckrTest<D_ChoosingTheNextMoveShrunk>
+public class C_ChoosingTheNextMoveShrunk : CheckrTest<C_ChoosingTheNextMoveShrunk>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

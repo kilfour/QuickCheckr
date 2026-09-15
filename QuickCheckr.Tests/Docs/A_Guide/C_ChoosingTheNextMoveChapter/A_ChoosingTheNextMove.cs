@@ -24,6 +24,6 @@ and QuickCheckr picks one at random during each execution.
 
 `OneOf` turns your Checkr into a **state machine explorer**.")]
 [DocInclude(typeof(B_ChoosingTheNextMoveNoShrinking), true)]
-[DocInclude(typeof(D_ChoosingTheNextMoveShrunk))]
-[DocInclude(typeof(C_ChoosingTheNextMoveConditional))]
+[DocInclude(typeof(C_ChoosingTheNextMoveShrunk))]
+[DocInclude(typeof(D_ChoosingTheNextMoveConditional))]
 public class A_ChoosingTheNextMove;
