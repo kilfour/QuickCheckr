@@ -32,8 +32,6 @@ public abstract class DocAttributeBaseTest<TTestClass>
         DocBoldHeaderAttribute("Report Excerpt");
     protected class DocConfigureHeaderAttribute() :
         DocBoldHeaderAttribute("The Configuration");
-    // protected class DocCheckrHeaderAttribute() :
-    //     DocBoldHeaderAttribute("The Checkr");
     protected class DocFuzzrHeaderAttribute() :
         DocBoldHeaderAttribute("The Fuzzr");
     protected class DocFileCodeHeaderAttribute(string code)
