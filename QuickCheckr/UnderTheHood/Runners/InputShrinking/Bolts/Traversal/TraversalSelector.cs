@@ -8,7 +8,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Traversal;
 
 internal static class TraversalSelector
 {
-    public static InputClassification Traverse(
+    public static async ValueTask<InputClassification> TraverseAsync(
         ShrinkingInfo info,
         ShrinkingContext context,
         IEnumerable<ITraversalOption> options)
@@ -36,12 +36,12 @@ internal static class TraversalSelector
         foreach (var property in defaultProperties)
         {
             members[property.Name] = configuredByName.TryGetValue(property.Name, out var option)
-                ? ClassifyOption(info, context, option)
-                : ObjectClassifier.ClassifyProperty(context, info, property);
+                ? await ClassifyOptionAsync(info, context, option).ConfigureAwait(false)
+                : await ObjectClassifier.ClassifyPropertyAsync(context, info, property).ConfigureAwait(false);
         }
 
         foreach (var option in configured.Where(option => !defaultNames.Contains(option.MemberName)))
-            members[option.MemberName] = ClassifyOption(info, context, option);
+            members[option.MemberName] = await ClassifyOptionAsync(info, context, option).ConfigureAwait(false);
 
         foreach (var property in readableProperties.Where(property =>
                      !ObjectClassifier.CanTraverse(property) &&
@@ -56,7 +56,7 @@ internal static class TraversalSelector
         return ObjectClassifier.ClassifyMembers(info.ActualType, context, members);
     }
 
-    private static InputClassification ClassifyOption(
+    private static async ValueTask<InputClassification> ClassifyOptionAsync(
         ShrinkingInfo info,
         ShrinkingContext context,
         ITraversalOption option)
@@ -80,7 +80,7 @@ internal static class TraversalSelector
             {
                 Parent = info with { Value = parent }
             };
-            return new ClassifierSelector().Classify(childInfo, context);
+            return await new ClassifierSelector().ClassifyAsync(childInfo, context).ConfigureAwait(false);
         }
     }
 }

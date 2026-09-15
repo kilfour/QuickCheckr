@@ -42,7 +42,7 @@ public sealed class DeliberatedTestr<T>
     /// Use for direct property-based testing after adding deliberation settings.
     /// </summary>
     public TestrPropertyRunner<T> Assert(Func<T, bool> invariant)
-        => new(fuzzr, shrinkers, formatters, invariant, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, input => Task.FromResult(invariant(input)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous property that must hold for generated inputs.
@@ -53,7 +53,7 @@ public sealed class DeliberatedTestr<T>
             fuzzr,
             shrinkers,
             formatters,
-            input => invariant(input).GetAwaiter().GetResult(),
+            invariant,
             deliberation,
             deliberationTarget,
             testName,
@@ -64,7 +64,7 @@ public sealed class DeliberatedTestr<T>
     /// Use when you want to compare a trusted model against another implementation after adding deliberation settings.
     /// </summary>
     public OracleTestr<T, TResult> Expected<TResult>(Func<T, TResult> expected)
-        => new(fuzzr, shrinkers, formatters, expected, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, input => Task.FromResult(expected(input)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous expected result for oracle-style testing.
@@ -75,7 +75,7 @@ public sealed class DeliberatedTestr<T>
             fuzzr,
             shrinkers,
             formatters,
-            input => expected(input).GetAwaiter().GetResult(),
+            expected,
             deliberation,
             deliberationTarget,
             testName,

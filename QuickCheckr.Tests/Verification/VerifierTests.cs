@@ -75,7 +75,7 @@ public class VerifierTests
     private static CheckrState CreateState()
         => new(1, 100, 123, AutopsyProbe.Empty);
 
-    private static CheckrResult<Case> PassingCheck(CheckrState state)
+    private static ValueTask<CheckrResult<Case>> PassingCheck(CheckrState state)
         => CheckrResult.CaseOnly(state);
 
     private sealed class PositiveItem

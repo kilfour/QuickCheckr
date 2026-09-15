@@ -4,8 +4,8 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.C
 
 internal sealed class CustomKeepShrinkClassifier : CustomClassifier<IClassificationOptionKeep>
 {
-    protected override InputClassification GetClassification(
+    protected override ValueTask<InputClassification> GetClassificationAsync(
         IClassificationOptionKeep option,
         CustomShrinkingContext customContext)
-        => InputRelevant.Create(customContext.PrintInput(customContext.Info.Value));
+        => new(InputRelevant.Create(customContext.PrintInput(customContext.Info.Value)));
 }

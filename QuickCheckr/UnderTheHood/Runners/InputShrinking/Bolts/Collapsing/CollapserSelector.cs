@@ -2,7 +2,7 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Collapsing;
 
 internal static class CollapserSelector
 {
-    public static ShrinkingInfo Collapse(ShrinkingInfo info, ShrinkingContext context)
+    public static async ValueTask<ShrinkingInfo> CollapseAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         var shrinkers = context.State.Memory.GetShrinkers(
             info.ExecutionId,
@@ -28,7 +28,7 @@ internal static class CollapserSelector
                 var candidate = option.Select(current);
                 if (candidate is null || !visited.Add(candidate))
                     continue;
-                if (!context.Verifier.RunFailed(info.ExecutionId, info.Key, candidate))
+                if (!await context.Verifier.RunFailedAsync(info.ExecutionId, info.Key, candidate).ConfigureAwait(false))
                     continue;
 
                 context.State.Memory.Commit(info.ExecutionId, info.Key, candidate);

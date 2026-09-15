@@ -25,7 +25,7 @@ public class V_DuringTrackrPoolWhenTwoPoolsCondition : CheckrThrowsTest<V_During
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Trackr.ToPool("answer", () => 42)
         from other in Trackr.ToPool("text", () => "answer")
-        from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int, string>("Select", (_, _) => ComputerSays.No<bool>("Boom"), (_, _) => CheckrResult.CaseOnly))
+        from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int, string>("Select", (_, _) => ComputerSays.No<bool>("Boom"), (_, _) => state => CheckrResult.CaseOnly(state)))
         select Case.Closed;
 
     [CodeExceptionType]

@@ -4,13 +4,13 @@ internal class FirstMatchCollectionDispatcher<TIn, TContext, TOut>(
     IReadOnlyList<FirstMatchHandler<TIn, TContext, TOut>> handlers,
     FirstMatchCollectionFallback<TContext, TOut> fallback)
 {
-    public TOut Dispatch(IEnumerable<TIn> inputs, TContext context)
+    public async ValueTask<TOut> DispatchAsync(IEnumerable<TIn> inputs, TContext context)
     {
         foreach (var input in inputs)
         {
             foreach (var h in handlers)
             {
-                var result = h.TryHandle(input, context);
+                var result = await h.TryHandleAsync(input, context).ConfigureAwait(false);
                 if (result.HasOutput)
                     return result.Output;
             }

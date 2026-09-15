@@ -6,9 +6,9 @@ namespace QuickTestr.Tests.Verification.Oracle;
 
 public class OracleTaskResultTests
 {
-    [Fact(Skip = "Causes a deadlock")]
-    public void AwaitsTaskResultsFromBothSides() =>
-        Testr.Named("Async oracle")
+    [Fact(Timeout = 10000)]
+    public async Task AwaitsTaskResultsFromBothSides() =>
+        await Testr.Named("Async oracle")
             .For(Fuzzr.Constant(42))
             .Expected(async input =>
             {
@@ -20,7 +20,7 @@ public class OracleTaskResultTests
                 await Task.Yield();
                 return input;
             })
-            .Run(1.Runs());
+            .RunAsync(1.Runs());
 
     [Fact]
     public void SupportsSynchronousExpectedAndAsynchronousActual() =>

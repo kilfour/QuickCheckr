@@ -16,7 +16,7 @@ public sealed class TestrPropertyRunnerT2<TInput1, TInput2> : TestrRunner<(TInpu
     private readonly FuzzrOf<TInput2> fuzzrOfT2;
     private readonly Shrinker[] shrinkers;
     private readonly CheckrOf<Case>[] formatters;
-    private readonly Func<TInput1, TInput2, bool> invariant;
+    private readonly Func<TInput1, TInput2, Task<bool>> invariant;
     private readonly Func<TInput1, TInput2, int>? deliberation;
     private readonly int? deliberationTarget;
     private readonly bool useBuiltInReducers;
@@ -26,7 +26,7 @@ public sealed class TestrPropertyRunnerT2<TInput1, TInput2> : TestrRunner<(TInpu
         FuzzrOf<TInput2> fuzzrOfT2,
         Shrinker[] shrinkers,
         CheckrOf<Case>[] formatters,
-        Func<TInput1, TInput2, bool> invariant,
+        Func<TInput1, TInput2, Task<bool>> invariant,
         Func<TInput1, TInput2, int>? deliberation,
         int? deliberationTarget,
         string testName,

@@ -11,6 +11,15 @@ internal static class ReductionRunner
         object? value,
         Func<object, bool> failTest,
         IReductionWhistleblower whistleblower)
+        => ForReducerAsync(reducer, key, path, value, candidate => new ValueTask<bool>(failTest(candidate)), whistleblower).GetAwaiter().GetResult();
+
+    public static async ValueTask<Reduction> ForReducerAsync(
+        Func<ReductionResult, Reduction> reducer,
+        string key,
+        string path,
+        object? value,
+        Func<object, ValueTask<bool>> failTest,
+        IReductionWhistleblower whistleblower)
     {
         var first = new ReductionResult(true, value);
         var reduction = reducer(first);
@@ -24,7 +33,7 @@ internal static class ReductionRunner
                     () => new MaxStepsExceededWarning(path, whistleblower.MaxStepsPerReducer));
                 return new Reduction.Unbounded(next.Candidate);
             }
-            failed = failTest(next.Candidate!);
+            failed = await failTest(next.Candidate!).ConfigureAwait(false);
             if (failed)
                 first = new ReductionResult(true, next.Candidate!);
             else

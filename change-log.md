@@ -1,3 +1,6 @@
+## 0.4.0: You Keep Me Hanging On ... Asynchronously
+
+
 ## 0.3.0: Collapsing New Buildings
 * Added `Shrink.Collapse<T>(...)` for supplying one or more descendant selectors.
 * Replaced silent scoped-swap exception handling with an explicit rejected-candidate replay outcome.

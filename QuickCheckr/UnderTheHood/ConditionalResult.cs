@@ -20,10 +20,10 @@ public sealed class ConditionalResult<T>
     internal ConditionalResult(T? value) => this.value = value;
     private static ConditionalResult<T> NotExecuted() => new() { };
 
-    internal static CheckrResult<ConditionalResult<T>> AsCheckrResult(
+    internal static async ValueTask<CheckrResult<ConditionalResult<T>>> AsCheckrResultAsync(
         CheckrState state,
         Func<bool> predicate,
-        Func<T?> factory) => predicate()
-            ? CheckrResult.Some(state, new ConditionalResult<T>(factory()))
+        CheckrOf<T> checkr) => predicate()
+            ? CheckrResult.Some(state, new ConditionalResult<T>((await checkr(state).ConfigureAwait(false)).Value))
             : CheckrResult.Some(state, ConditionalResult<T>.NotExecuted());
 }

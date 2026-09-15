@@ -12,6 +12,8 @@ namespace QuickCheckr.UnderTheHood;
 /// </summary>
 public sealed class CheckrState
 {
+    /// <summary>The cancellation token supplied to RunAsync, also available to custom steps.</summary>
+    public CancellationToken CancellationToken { get; }
     internal State FuzzrState { get; init; }
     internal Memory Memory { get; init; } = new();
     internal EvidenceRecorder EvidenceRecorder { get; init; }
@@ -23,6 +25,7 @@ public sealed class CheckrState
 
     internal int StartReplay()
     {
+        CancellationToken.ThrowIfCancellationRequested();
         EvidenceRecorder.StartReplay();
         return Memory.Reset();
     }
@@ -36,9 +39,11 @@ public sealed class CheckrState
         int desiredNumberOfExecutions,
         int maxStepsPerReducer,
         int? seed,
-        AutopsyProbe autopsyProbe)
+        AutopsyProbe autopsyProbe,
+        CancellationToken cancellationToken = default)
     {
         this.desiredNumberOfExecutions = desiredNumberOfExecutions;
+        CancellationToken = cancellationToken;
         FuzzrState = seed is null ? new() : new(seed.Value);
         MaxStepsPerReducer = maxStepsPerReducer;
         Pathologist = new Pathologist(autopsyProbe, this);

@@ -19,7 +19,10 @@ internal class MemoryLens(
         }
         catch (Exception exception)
         {
-            throw new CandidateRejectedException(Unwrap(exception));
+            var rejection = Unwrap(exception);
+            if (rejection is OperationCanceledException)
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(rejection).Throw();
+            throw new CandidateRejectedException(rejection);
         }
     };
 

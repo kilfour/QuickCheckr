@@ -16,8 +16,8 @@ public sealed class TestrOracleRunner<TInput, TResult> : TestrRunner<TInput>
     private readonly FuzzrOf<TInput> fuzzr;
     private readonly Shrinker[] shrinkers;
     private readonly CheckrOf<Case>[] formatters;
-    private readonly Func<TInput, TResult> Expected;
-    private readonly Func<TInput, TResult> Actual;
+    private readonly Func<TInput, Task<TResult>> Expected;
+    private readonly Func<TInput, Task<TResult>> Actual;
     private readonly Func<TInput, int>? Deliberation;
     private readonly int? DeliberationTarget;
     private readonly bool UseBuiltInReducers;
@@ -26,8 +26,8 @@ public sealed class TestrOracleRunner<TInput, TResult> : TestrRunner<TInput>
         FuzzrOf<TInput> fuzzr,
         Shrinker[] shrinkers,
         CheckrOf<Case>[] formatters,
-        Func<TInput, TResult> expected,
-        Func<TInput, TResult> actual,
+        Func<TInput, Task<TResult>> expected,
+        Func<TInput, Task<TResult>> actual,
         Func<TInput, int>? deliberation,
         int? deliberationTarget,
         string testName,

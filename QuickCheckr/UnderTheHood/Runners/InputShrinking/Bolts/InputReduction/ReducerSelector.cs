@@ -57,13 +57,13 @@ internal sealed class ReducerSelector
         return "_";
     }
 
-    public static InputClassification Reduce(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
+    public static async ValueTask<InputClassification> ReduceAsync(ShrinkingInfo info, ShrinkingContext context, InputClassification classification)
     {
         using var ___ = context.State.Pathologist.Examine(AutopsyPath.InputReduction);
 
         if (classification is CollectionRelevant collectionRelevant)
         {
-            var redux = GetRedux(info, context);
+            var redux = await GetReduxAsync(info, context).ConfigureAwait(false);
             if (!redux.HasValue)
                 redux = Maybe<Redux>.Just(new Redux(GetCollectionReport(collectionRelevant.Elements), info.Value!));
             if (redux.HasValue && collectionRelevant.Report != redux.Value!.Report)
@@ -73,7 +73,7 @@ internal sealed class ReducerSelector
 
         if (classification is TupleRelevant tupleRelevant)
         {
-            var redux = GetRedux(info, context);
+            var redux = await GetReduxAsync(info, context).ConfigureAwait(false);
             if (!redux.HasValue)
                 redux = Maybe<Redux>.Just(new Redux(GetTupleReport(tupleRelevant.Members), info.Value!));
             if (redux.HasValue && tupleRelevant.Report != redux.Value!.Report)
@@ -83,7 +83,7 @@ internal sealed class ReducerSelector
 
         if (classification is ObjectRelevant objectRelevant)
         {
-            var redux = GetRedux(info, context);
+            var redux = await GetReduxAsync(info, context).ConfigureAwait(false);
             if (!redux.HasValue)
             {
                 string report;
@@ -99,13 +99,13 @@ internal sealed class ReducerSelector
         }
         if (classification is InputRelevant inputRelevant)
         {
-            classification = inputRelevant with { Redux = GetRedux(info, context) };
+            classification = inputRelevant with { Redux = await GetReduxAsync(info, context).ConfigureAwait(false) };
         }
 
         return classification;
     }
 
-    private static Maybe<Redux> GetRedux(ShrinkingInfo info, ShrinkingContext context)
+    private static async ValueTask<Maybe<Redux>> GetReduxAsync(ShrinkingInfo info, ShrinkingContext context)
     {
         var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
         if (shrinkers is not null)
@@ -113,31 +113,31 @@ internal sealed class ReducerSelector
             var shrinker = shrinkers.Where(a => a.Reducers.Length != 0).FirstOrDefault(x => x.Condition(info));
             if (shrinker is not null)
             {
-                return Reduce(info, context, shrinker.Reducers.Select(a => a.ReducerFactory));
+                return await ReduceAsync(info, context, shrinker.Reducers.Select(a => a.ReducerFactory)).ConfigureAwait(false);
             }
         }
         if (context.UseDefaultReducers)
         {
             var reducerFactory = DefaultReducersRegistry.TryGetReducerFactory(info.Type);
             if (reducerFactory is not null)
-                return Reduce(info, context, reducerFactory);
+                return await ReduceAsync(info, context, reducerFactory).ConfigureAwait(false);
         }
         return Maybe<Redux>.Nothing();
     }
 
-    private static Maybe<Redux> Reduce(
+    private static async ValueTask<Maybe<Redux>> ReduceAsync(
         ShrinkingInfo info,
         ShrinkingContext context,
         IEnumerable<Func<Func<ReductionResult, Reduction>>> reducerFactories)
     {
         var reducer = reducerFactories.First()();
-        var step = ReductionRunner.ForReducer(
+        var step = await ReductionRunner.ForReducerAsync(
             reducer,
             info.Key,
             info.Path,
             info.Value,
-            a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
-            context);
+            a => context.Verifier.TestimonyFailedAsync(info.ExecutionId, info.Key, a),
+            context).ConfigureAwait(false);
         var witnessed = step is Reduction.Stop;
         foreach (var reducerFactory in reducerFactories.Skip(1))
         {
@@ -149,13 +149,13 @@ internal sealed class ReducerSelector
                 Reduction.Unbounded unbounded => unbounded.Result,
                 _ => info.Value
             };
-            step = ReductionRunner.ForReducer(
+            step = await ReductionRunner.ForReducerAsync(
                 reducer,
                 info.Key,
                 info.Path,
                 value,
-                a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
-                context);
+                a => context.Verifier.TestimonyFailedAsync(info.ExecutionId, info.Key, a),
+                context).ConfigureAwait(false);
             witnessed = witnessed || step is Reduction.Stop;
         }
         if (witnessed && step is Reduction.Unbounded finalUnbounded)
@@ -163,16 +163,16 @@ internal sealed class ReducerSelector
         return ReduxFromStep(info, context, step);
     }
 
-    private static Maybe<Redux> Reduce(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
+    private static async ValueTask<Maybe<Redux>> ReduceAsync(ShrinkingInfo info, ShrinkingContext context, Func<Func<ReductionResult, Reduction>> reducerFactory)
     {
         var reducer = reducerFactory();
-        var step = ReductionRunner.ForReducer(
+        var step = await ReductionRunner.ForReducerAsync(
             reducer,
             info.Key,
             info.Path,
             info.Value,
-            a => context.Verifier.TestimonyFailed(info.ExecutionId, info.Key, a),
-            context);
+            a => context.Verifier.TestimonyFailedAsync(info.ExecutionId, info.Key, a),
+            context).ConfigureAwait(false);
         return ReduxFromStep(info, context, step);
     }
 

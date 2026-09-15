@@ -4,17 +4,25 @@ internal sealed class FinalTraceRun(
     CheckrState State,
     CheckrOf<Case> Check)
 {
-    public void Run()
+    public async ValueTask RunAsync()
     {
         using var _ = State.Pathologist.Examine("FinalTraceRun");
         State.StartReplay();
         State.Memory.FinalTrace = true;
-        foreach (var id in State.Memory.Numbers)
+        try
         {
-            State.Memory.GotoExecution(id);
-            Check(State);
+            foreach (var id in State.Memory.Numbers)
+            {
+                State.Memory.GotoExecution(id);
+                State.CancellationToken.ThrowIfCancellationRequested();
+                await Check(State).ConfigureAwait(false);
+                State.CancellationToken.ThrowIfCancellationRequested();
+            }
         }
-        State.Memory.DisposeStash();
-        State.Memory.FinalTrace = false;
+        finally
+        {
+            try { await State.Memory.DisposeStashAsync().ConfigureAwait(false); }
+            finally { State.Memory.FinalTrace = false; }
+        }
     }
 }

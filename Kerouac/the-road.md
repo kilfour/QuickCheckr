@@ -1,8 +1,12 @@
-## 0.4.0: ...
+## 0.4.0: You Keep Me Hanging On ... Asynchronously
 
 ### Doing
 
 ### To Test
+
+### To Do
+
+## 0.x.x: ..
 
 ### To Do
 - Rework and document the custom shrinking API.
@@ -12,10 +16,6 @@
 * Add better assertions for findings and inquiries in Editor.
 * CompositeCustodian/Clerk ?
 * Revisit the Generate Unit Test idea ?
-
-
-## 0.x.x: ..
-
 
 ### To Test
 - Check exception handling during shrinking for `PoolElement.Replace` and related operations.

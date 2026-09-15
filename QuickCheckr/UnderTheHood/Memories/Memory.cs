@@ -32,6 +32,8 @@ internal sealed class Memory
     public void DisposeStash()
         => LongTermMemory.DisposeStash();
 
+    public ValueTask DisposeStashAsync() => LongTermMemory.DisposeStashAsync();
+
     public int Reset()
     {
         KeyGuardian = new();

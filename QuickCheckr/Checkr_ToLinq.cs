@@ -1,4 +1,4 @@
-﻿using QuickCheckr.UnderTheHood;
+using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr;
 
@@ -7,24 +7,31 @@ public static class Checkr_ToLinq
     public static CheckrOf<TValueTwo> Select<TValueOne, TValueTwo>(
         this CheckrOf<TValueOne> script,
         Func<TValueOne, TValueTwo> selector) =>
-            state =>
+            async state =>
                 {
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TValueTwo>(state);
-                    return CheckrResult.Some(state, selector(script(state).Value));
+                    var result = await script(state).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
+                    if (state.RunStopped)
+                        return CheckrResult.Default<TValueTwo>(state);
+                    return CheckrResult.Some(state, selector(result.Value));
                 };
 
     public static CheckrOf<TResult> SelectMany<TSource, TResult>(
         this CheckrOf<TSource> source,
         Func<TSource, CheckrOf<TResult>> selector) =>
-            state =>
+            async state =>
                 {
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TResult>(state);
-                    var result = source(state);
+                    var result = await source(state).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
                     if (state.RunStopped)
                         return CheckrResult.Default<TResult>(state);
-                    return selector(result.Value)(state);
+                    return await selector(result.Value)(state).ConfigureAwait(false);
                 };
 
     public static CheckrOf<TValueThree> SelectMany<TValueOne, TValueTwo, TValueThree>(

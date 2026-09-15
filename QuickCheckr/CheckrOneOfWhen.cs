@@ -16,9 +16,17 @@ public static partial class Checkr
     public static CheckrOf<Case> OneOfWhen(
         string key,
         params CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>[] options) =>
-        state =>
+        async state =>
         {
-            var checkrs = options.Select(a => a(state).Value).ToArray();
+            var checkrs = new (Func<bool> condition, CheckrOf<Case> checkr)[options.Length];
+            for (var i = 0; i < options.Length; i++)
+            {
+                state.CancellationToken.ThrowIfCancellationRequested();
+                checkrs[i] = (await options[i](state).ConfigureAwait(false)).Value;
+                state.CancellationToken.ThrowIfCancellationRequested();
+                if (state.RunStopped)
+                    return CheckrResult.CaseOnly(state);
+            }
             var validScriptIndexes =
                 checkrs.Select((a, ix) => (ix, a.condition))
                     .Where(a => a.condition())
@@ -32,7 +40,7 @@ public static partial class Checkr
                 });
             var checkr = checkrs[index];
             if (checkr.condition())
-                return checkrs[index].checkr(state);
+                return await checkrs[index].checkr(state).ConfigureAwait(false);
             return CheckrResult.CaseOnly(state);
         };
 }

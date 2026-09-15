@@ -17,6 +17,7 @@ internal sealed record CheckrRunnerConfig
     }
 
     public int? Seed { get; set; } = null;
+    public CancellationToken CancellationToken { get; init; }
     public string FileAs { get; }
     public ICustodian Custodian { get; }
     public ShrinkMode ShrinkMode { get; }

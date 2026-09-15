@@ -45,7 +45,7 @@ public sealed class DeliberatedTestrT2<TInput1, TInput2>
     /// Use for direct property-based testing after adding deliberation settings.
     /// </summary>
     public TestrPropertyRunnerT2<TInput1, TInput2> Assert(Func<TInput1, TInput2, bool> invariant)
-        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, invariant, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (input1, input2) => Task.FromResult(invariant(input1, input2)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous property that must hold for generated inputs.
@@ -58,7 +58,7 @@ public sealed class DeliberatedTestrT2<TInput1, TInput2>
             fuzzrOfT2,
             shrinkers,
             formatters,
-            (input1, input2) => invariant(input1, input2).GetAwaiter().GetResult(),
+            invariant,
             deliberation,
             deliberationTarget,
             testName,
@@ -69,7 +69,7 @@ public sealed class DeliberatedTestrT2<TInput1, TInput2>
     /// Use when you want to compare a trusted model against another implementation after adding deliberation settings.
     /// </summary>
     public OracleTestrT2<TInput1, TInput2, TResult> Expected<TResult>(Func<TInput1, TInput2, TResult> expected)
-        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (input1, input2) => Task.FromResult(expected(input1, input2)), deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
     /// Defines the asynchronous expected result for oracle-style testing.
@@ -82,7 +82,7 @@ public sealed class DeliberatedTestrT2<TInput1, TInput2>
             fuzzrOfT2,
             shrinkers,
             formatters,
-            (input1, input2) => expected(input1, input2).GetAwaiter().GetResult(),
+            expected,
             deliberation,
             deliberationTarget,
             testName,

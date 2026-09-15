@@ -118,14 +118,14 @@ public class DeliberationTests
     {
         var scores = new Queue<int>([4, 2, 1]);
         var currentScore = 0;
-        CheckrOf<Case> check = state =>
+        CheckrOf<Case> check = async state =>
         {
             if (!state.EvidenceRecorder.IsReplay)
                 currentScore = scores.Dequeue();
 
-            Checkr.Deliberate(() => currentScore)(state);
-            Trackr.DeliberateUntil(2)(state);
-            return Checkr.Expect("always fails", () => false)(state);
+            await Checkr.Deliberate(() => currentScore)(state).ConfigureAwait(false);
+            await Trackr.DeliberateUntil(2)(state).ConfigureAwait(false);
+            return await Checkr.Expect("always fails", () => false)(state).ConfigureAwait(false);
         };
 
         var findings = CaseOfficer.Investigate(

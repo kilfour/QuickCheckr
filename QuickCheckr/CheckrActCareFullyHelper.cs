@@ -12,6 +12,7 @@ public static partial class Checkr
             {
                 return CheckrResult.Some(state, func());
             }
+            catch (OperationCanceledException) { throw; }
             catch (Exception ex)
             {
                 return CheckrResult.Some(state, onError(ex));

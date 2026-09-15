@@ -13,6 +13,12 @@ public sealed record CheckrResult<TValue>
 
     internal CheckrState State { get; }
     internal TValue Value { get; }
+
+    /// <summary>
+    /// Wraps a synchronous step result as an already completed awaitable result.
+    /// </summary>
+    public static implicit operator ValueTask<CheckrResult<TValue>>(CheckrResult<TValue> result)
+        => new(result);
 }
 
 /// <summary>

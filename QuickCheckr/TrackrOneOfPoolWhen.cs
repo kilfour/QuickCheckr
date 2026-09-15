@@ -10,7 +10,7 @@ public static partial class Trackr
         string key,
         Func<T, bool> predicate,
         Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
-        state =>
+        async state =>
         {
             var id = state.Memory.StoreVariable(key,
                 () =>
@@ -24,7 +24,7 @@ public static partial class Trackr
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
             {
-                return CheckrResult.Some(state, checkr(new PoolElement<T>(id, value))(state).Value);
+                return await checkr(new PoolElement<T>(id, value))(state).ConfigureAwait(false);
             }
             return CheckrResult.CaseOnly(state);
         };
@@ -34,7 +34,7 @@ public static partial class Trackr
         string key,
         Func<T1, T2, bool> predicate,
         Func<PoolElement<T1>, PoolElement<T2>, CheckrOf<Case>> checkr) =>
-        state =>
+        async state =>
         {
             var pool1 = state.Memory.GetPoolDictionary<T1>();
             var pool2 = state.Memory.GetPoolDictionary<T2>();
@@ -56,6 +56,6 @@ public static partial class Trackr
             if (!result1 || !result2) return CheckrResult.CaseOnly(state);
             // todo: evaluate once
             if (!predicate(value1!, value2!)) return CheckrResult.CaseOnly(state);
-            return CheckrResult.Some(state, checkr(new PoolElement<T1>(id1, value1), new PoolElement<T2>(id2, value2))(state).Value);
+            return await checkr(new PoolElement<T1>(id1, value1), new PoolElement<T2>(id2, value2))(state).ConfigureAwait(false);
         };
 }

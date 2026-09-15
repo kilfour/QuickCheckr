@@ -7,7 +7,7 @@ internal sealed class CaseSelectionRun(
     bool Distinguish,
     bool RejectCases)
 {
-    public void Run()
+    public async ValueTask RunAsync()
     {
         using var _ = State.Pathologist.Examine("CaseSelectionRun");
         State.StartReplay();
@@ -20,15 +20,20 @@ internal sealed class CaseSelectionRun(
             foreach (var id in State.Memory.Numbers)
             {
                 State.Memory.GotoExecution(id);
-                Check(State);
+                State.CancellationToken.ThrowIfCancellationRequested();
+                await Check(State).ConfigureAwait(false);
+                State.CancellationToken.ThrowIfCancellationRequested();
             }
-            State.Memory.DisposeStash();
         }
         finally
         {
-            State.Memory.Deliberating = false;
-            State.Memory.Distinguishing = false;
-            State.Memory.RejectingCases = false;
+            try { await State.Memory.DisposeStashAsync().ConfigureAwait(false); }
+            finally
+            {
+                State.Memory.Deliberating = false;
+                State.Memory.Distinguishing = false;
+                State.Memory.RejectingCases = false;
+            }
         }
     }
 }

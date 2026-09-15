@@ -13,7 +13,7 @@ public static partial class Trackr
     public static CheckrOf<Case> OneOfPool<T>(
         string key,
         Func<PoolElement<T>, CheckrOf<Case>> checkr) =>
-        state =>
+        async state =>
         {
             var id = state.Memory.StoreVariable(key,
                 () =>
@@ -27,7 +27,7 @@ public static partial class Trackr
             var (result, value) = state.Memory.GetFromPool<T>(id);
             if (result)
             {
-                return CheckrResult.Some(state, checkr(new PoolElement<T>(id, value!))(state).Value);
+                return await checkr(new PoolElement<T>(id, value!))(state).ConfigureAwait(false);
             }
             return CheckrResult.CaseOnly(state);
         };
@@ -36,7 +36,7 @@ public static partial class Trackr
     public static CheckrOf<Case> OneOfPool<T1, T2>(
         string key,
         Func<T1, T2, CheckrOf<Case>> checkr) =>
-        state =>
+        async state =>
         {
             var id1 = state.Memory.StoreVariable($"{key}-1",
                 () => Fuzzr.OneOf(state.Memory.GetPoolIds<T1>(_ => true))(state.FuzzrState).Value);
@@ -46,7 +46,7 @@ public static partial class Trackr
                 () => Fuzzr.OneOf(state.Memory.GetPoolIds<T2>(_ => true))(state.FuzzrState).Value);
             var (result2, value2) = state.Memory.GetFromPool<T2>(id2);
 
-            if (result1 && result2) return CheckrResult.Some(state, checkr(value1!, value2!)(state).Value);
+            if (result1 && result2) return await checkr(value1!, value2!)(state).ConfigureAwait(false);
             return CheckrResult.CaseOnly(state);
         };
 }

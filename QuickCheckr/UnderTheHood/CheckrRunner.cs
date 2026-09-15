@@ -14,57 +14,60 @@ namespace QuickCheckr.UnderTheHood;
 internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions, AutopsyProbe autopsyProbe)
 {
     public CheckrOf<Case> Check { get; init; } = check;
-    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, autopsyProbe);
+    public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, autopsyProbe, config.CancellationToken);
 
     public int Seed => State.FuzzrState.Seed;
 
     public CaseFile Run()
+        => RunAsync().GetAwaiter().GetResult();
+
+    public async ValueTask<CaseFile> RunAsync()
     {
-        new InitialRun(State, Check).Run(numberOfExecutions);
+        await new InitialRun(State, Check).RunAsync(numberOfExecutions).ConfigureAwait(false);
         if (State.EvidenceRecorder.Failed())
-            return HandleFailure();
+            return await HandleFailureAsync().ConfigureAwait(false);
         var passedExpectations = State.EvidenceRecorder.PassedExpectations
             .Select(a => new PassedExpectation(a.Key, a.Value));
         return CaseFile.Passed(State.FuzzrState.Seed, [.. passedExpectations]);
     }
 
-    private CaseFile HandleFailure()
+    private async ValueTask<CaseFile> HandleFailureAsync()
     {
         var originalRunExecutionCount = State.Memory.Count();
         var shrinkCount = 0;
 
         if (!string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingVerification.Key))
         {
-            RunCaseSelection();
+            await RunCaseSelectionAsync().ConfigureAwait(false);
             return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
         }
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Executions))
-            shrinkCount += new ExecutionShrinker(State, Check).Run();
+            shrinkCount += await new ExecutionShrinker(State, Check).RunAsync().ConfigureAwait(false);
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Actions))
-            shrinkCount += new ActionShrinker(State, Check).Run();
+            shrinkCount += await new ActionShrinker(State, Check).RunAsync().ConfigureAwait(false);
 
-        new TraceRun(State, Check).Run(config.ReportMode.HasFlag(ReportMode.Trace));
+        await new TraceRun(State, Check).RunAsync(config.ReportMode.HasFlag(ReportMode.Trace)).ConfigureAwait(false);
 
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
-            shrinkCount += new InputShrinker(State, Check, config.ShrinkMode.HasFlag(ShrinkMode.Reduction)).Run();
+            shrinkCount += await new InputShrinker(State, Check, config.ShrinkMode.HasFlag(ShrinkMode.Reduction)).RunAsync().ConfigureAwait(false);
 
         if (config.ReportMode.HasFlag(ReportMode.FinalTrace))
-            new FinalTraceRun(State, Check).Run();
+            await new FinalTraceRun(State, Check).RunAsync().ConfigureAwait(false);
 
-        RunCaseSelection();
+        await RunCaseSelectionAsync().ConfigureAwait(false);
 
         return CompileTheCaseFile(originalRunExecutionCount, shrinkCount);
     }
 
-    private void RunCaseSelection()
+    private async ValueTask RunCaseSelectionAsync()
     {
         var deliberate = State.Memory.HasDeliberation;
         var distinguish = State.Memory.HasDistinction;
         var rejectCases = State.Memory.HasCaseRejection;
         if (deliberate || distinguish || rejectCases)
-            new CaseSelectionRun(State, Check, deliberate, distinguish, rejectCases).Run();
+            await new CaseSelectionRun(State, Check, deliberate, distinguish, rejectCases).RunAsync().ConfigureAwait(false);
     }
 
     private CaseFile CompileTheCaseFile(

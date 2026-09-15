@@ -4,17 +4,37 @@ namespace QuickCheckr;
 
 public static partial class Checkr
 {
+    /// <summary>Awaits a shrinkable action using the run's cancellation token.</summary>
+    public static CheckrOf<ActResult<T>> ShrinkableAct<T>(string key, Func<CancellationToken, Task<T>> func)
+        => TryShrinkableCatchAsync(key, func);
+
+    /// <summary>Awaits a shrinkable action using the run's cancellation token.</summary>
+    public static CheckrOf<ActResult<Case>> ShrinkableAct(string key, Func<CancellationToken, Task> action)
+        => TryShrinkableCatchAsync(key, async token => { await action(token).ConfigureAwait(false); return Case.Closed; });
+
+    /// <summary>Awaits a shrinkable action, capturing non-cancellation exceptions.</summary>
+    public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Func<CancellationToken, Task<T>> func)
+        => TryShrinkableCaptureAsync(key,
+            async token => new DelayedResult<T>(await func(token).ConfigureAwait(false)),
+            ex => new DelayedResult<T>(ex));
+
+    /// <summary>Awaits a shrinkable action, capturing non-cancellation exceptions.</summary>
+    public static CheckrOf<ActResult<DelayedResult>> ShrinkableActCarefully(string key, Func<CancellationToken, Task> action)
+        => TryShrinkableCaptureAsync(key,
+            async token => { await action(token).ConfigureAwait(false); return new DelayedResult(); },
+            ex => new DelayedResult(ex));
+
     public static CheckrOf<ActResult<T>> ShrinkableAct<T>(string key, Func<T> func)
         => TryShrinkableCatch(key, func);
 
     public static CheckrOf<ActResult<T>> ShrinkableAct<T>(string key, Func<Task<T>> func)
-        => TryShrinkableCatch(key, () => func().GetAwaiter().GetResult());
+        => TryShrinkableCatchAsync(key, _ => func());
 
     public static CheckrOf<ActResult<Case>> ShrinkableAct(string key, Action action)
         => TryShrinkableCatch(key, () => { action(); return Case.Closed; });
 
     public static CheckrOf<ActResult<Case>> ShrinkableAct(string key, Func<Task> action)
-        => TryShrinkableCatch(key, () => { action().GetAwaiter().GetResult(); return Case.Closed; });
+        => TryShrinkableCatchAsync(key, async _ => { await action().ConfigureAwait(false); return Case.Closed; });
 
     private static CheckrOf<ActResult<T>> TryShrinkableCatch<T>(string key, Func<T> func) =>
         state =>
@@ -40,8 +60,8 @@ public static partial class Checkr
             ex => new DelayedResult(ex));
 
     public static CheckrOf<ActResult<DelayedResult>> ShrinkableActCarefully(string key, Func<Task> action)
-        => TryShrinkableCapture(key,
-            () => { action().GetAwaiter().GetResult(); return new DelayedResult(); },
+        => TryShrinkableCaptureAsync(key,
+            async _ => { await action().ConfigureAwait(false); return new DelayedResult(); },
             ex => new DelayedResult(ex));
 
     public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Func<T> func)
@@ -50,8 +70,8 @@ public static partial class Checkr
             ex => new DelayedResult<T>(ex));
 
     public static CheckrOf<ActResult<DelayedResult<T>>> ShrinkableActCarefully<T>(string key, Func<Task<T>> func)
-        => TryShrinkableCapture(key,
-            () => new DelayedResult<T>(func().GetAwaiter().GetResult()),
+        => TryShrinkableCaptureAsync(key,
+            async _ => new DelayedResult<T>(await func().ConfigureAwait(false)),
             ex => new DelayedResult<T>(ex));
 
     private static CheckrOf<ActResult<T>> TryShrinkableCapture<T>(string key, Func<T> func, Func<Exception, T> onError) =>
@@ -65,6 +85,7 @@ public static partial class Checkr
             {
                 return CheckrResult.Some(state, ActResult<T>.Executed(func()));
             }
+            catch (OperationCanceledException) { throw; }
             catch (Exception ex)
             {
                 return CheckrResult.Some(state, ActResult<T>.Executed(onError(ex)));

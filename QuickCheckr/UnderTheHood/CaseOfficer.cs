@@ -11,15 +11,27 @@ internal static class CaseOfficer
         ExecutionCount executionsPerRun,
         CheckrRunnerConfig config,
         AutopsyProbe autopsyProbe)
+        // Synchronous compatibility boundary; async callers use InvestigateAsync directly.
+        => InvestigateAsync(checkr, runs, executionsPerRun, config, autopsyProbe).GetAwaiter().GetResult();
+
+    public static async ValueTask<Findings> InvestigateAsync(
+        CheckrOf<Case> checkr,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        CheckrRunnerConfig config,
+        AutopsyProbe autopsyProbe)
     {
+        config.CancellationToken.ThrowIfCancellationRequested();
         var findings = new Findings();
         Deliberator? deliberator = null;
         int? inlineTarget = null;
         CaseFile? firstDistinguishedCaseFile = null;
         for (int i = 0; i < runs.NumberOfRuns; i++)
         {
+            config.CancellationToken.ThrowIfCancellationRequested();
             var runner = new CheckrRunner(checkr, config, executionsPerRun.NumberOfExecutions, autopsyProbe);
-            var caseFile = runner.Run();
+            var caseFile = await runner.RunAsync().ConfigureAwait(false);
+            config.CancellationToken.ThrowIfCancellationRequested();
             findings.Add(caseFile);
             if (caseFile.HasEvidence)
             {

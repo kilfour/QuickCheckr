@@ -9,9 +9,9 @@ namespace QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification;
 
 internal sealed class ClassifierSelector
 {
-    public InputClassification Classify(ShrinkingInfo info, ShrinkingContext context)
+    public async ValueTask<InputClassification> ClassifyAsync(ShrinkingInfo info, ShrinkingContext context)
     {
-        info = CollapserSelector.Collapse(info, context);
+        info = await CollapserSelector.CollapseAsync(info, context).ConfigureAwait(false);
         InputClassification? classification = null;
         var shrinkers = context.State.Memory.GetShrinkers(info.ExecutionId, info.Key, info.Type);
         if (shrinkers is not null)
@@ -21,10 +21,10 @@ internal sealed class ClassifierSelector
                 .FirstOrDefault(shrinker => shrinker.Condition(info));
             if (classifier is not null)
             {
-                classification = ClassifyCustom(
+                classification = await ClassifyCustomAsync(
                     info,
                     classifier.Classifiers,
-                    context);
+                    context).ConfigureAwait(false);
             }
             else
             {
@@ -33,27 +33,27 @@ internal sealed class ClassifierSelector
                     .FirstOrDefault(shrinker => shrinker.Condition(info));
                 if (traversal is not null)
                 {
-                    classification = TraversalSelector.Traverse(
+                    classification = await TraversalSelector.TraverseAsync(
                         info,
                         context,
-                        traversal.Traversals);
+                        traversal.Traversals).ConfigureAwait(false);
                 }
             }
         }
-        classification ??= ClassifyDefault(info, context);
+        classification ??= await ClassifyDefaultAsync(info, context).ConfigureAwait(false);
         info = info with
         {
             Value = context.State.Memory.GetCurrentInputValue(
                 info.ExecutionId,
                 info.Key)
         };
-        classification = ReducerSelector.Reduce(info, context, classification);
+        classification = await ReducerSelector.ReduceAsync(info, context, classification).ConfigureAwait(false);
         return classification;
     }
 
-    private InputClassification ClassifyCustom(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
-        => new CustomClassifierDispatcher(new DefaultClassifierDispatcher()).Dispatch(options, new CustomShrinkingContext(info, context));
+    private async ValueTask<InputClassification> ClassifyCustomAsync(ShrinkingInfo info, IEnumerable<IClassificationOption> options, ShrinkingContext context)
+        => await new CustomClassifierDispatcher(new DefaultClassifierDispatcher()).DispatchAsync(options, new CustomShrinkingContext(info, context)).ConfigureAwait(false);
 
-    public InputClassification ClassifyDefault(ShrinkingInfo info, ShrinkingContext context)
-        => new DefaultClassifierDispatcher().Dispatch(info, context);
+    public async ValueTask<InputClassification> ClassifyDefaultAsync(ShrinkingInfo info, ShrinkingContext context)
+        => await new DefaultClassifierDispatcher().DispatchAsync(info, context).ConfigureAwait(false);
 }
