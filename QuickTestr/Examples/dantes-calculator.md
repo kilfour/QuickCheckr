@@ -51,6 +51,7 @@ Testr.Named("Calculator Oracle")
     .For(ItemFuzzr.Get.Many(1, 20).ToList())
     .Expected(Calculator.Total)
     .Actual(CalculatorNew.Total)
+    
     .Run();
 ```
 
@@ -59,11 +60,13 @@ Testr.Named("Calculator Oracle")
 public static class ItemFuzzr
 {
     private record CategoryAndNames(string Category, string[] Names);
+
     private static readonly CategoryAndNames[] categories =
         [ new CategoryAndNames("food", ["bread", "steak", "milk", "eggs", "tomatoes", "candy"])
         , new CategoryAndNames("electronics", ["headphones", "laptop", "phone", "tablet"])
         , new CategoryAndNames("books", ["book1", "book2", "book3"])
         ];
+
     private static readonly FuzzrOf<Item> Regular =
         from categoryAndName in Fuzzr.OneOf(categories)
         from name in Fuzzr.OneOf(categoryAndName.Names)
@@ -80,6 +83,7 @@ public static class ItemFuzzr
             Import = import,
             Rate = rate
         };
+
     private static readonly FuzzrOf<Item> GiftCard =
         from name in Fuzzr.OneOf("giftcard1", "giftcard2", "giftcard3")
         from regular in Regular
@@ -89,12 +93,15 @@ public static class ItemFuzzr
             regular.Name = name;
             regular.Cost = 0 - regular.Cost;
         }, regular);
+
     private static readonly FuzzrOf<Item> FreeShipping =
         from regular in Regular
         select Chain.It(() => regular.Name = "freeship " + regular.Name, regular);
+
     private static readonly FuzzrOf<Item> InvalidTaxRate =
         from regular in Regular
         select Chain.It(() => regular.Rate = 15m, regular);
+
     public static readonly FuzzrOf<Item> Get =
         Fuzzr.OneOf((50, Regular), (30, GiftCard), (10, FreeShipping), (1, InvalidTaxRate));
 }
@@ -110,25 +117,32 @@ public class CalculatorNew
     {
         var totalCost = 0m;
         var totalNumberOfItems = 0;
+
         CheckTaxRates(items);
         foreach (var item in items)
         {
             if (item.Number == 0)
                 continue;
+
             if (item.Category != "giftcard")
             {
                 totalCost += CostAnyItem(item);
                 totalNumberOfItems += item.Number;
             }
         }
+
         totalCost += ApplyLuckySevenDiscount(totalCost, totalNumberOfItems);
         totalCost += LoyaltyDiscount(totalCost, totalNumberOfItems);
+
         if (totalNumberOfItems != 0)
             totalCost += CostGiftcards(items);
+
         totalCost += ShippingCost(items, totalCost, totalNumberOfItems);
+
         totalCost = totalCost < 0 ? 0 : totalCost;
         return Math.Round(totalCost, 2);
     }
+
     private static decimal CostAnyItem(Item item)
     {
         var cost = item.Cost * item.Number;
@@ -138,26 +152,31 @@ public class CalculatorNew
         cost *= 1 + item.Rate + importTax;
         return Math.Round(cost, 2);
     }
+
     private static bool FreeShipping(List<Item> items)
     {
         return items.Any(item => item.Name!.ToLower().Contains("freeship"));
     }
+
     private static decimal ShippingCost(List<Item> items, decimal totalCost, int totalNumberOfItems)
     {
         if ((totalCost > 100) || FreeShipping(items) || (totalNumberOfItems == 0))
             return 0;
         return Math.Round(5m * (1 + LowestTaxRate(items)), 2);
     }
+
     private static decimal CostGiftcards(List<Item> items)
     {
         return items.Where(item => item.Category == "giftcard")
             .Sum(CostAnyItem);
     }
+
     private static decimal LowestTaxRate(List<Item> items)
     {
         return items.Where(item => item.Number != 0)
             .Aggregate(0.21m, (acc, current) => Math.Min(current.Rate, acc));
     }
+
     private static void CheckTaxRates(List<Item> items)
     {
         foreach (Item item in items.Where(item => item.Number != 0))
@@ -166,6 +185,7 @@ public class CalculatorNew
                 throw new ArgumentException($"Invalid tax rate on item: {item.Name}");
         }
     }
+
     private static decimal ApplyLuckySevenDiscount(decimal totalCost, int totalNumberOfItems)
     {
         if ((int)(totalCost * 100) % 7 == 0 && totalNumberOfItems > 5)

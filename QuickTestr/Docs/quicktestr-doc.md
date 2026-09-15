@@ -51,6 +51,7 @@ input that disproves it.
 Testr.Named("Doubling matches addition")
     .For(Fuzzr.Int(0, 100))
     .Assert(value => Double(value) == value + value)
+    
     .Run();
 ```
 The chain reads from top to bottom:
@@ -134,6 +135,7 @@ A classic to begin with:
 Testr.Named("Reverse is its own inverse")              // The name of the property.
     .For(Fuzzr.Int().Many(1, 10))                      // The input Fuzzr.
     .Assert(s => Reverse(Reverse(s)).SequenceEqual(s)) // The property to assert.
+    
     .Run();                                            // Run the test.
 // --------------------------------------------------------------------------------
 static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. l.Reverse()];
@@ -145,6 +147,7 @@ Let's break it by moving all `42`s to the end.
 Testr.Named("Reverse is its own inverse")
     .For(Fuzzr.Int().Many(1, 10))
     .Assert(s => Reverse(Reverse(s)).SequenceEqual(s))
+    
     .Run();
 // ---------------------------------------------------------------------
 static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. HideTheAnswer(l.Reverse())];
@@ -189,6 +192,7 @@ Testr
                 return false;
             return true;
         }))
+    
     .Run();
 ```
 **Some Notes:**
@@ -233,6 +237,7 @@ Testr.Named("AddBuggy Matches AddCorrect")
     .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
     .Expected(a => AddCorrect(a.Item1, a.Item2))
     .Actual(a => AddBuggy(a.Item1, a.Item2))
+    
     .Run();
 ```
 
@@ -274,6 +279,7 @@ Testr
     .Deliberate(a => a.Length, 4) // prefer smaller length strings
     .Expected(a => LostIn.Translation(a).Eval())
     .Actual(a => LostIn.FaultyTranslation(a).Eval())
+    
     .Run();
 ```
 
@@ -305,12 +311,15 @@ public class Remove
 {
     public static readonly SelectrOf<Selection> WhiteSpace =
         Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
+
     public static readonly SelectrOf<Selection> BalancedParentheses =
         Stringr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
+
     public static readonly SelectrOf<Selection> LeftHandSideAndOperator =
         from lhs in Stringr.AtleastOnce(char.IsDigit).Remove()
         from op in Stringr.Once('+', '-', '*', '/', '^').Remove()
         select Selection.Defined;
+
     public static readonly SelectrOf<Selection> UnaryMinusNoise =
         Stringr.AtleastOnce('-').Replace(_ => "-").Defined();
 }
@@ -346,6 +355,7 @@ public class Calculator
         counter++;
         Result += a;
     }
+
     public void Subtract(int a) => Result -= a;
     public void Clear()
     {
@@ -371,6 +381,7 @@ Testr.Named("Calculator Clear matches model")
         sut => sut.Clear())
     .Observe("Result Matches",
         (model, sut) => model.Result == sut.Result, a => a.Trace())
+    
     .Run();
 ```
 
@@ -399,11 +410,14 @@ Testr.Named("Calculator Clear matches model")
 public class RolodexOracle
 {
     private readonly List<Person> people = [];
+
     public IReadOnlyList<Person> People => people;
+
     public void Add(string firstName, string lastName)
     {
         people.Add(new Person { FirstName = firstName, LastName = lastName });
     }
+
     public void DeleteAllByName(string name)
     {
         people.RemoveAll(person => person.FirstName == name || person.LastName == name);
@@ -416,11 +430,14 @@ public class RolodexOracle
 public class Rolodex
 {
     private readonly List<Person> people = [];
+
     public IReadOnlyList<Person> People => people;
+
     public void Add(string firstName, string lastName)
     {
         people.Add(new Person { FirstName = firstName, LastName = lastName });
     }
+
     public void DeleteAllByName(string name)
     {
         for (int i = 0; i < people.Count(); i++)
@@ -458,6 +475,7 @@ Testr.Named("Rolodex")
         (model, a) => model.DeleteAllByName(a),
         (sut, a) => sut.DeleteAllByName(a))
     .Observe("People Match", PeopleMatch, a => a.Trace())
+    
     .Run();
 ```
 
@@ -524,6 +542,7 @@ Testr.Named("NameCollector matches model")
         (sut, a) => sut.Add(a))
     .Observe("Result Matches",
         (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
+    
     .Run();
 ```
 
@@ -579,6 +598,7 @@ Testr.Named("NameCollector matches model")
         (sut, a) => sut.Add(a))
     .Observe("Result Matches",
         (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
+    
     .Run();
 ```
 
@@ -640,6 +660,7 @@ Testr.Named("IdentityCounter matches model")
         (sut, a) => sut.Do(a))
     .Observe("Counter Matches",
         (model, sut) => model.Counter == sut.Counter)
+    
     .Run();
 ```
 

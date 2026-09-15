@@ -1,7 +1,7 @@
 > **No fuss. Just Fuzz.**  
 > `Named => For => Assert => Run`
 
-[![Docs](https://img.shields.io/badge/docs-QuickTestr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickTestr/blob/main/Docs/doc.md)
+[![Docs](https://img.shields.io/badge/docs-QuickTestr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickTestr/blob/main/Docs/quicktestr-doc.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickTestr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickTestr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickTestr/blob/main/LICENSE)
 

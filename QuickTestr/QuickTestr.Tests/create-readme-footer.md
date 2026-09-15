@@ -4,8 +4,8 @@ You can also supply explicit run counts or a seed, depending on how you want to 
 
 ## Documentation
 
-- [Getting Started](./Docs/doc.md)
-- [Shrinking Challenges](./Docs/challenges.md)
+- [Getting Started](./Docs/quicktestr-doc.md)
+- [Shrinking Challenges](./Docs/quicktestr-challenges.md)
 - [Dante's Calculator: Oracle Testing Legacy Code](./Examples/dantes-calculator.md)
 
 ## Installation

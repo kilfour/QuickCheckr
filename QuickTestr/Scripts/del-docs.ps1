@@ -1,5 +1,6 @@
 # Delete the Docs directories
 Remove-Item "Docs" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "Examples" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Drafts" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Experimental" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "Notes" -Recurse -Force -ErrorAction SilentlyContinue
