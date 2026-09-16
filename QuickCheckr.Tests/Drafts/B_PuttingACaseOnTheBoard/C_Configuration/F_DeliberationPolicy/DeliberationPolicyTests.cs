@@ -14,10 +14,10 @@ namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.F_De
 
 //[DocFile]
 [DocContent(
-@"Sometimes the shrinker comes up with a *local* minimal fail-case, not *the* minimal fail-case.  
+@"Sometimes the shrinker comes up with a *local* minimal failing case, not *the* minimal failing case.  
 Declaring run-level deliberation inside the Checkr allows us to explore the input further in a directed fashion.
 
-In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal fail-case.
+In short: Deliberation controls how agressive the shrinker keeps searching after it has found a *local* minimal failing case.
 
 Consider the following model:")]
 [DocExample(typeof(Account))]
@@ -106,7 +106,7 @@ public class DeliberationPolicyTests : BaseTest
 
     [Fact]
     [DocContent(
-@"As you can see, this is a *local* minimal fail-case, but a smaller one exists.  
+@"As you can see, this is a *local* minimal failing case, but a smaller one exists.  
 
 Let's deliberate over the completed runs, looking for a fail-case with less executions:")]
     [DocExample(typeof(DeliberationPolicyTests), nameof(GetDeliberatedCheckr))]

@@ -23,7 +23,7 @@ public class D_ChoosingTheNextMoveConditional : CheckrTest<D_ChoosingTheNextMove
     [DocReport]
     [DocHeader("Recap")]
     [DocContent(
-@$"`{nameof(Checkr)}.{nameof(Checkr.OneOf)}` and `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}` introduces controlled nondeterminism:
+@$"`{nameof(Checkr)}.{nameof(Checkr.OneOf)}` and `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}` introduce controlled nondeterminism:
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.

@@ -31,7 +31,7 @@ And here's the domain model:
 [DocExample(typeof(Coach))]
 [DocContent("**The Course:**")]
 [DocExample(typeof(Course))]
-public class BoltingHorses : BaseTest
+public class BoltingHorses : CheckrTest<BoltingHorses>
 {
     [Fact]
     [DocContent("Our Checkr is composed out of several parts:")]
@@ -79,17 +79,11 @@ A coach was assigned while suitable, then a course's required skills changed, in
     // **Note:** The astute reader will have noticed there exists more than one way in which the invariant can be violated.  
     // Let me redirect said readers to [Gathering Evidence][GatheringEvidence]."
     )]
-    public void RunTest()
-    {
-        var article = Journalist.Publish(TheCheckr, a => a
-                .Configure(a => a with { WarningLevel = WarningLevel.None })
-                .Run(1473455315, 20.ExecutionsPerRun()));
-        WriteAsserts(article, false);
-        WriteReport<BoltingHorses>(article, false);
-        Verify(article);
-    }
 
-    private static void Verify(Article article)
+    public override void Example() =>
+        Document(a => a.Run(1473455315, 20.ExecutionsPerRun()));
+
+    protected override void Verify(Article article)
     {
         Assert.Equal("Assigned Coach Must Be Suitable", article.FailureDescription());
         Assert.Equal("Coach-1", article.FailingExpectationMessages()[0]);
@@ -195,8 +189,8 @@ A coach was assigned while suitable, then a course's required skills changed, in
             coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
         select Case.Closed;
 
-    [CodeExample]
-    public static readonly CheckrOf<Case> TheCheckr =
+    [CodeSnippet]
+    protected override CheckrOf<Case> TheCheckr() =>
         from operations in Checkr.OneOfWhen(
             // Create up to 10 coaches.
             Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),

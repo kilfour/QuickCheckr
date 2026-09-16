@@ -28,6 +28,17 @@ public class Account
     }
 }
 ```
+
+**The Checkr:**  
+```csharp
+from account in Trackr.Stashed(() => new Account())
+from amount in Checkr.Input("Amount", Fuzzr.Int())
+from operations in Checkr.OneOf(
+    Checkr.Act("Deposit", () => account.Deposit(amount)),
+    Checkr.Act("Withdraw", () => account.WithDraw(amount))
+)
+select Case.Closed;
+```
 Every execution through this Checkr does the same things:
 
 1. Generate a random amount.
@@ -141,7 +152,7 @@ select Case.Closed;
  ------------------------------------------------------------
 ```
 ### Recap
-`Checkr.OneOf` and `Checkr.OneOfWhen` introduces controlled nondeterminism:
+`Checkr.OneOf` and `Checkr.OneOfWhen` introduce controlled nondeterminism:
 
 * Each execution picks **exactly one** branch.
 * All branches operate on the same stashed state.

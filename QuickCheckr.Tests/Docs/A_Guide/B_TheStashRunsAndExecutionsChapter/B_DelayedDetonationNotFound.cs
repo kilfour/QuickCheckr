@@ -15,8 +15,8 @@ public class B_DelayedDetonationNotFound : CheckrTest<B_DelayedDetonationNotFoun
     [DocContent("If we want to test it and write a Checkr like so:")]
     [DocCheckr]
     [DocContent(
-@"The test will always pass, even if we increase the amount of runs to infinity,
-because the test loses the state of the `BugHouse` between every run.")]
+@$"The test will always pass, even if we increase the amount of runs indefinitely,
+because the test loses the state of the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}` between every run.")]
     public override void Example() => Document(a => a.Run());
 
     [CodeSnippet]

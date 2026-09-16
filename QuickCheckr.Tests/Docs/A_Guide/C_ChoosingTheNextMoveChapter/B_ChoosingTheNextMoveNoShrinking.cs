@@ -9,7 +9,7 @@ using QuickPulse.Instruments;
 namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 
 
-
+[DocFileHeader("A Checkr With a Choice")]
 public class B_ChoosingTheNextMoveNoShrinking : CheckrTest<B_ChoosingTheNextMoveNoShrinking>
 {
     protected override bool Asserts => false;
@@ -18,6 +18,7 @@ public class B_ChoosingTheNextMoveNoShrinking : CheckrTest<B_ChoosingTheNextMove
     [Fact]
     [DocContent("Let's keep the model simple")]
     [DocExample(typeof(Account))]
+    [DocCheckr]
     [DocContent(
 @$"Every execution through this Checkr does the same things:
 
@@ -50,7 +51,7 @@ There is no guesswork.")]
 
 
     [CodeSnippet]
-    public static CheckrOf<Case> GetCheckr() =>
+    protected override CheckrOf<Case> TheCheckr() =>
         from account in Trackr.Stashed(() => new Account())
         from amount in Checkr.Input("Amount", Fuzzr.Int())
         from operations in Checkr.OneOf(
@@ -58,8 +59,6 @@ There is no guesswork.")]
             Checkr.Act("Withdraw", () => account.WithDraw(amount))
         )
         select Case.Closed;
-
-    protected override CheckrOf<Case> TheCheckr() => GetCheckr();
 
     protected override void Verify(Article article)
     {

@@ -12,20 +12,20 @@ public class B_MinimalFailingCheckr : CheckrTest<B_MinimalFailingCheckr>
     protected override bool Report => false;
 
     [Fact]
-    [DocContent("So what happens if try to do the opposite?")]
+    [DocContent("So what happens if we try to do the opposite?")]
     [DocCheckr]
     [DocContent("The test fails and QuickCheckr produces the following:")]
     [DocReport]
     [DocContent(
 @"
-The report shows a run summary containing :
+The report shows a run summary containing:
 * Test: Name of the test executing the Checkr.
-* Location: Source code Location of the test executing the Checkr.
+* Location: Source code location of the test executing the Checkr.
 * Original failing run: Number of executions executed during the run.
-* The minimal fail-case: In this simplest of examples it *only* specifies that an execution happened.
+* The minimal failing case: In this simplest of examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
 * Seed: The seed used to generate the failing run.  
-  You can use this to reproduce the failing run reliably, by calling run with the seed passed in.")]
+  You can use this to reproduce the failing run reliably, by passing the seed to Run.")]
     [DocExample(typeof(B_MinimalFailingCheckr), nameof(RunSeeded))]
     public override void Example() => Document(RunSeeded);
 

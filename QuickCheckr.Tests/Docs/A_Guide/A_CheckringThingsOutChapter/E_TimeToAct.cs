@@ -14,7 +14,7 @@ public class E_TimeToAct : CheckrTest<E_TimeToAct>
     [Fact]
     [DocContent("Testing inputs is fun and all, but really, we want to test some kind of behaviour, right?")]
     [DocCheckr]
-    [DocContent("Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.")]
+    [DocContent("Still a trivial example, but it shows how you can use `Checkr.Act` to execute behaviour and capture its result.")]
     [DocReport]
     [DocContent("As demonstrated, the name of the executed action is included in the report, as well as the relevant inputs.")]
     public override void Example() => Document(a => a.Run(1642083259));

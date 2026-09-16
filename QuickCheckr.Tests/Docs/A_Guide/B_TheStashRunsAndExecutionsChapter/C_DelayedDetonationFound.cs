@@ -15,21 +15,21 @@ public class C_DelayedDetonationFound : CheckrTest<C_DelayedDetonationFound>
     [Fact]
     [DocContent(
 @$"So here's what we do:
-1. We stash the `BugHouse` using `{nameof(Trackr)}.{nameof(Trackr.Stashed)}` and instead of creating a new one in the `Act` we use the stashed one.
+1. We stash the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}` using `{nameof(Trackr)}.{nameof(Trackr.Stashed)}` and instead of creating a new one in the `Act` we use the stashed one.
 2. We up the number of executions per run.  
-   The contents of `{nameof(Trackr)}.{nameof(Trackr.Stashed)}` is reset after every run, but not in between executions.
-   This allows us to *capture* the state of the `BugHouse`.")]
+   Values stored with `{nameof(Trackr)}.{nameof(Trackr.Stashed)}` are reset after every run, but not in between executions.
+   This allows us to *capture* the state of the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}`.")]
     [DocCheckr]
     [DocBoldHeader("Running It")]
     [DocExample(typeof(C_DelayedDetonationFound), nameof(RunCheckr))]
     [DocReport]
     [DocContent(
-@"The shrunk case makes it immediately clear why this Checkr needed multiple executions.  
+@$"The shrunk case makes it immediately clear why this Checkr needed multiple executions.  
 
-QuickCheckr shows that the action DelayedDetonation was executed twice without issue,
+QuickCheckr shows that the action `{nameof(A_TheStashRunsAndExecutions.BugHouse.DelayedDetonation)}` was executed twice without issue,
 and only on the third execution, where the relevant input `Int = 1` appears, does the exception occur.  
 
-Because the BugHouse instance is stashed, its internal count persisted across executions, allowing the failure to surface.  
+Because the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}` instance is stashed, its internal `count` persisted across executions, allowing the failure to surface.  
 
 The shrinking process confirms that all three executions are required:
 removing either of the first two would prevent the internal state from reaching the dangerous value.  
@@ -38,7 +38,7 @@ Finally, the report closes by listing which expectations passed during the origi
 highlighting that the behaviour was stable until exactly the offending execution.")]
     [DocHeader("Recap")]
     [DocContent(
-@"QuickCheckr operates across *two distinct scopes*, and understanding them is essential when testing stateful systems:
+@$"QuickCheckr operates across *two distinct scopes*, and understanding them is essential when testing stateful systems:
 
 **1. Run Scope**
 
@@ -58,7 +58,7 @@ This guarantees that each run is **independent**, **repeatable**, and **reproduc
 An *execution* is one walk through the Checkr script *within* a single run.
 Executions share:
 
-* The **same stashed instances** (e.g. the `BugHouse`).
+* The **same stashed instances** (e.g. the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}`).
 * The **same pools**, which accumulate objects over executions.
 * The **effects** of all previous executions in the run.
 
@@ -81,7 +81,7 @@ This means:
 * **Executions give you statefulness.**
 
 And together, they let QuickCheckr explore both *pure input variation* and *multi-step behaviour*,
-which is exactly what makes the BugHouse example catchable:
+which is exactly what makes the `{nameof(A_TheStashRunsAndExecutions.BugHouse)}` example catchable:
 the failure only emerges when several executions act on the *same* object.
 ")]
     public override void Example() => Document(RunCheckr);

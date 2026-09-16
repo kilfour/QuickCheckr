@@ -13,7 +13,7 @@ Treating pools as lists leads to scattered .Any() / .Count() checks that tend to
 Instead, Pool operations encapsulate "is this state valid?" so shrinking can replay safely.
   
 ## Pool Creation
-Pools are created **auto-magically**. Whenever any checkr tries to access a pool, store something in a pool, or perform any other pool related operation, a pool is created.  
+Pools are created **auto-magically**. Whenever any Checkr tries to access a pool, store something in a pool, or perform any other pool related operation, a pool is created.  
 ## Storing elements in the Pool
 ```csharp
 from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
@@ -25,9 +25,9 @@ select Case.Closed;
 Trackr.OneOfPool<Contact>("A Random Contact",
     contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 ```
-As you can see, the second argument to this method, is a function that takes a wrapped value and returns a Checkr.  
-In the same vein that the Pool collection itself is encapsulated, so are its elements.
-This is done because you might want to remove the element from the Pool, or replace it, and the shrinker needs to be aware of these operations.  
+As you can see, the second argument to this method is a function that takes a wrapped value and returns a Checkr.  
+Just as the Pool itself is encapsulated, so are its elements.
+This is done because you might want to remove the element from the Pool or replace it, and the shrinker needs to be aware of these operations.  
 Therefore, the operations are defined on the wrapper object.
 
 *Remove:*  
@@ -41,8 +41,8 @@ Trackr.OneOfPool<Contact>("A Random Contact to Replace",
     contact => contact.Replace(new Contact("Replaced by AI")));
 ```
 ### Conditionally
-Now, when picking a random element like this, there has to exist atleast one in the Pool, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
-Which means, you almost always want to execute this conditionally,
+Now, when picking a random element like this, the Pool must contain at least one element, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+This means you almost always want to execute it conditionally,
 and most likely it will be part of a random sequence of executions,
 as you will need another execution to put things into the Pool.  
 For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `OneOfWhen` Checkr.
@@ -80,7 +80,7 @@ from operations in Checkr.OneOfWhen(
         select Case.Closed),
     // 2. Update a (Contact-) name in the Rolodex
     Trackr.PoolWhen<Contact>("Contact to update",
-        a => a.Count != 0, // <= Can not pick from an empty selection.
+        a => a.Count != 0, // <= Cannot pick from an empty selection.
         contact => // Pick a random Contact to update 
             from newName in Checkr.Input("New Name", NameFuzzr)
             from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))

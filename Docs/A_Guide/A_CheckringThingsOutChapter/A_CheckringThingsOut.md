@@ -14,7 +14,7 @@ public void RunTest()
 ```
 Congratulations! You've just checked something out. The test passes and now we know that `true` is always `true`.
   
-So what happens if try to do the opposite?  
+So what happens if we try to do the opposite?  
 
 **The Checkr:**  
 ```csharp
@@ -36,14 +36,14 @@ The test fails and QuickCheckr produces the following:
  ======================================
 ```
 
-The report shows a run summary containing :
+The report shows a run summary containing:
 * Test: Name of the test executing the Checkr.
-* Location: Source code Location of the test executing the Checkr.
+* Location: Source code location of the test executing the Checkr.
 * Original failing run: Number of executions executed during the run.
-* The minimal fail-case: In this simplest of examples it *only* specifies that an execution happened.
+* The minimal failing case: In this simplest of examples it *only* specifies that an execution happened.
 * Failure details: Why the run failed in the first place.
 * Seed: The seed used to generate the failing run.  
-  You can use this to reproduce the failing run reliably, by calling run with the seed passed in.  
+  You can use this to reproduce the failing run reliably, by passing the seed to Run.  
 ```csharp
 checkr.Run(1642083259);
 ```
@@ -63,7 +63,7 @@ A Checkr is evaluated step by step, and `Case.Closed` is the final marker to ind
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, *on average*, once every hundred times.  
-Not ideal, so let's up the run number, like so:  
+Not ideal, so let's up the number of runs, like so:  
 ```csharp
 checkr.Run(200.Runs());
 ```
@@ -83,7 +83,7 @@ With more runs, the test is more likely to find a failing input.
   !! Expectation Failed: Input /= 42
  ======================================
 ```
-As you can see the input is now included in the report *minimal fail-case*,
+As you can see the input is now included in the report's minimal failing case,
 this is because QuickCheckr judged the input to be relevant to the failure.  
 Now, if we add another input to the Checkr, one which does not influence the failure.  
 
@@ -127,7 +127,7 @@ from sum in Checkr.Act("One plus Three", () => one + three)
 from expect in Checkr.Expect("Sum /= 42", () => sum != 42)
 select Case.Closed;
 ```
-Still a trivial example, but it shows how you can use `Checkr.Act` to start mutating things.  
+Still a trivial example, but it shows how you can use `Checkr.Act` to execute behaviour and capture its result.  
 
 **The Report:**  
 ```text

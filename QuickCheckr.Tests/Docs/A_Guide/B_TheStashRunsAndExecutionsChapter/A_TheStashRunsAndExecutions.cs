@@ -12,8 +12,8 @@ namespace QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 [DocFileHeader("The Stash, Runs and Executions")]
 [DocNavigation(typeof(Guide), typeof(A_CheckringThingsOut), typeof(A_ChoosingTheNextMove))]
 [DocContent(
-@"In the previous chapter we upped the run number in order to *fully explore the input space*.  
-But what if it's not the input that causes the issue, but a side-effect.
+@"In the previous chapter we upped the number of runs in order to explore more of the input space.  
+But what if it's not the input that causes the issue, but a side-effect ?
 
 Consider the following model:")]
 [DocExample(typeof(BugHouse))]

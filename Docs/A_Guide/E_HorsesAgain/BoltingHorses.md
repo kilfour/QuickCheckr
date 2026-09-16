@@ -72,22 +72,21 @@ It then creates a series of actions, randomly choosing one, using `Checkr.OneOfW
 out of those in the list for which it's predicate is fulfilled.  
 Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant.  
 ```csharp
-public static readonly CheckrOf<Case> TheCheckr =
-    from operations in Checkr.OneOfWhen(
-        // Create up to 10 coaches.
-        Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
-        // Maybe update existing coaches. Pick a random coach from the pool.
-        Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
-        // Create up to 5 courses.
-        Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
-        // Maybe update existing courses. Pick a random course from the pool.
-        Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
-        // Maybe assign a coach, if there exists a combination for which the predicate holds.
-        Trackr.PoolWhen("(Coach, Course) to Assign",
-            (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
-    // Ensure the system invariant is met at all times.
-    from invariant in AssignedCoachesMustBeSuitable
-    select Case.Closed;
+from operations in Checkr.OneOfWhen(
+    // Create up to 10 coaches.
+    Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
+    // Maybe update existing coaches. Pick a random coach from the pool.
+    Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
+    // Create up to 5 courses.
+    Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
+    // Maybe update existing courses. Pick a random course from the pool.
+    Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
+    // Maybe assign a coach, if there exists a combination for which the predicate holds.
+    Trackr.PoolWhen("(Coach, Course) to Assign",
+        (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
+// Ensure the system invariant is met at all times.
+from invariant in AssignedCoachesMustBeSuitable
+select Case.Closed;
 ```
 **Create Coach Checkr:**  
 In this one we create a coach with a *semi* random name, verify that the property `Name` is assigned and then add it to the coaches pool.  

@@ -22,12 +22,12 @@ A Checkr is evaluated step by step, and `Case.Closed` is the final marker to ind
 QuickCheckr relies on the [`QuickFuzzr`](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) library to generate inputs.
 
 `Fuzzr.Int()` generates a random integer between 1 and 100, so this test will fail, *on average*, once every hundred times.  
-Not ideal, so let's up the run number, like so:")]
+Not ideal, so let's up the number of runs, like so:")]
     [DocExample(typeof(C_GatheringInput), nameof(RunTwoHundredTimes))]
     [DocContent("With more runs, the test is more likely to find a failing input.")]
     [DocReport]
     [DocContent(
-@"As you can see the input is now included in the report *minimal fail-case*,
+@"As you can see the input is now included in the report's minimal failing case,
 this is because QuickCheckr judged the input to be relevant to the failure.")]
     public override void Example() => Document(a => a.Run(127648209));
 

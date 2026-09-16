@@ -2,8 +2,8 @@
 |[◀][A_CheckringThingsOut]|[△][Guide]|[▶][A_ChoosingTheNextMove]|
 |---|---|---|
   
-In the previous chapter we upped the run number in order to *fully explore the input space*.  
-But what if it's not the input that causes the issue, but a side-effect.
+In the previous chapter we upped the number of runs in order to explore more of the input space.  
+But what if it's not the input that causes the issue, but a side-effect ?
 
 Consider the following model:  
 ```csharp
@@ -27,12 +27,12 @@ from callBugHouse in Checkr.Act("DelayedDetonation", () => new BugHouse().Delaye
 from checkResult in Checkr.Expect("Returns true", () => callBugHouse)
 select Case.Closed;
 ```
-The test will always pass, even if we increase the amount of runs to infinity,
+The test will always pass, even if we increase the amount of runs indefinitely,
 because the test loses the state of the `BugHouse` between every run.  
 So here's what we do:
 1. We stash the `BugHouse` using `Trackr.Stashed` and instead of creating a new one in the `Act` we use the stashed one.
 2. We up the number of executions per run.  
-   The contents of `Trackr.Stashed` is reset after every run, but not in between executions.
+   Values stored with `Trackr.Stashed` are reset after every run, but not in between executions.
    This allows us to *capture* the state of the `BugHouse`.  
 
 **The Checkr:**  
@@ -72,10 +72,10 @@ checkr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```
 The shrunk case makes it immediately clear why this Checkr needed multiple executions.  
 
-QuickCheckr shows that the action DelayedDetonation was executed twice without issue,
+QuickCheckr shows that the action `DelayedDetonation` was executed twice without issue,
 and only on the third execution, where the relevant input `Int = 1` appears, does the exception occur.  
 
-Because the BugHouse instance is stashed, its internal count persisted across executions, allowing the failure to surface.  
+Because the `BugHouse` instance is stashed, its internal `count` persisted across executions, allowing the failure to surface.  
 
 The shrinking process confirms that all three executions are required:
 removing either of the first two would prevent the internal state from reaching the dangerous value.  
@@ -126,7 +126,7 @@ This means:
 * **Executions give you statefulness.**
 
 And together, they let QuickCheckr explore both *pure input variation* and *multi-step behaviour*,
-which is exactly what makes the BugHouse example catchable:
+which is exactly what makes the `BugHouse` example catchable:
 the failure only emerges when several executions act on the *same* object.
   
 
