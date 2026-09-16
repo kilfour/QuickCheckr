@@ -14,10 +14,9 @@
     <PackageTags>fuzzing;testing;property-based-testing;oracle-based-testing;model-based-testing</PackageTags>
 
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/kilfour/QuickTestr</RepositoryUrl>
+    <RepositoryUrl>https://github.com/kilfour/QuickCheckr</RepositoryUrl>
     <RepositoryBranch>main</RepositoryBranch>
-    <PackageProjectUrl>https://github.com/kilfour/QuickTestr</PackageProjectUrl>
-
+    <PackageProjectUrl>https://github.com/kilfour/QuickCheckr/tree/main/QuickTestr</PackageProjectUrl>
     <!-- NuGet metadata -->
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -48,7 +47,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <!-- <PackageReference Include="QuickCheckr" Version="0.2.3" /> -->
+    <!-- <PackageReference Include="QuickCheckr" Version="0.4.0" /> -->
   </ItemGroup>
 
   <ItemGroup>
