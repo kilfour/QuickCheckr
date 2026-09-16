@@ -26,7 +26,7 @@ public class AA_ReversingAListPass : QuickTestrPropertyTest<AA_ReversingAListPas
     {
         Testr.Named("Reverse is its own inverse")              // The name of the property.
             .For(Fuzzr.Int().Many(1, 10))                      // The input Fuzzr.
-            .Assert(s => Reverse(Reverse(s)).SequenceEqual(s)) // The property to assert..StoreCaseFiles(journalist)
+            .Assert(s => Reverse(Reverse(s)).SequenceEqual(s)).StoreCaseFiles(journalist) // The property to assert.
             .Run(1.Runs());                                            // Run the test.
         // --------------------------------------------------------------------------------
         static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. l.Reverse()];
