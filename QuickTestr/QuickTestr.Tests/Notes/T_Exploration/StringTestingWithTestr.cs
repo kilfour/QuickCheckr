@@ -19,8 +19,7 @@ public class StringTestingWithTestr : QuickTestrPropertyTest<StringTestingWithTe
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Create Book Title")
             .For(Text(100))
-            .Assert(a => BookTitle.Create(a!).Value == a)
-            .StoreCaseFiles(journalist)
+            .Assert(a => BookTitle.Create(a!).Value == a).StoreCaseFiles(journalist)
             .FillVault(200.Searches(), 50.Runs(),
                 new VaultPolicy<string?>(a => a?.Length <= 1 ? a : a?.Length!));
 

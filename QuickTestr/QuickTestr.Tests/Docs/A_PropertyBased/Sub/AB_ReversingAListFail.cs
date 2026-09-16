@@ -29,8 +29,7 @@ Let's break it by moving all `42`s to the end.
     {
         Testr.Named("Reverse is its own inverse")
             .For(Fuzzr.Int().Many(1, 10))
-            .Assert(s => Reverse(Reverse(s)).SequenceEqual(s))
-            .StoreCaseFiles(journalist)
+            .Assert(s => Reverse(Reverse(s)).SequenceEqual(s)).StoreCaseFiles(journalist)
             .Run(174616483);
         // ---------------------------------------------------------------------
         static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. HideTheAnswer(l.Reverse())];

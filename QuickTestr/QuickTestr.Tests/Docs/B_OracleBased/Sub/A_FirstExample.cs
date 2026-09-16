@@ -31,8 +31,7 @@ public class A_FirstExample : QuickTestrOracleTest<A_FirstExample>
         Testr.Named("AddBuggy Matches AddCorrect")
             .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
             .Expected(a => AddCorrect(a.Item1, a.Item2))
-            .Actual(a => AddBuggy(a.Item1, a.Item2))
-            .StoreCaseFiles(journalist)
+            .Actual(a => AddBuggy(a.Item1, a.Item2)).StoreCaseFiles(journalist)
             .Run(1471595869);
 
     protected override void Verify(Article article)

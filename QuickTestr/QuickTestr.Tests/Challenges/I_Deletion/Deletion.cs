@@ -46,8 +46,7 @@ public class Deletion : QuickTestrPropertyTest<Deletion>
                 var list = a.Item1.ToList();
                 list.Remove(a.Item2);
                 return !list.Contains(a.Item2);
-            })
-            .StoreCaseFiles(journalist)
+            }).StoreCaseFiles(journalist)
             .Run(712389878);
 
     protected override void Verify(Article article)

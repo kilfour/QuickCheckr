@@ -38,8 +38,7 @@ public class B_AnInterpreter : QuickTestrOracleTest<B_AnInterpreter>
                         Remove.UnaryMinusNoise)))
             .Deliberate(a => a.Length, 4) // prefer smaller length strings
             .Expected(a => LostIn.Translation(a).Eval())
-            .Actual(a => LostIn.FaultyTranslation(a).Eval())
-            .StoreCaseFiles(journalist)
+            .Actual(a => LostIn.FaultyTranslation(a).Eval()).StoreCaseFiles(journalist)
             .Run(443608219);
 
     [CodeExample]

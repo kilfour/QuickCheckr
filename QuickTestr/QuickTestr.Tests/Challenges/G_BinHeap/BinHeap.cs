@@ -44,8 +44,7 @@ public class BinHeap : QuickTestrPropertyTest<BinHeap>
                 var correct = Flatten(a).OrderBy(x => x).ToList();
                 var buggy = Flatten(a).ToList();
                 return correct.SequenceEqual(buggy);
-            })
-            .StoreCaseFiles(journalist)
+            }).StoreCaseFiles(journalist)
             .Run(2136249593);
 
     [CodeSnippet]

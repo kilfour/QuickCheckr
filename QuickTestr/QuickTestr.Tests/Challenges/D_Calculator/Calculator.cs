@@ -49,8 +49,7 @@ public class Calculator : QuickTestrPropertyTest<Calculator>
             .Format(TheFormatr)
             .For(TheFuzzr, TheShrinkr)
             .Deliberate(a => DepthOf(a))
-            .Assert(a => { a.Evaluate(); return true; })
-            .StoreCaseFiles(journalist)
+            .Assert(a => { a.Evaluate(); return true; }).StoreCaseFiles(journalist)
             .Run(729093046);
 
     [CodeSnippet]

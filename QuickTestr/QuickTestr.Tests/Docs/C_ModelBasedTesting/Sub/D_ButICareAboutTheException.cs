@@ -41,8 +41,7 @@ public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAbou
                 (model, a) => model.Add(a),
                 (sut, a) => sut.Add(a))
             .Observe("Result Matches",
-                (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
-            .StoreCaseFiles(journalist)
+                (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace()).StoreCaseFiles(journalist)
             .Run(1830780673, 50.ExecutionsPerRun());
 
     protected override void Verify(Article article)

@@ -44,8 +44,7 @@ public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
                     select name,
                 (model, a) => model.DeleteAllByName(a),
                 (sut, a) => sut.DeleteAllByName(a))
-            .Observe("People Match", PeopleMatch, a => a.Trace())
-            .StoreCaseFiles(journalist)
+            .Observe("People Match", PeopleMatch, a => a.Trace()).StoreCaseFiles(journalist)
             .Run(322254521, 100.ExecutionsPerRun());
 
     protected override void Verify(Article article)

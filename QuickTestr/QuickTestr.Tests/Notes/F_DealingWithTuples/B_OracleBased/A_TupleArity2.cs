@@ -26,8 +26,7 @@ public class A_TupleArity2 : QuickTestrOracleTest<A_TupleArity2>
         Testr.Named("Tuple2 can deconstruct")
             .For(Fuzzr.Int(), Fuzzr.Int())
             .Expected((a, b) => a)
-            .Actual((a, b) => b)
-            .StoreCaseFiles(journalist)
+            .Actual((a, b) => b).StoreCaseFiles(journalist)
             .Run(649859307);
 
     protected override void Verify(Article article)

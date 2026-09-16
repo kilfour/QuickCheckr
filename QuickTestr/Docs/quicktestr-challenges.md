@@ -51,7 +51,6 @@ Testr.Named("The sum of all values is less than 5 * 256.")
     .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
     .Deliberate(H.ElementCount, 2)
     .Assert(a => H.Sum(a) < (5 * 256))
-    
     .Run();
 ```
 
@@ -118,7 +117,6 @@ Testr.Named("No more than four distinct integers.")
     .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
     .Deliberate(a => 0 - a.Count, -5)
     .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
-    
     .Run();
 ```
 
@@ -152,7 +150,6 @@ Testr.Named("Reversing a list of integers results in the same list")
         reversed.Reverse();
         return reversed.SequenceEqual(a);
     })
-    
     .Run();
 ```
 
@@ -193,7 +190,6 @@ Testr.Named("No division by zero")
     .For(TheFuzzr, TheShrinkr)
     .Deliberate(a => DepthOf(a))
     .Assert(a => { a.Evaluate(); return true; })
-    
     .Run(729093046);
 ```
 
@@ -293,7 +289,6 @@ Testr.Named("The maximum value of the list is smaller than 900.")
         from list in Fuzzr.Int(0, 1000).Many(length)
         select list.ToList())
     .Assert(a => a.Max() < 900)
-    
     .Run();
 ```
 
@@ -353,7 +348,6 @@ The smallest falsified sample is `[10, 10]`
 Testr.Named("Difference must not be zero.")
     .For(TheFuzzr, Shrinkr)
     .Assert(a => a.A < 10 || a.A != a.B)
-    
     .Run();
 ```
 
@@ -381,7 +375,6 @@ The smallest falsified sample is `[10, 6]`.
 Testr.Named("Difference must not be small.")
     .For(TheFuzzr, Shrinkr)
     .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) > 4 || a.A == a.B)
-    
     .Run();
 ```
 
@@ -409,7 +402,6 @@ The smallest falsified sample is `[10, 9]`.
 Testr.Named("Difference is not exactly 1.")
     .For(TheFuzzr, Shrinkr)
     .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1)
-    
     .Run();
 ```
 
@@ -446,7 +438,6 @@ Testr.Named("Heap sort is correct.")
         var buggy = Flatten(a).ToList();
         return correct.SequenceEqual(buggy);
     })
-    
     .Run();
 ```
 
@@ -503,7 +494,6 @@ Testr
                 return false;
             return true;
         }))
-    
     .Run();
 ```
 
@@ -547,7 +537,6 @@ Testr
         list.Remove(a.Item2);
         return !list.Contains(a.Item2);
     })
-    
     .Run();
 ```
 
@@ -589,7 +578,6 @@ Testr
             return a.ToHashSet().Count >= 3;
         return true;
     })
-    
     .Run();
 ```
 
@@ -628,7 +616,6 @@ Testr
     .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
     .Deliberate(a => a.Count)
     .Assert(a => a.Sum(a => a.Count) <= 10)
-    
     .Run();
 ```
 

@@ -52,8 +52,7 @@ QuickTestr then reduces the failing value to the boundary where the bug begins.
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Doubling matches addition")
             .For(Fuzzr.Int(0, 100))
-            .Assert(value => Double(value) == value + value)
-            .StoreCaseFiles(journalist)
+            .Assert(value => Double(value) == value + value).StoreCaseFiles(journalist)
             .Run(1471595869);
 
     private static int Double(int value) => value > 42 ? 0 : value * 2;

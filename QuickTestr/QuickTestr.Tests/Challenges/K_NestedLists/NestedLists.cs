@@ -41,8 +41,7 @@ public class NestedLists : QuickTestrPropertyTest<NestedLists>
             .Named("The sum of lengths of the element lists is at most 10.")
             .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
             .Deliberate(a => a.Count)
-            .Assert(a => a.Sum(a => a.Count) <= 10)
-            .StoreCaseFiles(journalist)
+            .Assert(a => a.Sum(a => a.Count) <= 10).StoreCaseFiles(journalist)
             .Run(1959968277);
 
     protected override void Verify(Article article)

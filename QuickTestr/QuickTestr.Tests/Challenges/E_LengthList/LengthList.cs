@@ -42,8 +42,7 @@ public class LengthList : QuickTestrPropertyTest<LengthList>
                 from length in Fuzzr.Int(1, 100)
                 from list in Fuzzr.Int(0, 1000).Many(length)
                 select list.ToList())
-            .Assert(a => a.Max() < 900)
-            .StoreCaseFiles(journalist)
+            .Assert(a => a.Max() < 900).StoreCaseFiles(journalist)
             .Run(357470573);
 
     protected override void Verify(Article article)

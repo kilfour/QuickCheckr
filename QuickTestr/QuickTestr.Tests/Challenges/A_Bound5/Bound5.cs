@@ -47,8 +47,7 @@ public class Bound5 : QuickTestrPropertyTest<Bound5>
         Testr.Named("The sum of all values is less than 5 * 256.")
             .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
             .Deliberate(H.ElementCount, 2)
-            .Assert(a => H.Sum(a) < (5 * 256))
-            .StoreCaseFiles(journalist)
+            .Assert(a => H.Sum(a) < (5 * 256)).StoreCaseFiles(journalist)
             .Run(472166887);
 
     [CodeExample]

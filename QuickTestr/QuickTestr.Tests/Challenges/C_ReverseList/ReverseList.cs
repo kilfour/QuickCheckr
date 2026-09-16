@@ -35,8 +35,7 @@ public class ReverseList : QuickTestrPropertyTest<ReverseList>
                 var reversed = new List<int>(a);
                 reversed.Reverse();
                 return reversed.SequenceEqual(a);
-            })
-            .StoreCaseFiles(journalist)
+            }).StoreCaseFiles(journalist)
             .Run(12901993);
 
     protected override void Verify(Article article)

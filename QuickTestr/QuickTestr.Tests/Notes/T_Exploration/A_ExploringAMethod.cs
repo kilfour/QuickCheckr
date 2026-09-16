@@ -27,8 +27,7 @@ public class A_ExploringAMethod : QuickTestrPropertyTest<A_ExploringAMethod>
         Testr
             .Named("BookTitle Creation")
             .For(Fuzzr.String())
-            .Assert(a => BookTitle.Create(a).Value == a)
-            .StoreCaseFiles(journalist)
+            .Assert(a => BookTitle.Create(a).Value == a).StoreCaseFiles(journalist)
             .Run();
 
     protected override void Verify(Article article)

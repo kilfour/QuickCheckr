@@ -36,8 +36,7 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
                 (model, a) => model.Do(a),
                 (sut, a) => sut.Do(a))
             .Observe("Counter Matches",
-                (model, sut) => model.Counter == sut.Counter)
-            .StoreCaseFiles(journalist)
+                (model, sut) => model.Counter == sut.Counter).StoreCaseFiles(journalist)
             .Run(520188124, 50.ExecutionsPerRun());
 
     protected override void Verify(Article article)

@@ -26,8 +26,7 @@ public class B_SlightlyLessEvil : QuickTestrPropertyTest<B_SlightlyLessEvil>
         Testr
             .Named("BookTitle Creation")
             .For(Evilr.StringExcept(Evilr.StringOption.Empty))
-            .Assert(a => BookTitle.Create(a!).Value == a)
-            .StoreCaseFiles(journalist)
+            .Assert(a => BookTitle.Create(a!).Value == a).StoreCaseFiles(journalist)
             .Run(1540338462);
 
     protected override void Verify(Article article)

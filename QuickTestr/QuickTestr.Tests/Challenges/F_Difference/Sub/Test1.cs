@@ -33,8 +33,7 @@ public class Test1 : QuickTestrPropertyTest<Test1>
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Difference must not be zero.")
             .For(Difference.TheFuzzr, Difference.The.Shrinkr)
-            .Assert(a => a.A < 10 || a.A != a.B)
-            .StoreCaseFiles(journalist)
+            .Assert(a => a.A < 10 || a.A != a.B).StoreCaseFiles(journalist)
             .Run(1485535450);
 
     protected override void Verify(Article article)

@@ -41,8 +41,7 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
                 model => model.Clear(),
                 sut => sut.Clear())
             .Observe("Result Matches",
-                (model, sut) => model.Result == sut.Result, a => a.Trace())
-            .StoreCaseFiles(journalist)
+                (model, sut) => model.Result == sut.Result, a => a.Trace()).StoreCaseFiles(journalist)
             .Run(1626335899, 20.ExecutionsPerRun());
 
     protected override void Verify(Article article)

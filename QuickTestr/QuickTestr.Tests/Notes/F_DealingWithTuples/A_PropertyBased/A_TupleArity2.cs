@@ -25,8 +25,7 @@ public class A_TupleArity2 : QuickTestrPropertyTest<A_TupleArity2>
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Tuple2 can deconstruct")
             .For(Fuzzr.Int(), Fuzzr.Int())
-            .Assert((a, b) => a == b)
-            .StoreCaseFiles(journalist)
+            .Assert((a, b) => a == b).StoreCaseFiles(journalist)
             .Run(649859307);
 
     protected override void Verify(Article article)

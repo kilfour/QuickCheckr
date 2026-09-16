@@ -26,8 +26,7 @@ public class A_EvilizingInput : QuickTestrPropertyTest<A_EvilizingInput>
         Testr
             .Named("BookTitle Creation")
             .For(Evilr.String())
-            .Assert(a => BookTitle.Create(a!).Value == a)
-            .StoreCaseFiles(journalist)
+            .Assert(a => BookTitle.Create(a!).Value == a).StoreCaseFiles(journalist)
             .Run(1540338462);
 
     protected override void Verify(Article article)

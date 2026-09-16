@@ -40,8 +40,7 @@ public class C_CheckingTheException : QuickTestrModelRunTest<C_CheckingTheExcept
                 (model, a) => model.Add(a),
                 (sut, a) => sut.Add(a))
             .Observe("Result Matches",
-                (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
-            .StoreCaseFiles(journalist)
+                (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace()).StoreCaseFiles(journalist)
             .Run();
 
     protected override void Verify(Article article)

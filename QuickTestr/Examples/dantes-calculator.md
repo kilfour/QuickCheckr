@@ -51,7 +51,6 @@ Testr.Named("Calculator Oracle")
     .For(ItemFuzzr.Get.Many(1, 20).ToList())
     .Expected(Calculator.Total)
     .Actual(CalculatorNew.Total)
-    
     .Run();
 ```
 

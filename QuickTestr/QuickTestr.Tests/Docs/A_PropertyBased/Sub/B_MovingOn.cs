@@ -52,8 +52,7 @@ public class B_MovingOn : QuickTestrPropertyTest<B_MovingOn>
                     if (index != element && list[index] == element)
                         return false;
                     return true;
-                }))
-            .StoreCaseFiles(journalist)
+                })).StoreCaseFiles(journalist)
             .Run(1934478623);
 
     protected override void Verify(Article article)

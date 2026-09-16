@@ -54,8 +54,7 @@ public class StringTesting : QuickCheckrTest<StringTesting>
                 StringCase.Empty,
                 StringCase.Whitespace)
             .FailsWith<ComputerSaysNo>("Title cannot be longer than 100 characters.",
-                StringCase.LongerThan(100))
-            .StoreCaseFiles(journalist)
+                StringCase.LongerThan(100)).StoreCaseFiles(journalist)
             .Explore();
 
     private void Verify(Article article)

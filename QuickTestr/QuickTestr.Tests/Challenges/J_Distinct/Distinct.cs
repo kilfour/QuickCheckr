@@ -44,8 +44,7 @@ public class Distinct : QuickTestrPropertyTest<Distinct>
                 if (a.Count() >= 3)
                     return a.ToHashSet().Count >= 3;
                 return true;
-            })
-            .StoreCaseFiles(journalist)
+            }).StoreCaseFiles(journalist)
             .Run(1943621438);
 
     protected override void Verify(Article article)

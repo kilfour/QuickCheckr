@@ -60,8 +60,7 @@ where the real bugs tend to hide in unexpected edge-case combinations.
         Testr.Named("Calculator Oracle")
             .For(ItemFuzzr.Get.Many(1, 20).ToList())
             .Expected(Calculator.Total)
-            .Actual(CalculatorNew.Total)
-            .StoreCaseFiles(journalist)
+            .Actual(CalculatorNew.Total).StoreCaseFiles(journalist)
             .Run();
 
     protected override void Verify(Article article)

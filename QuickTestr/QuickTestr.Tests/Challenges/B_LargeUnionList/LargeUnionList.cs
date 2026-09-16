@@ -37,8 +37,7 @@ public class LargeUnionList : QuickTestrPropertyTest<LargeUnionList>
         Testr.Named("No more than four distinct integers.")
             .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
             .Deliberate(a => 0 - a.Count, -5)
-            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
-            .StoreCaseFiles(journalist)
+            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4).StoreCaseFiles(journalist)
             .Run(1575924946);
 
     protected override void Verify(Article article)
