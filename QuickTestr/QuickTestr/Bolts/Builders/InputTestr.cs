@@ -88,4 +88,32 @@ public sealed class InputTestr<T>
             null,
             testName,
             useBuiltInReducers);
+
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunner<T> AssertThrewExactly<TException>(Action<T> action, Func<T, string>? message = null)
+        where TException : Exception
+        => new(fuzzr, shrinkers, formatters, _ => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input)), message is null ? null : () => message(input))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunner<T> AssertThrewExactly<TException>(Func<T, Task> action, Func<T, string>? message = null)
+        where TException : Exception
+        => new(fuzzr, shrinkers, formatters, _ => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input)), message is null ? null : () => message(input))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunner<T> AssertThrewExactly<TException>(Func<T, CancellationToken, Task> action, Func<T, string>? message = null)
+        where TException : Exception
+        => new(fuzzr, shrinkers, formatters, _ => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", token => action(input, token)), message is null ? null : () => message(input))
+        };
 }

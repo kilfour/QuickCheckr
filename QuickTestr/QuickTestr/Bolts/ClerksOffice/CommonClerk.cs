@@ -47,7 +47,8 @@ internal static class CommonClerk
             .OnType((FailedExceptionDeposition a) => ExceptionFlow(a), () => failure);
 
     private static Flow<Flow> FailedExpectationFlow(FailedExpectationDeposition failure)
-        => Style.OnNewLine().Indent(1).Trace(failure.FailedExpectation);
+        => Style.OnNewLine().Indent(1).Trace(failure.FailedExpectation)
+            .ToFlow((string message) => Style.OnNewLine().Indent(3).Trace(message), failure.Messages);
 
     private static Flow<Flow> ExceptionFlow(FailedExceptionDeposition failure)
         => Style.OnNewLine().Indent(1).Trace(failure.GetFailureDescription());

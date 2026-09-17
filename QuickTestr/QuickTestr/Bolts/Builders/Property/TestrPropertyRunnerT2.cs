@@ -43,6 +43,8 @@ public sealed class TestrPropertyRunnerT2<TInput1, TInput2> : TestrRunner<(TInpu
         TestName = testName;
     }
 
+    internal Func<(TInput1, TInput2), CheckrOf<Case>>? Assertion { get; init; }
+
     internal override string TestName { get; }
 
     internal override CheckrOf<Case> GetCheckr(
@@ -63,6 +65,10 @@ public sealed class TestrPropertyRunnerT2<TInput1, TInput2> : TestrRunner<(TInpu
         from deliberateUntil in Checkr.When(
             () => deliberationTarget.HasValue,
             Trackr.DeliberateUntil(deliberationTarget.GetValueOrDefault()))
+        from assertion in Assertion is null ? CheckInvariant(input) : Assertion(input)
+        select Case.Closed;
+
+    private CheckrOf<Case> CheckInvariant((TInput1, TInput2) input) =>
         from run in Checkr.ActCarefully("Run", () => invariant(input.Item1, input.Item2))
         from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => invariant(input.Item1, input.Item2)))
         from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)

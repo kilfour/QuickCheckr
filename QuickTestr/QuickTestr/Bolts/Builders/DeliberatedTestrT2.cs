@@ -87,4 +87,32 @@ public sealed class DeliberatedTestrT2<TInput1, TInput2>
             deliberationTarget,
             testName,
             useBuiltInReducers);
+
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<TInput1, TInput2> AssertThrewExactly<TException>(Action<TInput1, TInput2> action, Func<TInput1, TInput2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), deliberation, deliberationTarget, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input.Item1, input.Item2)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<TInput1, TInput2> AssertThrewExactly<TException>(Func<TInput1, TInput2, Task> action, Func<TInput1, TInput2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), deliberation, deliberationTarget, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input.Item1, input.Item2)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<TInput1, TInput2> AssertThrewExactly<TException>(Func<TInput1, TInput2, CancellationToken, Task> action, Func<TInput1, TInput2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), deliberation, deliberationTarget, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", token => action(input.Item1, input.Item2, token)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
 }

@@ -93,4 +93,32 @@ public sealed class InputTestrT2<T1, T2>
             null,
             testName,
             useBuiltInReducers);
+
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<T1, T2> AssertThrewExactly<TException>(Action<T1, T2> action, Func<T1, T2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input.Item1, input.Item2)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<T1, T2> AssertThrewExactly<TException>(Func<T1, T2, Task> action, Func<T1, T2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", () => action(input.Item1, input.Item2)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
+
+    /// <summary>Requires the exact exception type and optionally an ordinal message match computed from the current input.</summary>
+    public TestrPropertyRunnerT2<T1, T2> AssertThrewExactly<TException>(Func<T1, T2, CancellationToken, Task> action, Func<T1, T2, string>? message = null)
+        where TException : Exception
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, (_, _) => Task.FromResult(true), null, null, testName, useBuiltInReducers)
+        {
+            Assertion = input => ExceptionProperty.Check<TException>(
+                testName, Checkr.ActCarefully("Run", token => action(input.Item1, input.Item2, token)), message is null ? null : () => message(input.Item1, input.Item2))
+        };
 }
