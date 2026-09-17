@@ -1,5 +1,7 @@
 ## 0.4.1:
 
+* Added an optional expected-message factory to `Checkr.ExpectThrewExactly<TException>`. When supplied, both the exact exception type and ordinal message equality are checked; the factory runs once per active expectation and failures include the expected message.
+
 * Added async `Task<bool>` callbacks and cancellation-token overloads to `Checkr.Expect`, `Checkr.ExpectWhen`, `Trackr.Expect`, `Trackr.Verify` (including labelled conditions), `Trackr.StopWhenProven`, `Trackr.PoolExpect`, both `Trackr.PoolExpectEach` forms, and `Trackr.PoolExpectEachWhen`.
 * Added awaited value factories to `Checkr.ExpectEquals`, including mixed synchronous/async factories. Task-returning factories compare their awaited results, not task objects. Use an explicitly typed null, such as `() => (string?)null`, when null factories would otherwise make overload resolution ambiguous.
 * Conditional predicates, pool filters, and related-pool `belongsTo` callbacks now support async evaluation and cancellation tokens, with mixed synchronous/async callback combinations.
