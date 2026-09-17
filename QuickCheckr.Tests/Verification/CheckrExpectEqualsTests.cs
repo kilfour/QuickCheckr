@@ -51,7 +51,7 @@ public class CheckrExpectEqualsTests
     public void Deferred_values_pass_and_support_nulls()
     {
         var article = Journalist.Publish(
-            Checkr.ExpectEquals<string>("nullable", () => null, () => null),
+            Checkr.ExpectEquals<string>("nullable", () => (string?)null, () => (string?)null),
             checkr => checkr.Run());
 
         Assert.Equal(string.Empty, article.FailureDescription());

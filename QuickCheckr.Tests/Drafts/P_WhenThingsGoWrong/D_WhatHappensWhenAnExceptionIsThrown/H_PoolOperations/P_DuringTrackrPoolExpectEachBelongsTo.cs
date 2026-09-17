@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
@@ -28,8 +29,8 @@ public class P_DuringTrackrPoolExpectEachBelongsTo : CheckrThrowsTest<P_DuringTr
         select Case.Closed;
 
     [CodeExceptionType]
-    protected override Type ExceptionType() => typeof(ComputerSaysNo);
+    protected override Type ExceptionType() => typeof(ExpectationThrowsException);
 
     [CodeExceptionMessage]
-    protected override string Message() => "Boom";
+    protected override string Message() => "The expectation 'Expectation: Int32-1' threw a 'ComputerSaysNo'.";
 }

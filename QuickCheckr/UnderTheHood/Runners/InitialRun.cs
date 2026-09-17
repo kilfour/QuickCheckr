@@ -13,7 +13,7 @@ internal sealed class InitialRun(CheckrState State, CheckrOf<Case> Check)
                 State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
                 State.CancellationToken.ThrowIfCancellationRequested();
-                if (State.EvidenceRecorder.Failed())
+                if (State.RunStopped || State.EvidenceRecorder.Failed())
                     return;
             }
         }

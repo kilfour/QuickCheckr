@@ -18,12 +18,6 @@ public static partial class Checkr
         => InnerExpectWhen(key, predicate, condition, messages);
 
     private static CheckrOf<Case> InnerExpectWhen(string key, Func<bool> predicate, Func<bool> condition, Func<List<string>>? messages)
-        => state =>
-        {
-            // this is duplicated in Evaluate.Expect
-            // call it here because we need to register before the predicate
-            // for unchecked excpectations warning
-            state.Memory.KeyGuardian.Expects.Check(key);
-            return predicate() ? Evaluate.Expect(key, condition, false, messages)(state) : CheckrResult.CaseOnly(state);
-        };
+        => Evaluate.ExpectAsync(key, _ => Task.FromResult(condition()), true, messages,
+            _ => Task.FromResult(predicate()));
 }

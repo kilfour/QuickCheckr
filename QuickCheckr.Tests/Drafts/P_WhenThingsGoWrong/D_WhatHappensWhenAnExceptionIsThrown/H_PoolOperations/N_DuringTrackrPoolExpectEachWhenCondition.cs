@@ -1,3 +1,4 @@
+using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
@@ -6,7 +7,7 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 
 [DocFile]
 [DocContent("""
-Whenever an exception occurs during the execution of the condition in `Trackr.PoolExpectEachWhen` it is propagated.
+Whenever an exception occurs during the execution of the condition in `Trackr.PoolExpectEachWhen` it is wrapped in an `ExpectationThrowsException`.
 """)]
 public class N_DuringTrackrPoolExpectEachWhenCondition : CheckrThrowsTest<N_DuringTrackrPoolExpectEachWhenCondition>
 {
@@ -27,8 +28,8 @@ public class N_DuringTrackrPoolExpectEachWhenCondition : CheckrThrowsTest<N_Duri
         select Case.Closed;
 
     [CodeExceptionType]
-    protected override Type ExceptionType() => typeof(ComputerSaysNo);
+    protected override Type ExceptionType() => typeof(ExpectationThrowsException);
 
     [CodeExceptionMessage]
-    protected override string Message() => "Boom";
+    protected override string Message() => "The expectation 'Expectation' threw a 'ComputerSaysNo'.";
 }

@@ -29,20 +29,9 @@ public static partial class Trackr
             return expect(state);
         };
 
-    public static CheckrOf<Case> PoolExpectEach<T1, T2>(
-        string key,
-        Func<T1, T2, bool> belongsTo,
-        Func<T1, IReadOnlyCollection<T2>, bool> expectation) =>
-        state =>
-        {
-            var poolDictionary = state.Memory.GetPoolDictionary<T1>();
-            var other = state.Memory.GetPool<T2>();
-            var combined = poolDictionary.Select(a => (KeyValueElement: a, Pool: other.Where(b => belongsTo(a.Value, b)).ToList()));
-            IEnumerable<CheckrOf<Case>> checkrs =
-                combined
-                    .Select(a =>
-                        Checkr.Expect($"{key}: {typeof(T1).Name}-{a.KeyValueElement.Key}",
-                            () => expectation(a.KeyValueElement.Value, [.. a.Pool])));
-            return Combine.Checkrs(checkrs)(state);
-        };
+    public static CheckrOf<Case> PoolExpectEach<T1, T2>(string key,
+        Func<T1, T2, bool> belongsTo, Func<T1, IReadOnlyCollection<T2>, bool> expectation)
+        => PoolExpectRelatedAsync<T1, T2>(key,
+            (parent, child, _) => Task.FromResult(belongsTo(parent, child)),
+            (parent, children, _) => Task.FromResult(expectation(parent, children)));
 }

@@ -1,5 +1,12 @@
 ## 0.4.1:
 
+* Added async `Task<bool>` callbacks and cancellation-token overloads to `Checkr.Expect`, `Checkr.ExpectWhen`, `Trackr.Expect`, `Trackr.Verify` (including labelled conditions), `Trackr.StopWhenProven`, `Trackr.PoolExpect`, both `Trackr.PoolExpectEach` forms, and `Trackr.PoolExpectEachWhen`.
+* Added awaited value factories to `Checkr.ExpectEquals`, including mixed synchronous/async factories. Task-returning factories compare their awaited results, not task objects. Use an explicitly typed null, such as `() => (string?)null`, when null factories would otherwise make overload resolution ambiguous.
+* Conditional predicates, pool filters, and related-pool `belongsTo` callbacks now support async evaluation and cancellation tokens, with mixed synchronous/async callback combinations.
+* Pool filters and conditional predicates now run inside replay skip and exception guards, including synchronous callbacks. On the initial run, exceptions from guarded pool filters and `belongsTo` callbacks are wrapped in `ExpectationThrowsException`; during shrinking, they reject the replay candidate.
+* Fixed standalone `StopWhenProven` steps so the runner stops after success even without a surrounding LINQ composition.
+* Async expectations respect replay skip checks, await callbacks before recording results, and preserve expectation exception handling during shrinking. Pool callbacks are awaited sequentially, including related-pool checks; cancellation stops further evaluation.
+
 * Fixed input shrinking so a different caught exception during replay rejects the candidate instead of treating the replay as passed. Invalid replacements no longer make otherwise irrelevant inputs appear relevant.
 * Exceptions thrown inside expectations during replay also reject the candidate. Rejection state is cleared before each replay.
 * Breaking change: `Checkr.ExpectEquals<T>(...)` now requires expected and actual value factories. Replace `ExpectEquals(key, expected, actual)` with `ExpectEquals(key, () => expected, () => actual)`.
