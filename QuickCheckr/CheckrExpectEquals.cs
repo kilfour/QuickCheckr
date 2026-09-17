@@ -3,17 +3,26 @@ namespace QuickCheckr;
 public static partial class Checkr
 {
     /// <summary>
-    /// Adds a named expectation that compares two values for equality.
-    /// When the values differ, the expected and actual values are included in the failure report
-    /// using the configured trace formatter.
+    /// Compares values evaluated only when this expectation runs, after replay skip checks.
+    /// Each factory is evaluated once per expectation execution; failures report those values.
     /// </summary>
-    public static CheckrOf<Case> ExpectEquals<T>(string key, T? expected, T? actual) =>
-        Expect(
-            key,
-            () => EqualityComparer<T?>.Default.Equals(expected, actual),
-            editor =>
-            [
-                $"Expected: {editor.IntroduceThis(expected)}",
-                $"Actual: {editor.IntroduceThis(actual)}"
-            ]);
+    public static CheckrOf<Case> ExpectEquals<T>(string key, Func<T?> expected, Func<T?> actual) =>
+        state =>
+        {
+            T? expectedValue = default;
+            T? actualValue = default;
+            return Expect(
+                key,
+                () =>
+                {
+                    expectedValue = expected();
+                    actualValue = actual();
+                    return EqualityComparer<T?>.Default.Equals(expectedValue, actualValue);
+                },
+                editor =>
+                [
+                    $"Expected: {editor.IntroduceThis(expectedValue)}",
+                    $"Actual: {editor.IntroduceThis(actualValue)}"
+                ])(state);
+        };
 }

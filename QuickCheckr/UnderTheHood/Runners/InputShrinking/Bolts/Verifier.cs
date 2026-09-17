@@ -53,9 +53,7 @@ internal class Verifier(CheckrState State,
             }
         }
 
-        return State.EvidenceRecorder.Failed()
-            ? new ReplayOutcome.FailurePreserved()
-            : new ReplayOutcome.Passed();
+        return GetOutcome();
     }
 
     public virtual async ValueTask<bool> TestimonyPassedAsync(int executionId, string key, object value)
@@ -98,6 +96,15 @@ internal class Verifier(CheckrState State,
                 await State.Memory.DisposeStashAsync().ConfigureAwait(false);
             }
         }
+        return GetOutcome();
+    }
+
+    private ReplayOutcome GetOutcome()
+    {
+        // A different exception blocks the replay; it is not evidence of a passing input.
+        if (State.EvidenceRecorder.ReplayException is { } exception)
+            return new ReplayOutcome.CandidateRejected(exception);
+
         return State.EvidenceRecorder.Failed()
             ? new ReplayOutcome.FailurePreserved()
             : new ReplayOutcome.Passed();

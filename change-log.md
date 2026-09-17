@@ -1,4 +1,11 @@
-## 0.4.0: You Keep Me Hanging On ... Asynchronously (not yet released)
+## 0.4.1:
+
+* Fixed input shrinking so a different caught exception during replay rejects the candidate instead of treating the replay as passed. Invalid replacements no longer make otherwise irrelevant inputs appear relevant.
+* Exceptions thrown inside expectations during replay also reject the candidate. Rejection state is cleared before each replay.
+* Breaking change: `Checkr.ExpectEquals<T>(...)` now requires expected and actual value factories. Replace `ExpectEquals(key, expected, actual)` with `ExpectEquals(key, () => expected, () => actual)`.
+* Equality expectations evaluate their factories only when the expectation runs, after replay skip checks. Each factory is evaluated once, and failure reports use the captured values with the configured trace formatter.
+
+## 0.4.0: You Keep Me Hanging On ... Asynchronously
 
 * Added end-to-end async/await support across execution, replay, shrinking, tracing, and case selection.
 * Added `RunAsync(...)` overloads, including cancellation support.

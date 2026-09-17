@@ -10,6 +10,7 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
         IsReplay = true;
         currentFailed = false;
         failedOnWrongExecutionId = false;
+        ReplayException = null;
     }
 
     private bool runFailed;
@@ -24,6 +25,7 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
     public bool ExpectationNeedsToBeSkipped(string key)
         => IsReplay && (FailingExpectation.Key != key);
 
+    public Exception? ReplayException { get; private set; }
     public Exception? Exception { get; private set; } = null;
     public void RecordFailure(Exception exception)
     {
@@ -31,6 +33,8 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
         {
             if (ExceptionIs.Equivalent(Exception, exception))
                 currentFailed = true;
+            else
+                ReplayException ??= exception;
             return;
         }
         if (!runFailed) // Action already crashed or previous expectation failed
@@ -45,7 +49,7 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
         pathologist.Inform("ExpectationCrashed", key, exception.GetType().Name);
         if (IsReplay)
         {
-            // currentFailed = true;
+            ReplayException ??= exception;
             return;
         }
         if (!runFailed) // Action already crashed or previous expectation failed
