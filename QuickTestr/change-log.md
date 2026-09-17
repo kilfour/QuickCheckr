@@ -1,6 +1,6 @@
-### Unreleased
-* Added `AssertThrewExactly<TException>(action, message: optionalFactory)` to one- and two-input property builders, including deliberated builders. Supports sync/async actions and cancellation-token callbacks, with exact exception-type and optional ordinal message matching. Message factories receive the current generated input (`Func<TInput, string>`) or both inputs (`Func<TInput1, TInput2, string>`), including during shrinking.
-* Exception assertions use the existing shrinking, deliberation, and async runner paths. Property reports include expected/actual exception details.
+### 0.4.1: Everybody needs good neighbours 
+* Added `AssertThrewExactly<TException>(action, message)` to one- and two-input property builders.
+* Fixed package info and keep version number in sync with QuickCheckr
 
 ### 0.1.0: Bringing It All Back Home
 * Added seeded debug runs with `AutopsyProbe` support.
