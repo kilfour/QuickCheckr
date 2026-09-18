@@ -1,6 +1,5 @@
 using QuickCheckr.Diagnostics;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.Tests.Verification;
 

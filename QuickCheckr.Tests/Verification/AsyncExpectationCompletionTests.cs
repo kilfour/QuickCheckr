@@ -2,7 +2,6 @@ using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
-using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 
 namespace QuickCheckr.Tests.Verification;
 
@@ -189,9 +188,12 @@ public class AsyncExpectationCompletionTests
         var state = State();
         List<int> order = [];
         await Trackr.Verify("verify",
-            ("first", async () => { order.Add(1); await Task.Yield(); return false; }),
-            ("second", async () => { order.Add(2); await Task.Yield(); return true; }),
-            ("third", async () => { order.Add(3); await Task.Yield(); return false; }))(state);
+            ("first", async () => { order.Add(1); await Task.Yield(); return false; }
+        ),
+            ("second", async () => { order.Add(2); await Task.Yield(); return true; }
+        ),
+            ("third", async () => { order.Add(3); await Task.Yield(); return false; }
+        ))(state);
         Assert.Equal([1, 2, 3], order);
         Assert.Equal("verify: first, third", state.EvidenceRecorder.FailingVerification.Key);
     }
