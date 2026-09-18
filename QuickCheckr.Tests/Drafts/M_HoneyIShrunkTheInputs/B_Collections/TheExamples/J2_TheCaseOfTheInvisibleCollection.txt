@@ -1,18 +1,17 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleCollection.cs:50:1
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:18:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
  ------------------------------------------------------------
   Executed: Add
-   - Input: Int = 1
+   - Int = 1
  ------------------------------------------------------------
   Executed: Update
-   - Input: Ints     = [ 57, 70 ]
-            Redux      [ ]
-   - Trace: Original = [ 57, 70 ]
-   - WARNING: Unused shrinkers found for 'List`1,List`1' at key 'Ints'.
+   - Ints     = [ 57, 70 ]
+     Redux      [ ]
+   - Original = [ 57, 70 ]
  ================================
   !! Expectation Failed: Has 1
  ================================

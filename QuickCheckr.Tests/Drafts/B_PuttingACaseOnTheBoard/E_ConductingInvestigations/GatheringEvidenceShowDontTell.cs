@@ -1,3 +1,4 @@
+using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
@@ -31,5 +32,11 @@ public class GatheringEvidenceShowDontTell : BaseTest
                 Custodian = Custodian.Local()
             })
             .Conduct(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun());
+    }
+
+    [Fact]
+    public void Checking()
+    {
+        GatheringEvidenceCheckr.TheCheckr().Run(135811622, 20.ExecutionsPerRun());
     }
 }

@@ -1,16 +1,16 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J3_TheCaseOfTheInvisibleCollection.cs:55:1
+ Location:                J3_TheCaseOfTheInvisibleCollection.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
  ------------------------------------------------------------
   Executed: Add
-   - Input: Int = 1
+   - Int = 1
  ------------------------------------------------------------
   Executed: Update
-   - Input: Ints  = [ 57, 70 ]
-            Redux   [ ]
+   - Ints  = [ 57, 70 ]
+     Redux   [ ]
  ================================
   !! Expectation Failed: Has 1
  ================================

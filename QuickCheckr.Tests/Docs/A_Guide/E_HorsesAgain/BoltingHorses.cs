@@ -58,12 +58,12 @@ Now we retrieve a random coach from the pool and update its skills, verifying th
 Same pattern as the *Create Coach Checkr*.")]
     [DocExample(typeof(BoltingHorses), nameof(CreateCourse))]
     [DocContent(
-@"**Assign Coach to Course Checkr:**")]
-    [DocExample(typeof(BoltingHorses), nameof(AssignCoachToCourse))]
-    [DocContent(
 @"**Update Course Skills Checkr:**  
 And again, same pattern as the *Update Coach Skills Checkr*.")]
     [DocExample(typeof(BoltingHorses), nameof(UpdateCourseSkills))]
+    [DocContent(
+@"**Assign Coach to Course Checkr:**")]
+    [DocExample(typeof(BoltingHorses), nameof(AssignCoachToCourse))]
     [DocContent(
 @"**Assigned Coaches Must Be Suitable Checkr:**  
 And finally here's the system invariant.  

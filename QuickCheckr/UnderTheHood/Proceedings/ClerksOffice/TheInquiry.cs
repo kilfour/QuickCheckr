@@ -48,6 +48,7 @@ internal static class TheInquiry
                     .OnNewLine()
                     .CaptionWidth("Minimal failing case")
                     .Trace(caseFile.ExecutionCount)
+                    .Space()
                     .Pluralize(caseFile.ExecutionCount, "execution")
                     .Space()
                     .Parenthesized(

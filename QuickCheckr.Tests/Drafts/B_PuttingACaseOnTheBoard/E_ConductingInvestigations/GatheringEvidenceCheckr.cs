@@ -1,5 +1,7 @@
+using QuickCheckr.Diagnostics;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickFuzzr;
+using QuickPulse.Show;
 
 namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.E_ConductingInvestigations;
 
@@ -17,8 +19,7 @@ public class GatheringEvidenceCheckr
         select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCoach =
-        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"),
-            Shrink.None<string>())
+        from name in Checkr.Input("Coach Name", NameFuzzr.For("Coach"))
         from coach in Checkr.Act("Create Coach", () => new Coach(name))
         from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
         from toPool in Trackr.ToPool("Store Coach", () => coach)
@@ -29,6 +30,7 @@ public class GatheringEvidenceCheckr
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
                 , Shrink.CollectionFromState(coach.Value.Skills, []))
+            from aut in Autopsy.Note("Coach Skills", () => Introduce.This(coach.Value.Skills))
             from updateSkills in Checkr.Act("Update Coach Skills",
                 () => coach.Value.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",
