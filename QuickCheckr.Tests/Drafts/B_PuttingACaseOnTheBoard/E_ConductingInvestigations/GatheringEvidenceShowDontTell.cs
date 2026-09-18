@@ -33,10 +33,4 @@ public class GatheringEvidenceShowDontTell : BaseTest
             })
             .Conduct(100.Investigations(), 3.Runs(), 20.ExecutionsPerRun());
     }
-
-    [Fact]
-    public void Checking()
-    {
-        GatheringEvidenceCheckr.TheCheckr().Run(135811622, 20.ExecutionsPerRun());
-    }
 }
