@@ -110,7 +110,7 @@ Executions share:
 Meanwhile, the following *are fresh each execution*:
 
 * Every `Checkr.Input` value.
-* Every `Checkr.Act`, `Checkr.Expect`, and `Checkr.Trace` is evaluated anew.
+* Every `Checkr.Act` and `Checkr.Expect` is evaluated anew.
 * The shrinking engine can re-run isolated executions to evaluate relevance.
 
 ```text
