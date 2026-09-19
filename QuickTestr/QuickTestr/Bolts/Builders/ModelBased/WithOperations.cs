@@ -20,7 +20,7 @@ public sealed class WithOperations<T, U>
     private readonly bool verifyReturnValues;
     private readonly Func<T> model;
     private readonly Func<U> sut;
-    private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations;
+    private readonly List<Func<bool, T, U, CheckrOf<CheckrOption>>> operations;
     private readonly List<Observation<T, U>> observations;
 
     internal WithOperations(
@@ -30,7 +30,7 @@ public sealed class WithOperations<T, U>
         Func<T> model,
         Func<U> sut,
         bool verifyReturnValues,
-        List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
+        List<Func<bool, T, U, CheckrOf<CheckrOption>>> operations,
         Observation<T, U> observation)
     {
         TestName = testName;

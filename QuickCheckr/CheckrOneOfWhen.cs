@@ -10,15 +10,15 @@ public static partial class Checkr
     /// Chooses one of the provided Checkr scripts whose condition evaluates to true, and executes it as the next step.  
     /// Use when modelling behaviour where only certain actions are valid in the current state.
     /// </summary>
-    public static CheckrOf<Case> OneOfWhen(params CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>[] options)
+    public static CheckrOf<Case> OneOfWhen(params CheckrOf<CheckrOption>[] options)
         => OneOfWhen(GetKeyFor.CheckrOneOfWhen, options);
 
     public static CheckrOf<Case> OneOfWhen(
         string key,
-        params CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>[] options) =>
+        params CheckrOf<CheckrOption>[] options) =>
         async state =>
         {
-            var checkrs = new (Func<bool> condition, CheckrOf<Case> checkr)[options.Length];
+            var checkrs = new CheckrOption[options.Length];
             for (var i = 0; i < options.Length; i++)
             {
                 state.CancellationToken.ThrowIfCancellationRequested();
@@ -28,8 +28,8 @@ public static partial class Checkr
                     return CheckrResult.CaseOnly(state);
             }
             var validScriptIndexes =
-                checkrs.Select((a, ix) => (ix, a.condition))
-                    .Where(a => a.condition())
+                checkrs.Select((a, ix) => (ix, a.Condition))
+                    .Where(a => a.Condition())
                     .Select(a => a.ix);
             var index = state.Memory.StoreVariable(key,
                 () =>
@@ -39,8 +39,8 @@ public static partial class Checkr
                     return Fuzzr.OneOf(validScriptIndexes)(state.FuzzrState).Value;
                 });
             var checkr = checkrs[index];
-            if (checkr.condition())
-                return await checkrs[index].checkr(state).ConfigureAwait(false);
+            if (checkr.Condition())
+                return await checkrs[index].Checkr(state).ConfigureAwait(false);
             return CheckrResult.CaseOnly(state);
         };
 }

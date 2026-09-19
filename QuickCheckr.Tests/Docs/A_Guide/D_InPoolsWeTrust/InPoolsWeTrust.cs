@@ -115,11 +115,11 @@ For this reason the following method returns a `{nameof(Checkr)}.{nameof(Checkr.
     public void Conditionally() =>
         Assert.Throws<EmptyPoolException>(() => (
             from option in PoolWhen()
-            from unconditionally in option.checkr
+            from unconditionally in option.Checkr
             select Case.Closed).Run());
 
     [CodeSnippet]
-    private static CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)> PoolWhen() =>
+    private static CheckrOf<CheckrOption> PoolWhen() =>
         Trackr.PoolWhen<Contact>("A Random Contact", a => a.Count != 0,
             contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
 

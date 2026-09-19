@@ -30,7 +30,7 @@ public sealed class WithSut<T, U>
         this.sut = sut;
     }
 
-    private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations = [];
+    private readonly List<Func<bool, T, U, CheckrOf<CheckrOption>>> operations = [];
 
     private WithSut<T, U> AddOperation(Func<bool, T, U, CheckrOf<Case>> operation)
     {

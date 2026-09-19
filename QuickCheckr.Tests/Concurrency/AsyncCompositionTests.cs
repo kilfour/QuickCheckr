@@ -97,10 +97,10 @@ public class AsyncCompositionTests
             completed++;
             return CheckrResult.CaseOnly(state);
         };
-        CheckrOf<(Func<bool>, CheckrOf<Case>)> option = async state =>
+        CheckrOf<CheckrOption> option = async state =>
         {
             await Task.Yield();
-            return CheckrResult.Some<(Func<bool>, CheckrOf<Case>)>(state, (() => true, nested));
+            return CheckrResult.Some<CheckrOption>(state, new(() => true, nested));
         };
         var wrapper = operation switch
         {

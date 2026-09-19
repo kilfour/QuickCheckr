@@ -1,3 +1,7 @@
+## 0.4.2: Not Yet Released
+
+* Breaking change: replaced the `(Func<bool> condition, CheckrOf<Case> checkr)` tuple used by `Checkr.Option`, `Checkr.OneOfWhen`, and `Trackr.PoolWhen` with the named `CheckrOption` record.
+
 ## 0.4.1: Plugging Some Holes
 
 * Added an optional expected-message factory to `Checkr.ExpectThrewExactly<TException>`. When supplied, both the exact exception type and ordinal message equality are checked; the factory runs once per active expectation and failures include the expected message.
