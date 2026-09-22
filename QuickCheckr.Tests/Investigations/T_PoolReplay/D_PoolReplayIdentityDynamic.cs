@@ -35,7 +35,7 @@ public class D_PoolReplayIdentityDynamic : CheckrTest<D_PoolReplayIdentityDynami
 
             Checkr.Option(() => counter == 3,
                 Trackr.OneOfPool<int>("Use Thing", thing =>
-                    from trace in Checkr.Trace("Pool Element", () => $"{thing.Id}:{thing.Value}")
+                    from trace in Checkr.Trace("Pool Element", _ => [$"{thing.Id}:{thing.Value}"])
                     from expect in Checkr.Expect(
                         "Second pool element fails",
                         () => !(factory.GetById(thing.Value).Extra == 0))

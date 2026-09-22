@@ -45,7 +45,7 @@ public class E_CustomizedWithReducer : CheckrTest<E_CustomizedWithReducer>
                 Op = Operation.Div
             }),
             Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
-        from trace in Checkr.Trace("Original", () => expr)
+        from trace in Checkr.Trace("Original", a => a.Show(expr))
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
         from expect in Checkr.Expect("Not 42", () => eval != 42)
         select Case.Closed;

@@ -22,7 +22,7 @@ public class A_Default : CheckrTest<A_Default>
     protected override CheckrOf<Case> TheCheckr() =>
         from expr in Checkr.Input("Expr", Fuzzr.Constant(
             new Term { L = new Num { Value = 42 }, R = new Num { Value = 0 }, Op = Operation.Div }))
-        from trace in Checkr.Trace("Original", () => expr)
+        from trace in Checkr.Trace("Original", a => a.Show(expr))
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
         select Case.Closed;
 
@@ -39,6 +39,6 @@ public class A_Default : CheckrTest<A_Default>
         Assert.Equal("Expr", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Op: Div, R: { Value: 0 } }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Op: Div, L: { Value: 42 }, R: { Value: 0 } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Op: Div, L: { Value: 42 }, R: { Value: 0 } }"], article.Execution(1).Trace(1).Read().Value);
     }
 }

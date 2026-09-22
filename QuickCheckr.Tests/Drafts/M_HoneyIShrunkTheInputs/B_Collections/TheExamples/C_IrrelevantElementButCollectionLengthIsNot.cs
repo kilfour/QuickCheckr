@@ -32,7 +32,7 @@ without introducing noise from element-level changes that could not affect the o
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from list in Checkr.Input("List", Fuzzr.Int().Many(1, 10))
-        from trace in Checkr.Trace("Original List", () => list)
+        from trace in Checkr.Trace("Original List", a => a.Show(list))
         from expect in Checkr.Expect("Length <= 2", () => list.Count() <= 2)
         select Case.Closed;
 
@@ -47,6 +47,6 @@ without introducing noise from element-level changes that could not affect the o
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, _, _ ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original List", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 12, 45, 56, 18, 31 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 12, 45, 56, 18, 31 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

@@ -20,7 +20,7 @@ public class D_RelevantItemIsDefault : CheckrTest<D_RelevantItemIsDefault>
     protected override CheckrOf<Case> TheCheckr() =>
         from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(0, 10))
         from expect in Checkr.Expect("List does not contain 0", () => !listInput.Contains(0))
-        from trace in Checkr.Trace("List Input", () => listInput)
+        from trace in Checkr.Trace("List Input", a => a.Show(listInput))
         select Case.Closed;
 
     protected override void Verify(Article article)
@@ -34,6 +34,6 @@ public class D_RelevantItemIsDefault : CheckrTest<D_RelevantItemIsDefault>
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 0 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("List Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

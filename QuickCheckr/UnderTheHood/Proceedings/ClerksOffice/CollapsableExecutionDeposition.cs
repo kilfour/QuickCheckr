@@ -20,4 +20,5 @@ internal sealed record CollapsableExecutionDeposition(ExecutionDeposition Execut
         Times++;
         return true;
     }
+
 }

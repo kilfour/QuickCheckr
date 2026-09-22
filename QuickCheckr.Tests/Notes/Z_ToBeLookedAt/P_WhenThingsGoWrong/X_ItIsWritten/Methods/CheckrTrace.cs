@@ -22,8 +22,8 @@ public class CheckrTrace
     private static CheckrOf<Case> GetCheckr()
     {
         return
-            from one in Checkr.Trace("reused", () => "")
-            from two in Checkr.Trace("reused", () => "")
+            from one in Checkr.Trace("reused", _ => [""])
+            from two in Checkr.Trace("reused", _ => [""])
             from expect in Checkr.Expect("fails", () => false) // <= this one needs to run
             select Case.Closed;
     }

@@ -37,7 +37,7 @@ public class PoolTraceDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("Making Sure", "42"))
+                    .AddTraceDeposition(new TraceDeposition("Making Sure", ["42"]))
                     .AddInputDeposition(new InputDeposition("Answer", 42))
                     .AddPoolTraceDeposition(new PoolTraceDeposition("Universe", "Pooled")));
         var reader = Transcribe(caseFile);

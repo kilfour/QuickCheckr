@@ -30,7 +30,7 @@ public class J_Tuples : CheckrTest<J_Tuples>
             from a in Fuzzr.Int()
             from b in Fuzzr.Int()
             select (a, b))
-        from traceOne in Checkr.Trace("Original", () => input)
+        from traceOne in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("Sum is < 42.", () => input.a + input.b < 42)
         select Case.Closed;
 
@@ -46,6 +46,6 @@ public class J_Tuples : CheckrTest<J_Tuples>
         Assert.Equal("( 52, 25, _ )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( 17, 25, _ )", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("( 52, 25, 23 )", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["( 52, 25, 23 )"], article.Execution(1).Trace(1).Read().Value);
     }
 }

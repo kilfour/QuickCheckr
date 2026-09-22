@@ -68,12 +68,12 @@ public sealed class TestrOracleRunnerT2<TInput1, TInput2, TResult> : TestrRunner
             Trackr.DeliberateUntil(deliberationTarget.GetValueOrDefault()))
         from expected in Checkr.ActCarefully("Expected", () => expected(input.Item1, input.Item2))
         from actual in Checkr.ActCarefully("Actual", () => actual(input.Item1, input.Item2))
-        from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expected.Threw && expected.HasValue, () => expected.Value)
-        from traceExpectedValueNull in Checkr.TraceWhen("Expected", () => !expected.Threw && !expected.HasValue, () => "null")
-        from traceExpectedException in Checkr.TraceWhen("Expected", () => expected.Threw, () => GetExceptionReport(expected.Exception!))
-        from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actual.Threw && actual.HasValue, () => actual.Value)
-        from traceActualValueNull in Checkr.TraceWhen("Actual  ", () => !actual.Threw && !actual.HasValue, () => "null")
-        from traceActualException in Checkr.TraceWhen("Actual  ", () => actual.Threw, () => GetExceptionReport(actual.Exception!))
+        from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expected.Threw && expected.HasValue, a => a.Show(expected.Value))
+        from traceExpectedValueNull in Checkr.TraceWhen("Expected", () => !expected.Threw && !expected.HasValue, _ => ["null"])
+        from traceExpectedException in Checkr.TraceWhen("Expected", () => expected.Threw, _ => [GetExceptionReport(expected.Exception!)])
+        from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actual.Threw && actual.HasValue, a => a.Show(actual.Value))
+        from traceActualValueNull in Checkr.TraceWhen("Actual  ", () => !actual.Threw && !actual.HasValue, _ => ["null"])
+        from traceActualException in Checkr.TraceWhen("Actual  ", () => actual.Threw, _ => [GetExceptionReport(actual.Exception!)])
         from expectation in Checkr.Expect(TestName, () => CheckResults(expected, actual))
         select Case.Closed;
 

@@ -24,7 +24,7 @@ public class OnSpecificValue : CheckrTest<OnSpecificValue>
             Shrink.When<int>(
                 s => s.Value(a => a == 5),
                 s => s.Simplify(Reduce.Towards(0))))
-        from trace in Checkr.Trace("Original", () => inter)
+        from trace in Checkr.Trace("Original", a => a.Show(inter))
         from expect in Checkr.Expect("All ints smaller than 1.", () => inter.A < 1 && inter.B < 1)
         select Case.Closed;
 
@@ -40,7 +40,7 @@ public class OnSpecificValue : CheckrTest<OnSpecificValue>
         Assert.Equal("{ B: 5 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ B: 1 }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ A: 42, B: 5 }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ A: 42, B: 5 }"], article.Execution(1).Trace(1).Read().Value);
     }
 
     public record Inter(int A, int B);

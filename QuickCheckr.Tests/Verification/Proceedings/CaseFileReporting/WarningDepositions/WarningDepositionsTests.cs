@@ -25,7 +25,7 @@ public class WarningDepositionsTests : DepositionTest
     {
         var caseFile = CaseFile.From(Dossier.FailureInfo, Dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                    .AddTraceDeposition(new TraceDeposition("Something   ", "I Traced"))
+                    .AddTraceDeposition(new TraceDeposition("Something   ", ["I Traced"]))
                     .AddWarningDeposition(new WarningDeposition(new AllInputsIrrelevantWarning())));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());

@@ -29,7 +29,7 @@ public class K_ACollectionOfObjects : CheckrTest<K_ACollectionOfObjects>
     protected override CheckrOf<Case> TheCheckr() =>
         from list in Checkr.Input("List", Fuzzr.One<Thing>().Many(2, 5))
         from show in Showr.ForTrace(ListShowr)
-        from trace in Checkr.Trace("Original", () => list)
+        from trace in Checkr.Trace("Original", a => a.Show(list))
         from expect in Checkr.ExpectWhen("Only answers for One",
             () => list.Any(), () => list.All(a => a.One != 42))
         select Case.Closed;
@@ -50,12 +50,12 @@ public class K_ACollectionOfObjects : CheckrTest<K_ACollectionOfObjects>
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ { One: 42 } ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal(@"[
+        Assert.Equal([@"[
     { One: 13, Two: 49 },
     { One: 61, Two: 79 },
     { One: 93, Two: 91 },
     { One: 18, Two: 39 },
     { One: 42, Two: 54 }
-]", article.Execution(1).Trace(1).Read().Value);
+]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

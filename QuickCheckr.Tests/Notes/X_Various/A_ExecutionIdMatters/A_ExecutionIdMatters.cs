@@ -85,7 +85,7 @@ So now, **Execution Id Matters**.
                         from act in Checkr.Act("Add", () => contactBook.Add(name))
                         from storeName in Trackr.ToPool("Name", () => name)
                         select Case.Closed))
-            from traceSut in Checkr.Trace("Sut", () => contactBook)
+            from traceSut in Checkr.Trace("Sut", a => a.Show(contactBook))
             from count in Trackr.PoolExpect<string>("Count matches",
                 a => a.Count() == contactBook.Contacts.Count)
             select Case.Closed;

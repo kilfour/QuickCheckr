@@ -39,9 +39,9 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
         Assert.Equal("Other Turtle", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("{ Down: { Down: null } }", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Turtle", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Down: { Down: { Down: null } } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Down: { Down: { Down: null } } }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Other Turtle", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("{ Down: { Down: null } }", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["{ Down: { Down: null } }"], article.Execution(1).Trace(2).Read().Value);
     }
 
     [CodeSnippet]
@@ -54,8 +54,8 @@ public class D1_IrrelevantObjectsNullIssues : BaseTest
                 from turtle in Fuzzr.One<Turtle>()
                 select turtle)
             from otherTurtle in Checkr.Input("Other Turtle", Fuzzr.One<Turtle>())
-            from traceTurtle in Checkr.Trace("Turtle", () => turtle)
-            from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
+            from traceTurtle in Checkr.Trace("Turtle", a => a.Show(turtle))
+            from traceOtherTurtle in Checkr.Trace("Other Turtle", a => a.Show(otherTurtle))
             from endsOnTurtle in Checkr.ExpectWhen("Turtle Ends on 'TurtlesAllTheWay'",
                 () => turtle.Down?.Down != null,
                 () => turtle.Down?.Down?.GetType() == typeof(TurtlesAllTheWay))

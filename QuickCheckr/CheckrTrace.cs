@@ -5,24 +5,13 @@ namespace QuickCheckr;
 public static partial class Checkr
 {
     /// <summary>
-    /// Records a named trace value for inclusion in the report.  
-    /// Use when you want to expose intermediate values or state to help explain shrinking or failures.
+    /// Records named trace lines for inclusion in the report.
+    /// Use the supplied context to format values, or return lines directly to control their layout.
     /// </summary>
-    public static CheckrOf<Case> Trace<T>(string key, Func<T?> factory) =>
+    public static CheckrOf<Case> Trace(string key, Func<TraceContext, string[]> trace) =>
         state =>
         {
-            state.Memory.StoreTrace(key, () => state.Editor.IntroduceThis(factory()));
-            return CheckrResult.CaseOnly(state);
-        };
-
-    /// <summary>
-    /// Records a named trace string.  
-    /// Use for arbitrary text or computed diagnostics that help illuminate the run.
-    /// </summary>
-    public static CheckrOf<Case> Trace(string key, Func<string> trace) =>
-        state =>
-        {
-            state.Memory.StoreTrace(key, trace);
+            state.Memory.StoreTrace(key, () => trace(new TraceContext(state.Editor)));
             return CheckrResult.CaseOnly(state);
         };
 }

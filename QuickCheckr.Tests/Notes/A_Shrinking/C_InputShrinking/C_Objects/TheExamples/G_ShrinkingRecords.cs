@@ -31,7 +31,7 @@ public class G_ShrinkingRecords : BaseTest
         Assert.Equal("Person", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Age: 18 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Person", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Name: \"xnh\", Age: 18 }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Name: \"xnh\", Age: 18 }"], article.Execution(1).Trace(1).Read().Value);
     }
 
     [CodeSnippet]
@@ -43,7 +43,7 @@ public class G_ShrinkingRecords : BaseTest
                 from ctor in Configr<PersonRecord>.Construct(Fuzzr.String(), Fuzzr.Int())
                 from personRecord in Fuzzr.One<PersonRecord>()
                 select personRecord)
-            from tracePerson in Checkr.Trace("Person", () => person)
+            from tracePerson in Checkr.Trace("Person", a => a.Show(person))
             from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
             select Case.Closed;
     }

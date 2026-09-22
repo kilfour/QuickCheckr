@@ -19,7 +19,7 @@ public class F_MultipleRelevantElements : CheckrTest<F_MultipleRelevantElements>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("List", Fuzzr.Int(1, 10).Many(1, 10))
         from list in Checkr.Capture(() => input.ToList())
-        from trace in Checkr.Trace("Original", () => list)
+        from trace in Checkr.Trace("Original", a => a.Show(list))
         from expect in Checkr.ExpectWhen("One, Two and Three", () => input.Count() > 2, () =>
              !(list[0] == 1
             && list[1] == 2
@@ -37,6 +37,6 @@ public class F_MultipleRelevantElements : CheckrTest<F_MultipleRelevantElements>
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 1, 2, 3 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 1, 2, 3, 9, 3, 1 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 1, 2, 3, 9, 3, 1 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

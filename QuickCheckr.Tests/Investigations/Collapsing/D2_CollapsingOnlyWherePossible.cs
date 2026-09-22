@@ -26,8 +26,8 @@ public class D2_CollapsingOnlyWherePossible : CheckrTest<D2_CollapsingOnlyWhereP
             "Other Turtle",
             Fuzzr.One<Turtle>(),
             Shrink.Collapse<Turtle>(turtle => turtle.Down))
-        from traceTurtle in Checkr.Trace("Turtle", () => turtle)
-        from traceOtherTurtle in Checkr.Trace("Other Turtle", () => otherTurtle)
+        from traceTurtle in Checkr.Trace("Turtle", a => a.Show(turtle))
+        from traceOtherTurtle in Checkr.Trace("Other Turtle", a => a.Show(otherTurtle))
         from endsOnTurtle in Checkr.ExpectWhen(
             "Turtle Ends on 'TurtlesAllTheWay'",
             () => turtle.Down?.Down != null,
@@ -51,12 +51,8 @@ public class D2_CollapsingOnlyWherePossible : CheckrTest<D2_CollapsingOnlyWhereP
             "{ Down: null }",
             article.Execution(1).Input(2).Read().Value);
 
-        Assert.Equal(
-            "{ Down: { Down: { Down: null } } }",
-            article.Execution(1).Trace(1).Read().Value);
-        Assert.Equal(
-            "{ Down: { Down: null } }",
-            article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["{ Down: { Down: { Down: null } } }"], article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Down: { Down: null } }"], article.Execution(1).Trace(2).Read().Value);
     }
 
     public class Turtle

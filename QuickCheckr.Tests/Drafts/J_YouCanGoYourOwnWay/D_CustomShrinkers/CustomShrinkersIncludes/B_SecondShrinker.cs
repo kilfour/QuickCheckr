@@ -23,7 +23,7 @@ public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
             Shrink.OnType<int>(
                 s => s.Classify(Try.Values(42)),
                 s => s.Simplify(Reduce.Towards(0))))
-        from trace in Checkr.Trace("original", () => answers)
+        from trace in Checkr.Trace("original", a => a.Show(answers))
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;
 
@@ -39,6 +39,6 @@ public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
         Assert.Equal("[ 73 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ 43 ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 73 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 73 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

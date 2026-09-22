@@ -96,11 +96,11 @@ public sealed class WithSut<T, U>
             from traceExpectedException in Checkr.TraceWhen(
                 "Expected",
                 () => modelResult.Threw,
-                () => GetExceptionReport(modelResult.Exception!))
+                _ => [GetExceptionReport(modelResult.Exception!)])
             from traceActualException in Checkr.TraceWhen(
                 "Actual  ",
                 () => sutResult.Threw,
-                () => GetExceptionReport(sutResult.Exception!))
+                _ => [GetExceptionReport(sutResult.Exception!)])
             from expectation in Checkr.Expect(
                 $"{label}, results do not match",
                 () => CheckResults(modelResult, sutResult))
@@ -118,19 +118,19 @@ public sealed class WithSut<T, U>
             from traceExpectedValue in Checkr.TraceWhen(
                 "Expected",
                 () => !modelResult.Threw,
-                () => modelResult.Value)
+                a => a.Show(modelResult.Value))
             from traceExpectedException in Checkr.TraceWhen(
                 "Expected",
                 () => modelResult.Threw,
-                () => GetExceptionReport(modelResult.Exception!))
+                _ => [GetExceptionReport(modelResult.Exception!)])
             from traceActualValue in Checkr.TraceWhen(
                 "Actual  ",
                 () => !sutResult.Threw,
-                () => sutResult.Value)
+                a => a.Show(sutResult.Value))
             from traceActualException in Checkr.TraceWhen(
                 "Actual  ",
                 () => sutResult.Threw,
-                () => GetExceptionReport(sutResult.Exception!))
+                _ => [GetExceptionReport(sutResult.Exception!)])
             from expectation in Checkr.Expect(
                 $"{label}, results do not match",
                 () => CheckResults(modelResult, sutResult))

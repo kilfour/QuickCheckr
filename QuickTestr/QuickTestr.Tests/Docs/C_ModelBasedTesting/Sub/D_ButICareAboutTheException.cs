@@ -57,9 +57,7 @@ public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAbou
         Assert.Equal("-QTS-Add", article.Execution(2).Action(2).Read().Label);
         Assert.Equal("\"k\"", article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Actual  ", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal(
-            "ComputerSaysNo: Already have that one ...",
-            article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(["ComputerSaysNo: Already have that one ..."], article.Execution(2).Trace(1).Read().Value);
     }
 }
 

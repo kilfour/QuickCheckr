@@ -39,10 +39,10 @@ public class TestrOracleDepositionsTests
                     Redux = Maybe.Just("1"),
                     Original = Maybe.Just("42")
                 })
-                .AddTraceDeposition(new TraceDeposition("Expected", "42"))
-                .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
-                .AddFinalTraceDeposition(new TraceDeposition("Expected", "2"))
-                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", "3"))
+                .AddTraceDeposition(new TraceDeposition("Expected", ["42"]))
+                .AddTraceDeposition(new TraceDeposition("Actual  ", ["43"]))
+                .AddFinalTraceDeposition(new TraceDeposition("Expected", ["2"]))
+                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", ["3"]))
                 );
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
@@ -74,10 +74,10 @@ public class TestrOracleDepositionsTests
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Run"))
                 .AddInputDeposition(new InputDeposition("PropertyName", 42))
-                .AddTraceDeposition(new TraceDeposition("Expected", "42"))
-                .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
-                .AddFinalTraceDeposition(new TraceDeposition("Expected", "42"))
-                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", "43"))
+                .AddTraceDeposition(new TraceDeposition("Expected", ["42"]))
+                .AddTraceDeposition(new TraceDeposition("Actual  ", ["43"]))
+                .AddFinalTraceDeposition(new TraceDeposition("Expected", ["42"]))
+                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", ["43"]))
                 );
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());

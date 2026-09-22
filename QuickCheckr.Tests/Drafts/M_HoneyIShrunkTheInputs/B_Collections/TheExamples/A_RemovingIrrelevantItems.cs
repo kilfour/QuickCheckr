@@ -22,7 +22,7 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
     protected override CheckrOf<Case> TheCheckr() =>
         from listInput in Checkr.Input("List Input", Fuzzr.Int().Many(0, 10))
         from expect in Checkr.Expect("List does not contain 7", () => !listInput.Contains(7))
-        from trace in Checkr.Trace("List Input", () => listInput)
+        from trace in Checkr.Trace("List Input", a => a.Show(listInput))
         select Case.Closed;
 
     protected override void Verify(Article article)
@@ -36,6 +36,6 @@ public class A_RemovingIrrelevantItems : CheckrTest<A_RemovingIrrelevantItems>
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 7 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("List Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 69, 49, 90, 36, 16, 71, 95, 7, 84 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

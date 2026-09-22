@@ -29,7 +29,7 @@ public class U_ValueObjects : CheckrTest<U_ValueObjects>
                     Reduce.MinimizeStringTo(1),
                     (BookTitle title) => title.Value,
                     (_, value) => new BookTitle(value)))))
-        from traceOne in Checkr.Trace("Original", () => input)
+        from traceOne in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("Does not contain a.", () => !input.Value.Contains('a'))
         select Case.Closed;
 
@@ -46,7 +46,7 @@ public class U_ValueObjects : CheckrTest<U_ValueObjects>
         Assert.Equal("{ Number: 42, Value: \"cxwufaml\" }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ Number: 42, Value: \"a\" }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Number: 42, Value: \"cxwufaml\" }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Number: 42, Value: \"cxwufaml\" }"], article.Execution(1).Trace(1).Read().Value);
     }
 
     public record BookTitle

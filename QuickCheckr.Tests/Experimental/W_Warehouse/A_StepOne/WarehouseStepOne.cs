@@ -55,7 +55,7 @@ public class WarehouseStepOne : BaseTest
                         < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
                 select Case.Closed))
         from traceStock in Checkr.Trace("warehouse",
-            () => service.ProductsForSale)
+            a => a.Show(service.ProductsForSale))
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;

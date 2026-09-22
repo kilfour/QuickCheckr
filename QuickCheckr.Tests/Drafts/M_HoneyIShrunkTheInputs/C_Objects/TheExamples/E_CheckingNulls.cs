@@ -54,7 +54,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
         Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Everything: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Everything: null, Irrelevant: { Answer: 78 } }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Everything: null, Irrelevant: { Answer: 78 } }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Null value for type 'Life' at input 'The Universe.Everything'.", article.Execution(1).Warning(1).Read().Value);
     }
 
@@ -72,7 +72,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     {
         return
             from universe in Checkr.Input("The Universe", TheUniverseFuzzr)
-            from trace in Checkr.Trace("The Universe", () => universe)
+            from trace in Checkr.Trace("The Universe", a => a.Show(universe))
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
             select Case.Closed;
     }
@@ -105,7 +105,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
         Assert.Equal("The Universe", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Everything: null, Irrelevant: null }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Null value for type 'Life' at input 'The Universe.Everything'.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal("Null value for type 'Life' at input 'The Universe.Irrelevant'.", article.Execution(1).Warning(2).Read().Value);
     }
@@ -138,7 +138,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
         Assert.Equal("Everything", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("The Universe", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Everything: null, Irrelevant: null }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Everything: null, Irrelevant: null }"], article.Execution(1).Trace(1).Read().Value);
     }
 
     private static readonly FuzzrOf<TheUniverse.Life?> TheLifeFuzzr =
@@ -154,7 +154,7 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
             from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr,
                 Shrink.OnType<TheUniverse.Life?>(s => s.Classify(Try.Fuzzr(TheLifeFuzzr))))
             from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
-            from trace in Checkr.Trace("The Universe", () => universe)
+            from trace in Checkr.Trace("The Universe", a => a.Show(universe))
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())
             select Case.Closed;
     }

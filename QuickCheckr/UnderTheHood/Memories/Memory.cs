@@ -180,7 +180,7 @@ internal sealed class Memory
     // Traces
     public bool Tracing { get; set; } = false;
     public bool FinalTrace { get; set; } = false;
-    public void StoreTrace(string key, Func<string> factory)
+    public void StoreTrace(string key, Func<string[]> factory)
     {
         if (Tracing)
             ShortTermMemory.StoreTrace(KeyGuardian.Traces.Check(key), factory);

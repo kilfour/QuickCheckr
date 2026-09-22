@@ -20,7 +20,7 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
     protected override CheckrOf<Case> TheCheckr() =>
         from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10),
             Shrink.Values(new List<int> { 0 }))
-        from trace in Checkr.Trace("Original", () => list)
+        from trace in Checkr.Trace("Original", a => a.Show(list))
         from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
         select Case.Closed;
 
@@ -35,6 +35,6 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

@@ -20,7 +20,7 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
     protected override CheckrOf<Case> TheCheckr() =>
         from listInput in Checkr.Input("List Input", Fuzzr.Int(0, 100).Many(2, 10))
         from expect in Checkr.Expect("List contains only 0", () => listInput.All(a => a == 0))
-        from trace in Checkr.Trace("List Input", () => listInput)
+        from trace in Checkr.Trace("List Input", a => a.Show(listInput))
         select Case.Closed;
 
     protected override void Verify(Article article)
@@ -34,6 +34,6 @@ public class E_RelevantItemIsAllButDefault : CheckrTest<E_RelevantItemIsAllButDe
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 51 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("List Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 28, 0, 50, 27, 37, 54, 74, 56, 51 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

@@ -23,8 +23,8 @@ public class B_CustomEnumerations : CheckrTest<B_CustomEnumerations>
     protected override CheckrOf<Case> TheCheckr() =>
         from inputOne in Checkr.Input("One", Fuzzr.Enum<SoundCheck>())
         from inputTwo in Checkr.Input("Two", Fuzzr.Enum<SoundCheck>())
-        from traceOne in Checkr.Trace("Original One", () => inputOne)
-        from traceTwo in Checkr.Trace("Original Two", () => inputTwo)
+        from traceOne in Checkr.Trace("Original One", a => a.Show(inputOne))
+        from traceTwo in Checkr.Trace("Original Two", a => a.Show(inputTwo))
         from expect in Checkr.Expect("Two should not be Two", () => inputTwo != SoundCheck.Two)
         select Case.Closed;
 
@@ -39,8 +39,8 @@ public class B_CustomEnumerations : CheckrTest<B_CustomEnumerations>
         Assert.Equal("Two", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("Two", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original One", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("Two", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["Two"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Original Two", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("Two", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["Two"], article.Execution(1).Trace(2).Read().Value);
     }
 }

@@ -18,16 +18,21 @@ internal static class TheCourtStyleGuide
             .Space()
             .Trace(input.Value);
 
-    private static Flow<Flow> Labeled(string type, string label, string value) =>
+    private static Flow<Flow> Labeled(string type, string label, string[] values) =>
         from maxLabel in Pulse.Draw<MaxLabel>()
         from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)
+        let multipleLines = values.Length > 1
         from _ in
             Style.OnNewLine()
                 .Indent(2)
                 .Trace("-")
                 .Space()
                 .When(labeled, Style.Caption(type).Space())
-                .Trace($"{label.PadRight(maxLabel.Length, ' ')} = {value}")
+                .Trace($"{label.PadRight(maxLabel.Length, ' ')} =")
+                .When(values.Length == 1, Style.Space().Trace(values[0]))
+                .ToFlow<string>(
+                    line => Style.OnNewLine().Indent(6).Trace(line),
+                    multipleLines ? values : [])
         select Flow.Continue;
 
     private static Flow<Flow> Trace(TraceDeposition input) =>
@@ -37,7 +42,7 @@ internal static class TheCourtStyleGuide
         Labeled("Final", input.Label, input.Value);
 
     private static Flow<Flow> PoolTrace(PoolTraceDeposition input) =>
-        Labeled(" Pool", input.Label, input.Value);
+        Labeled(" Pool", input.Label, [input.Value]);
 
     private static Flow<Flow> Redux(InputDeposition input) =>
         from labeled in Pulse.Draw<Decorum, bool>(a => a.Labels)

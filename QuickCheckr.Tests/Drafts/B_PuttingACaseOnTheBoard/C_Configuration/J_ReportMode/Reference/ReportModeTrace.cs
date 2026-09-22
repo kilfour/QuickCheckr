@@ -41,6 +41,6 @@ public class ReportModeTrace : CheckrTest<ReportModeTrace>
         Assert.Equal("Null Thing", article.Execution(1).Input(2).Read().Label);
         Assert.Equal("null", article.Execution(1).Input(2).Read().Value);
         Assert.Equal("Irrelevant", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("73", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["73"], article.Execution(1).Trace(1).Read().Value);
     }
 }

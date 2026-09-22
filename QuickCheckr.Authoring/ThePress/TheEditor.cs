@@ -26,14 +26,14 @@ public static class TheEditor
         from article in Pulse.Draw<Article>()
         let traceArticle = article.Execution(cursor.executionIndex).Trace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Label);")
-        from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
+        from value in Emit($"Assert.Equal({TraceValues(traceArticle.Value)}, article.Execution({cursor.executionIndex}).Trace({cursor.traceIndex}).Read().Value);")
         select Flow.Continue;
 
     private static Flow<Flow> FinalTrace((int executionIndex, int traceIndex) cursor) =>
         from article in Pulse.Draw<Article>()
         let traceArticle = article.Execution(cursor.executionIndex).FinalTrace(cursor.traceIndex).Read()
         from label in Emit($"Assert.Equal(\"{traceArticle.Label}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Label);")
-        from value in Emit($"Assert.Equal(\"{ReplaceDoubleQuotes(traceArticle.Value)}\", article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Value);")
+        from value in Emit($"Assert.Equal({TraceValues(traceArticle.Value)}, article.Execution({cursor.executionIndex}).FinalTrace({cursor.traceIndex}).Read().Value);")
         select Flow.Continue;
 
     private static Flow<Flow> PoolTrace((int executionIndex, int traceIndex) cursor) =>
@@ -58,6 +58,9 @@ public static class TheEditor
             return str.Replace(@"""", @"\""");
         return value;
     }
+
+    private static string TraceValues(IEnumerable<string> values) =>
+        $"[{string.Join(", ", values.Select(value => $"\"{ReplaceDoubleQuotes(value)}\""))}]";
 
     private static Flow<Flow> Action((int executionIndex, int actionIndex) cursor) =>
         from article in Pulse.Draw<Article>()

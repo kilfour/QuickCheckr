@@ -21,8 +21,8 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
     protected override CheckrOf<Case> TheCheckr() =>
         from person in Checkr.Input("Person", Fuzzr.One<Person>())
         from otherPerson in Checkr.Input("Other Person", Fuzzr.One<Person>())
-        from tracePerson in Checkr.Trace("Person", () => person)
-        from traceOtherPerson in Checkr.Trace("Other Person", () => otherPerson)
+        from tracePerson in Checkr.Trace("Person", a => a.Show(person))
+        from traceOtherPerson in Checkr.Trace("Other Person", a => a.Show(otherPerson))
         from isEighteen in Checkr.Expect("Not aged 18", () => person.Age != 18)
         select Case.Closed;
 
@@ -36,9 +36,9 @@ public class D_IrrelevantObjects : CheckrTest<D_IrrelevantObjects>
         Assert.Equal("Person", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Age: 18 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Person", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Name: \"voddj\", Age: 18 }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ Name: \"voddj\", Age: 18 }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Other Person", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("{ Name: \"hdpjy\", Age: 85 }", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["{ Name: \"hdpjy\", Age: 85 }"], article.Execution(1).Trace(2).Read().Value);
     }
 
     public class Person

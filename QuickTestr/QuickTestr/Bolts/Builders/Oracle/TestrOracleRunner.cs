@@ -75,9 +75,9 @@ public sealed class TestrOracleRunner<TInput, TResult> : TestrRunner<TInput>
         select Case.Closed;
 
     private static CheckrOf<Case> Trace(string label, DelayedResult<TResult> result) =>
-        from traceValue in Checkr.TraceWhen(label, () => !result.Threw && result.HasValue, () => result.Value)
-        from traceValueNull in Checkr.TraceWhen(label, () => !result.Threw && !result.HasValue, () => "null")
-        from traceException in Checkr.TraceWhen(label, () => result.Threw, () => GetExceptionReport(result.Exception!))
+        from traceValue in Checkr.TraceWhen(label, () => !result.Threw && result.HasValue, a => a.Show(result.Value))
+        from traceValueNull in Checkr.TraceWhen(label, () => !result.Threw && !result.HasValue, _ => ["null"])
+        from traceException in Checkr.TraceWhen(label, () => result.Threw, _ => [GetExceptionReport(result.Exception!)])
         select Case.Closed;
 
     private static CheckrOf<Case> Note(string label, DelayedResult<TResult> result) =>

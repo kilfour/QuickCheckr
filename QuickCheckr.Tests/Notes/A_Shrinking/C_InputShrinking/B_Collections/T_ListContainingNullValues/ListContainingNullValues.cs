@@ -20,7 +20,7 @@ public class ListContainingNullValues : CheckrTest<ListContainingNullValues>
     protected override CheckrOf<Case> TheCheckr() =>
         from listInput in Checkr.Input("List Input", Fuzzr.Int().Nullable().Many(0, 10))
         from expect in Checkr.Expect("no nulls allowed", () => listInput.All(a => a.HasValue))
-        from trace in Checkr.Trace("List Input", () => listInput)
+        from trace in Checkr.Trace("List Input", a => a.Show(listInput))
         select Case.Closed;
 
     protected override void Verify(Article article)
@@ -34,6 +34,6 @@ public class ListContainingNullValues : CheckrTest<ListContainingNullValues>
         Assert.Equal("List Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ null ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("List Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 49, 36, null, 95, null, 82, 73, 58, 2 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 49, 36, null, 95, null, 82, 73, 58, 2 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

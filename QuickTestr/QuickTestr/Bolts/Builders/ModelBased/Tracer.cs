@@ -53,8 +53,8 @@ internal sealed class Tracer<T, U> : ITracer<T, U>
             {
                 var result = projector(m, s);
                 return
-                    from modelTrace in Checkr.Trace("Model:", () => result.Item1)
-                    from sutTrace in Checkr.Trace("Sut:  ", () => result.Item2)
+                    from modelTrace in Checkr.Trace("Model:", a => a.Show(result.Item1))
+                    from sutTrace in Checkr.Trace("Sut:  ", a => a.Show(result.Item2))
                     select Case.Closed;
             };
         return this;

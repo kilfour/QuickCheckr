@@ -85,5 +85,8 @@ internal sealed class ModelClerk : ITranscribe
                 .Indent(4)
                 .Trace(input.Label)
                 .Space()
-                .Trace(input.Value);
+                .Trace(input.Value.FirstOrDefault() ?? string.Empty)
+                .ToFlow<string>(
+                    line => Style.OnNewLine().Indent(4).Trace(line),
+                    input.Value.Skip(1));
 }

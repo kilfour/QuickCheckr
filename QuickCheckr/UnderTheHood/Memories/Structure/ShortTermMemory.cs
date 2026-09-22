@@ -132,9 +132,9 @@ internal sealed class ShortTermMemory
     public IReadOnlyList<string> GetActions() => Current.GetActions();
     // --------------------------------------------------------------------------
     // Traces
-    public void StoreTrace(string key, Func<string> factory)
+    public void StoreTrace(string key, Func<string[]> factory)
         => Current.StoreTrace(key, factory);
-    public void StoreFinalTrace(string key, Func<string> factory)
+    public void StoreFinalTrace(string key, Func<string[]> factory)
         => Current.StoreFinalTrace(key, factory);
     // --------------------------------------------------------------------------
     // Pool Traces

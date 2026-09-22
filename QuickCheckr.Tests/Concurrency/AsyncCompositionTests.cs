@@ -207,7 +207,7 @@ public class AsyncCompositionTests
              from irrelevant in Checkr.ShrinkableAct("irrelevant", () => { })
              from pause in Pause(suspend)
              from distinction in Checkr.Distinguish(() => "category")
-             from trace in Checkr.Trace("input", () => input)
+             from trace in Checkr.Trace("input", a => a.Show(input))
              from expect in Checkr.Expect("below threshold", () => count.Value < 2 || input < 10)
              select Case.Closed).Configure(config => config with
              {

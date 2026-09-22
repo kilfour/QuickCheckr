@@ -81,7 +81,7 @@ public class WarehouseStepThree : BaseTest
 
     private static readonly CheckrOf<Case> TraceStock =
         from service in Trackr.GetStashed<WarehouseService>()
-        from traceStock in Checkr.Trace("Stock", () => service.ProductsForSale)
+        from traceStock in Checkr.Trace("Stock", a => a.Show(service.ProductsForSale))
         select Case.Closed;
 
 

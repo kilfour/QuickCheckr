@@ -26,7 +26,7 @@ public class N_CollectionsNeedToGrow : CheckrTest<N_CollectionsNeedToGrow>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("List", Fuzzr.Int().Many(3, 10),
             Shrink.Values(new List<int> { 0, 0, 0, 0 }))
-        from trace in Checkr.Trace("Original", () => input)
+        from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("List count >= 4", () => input.Count() >= 4)
         select Case.Closed;
 
@@ -41,6 +41,6 @@ public class N_CollectionsNeedToGrow : CheckrTest<N_CollectionsNeedToGrow>
         Assert.Equal("List", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 74, 41, 59 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 74, 41, 59 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 74, 41, 59 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

@@ -54,7 +54,7 @@ public class ListReverse : CheckrTest<ListReverse>
         from input in Checkr.Input("Input", ListFuzzr())
         from result in Checkr.Act("Result",
             () => TheReverser.Reverses(TheReverser.Reverses(input)))
-        from traceResult in Checkr.Trace("Result", () => result)
+        from traceResult in Checkr.Trace("Result", a => a.Show(result))
         from expect in Checkr.Expect(
             "Input == Result", () => input.SequenceEqual(result))
         select Case.Closed;
@@ -72,6 +72,6 @@ public class ListReverse : CheckrTest<ListReverse>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 42 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Result", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 42, 62, 13, 71, 81, 27, 62, 28, 85 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

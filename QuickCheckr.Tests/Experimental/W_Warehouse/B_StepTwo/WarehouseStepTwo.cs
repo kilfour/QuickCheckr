@@ -43,7 +43,7 @@ public class WarehouseStepTwo : BaseTest
             Checkr.Option(() => client.ProductsToOrder.Length > 0,
                 from show in Showr.ForTrace(() => GetRequestShowr(client))
                 from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
-                from trace in Checkr.Trace("Order Request", () => orderRequest)
+                from trace in Checkr.Trace("Order Request", a => a.Show(orderRequest))
                 from placeOrder in Checkr.Act("Client Places Order",
                     () => client.Orders.Add(service.PlaceOrder(orderRequest)))
                 from reloadedStock in Checkr.Capture(() => service.GetProducts())
@@ -55,7 +55,7 @@ public class WarehouseStepTwo : BaseTest
                 from forceReload in Checkr.Perform(() => client.ProductsToOrder = [])
                 select Case.Closed))
         from traceStock in Checkr.Trace("warehouse",
-            () => service.ProductsForSale)
+            a => a.Show(service.ProductsForSale))
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;

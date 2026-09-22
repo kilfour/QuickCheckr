@@ -70,7 +70,7 @@ public class InPoolsWeTrust : BaseTest
     [CodeSnippet]
     private static CheckrOf<Case> UseRandom() =>
         Trackr.OneOfPool<Contact>("A Random Contact",
-            contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+            contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
 
 
     [Fact]
@@ -121,7 +121,7 @@ For this reason the following method returns a `{nameof(Checkr)}.{nameof(Checkr.
     [CodeSnippet]
     private static CheckrOf<CheckrOption> PoolWhen() =>
         Trackr.PoolWhen<Contact>("A Random Contact", a => a.Count != 0,
-            contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+            contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
 
     [Fact]
     [DocHeader("Bringing it all back home")]

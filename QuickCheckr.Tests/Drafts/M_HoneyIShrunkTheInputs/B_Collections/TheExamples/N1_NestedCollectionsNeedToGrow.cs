@@ -26,7 +26,7 @@ public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNee
         from input in Checkr.Input("Museum",
             from a in Fuzzr.Int().Many(3, 10)
             select new Museum(a))
-        from trace in Checkr.Trace("Original", () => input)
+        from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("List count >= 4", () => input.A.Count() >= 4)
         select Case.Closed;
 
@@ -39,7 +39,7 @@ public class N1_NestedCollectionsNeedToGrow : CheckrTest<N1_NestedCollectionsNee
         Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ A: [ 74, 41, 59 ] }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ A: [ 74, 41, 59 ] }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal(
             $"Empty collection deemed irrelevant at input 'Museum'. {EmptyCollectionWarning.Suggestion}",
             article.Execution(1).Warning(1).Read().Value);

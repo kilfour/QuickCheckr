@@ -44,7 +44,7 @@ public class AStatefulList : BaseTest
         return
             from listWrap in Trackr.Stashed(() => new ListWrap())
             from item in Checkr.Input("Item", Fuzzr.Int(0, 10))
-            from traceBefore in Checkr.Trace("Before", () => listWrap.List)
+            from traceBefore in Checkr.Trace("Before", a => a.Show(listWrap.List))
             from operations in Checkr.OneOf(
                 from add in Checkr.Act("Add", () => listWrap.Add(item))
                 from listContainsItem in Checkr.Expect("List Contains Item",
@@ -54,7 +54,7 @@ public class AStatefulList : BaseTest
                 from listDoesNotContainItem in Checkr.Expect("List Does Not Contain Item",
                     () => !listWrap.List.Contains(item))
                 select Case.Closed)
-            from traceAfter in Checkr.Trace("After", () => listWrap.List)
+            from traceAfter in Checkr.Trace("After", a => a.Show(listWrap.List))
             select Case.Closed;
     }
 
@@ -72,25 +72,25 @@ public class AStatefulList : BaseTest
         Assert.Equal("Item", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("3", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Before", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ ]"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("After", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("[ 3 ]", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["[ 3 ]"], article.Execution(1).Trace(2).Read().Value);
         Assert.Equal(7, article.Execution(2).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("Item", article.Execution(2).Input(1).Read().Label);
         Assert.Equal("3", article.Execution(2).Input(1).Read().Value);
         Assert.Equal("Before", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("[ 3 ]", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(["[ 3 ]"], article.Execution(2).Trace(1).Read().Value);
         Assert.Equal("After", article.Execution(2).Trace(2).Read().Label);
-        Assert.Equal("[ 3, 3 ]", article.Execution(2).Trace(2).Read().Value);
+        Assert.Equal(["[ 3, 3 ]"], article.Execution(2).Trace(2).Read().Value);
         Assert.Equal(9, article.Execution(3).Read().ExecutionId);
         Assert.Equal("Remove", article.Execution(3).Action(1).Read().Label);
         Assert.Equal("Item", article.Execution(3).Input(1).Read().Label);
         Assert.Equal("3", article.Execution(3).Input(1).Read().Value);
         Assert.Equal("Before", article.Execution(3).Trace(1).Read().Label);
-        Assert.Equal("[ 3, 3 ]", article.Execution(3).Trace(1).Read().Value);
+        Assert.Equal(["[ 3, 3 ]"], article.Execution(3).Trace(1).Read().Value);
         Assert.Equal("After", article.Execution(3).Trace(2).Read().Label);
-        Assert.Equal("[ 3 ]", article.Execution(3).Trace(2).Read().Value);
+        Assert.Equal(["[ 3 ]"], article.Execution(3).Trace(2).Read().Value);
         Assert.Equal("List Does Not Contain Item", article.PassedExpectation(1).Read().Label);
         Assert.Equal(4, article.PassedExpectation(1).Read().TimesPassed);
         Assert.Equal("List Contains Item", article.PassedExpectation(2).Read().Label);

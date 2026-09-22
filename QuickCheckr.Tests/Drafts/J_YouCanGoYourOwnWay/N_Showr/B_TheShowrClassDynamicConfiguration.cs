@@ -23,9 +23,9 @@ public class B_TheShowrClassDynamicConfiguration : CheckrTest<B_TheShowrClassDyn
 
         from anInt in Checkr.Input("AnInt", Fuzzr.Int())
         from showrOne in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
-        from traceOne in Checkr.Trace("One", () => anInt)
+        from traceOne in Checkr.Trace("One", a => a.Show(anInt))
         from showrTwo in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(a => $"OTHER {a}"))
-        from traceTwo in Checkr.Trace("Two", () => anInt)
+        from traceTwo in Checkr.Trace("Two", a => a.Show(anInt))
         from fail in Checkr.Expect("not 7", () => anInt != 7)
         select Case.Closed;
 
@@ -40,8 +40,8 @@ public class B_TheShowrClassDynamicConfiguration : CheckrTest<B_TheShowrClassDyn
         Assert.Equal("AnInt", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("7", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("One", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("PREFIXED 7", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["PREFIXED 7"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Two", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("OTHER 7", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["OTHER 7"], article.Execution(1).Trace(2).Read().Value);
     }
 }

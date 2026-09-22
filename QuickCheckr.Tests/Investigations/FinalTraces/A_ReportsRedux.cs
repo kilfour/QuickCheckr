@@ -24,7 +24,7 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
-        from trace in Checkr.Trace("Input", () => input)
+        from trace in Checkr.Trace("Input", a => a.Show(input))
         from expect in Checkr.Expect("<= 42", () => input <= 42)
         select Case.Closed;
 
@@ -41,8 +41,8 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
         Assert.Equal("69", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("43", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("69", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["69"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Input", article.Execution(1).FinalTrace(1).Read().Label);
-        Assert.Equal("43", article.Execution(1).FinalTrace(1).Read().Value);
+        Assert.Equal(["43"], article.Execution(1).FinalTrace(1).Read().Value);
     }
 }

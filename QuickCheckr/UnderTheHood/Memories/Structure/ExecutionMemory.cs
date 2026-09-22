@@ -150,16 +150,16 @@ internal sealed class ExecutionMemory
 
     // --------------------------------------------------------------------------
     // Traces
-    private readonly TypedMemoryBank<string> traces = new();
-    public void StoreTrace(string key, Func<string> factory)
+    private readonly TypedMemoryBank<string[]> traces = new();
+    public void StoreTrace(string key, Func<string[]> factory)
         => traces.Store(key, factory);
-    public IReadOnlyDictionary<string, string> GetTraces()
+    public IReadOnlyDictionary<string, string[]> GetTraces()
         => traces.Values;
 
-    private readonly TypedMemoryBank<string> finalTraces = new();
-    public void StoreFinalTrace(string key, Func<string> factory)
+    private readonly TypedMemoryBank<string[]> finalTraces = new();
+    public void StoreFinalTrace(string key, Func<string[]> factory)
         => finalTraces.Store(key, factory);
-    public IReadOnlyDictionary<string, string> GetFinalTraces()
+    public IReadOnlyDictionary<string, string[]> GetFinalTraces()
         => finalTraces.Values;
     // --------------------------------------------------------------------------
 

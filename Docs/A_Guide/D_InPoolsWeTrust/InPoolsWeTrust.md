@@ -23,7 +23,7 @@ select Case.Closed;
 ## Using random elements from a Pool
 ```csharp
 Trackr.OneOfPool<Contact>("A Random Contact",
-    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+    contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
 ```
 As you can see, the second argument to this method is a function that takes a wrapped value and returns a Checkr.  
 Just as the Pool itself is encapsulated, so are its elements.
@@ -49,7 +49,7 @@ For this reason the following method returns a `Checkr.Option`, in order to make
   
 ```csharp
 Trackr.PoolWhen<Contact>("A Random Contact", a => a.Count != 0,
-    contact => Checkr.Trace("Contact Name", () => contact.Value.Name));
+    contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
 ```
 ## Bringing it all back home
 ### The Model

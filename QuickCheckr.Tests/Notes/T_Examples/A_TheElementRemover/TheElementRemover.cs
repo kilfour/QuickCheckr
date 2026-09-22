@@ -56,7 +56,7 @@ public class TheElementRemover : BaseTest
         Assert.Equal("5", article.Execution(1).Input(2).Read().Value);
 
         Assert.Equal("List Before Shrinking", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 
     [CodeSnippet]
@@ -82,7 +82,7 @@ public class TheElementRemover : BaseTest
             from listDoesNotContainElement in Checkr.Expect(
                 "List Does Not Contain Element",
                 () => !output.Contains(element))
-            from traceList in Checkr.Trace("List Before Shrinking", () => list)
+            from traceList in Checkr.Trace("List Before Shrinking", a => a.Show(list))
             select Case.Closed;
     }
 

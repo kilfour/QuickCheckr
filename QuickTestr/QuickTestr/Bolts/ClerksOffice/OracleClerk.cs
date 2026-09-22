@@ -98,5 +98,8 @@ internal sealed class OracleClerk : ITranscribe
         => Style
             .OnNewLine()
             .Indent(7)
-            .LabeledValue(trace.Label, trace.Value);
+            .LabeledValue(trace.Label, trace.Value.FirstOrDefault() ?? string.Empty)
+            .ToFlow<string>(
+                line => Style.OnNewLine().Indent(7 + trace.Label.Length + 3).Trace(line),
+                trace.Value.Skip(1));
 }

@@ -68,7 +68,7 @@ public class WarehouseStepFour : BaseTest
             Checkr.Option(() => true, GetProductInfo),
             Checkr.Option(() => client.ProductsToOrder.Length > 0, PlaceOrder))
         from traceStock in Checkr.Trace("warehouse",
-            () => service.ProductsForSale)
+            a => a.Show(service.ProductsForSale))
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;

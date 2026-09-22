@@ -63,9 +63,9 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
         Assert.Equal("-QTM-Clear", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("-QTS-Clear", article.Execution(2).Action(2).Read().Label);
         Assert.Equal("Model:", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("{ Result: 0 }", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(["{ Result: 0 }"], article.Execution(2).Trace(1).Read().Value);
         Assert.Equal("Sut:  ", article.Execution(2).Trace(2).Read().Label);
-        Assert.Equal("{ Result: 124 }", article.Execution(2).Trace(2).Read().Value);
+        Assert.Equal(["{ Result: 124 }"], article.Execution(2).Trace(2).Read().Value);
         Assert.Equal("Result Matches", article.PassedExpectation(1).Read().Label);
         Assert.Equal(16, article.PassedExpectation(1).Read().TimesPassed);
     }

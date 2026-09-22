@@ -23,7 +23,7 @@ we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array."
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("int[]", Fuzzr.Constant(new int[] { 42, 2, 3 }))
-        from trace in Checkr.Trace("Original", () => input)
+        from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("No answer here",
             () => !input.Contains(42))
         select Case.Closed;
@@ -39,6 +39,6 @@ we have to cheat a bit using a `Fuzzr.Constant()` in order to pass in an Array."
         Assert.Equal("int[]", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 42 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 42, 2, 3 ]", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["[ 42, 2, 3 ]"], article.Execution(1).Trace(1).Read().Value);
     }
 }

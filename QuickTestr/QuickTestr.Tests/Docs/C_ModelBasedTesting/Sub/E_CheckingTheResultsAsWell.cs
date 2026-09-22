@@ -52,9 +52,9 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
         Assert.Equal("-QTS-Do", article.Execution(4).Action(2).Read().Label);
         Assert.Equal("78", article.Execution(4).Input(1).Read().Value);
         Assert.Equal("Expected", article.Execution(4).Trace(1).Read().Label);
-        Assert.Equal("78", article.Execution(4).Trace(1).Read().Value);
+        Assert.Equal(["78"], article.Execution(4).Trace(1).Read().Value);
         Assert.Equal("Actual  ", article.Execution(4).Trace(2).Read().Label);
-        Assert.Equal("0", article.Execution(4).Trace(2).Read().Value);
+        Assert.Equal(["0"], article.Execution(4).Trace(2).Read().Value);
     }
 }
 

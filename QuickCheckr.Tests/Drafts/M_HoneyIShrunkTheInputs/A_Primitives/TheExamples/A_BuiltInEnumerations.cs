@@ -21,8 +21,8 @@ public class A_BuiltInEnumerations : CheckrTest<A_BuiltInEnumerations>
     protected override CheckrOf<Case> TheCheckr() =>
         from inputOne in Checkr.Input("One", Fuzzr.Enum<DayOfWeek>())
         from inputTwo in Checkr.Input("Two", Fuzzr.Enum<DayOfWeek>())
-        from traceOne in Checkr.Trace("Original One", () => inputOne)
-        from traceTwo in Checkr.Trace("Original Two", () => inputTwo)
+        from traceOne in Checkr.Trace("Original One", a => a.Show(inputOne))
+        from traceTwo in Checkr.Trace("Original Two", a => a.Show(inputTwo))
         from expect in Checkr.Expect("Two should not be Monday", () => inputTwo != DayOfWeek.Monday)
         select Case.Closed;
 
@@ -37,8 +37,8 @@ public class A_BuiltInEnumerations : CheckrTest<A_BuiltInEnumerations>
         Assert.Equal("Two", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("Monday", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original One", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("Wednesday", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["Wednesday"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("Original Two", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("Monday", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal(["Monday"], article.Execution(1).Trace(2).Read().Value);
     }
 }

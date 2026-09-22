@@ -39,7 +39,7 @@ public class D_CustomizedWithIrrelevant : CheckrTest<D_CustomizedWithIrrelevant>
             .HidePropertyNames())
         from expr in Checkr.Input("Expr", Fuzzr.Constant(
             new Term { L = new Num { Value = 84 }, R = new Num { Value = 0 }, Op = Operation.Div }))
-        from trace in Checkr.Trace("Original", () => expr)
+        from trace in Checkr.Trace("Original", a => a.Show(expr))
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
         select Case.Closed;
 

@@ -33,7 +33,7 @@ public class N2_NestedCollectionsNeedToGrow : CheckrTest<N2_NestedCollectionsNee
                     Try.Default<IEnumerable<int>>(),
                     Try.Fuzzr(fuzzr)),
                 s => s.Simplify(Reduce.Values<IEnumerable<int>>([[]]))))
-        from trace in Checkr.Trace("Original", () => input)
+        from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("List count >= 4", () => input.A.Count() >= 4)
         select Case.Closed;
 
@@ -50,7 +50,7 @@ public class N2_NestedCollectionsNeedToGrow : CheckrTest<N2_NestedCollectionsNee
         Assert.Equal("{ A: [ 74, 41, 59 ] }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ A: [ ] }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ A: [ 74, 41, 59 ] }", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["{ A: [ 74, 41, 59 ] }"], article.Execution(1).Trace(1).Read().Value);
         Assert.Equal("No witness for reducer at 'Museum.A'.", article.Execution(1).Warning(1).Read().Value);
     }
 

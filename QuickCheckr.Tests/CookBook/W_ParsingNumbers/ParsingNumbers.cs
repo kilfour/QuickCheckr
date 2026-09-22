@@ -61,7 +61,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
         from until in Trackr.DeliberateUntil(4)
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
         from result in Checkr.Act("SUT Result", () => LostIn.FaultyTranslation(input).Eval())
-        from traceResult in Checkr.Trace("Compare", () => $"Oracle: {oracleResult} /= SUT: {result}")
+        from traceResult in Checkr.Trace("Compare", _ => [$"Oracle: {oracleResult} /= SUT: {result}"])
         from match in Checkr.ExpectWhen("Match",
             () => !double.IsNaN(oracleResult),
             () => oracleResult == result)

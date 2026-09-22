@@ -38,7 +38,7 @@ public class E_PoolReplayIdentityComplex : CheckrTest<E_PoolReplayIdentityComple
 
             Checkr.Option(() => counter == 4,
                 Trackr.OneOfPool<int>("Use Thing", thing =>
-                    from trace in Checkr.Trace("Pool Element", () => $"{thing.Id}:{thing.Value}")
+                    from trace in Checkr.Trace("Pool Element", _ => [$"{thing.Id}:{thing.Value}"])
                     from expect in Checkr.Expect(
                         "Second pool element fails",
                         () => !(factory.GetById(thing.Value).Extra == 42))

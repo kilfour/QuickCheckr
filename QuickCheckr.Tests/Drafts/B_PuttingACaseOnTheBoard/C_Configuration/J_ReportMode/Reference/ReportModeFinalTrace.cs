@@ -32,7 +32,7 @@ public class ReportModeFinalTrace : CheckrTest<ReportModeFinalTrace>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(),
             Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
-        from trace in Checkr.Trace("Input / 2", () => input / 2)
+        from trace in Checkr.Trace("Input / 2", a => a.Show(input / 2))
         from expect in Checkr.Expect("Input > 10", () => input < 10)
         select Case.Closed;
 
@@ -48,6 +48,6 @@ public class ReportModeFinalTrace : CheckrTest<ReportModeFinalTrace>
         Assert.Equal("59", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("10", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.Equal("Input / 2", article.Execution(1).FinalTrace(1).Read().Label);
-        Assert.Equal("5", article.Execution(1).FinalTrace(1).Read().Value);
+        Assert.Equal(["5"], article.Execution(1).FinalTrace(1).Read().Value);
     }
 }

@@ -30,7 +30,7 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
             from a in Fuzzr.Int()
             from b in Fuzzr.Int()
             select (a, b))
-        from traceOne in Checkr.Trace("Original", () => input)
+        from traceOne in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("First list does not contain 42.", () => !input.a.Contains(42))
         select Case.Closed;
 
@@ -45,6 +45,6 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
         Assert.Equal("Tuple", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( [ 42 ], _, _ )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("( [ 42, 32 ], [ 17, 69 ], [ ] )", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["( [ 42, 32 ], [ 17, 69 ], [ ] )"], article.Execution(1).Trace(1).Read().Value);
     }
 }

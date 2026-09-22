@@ -22,7 +22,7 @@ public class F_None : CheckrTest<F_None>
         from showr in Showr.ForAll(() => Please.AllowMe().ToReplace<int>(a => $"PREFIXED {a}"))
         from showrNone in Showr.None()
         from anInt in Checkr.Input("AnInt", Fuzzr.Int())
-        from trace in Checkr.Trace("AnInt", () => anInt)
+        from trace in Checkr.Trace("AnInt", a => a.Show(anInt))
         from fail in Checkr.Expect("not 7", () => anInt != 7)
         select Case.Closed;
 
@@ -37,6 +37,6 @@ public class F_None : CheckrTest<F_None>
         Assert.Equal("AnInt", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("7", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("AnInt", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("7", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["7"], article.Execution(1).Trace(1).Read().Value);
     }
 }

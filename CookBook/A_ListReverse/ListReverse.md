@@ -32,7 +32,7 @@ from showr in Showr.ForInput()
 from input in Checkr.Input("Input", ListFuzzr())
 from result in Checkr.Act("Result",
     () => TheReverser.Reverses(TheReverser.Reverses(input)))
-from traceResult in Checkr.Trace("Result", () => result)
+from traceResult in Checkr.Trace("Result", a => a.Show(result))
 from expect in Checkr.Expect(
     "Input == Result", () => input.SequenceEqual(result))
 select Case.Closed;

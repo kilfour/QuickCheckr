@@ -35,7 +35,7 @@ public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
 
             Checkr.Option(() => counter == 3,
                 Trackr.OneOfPool<Thing>("Use Thing", thing =>
-                    from trace in Checkr.Trace("Pool Element", () => $"{thing.Id}:{thing.Value.Id}")
+                    from trace in Checkr.Trace("Pool Element", _ => [$"{thing.Id}:{thing.Value.Id}"])
                     from expect in Checkr.Expect(
                         "Second pool element fails",
                         () => thing.Id != 2)
@@ -64,7 +64,7 @@ public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
         Assert.Equal("Use Thing", article.Execution(2).PoolTrace(1).Read().Label);
         Assert.Equal("Thing-2", article.Execution(2).PoolTrace(1).Read().Value);
         Assert.Equal("Pool Element", article.Execution(2).Trace(1).Read().Label);
-        Assert.Equal("2:1", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal(["2:1"], article.Execution(2).Trace(1).Read().Value);
     }
 
     public class ThingFactory

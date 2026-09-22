@@ -33,7 +33,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("42", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("Irrelevant Input", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("47", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal(["47"], article.Execution(1).Trace(1).Read().Value);
     }
 
     [CodeSnippet]
@@ -44,7 +44,7 @@ QuickCheckr is built with transparency and discoverability as a first class conc
             from input in Checkr.Input("Input", Fuzzr.Int())
             from irrelevant in Checkr.Input("Irrelevant Input", Fuzzr.Int())
             from expect in Checkr.Expect("Input /= 42", () => input != 42)
-            from trace in Checkr.Trace("Irrelevant Input", () => irrelevant)
+            from trace in Checkr.Trace("Irrelevant Input", a => a.Show(irrelevant))
             select Case.Closed;
         return check;
     }
