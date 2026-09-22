@@ -9,6 +9,6 @@ internal static class ExceptionProperty
         string name, CheckrOf<DelayedResult> action, Func<string>? message)
         where TException : Exception =>
         from result in action
-        from expectation in Checkr.ExpectThrewExactly<TException>(name, result, message)
+        from expectation in Checkr.Expect(name, a => a.ThrewExactly<TException>(result, message?.Invoke()))
         select Case.Closed;
 }

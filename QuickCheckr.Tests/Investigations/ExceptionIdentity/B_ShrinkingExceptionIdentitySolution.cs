@@ -26,7 +26,7 @@ public class B_ShrinkingExceptionIdentitySolution : CheckrTest<B_ShrinkingExcept
             from _ in Checkr.Act("1", () => { cell.Value = new Thing(); })
             select Case.Closed,
             from act in Checkr.ActCarefully("2", () => cell.Value.Name = null!)
-            from check in Checkr.ExpectThrewExactly<ComputerSaysNo>("2", act)
+            from check in Checkr.Expect("2", a => a.ThrewExactly<ComputerSaysNo>(act))
             select Case.Closed
         )
         select Case.Closed;

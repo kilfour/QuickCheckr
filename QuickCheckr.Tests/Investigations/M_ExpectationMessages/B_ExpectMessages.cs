@@ -19,7 +19,7 @@ public class B_ExpectMessages : CheckrTest<B_ExpectMessages>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Answer", Fuzzr.Constant(42))
-        from expect in Checkr.Expect("Always fails", () => false, () => [$"answer = {input}", "second message"])
+        from expect in Checkr.Expect("Always fails", a => a.Fail($"answer = {input}", "second message"))
         select Case.Closed;
 
     protected override void Verify(Article article)

@@ -12,7 +12,6 @@ namespace QuickCheckr.UnderTheHood;
 /// </summary>
 public sealed class CheckrState
 {
-    /// <summary>The cancellation token supplied to RunAsync, also available to custom steps.</summary>
     public CancellationToken CancellationToken { get; }
     internal State FuzzrState { get; init; }
     internal Memory Memory { get; init; } = new();

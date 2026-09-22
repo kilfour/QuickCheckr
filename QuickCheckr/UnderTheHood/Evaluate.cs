@@ -2,67 +2,148 @@ namespace QuickCheckr.UnderTheHood;
 
 internal static class Evaluate
 {
-    public static CheckrOf<Case> Expect(
+    public static CheckrOf<Case> Expectation(
         string key,
-        Func<bool> condition,
-        bool register,
-        Func<List<string>>? message = null,
-        Func<ExceptionFailureIdentity?>? failureIdentity = null) =>
+        Func<ExpectationContext, ExpectationResult> evaluate,
+        bool register) =>
         state =>
         {
             if (register)
                 state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
             return TheCatcher.InTheCheckr(state,
-                () => InnerExpect(key, condition, state, message, failureIdentity),
+                () => Expectation(key, evaluate(context), state),
                 (ex) => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };
 
-    public static CheckrOf<Case> ExpectAsync(
+    public static CheckrOf<Case> ExpectationAsync(
         string key,
-        Func<CancellationToken, Task<bool>> condition,
-        bool register,
-        Func<List<string>>? message = null,
-        Func<CancellationToken, Task<bool>>? predicate = null) =>
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluate,
+        bool register) =>
         state =>
         {
             if (register)
                 state.Memory.KeyGuardian.Expects.Check(key);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
             return TheCatcher.InTheCheckrAsync(state,
                 async () =>
                 {
-                    if (predicate is not null)
-                    {
-                        var applies = await predicate(state.CancellationToken).ConfigureAwait(false);
-                        state.CancellationToken.ThrowIfCancellationRequested();
-                        if (!applies) return CheckrResult.CaseOnly(state);
-                    }
-                    var passed = await condition(state.CancellationToken).ConfigureAwait(false);
+                    var result = await evaluate(context, state.CancellationToken).ConfigureAwait(false);
                     state.CancellationToken.ThrowIfCancellationRequested();
-                    return InnerExpect(key, () => passed, state, message, null);
+                    return Expectation(key, result, state);
                 },
                 ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };
-    private static CheckrResult<Case> InnerExpect(
+
+    public static CheckrOf<Case> ExpectationWhen(
         string key,
-        Func<bool> condition,
-        CheckrState state,
-        Func<List<string>>? message,
-        Func<ExceptionFailureIdentity?>? failureIdentity)
+        Func<bool> predicate,
+        Func<ExpectationContext, ExpectationResult> evaluate,
+        bool register) =>
+        state =>
+        {
+            if (register)
+                state.Memory.KeyGuardian.Expects.Check(key);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
+                return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
+            return TheCatcher.InTheCheckr(state,
+                () => predicate()
+                    ? Expectation(key, evaluate(context), state)
+                    : CheckrResult.CaseOnly(state),
+                ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
+        };
+
+    public static CheckrOf<Case> ExpectationWhenAsync(
+        string key,
+        Func<CancellationToken, Task<bool>> predicate,
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluate,
+        bool register) =>
+        state =>
+        {
+            if (register)
+                state.Memory.KeyGuardian.Expects.Check(key);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
+                return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
+            return TheCatcher.InTheCheckrAsync(state,
+                async () =>
+                {
+                    var applies = await predicate(state.CancellationToken).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
+                    if (!applies)
+                        return CheckrResult.CaseOnly(state);
+                    var result = await evaluate(context, state.CancellationToken).ConfigureAwait(false);
+                    state.CancellationToken.ThrowIfCancellationRequested();
+                    return Expectation(key, result, state);
+                },
+                ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
+        };
+
+    public static CheckrOf<Case> Verification(
+        string key,
+        Func<ExpectationContext, ExpectationResult> evaluate) =>
+        state =>
+        {
+            state.Memory.KeyGuardian.Expects.Check(key);
+            if (!state.IsThisTheRunsLastExecution())
+                return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
+            return Verification(key, evaluate(context), state);
+        };
+
+    public static CheckrOf<Case> VerificationAsync(
+        string key,
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluate) =>
+        async state =>
+        {
+            state.Memory.KeyGuardian.Expects.Check(key);
+            if (!state.IsThisTheRunsLastExecution())
+                return CheckrResult.CaseOnly(state);
+            state.CancellationToken.ThrowIfCancellationRequested();
+            var context = new ExpectationContext(state.Editor);
+            var result = await evaluate(context, state.CancellationToken).ConfigureAwait(false);
+            state.CancellationToken.ThrowIfCancellationRequested();
+            return Verification(key, result, state);
+        };
+
+    private static CheckrResult<Case> Expectation(
+        string key,
+        ExpectationResult result,
+        CheckrState state)
     {
-        if (condition())
+        if (result.IsPassed)
+        {
             state.EvidenceRecorder.ExpectationPassed(key);
+        }
         else
         {
-            var failure = new ExpectationFailure(
-                key,
-                message == null ? [] : message(),
-                failureIdentity?.Invoke());
-            state.EvidenceRecorder.ExpectationFailed(failure, state.Memory.ShortTermMemory.CurrentExecutionNumber);
+            state.EvidenceRecorder.ExpectationFailed(
+                new ExpectationFailure(key, result.Messages, result.FailureIdentity?.Invoke()),
+                state.Memory.ShortTermMemory.CurrentExecutionNumber);
         }
         return CheckrResult.CaseOnly(state);
     }
+
+    private static CheckrResult<Case> Verification(
+        string key,
+        ExpectationResult result,
+        CheckrState state)
+    {
+        if (result.IsPassed)
+        {
+            state.EvidenceRecorder.ExpectationPassed(key);
+        }
+        else
+        {
+            state.EvidenceRecorder.VerificationFailed(
+                new VerificationFailure(key, result.Messages));
+        }
+        return CheckrResult.CaseOnly(state);
+    }
+
 }

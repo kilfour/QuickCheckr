@@ -13,7 +13,7 @@ public class CheckrExpectWhen
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
-        Assert.Equal(GetMessage(), ex.Message);
+        Assert.Equal(GetMessage().ReplaceLineEndings(), ex.Message.ReplaceLineEndings());
     }
 
     [CodeSnippet]
@@ -39,9 +39,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 
 - 'Checkr.Expect'
-- 'Checkr.ExpectEquals'
 - 'Checkr.ExpectWhen'
-- 'Checkr.ExpectThrewExactly'
 - 'Trackr.Expect'
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'

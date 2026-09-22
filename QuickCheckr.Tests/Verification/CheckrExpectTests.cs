@@ -11,9 +11,7 @@ public class CheckrExpectTests
         var checkr =
             from showr in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(value => $"<{value}>"))
             from expectation in Checkr.Expect(
-                "answer",
-                () => false,
-                editor => [$"Value: {editor.IntroduceThis(42)}"])
+                "answer", a => a.Fail($"Value: {a.Show(42)}"))
             select Case.Closed;
 
         var article = Journalist.Publish(checkr, configured => configured.Run());

@@ -14,18 +14,16 @@ public static partial class Trackr
             if (candidates.Count == 0)
                 return CheckrResult.CaseOnly(state);
             state.Pathologist.Inform(string.Join("/", candidates.Select(a => a.Key)));
-            List<string> failed = [];
-            var expect = Evaluate.Expect(
+            var expect = Evaluate.Expectation(
                 key,
-                () =>
+                _ =>
                 {
-                    failed = [.. candidates
+                    string[] failed = [.. candidates
                         .Where(a => !expectation(a.Value))
                         .Select(a => $"{typeof(T).Name}-{a.Key}")];
-                    return failed.Count == 0;
+                    return failed.Length == 0 ? ExpectationResult.Passed() : ExpectationResult.Failed(failed);
                 },
-                true,
-                () => failed);
+                true);
             return expect(state);
         };
 

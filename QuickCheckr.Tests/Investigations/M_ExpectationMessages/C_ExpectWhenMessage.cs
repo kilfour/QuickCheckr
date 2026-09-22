@@ -19,7 +19,8 @@ public class C_ExpectWhenMessage : CheckrTest<C_ExpectWhenMessage>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Answer", Fuzzr.Constant(42))
-        from expect in Checkr.ExpectWhen("Always fails", () => true, () => false, () => $"answer = {input}")
+        from expect in Checkr.ExpectWhen("Always fails", () => true,
+            expectation => expectation.Fail($"answer = {input}"))
         select Case.Closed;
 
     protected override void Verify(Article article)

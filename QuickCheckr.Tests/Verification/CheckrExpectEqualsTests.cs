@@ -12,7 +12,7 @@ public class CheckrExpectEqualsTests
     public void Equal_values_pass()
     {
         var article = Journalist.Publish(
-            Checkr.ExpectEquals("answer", () => 42, () => 42),
+            Checkr.Expect("answer", a => a.Equal(42, 42)),
             checkr => checkr.Run());
 
         Assert.Equal(string.Empty, article.FailureDescription());
@@ -24,7 +24,7 @@ public class CheckrExpectEqualsTests
     {
         var checkr =
             from showr in Showr.ForTrace(() => Please.AllowMe().ToReplace<int>(value => $"<{value}>"))
-            from expectation in Checkr.ExpectEquals("answer", () => 41, () => 42)
+            from expectation in Checkr.Expect("answer", a => a.Equal(41, 42))
             select Case.Closed;
 
         var article = Journalist.Publish(checkr, configured => configured.Run());
@@ -40,7 +40,7 @@ public class CheckrExpectEqualsTests
         string? actual = null;
 
         var article = Journalist.Publish(
-            Checkr.ExpectEquals("nullable", () => expected, () => actual),
+            Checkr.Expect("nullable", a => a.Equal(expected, actual)),
             checkr => checkr.Run());
 
         Assert.Equal(string.Empty, article.FailureDescription());
@@ -51,7 +51,7 @@ public class CheckrExpectEqualsTests
     public void Deferred_values_pass_and_support_nulls()
     {
         var article = Journalist.Publish(
-            Checkr.ExpectEquals<string>("nullable", () => (string?)null, () => (string?)null),
+            Checkr.Expect("nullable", a => a.Equal<string>(null, null)),
             checkr => checkr.Run());
 
         Assert.Equal(string.Empty, article.FailureDescription());
@@ -63,7 +63,7 @@ public class CheckrExpectEqualsTests
     {
         var expectedCalls = 0;
         var actualCalls = 0;
-        var check = Checkr.ExpectEquals("answer", () => ++expectedCalls, () => ++actualCalls + 1);
+        var check = Checkr.Expect("answer", a => a.Equal(++expectedCalls, ++actualCalls + 1));
         Assert.Equal(0, expectedCalls);
         Assert.Equal(0, actualCalls);
         var state = new CheckrState(1, 100, 123, AutopsyProbe.Empty);
@@ -91,7 +91,7 @@ public class CheckrExpectEqualsTests
             throw new NullReferenceException("response is missing");
         }
 
-        await Checkr.ExpectEquals("board name", () => Value(), () => Value())(state);
+        await Checkr.Expect("board name", a => a.Equal(Value(), Value()))(state);
 
         Assert.Equal(0, calls);
         Assert.Null(state.EvidenceRecorder.ReplayException);
@@ -107,9 +107,10 @@ public class CheckrExpectEqualsTests
         state.Memory.StoreInput("name", () => "original");
         state.EvidenceRecorder.ExpectationFailed(new ExpectationFailure("board name", []), 1);
         string Throws() => throw new NullReferenceException("response is missing");
-        var check = Checkr.ExpectEquals("board name",
-            () => expectedThrows ? Throws() : "expected",
-            () => expectedThrows ? "actual" : Throws());
+        var check = Checkr.Expect("board name",
+            a => a.Equal(
+            expectedThrows ? Throws() : "expected",
+            expectedThrows ? "actual" : Throws()));
 
         var outcome = await new Verifier(state, check).RunAsync(1, "name", "a");
 

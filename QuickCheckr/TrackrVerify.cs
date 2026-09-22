@@ -8,36 +8,13 @@ public static partial class Trackr
     /// Evaluates a named condition only on the final execution of a run.  
     /// Use when an assertion depends on the cumulative state built up across all executions.
     /// </summary>
-    public static CheckrOf<Case> Verify(string key, Func<bool> condition)
-        => InnerVerify(key, condition, () => []);
-
-    public static CheckrOf<Case> Verify(string key, Func<bool> condition, Func<string> message)
-        => InnerVerify(key, condition, () => [message()]);
-
-    public static CheckrOf<Case> Verify(string key, Func<bool> condition, Func<List<string>>? messages)
-        => InnerVerify(key, condition, messages);
-
-    private static CheckrOf<Case> InnerVerify(
+    public static CheckrOf<Case> Verify(
         string key,
-        Func<bool> condition,
-        Func<List<string>>? messages) =>
-        state =>
-        {
-            state.Memory.KeyGuardian.Expects.Check(key);
-            if (!state.IsThisTheRunsLastExecution())
-                return CheckrResult.CaseOnly(state);
-            bool passed = condition();
-            if (!passed)
-            {
-                state.EvidenceRecorder.VerificationFailed(
-                    new VerificationFailure(key, messages?.Invoke() ?? []));
-            }
-            else
-            {
-                state.EvidenceRecorder.ExpectationPassed(key);
-            }
-            return CheckrResult.CaseOnly(state);
-        };
+        Func<ExpectationContext, ExpectationResult> evaluation)
+        => Evaluate.Verification(key, evaluation);
+
+    public static CheckrOf<Case> Verify(string key, Func<bool> evaluation)
+        => Verify(key, context => evaluation() ? context.Pass() : context.Fail());
 
     /// <summary>
     /// Evaluates a set of labelled conditions only on the final execution of a run.  

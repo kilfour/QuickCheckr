@@ -22,8 +22,7 @@ public class D_ExpectWhenMessages : CheckrTest<D_ExpectWhenMessages>
         from expect in Checkr.ExpectWhen(
             "Always fails",
             () => true,
-            () => false,
-            () => [$"answer = {input}", "second message"])
+            expectation => expectation.Fail($"answer = {input}", "second message"))
         select Case.Closed;
 
     protected override void Verify(Article article)

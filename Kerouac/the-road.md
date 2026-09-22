@@ -1,6 +1,8 @@
-## 0.4.0: You Keep Me Hanging On ... Asynchronously
+## 0.4.2: ???
 
 ### Doing
+- ExpectationResult
+  - async version
 
 ### To Test
 

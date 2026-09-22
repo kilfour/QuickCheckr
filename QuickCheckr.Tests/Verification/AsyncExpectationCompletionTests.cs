@@ -20,24 +20,28 @@ public class AsyncExpectationCompletionTests
     public async Task EqualityAwaitsTaskValuesRatherThanComparingTaskObjects()
     {
         var state = State();
-        await Checkr.ExpectEquals("equal", () => Number(1000), () => Number(1000))(state);
+        await Checkr.Expect("equal", async expectation =>
+            expectation.Equal(await Number(1000), await Number(1000)))(state);
         Assert.Equal(1, state.EvidenceRecorder.PassedExpectations["equal"]);
-        await Checkr.ExpectEquals("different", () => Number(1000), () => Number(1001))(state);
+        await Checkr.Expect("different", async expectation =>
+            expectation.Equal(await Number(1000), await Number(1001)))(state);
         Assert.Equal(["Expected: 1000", "Actual: 1001"], state.EvidenceRecorder.FailingExpectation.Message);
     }
 
     [Fact]
-    public async Task EqualitySupportsEveryMixedFactoryShape()
+    public async Task EqualityComposesSynchronousAndAsynchronousValues()
     {
         var state = State();
-        await Checkr.ExpectEquals("sync async", () => 42, () => Number(42))(state);
-        await Checkr.ExpectEquals("async sync", () => Number(42), () => 42)(state);
-        await Checkr.ExpectEquals("sync token", () => 42, token => Number(42))(state);
-        await Checkr.ExpectEquals("token sync", token => Number(42), () => 42)(state);
-        await Checkr.ExpectEquals("async token", () => Number(42), token => Number(42))(state);
-        await Checkr.ExpectEquals("token async", token => Number(42), () => Number(42))(state);
-        await Checkr.ExpectEquals("token token", token => Number(42), token => Number(42))(state);
-        Assert.Equal(7, state.EvidenceRecorder.PassedExpectations.Count);
+        await Checkr.Expect("sync async", async expectation =>
+            expectation.Equal(42, await Number(42)))(state);
+        await Checkr.Expect("async sync", async expectation =>
+            expectation.Equal(await Number(42), 42))(state);
+        await Checkr.Expect("with token", async (expectation, token) =>
+        {
+            Assert.Equal(TestContext.Current.CancellationToken, token);
+            return expectation.Equal(await Number(42), await Number(42));
+        })(state);
+        Assert.Equal(3, state.EvidenceRecorder.PassedExpectations.Count);
     }
 
     [Fact]
@@ -46,8 +50,14 @@ public class AsyncExpectationCompletionTests
         var state = State();
         var expectedCalls = 0;
         var actualCalls = 0;
-        await Checkr.ExpectEquals("values", async () => { await Task.Yield(); return ++expectedCalls; },
-            async () => { await Task.Yield(); return ++actualCalls + 1; })(state);
+        await Checkr.Expect("values", async expectation =>
+        {
+            await Task.Yield();
+            var expected = ++expectedCalls;
+            await Task.Yield();
+            var actual = ++actualCalls + 1;
+            return expectation.Equal(expected, actual);
+        })(state);
         Assert.Equal(1, expectedCalls);
         Assert.Equal(1, actualCalls);
         Assert.Equal(["Expected: 1", "Actual: 2"], state.EvidenceRecorder.FailingExpectation.Message);
@@ -59,7 +69,13 @@ public class AsyncExpectationCompletionTests
         var state = State();
         var calls = 0;
         await Checkr.ExpectWhen("conditional", () => Bool(false),
-            async () => { calls++; await Task.Yield(); return false; }, () => { calls++; return "unused"; })(state);
+            async expectation =>
+            {
+                calls++;
+                await Task.Yield();
+                return expectation.Fail(Message());
+            })(state);
+        string Message() { calls++; return "unused"; }
         Assert.Equal(0, calls);
         Assert.Empty(state.EvidenceRecorder.PassedExpectations);
         Assert.False(state.EvidenceRecorder.Failed());
@@ -70,8 +86,9 @@ public class AsyncExpectationCompletionTests
     {
         var state = State();
         await Checkr.ExpectWhen("a", () => true, () => Bool(true))(state);
-        await Checkr.ExpectWhen("b", () => Bool(true), () => true)(state);
-        await Checkr.ExpectWhen("c", token => Bool(true), () => Bool(false), () => new List<string> { "reason" })(state);
+        await Checkr.ExpectWhen("b", () => Bool(true), () => Bool(true))(state);
+        await Checkr.ExpectWhen("c", token => Bool(true), async (expectation, token) =>
+            await Bool(false) ? expectation.Pass() : expectation.Fail("reason"))(state);
         Assert.Equal(2, state.EvidenceRecorder.PassedExpectations.Count);
         Assert.Equal(["reason"], state.EvidenceRecorder.FailingExpectation.Message);
     }
@@ -88,13 +105,23 @@ public class AsyncExpectationCompletionTests
         var calls = 0;
         bool Predicate() { calls++; throw new InvalidOperationException(); }
         async Task<bool> AsyncPredicate() { await Task.Yield(); return Predicate(); }
-        var when = asyncPredicate ? Checkr.ExpectWhen("when", AsyncPredicate, () => true)
-            : Checkr.ExpectWhen("when", Predicate, () => true);
+        var when = asyncPredicate
+            ? Checkr.ExpectWhen("when", AsyncPredicate, async expectation =>
+            {
+                await Task.Yield();
+                return expectation.Pass();
+            })
+            : Checkr.ExpectWhen("when", Predicate, async expectation =>
+            {
+                await Task.Yield();
+                return expectation.Pass();
+            });
         var pool = asyncPredicate ? Trackr.PoolExpectEachWhen<int>("pool", _ => AsyncPredicate(), _ => true)
             : Trackr.PoolExpectEachWhen<int>("pool", _ => Predicate(), _ => true);
         await when(state);
         await pool(state);
-        await Checkr.ExpectEquals("equal", () => Number(calls++), () => Number(calls++))(state);
+        await Checkr.Expect("equal", async expectation =>
+            expectation.Equal(await Number(calls++), await Number(calls++)))(state);
         Assert.Equal(0, calls);
         Assert.Null(state.EvidenceRecorder.ReplayException);
     }
@@ -224,9 +251,16 @@ public class AsyncExpectationCompletionTests
         var state = new CheckrState(1, 100, 123, AutopsyProbe.Empty, cancellation.Token);
         state.Memory.StartNewExecution();
         var actualCalls = 0;
-        var check = Checkr.ExpectEquals("equal", async token =>
-        { Assert.Equal(cancellation.Token, token); await Task.Yield(); cancellation.Cancel(); return 1; },
-            () => ++actualCalls);
+        var check = Checkr.Expect("equal", async (expectation, token) =>
+        {
+            Assert.Equal(cancellation.Token, token);
+            await Task.Yield();
+            cancellation.Cancel();
+            var expected = 1;
+            token.ThrowIfCancellationRequested();
+            var actual = ++actualCalls;
+            return expectation.Equal(expected, actual);
+        });
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => check(state).AsTask());
         Assert.Equal(0, actualCalls);
     }

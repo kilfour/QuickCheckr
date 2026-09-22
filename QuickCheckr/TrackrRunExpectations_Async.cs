@@ -1,13 +1,31 @@
 using QuickCheckr.UnderTheHood;
 namespace QuickCheckr;
+
 public static partial class Trackr
 {
+    public static CheckrOf<Case> Expect(
+        this string key,
+        Func<ExpectationContext, Task<ExpectationResult>> evaluation)
+        => Expect(key, (context, _) => evaluation(context));
+
+    public static CheckrOf<Case> Expect(
+        this string key,
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluation)
+        => state => state.IsThisTheRunsLastExecution()
+            ? Evaluate.ExpectationAsync(key, evaluation, true)(state)
+            : CheckrResult.CaseOnly(state);
+
     public static CheckrOf<Case> Expect(this string key, Func<Task<bool>> condition)
-        => Expect(key, _ => condition());
+        => Expect(key, async context =>
+            await condition().ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
 
     public static CheckrOf<Case> Expect(this string key, Func<CancellationToken, Task<bool>> condition)
-        => state => state.IsThisTheRunsLastExecution()
-            ? Evaluate.ExpectAsync(key, condition, true)(state) : CheckrResult.CaseOnly(state);
+        => Expect(key, async (context, token) =>
+            await condition(token).ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
 
     public static CheckrOf<Case> StopWhenProven(string key, Func<Task<bool>> condition)
         => StopWhenProven(key, _ => condition());
@@ -25,39 +43,27 @@ public static partial class Trackr
                 return EvaluateStopWhenProven(key, () => passed, state);
             }, ex => state.EvidenceRecorder.RecordFailure(ex));
         };
-    public static CheckrOf<Case> Verify(string key, Func<Task<bool>> condition)
-        => VerifyAsync(key, _ => condition(), null);
+    public static CheckrOf<Case> Verify(
+        string key,
+        Func<ExpectationContext, Task<ExpectationResult>> evaluation)
+        => Verify(key, (context, _) => evaluation(context));
 
-    public static CheckrOf<Case> Verify(string key, Func<Task<bool>> condition, Func<string> message)
-        => VerifyAsync(key, _ => condition(), () => [message()]);
+    public static CheckrOf<Case> Verify(
+        string key,
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluation)
+        => Evaluate.VerificationAsync(key, evaluation);
 
-    public static CheckrOf<Case> Verify(string key, Func<Task<bool>> condition, Func<List<string>>? messages)
-        => VerifyAsync(key, _ => condition(), messages);
+    public static CheckrOf<Case> Verify(string key, Func<Task<bool>> evaluation)
+        => Verify(key, async context =>
+            await evaluation().ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
 
-    public static CheckrOf<Case> Verify(string key, Func<CancellationToken, Task<bool>> condition)
-        => VerifyAsync(key, condition, null);
-
-    public static CheckrOf<Case> Verify(string key, Func<CancellationToken, Task<bool>> condition, Func<string> message)
-        => VerifyAsync(key, condition, () => [message()]);
-
-    public static CheckrOf<Case> Verify(string key, Func<CancellationToken, Task<bool>> condition, Func<List<string>>? messages)
-        => VerifyAsync(key, condition, messages);
-
-
-    private static CheckrOf<Case> VerifyAsync(string key, Func<CancellationToken, Task<bool>> condition,
-        Func<List<string>>? messages) =>
-        async state =>
-        {
-            state.Memory.KeyGuardian.Expects.Check(key);
-            if (!state.IsThisTheRunsLastExecution())
-                return CheckrResult.CaseOnly(state);
-            state.CancellationToken.ThrowIfCancellationRequested();
-            var passed = await condition(state.CancellationToken).ConfigureAwait(false);
-            state.CancellationToken.ThrowIfCancellationRequested();
-            if (passed) state.EvidenceRecorder.ExpectationPassed(key);
-            else state.EvidenceRecorder.VerificationFailed(new VerificationFailure(key, messages?.Invoke() ?? []));
-            return CheckrResult.CaseOnly(state);
-        };
+    public static CheckrOf<Case> Verify(string key, Func<CancellationToken, Task<bool>> evaluation)
+        => Verify(key, async (context, token) =>
+            await evaluation(token).ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
 
     public static CheckrOf<Case> Verify(string key)
         => Verify(key, Array.Empty<(string label, Func<bool> condition)>());

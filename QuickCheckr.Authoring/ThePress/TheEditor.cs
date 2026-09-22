@@ -100,7 +100,7 @@ public static class TheEditor
         from failedExpectation in EmitIf(
             article.FailureDescription() is not null,
             $"Assert.Equal(\"{article.FailureDescription()}\", article.FailureDescription());")
-        from failedExpectationMessages in Pulse.ToFlow(FailedExceptionMessage, Enumerable.Range(0, article.FailingExpectationMessages().Count))
+        from failedExpectationMessages in Pulse.ToFlow(FailedExceptionMessage, Enumerable.Range(0, article.FailingExpectationMessages().Length))
         from failedAssat in EmitIf(
             article.VerifyFailed() is not null,
             $"Assert.Equal(\"{article.VerifyFailed()}\", article.VerifyFailed());")

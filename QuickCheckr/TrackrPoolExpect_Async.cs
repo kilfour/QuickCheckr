@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood;
 namespace QuickCheckr;
+
 public static partial class Trackr
 {
 
@@ -77,28 +78,32 @@ public static partial class Trackr
             if (candidates.Count == 0) return CheckrResult.CaseOnly(state);
             List<KeyValuePair<int, T>> selected = [];
             List<string> failed = [];
-            return Evaluate.ExpectAsync(key, async token =>
-            {
-                foreach (var item in selected)
+            return Evaluate.ExpectationWhenAsync(
+                key,
+                async token =>
                 {
-                    token.ThrowIfCancellationRequested();
-                    var passed = await expectation(item.Value, token).ConfigureAwait(false);
-                    token.ThrowIfCancellationRequested();
-                    if (!passed) failed.Add($"{typeof(T).Name}-{item.Key}");
-                }
-                return failed.Count == 0;
-            }, true, () => failed, async token =>
-            {
-                // Filter callbacks run inside the expectation's skip, exception and cancellation guards.
-                foreach (var item in candidates)
+                    // Filter callbacks run inside the expectation's skip, exception and cancellation guards.
+                    foreach (var item in candidates)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        var include = await predicate(item.Value, token).ConfigureAwait(false);
+                        token.ThrowIfCancellationRequested();
+                        if (include) selected.Add(item);
+                    }
+                    return selected.Count != 0;
+                },
+                async (context, token) =>
                 {
-                    token.ThrowIfCancellationRequested();
-                    var include = await predicate(item.Value, token).ConfigureAwait(false);
-                    token.ThrowIfCancellationRequested();
-                    if (include) selected.Add(item);
-                }
-                return selected.Count != 0;
-            })(state);
+                    foreach (var item in selected)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        var passed = await expectation(item.Value, token).ConfigureAwait(false);
+                        token.ThrowIfCancellationRequested();
+                        if (!passed) failed.Add($"{typeof(T).Name}-{item.Key}");
+                    }
+                    return failed.Count == 0 ? context.Pass() : context.Fail([.. failed]);
+                },
+                true)(state);
         };
 
     private static CheckrOf<Case> PoolExpectRelatedAsync<T1, T2>(string key,

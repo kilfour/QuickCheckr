@@ -2,7 +2,7 @@ namespace QuickCheckr.UnderTheHood;
 
 internal sealed record ExpectationFailure(
     string Key,
-    List<string> Message,
+    string[] Message,
     ExceptionFailureIdentity? Identity = null)
 {
     public static ExpectationFailure Empty => new("", []);

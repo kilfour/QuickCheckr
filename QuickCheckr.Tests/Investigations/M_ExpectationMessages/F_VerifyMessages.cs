@@ -21,8 +21,7 @@ public class F_VerifyMessages : CheckrTest<F_VerifyMessages>
         from input in Checkr.Input("Answer", Fuzzr.Constant(42))
         from verify in Trackr.Verify(
             "Always fails",
-            () => false,
-            () => [$"answer = {input}", "second message"])
+            expectation => expectation.Fail($"answer = {input}", "second message"))
         select Case.Closed;
 
     protected override void Verify(Article article)

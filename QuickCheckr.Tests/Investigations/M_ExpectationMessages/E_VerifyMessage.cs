@@ -19,7 +19,8 @@ public class E_VerifyMessage : CheckrTest<E_VerifyMessage>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Answer", Fuzzr.Constant(42))
-        from verify in Trackr.Verify("Always fails", () => false, () => $"answer = {input}")
+        from verify in Trackr.Verify("Always fails",
+            expectation => expectation.Fail($"answer = {input}"))
         select Case.Closed;
 
     protected override void Verify(Article article)

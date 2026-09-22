@@ -33,9 +33,7 @@ internal sealed class DuplicateKeyWriteGuardForExpectations : DuplicateKeyWriteG
     public DuplicateKeyWriteGuardForExpectations()
         : base(
             [ "Checkr.Expect"
-            , "Checkr.ExpectEquals"
             , "Checkr.ExpectWhen"
-            , "Checkr.ExpectThrewExactly"
             , "Trackr.Expect"
             , "Trackr.Verify"
             , "Trackr.StopWhenProven"])

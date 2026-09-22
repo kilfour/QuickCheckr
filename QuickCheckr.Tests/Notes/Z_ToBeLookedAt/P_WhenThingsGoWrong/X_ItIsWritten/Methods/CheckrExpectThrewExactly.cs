@@ -14,7 +14,7 @@ public class CheckrExpectThrewExactly
     public void RunTest()
     {
         var ex = Assert.Throws<DuplicateKeyWriteException>(() => GetCheckr().Run());
-        Assert.Equal(GetMessage(), ex.Message);
+        Assert.Equal(GetMessage().ReplaceLineEndings(), ex.Message.ReplaceLineEndings());
     }
 
     [CodeSnippet]
@@ -24,7 +24,7 @@ public class CheckrExpectThrewExactly
         return
             from one in Checkr.Expect("reused", () => true)
             from act in Checkr.ActCarefully("act", () => ComputerSays.No("BOOM"))
-            from two in Checkr.ExpectThrewExactly<ComputerSaysNo>("reused", act)
+            from two in Checkr.Expect("reused", a => a.ThrewExactly<ComputerSaysNo>(act))
             select Case.Closed;
     }
 
@@ -41,9 +41,7 @@ Reusing a key for multiple write operations makes reports and shrinking ambiguou
 The following Checkrs write to the this bank:
 
 - 'Checkr.Expect'
-- 'Checkr.ExpectEquals'
 - 'Checkr.ExpectWhen'
-- 'Checkr.ExpectThrewExactly'
 - 'Trackr.Expect'
 - 'Trackr.Verify'
 - 'Trackr.StopWhenProven'

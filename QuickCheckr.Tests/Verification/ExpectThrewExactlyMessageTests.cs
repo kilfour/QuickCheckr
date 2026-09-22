@@ -14,8 +14,11 @@ public class ExpectThrewExactlyMessageTests
     {
         var state = State();
         var calls = 0;
-        var check = Checkr.ExpectThrewExactly<InvalidOperationException>("throws",
-            new DelayedResult(new InvalidOperationException(actual)), () => { calls++; return "expected"; });
+        var check = Checkr.Expect("throws",
+            a => a.ThrewExactly<InvalidOperationException>(
+                new DelayedResult(new InvalidOperationException(actual)),
+                ExpectedMessage()));
+        string ExpectedMessage() { calls++; return "expected"; }
         Assert.Equal(0, calls);
         await check(state);
         Assert.Equal(1, calls);
@@ -31,8 +34,9 @@ public class ExpectThrewExactlyMessageTests
     public async Task OmittingMessageKeepsTypeOnlyBehavior()
     {
         var state = State();
-        await Checkr.ExpectThrewExactly<InvalidOperationException>("throws",
-            new DelayedResult(new InvalidOperationException("anything")))(state);
+        await Checkr.Expect("throws",
+           a => a.ThrewExactly<InvalidOperationException>(
+           new DelayedResult(new InvalidOperationException("anything"))))(state);
         Assert.Equal(1, state.EvidenceRecorder.PassedExpectations["throws"]);
     }
 
@@ -43,7 +47,7 @@ public class ExpectThrewExactlyMessageTests
     {
         var state = State();
         var result = missing ? new DelayedResult() : new DelayedResult(new ArgumentException("expected"));
-        await Checkr.ExpectThrewExactly<Exception>("throws", result, () => "expected")(state);
+        await Checkr.Expect("throws", a => a.ThrewExactly<InvalidOperationException>(result, "expected"))(state);
         Assert.True(state.EvidenceRecorder.Failed());
     }
 
@@ -53,8 +57,11 @@ public class ExpectThrewExactlyMessageTests
         var state = State();
         state.EvidenceRecorder.ExpectationFailed(new ExpectationFailure("target", []), 1);
         state.StartReplay();
-        await Checkr.ExpectThrewExactly<Exception>("other", new DelayedResult(),
-            () => throw new InvalidOperationException("must not run"))(state);
+        await Checkr.Expect("other",
+            a => a.ThrewExactly<Exception>(
+                new DelayedResult(),
+                Message()))(state);
+        string Message() => throw new InvalidOperationException("must not run");
         Assert.Null(state.EvidenceRecorder.ReplayException);
     }
 
@@ -64,8 +71,11 @@ public class ExpectThrewExactlyMessageTests
         var state = State();
         state.EvidenceRecorder.ExpectationFailed(new ExpectationFailure("throws", []), 1);
         state.StartReplay();
-        await Checkr.ExpectThrewExactly<Exception>("throws", new DelayedResult(),
-            () => throw new InvalidOperationException("message factory"))(state);
+        await Checkr.Expect("throws",
+            a => a.ThrewExactly<Exception>(
+                new DelayedResult(),
+                Message()))(state);
+        string Message() => throw new InvalidOperationException("message factory");
         Assert.IsType<InvalidOperationException>(state.EvidenceRecorder.ReplayException);
     }
 

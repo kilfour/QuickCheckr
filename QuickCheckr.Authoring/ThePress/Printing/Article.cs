@@ -24,7 +24,7 @@ public class Article(IRecord record)
         }
         return string.Empty;
     }
-    public List<string> FailingExpectationMessages()
+    public string[] FailingExpectationMessages()
     {
         if (caseFile is null) return [];
         return caseFile.FailureDeposition switch

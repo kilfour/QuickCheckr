@@ -1,6 +1,7 @@
 ## 0.4.2: Not Yet Released
 
 * Breaking change: replaced the `(Func<bool> condition, CheckrOf<Case> checkr)` tuple used by `Checkr.Option`, `Checkr.OneOfWhen`, and `Trackr.PoolWhen` with the named `CheckrOption` record.
+* Breaking change: redesigned expectations around the sealed `ExpectationResult` returned from an `ExpectationContext` callback. Failure messages are now created with `expectation.Fail(...)`, formatter-aware values with `expectation.Show(...)`, equality with `expectation.Equal(...)`, and exact exception checks with `expectation.ThrewExactly<TException>(...)`. The former message overloads and the standalone `Checkr.ExpectEquals` and `Checkr.ExpectThrewExactly` APIs were removed.
 
 ## 0.4.1: Plugging Some Holes
 

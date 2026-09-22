@@ -15,7 +15,14 @@ public class AsyncExpectationTests
         var state = State(TestContext.Current.CancellationToken);
         var gate = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         var messages = 0;
-        var pending = Checkr.Expect("check", () => gate.Task, () => { messages++; return "failed"; })(state).AsTask();
+        var pending = Checkr.Expect("check", async expectation =>
+        {
+            var passed = await gate.Task;
+            return passed
+                ? expectation.Pass()
+                : expectation.Fail(Message());
+        })(state).AsTask();
+        string Message() { messages++; return "failed"; }
         Assert.False(pending.IsCompleted);
         Assert.Equal(0, messages);
         gate.SetResult(false);
@@ -32,7 +39,12 @@ public class AsyncExpectationTests
         state.EvidenceRecorder.ExpectationFailed(new ExpectationFailure("target", []), 1);
         state.StartReplay();
         var invoked = false;
-        await Checkr.Expect("other", async () => { invoked = true; await Task.Yield(); return false; })(state);
+        await Checkr.Expect("other", async expectation =>
+        {
+            invoked = true;
+            await Task.Yield();
+            return expectation.Fail();
+        })(state);
         Assert.False(invoked);
     }
 
@@ -72,12 +84,12 @@ public class AsyncExpectationTests
     {
         using var cancellation = new CancellationTokenSource();
         var state = State(cancellation.Token);
-        var check = Checkr.Expect("check", async token =>
+        var check = Checkr.Expect("check", async (expectation, token) =>
         {
             Assert.Equal(cancellation.Token, token);
             await Task.Yield();
             cancellation.Cancel();
-            return false;
+            return expectation.Fail();
         });
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => check(state).AsTask());
         Assert.False(state.EvidenceRecorder.Failed());
