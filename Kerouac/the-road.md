@@ -1,8 +1,6 @@
 ## 0.4.2: ???
 
 ### Doing
-- ExpectationResult
-  - async version
 
 ### To Test
 
