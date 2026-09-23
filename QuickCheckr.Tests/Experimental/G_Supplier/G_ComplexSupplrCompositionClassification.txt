@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                G_ComplexSupplrCompositionClassification.cs:23:1
+ Location:                G_ComplexSupplrCompositionClassification.cs:22:1
  Original failing run:    1 execution
  Seed:                    1656426057
  ------------------------------------------------------------

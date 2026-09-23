@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_NestedReconstruction.cs:22:1
+ Location:                B_NestedReconstruction.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    157112786
+ Seed:                    1353391193
  ------------------------------------------------------------
   Executed:
    - Envelope = { Payload: { Values: [ 42 ] } }

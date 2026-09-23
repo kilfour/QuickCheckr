@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeNone.cs:68:1
+ Location:                ReportModeNone.cs:20:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1964562926
@@ -8,6 +8,6 @@
   Executed: Blows up on 2
    - Counter    = 2
    - Null Thing = null
- ===========================================================================
+ ============================================================
   !! ComputerSaysNo: Only one is available
- ===========================================================================
+ ============================================================

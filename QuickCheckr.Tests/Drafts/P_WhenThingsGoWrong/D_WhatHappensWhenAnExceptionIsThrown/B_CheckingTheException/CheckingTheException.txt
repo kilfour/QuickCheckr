@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                CheckingTheException.cs:33:1
+ Location:                CheckingTheException.cs:17:1
  Original failing run:    1 execution
  Seed:                    412717959
  ------------------------------------------------------------

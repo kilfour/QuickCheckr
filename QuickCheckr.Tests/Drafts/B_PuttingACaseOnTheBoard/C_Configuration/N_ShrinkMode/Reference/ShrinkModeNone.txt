@@ -1,23 +1,23 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeNone.cs:68:1
+ Location:                ShrinkModeNone.cs:20:1
  Original failing run:    3 executions
  Seed:                    2145473476
  ------------------------------------------------------------
   Executed:
-   - Input: counter    = 1
-   - Input: Relevant   = 51
-   - Input: Irrelevant = 6
+   - counter    = 1
+   - Relevant   = 51
+   - Irrelevant = 6
  ------------------------------------------------------------
   Executed:
-   - Input: counter    = 2
-   - Input: Relevant   = 38
-   - Input: Irrelevant = 19
+   - counter    = 2
+   - Relevant   = 38
+   - Irrelevant = 19
  ------------------------------------------------------------
   Executed:
-   - Input: counter    = 3
-   - Input: Relevant   = 66
-   - Input: Irrelevant = 13
+   - counter    = 3
+   - Relevant   = 66
+   - Irrelevant = 13
  ============================================
   !! Expectation Failed: Third Time Answer
  ============================================

@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                D_CollectionOf.cs:59:1
+ Location:                D_CollectionOf.cs:18:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    1681332589
  ------------------------------------------------------------
   Executed:
-   - Input: Input = [ 94 ]
-            Redux   [ 2 ]
+   - Input = [ 94 ]
+     Redux   [ 2 ]
  ==================================
   !! Expectation Failed: All < 2
  ==================================

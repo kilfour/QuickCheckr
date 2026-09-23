@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                H_NestedCollections.cs:59:1
+ Location:                H_NestedCollections.cs:16:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    146712596
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ [ 42 ] ]
-   - Trace: Original = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
+   - List     = [ [ 42 ] ]
+   - Original = [ [ 42, 1, 15 ], [ 17 ], [ 27, 9 ] ]
  ===============================================
   !! Expectation Failed: List[0][0] is not 42
  ===============================================

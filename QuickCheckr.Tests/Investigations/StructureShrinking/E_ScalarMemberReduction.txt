@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                E_ScalarMemberReduction.cs:23:1
+ Location:                E_ScalarMemberReduction.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    329083251
+ Seed:                    1808250328
  ------------------------------------------------------------
   Executed:
    - Limit = { Value: 999 }

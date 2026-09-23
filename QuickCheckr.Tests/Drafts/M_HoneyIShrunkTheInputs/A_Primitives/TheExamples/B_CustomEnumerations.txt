@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_CustomEnumerations.cs:59:1
+ Location:                B_CustomEnumerations.cs:18:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1735186993
  ------------------------------------------------------------
   Executed:
-   - Input: Two          = Two
-   - Trace: Original One = Two
-   - Trace: Original Two = Two
+   - Two          = Two
+   - Original One = Two
+   - Original Two = Two
  ================================================
   !! Expectation Failed: Two should not be Two
  ================================================

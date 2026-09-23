@@ -1,11 +1,11 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_CoupledPredicate.cs:37:1
+ Location:                A_CoupledPredicate.cs:20:1
  Original failing run:    1 execution
  Seed:                    2017105380
  ------------------------------------------------------------
   Executed:
-   - Input: pair = { A: 9, B: 9 }
+   - pair = { A: 9, B: 9 }
  ======================================
   !! Expectation Failed: A + B <= 10
  ======================================

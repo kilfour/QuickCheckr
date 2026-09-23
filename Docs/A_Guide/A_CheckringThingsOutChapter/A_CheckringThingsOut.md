@@ -26,7 +26,7 @@ The test fails and QuickCheckr produces the following:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_MinimalFailingCheckr.cs:43:1
+ Location:                B_MinimalFailingCheckr.cs:47:1
  Original failing run:    1 execution
  Seed:                    1642083259
  ------------------------------------------------------------

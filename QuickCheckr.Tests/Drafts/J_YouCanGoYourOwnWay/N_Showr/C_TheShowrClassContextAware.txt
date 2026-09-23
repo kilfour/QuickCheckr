@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_TheShowrClassContextAware.cs:64:1
+ Location:                C_TheShowrClassContextAware.cs:22:1
  Original failing run:    1 execution
  Seed:                    695266907
  ------------------------------------------------------------
   Executed: Place order
-   - Input: Order request = { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 53 }
-                            Ordered 53 pieces of Product One.
+   - Order request = { ProductId: b1c88a3c-444e-4776-a5c4-c660a75e9365, Amount: 53 }
+                     Ordered 53 pieces of Product One.
  ============================================
   !! Expectation Failed: No negative stock
  ============================================

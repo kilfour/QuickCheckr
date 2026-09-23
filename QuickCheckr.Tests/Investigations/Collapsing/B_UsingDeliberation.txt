@@ -1,11 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_UsingDeliberation.cs:20:1
+ Location:                B_UsingDeliberation.cs:18:1
  Original failing run:    1 execution
- Seed:                    323561070
+ Minimal failing case:    1 execution (after 1 shrink)
+ Seed:                    1105891459
  ------------------------------------------------------------
   Executed:
-   - lister = { Values: [ 68, 88 ], Child: null }
+   - lister = { Values: [ 92, 48 ], Child: null }
  ==========================================================
   !! Expectation Failed: no list sum > 100 && count >= 2
  ==========================================================

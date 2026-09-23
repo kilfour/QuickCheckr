@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ThereShallBeOnly.cs:22:1
+ Location:                ThereShallBeOnly.cs:19:1
  Original failing run:    6 executions
  Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    59881302
+ Seed:                    1494464546
  ------------------------------------------------------------
   Executed:
    - Counter-1 = 6

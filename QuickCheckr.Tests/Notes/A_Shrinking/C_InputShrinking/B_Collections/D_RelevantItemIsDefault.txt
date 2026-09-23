@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                D_RelevantItemIsDefault.cs:59:1
+ Location:                D_RelevantItemIsDefault.cs:17:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    820833320
  ------------------------------------------------------------
   Executed:
-   - Input: List Input = [ 0 ]
-   - Trace: List Input = [ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]
+   - List Input = [ 0 ]
+   - List Input = [ 84, 63, 90, 91, 55, 53, 39, 91, 0 ]
  ==================================================
   !! Expectation Failed: List does not contain 0
  ==================================================

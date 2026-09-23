@@ -1,16 +1,17 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShrinkModeInputs.cs:68:1
+ Location:                ShrinkModeInputs.cs:20:1
  Original failing run:    3 executions
- Minimal failing case:    3 executions (after 7 shrinks)
+ Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    2145473476
  ------------------------------------------------------------
   Executed: (2 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed:
-   - Input: counter  = 3
-   - Input: Relevant = 66
+   - counter  = 3
+   - Relevant = 66
+     Redux      42
  ============================================
   !! Expectation Failed: Third Time Answer
  ============================================

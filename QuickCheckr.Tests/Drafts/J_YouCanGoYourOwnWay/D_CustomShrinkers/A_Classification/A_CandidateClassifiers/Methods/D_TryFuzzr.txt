@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                D_TryFuzzr.cs:51:1
+ Location:                D_TryFuzzr.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 2
+   - counter = 2
  =======================================
   !! Expectation Failed: counter != 2
  =======================================

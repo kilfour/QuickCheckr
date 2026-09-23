@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_CustomizedNested.cs:32:1
+ Location:                C_CustomizedNested.cs:19:1
  Original failing run:    1 execution
  Seed:                    1611568796
  ------------------------------------------------------------
   Executed: Evaluate
-   - Input: Expr     = ( 84 / ( 1 + 1 ) )
-   - Trace: Original = { Op: Div, L: { Value: 84 }, R: { Op: Add, L: { Value: 1 }, R: { Value: 1 } } }
+   - Expr     = ( 84 / ( 1 + 1 ) )
+   - Original = { Op: Div, L: { Value: 84 }, R: { Op: Add, L: { Value: 1 }, R: { Value: 1 } } }
  =================================
   !! Expectation Failed: Not 42
  =================================

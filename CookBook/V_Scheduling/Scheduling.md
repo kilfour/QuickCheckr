@@ -187,17 +187,18 @@ And ofcourse, there's an edge-case.
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                Scheduling.cs:64:1
+ Location:                Scheduling.cs:53:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    511619818
  ------------------------------------------------------------
   Executed:
-   - Input: Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
-   - Input: Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
+   - Booking One = { Start: 27.December(2025), End: 2.January(2026), Schedule: { Thursday: [ { Start: 10, End: 15 } ] } }
+   - Booking Two = { Start: 25.December(2025), End: 31.December(2025), Schedule: { Thursday: [ { Start: 14, End: 16 } ] } }
    - WARNING: Empty collections deemed irrelevant at:
        Booking One.Schedule: Monday, Tuesday, Wednesday, Friday
        Booking Two.Schedule: Monday, Tuesday, Wednesday, Friday
+       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==================================================
   !! Expectation Failed: Bookings do not overlap
  ==================================================

@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_ExpectationShouldStop.cs:41:1
+ Location:                B_ExpectationShouldStop.cs:20:1
  Original failing run:    1 execution
- Seed:                    1672992825
+ Seed:                    1110235243
  ------------------------------------------------------------
   Executed:
    - To Pool: input.Answer = Int32-1

@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                F_UnconfiguredReadOnlyMemberIsRetained.cs:25:1
+ Location:                F_UnconfiguredReadOnlyMemberIsRetained.cs:23:1
  Original failing run:    1 execution
- Seed:                    1360275310
+ Seed:                    454155332
  ------------------------------------------------------------
   Executed:
    - Request = { Code: 42, Note: { Text: "irrelevant" } }

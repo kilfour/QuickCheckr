@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                K_ACollectionOfObjects.cs:59:1
+ Location:                K_ACollectionOfObjects.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    849984174
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ { One: 42 } ]
-   - Trace: Original = [
+   - List     = [ { One: 42 } ]
+   - Original = [
     { One: 13, Two: 49 },
     { One: 61, Two: 79 },
     { One: 93, Two: 91 },

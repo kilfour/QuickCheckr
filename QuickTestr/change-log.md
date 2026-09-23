@@ -1,3 +1,6 @@
+### 0.4.2: Keeping Up With the Checkrers
+* QuickCheckr compatibility update.
+
 ### 0.4.1: Everybody needs good neighbours 
 * Added `AssertThrewExactly<TException>(action, message)` to one- and two-input property builders.
 * Fixed package info and keep version number in sync with QuickCheckr

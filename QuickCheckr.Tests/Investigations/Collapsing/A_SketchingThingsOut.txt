@@ -1,12 +1,15 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_SketchingThingsOut.cs:20:1
+ Location:                A_SketchingThingsOut.cs:18:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1374960450
  ------------------------------------------------------------
   Executed:
    - lister = { Child: { Child: { Child: { Values: [ 11, 72, 27 ], Child: null } } } }
+   - WARNING: Empty collection deemed irrelevant at:
+       lister: Values, Child.Values, Child.Child.Values
+       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================================
   !! Expectation Failed: no list sum > 100 && count >= 2
  ==========================================================

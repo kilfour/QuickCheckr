@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_UsingCollapser.cs:20:1
+ Location:                C_UsingCollapser.cs:18:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1374960450

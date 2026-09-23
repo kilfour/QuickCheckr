@@ -1,15 +1,15 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                PoolExpectEach.cs:41:1
+ Location:                PoolExpectEach.cs:18:1
  Original failing run:    3 executions
  Minimal failing case:    2 executions (after 1 shrink)
- Seed:                    845928227
+ Seed:                    1106716057
  ------------------------------------------------------------
   Executed:
-   -  Pool: 2 = Thing-1
+   - 2 = Thing-1
  ------------------------------------------------------------
   Executed:
-   -  Pool: 3 = OtherThing-1
+   - 3 = OtherThing-1
  =================================================
   !! Expectation Failed: just checking: Thing-1
  =================================================

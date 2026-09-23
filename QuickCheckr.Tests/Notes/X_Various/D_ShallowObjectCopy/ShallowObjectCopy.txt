@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ShallowObjectCopy.cs:22:1
+ Location:                ShallowObjectCopy.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    458149048

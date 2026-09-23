@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_BuiltInEnumerations.cs:59:1
+ Location:                A_BuiltInEnumerations.cs:18:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2083214969
  ------------------------------------------------------------
   Executed:
-   - Input: Two          = Monday
-   - Trace: Original One = Wednesday
-   - Trace: Original Two = Monday
+   - Two          = Monday
+   - Original One = Wednesday
+   - Original Two = Monday
  ===================================================
   !! Expectation Failed: Two should not be Monday
  ===================================================

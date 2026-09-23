@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_ShrinkingExceptionIdentitySolution.cs:22:1
+ Location:                B_ShrinkingExceptionIdentitySolution.cs:20:1
  Original failing run:    2 executions
  Seed:                    743406629
  ------------------------------------------------------------

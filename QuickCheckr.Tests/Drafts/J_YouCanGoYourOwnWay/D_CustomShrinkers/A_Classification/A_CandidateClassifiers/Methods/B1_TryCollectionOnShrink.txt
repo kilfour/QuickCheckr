@@ -1,11 +1,11 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B1_TryCollectionOnShrink.cs:33:1
+ Location:                B1_TryCollectionOnShrink.cs:18:1
  Original failing run:    1 execution
  Seed:                    899182715
  ------------------------------------------------------------
   Executed:
-   - Input: answers = [ 2, 80 ]
+   - answers = [ 2, 80 ]
  ===============================================
   !! Expectation Failed: all answers equal 42
  ===============================================

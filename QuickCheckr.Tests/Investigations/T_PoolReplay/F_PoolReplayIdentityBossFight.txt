@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                F_PoolReplayIdentityBossFight.cs:28:1
+ Location:                F_PoolReplayIdentityBossFight.cs:23:1
  Original failing run:    6 executions
  Minimal failing case:    5 executions (after 1 shrink)
  Seed:                    769948390

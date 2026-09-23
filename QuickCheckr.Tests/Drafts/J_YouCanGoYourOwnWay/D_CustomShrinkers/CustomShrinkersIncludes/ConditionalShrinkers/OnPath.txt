@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                OnPath.cs:58:1
+ Location:                OnPath.cs:19:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    776489069
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1036463044
  ------------------------------------------------------------
   Executed:
-   - Input: Inter = { A: 42, B: 21 }
-            Redux   { A: 3, B: 8 }
+   - Inter = { A: 42, B: 21 }
+     Redux   { A: 3, B: 8 }
    - WARNING: No witness for reducer at 'Inter.A'.
  ===============================================
   !! Expectation Failed: Sum smaller than 11.

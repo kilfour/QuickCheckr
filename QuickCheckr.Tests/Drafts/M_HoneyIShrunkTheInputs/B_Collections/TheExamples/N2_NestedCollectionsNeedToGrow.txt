@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                N2_NestedCollectionsNeedToGrow.cs:25:1
+ Location:                N2_NestedCollectionsNeedToGrow.cs:23:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    482835926

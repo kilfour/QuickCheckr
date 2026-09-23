@@ -61,7 +61,7 @@ Running the Checkr without shrinking yields a report similar to this:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                B_ChoosingTheNextMoveNoShrinking.cs:43:1
+ Location:                B_ChoosingTheNextMoveNoShrinking.cs:44:1
  Original failing run:    5 executions
  Seed:                    971854269
  ------------------------------------------------------------
@@ -92,7 +92,7 @@ And if we let the QuickCheckr shrinker do its work:
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_ChoosingTheNextMoveShrunk.cs:24:1
+ Location:                C_ChoosingTheNextMoveShrunk.cs:26:1
  Original failing run:    5 executions
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    971854269
@@ -137,7 +137,7 @@ select Case.Closed;
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                D_ChoosingTheNextMoveConditional.cs:32:1
+ Location:                D_ChoosingTheNextMoveConditional.cs:31:1
  Original failing run:    2 executions
  Seed:                    356083796
  ------------------------------------------------------------

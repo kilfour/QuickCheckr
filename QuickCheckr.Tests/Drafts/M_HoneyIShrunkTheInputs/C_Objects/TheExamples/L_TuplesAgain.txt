@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                L_TuplesAgain.cs:33:1
+ Location:                L_TuplesAgain.cs:19:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
  Seed:                    751254928
  ------------------------------------------------------------
   Executed:
-   - Input: Tuple    = ( 52, 25, _ )
-            Redux      ( 17, 25, _ )
-   - Trace: Original = { Item1: 52, Item2: 25, Item3: 23 }
+   - Tuple    = ( 52, 25, _ )
+     Redux      ( 17, 25, _ )
+   - Original = { Item1: 52, Item2: 25, Item3: 23 }
  =======================================
   !! Expectation Failed: Sum is < 42.
  =======================================

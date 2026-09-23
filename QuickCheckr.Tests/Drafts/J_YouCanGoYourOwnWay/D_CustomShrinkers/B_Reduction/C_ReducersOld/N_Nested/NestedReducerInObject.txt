@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                NestedReducerInObject.cs:64:1
+ Location:                NestedReducerInObject.cs:27:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    686899245
  ------------------------------------------------------------
   Executed:
-   - Input: Universe = { Answer: 61 }
-            Redux      { Answer: 43 }
+   - Universe = { Answer: 61 }
+     Redux      { Answer: 43 }
  =======================================
   !! Expectation Failed: answer <= 42
  =======================================

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_ChoosingTheNextMoveNoShrinking.cs:43:1
+ Location:                B_ChoosingTheNextMoveNoShrinking.cs:44:1
  Original failing run:    5 executions
  Seed:                    971854269
  ------------------------------------------------------------

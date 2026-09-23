@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                FuzzrConfig.cs:23:1
+ Location:                FuzzrConfig.cs:21:1
  Original failing run:    1 execution
  Seed:                    1493113936
  ------------------------------------------------------------

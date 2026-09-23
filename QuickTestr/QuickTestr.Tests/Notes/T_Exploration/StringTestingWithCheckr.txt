@@ -1,17 +1,29 @@
  ------------------------------------------------------------
- 11 Total Runs
- 10 Failed Runs
- 1 Distinct Failure
+ 50 Total Runs
+ 50 Failed Runs
+ 2 Distinct Failures
  ------------------------------------------------------------
 
  ============================================================
- Seed:                    547058915
+ Seed:                    1839336318
+ Original failing run:    1 execution
  Failure:                 ComputerSaysNo: Title is required.
-    Input = ""
+ ------------------------------------------------------------
+  Executed: Create
+   - Title = "\t"
+ ============================================================
+
+ ============================================================
+ Seed:                    1988696003
+ Original failing run:    1 execution
+ Failure:                 ComputerSaysNo: Title cannot be longer than 100 characters.
+ ------------------------------------------------------------
+  Executed: Create
+   - Title = "omhtncpgmcqzohmouhcroxjqyorcjtbtrfhrewzcvffcfyfemlxctggrdruykmwtawijzujyhzvjsglaimpxwyakyqonbbriilcipwfsbyvtlxywfupyxywbwxkj"
  ============================================================
 
 
  ============================================================
  Passed Expectations
- - Create Book Title: 1x
+ - Accepted: 55x
  ============================================================

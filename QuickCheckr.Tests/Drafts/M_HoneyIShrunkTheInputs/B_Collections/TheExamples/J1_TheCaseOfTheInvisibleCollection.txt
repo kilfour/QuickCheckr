@@ -1,15 +1,16 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J1_TheCaseOfTheInvisibleCollection.cs:50:1
+ Location:                J1_TheCaseOfTheInvisibleCollection.cs:26:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
  ------------------------------------------------------------
   Executed: Add
-   - Input: Int = 1
+   - Int = 1
  ------------------------------------------------------------
   Executed: Update
    - WARNING: All inputs were considered irrelevant.
+   - WARNING: Empty collection deemed irrelevant at input 'Ints'. If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ================================
   !! Expectation Failed: Has 1
  ================================

@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ExecutionShrinking.cs:68:1
+ Location:                ExecutionShrinking.cs:36:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    669391953
  ------------------------------------------------------------
   Executed:
-   - Input: counter = 3
+   - counter = 3
  ===================================================
   !! Expectation Failed: Counter does not equal 3
  ===================================================

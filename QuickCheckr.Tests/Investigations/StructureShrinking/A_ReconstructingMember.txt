@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                A_ReconstructingMember.cs:22:1
+ Location:                A_ReconstructingMember.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1616780161
+ Seed:                    322224845
  ------------------------------------------------------------
   Executed:
    - Parcel = { Values: [ 42 ] }

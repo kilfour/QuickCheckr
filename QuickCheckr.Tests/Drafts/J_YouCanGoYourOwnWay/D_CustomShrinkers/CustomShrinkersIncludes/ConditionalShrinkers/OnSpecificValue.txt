@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                OnSpecificValue.cs:58:1
+ Location:                OnSpecificValue.cs:19:1
  Original failing run:    1 execution
- Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1329962298
+ Minimal failing case:    1 execution (after 3 shrinks)
+ Seed:                    1006723326
  ------------------------------------------------------------
   Executed:
-   - Input: Inter    = { B: 5 }
-            Redux      { B: 1 }
-   - Trace: Original = { A: 42, B: 5 }
+   - Inter    = { B: 5 }
+     Redux      { B: 1 }
+   - Original = { A: 42, B: 5 }
  ===================================================
   !! Expectation Failed: All ints smaller than 1.
  ===================================================

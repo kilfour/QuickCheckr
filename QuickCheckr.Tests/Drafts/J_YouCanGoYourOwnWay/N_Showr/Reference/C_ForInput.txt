@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_ForInput.cs:64:1
+ Location:                C_ForInput.cs:19:1
  Original failing run:    1 execution
  Seed:                    695266907
  ------------------------------------------------------------
   Executed:
-   - Input: AnInt = 7
-                    PREFIXED 7
-   - Trace: AnInt = 7
+   - AnInt = 7
+             PREFIXED 7
+   - AnInt = 7
  ================================
   !! Expectation Failed: not 7
  ================================

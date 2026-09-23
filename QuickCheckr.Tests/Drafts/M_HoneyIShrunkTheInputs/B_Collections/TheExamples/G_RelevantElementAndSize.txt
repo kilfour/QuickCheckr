@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                G_RelevantElementAndSize.cs:59:1
+ Location:                G_RelevantElementAndSize.cs:16:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 5 shrinks)
  Seed:                    1374380958
  ------------------------------------------------------------
   Executed:
-   - Input: List     = [ _, 7 ]
-   - Trace: Original = [ 6, 7, 9, 7, 3, 2 ]
+   - List     = [ _, 7 ]
+   - Original = [ 6, 7, 9, 7, 3, 2 ]
  ==================================================
   !! Expectation Failed: Second element is not 7
  ==================================================
