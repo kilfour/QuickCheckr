@@ -6,7 +6,6 @@
  Seed:                    2014608033
  ------------------------------------------------------------
   Executed:
-   - WARNING: All inputs were considered irrelevant.
    - WARNING: Empty collection deemed irrelevant at input 'List Input'. If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  =======================================
   !! Expectation Failed: Always fails

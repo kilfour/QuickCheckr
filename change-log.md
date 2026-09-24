@@ -1,11 +1,13 @@
+## 0.4.3:
+* Reduced `AllInputsIrrelevantWarning` from Important to Verbose. 
+
 ## 0.4.2: Api Sharpening
 * Added a `.FileAs(...)` extension method on `CheckrOf<Case>` and `ConfiguredCheckr` which serves as shorthand for `Configure(a => a with { FileAs = "TestName" })`.
 * Breaking change: replaced the `(Func<bool> condition, CheckrOf<Case> checkr)` tuple used by `Checkr.Option`, `Checkr.OneOfWhen`, and `Trackr.PoolWhen` with the named `CheckrOption` record.
-* Breaking change: redesigned expectations around the sealed `ExpectationResult` returned from an `ExpectationContext` callback. Failure messages are now created with `expectation.Fail(...)`, formatter-aware values with `expectation.Show(...)`, equality with `expectation.Equal(...)`, and exact exception checks with `expectation.ThrewExactly<TException>(...)`. The former message overloads and the standalone `Checkr.ExpectEquals` and `Checkr.ExpectThrewExactly` APIs were removed.
+* Breaking change: redesigned expectations around the `ExpectationResult` returned from an `ExpectationContext` callback. Failure messages are now created with `expectation.Fail(...)`, formatter-aware values with `expectation.Show(...)`, equality with `expectation.Equal(...)`, and exact exception checks with `expectation.ThrewExactly<TException>(...)`. The former message overloads and the standalone `Checkr.ExpectEquals` and `Checkr.ExpectThrewExactly` APIs were removed.
 * Breaking change: redesigned `Checkr.Trace` and `Checkr.TraceWhen` around a `TraceContext` callback. Values can be formatted with `trace.Show(...)`, or callers can return `string[]` directly to control line breaks and indentation. The former value-factory and string-factory overloads were removed.
 
 ## 0.4.1: Plugging Some Holes
-
 * Added an optional expected-message factory to `Checkr.ExpectThrewExactly<TException>`. When supplied, both the exact exception type and ordinal message equality are checked; the factory runs once per active expectation and failures include the expected message.
 overloads to `Checkr.Expect`, `Checkr.ExpectWhen`, `Trackr.Expect`, `Trackr.Verify`, `Trackr.StopWhenProven`, `Trackr.PoolExpect`, both `Trackr.PoolExpectEach` forms, and `Trackr.PoolExpectEachWhen`.
 * Added awaited value factories to `Checkr.ExpectEquals`.
@@ -19,7 +21,6 @@ overloads to `Checkr.Expect`, `Checkr.ExpectWhen`, `Trackr.Expect`, `Trackr.Veri
 * Equality expectations evaluate their factories only when the expectation runs, after replay skip checks. Each factory is evaluated once, and failure reports use the captured values with the configured trace formatter.
 
 ## 0.4.0: You Keep Me Hanging On ... Asynchronously
-
 * Added end-to-end async/await support across execution, replay, shrinking, tracing, and case selection.
 * Added `RunAsync(...)` overloads, including cancellation support.
 * Task-based actions, captures, performs, and carefully handled actions are now genuinely awaited instead of blocking.

@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -17,7 +18,7 @@ public class AllInputsShrunk : CheckrTest<AllInputsShrunk>
     [DocContent("")]
     [DocContent("")]
     public override void Example() =>
-        Document(a => a.Run(1098916919));
+        Document(a => a.Configure(b => b with { WarningLevel = WarningLevel.Verbose }).Run(1098916919));
 
 
     [CodeSnippet]

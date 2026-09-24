@@ -166,11 +166,9 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
  ------------------------------------------------------------
   Executed: Create Course
    - Store Course = Course-1
-   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Create Coach
    - Store Coach = Coach-1
-   - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Assign Coach to Course
    - (Coach, Course) to Assign = ( Coach-1, Course-1 )

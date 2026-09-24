@@ -51,14 +51,13 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(2, article.Total().Traces());
-        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(0, article.Total().Warnings());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(16, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal(3, article.Execution(1).Times);
         Assert.Equal("-QTM-Add", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("-QTS-Add", article.Execution(1).Action(2).Read().Label);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal(17, article.Execution(2).Read().ExecutionId);
         Assert.Equal("-QTM-Clear", article.Execution(2).Action(1).Read().Label);
         Assert.Equal("-QTS-Clear", article.Execution(2).Action(2).Read().Label);

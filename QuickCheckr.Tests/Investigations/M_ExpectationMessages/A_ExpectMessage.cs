@@ -27,9 +27,8 @@ public class A_ExpectMessage : CheckrTest<A_ExpectMessage>
         Assert.Equal("Always fails", article.FailureDescription());
         Assert.Equal("answer = 42", article.FailingExpectationMessages()[0]);
         Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(0, article.Total().Warnings());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
     }
 }

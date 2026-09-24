@@ -5,8 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    435330806
  ------------------------------------------------------------
-  Executed:
-   - WARNING: All inputs were considered irrelevant.
+  Executed
  =======================================
   !! Expectation Failed: Always fails
        answer = 42

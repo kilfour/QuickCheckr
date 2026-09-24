@@ -46,7 +46,7 @@ public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvi
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(2, article.Total().Warnings());
+        Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Add", article.Execution(1).Action(1).Read().Label);
@@ -57,7 +57,6 @@ public class J1_TheCaseOfTheInvisibleCollection : CheckrTest<J1_TheCaseOfTheInvi
         Assert.Equal(
             $"Empty collection deemed irrelevant at input 'Ints'. {EmptyCollectionWarning.Suggestion}",
             article.Execution(2).Warning(1).Read().Value);
-        Assert.Equal("All inputs were considered irrelevant.", article.Execution(2).Warning(2).Read().Value);
     }
 
     [CodeExample]

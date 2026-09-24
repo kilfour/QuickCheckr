@@ -3,7 +3,7 @@
  Location:                A_GreedIsNotGood.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    106639220
+ Seed:                    1636625885
  ------------------------------------------------------------
   Executed:
    - List = [ _, 1 ]

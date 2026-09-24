@@ -3,7 +3,7 @@
  Location:                B_NestedReconstruction.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    1353391193
+ Seed:                    362333380
  ------------------------------------------------------------
   Executed:
    - Envelope = { Payload: { Values: [ 42 ] } }

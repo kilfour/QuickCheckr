@@ -3,7 +3,7 @@
  Location:                CheckrSequence.cs:20:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
- Seed:                    549929189
+ Seed:                    1923364636
  ------------------------------------------------------------
   Executed: 1
    - Counter = 3
