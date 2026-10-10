@@ -1,5 +1,6 @@
 ## 0.4.3:
 * Reduced `AllInputsIrrelevantWarning` from Important to Verbose. 
+* Added `Trackr.PoolWhen<T1, T2>` to conditionally enable a Checkr using a predicate over two complete pools, such as `pool1.Count > 0 && pool2.Count < 2`.
 
 ## 0.4.2: Api Sharpening
 * Added a `.FileAs(...)` extension method on `CheckrOf<Case>` and `ConfiguredCheckr` which serves as shorthand for `Configure(a => a with { FileAs = "TestName" })`.
