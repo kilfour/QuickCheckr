@@ -49,6 +49,13 @@ internal sealed class LongTermMemory
     private MemoryBank stashed = new();
     public T StoreStashed<T>(string key, Func<T> factory)
         => stashed.Store(key, factory)!;
+    public async Task<T> StoreStashedAsync<T>(string key, Func<Task<T>> factory)
+    {
+        if (stashed.Values.TryGetValue(key, out var existing))
+            return (T)existing!;
+        var value = await factory().ConfigureAwait(false);
+        return stashed.Store(key, () => value)!;
+    }
     public T GetStashed<T>(string key) => stashed.Get<T>(key)!;
     // --------------------------------------------------------------------------
 

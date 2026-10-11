@@ -1,4 +1,5 @@
 ## 0.4.3:
+* Added async value factories to `Trackr.Stashed`, with type-based and custom keys and optional cancellation-token support. Awaited values retain once-per-run caching, retrieval, and disposal.
 * Reduced `AllInputsIrrelevantWarning` from Important to Verbose. 
 * Added `Trackr.PoolWhen<T1, T2>` to conditionally enable a Checkr using a predicate over two complete pools, such as `pool1.Count > 0 && pool2.Count < 2`.
 

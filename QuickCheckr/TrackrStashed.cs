@@ -17,4 +17,26 @@ public static partial class Trackr
     /// </summary>
     public static CheckrOf<T> Stashed<T>(string key, Func<T> func) =>
         state => CheckrResult.Some(state, state.Memory.StoreStashed(key, func)!);
+
+    /// <summary>Asynchronously creates and stashes a shared value under a type-based key.</summary>
+    public static CheckrOf<T> Stashed<T>(Func<Task<T>> func)
+        => Stashed<T>(typeof(T).FullName!, _ => func());
+
+    /// <summary>Asynchronously creates and stashes a shared value under a custom key.</summary>
+    public static CheckrOf<T> Stashed<T>(string key, Func<Task<T>> func)
+        => Stashed<T>(key, _ => func());
+
+    /// <summary>Asynchronously creates and stashes a shared value using the run's cancellation token.</summary>
+    public static CheckrOf<T> Stashed<T>(Func<CancellationToken, Task<T>> func)
+        => Stashed(typeof(T).FullName!, func);
+
+    /// <summary>Asynchronously creates and stashes a shared value under a custom key using the run's cancellation token.</summary>
+    public static CheckrOf<T> Stashed<T>(string key, Func<CancellationToken, Task<T>> func) =>
+        async state =>
+        {
+            state.CancellationToken.ThrowIfCancellationRequested();
+            var value = await state.Memory.StoreStashedAsync(key, () => func(state.CancellationToken)).ConfigureAwait(false);
+            state.CancellationToken.ThrowIfCancellationRequested();
+            return CheckrResult.Some(state, value);
+        };
 }

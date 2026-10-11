@@ -74,6 +74,9 @@ internal sealed class Memory
     // Stashed
     public T StoreStashed<T>(string key, Func<T> factory)
         => LongTermMemory.StoreStashed(KeyGuardian.Stash.Check(key), factory);
+
+    public Task<T> StoreStashedAsync<T>(string key, Func<Task<T>> factory)
+        => LongTermMemory.StoreStashedAsync(KeyGuardian.Stash.Check(key), factory);
     public T GetStashed<T>(string key)
         => LongTermMemory.GetStashed<T>(key);
     // --------------------------------------------------------------------------
