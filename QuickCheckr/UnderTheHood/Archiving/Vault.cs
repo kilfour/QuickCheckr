@@ -20,12 +20,18 @@ internal sealed class EvidenceVault(CheckrRunnerConfig config)
 
 
     public IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
+        => CheckAsync(check, config, closeResolved).GetAwaiter().GetResult();
+
+    public async Task<IEnumerable<CaseFile>> CheckAsync(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
     {
+        config.CancellationToken.ThrowIfCancellationRequested();
         entries = custodian.RetrieveVaultEntries(config.FileAs);
         var caseFiles = new List<CaseFile>();
         foreach (var entry in entries)
         {
-            var caseFile = new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun, AutopsyProbe.Empty).Run();
+            config.CancellationToken.ThrowIfCancellationRequested();
+            var caseFile = await new CheckrRunner(check, config with { Seed = entry.Seed }, entry.ExecutionsPerRun, AutopsyProbe.Empty).RunAsync().ConfigureAwait(false);
+            config.CancellationToken.ThrowIfCancellationRequested();
             caseFiles.Add(caseFile);
             if (caseFile.HasEvidence)
             {
@@ -47,6 +53,7 @@ internal sealed class EvidenceVault(CheckrRunnerConfig config)
                 }
             }
         }
+        config.CancellationToken.ThrowIfCancellationRequested();
         custodian.StoreVaultEntries(config.FileAs, entries);
         return caseFiles;
     }

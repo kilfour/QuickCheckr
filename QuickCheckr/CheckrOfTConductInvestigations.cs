@@ -23,10 +23,32 @@ public static class CheckrOfTConductInvestigations
         RunCount runs,
         ExecutionCount executionsPerRun,
         Directive directive)
+        => configuredCheckr.ConductAsync(maxInvestigations, runs, executionsPerRun, directive).GetAwaiter().GetResult();
+
+    /// <summary>Conducts investigations, awaiting saved-case replay, execution, and shrinking.</summary>
+    [StackTraceHidden]
+    public static Task<ConfiguredCheckr> ConductAsync(
+        this ConfiguredCheckr configuredCheckr,
+        InvestigationCount maxInvestigations,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        CancellationToken cancellationToken = default)
+        => configuredCheckr.ConductAsync(maxInvestigations, runs, executionsPerRun, Directive.Default, cancellationToken);
+
+    /// <summary>Conducts investigations using the supplied directive and cooperative cancellation.</summary>
+    [StackTraceHidden]
+    public static async Task<ConfiguredCheckr> ConductAsync(
+        this ConfiguredCheckr configuredCheckr,
+        InvestigationCount maxInvestigations,
+        RunCount runs,
+        ExecutionCount executionsPerRun,
+        Directive directive,
+        CancellationToken cancellationToken = default)
     {
-        var config = new CheckrRunnerConfig(configuredCheckr.Config);
+        cancellationToken.ThrowIfCancellationRequested();
+        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { CancellationToken = cancellationToken };
         var vault = Vault.From(config);
-        var checkedCaseFiles = vault.Check(configuredCheckr.Checkr, config, false).ToList();
+        var checkedCaseFiles = (await vault.CheckAsync(configuredCheckr.Checkr, config, false).ConfigureAwait(false)).ToList();
         var caseFiles = checkedCaseFiles
             .Where(caseFile => caseFile.HasEvidence && !caseFile.Rejected)
             .ToList();
@@ -34,7 +56,9 @@ public static class CheckrOfTConductInvestigations
         var stop = NeedsToStop(directive, caseFiles, inquiry);
         for (int i = 0; i < maxInvestigations.NumberOfInvestigations && !stop; i++)
         {
-            var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty);
+            cancellationToken.ThrowIfCancellationRequested();
+            var findings = await CaseOfficer.InvestigateAsync(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
             inquiry.Add([.. findings.CaseFiles]);
             foreach (var caseFile in Candidates(findings))
             {
@@ -54,6 +78,7 @@ public static class CheckrOfTConductInvestigations
             }
         }
 
+        cancellationToken.ThrowIfCancellationRequested();
         foreach (var caseFile in caseFiles)
         {
             if (!string.IsNullOrWhiteSpace(config.FileAs))
