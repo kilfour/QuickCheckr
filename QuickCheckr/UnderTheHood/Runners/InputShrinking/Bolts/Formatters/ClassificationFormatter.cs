@@ -14,8 +14,11 @@ public sealed class ClassificationFormatter
 
     public ObjectClassificationFormatter<T> For<T>()
     {
-        var format = new ObjectClassificationFormat();
-        ObjectClassificationFormats.Add(typeof(T), format);
+        if (!ObjectClassificationFormats.TryGetValue(typeof(T), out var format))
+        {
+            format = new ObjectClassificationFormat();
+            ObjectClassificationFormats.Add(typeof(T), format);
+        }
         return new(this, format);
     }
 }

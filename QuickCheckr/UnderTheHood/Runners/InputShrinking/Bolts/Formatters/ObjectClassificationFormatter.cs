@@ -39,7 +39,8 @@ public sealed class ObjectClassificationFormatter<T>
 
     public ObjectClassificationFormatter<T> Property<TProperty>(Expression<Func<T, TProperty>> expression)
     {
-        format.Properties.Add(expression.AsMemberInfo().Name);
+        var name = expression.AsMemberInfo().Name;
+        if (!format.Properties.Contains(name)) format.Properties.Add(name);
         return this;
     }
 
@@ -48,7 +49,8 @@ public sealed class ObjectClassificationFormatter<T>
         Func<TProperty, string> formatter)
     {
         classificationFormatter.InputPrinter.ToReplace(formatter);
-        format.Properties.Add(expression.AsMemberInfo().Name);
+        var name = expression.AsMemberInfo().Name;
+        if (!format.Properties.Contains(name)) format.Properties.Add(name);
         return this;
     }
 }
