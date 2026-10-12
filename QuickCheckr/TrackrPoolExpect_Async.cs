@@ -3,6 +3,16 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
+    public static CheckrOf<Case> PoolExpect<T>(
+        string key,
+        Func<IReadOnlyCollection<T>, ExpectationContext, Task<ExpectationResult>> condition)
+        => PoolExpect<T>(key, (pool, context, _) => condition(pool, context));
+
+    public static CheckrOf<Case> PoolExpect<T>(
+        string key,
+        Func<IReadOnlyCollection<T>, ExpectationContext, CancellationToken, Task<ExpectationResult>> condition)
+        => state => Checkr.Expect(key, (context, token) =>
+            condition((IReadOnlyCollection<T>)state.Memory.GetPool<T>(), context, token))(state);
 
     public static CheckrOf<Case> PoolExpect<T>(string key, Func<IReadOnlyCollection<T>, Task<bool>> condition)
         => PoolExpect<T>(key, (pool, _) => condition(pool));
@@ -71,13 +81,20 @@ public static partial class Trackr
 
     private static CheckrOf<Case> PoolExpectEachAsync<T>(string key,
         Func<T, CancellationToken, Task<bool>> predicate,
-        Func<T, CancellationToken, Task<bool>> expectation) =>
+        Func<T, CancellationToken, Task<bool>> expectation)
+        => PoolExpectEachAsync<T>(key, predicate, async (item, context, token) =>
+            await expectation(item, token).ConfigureAwait(false) ? context.Pass() : context.Fail());
+
+    private static CheckrOf<Case> PoolExpectEachAsync<T>(string key,
+        Func<T, CancellationToken, Task<bool>> predicate,
+        Func<T, ExpectationContext, CancellationToken, Task<ExpectationResult>> expectation) =>
         state =>
         {
             var candidates = state.Memory.GetPoolDictionary<T>().ToList();
             if (candidates.Count == 0) return CheckrResult.CaseOnly(state);
             List<KeyValuePair<int, T>> selected = [];
             List<string> failed = [];
+            Func<ExceptionFailureIdentity>? failureIdentity = null;
             return Evaluate.ExpectationWhenAsync(
                 key,
                 async token =>
@@ -97,24 +114,37 @@ public static partial class Trackr
                     foreach (var item in selected)
                     {
                         token.ThrowIfCancellationRequested();
-                        var passed = await expectation(item.Value, token).ConfigureAwait(false);
+                        var result = await expectation(item.Value, context, token).ConfigureAwait(false);
                         token.ThrowIfCancellationRequested();
-                        if (!passed) failed.Add($"{typeof(T).Name}-{item.Key}");
+                        if (!result.IsPassed)
+                        {
+                            failed.Add($"{typeof(T).Name}-{item.Key}");
+                            failed.AddRange(result.Messages);
+                            failureIdentity ??= result.FailureIdentity;
+                        }
                     }
-                    return failed.Count == 0 ? context.Pass() : context.Fail([.. failed]);
+                    return failed.Count == 0 ? context.Pass()
+                        : failureIdentity is null ? context.Fail([.. failed])
+                        : ExpectationResult.ExceptionFailed(failureIdentity, [.. failed]);
                 },
                 true)(state);
         };
 
     private static CheckrOf<Case> PoolExpectRelatedAsync<T1, T2>(string key,
         Func<T1, T2, CancellationToken, Task<bool>> belongsTo,
-        Func<T1, IReadOnlyCollection<T2>, CancellationToken, Task<bool>> expectation) =>
+        Func<T1, IReadOnlyCollection<T2>, CancellationToken, Task<bool>> expectation)
+        => PoolExpectRelatedAsync<T1, T2>(key, belongsTo, async (parent, children, context, token) =>
+            await expectation(parent, children, token).ConfigureAwait(false) ? context.Pass() : context.Fail());
+
+    private static CheckrOf<Case> PoolExpectRelatedAsync<T1, T2>(string key,
+        Func<T1, T2, CancellationToken, Task<bool>> belongsTo,
+        Func<T1, IReadOnlyCollection<T2>, ExpectationContext, CancellationToken, Task<ExpectationResult>> expectation) =>
         state =>
         {
             var parents = state.Memory.GetPoolDictionary<T1>().ToList();
             var other = state.Memory.GetPool<T2>().ToList();
             return Combine.Checkrs(parents.Select(parent =>
-                Checkr.Expect($"{key}: {typeof(T1).Name}-{parent.Key}", async token =>
+                Checkr.Expect($"{key}: {typeof(T1).Name}-{parent.Key}", async (context, token) =>
                 {
                     List<T2> children = [];
                     foreach (var child in other)
@@ -124,7 +154,7 @@ public static partial class Trackr
                         token.ThrowIfCancellationRequested();
                         if (include) children.Add(child);
                     }
-                    return await expectation(parent.Value, children, token).ConfigureAwait(false);
+                    return await expectation(parent.Value, children, context, token).ConfigureAwait(false);
                 })))(state);
         };
 }
