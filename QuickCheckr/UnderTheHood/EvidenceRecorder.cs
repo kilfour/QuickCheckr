@@ -11,6 +11,7 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
         currentFailed = false;
         failedOnWrongExecutionId = false;
         ReplayException = null;
+        replayFailingExpectation = null;
     }
 
     private bool runFailed;
@@ -57,6 +58,14 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
     }
 
     private int failingExecutionId;
+    private ExpectationFailure? replayFailingExpectation;
+
+    public void RefreshFailureMessages()
+    {
+        if (IsReplay && Failed() && ReplayException is null && replayFailingExpectation is { } failure)
+            FailingExpectation = FailingExpectation with { Message = failure.Message };
+    }
+
     public ExpectationFailure FailingExpectation { get; private set; } = ExpectationFailure.Empty;
     public void ExpectationFailed(ExpectationFailure failure, int executionId)
     {
@@ -65,7 +74,10 @@ internal sealed class EvidenceRecorder(Pathologist pathologist)
         {
 
             if (FailingExpectation.IsEquivalentTo(failure) && failingExecutionId == executionId)
+            {
                 currentFailed = true;
+                replayFailingExpectation = failure;
+            }
             else
                 failedOnWrongExecutionId = true;
             return;

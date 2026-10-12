@@ -1,4 +1,5 @@
 ## 0.4.3:
+* Fixed expectation failure messages to describe the final shrunk case, including equality diagnostics and pool expectations, even when final tracing is disabled. Temporary shrink candidates do not overwrite reported messages.
 * Added ExpectationContext callbacks to Trackr.PoolExpect, both Trackr.PoolExpectEach forms, and Trackr.PoolExpectEachWhen for custom failure messages, formatter-aware equality checks, and exception checks. Includes async callbacks and optional cancellation tokens; per-item failures retain pool element identifiers alongside their messages.
 * Added `Try.None<T>` classification for use in `Shrink.When`.
 * Added async value factories to `Trackr.Stashed`, with type-based and custom keys and optional cancellation-token support. Awaited values retain once-per-run caching, retrieval, and disposal.

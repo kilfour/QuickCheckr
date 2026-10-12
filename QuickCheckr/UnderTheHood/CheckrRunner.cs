@@ -53,8 +53,9 @@ internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig conf
         if (config.ShrinkMode.HasFlag(ShrinkMode.Inputs))
             shrinkCount += await new InputShrinker(State, Check, config.ShrinkMode.HasFlag(ShrinkMode.Reduction)).RunAsync().ConfigureAwait(false);
 
-        if (config.ReportMode.HasFlag(ReportMode.FinalTrace))
-            await new FinalTraceRun(State, Check).RunAsync().ConfigureAwait(false);
+        var finalTrace = config.ReportMode.HasFlag(ReportMode.FinalTrace);
+        if (finalTrace || !string.IsNullOrWhiteSpace(State.EvidenceRecorder.FailingExpectation.Key))
+            await new FinalTraceRun(State, Check).RunAsync(finalTrace).ConfigureAwait(false);
 
         await RunCaseSelectionAsync().ConfigureAwait(false);
 
