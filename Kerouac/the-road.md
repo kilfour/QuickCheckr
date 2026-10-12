@@ -5,7 +5,8 @@
 ### To Test
 
 ### To Do
-
+- Expect messages for Pool(s)
+- Http Timeout crash during shrinking async Use Case AM
 ## 0.x.x: ..
 
 ### To Do

@@ -20,5 +20,7 @@ public static class Try
     public static ClassificationOption<T> Default<T>() => new ClassificationOptionDefault<T>();
 
     public static ClassificationOption<T> Keep<T>() => new ClassificationOptionKeep<T>();
+
+    public static ClassificationOption<T> None<T>() => new ClassificationOptionNone<T>();
 }
 
