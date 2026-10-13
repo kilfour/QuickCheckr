@@ -10,6 +10,7 @@ public sealed class ClassificationFormatter
 {
     public ManOfWealthAndTaste InputPrinter { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();
+
     internal Dictionary<Type, ObjectClassificationFormat> ObjectClassificationFormats { get; } = [];
 
     public ObjectClassificationFormatter<T> For<T>()
