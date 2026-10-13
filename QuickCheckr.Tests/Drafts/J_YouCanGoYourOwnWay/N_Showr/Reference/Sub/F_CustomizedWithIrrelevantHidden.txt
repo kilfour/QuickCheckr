@@ -1,0 +1,13 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                F_CustomizedWithIrrelevantHidden.cs:19:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1611568796
+ ------------------------------------------------------------
+  Executed: Evaluate
+   - Expr     = ( / 0 )
+   - Original = { Op: Div, L: { Value: 84 }, R: { Value: 0 } }
+ ============================================================
+  !! DivideByZeroException: Attempted to divide by zero.
+ ============================================================

@@ -1,4 +1,5 @@
 ## 0.4.3: Back to Life, Back to Reality
+* Added `HideIrrelevantProperties` to classification formatter.
 * Fixed repeated `Showr.ForClassification` configuration for the same type across executions and runs. `For<T>()` reuses the existing format, allowing configuration calls to compose; repeated `.Property(...)` calls retain a single property entry.
 * Added `ConductAsync(...)` overloads with optional directives and cancellation support. Saved-case replay, investigations, and shrinking are awaited; synchronous `Conduct(...)` remains available.
 * Fixed expectation failure messages to describe the final shrunk case, including equality diagnostics and pool expectations, even when final tracing is disabled. Temporary shrink candidates do not overwrite reported messages.

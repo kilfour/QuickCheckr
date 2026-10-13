@@ -24,6 +24,12 @@ public sealed class ObjectClassificationFormatter<T>
         return this;
     }
 
+    public ObjectClassificationFormatter<T> HideIrrelevantProperties()
+    {
+        format.HideIrrelevantProperties = true;
+        return this;
+    }
+
     public ObjectClassificationFormatter<T> Bounds(string left, string right)
     {
         format.LeftBound = left;

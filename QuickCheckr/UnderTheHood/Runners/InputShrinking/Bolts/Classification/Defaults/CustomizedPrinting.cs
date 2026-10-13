@@ -32,6 +32,10 @@ internal static class CustomizedPrinting
                         .Where(kvp => !keySet.Contains(kvp.Key))
                         .Select(kvp => kvp))
                 .ToDictionary();
+        if (format.HideIrrelevantProperties)
+            ordered = ordered
+                .Where(kvp => kvp.Value is InputRelevant)
+                .ToDictionary();
         return $"{format.LeftBound}{string.Join(format.Delimiter,
             ordered
                 .Select(a => PropertyReport(format, a, useRedux)))}{format.RightBound}";
