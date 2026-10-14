@@ -1,5 +1,8 @@
-## 0.4.3: Back to Life, Back to Reality
+## 0.4.4: 
 * Added `HideIrrelevantProperties` to classification formatter.
+* Added `Trackr.ManyOfPool<T>(key, numberOfItems, checkr)` to randomly select multiple pool elements with replacement and pass them to a callback as an `IReadOnlyList<PoolElement<T>>`. Selected identifiers are retained for replay; the callback is skipped if any selected element is no longer in the pool.
+
+## 0.4.3: Back to Life, Back to Reality
 * Fixed repeated `Showr.ForClassification` configuration for the same type across executions and runs. `For<T>()` reuses the existing format, allowing configuration calls to compose; repeated `.Property(...)` calls retain a single property entry.
 * Added `ConductAsync(...)` overloads with optional directives and cancellation support. Saved-case replay, investigations, and shrinking are awaited; synchronous `Conduct(...)` remains available.
 * Fixed expectation failure messages to describe the final shrunk case, including equality diagnostics and pool expectations, even when final tracing is disabled. Temporary shrink candidates do not overwrite reported messages.

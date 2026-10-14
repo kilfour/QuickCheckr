@@ -150,7 +150,7 @@ For this reason the following method returns a `{nameof(Checkr)}.{nameof(Checkr.
     {
         return
             from contactBook in Trackr.Stashed(() => new Rolodex())
-            // Pick one of two operations.
+                // Pick one of two operations.
             from operations in Checkr.OneOfWhen(
                 // 1. Add a (Contact-) name to the Rolodex
                 Trackr.PoolWhen<Contact>(a => a.Count < 10,

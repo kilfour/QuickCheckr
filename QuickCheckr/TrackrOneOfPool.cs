@@ -20,7 +20,7 @@ public static partial class Trackr
                 {
                     var poolIds = state.Memory.GetPoolIds<T>();
                     if (!poolIds.Any())
-                        throw new EmptyPoolException(key, typeof(T));
+                        throw new EmptyPoolException(key, typeof(T), "OneOfPool<T>");
                     return Fuzzr.OneOf(poolIds)(state.FuzzrState).Value;
                 });
             state.Memory.StorePoolTrace(key, () => $"{typeof(T).Name}-{id}");
@@ -31,7 +31,6 @@ public static partial class Trackr
             }
             return CheckrResult.CaseOnly(state);
         };
-
 
     public static CheckrOf<Case> OneOfPool<T1, T2>(
         string key,
