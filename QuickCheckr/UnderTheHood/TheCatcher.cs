@@ -20,6 +20,7 @@ internal static class TheCatcher
         catch (OperationCanceledException) { throw; }
         catch (Exception exception)
         {
+            state.AbortExecution();
             onException?.Invoke(exception);
             return CheckrResult.Default<T>(state);
         }
@@ -45,6 +46,7 @@ internal static class TheCatcher
         catch (OperationCanceledException) { throw; }
         catch (Exception exception)
         {
+            state.AbortExecution();
             onException?.Invoke(exception);
             return CheckrResult.Default<T>(state);
         }

@@ -25,6 +25,7 @@ public sealed class CheckrState
     internal int StartReplay()
     {
         CancellationToken.ThrowIfCancellationRequested();
+        ExecutionAborted = false;
         EvidenceRecorder.StartReplay();
         return Memory.Reset();
     }
@@ -49,7 +50,11 @@ public sealed class CheckrState
         EvidenceRecorder = new(Pathologist);
     }
 
-    internal bool RunStopped => runStopped;
+    internal bool RunStopped => runStopped || ExecutionAborted;
+
+    internal bool ExecutionAborted { get; private set; }
+
+    internal void AbortExecution() => ExecutionAborted = true;
 
     internal int MaxStepsPerReducer { get; }
 

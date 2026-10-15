@@ -45,6 +45,7 @@ internal class Verifier(CheckrState State,
                     State.CancellationToken.ThrowIfCancellationRequested();
                     await Check(State).ConfigureAwait(false);
                     State.CancellationToken.ThrowIfCancellationRequested();
+                    if (State.ExecutionAborted) break;
                 }
             }
             finally
@@ -89,6 +90,7 @@ internal class Verifier(CheckrState State,
                     State.CancellationToken.ThrowIfCancellationRequested();
                     await Check(State).ConfigureAwait(false);
                     State.CancellationToken.ThrowIfCancellationRequested();
+                    if (State.ExecutionAborted) break;
                 }
             }
             finally

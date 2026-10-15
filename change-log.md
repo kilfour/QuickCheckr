@@ -1,4 +1,5 @@
 ## 0.4.4: 
+* Fixed caught action exceptions allowing dependent steps to consume default values and corrupt tracked pools. Failed runs and shrinking replays now abort after the exception; each replay starts fresh, while `ActCarefully` still captures exceptions without aborting.
 * Added `HideIrrelevantProperties` to classification formatter.
 * Added `Trackr.ManyOfPool<T>(key, numberOfItems, checkr)` to randomly select multiple pool elements with replacement and pass them to a callback as an `IReadOnlyList<PoolElement<T>>`. Selected identifiers are retained for replay; the callback is skipped if any selected element is no longer in the pool.
 

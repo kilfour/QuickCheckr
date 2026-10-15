@@ -18,6 +18,7 @@ internal sealed class TraceRun(
                 State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
                 State.CancellationToken.ThrowIfCancellationRequested();
+                if (State.ExecutionAborted) break;
             }
         }
         finally

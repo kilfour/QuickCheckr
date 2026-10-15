@@ -22,6 +22,7 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<Case> TheCheckr() =>
         from _ in Showr.ForTrace(() => Please.AllowMe().ToUseNonLinearTime().ToPrettyPrint())
+        // from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
         from repository in Trackr.Stashed(() => new OrderRepository())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),
@@ -35,19 +36,11 @@ public class OrderRepositoryCheckr
         select Case.Closed;
 
     private static CheckrOf<CheckrOption> MoveOrder(OrderRepository repository) =>
-        Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 2 && o.Count > 1,
+        Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 0 && o.Count > 0,
             Trackr.OneOfPool<Customer>("Customer for Move Order", customer =>
                 Trackr.OneOfPool<OrderInfo>("Order for Move Order", order =>
                     from move in Checkr.Act("Move Order", () => repository.MoveOrder(order.Value.Order.Id, customer.Value.Id))
-                    from _ in Checkr.Capture(() =>
-                    {
-                        if (order.Value == null)
-                            return true;
-                        if (order.Value.Order == null)
-                            return true;
-                        return false;
-                    })
-                    from update in order.Replace(() =>
+                    from update in order.Replace(
                         new OrderInfo(order.Value.Order with { CustomerId = customer.Value.Id },
                         customer.Value))
                     select Case.Closed)));

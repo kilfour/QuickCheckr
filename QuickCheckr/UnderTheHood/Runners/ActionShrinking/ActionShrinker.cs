@@ -51,6 +51,7 @@ internal sealed class ActionShrinker(
                 State.CancellationToken.ThrowIfCancellationRequested();
                 await Check(State).ConfigureAwait(false);
                 State.CancellationToken.ThrowIfCancellationRequested();
+                if (State.ExecutionAborted) break;
                 executionId = State.Memory.NextExecution();
             }
         }
