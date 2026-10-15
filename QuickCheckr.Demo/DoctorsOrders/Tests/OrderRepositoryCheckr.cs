@@ -1,51 +1,66 @@
-using Microsoft.Data.Sqlite;
 using System.Text;
-using Xunit;
 using QuickCheckr.Demo.DoctorsOrders.Source;
 using QuickFuzzr;
 using QuickFuzzr.Strings;
 using WibblyWobbly;
 using QuickPulse.Show;
+using Microsoft.Data.Sqlite;
+using Xunit;
 
 namespace QuickCheckr.Demo.DoctorsOrders.Tests;
 
 public class OrderRepositoryCheckr
 {
-    [DemoFact]
+    [Fact]
     public void Run() =>
         TheCheckr()
             .FileAs("OrderRepositoryChecks")
             //.Conduct(50.Investigations(), 5.Runs(), 50.ExecutionsPerRun());
-            .Run(50.Runs(), 50.ExecutionsPerRun());
+            .Run(50.Runs(), 100.ExecutionsPerRun());
+
+    internal sealed record OrderInfo(Order Order, Customer Customer);
 
     private static CheckrOf<Case> TheCheckr() =>
         from _ in Showr.ForTrace(() => Please.AllowMe().ToUseNonLinearTime().ToPrettyPrint())
         from repository in Trackr.Stashed(() => new OrderRepository())
-        from history in Trackr.Stashed(() => new QueryHistory())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),
             InsertNullNameCustomer(repository),
             InsertNullCountryCustomer(repository),
             InsertOrder(repository),
-            // Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 2 && o.Count > 1,
-            //     Trackr.OneOfPool<Customer>("Customer for Move Order", customer =>
-            //         Trackr.OneOfPool<OrderInfo>("Order for Move Order", order =>
-            //         from move in Checkr.Act("Move Order", () => repository.MoveOrder(order.Value.Order.Id, customer.Value.Id))
-            //         from changed in Checkr.Capture(() => { history.Changed(order.Value.Order.CustomerId); history.Changed(customer.Value.Id); return Case.Closed; })
-            //         from update in order.Replace(new OrderInfo(order.Value.Order with { CustomerId = customer.Value.Id }, customer.Value))
-            //         select Case.Closed))),
-            // Trackr.PoolWhen<OrderInfo>(a => a.Count > 0,
-            //     from invalid in Checkr.Input("Invalid Query",
-            //         from escape in Fuzzr.OneOf("!!", "##")
-            //         select new OrderQuery(CustomerNamePattern: "%", LikeEscape: escape))
-            //     from failed in Checkr.ActCarefully("Find Orders With Invalid Escape", () => repository.FindOrders(invalid))
-            //     from observed in Checkr.Capture(() => { if (failed.ThrewAs<SqliteException>()) history.QueryFailed(); return Case.Closed; })
-            //     from expected in Checkr.Expect("SQLite rejects invalid escape", () =>
-            //         failed.ThrewAs<SqliteException>(out var exception) && exception.SqliteErrorCode == 1)
-            //     select Case.Closed),
-            FindOrders(repository, history),
-            Requery(repository, history))
+            MoveOrder(repository),
+            InvalidEscapeQuery(repository),
+            FindOrders(repository),
+            Requery(repository))
         select Case.Closed;
+
+    private static CheckrOf<CheckrOption> MoveOrder(OrderRepository repository) =>
+        Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 2 && o.Count > 1,
+            Trackr.OneOfPool<Customer>("Customer for Move Order", customer =>
+                Trackr.OneOfPool<OrderInfo>("Order for Move Order", order =>
+                    from move in Checkr.Act("Move Order", () => repository.MoveOrder(order.Value.Order.Id, customer.Value.Id))
+                    from _ in Checkr.Capture(() =>
+                    {
+                        if (order.Value == null)
+                            return true;
+                        if (order.Value.Order == null)
+                            return true;
+                        return false;
+                    })
+                    from update in order.Replace(() =>
+                        new OrderInfo(order.Value.Order with { CustomerId = customer.Value.Id },
+                        customer.Value))
+                    select Case.Closed)));
+
+    private static CheckrOf<CheckrOption> InvalidEscapeQuery(OrderRepository repository) =>
+        Trackr.PoolWhen<OrderInfo>(a => a.Count > 0,
+            from invalid in Checkr.Input("Invalid Query",
+                from escape in Fuzzr.OneOf("!!", "##")
+                select new OrderQuery(CustomerNamePattern: "%", LikeEscape: escape))
+            from failed in Checkr.ActCarefully("Find Orders With Invalid Escape", () => repository.FindOrders(invalid))
+            from expected in Checkr.Expect("SQLite rejects invalid escape", () =>
+                failed.ThrewAs<SqliteException>(out var exception) && exception.SqliteErrorCode == 1)
+            select Case.Closed);
 
     private static CheckrOf<CheckrOption> InsertOrder(OrderRepository repository) =>
         Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 0 && o.Count < 10,
@@ -112,7 +127,7 @@ public class OrderRepositoryCheckr
             LikeEscape: LikeEscape);
     }
 
-    private static CheckrOf<CheckrOption> FindOrders(OrderRepository repository, QueryHistory history) =>
+    private static CheckrOf<CheckrOption> FindOrders(OrderRepository repository) =>
         Trackr.PoolWhen<OrderInfo>(a => a.Count > 0,
             Trackr.ManyOfPool<Customer>("Customer for Query", 3, customers =>
                 from input in Checkr.Input("Order Query Input", () =>
@@ -150,7 +165,7 @@ public class OrderRepositoryCheckr
              OrdersMatchResult(ApplyQuery(query, orders), result, context))
         select Case.Closed;
 
-    private static CheckrOf<CheckrOption> Requery(OrderRepository repository, QueryHistory history) =>
+    private static CheckrOf<CheckrOption> Requery(OrderRepository repository) =>
         Trackr.PoolWhen<OrderQuery>(queries => queries.Count > 0,
             Trackr.OneOfPool<OrderQuery>("Query to Repeat", query =>
                 VerifyQuery(repository, query.Value)));

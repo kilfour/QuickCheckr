@@ -53,7 +53,7 @@ public sealed class OrderRepository : IDisposable
             ("$customer", customerId),
             ("$id", orderId));
         Invalidate(customerId);
-        Invalidate(previous);
+        // Invalidate(previous);
     }
 
     public IReadOnlyList<Order> FindOrders(OrderQuery query)
