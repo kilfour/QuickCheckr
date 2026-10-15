@@ -11,7 +11,7 @@ namespace QuickCheckr.Demo.DoctorsOrders.Tests;
 
 public class OrderRepositoryCheckr
 {
-    [Fact]
+    [DemoFact]
     public void Run() =>
         TheCheckr()
             .FileAs("OrderRepositoryChecks")
@@ -22,7 +22,7 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<Case> TheCheckr() =>
         from _ in Showr.ForTrace(() => Please.AllowMe().ToUseNonLinearTime().ToPrettyPrint())
-        // from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
+        from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
         from repository in Trackr.Stashed(() => new OrderRepository())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),
