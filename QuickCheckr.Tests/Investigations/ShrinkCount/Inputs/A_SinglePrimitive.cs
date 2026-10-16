@@ -1,9 +1,10 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.ShrinkCount.Executions;
+namespace QuickCheckr.Tests.Investigations.ShrinkCount.Inputs;
 
 [DocFile]
 public class A_SinglePrimitive : CheckrTest<A_SinglePrimitive>

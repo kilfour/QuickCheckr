@@ -1,0 +1,12 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_MultiplePrimitives.cs:18:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    1874338076
+ ------------------------------------------------------------
+  Executed:
+   - Answer = 42
+ ================================
+  !! Expectation Failed: Fails
+ ================================
