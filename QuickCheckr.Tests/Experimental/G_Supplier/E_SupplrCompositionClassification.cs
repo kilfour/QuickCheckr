@@ -34,7 +34,7 @@ public class E_SupplrCompositionClassification : CheckrTest<E_SupplrCompositionC
         Assert.Equal("", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.ShrinkCount);
+        Assert.Equal(4, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Composed", article.Execution(1).Input(1).Read().Label);
     }

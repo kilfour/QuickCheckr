@@ -34,7 +34,7 @@ public class G_ComplexSupplrCompositionClassification :
         Assert.Equal("", article.VerifyFailed());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(0, article.Total().Inputs());
-        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
     }
 
     [Fact]

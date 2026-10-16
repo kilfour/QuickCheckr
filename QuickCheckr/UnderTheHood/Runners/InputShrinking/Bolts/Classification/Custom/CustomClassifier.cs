@@ -9,13 +9,8 @@ internal abstract class CustomClassifier<T>
     public override async ValueTask<HandlerResult<InputClassification>> TryHandleAsync(
         IClassificationOption input, CustomShrinkingContext customContext)
         => input is T option
-            ? ReturnIfRelevant(await GetClassificationAsync(option, customContext).ConfigureAwait(false))
+            ? HandlerResult.Handled(await GetClassificationAsync(option, customContext).ConfigureAwait(false))
             : Unhandled;
-
-    private HandlerResult<InputClassification> ReturnIfRelevant(InputClassification classification)
-        => classification is InputAssumedIrrelevant
-            ? Unhandled
-            : HandlerResult.Handled(classification);
 
     protected abstract ValueTask<InputClassification> GetClassificationAsync(T input, CustomShrinkingContext customContext);
 }
