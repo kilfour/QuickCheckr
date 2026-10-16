@@ -1,12 +1,13 @@
 ## 0.4.3: ???
 
 ### Doing
+Testing ShrinkCount
 
 ### To Test
 
 ### To Do
-- Expect messages for Pool(s)
-- Http Timeout crash during shrinking async Use Case AM
+- Muliple shrink runs (stop if no sshrink count)
+
 ## 0.x.x: ..
 
 ### To Do
