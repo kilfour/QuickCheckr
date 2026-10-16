@@ -6,7 +6,7 @@ Testing ShrinkCount
 ### To Test
 
 ### To Do
-- Muliple shrink runs (stop if no sshrink count)
+- Muliple shrink runs (stop if no shrink count)
 
 ## 0.x.x: ..
 
