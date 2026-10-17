@@ -69,7 +69,7 @@ public class OrderRepositoryCheckr
                 from id in Fuzzr.String(Fuzzr.OneOf(CharSet.AlphaNumeric), 5)
                 from name in Fuzzr.String()
                 from country in Fuzzr.String()
-                select new Customer(id, name, country))
+                select new Customer(id, name, country), Shrink.OnType<string>(s => s.Simplify(Reduce.MinimizeString)))
             from insert in Checkr.Act("Insert Customer", () => repository.AddCustomer(customer))
             from pool in Trackr.ToPool("Customer", () => customer)
             select Case.Closed);
@@ -152,7 +152,7 @@ public class OrderRepositoryCheckr
             .Take(query.Take)];
 
     private static CheckrOf<Case> VerifyQuery(OrderRepository repository, OrderQuery query) =>
-        from trace in Checkr.Trace("Query", a => a.Show(query))
+        // from trace in Checkr.Trace("Query", a => a.Show(query))
         from result in Checkr.Act("Find Orders", () => repository.FindOrders(query))
         from expected in Trackr.PoolExpect<OrderInfo>("Order Query", (orders, context) =>
              OrdersMatchResult(ApplyQuery(query, orders), result, context))

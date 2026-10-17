@@ -180,7 +180,7 @@ internal static class TheCourtStyleGuide
         return Pulse
             .ToFlowIf(input.HasEvidence, Evidence, () => input)
             .When(breakBeforePassed, Style.NewLine())
-            .TraceIf(hasPassed, () => " Passed Expectations")
+            .TraceIf(hasPassed, () => " Passed Expectations (during initial run) ")
             .ToFlowIf(hasPassed, PassedExpectations, () => input.PassedExpectations);
     }
 

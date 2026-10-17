@@ -21,7 +21,7 @@ public class PassedExpectationDepositionsTests : DepositionTest
         var caseFile = CaseFile.Empty()
                 .AddPassedExpectationDeposition(new PassedExpectation("an expectation", 1));
         var reader = Transcribe(caseFile);
-        Assert.Equal(" Passed Expectations", reader.NextLine());
+        Assert.Equal(" Passed Expectations (during initial run) ", reader.NextLine());
         Assert.Equal(" - an expectation: 1x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());
@@ -35,7 +35,7 @@ public class PassedExpectationDepositionsTests : DepositionTest
                 .AddPassedExpectationDeposition(new PassedExpectation("an expectation", 1))
                 .AddPassedExpectationDeposition(new PassedExpectation("another expectation", 42));
         var reader = Transcribe(caseFile);
-        Assert.Equal(" Passed Expectations", reader.NextLine());
+        Assert.Equal(" Passed Expectations (during initial run) ", reader.NextLine());
         Assert.Equal(" - an expectation: 1x", reader.NextLine());
         Assert.Equal(" - another expectation: 42x", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
