@@ -16,13 +16,14 @@ public class OrderRepositoryCheckr
         TheCheckr()
             .FileAs("OrderRepositoryChecks")
             //.Conduct(50.Investigations(), 5.Runs(), 50.ExecutionsPerRun());
-            .Run(50.Runs(), 100.ExecutionsPerRun());
+            .Run(500.Runs(), 100.ExecutionsPerRun());
 
     internal sealed record OrderInfo(Order Order, Customer Customer);
 
     private static CheckrOf<Case> TheCheckr() =>
         from _ in Showr.ForTrace(() => Please.AllowMe().ToUseNonLinearTime().ToPrettyPrint())
         from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
+        from deliberateUntil in Trackr.DeliberateUntil(6)
         from repository in Trackr.Stashed(() => new OrderRepository())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),
@@ -37,13 +38,13 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<CheckrOption> MoveOrder(OrderRepository repository) =>
         Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 0 && o.Count > 0,
-            Trackr.OneOfPool<Customer>("Customer for Move Order", customer =>
-                Trackr.OneOfPool<OrderInfo>("Order for Move Order", order =>
-                    from move in Checkr.Act("Move Order", () => repository.MoveOrder(order.Value.Order.Id, customer.Value.Id))
-                    from update in order.Replace(
-                        new OrderInfo(order.Value.Order with { CustomerId = customer.Value.Id },
-                        customer.Value))
-                    select Case.Closed)));
+            from customer in Trackr.OneOfPool<Customer>("Customer for Move Order")
+            from order in Trackr.OneOfPool<OrderInfo>("Order for Move Order")
+            from move in Checkr.Act("Move Order", () => repository.MoveOrder(order.Value.Order.Id, customer.Value.Id))
+            from update in order.Replace(
+                new OrderInfo(order.Value.Order with { CustomerId = customer.Value.Id },
+                customer.Value))
+            select Case.Closed);
 
     private static CheckrOf<CheckrOption> InvalidEscapeQuery(OrderRepository repository) =>
         Trackr.PoolWhen<OrderInfo>(a => a.Count > 0,
@@ -57,11 +58,11 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<CheckrOption> InsertOrder(OrderRepository repository) =>
         Trackr.PoolWhen<Customer, OrderInfo>((c, o) => c.Count > 0 && o.Count < 10,
-            Trackr.OneOfPool<Customer>("Customer for New Order", customer =>
-                from orderedOn in Checkr.Input("Ordered On", Fuzzr.DateOnly(1.January(2026), 2.January(2026)))
-                from order in Checkr.Act("Insert Order", () => repository.InsertOrder(customer.Value.Id, orderedOn))
-                from pool in Trackr.ToPool("Order", () => new OrderInfo(order, customer.Value))
-                select Case.Closed));
+            from customer in Trackr.OneOfPool<Customer>("Customer for New Order")
+            from orderedOn in Checkr.Input("Ordered On", Fuzzr.DateOnly(1.January(2026), 2.January(2026)))
+            from order in Checkr.Act("Insert Order", () => repository.InsertOrder(customer.Value.Id, orderedOn))
+            from pool in Trackr.ToPool("Order", () => new OrderInfo(order, customer.Value))
+            select Case.Closed);
 
     private static CheckrOf<CheckrOption> InsertCustomer(OrderRepository repository) =>
         Trackr.PoolWhen<Customer>(a => a.Count < 3,
@@ -160,8 +161,9 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<CheckrOption> Requery(OrderRepository repository) =>
         Trackr.PoolWhen<OrderQuery>(queries => queries.Count > 0,
-            Trackr.OneOfPool<OrderQuery>("Query to Repeat", query =>
-                VerifyQuery(repository, query.Value)));
+            from query in Trackr.OneOfPool<OrderQuery>("Query to Repeat")
+            from requery in VerifyQuery(repository, query.Value)
+            select Case.Closed);
 
     // SQLite LIKE folds ASCII letters only; _ matches one Unicode code point.
     internal static bool Like(string value, string pattern, string escape)
