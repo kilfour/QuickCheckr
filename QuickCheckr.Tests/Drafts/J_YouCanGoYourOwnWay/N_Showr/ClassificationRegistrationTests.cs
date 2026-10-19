@@ -1,5 +1,4 @@
 using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.N_Showr;

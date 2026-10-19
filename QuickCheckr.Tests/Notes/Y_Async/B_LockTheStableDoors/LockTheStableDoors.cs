@@ -44,7 +44,6 @@ public class LockTheStableDoors : BaseTest
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(3, article.Total().PoolTraces());
         Assert.Equal(1, article.Total().PassedExpectations());
-        // Assert.Equal(14, article.ShrinkCount);
         Assert.Equal(5, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Store Coach", article.Execution(1).PoolTrace(1).Read().Label);
@@ -143,11 +142,11 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
         from dbCourses in Checkr.Capture(service.GetCoursesAsync)
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<CoachBy>(a => a.Count() < 10, CreateCoach),
-            Trackr.PoolWhen<CoachBy>(a => a.Any(), UpdateCoachSkills),
-            Trackr.PoolWhen<CourseBy>(a => a.Count() < 5, CreateCourse),
-            Trackr.PoolWhen<CourseBy>(a => a.Any(), UpdateCourseSkills),
-            Trackr.PoolWhen<CoachBy>(a => a.Any() && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+            Trackr.PoolWhen<CoachBy>(a => a.Count < 10, CreateCoach),
+            Trackr.PoolWhen<CoachBy>(a => a.Count != 0, UpdateCoachSkills),
+            Trackr.PoolWhen<CourseBy>(a => a.Count < 5, CreateCourse),
+            Trackr.PoolWhen<CourseBy>(a => a.Count != 0, UpdateCourseSkills),
+            Trackr.PoolWhen<CoachBy>(a => a.Count != 0 && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
         from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
 }

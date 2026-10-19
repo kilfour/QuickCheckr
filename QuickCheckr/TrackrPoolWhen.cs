@@ -4,11 +4,11 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
+
     public static CheckrOf<CheckrOption> PoolWhen<T>(
         Func<IReadOnlyCollection<T>, bool> predicate,
         CheckrOf<Case> checkr) =>
-        state => CheckrResult.Some<CheckrOption>(
-            state, new(() => predicate((IReadOnlyCollection<T>)state.Memory.GetPool<T>()), checkr));
+            Poolr.When(predicate).Then(checkr);
 
     public static CheckrOf<CheckrOption> PoolWhen<T>(
         string key,

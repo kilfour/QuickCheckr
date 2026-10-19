@@ -78,15 +78,12 @@ public sealed class OrderRepository : IDisposable
               AND ($country IS NULL OR c.Country = $country)
               AND ($from IS NULL OR o.OrderedOn >= $from)
               AND ($through IS NULL OR o.OrderedOn <= $through)
-              AND ($pattern IS NULL OR c.Name LIKE $pattern ESCAPE $escape)
             ORDER BY o.OrderedOn, o.Id LIMIT $take OFFSET $skip
             """;
         command.Parameters.AddWithValue("$customer", (object?)query.CustomerId ?? DBNull.Value);
         command.Parameters.AddWithValue("$country", (object?)query.Country ?? DBNull.Value);
         command.Parameters.AddWithValue("$from", query.From is { } from ? DateText(from) : DBNull.Value);
         command.Parameters.AddWithValue("$through", query.Through is { } through ? DateText(through) : DBNull.Value);
-        command.Parameters.AddWithValue("$pattern", (object?)query.CustomerNamePattern ?? DBNull.Value);
-        command.Parameters.AddWithValue("$escape", query.LikeEscape);
         command.Parameters.AddWithValue("$take", query.Take);
         command.Parameters.AddWithValue("$skip", query.Skip);
         using var reader = command.ExecuteReader();

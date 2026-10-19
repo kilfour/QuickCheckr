@@ -6,27 +6,6 @@ namespace QuickCheckr;
 
 public static partial class Trackr
 {
-    public static CheckrOf<PoolElement<T>> OneOfPool<T>(string key) =>
-        state =>
-        {
-            var id = state.Memory.StoreVariable(key,
-                () =>
-                {
-                    var poolIds = state.Memory.GetPoolIds<T>();
-                    if (!poolIds.Any())
-                        throw new EmptyPoolException(key, typeof(T), "OneOfPool<T>");
-                    return Fuzzr.OneOf(poolIds)(state.FuzzrState).Value;
-                });
-            state.Memory.StorePoolTrace(key, () => $"{typeof(T).Name}-{id}");
-            var (result, value) = state.Memory.GetFromPool<T>(id);
-            if (result)
-            {
-                return CheckrResult.Some(state, new PoolElement<T>(id, value!));
-            }
-            state.AbortExecution();
-            return CheckrResult.Default<PoolElement<T>>(state);
-        };
-
     /// <summary>
     /// Selects a value at random from a pool, or returns a default value (typically null) when the pool is empty.  
     /// Use when modelling behaviour that may or may not have stored items available during the run.

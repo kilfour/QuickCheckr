@@ -10,8 +10,6 @@ public sealed record OrderQuery(
     DateOnly? From = null,
     DateOnly? Through = null,
     int Skip = 0,
-    int Take = 20,
-    string? CustomerNamePattern = null,
-    string LikeEscape = "\\");
+    int Take = 20);
 
 

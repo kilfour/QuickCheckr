@@ -1,5 +1,4 @@
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
