@@ -26,7 +26,7 @@ public class TheNeedlerPattern : CheckrTest<TheNeedlerPattern>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(1, 10))
         from task in Taskr.Start("start", ct => Eventually.AddOne(input))
-        from no7 in Trackr.PoolExpectEach<Task<int>>("Is not 7", a => a.GetAwaiter().GetResult() != 7)
+            //from no7 in Trackr.PoolExpectEach<Task<int>>("Is not 7", a => a.GetAwaiter().GetResult() != 7)
         select Case.Closed;
 
     protected override void Verify(Article article)

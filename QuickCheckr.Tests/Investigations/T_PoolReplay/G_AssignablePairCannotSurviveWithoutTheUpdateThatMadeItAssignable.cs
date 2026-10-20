@@ -62,12 +62,24 @@ public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable :
                                     .Assign(factory.GetThingById(thing.Value.ThingId))))),
 
             Checkr.Option(() => counter == 6,
-                Trackr.PoolExpectEach<OtherThingInfo>("Assigned to 42",
-                    otherThingInfo =>
+                from otherThings in Poolr.AllElements<OtherThingInfo>()
+                from check in Checkr.ExpectWhen("Assigned to 42",
+                    () => otherThings.Count != 0,
+                    context =>
                     {
-                        var otherThing = factory.GetOtherThingById(otherThingInfo.OtherThingId);
-                        return otherThing.Assigned ? otherThing.ThingId == 2 : true;
-                    }))
+                        var failures = otherThings
+                            .Where(element =>
+                            {
+                                var otherThing = factory.GetOtherThingById(element.Value.OtherThingId);
+                                return otherThing.Assigned && otherThing.ThingId != 2;
+                            })
+                            .Select(element => $"OtherThingInfo-{element.Id}")
+                            .ToArray();
+                        return failures.Length == 0
+                            ? context.Pass()
+                            : context.Fail(failures);
+                    })
+                select Case.Closed)
         )
         select Case.Closed;
 
