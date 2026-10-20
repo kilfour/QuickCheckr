@@ -1,21 +1,20 @@
 using QuickCheckr.Authoring;
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.NoOptionsAvailable;
 
 [DocFile]
-[DocFileHeader("OneOfPool")]
-[DocContent("Throws an `EmptyPoolException` when the pool is empty.")]
+[DocFileHeader($"{nameof(Poolr)}.{nameof(Poolr.OneOf)}")]
+[DocContent($"Throws an `{nameof(EmptyPoolException)}` when the pool is empty.")]
 [DocBoldHeader("Message:")]
-[DocExample(typeof(C_OneOfPool), nameof(Message))]
-public class C_OneOfPool : DocAttributeBaseTest
+[DocExample(typeof(C_PoolrOneOf), nameof(Message))]
+public class C_PoolrOneOf : DocAttributeBaseTest
 {
     [Fact]
     public void NoOptionsThrows()
     {
-        var ex = Assert.Throws<EmptyPoolException>(() => Trackr.OneOfPool<int>("pool", a => s => CheckrResult.CaseOnly(s)).Run());
+        var ex = Assert.Throws<EmptyPoolException>(() => Poolr.OneOf<int>("pool").Select(_ => Case.Closed).Run());
         Assert.Equal(Message(), ex.Message);
     }
 

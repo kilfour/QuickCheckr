@@ -1,5 +1,3 @@
-using QuickCheckr.UnderTheHood;
-
 namespace QuickCheckr;
 
 /// <summary>
