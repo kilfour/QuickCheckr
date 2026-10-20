@@ -46,8 +46,9 @@ public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable :
                 select Case.Closed),
 
             Checkr.Option(() => counter == 4,
-                Trackr.OneOfPool<OtherThingInfo>("Update Other Thing", thing =>
-                    Checkr.Act("Update", () => { factory.GetOtherThingById(thing.Value.OtherThingId).Extra = 42; }))),
+                from thing in Poolr.OneOf<OtherThingInfo>("Update Other Thing")
+                from update in Checkr.Act("Update", () => { factory.GetOtherThingById(thing.OtherThingId).Extra = 42; })
+                select Case.Closed),
 
             Checkr.Option(() => counter == 5,
                 from pair in Poolr.OneOfWhen<ThingInfo, OtherThingInfo>(

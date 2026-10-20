@@ -34,15 +34,19 @@ public class E_PoolReplayIdentityComplex : CheckrTest<E_PoolReplayIdentityComple
                 select Case.Closed),
 
             Checkr.Option(() => counter == 3,
-                Trackr.OneOfPool<int>("Update Thing", a => Checkr.Act("", () => { factory.GetById(a.Value).Extra = 42; }))),
+                from thing in Poolr.OneOf<int>("Update Thing")
+                from update in Checkr.Act("", () => { factory.GetById(thing).Extra = 42; })
+                select Case.Closed),
 
             Checkr.Option(() => counter == 4,
-                Trackr.OneOfPool<int>("Use Thing", thing =>
-                    from trace in Checkr.Trace("Pool Element", _ => [$"{thing.Id}:{thing.Value}"])
-                    from expect in Checkr.Expect(
-                        "Second pool element fails",
-                        () => !(factory.GetById(thing.Value).Extra == 42))
-                    select Case.Closed)))
+                from thing in Poolr.OneOf<int>("Use Thing")
+                from elements in Poolr.AllElements<int>()
+                let poolId = elements.Single(element => element.Value == thing).Id
+                from trace in Checkr.Trace("Pool Element", _ => [$"{poolId}:{thing}"])
+                from expect in Checkr.Expect(
+                    "Second pool element fails",
+                    () => !(factory.GetById(thing).Extra == 42))
+                select Case.Closed))
         select Case.Closed;
 
     protected override void Verify(Article article)

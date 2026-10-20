@@ -34,12 +34,14 @@ public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
                 select Case.Closed),
 
             Checkr.Option(() => counter == 3,
-                Trackr.OneOfPool<Thing>("Use Thing", thing =>
-                    from trace in Checkr.Trace("Pool Element", _ => [$"{thing.Id}:{thing.Value.Id}"])
-                    from expect in Checkr.Expect(
-                        "Second pool element fails",
-                        () => thing.Id != 2)
-                    select Case.Closed)))
+                from thing in Poolr.OneOf<Thing>("Use Thing")
+                from elements in Poolr.AllElements<Thing>()
+                let poolId = elements.Single(element => ReferenceEquals(element.Value, thing)).Id
+                from trace in Checkr.Trace("Pool Element", _ => [$"{poolId}:{thing.Id}"])
+                from expect in Checkr.Expect(
+                    "Second pool element fails",
+                    () => poolId != 2)
+                select Case.Closed))
         select Case.Closed;
 
     protected override void Verify(Article article)

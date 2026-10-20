@@ -20,8 +20,8 @@ public class C_PoolrOneOf : DocAttributeBaseTest
 
     [CodeSnippet]
     private static string Message() =>
-@"Trackr.OneOfPool<T> could not choose a 'Int32' from pool 'pool' because the pool is empty.
+@"Poolr.OneOf<T> could not choose a 'Int32' from pool 'pool' because the pool is empty.
 
-Trackr.OneOfPool<T> needs at least one stored value to choose from.
-Add a value to the pool before calling Trackr.OneOfPool<T>, or use a conditional pool operation when the pool may be empty.";
+Poolr.OneOf<T> needs at least one stored value to choose from.
+Add a value to the pool before calling Poolr.OneOf<T>, or use a conditional pool operation when the pool may be empty.";
 }

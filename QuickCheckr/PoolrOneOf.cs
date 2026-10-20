@@ -22,7 +22,7 @@ public static partial class Poolr
                     {
                         if (predicate is not null)
                             throw new NoMatchingPoolElementException(key, typeof(T));
-                        throw new EmptyPoolException(key, typeof(T), "OneOfPool<T>");
+                        throw new EmptyPoolException(key, typeof(T), "Poolr.OneOf<T>");
                     }
                     return Fuzzr.OneOf(poolIds)(state.FuzzrState).Value;
                 });
