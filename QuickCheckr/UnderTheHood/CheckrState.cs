@@ -15,6 +15,7 @@ public sealed class CheckrState
     public CancellationToken CancellationToken { get; }
     internal State FuzzrState { get; init; }
     internal Memory Memory { get; init; } = new();
+    internal PoolIterationScope? PoolIteration { get; set; }
     internal EvidenceRecorder EvidenceRecorder { get; init; }
     internal ManOfWealthAndTaste Editor { get; set; } =
         Please.AllowMe().ToUseNonLinearTime();

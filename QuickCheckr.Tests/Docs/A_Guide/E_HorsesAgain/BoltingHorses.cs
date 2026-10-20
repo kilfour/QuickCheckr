@@ -182,24 +182,10 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
     [CodeExample]
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from coaches in Poolr.AllElements<Coach>()
-        from assigned in Checkr.Capture(() =>
-            coaches.Where(c => c.Value.AssignedCourses.Any()).ToArray())
-        from check in Checkr.ExpectWhen(
-            "Assigned Coach Must Be Suitable",
-            () => assigned.Length != 0,
-            context =>
-            {
-                var failures = assigned
-                    .Where(c => !c.Value.AssignedCourses.All(c.Value.IsSuitableFor))
-                    .Select(c => $"Coach-{c.Id}")
-                    .ToArray();
-
-                return failures.Length == 0
-                    ? context.Pass()
-                    : context.Fail(failures);
-            })
-        select Case.Closed;
+        Poolr.ForEach<Coach>(coach =>
+            Checkr.ExpectWhen("Assigned Coach Must Be Suitable",
+                () => coach.AssignedCourses.Any(),
+                () => coach.AssignedCourses.All(coach.IsSuitableFor)));
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>

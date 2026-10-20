@@ -9,7 +9,7 @@ internal static class Evaluate
         state =>
         {
             if (register)
-                state.Memory.KeyGuardian.Expects.Check(key);
+                RegisterExpectation(key, state);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             var context = new ExpectationContext(state.Editor);
@@ -25,7 +25,7 @@ internal static class Evaluate
         state =>
         {
             if (register)
-                state.Memory.KeyGuardian.Expects.Check(key);
+                RegisterExpectation(key, state);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             var context = new ExpectationContext(state.Editor);
@@ -47,7 +47,7 @@ internal static class Evaluate
         state =>
         {
             if (register)
-                state.Memory.KeyGuardian.Expects.Check(key);
+                RegisterExpectation(key, state);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             var context = new ExpectationContext(state.Editor);
@@ -66,7 +66,7 @@ internal static class Evaluate
         state =>
         {
             if (register)
-                state.Memory.KeyGuardian.Expects.Check(key);
+                RegisterExpectation(key, state);
             if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
                 return CheckrResult.CaseOnly(state);
             var context = new ExpectationContext(state.Editor);
@@ -111,11 +111,24 @@ internal static class Evaluate
             return Verification(key, result, state);
         };
 
-    private static CheckrResult<Case> Expectation(
+    private static void RegisterExpectation(string key, CheckrState state)
+    {
+        if (state.PoolIteration is { } iteration)
+            iteration.Register(key);
+        else
+            state.Memory.KeyGuardian.Expects.Check(key);
+    }
+
+    internal static CheckrResult<Case> Expectation(
         string key,
         ExpectationResult result,
         CheckrState state)
     {
+        if (state.PoolIteration is { } iteration)
+        {
+            iteration.Record(key, result);
+            return CheckrResult.CaseOnly(state);
+        }
         if (result.IsPassed)
         {
             state.EvidenceRecorder.ExpectationPassed(key);

@@ -5,10 +5,10 @@ using QuickPulse.Instruments;
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExceptionIsThrown.H_PoolOperations;
 
 [DocFile]
-[DocContent("""
-Whenever an exception occurs during the execution of the callback in `Trackr.PoolForEach` it is propagated.
+[DocContent($"""
+Whenever an exception occurs during the execution of the callback in `{nameof(Poolr)}.{nameof(Poolr.ForEach)}` it is propagated.
 """)]
-public class I_DuringTrackrPoolForEach : CheckrThrowsTest<I_DuringTrackrPoolForEach>
+public class I_DuringPoolrForEach : CheckrThrowsTest<I_DuringPoolrForEach>
 {
     [Fact]
     [DocCheckr]
@@ -23,7 +23,7 @@ public class I_DuringTrackrPoolForEach : CheckrThrowsTest<I_DuringTrackrPoolForE
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Poolr.Add("answer", Checkr.Capture(() => 42))
-        from operations in Trackr.PoolForEach<int>(_ => ComputerSays.No<CheckrOf<Case>>("Boom"))
+        from operations in Poolr.ForEach<int>(_ => ComputerSays.No<CheckrOf<Case>>("Boom"))
         select Case.Closed;
 
     [CodeExceptionType]
