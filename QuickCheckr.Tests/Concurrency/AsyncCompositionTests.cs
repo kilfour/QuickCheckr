@@ -80,7 +80,6 @@ public class AsyncCompositionTests
     [InlineData("one of when")]
     [InlineData("sequence")]
     [InlineData("once")]
-    [InlineData("pool")]
     [InlineData("two pools")]
     [InlineData("pool when")]
     [InlineData("two pools when")]
@@ -109,7 +108,6 @@ public class AsyncCompositionTests
             "one of when" => Checkr.OneOfWhen(option),
             "sequence" => Checkr.Sequence(nested),
             "once" => Trackr.Once("once", nested),
-            "pool" => Trackr.OneOfPool<int>("pool", _ => nested),
             "two pools" => Trackr.OneOfPool<int, string>("pools", (_, _) => nested),
             "pool when" => Trackr.OneOfPoolWhen<int>("pool", _ => true, _ => nested),
             "two pools when" => Trackr.OneOfPoolWhen<int, string>("pools", (_, _) => true, (_, _) => nested),

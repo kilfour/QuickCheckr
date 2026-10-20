@@ -20,6 +20,16 @@ public sealed class PoolCondition
     public PoolCondition AndHas<T>() =>
         AndWhen<T>(pool => pool.Count > 0);
 
+    /// <summary>Requires a condition over two pools, evaluating it only when the preceding condition passes.</summary>
+    public PoolCondition AndWhen<T1, T2>(
+        Func<IReadOnlyCollection<T1>, IReadOnlyCollection<T2>, bool> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        return new(state => predicate(state) && other(
+            (IReadOnlyCollection<T1>)state.Memory.GetPool<T1>(),
+            (IReadOnlyCollection<T2>)state.Memory.GetPool<T2>()));
+    }
+
     /// <summary>Creates an option whose condition is evaluated against the current execution's pools.</summary>
     public CheckrOf<CheckrOption> Then(CheckrOf<Case> checkr)
     {

@@ -9,11 +9,11 @@ public class GatheringEvidenceCheckr
 {
     public static CheckrOf<Case> TheCheckr() =>
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
-            Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
-            Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
-            Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
-            Trackr.PoolWhen("(Coach, Course) to Assign",
+            Poolr.When<Coach>(a => a.Count < 10, CreateCoach),
+            Poolr.When("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
+            Poolr.When<Course>(a => a.Count < 5, CreateCourse),
+            Poolr.When("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
+            Poolr.When("(Coach, Course) to Assign",
                 (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
         from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
@@ -57,14 +57,14 @@ public class GatheringEvidenceCheckr
                    == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
             select Case.Closed;
 
-    private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
+    private static readonly Func<Coach, Course, CheckrOf<Case>> AssignCoachToCourse =
         (coach, course) =>
             from assign in Checkr.Act("Assign Coach to Course",
-                () => course.Value.AssignCoach(coach.Value))
+                () => course.AssignCoach(coach))
             from isAssigned in Checkr.Expect("Coach is assigned",
-                () => course.Value.AssignedCoach == coach.Value)
+                () => course.AssignedCoach == coach)
             from hasCourse in Checkr.Expect("Coach has Course",
-                () => coach.Value.AssignedCourses.Contains(course.Value))
+                () => coach.AssignedCourses.Contains(course))
             select Case.Closed;
 
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
