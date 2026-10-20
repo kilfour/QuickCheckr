@@ -1,14 +1,16 @@
 using QuickCheckr.Tests.Tools;
+using QuickCheckr.UnderTheHood;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
+
 
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExceptionIsThrown.H_PoolOperations;
 
 [DocFile]
-[DocContent("""
-Whenever an exception occurs during the execution of the callback in `Trackr.OneOfPoolWhen<T1, T2>` it is propagated.
+[DocContent($"""
+Whenever an excecption occurs during the execution of the condition in `{nameof(Poolr)}.{nameof(Poolr.When)}` it is propagated.
 """)]
-public class H_DuringTrackrOneOfTwoPoolsWhenCallback : CheckrThrowsTest<H_DuringTrackrOneOfTwoPoolsWhenCallback>
+public class B_DuringPoolrWhen : CheckrThrowsTest<B_DuringPoolrWhen>
 {
     [Fact]
     [DocCheckr]
@@ -23,8 +25,8 @@ public class H_DuringTrackrOneOfTwoPoolsWhenCallback : CheckrThrowsTest<H_During
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Poolr.Add("answer", Checkr.Capture(() => 42))
-        from other in Poolr.Add("text", Checkr.Capture(() => "answer"))
-        from operations in Trackr.OneOfPoolWhen<int, string>("Select", (_, _) => true, (_, _) => ComputerSays.No<CheckrOf<Case>>("Boom"))
+        from operations in Checkr.OneOfWhen(
+            Poolr.When<int>(_ => ComputerSays.No<bool>("Boom"), state => CheckrResult.CaseOnly(state)))
         select Case.Closed;
 
     [CodeExceptionType]

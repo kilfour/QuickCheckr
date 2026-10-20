@@ -1,26 +1,26 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:31:1
+ Location:                Notes\Y_Async\B_LockTheStableDoors\LockTheStableDoors.cs:30:1
  Original failing run:    13 executions
  Minimal failing case:    4 executions (after 14 shrinks)
  Seed:                    1511313504
  ------------------------------------------------------------
   Executed: Create Coach
-   -  Pool: Store Coach = CoachBy-2
-   - WARNING: All inputs were considered irrelevant.
+   - Store Coach = CoachBy-2
  ------------------------------------------------------------
   Executed: Create Course
-   -  Pool: Store Course = CourseBy-2
-   - WARNING: All inputs were considered irrelevant.
+   - Store Course = CourseBy-2
  ------------------------------------------------------------
   Executed: Assign Coach to Course
+   - Coach to assign    = CoachBy-2
+   - Course assigned to = CourseBy-2
  ------------------------------------------------------------
   Executed: Update Course Skills
-   -  Pool: Course to update = CourseBy-2
-   - Input: Course Skills    = [ _ ]
+   - Course to update = CourseBy-2
+   - Course Skills    = [ _ ]
  ============================================================
   !! Expectation Failed: Assigned Coaches Must Be Suitable
  ============================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Assigned Coaches Must Be Suitable: 5x
  ------------------------------------------------------------

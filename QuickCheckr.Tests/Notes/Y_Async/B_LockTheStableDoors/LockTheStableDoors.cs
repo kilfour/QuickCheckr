@@ -31,7 +31,7 @@ public class LockTheStableDoors : BaseTest
                 .Run(1511313504, 20.ExecutionsPerRun()));
 
         WriteAsserts(article, false);
-        WriteReport<LockTheStableDoors>(article, false);
+        WriteReport<LockTheStableDoors>(article, true);
         Verify(article);
     }
 
@@ -41,7 +41,7 @@ public class LockTheStableDoors : BaseTest
         Assert.Equal(4, article.Total().Executions());
         Assert.Equal(4, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(3, article.Total().PoolTraces());
+        Assert.Equal(5, article.Total().PoolTraces());
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(5, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Create Coach", article.Execution(1).Action(1).Read().Label);
@@ -105,14 +105,14 @@ public class LockTheStableDoors : BaseTest
 
     [CodeExample]
     private static CheckrOf<Case> AssignCoachToCourse(InMemoryCoachCourseService service) =>
-        from pool in Trackr.OneOfPool<CoachBy, CourseBy>("Coach to assign", (coach, course) =>
-            from coaches in Checkr.Capture(service.GetCoachesAsync)
-            from courses in Checkr.Capture(service.GetCoursesAsync)
-            from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
-            from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
-            from valid in Checkr.When(() => dbCoach.IsSuitableFor(dbCourse), // we can do better than this, i'm sure ;-)
-                from assign in Checkr.Act("Assign Coach to Course", () => service.AssignCoachToCourseAsync(coach.Name, course.Name))
-                select Case.Closed)
+        from coach in Poolr.OneOf<CoachBy>("Coach to assign")
+        from course in Poolr.OneOf<CourseBy>("Course assigned to")
+        from coaches in Checkr.Capture(service.GetCoachesAsync)
+        from courses in Checkr.Capture(service.GetCoursesAsync)
+        from dbCoach in Checkr.Capture(() => coaches.Single(a => a.Name == coach.Name))
+        from dbCourse in Checkr.Capture(() => courses.Single(a => a.Name == course.Name))
+        from valid in Checkr.When(() => dbCoach.IsSuitableFor(dbCourse), // we can do better than this, i'm sure ;-)
+            from assign in Checkr.Act("Assign Coach to Course", () => service.AssignCoachToCourseAsync(coach.Name, course.Name))
             select Case.Closed)
         select Case.Closed;
 

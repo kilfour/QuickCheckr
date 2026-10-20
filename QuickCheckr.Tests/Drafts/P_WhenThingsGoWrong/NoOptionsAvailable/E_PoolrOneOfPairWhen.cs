@@ -1,16 +1,15 @@
 using QuickCheckr.Authoring;
-using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.NoOptionsAvailable;
 
 [DocFile]
-[DocFileHeader("OneOfPoolWhen with two pools")]
+[DocFileHeader("Poolr.OneOfWhen with two pools")]
 [DocContent("Throws a `NoMatchingPoolElementException` when no pair from the two pools matches the predicate.")]
 [DocBoldHeader("Message:")]
-[DocExample(typeof(E_OneOfPoolWhen), nameof(Message))]
-public class E_OneOfPoolWhen : DocAttributeBaseTest
+[DocExample(typeof(E_PoolrOneOfPairWhen), nameof(Message))]
+public class E_PoolrOneOfPairWhen : DocAttributeBaseTest
 {
     [Fact]
     public void NoOptionsThrows()
@@ -18,10 +17,9 @@ public class E_OneOfPoolWhen : DocAttributeBaseTest
         var checkr =
             from number in Poolr.Add("store number", Checkr.Capture(() => 1))
             from text in Poolr.Add("store text", Checkr.Capture(() => "two"))
-            from selected in Trackr.OneOfPoolWhen<int, string>(
+            from selected in Poolr.OneOfWhen<int, string>(
                 "pool pair",
-                (candidateNumber, candidateText) => candidateNumber.ToString() == candidateText,
-                (_, _) => state => CheckrResult.CaseOnly(state))
+                (candidateNumber, candidateText) => candidateNumber.ToString() == candidateText)
             select Case.Closed;
 
         var ex = Assert.Throws<NoMatchingPoolElementException>(() => checkr.Run());
@@ -30,8 +28,8 @@ public class E_OneOfPoolWhen : DocAttributeBaseTest
 
     [CodeSnippet]
     private static string Message() =>
-@"Trackr.OneOfPoolWhen could not choose a matching pair of 'Int32' and 'String' from pool 'pool pair'.
+@"Poolr.OneOfWhen could not choose a matching pair of 'Int32' and 'String' from pool 'pool pair'.
 
-OneOfPoolWhen needs at least one matching pair whenever it runs.
-Check the predicate, or use Trackr.PoolWhen when a match is optional.";
+OneOfWhen needs at least one matching pair whenever it runs.
+Check the predicate, or use Poolr.When when a match is optional.";
 }

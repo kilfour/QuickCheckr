@@ -50,17 +50,15 @@ public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable :
                     Checkr.Act("Update", () => { factory.GetOtherThingById(thing.Value.OtherThingId).Extra = 42; }))),
 
             Checkr.Option(() => counter == 5,
-                Trackr.OneOfPoolWhen<ThingInfo, OtherThingInfo>(
+                from pair in Poolr.OneOfWhen<ThingInfo, OtherThingInfo>(
                     "Assignable Pair",
                     (thing, otherThing) =>
                         factory.GetThingById(thing.ThingId)
-                            .CanAssignTo(factory.GetOtherThingById(otherThing.OtherThingId)),
-                    (thing, otherThing) =>
-                        Checkr.Act("Assign",
-                            () =>
-                                factory.GetOtherThingById(otherThing.Value.OtherThingId)
-                                    .Assign(factory.GetThingById(thing.Value.ThingId))))),
-
+                            .CanAssignTo(factory.GetOtherThingById(otherThing.OtherThingId)))
+                from assign in Checkr.Act("Assign",
+                    () => factory.GetOtherThingById(pair.Second.OtherThingId)
+                        .Assign(factory.GetThingById(pair.First.ThingId)))
+                select Case.Closed),
             Checkr.Option(() => counter == 6,
                 from otherThings in Poolr.AllElements<OtherThingInfo>()
                 from check in Checkr.ExpectWhen("Assigned to 42",

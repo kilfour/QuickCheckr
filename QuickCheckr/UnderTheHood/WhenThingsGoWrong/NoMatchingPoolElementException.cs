@@ -15,14 +15,14 @@ public sealed class NoMatchingPoolElementException : QuickCheckrException
     }
 
     private static string BuildMessage(string key, Type valueType) =>
-        $@"Trackr.OneOfPoolWhen could not choose a '{valueType.Name}' from pool '{key}' because no stored value matched the predicate.
+        $@"Poolr.OneOfWhen could not choose a '{valueType.Name}' from pool '{key}' because no stored value matched the predicate.
 
-OneOfPoolWhen needs at least one matching stored value whenever it runs.
-Check the predicate, or use Trackr.PoolWhen when a match is optional.";
+OneOfWhen needs at least one matching stored value whenever it runs.
+Check the predicate, or use Poolr.When when a match is optional.";
 
     private static string BuildMessage(string key, Type firstValueType, Type secondValueType) =>
-        $@"Trackr.OneOfPoolWhen could not choose a matching pair of '{firstValueType.Name}' and '{secondValueType.Name}' from pool '{key}'.
+        $@"Poolr.OneOfWhen could not choose a matching pair of '{firstValueType.Name}' and '{secondValueType.Name}' from pool '{key}'.
 
-OneOfPoolWhen needs at least one matching pair whenever it runs.
-Check the predicate, or use Trackr.PoolWhen when a match is optional.";
+OneOfWhen needs at least one matching pair whenever it runs.
+Check the predicate, or use Poolr.When when a match is optional.";
 }
