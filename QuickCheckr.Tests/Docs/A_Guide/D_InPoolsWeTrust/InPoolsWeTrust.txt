@@ -1,24 +1,23 @@
  ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:139:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:161:1
  Original failing run:    10 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    1444257086
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Store = Contact-5
-   - WARNING: All inputs were considered irrelevant.
+   - Store = Contact-5
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Store = Contact-6
-   - Input: Name  = "Paul Harrison"
+   - Store = Contact-6
+   - Name  = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Contact to update = Contact-5
-   - Input: New Name          = "Paul Harrison"
+   - Contact to update = Contact-5
+   - New Name          = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Count matches: 9x
  ------------------------------------------------------------

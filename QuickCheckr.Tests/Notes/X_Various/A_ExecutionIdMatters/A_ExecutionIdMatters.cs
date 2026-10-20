@@ -70,10 +70,9 @@ So now, **Execution Id Matters**.
                         select Case.Closed),
                     Checkr.Option(() => counter == 2, // update AAA to BBB, if this gets shrunk run fails on execution 3
                         from newName in Checkr.Input("Name", Fuzzr.Constant("BBB"))
-                        from update in Trackr.OneOfPool<string>("Name to update", nameToUpdate =>
-                            from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate.Value, newName))
-                            from update in nameToUpdate.Replace(newName)
-                            select Case.Closed)
+                        from update in Poolr.Update<string>("Name to update", nameToUpdate =>
+                            from act in Checkr.Act("Update", () => contactBook.Update(nameToUpdate, newName))
+                            select newName)
                         select Case.Closed),
                     Checkr.Option(() => counter == 3, // add a new AAA
                         from name in Checkr.Input("Name", Fuzzr.Constant("AAA"))

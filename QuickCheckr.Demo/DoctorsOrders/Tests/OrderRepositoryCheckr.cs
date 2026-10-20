@@ -17,6 +17,11 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<Case> TheCheckr() =>
         from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
+        from showr in Showr.ForClassification(a =>
+            a.For<OrderQueryInput>()
+                .Bounds($"{Environment.NewLine}{{{Environment.NewLine}    ", $"{Environment.NewLine}}}")
+                .Delimiter($"{Environment.NewLine}    ")
+                .HideIrrelevantProperties())
         from repository in Trackr.Stashed(() => new OrderRepository())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),

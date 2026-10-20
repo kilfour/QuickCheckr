@@ -14,6 +14,7 @@
 
 ### To Do
 - Rework and document the custom shrinking API.
+- classifier showr, define some defaults, multi line needs to be aligned
 
 
 **nice to have:**
