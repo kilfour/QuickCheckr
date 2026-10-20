@@ -72,46 +72,39 @@ public class LockTheStableDoors : BaseTest
 
 
     [CodeExample]
-    private static readonly CheckrOf<Case> CreateCoach =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
-        from name in Checkr.Input("Coach Name",
-            from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-        from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
-        from toPool in Trackr.ToPool("Store Coach", () => new CoachBy(name))
+    private static CheckrOf<Case> CreateCoach(InMemoryCoachCourseService service) =>
+        Poolr.Add("Store Coach",
+            from name in Checkr.Input("Coach Name",
+                from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
+            from coach in Checkr.Act("Create Coach", () => service.CreateCoachAsync(name))
+            select new CoachBy(name));
+
+    [CodeExample]
+    private static CheckrOf<Case> UpdateCoachSkills(InMemoryCoachCourseService service) =>
+        from coach in Poolr.OneOf<CoachBy>("Coach to update")
+        from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
+        from updateSkills in Checkr.Act("Update Coach Skills",
+            () => service.UpdateCoachSkillsAsync(coach.Name, skills))
         select Case.Closed;
 
     [CodeExample]
-    private static readonly CheckrOf<Case> UpdateCoachSkills =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
-        from pool in Trackr.OneOfPool<CoachBy>("Coach to update", coach =>
-            from skills in Checkr.Input("Coach Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from updateSkills in Checkr.Act("Update Coach Skills",
-                () => service.UpdateCoachSkillsAsync(coach.Value.Name, skills))
-            select Case.Closed)
+    private static CheckrOf<Case> CreateCourse(InMemoryCoachCourseService service) =>
+        Poolr.Add("Store Course",
+            from name in Checkr.Input("Course Name",
+                from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
+            from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
+            select new CourseBy(name));
+
+    [CodeExample]
+    private static CheckrOf<Case> UpdateCourseSkills(InMemoryCoachCourseService service) =>
+        from course in Poolr.OneOf<CourseBy>("Course to update")
+        from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
+        from updateSkills in Checkr.Act("Update Course Skills",
+            () => service.UpdateCourseSkillsAsync(course.Name, skills))
         select Case.Closed;
 
     [CodeExample]
-    private static readonly CheckrOf<Case> CreateCourse =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
-        from name in Checkr.Input("Course Name",
-            from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-        from course in Checkr.Act("Create Course", () => service.CreateCourseAsync(name))
-        from toPool in Trackr.ToPool("Store Course", () => new CourseBy(name))
-        select Case.Closed;
-
-    [CodeExample]
-    private static readonly CheckrOf<Case> UpdateCourseSkills =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
-        from pool in Trackr.OneOfPool<CourseBy>("Course to update", course =>
-            from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(3, 5))
-            from updateSkills in Checkr.Act("Update Course Skills",
-                () => service.UpdateCourseSkillsAsync(course.Value.Name, skills))
-            select Case.Closed)
-        select Case.Closed;
-
-    [CodeExample]
-    private static readonly CheckrOf<Case> AssignCoachToCourse =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
+    private static CheckrOf<Case> AssignCoachToCourse(InMemoryCoachCourseService service) =>
         from pool in Trackr.OneOfPool<CoachBy, CourseBy>("Coach to assign", (coach, course) =>
             from coaches in Checkr.Capture(service.GetCoachesAsync)
             from courses in Checkr.Capture(service.GetCoursesAsync)
@@ -124,8 +117,7 @@ public class LockTheStableDoors : BaseTest
         select Case.Closed;
 
     [CodeExample]
-    private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        from service in Trackr.GetStashed<InMemoryCoachCourseService>()
+    private static CheckrOf<Case> AssignedCoachesMustBeSuitable(InMemoryCoachCourseService service) =>
         from coaches in Checkr.Capture(service.GetCoachesAsync)
         from assignedCheck in Checkr.ExpectWhen("Assigned Coaches Must Be Suitable",
             () => coaches.Any(coach => coach.AssignedCourses.Any()),
@@ -141,13 +133,14 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
         from dbCourses in Checkr.Capture(service.GetCoursesAsync)
         from operations in Checkr.OneOfWhen(
-            Poolr.When<CoachBy>(a => a.Count < 10, CreateCoach),
-            Poolr.Has<CoachBy>(UpdateCoachSkills),
-            Poolr.When<CourseBy>(a => a.Count < 5, CreateCourse),
-            Poolr.Has<CourseBy>(UpdateCourseSkills),
+            Poolr.When<CoachBy>(a => a.Count < 10, CreateCoach(service)),
+            Poolr.Has<CoachBy>(UpdateCoachSkills(service)),
+            Poolr.When<CourseBy>(a => a.Count < 5, CreateCourse(service)),
+            Poolr.Has<CourseBy>(UpdateCourseSkills(service)),
             Poolr.Has<CoachBy>()
-                .AndWhen<CourseBy>(a => a.Any(course => dbCourses.Single(b => b.Name == course.Name).AssignedCoach == null))
-                .Then(AssignCoachToCourse))
-        from invariant in AssignedCoachesMustBeSuitable
+                .AndWhen<CourseBy>(a => a.Any(course =>
+                    dbCourses.Single(b => b.Name == course.Name).AssignedCoach == null))
+                .Then(AssignCoachToCourse(service)))
+        from invariant in AssignedCoachesMustBeSuitable(service)
         select Case.Closed;
 }
