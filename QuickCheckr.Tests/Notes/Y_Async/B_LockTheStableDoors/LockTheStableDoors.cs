@@ -28,7 +28,6 @@ public class LockTheStableDoors : BaseTest
     public void RunTest()
     {
         var article = Journalist.Publish(TheCheckr, a => a
-
                 .Run(1511313504, 20.ExecutionsPerRun()));
 
         WriteAsserts(article, false);
@@ -142,11 +141,13 @@ public class LockTheStableDoors : BaseTest
         from service in Trackr.Stashed(() => new InMemoryCoachCourseService())
         from dbCourses in Checkr.Capture(service.GetCoursesAsync)
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<CoachBy>(a => a.Count < 10, CreateCoach),
-            Trackr.PoolWhen<CoachBy>(a => a.Count != 0, UpdateCoachSkills),
-            Trackr.PoolWhen<CourseBy>(a => a.Count < 5, CreateCourse),
-            Trackr.PoolWhen<CourseBy>(a => a.Count != 0, UpdateCourseSkills),
-            Trackr.PoolWhen<CoachBy>(a => a.Count != 0 && dbCourses.Any(course => course.AssignedCoach == null), AssignCoachToCourse))
+            Poolr.When<CoachBy>(a => a.Count < 10, CreateCoach),
+            Poolr.Has<CoachBy>(UpdateCoachSkills),
+            Poolr.When<CourseBy>(a => a.Count < 5, CreateCourse),
+            Poolr.Has<CourseBy>(UpdateCourseSkills),
+            Poolr.Has<CoachBy>()
+                .AndWhen<CourseBy>(a => a.Any(course => dbCourses.Single(b => b.Name == course.Name).AssignedCoach == null))
+                .Then(AssignCoachToCourse))
         from invariant in AssignedCoachesMustBeSuitable
         select Case.Closed;
 }

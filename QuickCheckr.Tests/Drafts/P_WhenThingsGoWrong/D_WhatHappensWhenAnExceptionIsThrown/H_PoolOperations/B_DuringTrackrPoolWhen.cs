@@ -7,8 +7,8 @@ using QuickPulse.Instruments;
 namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExceptionIsThrown.H_PoolOperations;
 
 [DocFile]
-[DocContent("""
-Whenever an excecption occurs during the execution of the condition in `Trackr.PoolWhen` it is propagated.
+[DocContent($"""
+Whenever an excecption occurs during the execution of the condition in `{nameof(Poolr)}.{nameof(Poolr.When)}` it is propagated.
 """)]
 public class B_DuringTrackrPoolWhen : CheckrThrowsTest<B_DuringTrackrPoolWhen>
 {
@@ -26,7 +26,7 @@ public class B_DuringTrackrPoolWhen : CheckrThrowsTest<B_DuringTrackrPoolWhen>
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Trackr.ToPool("answer", () => 42)
         from operations in Checkr.OneOfWhen(
-            Trackr.PoolWhen<int>(_ => ComputerSays.No<bool>("Boom"), state => CheckrResult.CaseOnly(state)))
+            Poolr.When<int>(_ => ComputerSays.No<bool>("Boom"), state => CheckrResult.CaseOnly(state)))
         select Case.Closed;
 
     [CodeExceptionType]

@@ -32,7 +32,7 @@ public partial class TheBroadcasterTest : BaseTest
             from _ in Checkr.OneOfWhen(
 
                 // 1) Register
-                Trackr.PoolWhen<TestClientProxy>(a => a.Count < 10,
+                Poolr.When<TestClientProxy>(a => a.Count < 10,
                     from register in Checkr.Act("Register", broadcaster.Register)
                     from client in Trackr.ToPool("Client", () => factory.LastClient)
                     from clientAdded in Checkr.Expect("Client is added to collection",
