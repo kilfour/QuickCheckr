@@ -22,8 +22,8 @@ public class W_DuringTrackrPoolWhenTwoPoolsCallback : CheckrThrowsTest<W_DuringT
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
-        from other in Trackr.ToPool("text", () => "answer")
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
+        from other in Poolr.Add("text", Checkr.Capture(() => "answer"))
         from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int, string>("Select", (_, _) => true, (_, _) => ComputerSays.No<CheckrOf<Case>>("Boom")))
         select Case.Closed;
 

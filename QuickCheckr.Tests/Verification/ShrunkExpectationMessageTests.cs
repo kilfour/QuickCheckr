@@ -36,7 +36,7 @@ public class ShrunkExpectationMessageTests
         };
         var check =
             from input in Checkr.Input("value", Fuzzr.Constant(42))
-            from pooled in Trackr.ToPool("number", () => input)
+            from pooled in Poolr.Add("number", Checkr.Capture(() => input))
             from failure in Expect(input)
             select Case.Closed;
         var runner = new CheckrRunner(check,

@@ -16,7 +16,7 @@ public class D_OneOfPoolWhen : DocAttributeBaseTest
     public void NoOptionsThrows()
     {
         var checkr =
-            from stored in Trackr.ToPool("store", () => 1)
+            from stored in Poolr.Add("store", Checkr.Capture(() => 1))
             from selected in Trackr.OneOfPoolWhen<int>(
                 "pool",
                 value => value > 1,

@@ -22,7 +22,7 @@ public class U_DuringTrackrPoolWhenElementCallback : CheckrThrowsTest<U_DuringTr
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Checkr.OneOfWhen(Trackr.PoolWhen("Select", (int _) => true, _ => ComputerSays.No<CheckrOf<Case>>("Boom")))
         select Case.Closed;
 

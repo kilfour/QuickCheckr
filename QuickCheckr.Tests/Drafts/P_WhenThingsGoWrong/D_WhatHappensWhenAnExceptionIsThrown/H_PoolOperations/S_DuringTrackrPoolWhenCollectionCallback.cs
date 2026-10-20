@@ -22,7 +22,7 @@ public class S_DuringTrackrPoolWhenCollectionCallback : CheckrThrowsTest<S_Durin
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Checkr.OneOfWhen(Trackr.PoolWhen<int>("Select", (IReadOnlyCollection<int> _) => true, _ => ComputerSays.No<CheckrOf<Case>>("Boom")))
         select Case.Closed;
 

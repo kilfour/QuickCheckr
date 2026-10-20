@@ -25,12 +25,12 @@ public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
         from op in Checkr.OneOfWhen(
             Checkr.Option(() => counter == 1,
                 from thing in Checkr.Act("Create Thing 1", factory.Create)
-                from pool in Trackr.ToPool("Thing", () => thing)
+                from pool in Poolr.Add("Thing", Checkr.Capture(() => thing))
                 select Case.Closed),
 
             Checkr.Option(() => counter == 2,
                 from thing in Checkr.Act("Create Thing 2", factory.Create)
-                from pool in Trackr.ToPool("Thing", () => thing)
+                from pool in Poolr.Add("Thing", Checkr.Capture(() => thing))
                 select Case.Closed),
 
             Checkr.Option(() => counter == 3,

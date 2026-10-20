@@ -23,7 +23,7 @@ public class L_DuringTrackrPoolExpect : CheckrThrowsTest<L_DuringTrackrPoolExpec
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Trackr.PoolExpect<int>("Expectation", _ => ComputerSays.No<bool>("Boom"))
         select Case.Closed;
 

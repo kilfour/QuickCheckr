@@ -19,7 +19,7 @@ public class ActionAbortTests
             ? Checkr.Act<string>("insert", async () => { await Task.Yield(); throw error; })
             : Checkr.Act<string>("insert", (Func<string>)(() => throw error));
         var check = from value in action
-                    from pool in Trackr.ToPool("item", () => { inserted = true; return value; })
+                    from pool in Poolr.Add("item", Checkr.Capture(() => { inserted = true; return value; }))
                     select Project();
         Case Project() { projected = true; return Case.Closed; }
 
@@ -41,7 +41,7 @@ public class ActionAbortTests
         var check = from number in Checkr.Input("number", QuickFuzzr.Fuzzr.OneOf(1))
                     from value in Checkr.Act("insert", () => number < 0
                         ? throw new InvalidOperationException("invalid candidate") : "order")
-                    from pool in Trackr.ToPool("order", () => { continued++; return value; })
+                    from pool in Poolr.Add("order", Checkr.Capture(() => { continued++; return value; }))
                     select Case.Closed;
         var verifier = new Verifier(state, check);
 

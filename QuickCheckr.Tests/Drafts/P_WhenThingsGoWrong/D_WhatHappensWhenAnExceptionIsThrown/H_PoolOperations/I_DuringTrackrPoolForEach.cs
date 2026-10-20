@@ -22,7 +22,7 @@ public class I_DuringTrackrPoolForEach : CheckrThrowsTest<I_DuringTrackrPoolForE
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Trackr.PoolForEach<int>(_ => ComputerSays.No<CheckrOf<Case>>("Boom"))
         select Case.Closed;
 

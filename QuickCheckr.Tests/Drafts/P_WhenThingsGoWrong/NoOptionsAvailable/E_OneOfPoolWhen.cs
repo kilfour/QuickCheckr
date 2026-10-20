@@ -16,8 +16,8 @@ public class E_OneOfPoolWhen : DocAttributeBaseTest
     public void NoOptionsThrows()
     {
         var checkr =
-            from number in Trackr.ToPool("store number", () => 1)
-            from text in Trackr.ToPool("store text", () => "two")
+            from number in Poolr.Add("store number", Checkr.Capture(() => 1))
+            from text in Poolr.Add("store text", Checkr.Capture(() => "two"))
             from selected in Trackr.OneOfPoolWhen<int, string>(
                 "pool pair",
                 (candidateNumber, candidateText) => candidateNumber.ToString() == candidateText,

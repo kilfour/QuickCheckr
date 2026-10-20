@@ -32,17 +32,17 @@ public class G_AssignablePairCannotSurviveWithoutTheUpdateThatMadeItAssignable :
         from op in Checkr.OneOfWhen(
             Checkr.Option(() => counter == 1,
                 from thing in Checkr.Act("Create Thing 1", factory.CreateThing)
-                from pool in Trackr.ToPool("Thing", () => new ThingInfo(thing.Id))
+                from pool in Poolr.Add("Thing", Checkr.Capture(() => new ThingInfo(thing.Id)))
                 select Case.Closed),
 
             Checkr.Option(() => counter == 2,
                 from thing in Checkr.Act("Create Other Thing 1", factory.CreateOtherThing)
-                from pool in Trackr.ToPool("Other Thing", () => new OtherThingInfo(thing.Id))
+                from pool in Poolr.Add("Other Thing", Checkr.Capture(() => new OtherThingInfo(thing.Id)))
                 select Case.Closed),
 
             Checkr.Option(() => counter == 3,
                 from thing in Checkr.Act("Create Other Thing 2", factory.CreateOtherThing)
-                from pool in Trackr.ToPool("Other Thing", () => new OtherThingInfo(thing.Id))
+                from pool in Poolr.Add("Other Thing", Checkr.Capture(() => new OtherThingInfo(thing.Id)))
                 select Case.Closed),
 
             Checkr.Option(() => counter == 4,

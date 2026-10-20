@@ -180,7 +180,7 @@ public class AsyncExpectationTests
         var calls = 0;
         var check =
             from input in Checkr.Input("irrelevant", Fuzzr.Constant(42))
-            from parent in Trackr.ToPool("parent", () => "board")
+            from parent in Poolr.Add("parent", Checkr.Capture(() => "board"))
             from expectation in Trackr.PoolExpectEach<string, int>("related", (_, _) => true,
                 async (_, _) => { await Task.Yield(); calls++; return false; })
             select Case.Closed;

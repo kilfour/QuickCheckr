@@ -23,7 +23,7 @@ public class X_DuringTrackrPoolWhenCheckr : CheckrThrowsTest<X_DuringTrackrPoolW
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Checkr.OneOfWhen(Poolr.When<int>(_ => true, _ => ComputerSays.No<CheckrResult<Case>>("Boom")))
         select Case.Closed;
 

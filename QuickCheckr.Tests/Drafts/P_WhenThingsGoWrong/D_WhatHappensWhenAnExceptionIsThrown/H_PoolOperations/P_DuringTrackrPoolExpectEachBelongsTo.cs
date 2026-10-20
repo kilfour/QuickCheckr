@@ -23,8 +23,8 @@ public class P_DuringTrackrPoolExpectEachBelongsTo : CheckrThrowsTest<P_DuringTr
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
-        from other in Trackr.ToPool("text", () => "answer")
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
+        from other in Poolr.Add("text", Checkr.Capture(() => "answer"))
         from operations in Trackr.PoolExpectEach<int, string>("Expectation", (_, _) => ComputerSays.No<bool>("Boom"), (_, _) => true)
         select Case.Closed;
 

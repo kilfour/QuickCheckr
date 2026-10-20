@@ -25,7 +25,7 @@ public class B_ExpectationShouldStop : CheckrTest<B_ExpectationShouldStop>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Thing", Fuzzr.Constant<Thing>(null!))
         from isnotnull in Checkr.Expect("Is not null", () => input is not null)
-        from answer in Trackr.ToPool("To Pool: input.Answer", () => input.Answer)
+        from answer in Poolr.Add("To Pool: input.Answer", Checkr.Capture(() => input.Answer))
         select Case.Closed;
 
     protected override void Verify(Article article)

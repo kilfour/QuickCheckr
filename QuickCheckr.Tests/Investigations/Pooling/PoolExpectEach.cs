@@ -23,9 +23,9 @@ public class PoolExpectEach : CheckrTest<PoolExpectEach>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from sequence in Checkr.Sequence(
-            Trackr.ToPool("1", () => new Thing()).Select(_ => Case.Closed),
-            Trackr.ToPool("2", () => new Thing()).Select(_ => Case.Closed),
-            Trackr.ToPool("3", () => new OtherThing()).Select(_ => Case.Closed)
+            Poolr.Add("1", Checkr.Capture(() => new Thing())),
+            Poolr.Add("2", Checkr.Capture(() => new Thing())),
+            Poolr.Add("3", Checkr.Capture(() => new OtherThing()))
         )
         from check in Trackr.PoolExpectEach<Thing, OtherThing>(
             "just checking",

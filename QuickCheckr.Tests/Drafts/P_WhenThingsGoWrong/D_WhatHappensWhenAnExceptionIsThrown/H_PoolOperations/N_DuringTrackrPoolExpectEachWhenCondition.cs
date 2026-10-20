@@ -23,7 +23,7 @@ public class N_DuringTrackrPoolExpectEachWhenCondition : CheckrThrowsTest<N_Duri
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from store in Trackr.ToPool("answer", () => 42)
+        from store in Poolr.Add("answer", Checkr.Capture(() => 42))
         from operations in Trackr.PoolExpectEachWhen<int>("Expectation", _ => ComputerSays.No<bool>("Boom"), _ => true)
         select Case.Closed;
 
