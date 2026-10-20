@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 [DocContent($"""
 Whenever an exception occurs during the execution of the supplied checkr in `{nameof(Poolr)}.{nameof(Poolr.When)}` it is propagated.
 """)]
-public class X_DuringTrackrPoolWhenCheckr : CheckrThrowsTest<X_DuringTrackrPoolWhenCheckr>
+public class X_DuringPoolrWhenCheckr : CheckrThrowsTest<X_DuringPoolrWhenCheckr>
 {
     [Fact]
     [DocCheckr]

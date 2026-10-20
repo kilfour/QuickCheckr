@@ -2,6 +2,20 @@ namespace QuickCheckr;
 
 public static partial class Poolr
 {
+    /// <summary>Creates an option that selects a matching pool value when executed.</summary>
+    public static CheckrOf<CheckrOption> When<T>(
+        string key,
+        Func<T, bool> predicate,
+        Func<T, CheckrOf<Case>> checkr)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(checkr);
+        return When<T>(pool => pool.Any(predicate)).Then(
+            from value in OneOfWhen(key, predicate)
+            from result in checkr(value)
+            select result);
+    }
+
     /// <summary>Creates a conditional option that selects a pool element when executed.</summary>
     public static CheckrOf<CheckrOption> When<T>(
         string key,

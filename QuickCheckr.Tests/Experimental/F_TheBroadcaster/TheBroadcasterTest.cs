@@ -41,11 +41,11 @@ public partial class TheBroadcasterTest : BaseTest
                     select Case.Closed),
 
                 // 2) Remove on fault
-                Trackr.PoolWhen<TestClientProxy>("Faulty Client", a => a.Count != 0,
+                Poolr.When<TestClientProxy>("Faulty Client", a => a.Count != 0,
                     faulty =>
-                    from clientFaults in Checkr.Act("Client Faults", () => faulty.Value.Fault())
+                    from clientFaults in Checkr.Act("Client Faults", () => faulty.Fault())
                     from clientRemoved in Checkr.Expect("Faulty client is removed", () =>
-                        !broadcaster.HasClient(faulty.Value))
+                        !broadcaster.HasClient(faulty))
                     select Case.Closed),
 
                 // 3) Start broadcaster

@@ -6,9 +6,9 @@ namespace QuickCheckr.Tests.Drafts.P_WhenThingsGoWrong.D_WhatHappensWhenAnExcept
 
 [DocFile]
 [DocContent("""
-Whenever an exception occurs during the execution of the callback in `Trackr.PoolWhen` it is propagated.
+Whenever an exception occurs during the execution of the callback in `Poolr.When<T1, T2>` it is propagated.
 """)]
-public class U_DuringTrackrPoolWhenElementCallback : CheckrThrowsTest<U_DuringTrackrPoolWhenElementCallback>
+public class W_DuringPoolrWhenTwoPoolsCallback : CheckrThrowsTest<W_DuringPoolrWhenTwoPoolsCallback>
 {
     [Fact]
     [DocCheckr]
@@ -23,7 +23,8 @@ public class U_DuringTrackrPoolWhenElementCallback : CheckrThrowsTest<U_DuringTr
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from store in Poolr.Add("answer", Checkr.Capture(() => 42))
-        from operations in Checkr.OneOfWhen(Trackr.PoolWhen("Select", (int _) => true, _ => ComputerSays.No<CheckrOf<Case>>("Boom")))
+        from other in Poolr.Add("text", Checkr.Capture(() => "answer"))
+        from operations in Checkr.OneOfWhen(Poolr.When<int, string>("Select", (_, _) => true, (_, _) => ComputerSays.No<CheckrOf<Case>>("Boom")))
         select Case.Closed;
 
     [CodeExceptionType]

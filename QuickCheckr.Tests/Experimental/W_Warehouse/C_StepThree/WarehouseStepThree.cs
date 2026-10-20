@@ -92,37 +92,37 @@ public class WarehouseStepThree : BaseTest
         select Case.Closed;
 
     [CodeExample]
-    private static readonly Func<PoolElement<ClientSim>, CheckrOf<Case>> ClientTakesAction =
+    private static readonly Func<ClientSim, CheckrOf<Case>> ClientTakesAction =
         client =>
             from service in Trackr.GetStashed<WarehouseService>()
             from ops in Checkr.OneOfWhen("Client Actions",
-                Checkr.Option(() => client.Value.ProductsToOrder.Length == 0, GetProductInfo(client)),
-                Checkr.Option(() => client.Value.ProductsToOrder.Length > 0, PlaceOrder(client)))
+                Checkr.Option(() => client.ProductsToOrder.Length == 0, GetProductInfo(client)),
+                Checkr.Option(() => client.ProductsToOrder.Length > 0, PlaceOrder(client)))
             select Case.Closed;
 
     [CodeExample]
-    private static CheckrOf<Case> GetProductInfo(PoolElement<ClientSim> client) =>
+    private static CheckrOf<Case> GetProductInfo(ClientSim client) =>
         from service in Trackr.GetStashed<WarehouseService>()
         from getProducts in Checkr.Act("Client Gets Products to Order",
-            () => client.Value.ProductsToOrder = service.GetProducts())
+            () => client.ProductsToOrder = service.GetProducts())
         from traceStock in TraceStock
         select Case.Closed;
 
     [CodeExample]
-    private static CheckrOf<Case> PlaceOrder(PoolElement<ClientSim> client) =>
+    private static CheckrOf<Case> PlaceOrder(ClientSim client) =>
         from service in Trackr.GetStashed<WarehouseService>()
-        from show in Showr.ForInput(() => GetRequestShowr(client.Value))
-        from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client.Value))
+        from show in Showr.ForInput(() => GetRequestShowr(client))
+        from orderRequest in Checkr.Input("Order Request", () => OrderRequestFuzzr(client))
         from placeOrder in Checkr.Act("Client Places Order",
-            () => client.Value.Orders.Add(service.PlaceOrder(orderRequest)))
+            () => client.Orders.Add(service.PlaceOrder(orderRequest)))
         from traceStock in TraceStock
         from reloadedStock in Checkr.Capture(() => service.GetProducts())
         from checkStockDecreased in Checkr.ExpectWhen("Stock Decreased After Order",
             () => orderRequest.OrderLines.Sum(a => a.Amount) > 0,
             () => orderRequest.OrderLines.All(a =>
                 reloadedStock.Single(b => a.ProductId == b.ProductId).Available
-                < client.Value.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
-        from forceReload in Checkr.Perform(() => client.Value.ProductsToOrder = [])
+                < client.ProductsToOrder.Single(b => a.ProductId == b.ProductId).Available))
+        from forceReload in Checkr.Perform(() => client.ProductsToOrder = [])
         select Case.Closed;
 
     [CodeExample]
@@ -131,7 +131,7 @@ public class WarehouseStepThree : BaseTest
         from showStock in Showr.ForTrace(GetShowr)
         from ops in Checkr.OneOfWhen(
             Poolr.When<ClientSim>(a => a.Count < 3, LogOn),
-            Trackr.PoolWhen("Client Action", a => a.Count != 0, ClientTakesAction))
+            Poolr.When("Client Action", a => a.Count != 0, ClientTakesAction))
         from checkStock in Checkr.Expect("No Stock Below Zero After Any Action",
             () => service.GetProducts().Select(a => a.Available).All(a => a >= 0))
         select Case.Closed;
