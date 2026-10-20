@@ -19,6 +19,23 @@ public static partial class Trackr
                 ex => state.EvidenceRecorder.RecordFailure(ex));
         };
 
+    public static CheckrOf<Case> StopWhenProven(string key, Func<Task<bool>> condition)
+        => StopWhenProven(key, _ => condition());
+
+    public static CheckrOf<Case> StopWhenProven(string key, Func<CancellationToken, Task<bool>> condition) =>
+        state =>
+        {
+            state.Memory.KeyGuardian.Expects.Check(key);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
+                return CheckrResult.CaseOnly(state);
+            return TheCatcher.InTheCheckrAsync(state, async () =>
+            {
+                var passed = await condition(state.CancellationToken).ConfigureAwait(false);
+                state.CancellationToken.ThrowIfCancellationRequested();
+                return EvaluateStopWhenProven(key, () => passed, state);
+            }, ex => state.EvidenceRecorder.RecordFailure(ex));
+        };
+
     private static CheckrResult<Case> EvaluateStopWhenProven(string key, Func<bool> condition, CheckrState state)
     {
         if (condition())

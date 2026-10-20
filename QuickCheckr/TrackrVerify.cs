@@ -46,4 +46,53 @@ public static partial class Trackr
             }
             return CheckrResult.CaseOnly(state);
         };
+
+    public static CheckrOf<Case> Verify(
+        string key,
+        Func<ExpectationContext, Task<ExpectationResult>> evaluation)
+        => Verify(key, (context, _) => evaluation(context));
+
+    public static CheckrOf<Case> Verify(
+        string key,
+        Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluation)
+        => Evaluate.VerificationAsync(key, evaluation);
+
+    public static CheckrOf<Case> Verify(string key, Func<Task<bool>> evaluation)
+        => Verify(key, async context =>
+            await evaluation().ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
+
+    public static CheckrOf<Case> Verify(string key, Func<CancellationToken, Task<bool>> evaluation)
+        => Verify(key, async (context, token) =>
+            await evaluation(token).ConfigureAwait(false)
+                ? context.Pass()
+                : context.Fail());
+
+    public static CheckrOf<Case> Verify(string key)
+        => Verify(key, Array.Empty<(string label, Func<bool> condition)>());
+
+    public static CheckrOf<Case> Verify(string key, params (string label, Func<Task<bool>> condition)[] conditions)
+        => Verify(key, conditions.Select(item =>
+            (item.label, (Func<CancellationToken, Task<bool>>)(_ => item.condition()))).ToArray());
+
+    public static CheckrOf<Case> Verify(string key,
+        params (string label, Func<CancellationToken, Task<bool>> condition)[] conditions) =>
+        async state =>
+        {
+            if (!state.IsThisTheRunsLastExecution())
+                return CheckrResult.CaseOnly(state);
+            List<string> failed = [];
+            foreach (var (label, condition) in conditions)
+            {
+                state.CancellationToken.ThrowIfCancellationRequested();
+                var passed = await condition(state.CancellationToken).ConfigureAwait(false);
+                state.CancellationToken.ThrowIfCancellationRequested();
+                if (!passed) failed.Add(label);
+            }
+            if (failed.Count == 0) state.EvidenceRecorder.ExpectationPassed(key);
+            else state.EvidenceRecorder.VerificationFailed(
+                new VerificationFailure(key + ": " + string.Join(", ", failed), []));
+            return CheckrResult.CaseOnly(state);
+        };
 }
