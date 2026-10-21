@@ -1,7 +1,7 @@
-## 0.4.4: 
+## 0.4.4: Getting in at the Deep End
 * Fixed caught action exceptions allowing dependent steps to consume default values and corrupt tracked pools. Failed runs and shrinking replays now abort after the exception; each replay starts fresh, while `ActCarefully` still captures exceptions without aborting.
 * Added `HideIrrelevantProperties` to classification formatter.
-* Added `Trackr.ManyOfPool<T>(key, numberOfItems, checkr)` to randomly select multiple pool elements with replacement and pass them to a callback as an `IReadOnlyList<PoolElement<T>>`. Selected identifiers are retained for replay; the callback is skipped if any selected element is no longer in the pool.
+
 
 ## 0.4.3: Back to Life, Back to Reality
 * Fixed repeated `Showr.ForClassification` configuration for the same type across executions and runs. `For<T>()` reuses the existing format, allowing configuration calls to compose; repeated `.Property(...)` calls retain a single property entry.

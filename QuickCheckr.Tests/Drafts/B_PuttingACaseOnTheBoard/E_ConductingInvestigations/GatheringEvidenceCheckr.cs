@@ -25,17 +25,17 @@ public class GatheringEvidenceCheckr
         from toPool in Poolr.Add("Store Coach", Checkr.Capture(() => coach))
         select Case.Closed;
 
-    private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
+    private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
         coach =>
             from skills in Checkr.Input("Coach Skills"
                 , Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3)
-                , Shrink.CollectionFromState(coach.Value.Skills, []))
-            from aut in Autopsy.Note("Coach Skills", () => Introduce.This(coach.Value.Skills))
+                , Shrink.CollectionFromState(coach.Skills, []))
+            from aut in Autopsy.Note("Coach Skills", () => Introduce.This(coach.Skills))
             from updateSkills in Checkr.Act("Update Coach Skills",
-                () => coach.Value.UpdateSkills(skills))
+                () => coach.UpdateSkills(skills))
             from checkSkills in Checkr.Expect("Coach Skills Set",
-                () => coach.Value.Skills.Count
-                   == skills.Count() && coach.Value.Skills.All(skills.Contains))
+                () => coach.Skills.Count
+                   == skills.Count() && coach.Skills.All(skills.Contains))
             select Case.Closed;
 
     private static readonly CheckrOf<Case> CreateCourse =
@@ -46,15 +46,15 @@ public class GatheringEvidenceCheckr
         from toPool in Poolr.Add("Store Course", Checkr.Capture(() => course))
         select Case.Closed;
 
-    private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
+    private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
         course =>
             from skills in Checkr.Input("Course Skills",
                 Fuzzr.OneOf(Skill.Pool).Unique(Guid.NewGuid()).Many(1, 3))
             from updateSkills in Checkr.Act("Update Course Skills",
-                () => course.Value.UpdateRequiredSkills(skills))
+                () => course.UpdateRequiredSkills(skills))
             from checkSkills in Checkr.Expect("Course Required Skills Set",
-                () => course.Value.RequiredSkills.Count
-                   == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
+                () => course.RequiredSkills.Count
+                   == skills.Count() && course.RequiredSkills.All(skills.Contains))
             select Case.Closed;
 
     private static readonly Func<Coach, Course, CheckrOf<Case>> AssignCoachToCourse =

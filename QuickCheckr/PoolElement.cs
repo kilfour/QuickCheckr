@@ -1,9 +1,7 @@
 namespace QuickCheckr;
 
-/// <summary>
-/// Represents an element selected from a tracked pool and provides operations that update that element.
-/// </summary>
-public sealed class PoolElement<T>
+
+internal sealed class PoolElement<T>
 {
     private readonly int id;
     private readonly T? value;

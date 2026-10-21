@@ -13,7 +13,7 @@ public static partial class Poolr
             () => poolElement.Select(value =>
             {
                 var id = state.Memory.StoreVariable(key,
-                    () => Fuzzr.Counter(typeof(T).Name + key)(state.FuzzrState).Value);
+                    () => Fuzzr.Counter(typeof(T).Name)(state.FuzzrState).Value);
                 state.Memory.StorePoolTrace(key, () => $"{typeof(T).Name}-{id}");
                 state.Memory.StoreInPool(id, value);
                 return Case.Closed;
