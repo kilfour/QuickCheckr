@@ -40,8 +40,7 @@ public class E_PoolReplayIdentityComplex : CheckrTest<E_PoolReplayIdentityComple
 
             Checkr.Option(() => counter == 4,
                 from thing in Poolr.OneOf<int>("Use Thing")
-                from elements in Poolr.AllElements<int>()
-                let poolId = elements.Single(element => element.Value == thing).Id
+                from poolId in PoolIdentity.Of(thing)
                 from trace in Checkr.Trace("Pool Element", _ => [$"{poolId}:{thing}"])
                 from expect in Checkr.Expect(
                     "Second pool element fails",

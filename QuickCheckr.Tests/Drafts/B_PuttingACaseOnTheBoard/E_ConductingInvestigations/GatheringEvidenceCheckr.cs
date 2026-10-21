@@ -68,26 +68,8 @@ public class GatheringEvidenceCheckr
             select Case.Closed;
 
     private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-        // from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
-        //     coach => coach.AssignedCourses.Any(),
-        //     coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
-        // select Case.Closed;
-        from coaches in Poolr.AllElements<Coach>()
-        from assigned in Checkr.Capture(() =>
-            coaches.Where(c => c.Value.AssignedCourses.Any()).ToArray())
-        from check in Checkr.ExpectWhen(
-            "Assigned Coach Must Be Suitable",
-            () => assigned.Length != 0,
-            context =>
-            {
-                var failures = assigned
-                    .Where(c => !c.Value.AssignedCourses.All(c.Value.IsSuitableFor))
-                    .Select(c => $"Coach-{c.Id}")
-                    .ToArray();
-
-                return failures.Length == 0
-                    ? context.Pass()
-                    : context.Fail(failures);
-            })
-        select Case.Closed;
+        Poolr.ForEach<Coach>(coach =>
+            Checkr.ExpectWhen("Assigned Coach Must Be Suitable",
+                () => coach.AssignedCourses.Any(),
+                () => coach.AssignedCourses.All(coach.IsSuitableFor)));
 }

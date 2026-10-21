@@ -61,24 +61,12 @@ public class F_PoolReplayIdentityBossFight : CheckrTest<F_PoolReplayIdentityBoss
                         .Assign(factory.GetThingById(pair.First.ThingId)))
                 select Case.Closed),
             Checkr.Option(() => counter == 6,
-                from otherThings in Poolr.AllElements<OtherThingInfo>()
-                from check in Checkr.ExpectWhen("Assigned to 42",
-                    () => otherThings.Count != 0,
-                    context =>
+                Poolr.ForEach<OtherThingInfo>(info =>
+                    Checkr.Expect("Assigned to 42", () =>
                     {
-                        var failures = otherThings
-                            .Where(element =>
-                            {
-                                var otherThing = factory.GetOtherThingById(element.Value.OtherThingId);
-                                return otherThing.Assigned && otherThing.ThingId != 2;
-                            })
-                            .Select(element => $"OtherThingInfo-{element.Id}")
-                            .ToArray();
-                        return failures.Length == 0
-                            ? context.Pass()
-                            : context.Fail(failures);
-                    })
-                select Case.Closed)
+                        var otherThing = factory.GetOtherThingById(info.OtherThingId);
+                        return !otherThing.Assigned || otherThing.ThingId == 2;
+                    })))
         )
         select Case.Closed;
 

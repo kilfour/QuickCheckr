@@ -14,42 +14,49 @@ Instead, Pool operations encapsulate "is this state valid?" so shrinking can rep
   
 ## Pool Creation
 Pools are created **auto-magically**. Whenever any Checkr tries to access a pool, store something in a pool, or perform any other pool related operation, a pool is created.  
-## Storing elements in the Pool
+## Adding elements to a Pool
 ```csharp
-from name in Checkr.Input("Name", Fuzzr.String())          // Generate a random String.
-from storeName in Trackr.ToPool("Name", () => new Contact(name)) // <= And in it goes.
-select Case.Closed;
+Poolr.Add("Name",
+    from name in Checkr.Input("Name", Fuzzr.String())   // Generate a random String.
+    select new Contact(name));
 ```
 ## Using random elements from a Pool
 ```csharp
-Trackr.OneOfPool<Contact>("A Random Contact",
-    contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
+from contact in Poolr.OneOf<Contact>("A Random Contact")
+from trace in Checkr.Trace("Contact Name", _ => [contact.Name])
+select Case.Closed;
 ```
-As you can see, the second argument to this method is a function that takes a wrapped value and returns a Checkr.  
-Just as the Pool itself is encapsulated, so are its elements.
-This is done because you might want to remove the element from the Pool or replace it, and the shrinker needs to be aware of these operations.  
-Therefore, the operations are defined on the wrapper object.
-
-*Remove:*  
+## Removing an element
 ```csharp
-Trackr.OneOfPool<Contact>("A Random Contact to Remove",
-    contact => contact.Remove());
+Poolr.Remove<Contact>("A Random Contact to Remove",
+    contact => Checkr.Trace("Contact Name", _ => [contact.Name]));
 ```
-*Replace:*  
+## Updating an element
 ```csharp
-Trackr.OneOfPool<Contact>("A Random Contact to Replace",
-    contact => contact.Replace(new Contact("Replaced by AI")));
+Poolr.Update<Contact>("A Random Contact to Update", contact =>
+    from trace in Checkr.Trace("Contact Name", _ => [contact.Name])
+    select contact with { Name = "Replaced by AI" });
 ```
 ### Conditionally
-Now, when picking a random element like this, the Pool must contain at least one element, or else a QuickFuzzr `OneOfEmptyOptionsException` will be thrown.  
+Now, when picking a random element like this, the Pool must contain at least one element, or else a `EmptyPoolException` will be thrown.  
 This means you almost always want to execute it conditionally,
 and most likely it will be part of a random sequence of executions,
 as you will need another execution to put things into the Pool.  
-For this reason the following method returns a `Checkr.Option`, in order to make it fit neatly into a `OneOfWhen` Checkr.
+For this reason the following method returns a `CheckrOf<CheckrOption>`, in order to make it fit neatly into a `OneOfWhen` Checkr.
   
 ```csharp
-Trackr.PoolWhen<Contact>("A Random Contact", a => a.Count != 0,
-    contact => Checkr.Trace("Contact Name", _ => [contact.Value.Name]));
+Poolr.When<Contact>("A Random Contact", a => a.Count != 0,
+    contact => Checkr.Trace("Contact Name", _ => [contact.Name]));
+```
+The above predicate is so common, there exists a shorthand method that expresses things a bit better.  
+```csharp
+Poolr.Has<Contact>("A Random Contact",
+    contact => Checkr.Trace("Contact Name", _ => [contact.Name]));
+```
+There exists overloads for both these methods that do not pick a random element.  
+These are used to control the size of a pool amongst other things.  
+```csharp
+Poolr.When<Contact>(a => a.Count < 5, Checkr.Trace("Info", _ => ["Adding another Contact"]));
 ```
 ## Bringing it all back home
 ### The Model
@@ -72,49 +79,46 @@ from contactBook in Trackr.Stashed(() => new Rolodex())
 // Pick one of two operations.
 from operations in Checkr.OneOfWhen(
     // 1. Add a (Contact-) name to the Rolodex
-    Trackr.PoolWhen<Contact>(a => a.Count < 10,
-        from name in Checkr.Input("Name", NameFuzzr)
-        from add in Checkr.Act("Add", () => contactBook.Add(name))
-            // Store the Contact in the Pool.
-        from storeName in Trackr.ToPool("Store", () => new Contact(name))
-        select Case.Closed),
+    Poolr.When<Contact>(a => a.Count < 10,
+        Poolr.Add("Store",
+            from name in Checkr.Input("Name", NameFuzzr)
+            from add in Checkr.Act("Add", () => contactBook.Add(name))
+            select new Contact(name))),
     // 2. Update a (Contact-) name in the Rolodex
-    Trackr.PoolWhen<Contact>("Contact to update",
-        a => a.Count != 0, // <= Cannot pick from an empty selection.
-        contact => // Pick a random Contact to update 
+    Poolr.Has<Contact>(
+        Poolr.Update<Contact>("Contact to update", contact =>
             from newName in Checkr.Input("New Name", NameFuzzr)
-            from update in Checkr.Act("Update", () => contactBook.Update(contact.Value.Name, newName))
-                // Update the contact in the pool, keeping model and test data in sync.
-            from updatePool in contact.Replace(new Contact(newName))
-            select Case.Closed))
+            from update in Checkr.Act("Update",
+                () => contactBook.Update(contact.Name, newName))
+            select contact with { Name = newName })))
     // This expectation implicitly verifies that duplicates are not introduced. 
-from count in Trackr.PoolExpect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
+from model in Poolr.All<Contact>()
+from count in Checkr.Expect("Count matches", () => model.Count == contactBook.Contacts.Count)
 select Case.Closed;
 ```
 ### The Report
 ```text
 ------------------------------------------------------------
  Test:                    AllTogetherNow
- Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:139:1
+ Location:                Docs\A_Guide\D_InPoolsWeTrust\InPoolsWeTrust.cs:161:1
  Original failing run:    10 executions
  Minimal failing case:    3 executions (after 8 shrinks)
  Seed:                    1444257086
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Store = Contact-5
-   - WARNING: All inputs were considered irrelevant.
+   - Store = Contact-5
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Store = Contact-6
-   - Input: Name  = "Paul Harrison"
+   - Store = Contact-6
+   - Name  = "Paul Harrison"
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Contact to update = Contact-5
-   - Input: New Name          = "Paul Harrison"
+   - Contact to update = Contact-5
+   - New Name          = "Paul Harrison"
  ========================================
   !! Expectation Failed: Count matches
  ========================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Count matches: 9x
  ------------------------------------------------------------
 ```

@@ -35,8 +35,7 @@ public class A_PoolReplayIdentity : CheckrTest<A_PoolReplayIdentity>
 
             Checkr.Option(() => counter == 3,
                 from thing in Poolr.OneOf<Thing>("Use Thing")
-                from elements in Poolr.AllElements<Thing>()
-                let poolId = elements.Single(element => ReferenceEquals(element.Value, thing)).Id
+                from poolId in PoolIdentity.Of(thing)
                 from trace in Checkr.Trace("Pool Element", _ => [$"{poolId}:{thing.Id}"])
                 from expect in Checkr.Expect(
                     "Second pool element fails",

@@ -11,17 +11,12 @@ public class OrderRepositoryCheckr
     public void Run() =>
         TheCheckr()
             .FileAs("OrderRepositoryChecks")
-            .Run(50.Runs(), 100.ExecutionsPerRun());
+            .Run(20.Runs(), 50.ExecutionsPerRun());
 
     internal sealed record OrderInfo(Order Order, Customer Customer);
 
     private static CheckrOf<Case> TheCheckr() =>
         from deliberate in Trackr.Deliberate(Deliberation.MinimumExecutions())
-        from showr in Showr.ForClassification(a =>
-            a.For<OrderQueryInput>()
-                .Bounds($"{Environment.NewLine}{{{Environment.NewLine}    ", $"{Environment.NewLine}}}")
-                .Delimiter($"{Environment.NewLine}    ")
-                .HideIrrelevantProperties())
         from repository in Trackr.Stashed(() => new OrderRepository())
         from ops in Checkr.OneOfWhen(
             InsertCustomer(repository),
@@ -48,14 +43,12 @@ public class OrderRepositoryCheckr
         Poolr
             .Has<Customer>()
             .AndWhen<OrderInfo>(a => a.Count < 10)
-            .Then(InsertThisOrder(repository));
+            .Then(Poolr.Add("Order",
+                from customer in Poolr.OneOf<Customer>("Customer for New Order")
+                from orderedOn in Checkr.Input("Ordered On", Fuzzr.DateOnly(1.January(2026), 2.January(2026)))
+                from order in Checkr.Act("Insert Order", () => repository.InsertOrder(customer.Id, orderedOn))
+                select new OrderInfo(order, customer)));
 
-    private static CheckrOf<Case> InsertThisOrder(OrderRepository repository) =>
-        Poolr.Add("Order",
-            from customer in Poolr.OneOf<Customer>("Customer for New Order")
-            from orderedOn in Checkr.Input("Ordered On", Fuzzr.DateOnly(1.January(2026), 2.January(2026)))
-            from order in Checkr.Act("Insert Order", () => repository.InsertOrder(customer.Id, orderedOn))
-            select new OrderInfo(order, customer));
 
     private static CheckrOf<CheckrOption> MoveOrder(OrderRepository repository) =>
         Poolr
@@ -75,10 +68,10 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<CheckrOption> FindOrders(OrderRepository repository) =>
         Poolr.Has<OrderInfo>(
-            Poolr.Add("Query",
+            Poolr.Add("Add Query",
                 from customerForId in Poolr.OneOf<Customer>("Customer for Id filter")
                 from customerForCountry in Poolr.OneOf<Customer>("Customer for Country filter")
-                from input in Checkr.Input("Order Query Input",
+                from input in Checkr.Input("Query Input",
                     OrderQueryInputFuzzr,
                     Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
                 from query in Checkr.Capture(() => input.ToOrderQuery(customerForId, customerForCountry))

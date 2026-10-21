@@ -74,15 +74,15 @@ Finally after each action we check the `AssignedCoachesMustBeSuitable` Invariant
 ```csharp
 from operations in Checkr.OneOfWhen(
     // Create up to 10 coaches.
-    Trackr.PoolWhen<Coach>(a => a.Count < 10, CreateCoach),
+    Poolr.When<Coach>(a => a.Count < 10, CreateCoach),
     // Maybe update existing coaches. Pick a random coach from the pool.
-    Trackr.PoolWhen("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
+    Poolr.When("Coach to Update Skills", a => a.Count != 0, UpdateCoachSkills),
     // Create up to 5 courses.
-    Trackr.PoolWhen<Course>(a => a.Count < 5, CreateCourse),
+    Poolr.When<Course>(a => a.Count < 5, CreateCourse),
     // Maybe update existing courses. Pick a random course from the pool.
-    Trackr.PoolWhen("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
+    Poolr.When("Course to Update Skills", a => a.Count != 0, UpdateCourseSkills),
     // Maybe assign a coach, if there exists a combination for which the predicate holds.
-    Trackr.PoolWhen("(Coach, Course) to Assign",
+    Poolr.When("(Coach, Course) to Assign",
         (coach, course) => coach.IsSuitableFor(course), AssignCoachToCourse))
 // Ensure the system invariant is met at all times.
 from invariant in AssignedCoachesMustBeSuitable
@@ -92,57 +92,57 @@ select Case.Closed;
 In this one we create a coach with a *semi* random name, verify that the property `Name` is assigned and then add it to the coaches pool.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCoach =
-    from name in Checkr.Input("Coach Name",
-        from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
-    from coach in Checkr.Act("Create Coach", () => new Coach(name))
-    from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
-    from toPool in Trackr.ToPool("Store Coach", () => coach) // Store this coach in the pool.
-    select Case.Closed;
+    Poolr.Add("Store Coach",
+        from name in Checkr.Input("Coach Name",
+            from cnt in Fuzzr.Counter("coach-name") select $"Coach-{cnt}")
+        from coach in Checkr.Act("Create Coach", () => new Coach(name))
+        from checkName in Checkr.Expect("Coach Name is set", () => coach.Name == name)
+        select coach);
 ```
 **Update Coach Skills Checkr:**  
 Now we retrieve a random coach from the pool and update its skills, verifying that the property `Skills` is set correctly.  
 ```csharp
-private static readonly Func<PoolElement<Coach>, CheckrOf<Case>> UpdateCoachSkills =
+private static readonly Func<Coach, CheckrOf<Case>> UpdateCoachSkills =
     coach =>
         from skills in Checkr.Input("Coach Skills",
             Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(1, 3))
         from updateSkills in Checkr.Act("Update Coach Skills",
-            () => coach.Value.UpdateSkills(skills)) // Update the Coach.
+            () => coach.UpdateSkills(skills)) // Update the Coach.
         from checkSkills in Checkr.Expect("Coach Skills Set",
-            () => coach.Value.Skills.Count
-               == skills.Count() && coach.Value.Skills.All(skills.Contains))
+            () => coach.Skills.Count
+               == skills.Count() && coach.Skills.All(skills.Contains))
         select Case.Closed;
 ```
 **Create Course Checkr:**  
 Same pattern as the *Create Coach Checkr*.  
 ```csharp
 private static readonly CheckrOf<Case> CreateCourse =
-    from name in Checkr.Input("Course Name",
-        from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
-    from course in Checkr.Act("Create Course", () => new Course(name))
-    from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
-    from toPool in Trackr.ToPool("Store Course", () => course) // Store this course in the pool.
-    select Case.Closed;
+    Poolr.Add("Store Course",
+        from name in Checkr.Input("Course Name",
+            from cnt in Fuzzr.Counter("course-name") select $"Course-{cnt}")
+        from course in Checkr.Act("Create Course", () => new Course(name))
+        from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
+        select course);
 ```
 **Update Course Skills Checkr:**  
 And again, same pattern as the *Update Coach Skills Checkr*.  
 ```csharp
-private static readonly Func<PoolElement<Course>, CheckrOf<Case>> UpdateCourseSkills =
+private static readonly Func<Course, CheckrOf<Case>> UpdateCourseSkills =
     course =>
         from skills in Checkr.Input("Course Skills", Fuzzr.OneOf(SkillPool).Unique(Guid.NewGuid()).Many(1, 3))
         from updateSkills in Checkr.Act("Update Course Skills",
-            () => course.Value.UpdateRequiredSkills(skills)) // Update the Course.
+            () => course.UpdateRequiredSkills(skills)) // Update the Course.
         from checkSkills in Checkr.Expect("Course Required Skills Set",
-            () => course.Value.RequiredSkills.Count
-               == skills.Count() && course.Value.RequiredSkills.All(skills.Contains))
+            () => course.RequiredSkills.Count
+               == skills.Count() && course.RequiredSkills.All(skills.Contains))
         select Case.Closed;
 ```
 **Assign Coach to Course Checkr:**  
 ```csharp
-private static readonly Func<PoolElement<Coach>, PoolElement<Course>, CheckrOf<Case>> AssignCoachToCourse =
+private static readonly Func<Coach, Course, CheckrOf<Case>> AssignCoachToCourse =
     (coach, course) =>
-        from assign in Checkr.Act("Assign Coach to Course", () => course.Value.AssignCoach(coach.Value))
-        from isAssigned in Checkr.Expect("Coach is assigned", () => course.Value.AssignedCoach == coach.Value)
+        from assign in Checkr.Act("Assign Coach to Course", () => course.AssignCoach(coach))
+        from isAssigned in Checkr.Expect("Coach is assigned", () => course.AssignedCoach == coach)
         select Case.Closed;
 ```
 **Assigned Coaches Must Be Suitable Checkr:**  
@@ -150,10 +150,10 @@ And finally here's the system invariant.
 *Any coach assigned a course must have the required skills to teach that course*.  
 ```csharp
 private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
-    from assignedCheck in Trackr.PoolExpectEachWhen<Coach>("Assigned Coach Must Be Suitable",
-        coach => coach.AssignedCourses.Any(), // Check that all assigned coaches are suitable.
-        coach => coach.AssignedCourses.All(course => coach.IsSuitableFor(course)))
-    select Case.Closed;
+    Poolr.ForEach<Coach>(coach =>
+        Checkr.ExpectWhen("Assigned Coach Must Be Suitable",
+            () => coach.AssignedCourses.Any(),
+            () => coach.AssignedCourses.All(coach.IsSuitableFor)));
 ```
 **The Report:**  
 ```text
