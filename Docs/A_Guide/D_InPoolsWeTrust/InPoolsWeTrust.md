@@ -17,7 +17,7 @@ Pools are created **auto-magically**. Whenever any Checkr tries to access a pool
 ## Adding elements to a Pool
 ```csharp
 Poolr.Add("Name",
-    from name in Checkr.Input("Name", Fuzzr.String())   // Generate a random String.
+    from name in Checkr.Input("Name", Fuzzr.String())
     select new Contact(name));
 ```
 ## Using random elements from a Pool
