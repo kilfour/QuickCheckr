@@ -118,15 +118,6 @@ RUN 1: [Execution 1] => [Execution 2] => [Execution 3] (fails)
        
 RUN 2: Fresh stash, fresh start.
 ```
-
-This means:
-
-* **Runs give you independence.**
-* **Executions give you statefulness.**
-
-And together, they let QuickCheckr explore both *pure input variation* and *multi-step behaviour*,
-which is exactly what makes the `BugHouse` example catchable:
-the failure only emerges when several executions act on the *same* object.
   
 
 [InPoolsWeTrust]: ../D_InPoolsWeTrust/InPoolsWeTrust.md

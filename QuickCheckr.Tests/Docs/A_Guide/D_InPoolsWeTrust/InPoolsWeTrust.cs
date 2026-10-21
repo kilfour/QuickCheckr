@@ -58,8 +58,8 @@ public class InPoolsWeTrust : BaseTest
     [CodeSnippet]
     private static CheckrOf<Case> Store() =>
         Poolr.Add("Name",
-            from name in Checkr.Input("Name", Fuzzr.String())   // Generate a random String.
-            select new Contact(name));                          // <= And in it goes.
+            from name in Checkr.Input("Name", Fuzzr.String())
+            select new Contact(name));
 
     [Fact]
     [DocHeader("Using random elements from a Pool")]

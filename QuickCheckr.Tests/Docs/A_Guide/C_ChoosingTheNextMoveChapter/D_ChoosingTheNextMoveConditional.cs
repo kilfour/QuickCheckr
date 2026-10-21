@@ -9,7 +9,7 @@ namespace QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 [DocFileHeader("On One Condition")]
 [DocContent(
 @$"In many cases you would like to control the possible branches taken, based on some condition.  
-For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes an enumerable of `{nameof(Checkr)}.{nameof(Checkr.Option)}` elements.  
+For this you can use `{nameof(Checkr)}.{nameof(Checkr.OneOfWhen)}`, which takes an enumerable of `{nameof(CheckrOption)}` elements.  
 
 **Example:**")]
 public class D_ChoosingTheNextMoveConditional : CheckrTest<D_ChoosingTheNextMoveConditional>

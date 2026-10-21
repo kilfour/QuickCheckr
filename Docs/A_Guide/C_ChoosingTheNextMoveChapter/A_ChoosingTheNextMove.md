@@ -110,7 +110,7 @@ The shrunk case shows:
   
 ## On One Condition
 In many cases you would like to control the possible branches taken, based on some condition.  
-For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `Checkr.Option` elements.  
+For this you can use `Checkr.OneOfWhen`, which takes an enumerable of `CheckrOption` elements.  
 
 **Example:**  
 
