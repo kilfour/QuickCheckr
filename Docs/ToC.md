@@ -4,8 +4,3 @@
     - [Choosing the Next Move](A_Guide/C_ChoosingTheNextMoveChapter/A_ChoosingTheNextMove.md)
     - [In Pools We Trust](A_Guide/D_InPoolsWeTrust/InPoolsWeTrust.md)
     - [Bolting Horses](A_Guide/E_HorsesAgain/BoltingHorses.md)
-  - [Putting a Case on the Board](B_PuttingACaseOnTheBoard/PuttingACaseOnTheBoard.md)
-    - [Running a Checkr](B_PuttingACaseOnTheBoard/B_RunningACheckr/RunningACheckr.md)
-    - [Configuration](B_PuttingACaseOnTheBoard/C_Configuration/Configuration.md)
-        - [ReportMode Reference](B_PuttingACaseOnTheBoard/C_Configuration/J_ReportMode/Reference/A_ReportModeReference.md)
-        - [ShrinkMode Reference](B_PuttingACaseOnTheBoard/C_Configuration/N_ShrinkMode/Reference/A_ShrinkModeReference.md)

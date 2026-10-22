@@ -11,7 +11,7 @@ using QuickCheckr.UnderTheHood.Runners.Tracing;
 
 namespace QuickCheckr.UnderTheHood;
 
-internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrRunnerConfig config, int numberOfExecutions, AutopsyProbe autopsyProbe)
+internal sealed class CheckrRunner(CheckrOf<Case> check, CheckrConfig config, int numberOfExecutions, AutopsyProbe autopsyProbe)
 {
     public CheckrOf<Case> Check { get; init; } = check;
     public CheckrState State { get; init; } = new(numberOfExecutions, config.MaxStepsPerReducer, config.Seed, autopsyProbe, config.CancellationToken);

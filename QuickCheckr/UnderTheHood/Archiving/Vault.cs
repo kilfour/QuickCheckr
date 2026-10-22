@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
@@ -7,11 +8,11 @@ namespace QuickCheckr.UnderTheHood.Archiving;
 internal sealed class VaultNotConfiguredException : Exception;
 internal static class Vault
 {
-    public static EvidenceVault From(CheckrRunnerConfig config)
+    public static EvidenceVault From(CheckrConfig config)
         => string.IsNullOrWhiteSpace(config.FileAs) ? throw new VaultNotConfiguredException() : new EvidenceVault(config);
 }
 
-internal sealed class EvidenceVault(CheckrRunnerConfig config)
+internal sealed class EvidenceVault(CheckrConfig config)
 {
 
     private HashSet<VaultEntry> entries = [];
@@ -19,10 +20,10 @@ internal sealed class EvidenceVault(CheckrRunnerConfig config)
 
 
 
-    public IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
+    public IEnumerable<CaseFile> Check(CheckrOf<Case> check, CheckrConfig config, bool closeResolved)
         => CheckAsync(check, config, closeResolved).GetAwaiter().GetResult();
 
-    public async Task<IEnumerable<CaseFile>> CheckAsync(CheckrOf<Case> check, CheckrRunnerConfig config, bool closeResolved)
+    public async Task<IEnumerable<CaseFile>> CheckAsync(CheckrOf<Case> check, CheckrConfig config, bool closeResolved)
     {
         config.CancellationToken.ThrowIfCancellationRequested();
         entries = custodian.RetrieveVaultEntries(config.FileAs);

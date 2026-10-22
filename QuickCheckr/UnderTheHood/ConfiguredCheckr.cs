@@ -5,7 +5,7 @@ namespace QuickCheckr.UnderTheHood;
 /// <summary>
 /// Couples a Checkr script with the configuration used to run it.
 /// </summary>
-public sealed record ConfiguredCheckr
+public record ConfiguredCheckr
 {
     internal ConfiguredCheckr(CheckrOf<Case> checkr, CheckrConfig config)
     {
@@ -15,4 +15,9 @@ public sealed record ConfiguredCheckr
 
     internal CheckrOf<Case> Checkr { get; }
     internal CheckrConfig Config { get; init; }
+}
+
+public sealed record PeristentCheckr : ConfiguredCheckr
+{
+    internal PeristentCheckr(CheckrOf<Case> checkr, CheckrConfig config) : base(checkr, config) { }
 }

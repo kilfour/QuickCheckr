@@ -1,3 +1,4 @@
+using QuickCheckr.Protocol;
 using QuickCheckr.Diagnostics;
 using QuickCheckr.FilingCabinet;
 
@@ -9,7 +10,7 @@ internal static class CaseOfficer
         CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        CheckrRunnerConfig config,
+        CheckrConfig config,
         AutopsyProbe autopsyProbe)
         // Synchronous compatibility boundary; async callers use InvestigateAsync directly.
         => InvestigateAsync(checkr, runs, executionsPerRun, config, autopsyProbe).GetAwaiter().GetResult();
@@ -18,7 +19,7 @@ internal static class CaseOfficer
         CheckrOf<Case> checkr,
         RunCount runs,
         ExecutionCount executionsPerRun,
-        CheckrRunnerConfig config,
+        CheckrConfig config,
         AutopsyProbe autopsyProbe)
     {
         config.CancellationToken.ThrowIfCancellationRequested();

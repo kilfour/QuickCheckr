@@ -18,7 +18,7 @@ public static class CheckrOfTRunColdCases
     [StackTraceHidden]
     private static ConfiguredCheckr Check(ConfiguredCheckr configuredCheckr, bool closeResolved)
     {
-        var config = new CheckrRunnerConfig(configuredCheckr.Config);
+        var config = configuredCheckr.Config with { };
         var vault = Vault.From(config);
         var caseFiles = vault.Check(configuredCheckr.Checkr, config, closeResolved);
         var review = new ColdCasesReview().Add([.. caseFiles]);

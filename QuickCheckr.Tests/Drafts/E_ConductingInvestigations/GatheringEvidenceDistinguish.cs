@@ -2,7 +2,7 @@ using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
+using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;

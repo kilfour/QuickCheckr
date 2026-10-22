@@ -1,4 +1,6 @@
 ## 0.4.5: Honey, I Changed the Shrinking API
+* Added fluent configuration helpers `ShrinkMode(...)`, `ReportMode(...)`, `WarningLevel(...)`, `MaxStepsPerReducer(...)`, `Custodian(...)`, and `Clerk(...)` on `CheckrOf<Case>` and `ConfiguredCheckr`. Helpers chain with `FileAs(...)` and preserve previously applied settings.
+* Breaking change: made `CheckrConfig` and `Configure(...)` internal. 
 * Breaking change: replaced `Shrink.OnType<T>(...)` and `Shrink.When<T>(...)` with `Shrinkr.For<T>()` and fluent `.When(...)`, `.Classify(...)`, `.Reduce(...)`, and `.Traverse(...)` calls. For example, `Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero))` becomes `Shrinkr.For<int>().Reduce(Reduce.TowardsZero)`.
 * Breaking change: replaced `Shrink.Collapse<T>(...)` with `Shrinkr.For<T>().Collapse(...)`. Fluent strategies are immutable; repeated configuration calls append options in declaration order, and repeated `.When(...)` calls combine conditions with AND.
 * Moved `Shrinkr`, `Shrinker`, and `Reduce` into the `QuickCheckr.Shrinking` namespace. String shrinkers accept Stringr selectors directly through `.Reduce(...)`.

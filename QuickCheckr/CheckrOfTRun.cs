@@ -19,7 +19,7 @@ public static class CheckrOfTRun
         CheckrConfig checkrConfig,
         int? seed)
     {
-        var config = new CheckrRunnerConfig(checkrConfig) with { Seed = seed };
+        var config = checkrConfig with { Seed = seed };
         var findings = CaseOfficer.Investigate(checkr, runs, executionsPerRun, config, AutopsyProbe.Empty);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return checkr;
@@ -32,7 +32,7 @@ public static class CheckrOfTRun
         ExecutionCount executionsPerRun,
         int? seed)
     {
-        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed };
+        var config = configuredCheckr.Config with { Seed = seed };
         var findings = CaseOfficer.Investigate(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty);
         SpokesPerson.Announce(config, findings, executionsPerRun);
         return configuredCheckr;

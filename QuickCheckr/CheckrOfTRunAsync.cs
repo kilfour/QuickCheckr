@@ -24,7 +24,7 @@ public static class CheckrOfTRunAsync
         int? seed,
         CancellationToken cancellationToken)
     {
-        var config = new CheckrRunnerConfig(checkrConfig) with { Seed = seed, CancellationToken = cancellationToken };
+        var config = checkrConfig with { Seed = seed, CancellationToken = cancellationToken };
         var findings = await CaseOfficer.InvestigateAsync(checkr, runs, executionsPerRun, config, AutopsyProbe.Empty).ConfigureAwait(false);
         cancellationToken.ThrowIfCancellationRequested();
         SpokesPerson.Announce(config, findings, executionsPerRun);
@@ -39,7 +39,7 @@ public static class CheckrOfTRunAsync
         int? seed,
         CancellationToken cancellationToken)
     {
-        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { Seed = seed, CancellationToken = cancellationToken };
+        var config = configuredCheckr.Config with { Seed = seed, CancellationToken = cancellationToken };
         var findings = await CaseOfficer.InvestigateAsync(configuredCheckr.Checkr, runs, executionsPerRun, config, AutopsyProbe.Empty).ConfigureAwait(false);
         cancellationToken.ThrowIfCancellationRequested();
         SpokesPerson.Announce(config, findings, executionsPerRun);

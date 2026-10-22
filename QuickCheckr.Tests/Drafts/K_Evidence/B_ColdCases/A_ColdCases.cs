@@ -1,7 +1,7 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
+using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.B_TheCustodian;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Archiving;

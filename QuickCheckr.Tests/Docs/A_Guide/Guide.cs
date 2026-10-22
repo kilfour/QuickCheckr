@@ -3,14 +3,12 @@ using QuickCheckr.Tests.Docs.A_Guide.B_TheStashRunsAndExecutionsChapter;
 using QuickCheckr.Tests.Docs.A_Guide.C_ChoosingTheNextMoveChapter;
 using QuickCheckr.Tests.Docs.A_Guide.D_InPoolsWeTrust;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard;
-using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Docs.A_Guide;
 
 [DocFile]
-[DocNavigation(null, null, typeof(PuttingACaseOnTheBoard))]
+// [DocNavigation(null, null, typeof(PuttingACaseOnTheBoard))]
 [DocLink(typeof(A_CheckringThingsOut), "CheckringThingsOut")]
 [DocLink(typeof(A_TheStashRunsAndExecutions), "TheStashRunsAndExecutions")]
 [DocLink(typeof(A_ChoosingTheNextMove), "ChoosingTheNextMove")]

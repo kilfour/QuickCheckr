@@ -46,7 +46,7 @@ public static class CheckrOfTConductInvestigations
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        var config = new CheckrRunnerConfig(configuredCheckr.Config) with { CancellationToken = cancellationToken };
+        var config = configuredCheckr.Config with { CancellationToken = cancellationToken };
         var vault = Vault.From(config);
         var checkedCaseFiles = (await vault.CheckAsync(configuredCheckr.Checkr, config, false).ConfigureAwait(false)).ToList();
         var caseFiles = checkedCaseFiles

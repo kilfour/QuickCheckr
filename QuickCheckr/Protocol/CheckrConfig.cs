@@ -7,13 +7,13 @@ namespace QuickCheckr.Protocol;
 /// Defines the configuration applied when running a Checkr.  
 /// Use to control seeding, shrinking, diagnostics, and how evidence is recorded.
 /// </summary>
-public sealed record CheckrConfig
+internal sealed record CheckrConfig
 {
     /// <summary>
     /// Returns the default configuration for a Checkr run.  
     /// Use as a baseline when applying custom configuration with <c>a => a with { ... }</c>.
     /// </summary>
-    public static CheckrConfig Default()
+    internal static CheckrConfig Default()
     {
         return
             new CheckrConfig()
@@ -27,8 +27,11 @@ public sealed record CheckrConfig
             };
     }
 
+    internal int? Seed { get; init; }
+    internal CancellationToken CancellationToken { get; init; }
+
     /// <summary>
-    /// Controls how shrinking behaves for this run.  
+    /// Controls how shrinking behaves for this run.
     /// Use to opt out, into or customise shrinking strategies.
     /// </summary>
     public required ShrinkMode ShrinkMode { get; init; }

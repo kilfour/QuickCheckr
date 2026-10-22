@@ -28,7 +28,7 @@ but it also explores sequences of actions and reduces failures to the smallest s
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.  
 
-[PuttingACaseOnTheBoard]: ../B_PuttingACaseOnTheBoard/PuttingACaseOnTheBoard.md
+[PuttingACaseOnTheBoard]: ../../Drafts/B_PuttingACaseOnTheBoard/PuttingACaseOnTheBoard.md
 
 [CheckringThingsOut]: A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 

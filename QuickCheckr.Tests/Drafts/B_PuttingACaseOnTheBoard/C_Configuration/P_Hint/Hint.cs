@@ -1,0 +1,35 @@
+using System.Runtime.CompilerServices;
+using QuickPulse.Explains;
+
+
+namespace QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
+
+[DocContent(
+@$"If you do not like the defaults,
+it is advised to simply wrap them into your own `{nameof(CheckrOf<Case>)}` extension method(s):  
+")]
+[DocContent("**Auto File:**")]
+[DocExample(typeof(Hint), nameof(FileThis))]
+[DocContent("**Investigating:**")]
+[DocExample(typeof(Hint), nameof(Investigate))]
+[DocContent("You get the idea.")]
+public static class Hint
+{
+    [CodeExample]
+    public static void FileThis(
+        this CheckrOf<Case> checkr,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string testName = "")
+        => checkr
+            .Configure(a => a with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" })
+            .Run(50.Runs(), 20.ExecutionsPerRun());
+
+    [CodeExample]
+    public static void Investigate(
+        this CheckrOf<Case> checkr,
+        [CallerFilePath] string filePath = "",
+        [CallerMemberName] string testName = "")
+        => checkr
+            .Configure(cfg => cfg with { FileAs = $"{Path.GetFileName(filePath)}-{testName}" })
+            .Conduct(100.Investigations(), 10.Runs(), 20.ExecutionsPerRun());
+}
