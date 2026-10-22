@@ -194,7 +194,7 @@ A coach was assigned while suitable, then a course's required skills changed, in
 
   
 
-[GatheringEvidence]: ../../../Drafts/B_PuttingACaseOnTheBoard/E_ConductingInvestigations/GatheringEvidence.md
+[GatheringEvidence]: ../../../Drafts/E_ConductingInvestigations/GatheringEvidence.md
 
 [Guide]: ../Guide.md
 

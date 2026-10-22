@@ -15,7 +15,7 @@ because I did not feel like combing through all the code looking for bugs manual
 ```csharp
 from input in Checkr.Input("Expression",
     ParseFuzzr.Expression(),
-    Shrink.OnType<string>(s => s.Simplify(
+    Shrinkr.For<string>().Reduce(
         // remove whitespace
         Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined(),
         // remove delimiters
@@ -29,7 +29,7 @@ from input in Checkr.Input("Expression",
         from rhs in Stringr.AtleastOnce(char.IsDigit).Remove()
         select Selection.Defined,
         // clean up unary minus noise
-        Stringr.AtleastOnce('-').Replace(t => "-").Defined())))
+        Stringr.AtleastOnce('-').Replace(t => "-").Defined()))
 from deliberate in Checkr.Deliberate(() => input.Length)
 from until in Trackr.DeliberateUntil(4)
 from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())
