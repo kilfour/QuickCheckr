@@ -1,0 +1,11 @@
+using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
+
+namespace QuickCheckr.Shrinking;
+
+public static partial class Reduce
+{
+    public static Func<Reducer<T>> Values<T>(IEnumerable<T> values, bool checkAll = false)
+        => checkAll
+            ? () => new ReportLastFailureBuilder<T>(_ => values).Reduce
+            : () => new StopOnFirstPassedBuilder<T>(_ => values).Reduce;
+}

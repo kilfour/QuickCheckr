@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -19,7 +20,7 @@ public class I_WhenAnEmptyCollectionIsTheCulprit : CheckrTest<I_WhenAnEmptyColle
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from list in Checkr.Input("List", Fuzzr.Int().Many(0, 10),
-            Shrink.Values(new List<int> { 0 }))
+            Shrinkr.For<List<int>>().Classify(Try.Values(new List<int> { 0 })))
         from trace in Checkr.Trace("Original", a => a.Show(list))
         from listNotEmpty in Checkr.Expect("List is not empty", () => list.Any())
         select Case.Closed;

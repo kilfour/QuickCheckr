@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -29,7 +30,7 @@ public class NestedInObject : CheckrTest<NestedInObject>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from answer in Checkr.Input("Answer", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from universe in Checkr.Capture(() => new TheUniverse { Answer = answer })
         from notTooBig in Checkr.Expect("answer <= 42", () => universe.Answer <= 42)
         select Case.Closed;

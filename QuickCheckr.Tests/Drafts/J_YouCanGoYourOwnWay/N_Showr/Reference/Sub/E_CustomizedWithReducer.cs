@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -44,7 +45,7 @@ public class E_CustomizedWithReducer : CheckrTest<E_CustomizedWithReducer>
                 R = new Term { L = new Num { Value = 10 }, R = new Num { Value = 20 }, Op = Operation.Div },
                 Op = Operation.Div
             }),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(1))))
+            Shrinkr.For<int>().Reduce(Reduce.Towards(1)))
         from trace in Checkr.Trace("Original", a => a.Show(expr))
         from eval in Checkr.Act("Evaluate", expr.Evaluate)
         from expect in Checkr.Expect("Not 42", () => eval != 42)

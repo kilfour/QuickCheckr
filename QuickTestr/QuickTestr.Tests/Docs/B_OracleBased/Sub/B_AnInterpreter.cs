@@ -5,6 +5,7 @@ using QuickCheckr.StringReduction;
 using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Shrinking;
 
 namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 
@@ -30,12 +31,12 @@ public class B_AnInterpreter : QuickTestrOracleTest<B_AnInterpreter>
         Testr
             .Named("Interpreter matches golden model.")
             .For(ExpressionFuzzr.GetExpression(),
-                Shrink.OnType<string>(
-                    s => s.Simplify(
+                Shrinkr.For<string>()
+                    .Reduce(
                         Remove.WhiteSpace,
                         Remove.BalancedParentheses,
                         Remove.LeftHandSideAndOperator,
-                        Remove.UnaryMinusNoise)))
+                        Remove.UnaryMinusNoise))
             .Deliberate(a => a.Length, 4) // prefer smaller length strings
             .Expected(a => LostIn.Translation(a).Eval())
             .Actual(a => LostIn.FaultyTranslation(a).Eval()).StoreCaseFiles(journalist)

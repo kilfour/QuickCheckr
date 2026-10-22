@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -23,7 +24,7 @@ public class B_TryCollection : CheckrTest<B_TryCollection>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from answers in Checkr.Input("answers", Fuzzr.Int().Many(2, 5),
-            Shrink.OnType<IEnumerable<int>>(s => s.Classify(Try.Collection([0], [1], [42]))))
+            Shrinkr.For<IEnumerable<int>>().Classify(Try.Collection([0], [1], [42])))
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;
 

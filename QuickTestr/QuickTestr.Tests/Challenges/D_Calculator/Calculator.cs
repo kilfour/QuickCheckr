@@ -4,6 +4,7 @@ using QuickPulse.Explains;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Shrinking;
 
 namespace QuickTestr.Tests.Challenges.D_Calculator;
 
@@ -71,11 +72,12 @@ public class Calculator : QuickTestrPropertyTest<Calculator>
 
     [CodeSnippet]
     private static readonly Shrinker TheShrinkr =
-        Shrink.When<int>(s => s
-            .As<Num>(a => a.Value)
-            .As<Term, Expr>(a => a.R)
-            .Value(t => t.Op == Operation.Div),
-        s => s.Simplify(Reduce.Towards(1)));
+        Shrinkr.For<int>()
+            .When(s => s
+                .As<Num>(a => a.Value)
+                .As<Term, Expr>(a => a.R)
+                .Value(t => t.Op == Operation.Div))
+            .Reduce(Reduce.Towards(1));
 
     [CodeSnippet]
     private readonly CheckrOf<Case>[] TheFormatr =

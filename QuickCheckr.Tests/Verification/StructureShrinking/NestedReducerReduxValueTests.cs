@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
 using QuickFuzzr;
@@ -13,11 +14,9 @@ public class NestedReducerReduxValueTests
             from box in Checkr.Input(
                 "Box",
                 Fuzzr.Constant(new Box([999])),
-                Shrink.OnType<Box>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            box => box.Values,
-                            (box, values) => new Box(values)))))
+                Shrinkr.For<Box>().Traverse(
+                        Traversal.Member((Box box) => box.Values,
+                            (box, values) => new Box(values))))
             from expect in Checkr.Expect(
                 "All values are below 10",
                 () => box.Values.All(value => value < 10))
@@ -45,11 +44,9 @@ public class NestedReducerReduxValueTests
             from box in Checkr.Input(
                 "Nested Box",
                 Fuzzr.Constant(new NestedBox([new[] { 999 }])),
-                Shrink.OnType<NestedBox>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            box => box.Values,
-                            (box, values) => new NestedBox(values)))))
+                Shrinkr.For<NestedBox>().Traverse(
+                        Traversal.Member((NestedBox box) => box.Values,
+                            (box, values) => new NestedBox(values))))
             from expect in Checkr.Expect(
                 "All values are below 10",
                 () => box.Values.SelectMany(values => values).All(value => value < 10))
@@ -78,11 +75,9 @@ public class NestedReducerReduxValueTests
             from box in Checkr.Input(
                 "Array Box",
                 Fuzzr.Constant(new ArrayBox([999])),
-                Shrink.OnType<ArrayBox>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            box => box.Values,
-                            (box, values) => new ArrayBox(values)))))
+                Shrinkr.For<ArrayBox>().Traverse(
+                        Traversal.Member((ArrayBox box) => box.Values,
+                            (box, values) => new ArrayBox(values))))
             from expect in Checkr.Expect(
                 "All values are below 10",
                 () => box.Values.All(value => value < 10))
@@ -110,11 +105,9 @@ public class NestedReducerReduxValueTests
             from box in Checkr.Input(
                 "Box",
                 Fuzzr.Constant(new Box([999, 998])),
-                Shrink.OnType<Box>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            box => box.Values,
-                            (box, values) => new Box(values)))))
+                Shrinkr.For<Box>().Traverse(
+                        Traversal.Member((Box box) => box.Values,
+                            (box, values) => new Box(values))))
             from expect in Checkr.Expect(
                 "Both thresholds are exceeded",
                 () => !(box.Values.Count == 2 &&

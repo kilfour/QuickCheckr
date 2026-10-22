@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
@@ -73,7 +74,7 @@ public class SystemTypes : BaseTest
         return
             from thing in Checkr.Input("A thing with a type",
                 Fuzzr.Constant(new Thing()),
-                Shrink.OnType<Type>(s => s.Classify(Try.Values([typeof(string), typeof(double)]))))
+                Shrinkr.For<Type>().Classify(Try.Values([typeof(string), typeof(double)])))
             from fail in Checkr.Expect("Fails", () => thing.Type.Name != typeof(int).Name)
             select Case.Closed;
     }

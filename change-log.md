@@ -1,4 +1,14 @@
+## 0.4.5: Honey, I Changed the Shrinking API
+* Breaking change: replaced `Shrink.OnType<T>(...)` and `Shrink.When<T>(...)` with `Shrinkr.For<T>()` and fluent `.When(...)`, `.Classify(...)`, `.Reduce(...)`, and `.Traverse(...)` calls. For example, `Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero))` becomes `Shrinkr.For<int>().Reduce(Reduce.TowardsZero)`.
+* Breaking change: replaced `Shrink.Collapse<T>(...)` with `Shrinkr.For<T>().Collapse(...)`. Fluent strategies are immutable; repeated configuration calls append options in declaration order, and repeated `.When(...)` calls combine conditions with AND.
+* Moved `Shrinkr`, `Shrinker`, and `Reduce` into the `QuickCheckr.Shrinking` namespace. String shrinkers accept Stringr selectors directly through `.Reduce(...)`.
+* Removed the redundant `ClassificationBuilder<T>`, `ReducerBuilder<T>`, and `TraversalBuilder<T>` types.
+
+
 ## 0.4.4: Getting in at the Deep End
+* Breaking change: moved the `Trackr.Pool...` APIs to `Poolr`, with shorter names such as `Poolr.Add`, `Remove`, `Update`, `OneOf`, `OneOfWhen`, `All`, and `Expect`. Pool mutations now compose with `CheckrOf<T>` / `CheckrOf<Case>` instead of dedicated action and value-factory overloads.
+* Simplified per-element pool operations with `Poolr.ForEach`, which accepts any Checkr, replacing the specialized pool expectation helpers. Repeated expectation labels are reported once, with failing pool element identifiers included in their messages.
+* Added composable pool conditions through `Poolr.Has<T>()` and `Poolr.When(...)`, combined with `.AndHas<T>()` / `.AndWhen(...)` and attached to an option with `.Then(...)`. Removed `Trackr.PoolClear` and `Trackr.ManyOfPool`.
 * Fixed caught action exceptions allowing dependent steps to consume default values and corrupt tracked pools. Failed runs and shrinking replays now abort after the exception; each replay starts fresh, while `ActCarefully` still captures exceptions without aborting.
 * Added `HideIrrelevantProperties` to classification formatter.
 

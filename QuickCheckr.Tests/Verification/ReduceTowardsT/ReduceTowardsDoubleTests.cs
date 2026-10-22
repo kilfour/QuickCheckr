@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.InputReduction;
 

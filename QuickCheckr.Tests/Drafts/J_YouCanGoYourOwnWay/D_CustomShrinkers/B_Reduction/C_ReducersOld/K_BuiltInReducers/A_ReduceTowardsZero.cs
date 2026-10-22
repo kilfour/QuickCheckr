@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,7 +20,7 @@ public class A_ReduceTowardsZero : CheckrTest<A_ReduceTowardsZero>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from expect in Checkr.Expect("Input should be smaller than 42", () => input < 42)
         select Case.Closed;
 

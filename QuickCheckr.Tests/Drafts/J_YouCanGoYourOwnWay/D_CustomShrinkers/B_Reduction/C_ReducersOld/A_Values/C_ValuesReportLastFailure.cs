@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,7 +20,7 @@ public class C_ValuesReportLastFailure : CheckrTest<C_ValuesReportLastFailure>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
          from input in Checkr.Input("Input", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 0, 1, 2], true))))
+            Shrinkr.For<int>().Reduce(Reduce.Values([3, 0, 1, 2], true)))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

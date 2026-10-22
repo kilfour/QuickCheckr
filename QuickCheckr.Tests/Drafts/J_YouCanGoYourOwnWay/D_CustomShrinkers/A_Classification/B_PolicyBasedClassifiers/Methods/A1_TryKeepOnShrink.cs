@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -22,7 +23,7 @@ public class A1_TryKeepOnShrink : CheckrTest<A1_TryKeepOnShrink>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            Shrink.Keep<Thing>())
+            Shrinkr.For<Thing>().Classify(Try.Keep<Thing>()))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

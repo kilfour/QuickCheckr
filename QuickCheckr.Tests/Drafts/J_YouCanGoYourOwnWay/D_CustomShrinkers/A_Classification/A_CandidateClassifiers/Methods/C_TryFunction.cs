@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -26,7 +27,7 @@ public class C_TryFunction : CheckrTest<C_TryFunction>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            Shrink.OnType<Thing>(s => s.Classify(Try.Function((Thing a) => [new Thing()]))))
+            Shrinkr.For<Thing>().Classify(Try.Function((Thing a) => [new Thing()])))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -5,7 +6,7 @@ using QuickPulse.Explains;
 
 namespace QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.G_SpecialShrinkers;
 
-[DocFileCodeHeader("Shrink.None<Thing>()")]
+[DocFileCodeHeader("Shrinkr.For<Thing>().Classify(Try.None<Thing>())")]
 public class A_ShrinkNone : CheckrTest<A_ShrinkNone>
 {
     protected override bool Asserts => false;
@@ -14,9 +15,9 @@ public class A_ShrinkNone : CheckrTest<A_ShrinkNone>
     [Fact]
     [DocCheckr]
     [DocContent(
-@"`Shrink.None` is a custom shrinker that explicitly marks an input as irrelevant and therefore not worth shrinking.
+@"`Shrinkr.For<T>().Classify(Try.None<T>())` is a custom shrinker that explicitly marks an input as irrelevant and therefore not worth shrinking.
 It is primarily a performance tool: when a branch is known not to influence the outcome,
-`Shrink.None` prevents QuickCheckr from wasting time shrinking or re-executing it. 
+`Shrinkr.For<T>().Classify(Try.None<T>())` prevents QuickCheckr from wasting time shrinking or re-executing it.
 This can significantly speed up scenarios that involve expensive operations such as WebAPI calls.
 It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings when that irrelevance is intentional and understood.
 ")]
@@ -29,7 +30,7 @@ It can also be used to suppress unnecessary ""all inputs irrelevant"" warnings w
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing",
             Fuzzr.Constant<Thing>(null!),
-            Shrink.None<Thing>())
+            Shrinkr.For<Thing>().Classify(Try.None<Thing>()))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -20,9 +21,7 @@ public class B_SecondShrinker : CheckrTest<B_SecondShrinker>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from answers in Checkr.Input("answers", Fuzzr.Int().Many(1, 5),
-            Shrink.OnType<int>(
-                s => s.Classify(Try.Values(42)),
-                s => s.Simplify(Reduce.Towards(0))))
+            Shrinkr.For<int>().Classify(Try.Values(42)).Reduce(Reduce.Towards(0)))
         from trace in Checkr.Trace("original", a => a.Show(answers))
         from expect in Checkr.Expect("all answers equal 42", () => answers.All(a => a == 42))
         select Case.Closed;

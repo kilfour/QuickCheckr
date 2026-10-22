@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -28,11 +29,9 @@ public class N2_NestedCollectionsNeedToGrow : CheckrTest<N2_NestedCollectionsNee
         from input in Checkr.Input("Museum",
             from a in fuzzr
             select new Museum(a),
-            Shrink.OnType<IEnumerable<int>>(
-                s => s.Classify(
+            Shrinkr.For<IEnumerable<int>>().Classify(
                     Try.Default<IEnumerable<int>>(),
-                    Try.Fuzzr(fuzzr)),
-                s => s.Simplify(Reduce.Values<IEnumerable<int>>([[]]))))
+                    Try.Fuzzr(fuzzr)).Reduce(Reduce.Values<IEnumerable<int>>([[]])))
         from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("List count >= 4", () => input.A.Count() >= 4)
         select Case.Closed;

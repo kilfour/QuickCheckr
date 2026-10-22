@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Drafts.H_OnShrinking.C_InputShrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -61,7 +62,7 @@ Depending on demand, the library of reducers might grow fast.
     protected override CheckrOf<Case> TheCheckr() =>
         from account in Trackr.Stashed(() => new Account())
         from amount in Checkr.Input("Amount", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from operations in Checkr.OneOf(
             Checkr.Act("Deposit", () => account.Deposit(amount)),
             Checkr.Act("Withdraw", () => account.WithDraw(amount)))

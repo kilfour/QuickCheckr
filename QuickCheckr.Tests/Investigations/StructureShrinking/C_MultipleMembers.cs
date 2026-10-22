@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -26,14 +27,11 @@ public class C_MultipleMembers : CheckrTest<C_MultipleMembers>
             Fuzzr.Constant(new Manifest(
                 [1, 42, 2],
                 ["noise", "required", "extra"])),
-            Shrink.OnType<Manifest>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        manifest => manifest.Codes,
-                        (manifest, codes) => new Manifest(codes, manifest.Tags)),
-                    traversal.Member(
-                        manifest => manifest.Tags,
-                        (manifest, tags) => new Manifest(manifest.Codes, tags)))))
+            Shrinkr.For<Manifest>().Traverse(
+                Traversal.Member((Manifest manifest) => manifest.Codes,
+                    (manifest, codes) => new Manifest(codes, manifest.Tags)),
+                Traversal.Member((Manifest manifest) => manifest.Tags,
+                    (manifest, tags) => new Manifest(manifest.Codes, tags))))
         from expect in Checkr.Expect(
             "Required code and tag cannot occur together",
             () => !(manifest.Codes.Contains(42) && manifest.Tags.Contains("required")))

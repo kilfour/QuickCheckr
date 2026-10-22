@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.Shrinking;
 using QuickCheckr.UnderTheHood.Memories.Structure.Lensing;
 using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts.Classification.Records;
 using QuickCheckr.UnderTheHood.Warnings;

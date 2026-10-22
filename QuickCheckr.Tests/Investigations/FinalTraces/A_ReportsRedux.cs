@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -23,7 +24,7 @@ public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+        from input in Checkr.Input("Input", Fuzzr.Int(), Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from trace in Checkr.Trace("Input", a => a.Show(input))
         from expect in Checkr.Expect("<= 42", () => input <= 42)
         select Case.Closed;

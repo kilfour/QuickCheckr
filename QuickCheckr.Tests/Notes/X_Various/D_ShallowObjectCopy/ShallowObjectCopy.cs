@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -26,7 +27,7 @@ public class ShallowObjectCopy : CheckrTest<ShallowObjectCopy>
     protected override CheckrOf<Case> TheCheckr() =>
         from box in Checkr.Input("box",
             from v in Fuzzr.Int(-10, 10)
-            select new Box { Value = v }, Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            select new Box { Value = v }, Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from expect in Checkr.Expect("Value must be >= 0", () => box.Value >= 0)
         select Case.Closed;
 

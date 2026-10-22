@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -27,11 +28,9 @@ public class D_RejectedReconstruction : CheckrTest<D_RejectedReconstruction>
         from schedule in Checkr.Input(
             "Schedule",
             Fuzzr.Constant(new NonEmptySchedule([1, 42])),
-            Shrink.OnType<NonEmptySchedule>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        schedule => schedule.Slots,
-                        (schedule, slots) => new NonEmptySchedule(slots)))))
+            Shrinkr.For<NonEmptySchedule>().Traverse(
+                    Traversal.Member((NonEmptySchedule schedule) => schedule.Slots,
+                        (schedule, slots) => new NonEmptySchedule(slots))))
         from expect in Checkr.Expect(
             "Schedule does not contain 42",
             () => !schedule.Slots.Contains(42))

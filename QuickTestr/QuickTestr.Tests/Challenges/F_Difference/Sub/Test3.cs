@@ -32,7 +32,7 @@ public class Test3 : QuickTestrPropertyTest<Test3>
     [CodeRemove("1231462692")]
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Difference is not exactly 1.")
-            .For(Difference.TheFuzzr, Difference.The.Shrinkr)
+            .For(Difference.TheFuzzr, Difference.The.Shrinker)
             .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1).StoreCaseFiles(journalist)
             .Run(1231462692);
 

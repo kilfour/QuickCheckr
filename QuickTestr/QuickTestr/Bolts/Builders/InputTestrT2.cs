@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Shrinking;
 using QuickFuzzr;
 using QuickTestr.Bolts.Builders.Oracle;
 using QuickTestr.Bolts.Builders.Property;

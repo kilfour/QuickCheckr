@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -26,7 +27,7 @@ they do not know which values are meaningful in the context of a specific check.
 By adding:
 
 ```csharp
-s => s.Classify(Try.Values(42))
+.Classify(Try.Values(42))
 ```
 
 we tell QuickCheckr that `42` is a value worth trying explicitly during shrinking.
@@ -34,7 +35,7 @@ we tell QuickCheckr that `42` is a value worth trying explicitly during shrinkin
 The reducer then continues simplifying the remaining failing value:
 
 ```csharp
-s => s.Simplify(Reduce.TowardsZero)
+.Reduce(Reduce.TowardsZero)
 ```
 
 In the report, the original failing value is `53`, while the final reported value becomes `43`.
@@ -50,9 +51,7 @@ they allow shrinking to be guided by values that are semantically meaningful for
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from answers in Checkr.Input("Answer", Fuzzr.Int(),
-            Shrink.OnType<int>(
-                s => s.Classify(Try.Values(42)),
-                s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Classify(Try.Values(42)).Reduce(Reduce.TowardsZero))
         from expect in Checkr.Expect("Answer equals 42", () => answers == 42)
         select Case.Closed;
 

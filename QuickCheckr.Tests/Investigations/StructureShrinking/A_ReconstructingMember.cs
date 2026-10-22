@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -24,11 +25,10 @@ public class A_ReconstructingMember : CheckrTest<A_ReconstructingMember>
         from parcel in Checkr.Input(
             "Parcel",
             Fuzzr.Constant(new Parcel([1, 42, 2])),
-            Shrink.OnType<Parcel>(
-                traversal => traversal.Using(
-                    Traversal.Member(
-                        (Parcel parcel) => parcel.Values,
-                        (parcel, values) => new Parcel(values)))))
+            Shrinkr.For<Parcel>()
+                .Traverse(Traversal.Member(
+                    (Parcel parcel) => parcel.Values,
+                    (parcel, values) => new Parcel(values))))
         from expect in Checkr.Expect(
             "Does not contain 42",
             () => !parcel.Values.Contains(42))

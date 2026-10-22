@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -29,9 +30,7 @@ public class J2_TheCaseOfTheInvisibleCollection : CheckrTest<J2_TheCaseOfTheInvi
             Checkr.Option(() => thing.Ints.Contains(1),
                 from ints in Checkr.Input("Ints",
                 Fuzzr.Int().Many(2),
-                Shrink.OnType<List<int>>(
-                    s => s.Classify(Try.Default<List<int>>(), Try.Values(thing.Ints)),
-                    s => s.Simplify(Reduce.Values([[], thing.Ints]))))
+                Shrinkr.For<List<int>>().Classify(Try.Default<List<int>>(), Try.Values(thing.Ints)).Reduce(Reduce.Values([[], thing.Ints])))
                 from act in Checkr.Act("Update", () => thing.Ints = [.. ints])
                 from trace in Checkr.Trace("Original", a => a.Show(thing.Ints))
                 from check in Checkr.Expect("Has 1", () => NewMethod(thing))

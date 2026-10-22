@@ -2,6 +2,7 @@ using QuickFuzzr;
 using QuickCheckr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring;
+using QuickCheckr.Shrinking;
 
 namespace QuickTestr.Tests.Challenges.F_Difference;
 
@@ -23,10 +24,9 @@ public class Difference : DocAttributeBaseTest
     [CodeExample]
     public class The
     {
-        public static readonly Shrinker Shrinkr =
-            Shrink.OnType<Pair>(
-                s => s.Simplify(
-                    Reduce.Function<Pair>(a => TowardsZero(a))));
+        public static readonly Shrinker Shrinker =
+            Shrinkr.For<Pair>()
+                .Reduce(Reduce.Function<Pair>(a => TowardsZero(a)));
 
         private static IEnumerable<Pair> TowardsZero(Pair input)
         {

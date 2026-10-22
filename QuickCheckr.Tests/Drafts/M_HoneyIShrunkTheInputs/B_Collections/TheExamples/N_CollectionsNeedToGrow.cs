@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -25,7 +26,7 @@ public class N_CollectionsNeedToGrow : CheckrTest<N_CollectionsNeedToGrow>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("List", Fuzzr.Int().Many(3, 10),
-            Shrink.Values(new List<int> { 0, 0, 0, 0 }))
+            Shrinkr.For<List<int>>().Classify(Try.Values(new List<int> { 0, 0, 0, 0 })))
         from trace in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("List count >= 4", () => input.Count() >= 4)
         select Case.Closed;

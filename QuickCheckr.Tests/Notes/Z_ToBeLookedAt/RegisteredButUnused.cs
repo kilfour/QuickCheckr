@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
@@ -29,7 +30,7 @@ public class RegisteredButUnused : CheckrTest<RegisteredButUnused>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(),
-            Shrink.OnType<string>(s => s.Classify(Try.Values(["unused"]))))
+            Shrinkr.For<string>().Classify(Try.Values(["unused"])))
         from expect in Checkr.Expect("Input < 2", () => input < 2)
         select Case.Closed;
 

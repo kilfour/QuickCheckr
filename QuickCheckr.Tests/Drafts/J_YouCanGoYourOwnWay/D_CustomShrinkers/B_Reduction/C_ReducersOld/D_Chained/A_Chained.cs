@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,7 +20,7 @@ public class A_Chained : CheckrTest<A_Chained>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
          from input in Checkr.Input("Input", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.Towards(5), Reduce.Towards(0))))
+            Shrinkr.For<int>().Reduce(Reduce.Towards(5), Reduce.Towards(0)))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

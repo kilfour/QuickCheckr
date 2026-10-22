@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
@@ -11,7 +12,7 @@ to demonstrate how to find all the different ways the invariant can be violated.
 
 So we're using the same model, and *almost* exactly the same Checkr.  
 Changes:
-- Added Shrink.None to the Name inputs. 
+- Added Shrinkr.For<string>().Classify(Try.None<string>()) to the Name inputs.
 - Updated `UpdateCoachSkills` to avoid the issue documented [here][J_TheCaseOfTheInvisibleCollection]:")]
 [DocCodeFile("GatheringEvidenceCheckr.cs", "csharp", 4)]
 [DocContent(

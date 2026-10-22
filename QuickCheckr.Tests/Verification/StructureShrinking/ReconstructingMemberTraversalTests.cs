@@ -1,6 +1,7 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
+using QuickCheckr.Shrinking;
 using QuickFuzzr;
 
 namespace QuickCheckr.Tests.Verification.StructureShrinking;
@@ -32,11 +33,9 @@ public class ReconstructingMemberTraversalTests
             from outer in Checkr.Input(
                 "Outer Box",
                 Fuzzr.Constant(original),
-                Shrink.OnType<OuterBox>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            outer => outer.Inner,
-                            (outer, inner) => new OuterBox(inner)))),
+                Shrinkr.For<OuterBox>().Traverse(
+                        Traversal.Member((OuterBox outer) => outer.Inner,
+                            (outer, inner) => new OuterBox(inner))),
                 BoxTraversal)
             from expect in Checkr.Expect(
                 "Expectation",
@@ -61,11 +60,9 @@ public class ReconstructingMemberTraversalTests
             from box in Checkr.Input(
                 "Mixed Box",
                 Fuzzr.Constant(new MixedBox([1, 42, 2]) { Code = 42 }),
-                Shrink.OnType<MixedBox>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            box => box.Values,
-                            (box, values) => new MixedBox(values) { Code = box.Code }))))
+                Shrinkr.For<MixedBox>().Traverse(
+                        Traversal.Member((MixedBox box) => box.Values,
+                            (box, values) => new MixedBox(values) { Code = box.Code })))
             from expect in Checkr.Expect(
                 "Expectation",
                 () => !(box.Code == 42 && box.Values.Contains(42)))
@@ -90,11 +87,9 @@ public class ReconstructingMemberTraversalTests
             from request in Checkr.Input(
                 "Request",
                 Fuzzr.Constant(new Request(42, note)),
-                Shrink.OnType<Request>(
-                    traversal => traversal.Using(
-                        traversal.Member(
-                            request => request.Code,
-                            (request, code) => new Request(code, request.Note)))))
+                Shrinkr.For<Request>().Traverse(
+                        Traversal.Member((Request request) => request.Code,
+                            (request, code) => new Request(code, request.Note))))
             from expect in Checkr.Expect(
                 "Expectation",
                 () => request.Code != 42)
@@ -123,7 +118,7 @@ public class ReconstructingMemberTraversalTests
         bool traversalFirst)
     {
         var original = new Box([1, 42, 2]);
-        var keep = Shrink.Keep<Box>();
+        var keep = Shrinkr.For<Box>().Classify(Try.Keep<Box>());
         Shrinker[] shrinkers = traversalFirst
             ? [BoxTraversal, keep]
             : [keep, BoxTraversal];
@@ -150,13 +145,12 @@ public class ReconstructingMemberTraversalTests
     public void Traversal_uses_custom_classifiers_for_nested_member_values()
     {
         var classifierWasCalled = false;
-        var classifyInts = Shrink.OnType<int>(
-            classification => classification.Classify(
+        var classifyInts = Shrinkr.For<int>().Classify(
                 Try.Function<int>(_ =>
                 {
                     classifierWasCalled = true;
                     return [0];
-                })));
+                }));
         var checkr =
             from box in Checkr.Input(
                 "Box",
@@ -194,11 +188,9 @@ public class ReconstructingMemberTraversalTests
     }
 
     private static readonly Shrinker BoxTraversal =
-        Shrink.OnType<Box>(
-            traversal => traversal.Using(
-                traversal.Member(
-                    box => box.Values,
-                    (box, values) => new Box(values))));
+        Shrinkr.For<Box>().Traverse(
+                Traversal.Member((Box box) => box.Values,
+                    (box, values) => new Box(values)));
 
     private sealed class Box(IEnumerable<int> values)
     {

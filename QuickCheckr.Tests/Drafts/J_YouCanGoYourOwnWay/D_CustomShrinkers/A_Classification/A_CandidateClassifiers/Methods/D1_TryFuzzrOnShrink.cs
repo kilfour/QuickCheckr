@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -21,7 +22,7 @@ public class D1_TryFuzzrOnShrink : CheckrTest<D1_TryFuzzrOnShrink>
     protected override CheckrOf<Case> TheCheckr() =>
         from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
         from thing in Checkr.Input("Null Thing", Fuzzr.Constant<Thing>(null!),
-            Shrink.Fuzzr(Fuzzr.One<Thing>(), 2))
+            Shrinkr.For<Thing>().Classify(Try.Fuzzr(Fuzzr.One<Thing>(), 2)))
         from expect in Checkr.Expect("counter != 2", () => counter != 2)
         select Case.Closed;
 

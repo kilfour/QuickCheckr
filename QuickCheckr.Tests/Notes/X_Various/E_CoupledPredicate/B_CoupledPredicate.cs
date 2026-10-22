@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -25,7 +26,7 @@ public class B_CoupledPredicate : CheckrTest<B_CoupledPredicate>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from pair in Checkr.Input("pair", Fuzzr.Constant(new Pair(11, 11)),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from expect in Checkr.Expect("A + B <= 10", () => (pair.A + pair.B) <= 10)
         select Case.Closed;
 

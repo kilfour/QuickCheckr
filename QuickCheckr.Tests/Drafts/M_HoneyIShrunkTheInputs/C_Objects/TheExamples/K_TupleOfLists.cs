@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -25,7 +26,7 @@ public class K_TupleOfLists : CheckrTest<K_TupleOfLists>
             from b in Fuzzr.Int().Many(2)
             from c in Fuzzr.Int().Many(0)
             select (a, b, c),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from irrelevant in Checkr.Input("Irrelevant",
             from a in Fuzzr.Int()
             from b in Fuzzr.Int()

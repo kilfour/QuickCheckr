@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickFuzzr;
 
 namespace QuickCheckr.Tests.Verification.StructureShrinking;
@@ -14,7 +15,7 @@ public class CollapsingTests
         var article = Run(
             original,
             node => Check(node),
-            Shrink.Collapse<Node>(node => node.Child));
+            Shrinkr.For<Node>().Collapse(node => node.Child));
 
         var input = article.Execution(1).Input(1).Read();
         Assert.Same(leaf, input.InputValue);
@@ -29,7 +30,7 @@ public class CollapsingTests
         var article = Run(
             original,
             node => node.Values.Count < 2 || node.Values.Sum() <= 100,
-            Shrink.Collapse<Node>(node => node.Child));
+            Shrinkr.For<Node>().Collapse(node => node.Child));
 
         Assert.Same(original, article.Execution(1).Input(1).Read().InputValue);
     }
@@ -42,11 +43,51 @@ public class CollapsingTests
         var article = Run(
             original,
             _ => false,
-            Shrink.Collapse<Node>(node => node.Child),
-            Shrink.Keep<Node>());
+            Shrinkr.For<Node>().Collapse(node => node.Child),
+            Shrinkr.For<Node>().Classify(Try.Keep<Node>()));
 
         Assert.Same(original, article.Execution(1).Input(1).Read().InputValue);
         Assert.Equal(0, article.ShrinkCount);
+    }
+
+    [Fact]
+    public void Fluent_collapse_appends_selectors_and_preserves_other_configuration()
+    {
+        var leaf = new Node([68, 88]);
+        var original = new Node([], leaf);
+        var initial = Shrinkr.For<Node>().Collapse(_ => null);
+        var configured = initial
+            .Collapse(node => node.Child)
+            .When((Node node) => node?.Child is not null)
+            .Classify(Try.Keep<Node>());
+
+        var unchanged = Run(original, node => Check(node), initial);
+        var collapsed = Run(original, node => Check(node), configured);
+
+        Assert.Same(original, unchanged.Execution(1).Input(1).Read().InputValue);
+        Assert.Same(leaf, collapsed.Execution(1).Input(1).Read().InputValue);
+    }
+
+    [Fact]
+    public void Fluent_collapse_respects_its_condition()
+    {
+        var original = new Node([], new Node([68, 88]));
+        var article = Run(original, node => Check(node),
+            Shrinkr.For<Node>()
+                .When((Node _) => false)
+                .Collapse(node => node.Child),
+            Shrinkr.For<Node>().Classify(Try.Keep<Node>()));
+
+        Assert.Same(original, article.Execution(1).Input(1).Read().InputValue);
+    }
+
+    [Fact]
+    public void Fluent_collapse_rejects_missing_or_null_selectors()
+    {
+        var shrinker = Shrinkr.For<Node>();
+        Assert.Throws<ArgumentNullException>(() => shrinker.Collapse(null!));
+        Assert.Throws<ArgumentException>(() => shrinker.Collapse());
+        Assert.Throws<ArgumentException>(() => shrinker.Collapse(node => node.Child, null!));
     }
 
     private static Article Run(

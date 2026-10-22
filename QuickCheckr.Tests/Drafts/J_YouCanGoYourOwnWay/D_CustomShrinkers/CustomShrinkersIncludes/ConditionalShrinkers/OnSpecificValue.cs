@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -21,9 +22,9 @@ public class OnSpecificValue : CheckrTest<OnSpecificValue>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 5)),
-            Shrink.When<int>(
-                s => s.Value(a => a == 5),
-                s => s.Simplify(Reduce.Towards(0))))
+            Shrinkr.For<int>()
+                .When(s => s.Value(a => a == 5))
+                .Reduce(Reduce.Towards(0)))
         from trace in Checkr.Trace("Original", a => a.Show(inter))
         from expect in Checkr.Expect("All ints smaller than 1.", () => inter.A < 1 && inter.B < 1)
         select Case.Closed;

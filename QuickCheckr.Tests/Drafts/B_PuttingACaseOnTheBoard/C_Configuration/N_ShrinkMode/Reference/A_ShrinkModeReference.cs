@@ -1,4 +1,5 @@
 using QuickCheckr.Protocol;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -23,7 +24,7 @@ public class A_ShrinkModeReference : BaseTest
     {
         return
             from counter in Checkr.Input("counter", Fuzzr.Counter("counter"))
-            from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            from relevant in Checkr.Input("Relevant", Fuzzr.Int(), Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
             from irrelevant in Checkr.Input("Irrelevant", Fuzzr.Int(1, 25))
             from expect in Checkr.Expect("Third Time Answer", () => !(counter == 3 && relevant >= 42))
             select Case.Closed;

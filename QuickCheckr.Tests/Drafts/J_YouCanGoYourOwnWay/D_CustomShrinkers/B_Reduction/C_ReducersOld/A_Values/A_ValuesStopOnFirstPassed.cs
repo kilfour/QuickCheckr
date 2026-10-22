@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -18,7 +19,7 @@ public class A_ValuesStopOnFirstPassed : CheckrTest<A_ValuesStopOnFirstPassed>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-         from input in Checkr.Input("Input", Fuzzr.Int(), Shrink.OnType<int>(s => s.Simplify(Reduce.Values([3, 2, 1, 0]))))
+         from input in Checkr.Input("Input", Fuzzr.Int(), Shrinkr.For<int>().Reduce(Reduce.Values([3, 2, 1, 0])))
          from expect in Checkr.Expect("Input < 2", () => input < 2)
          select Case.Closed;
 

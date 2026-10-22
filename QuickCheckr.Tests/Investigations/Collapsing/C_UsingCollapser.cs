@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -22,7 +23,7 @@ public class C_UsingCollapser : CheckrTest<C_UsingCollapser>
         from lister in Checkr.Input(
             "lister",
             ListerFuzzr,
-            Shrink.Collapse<Lister>(lister => lister.Child))
+            Shrinkr.For<Lister>().Collapse(lister => lister.Child))
         from expect in Checkr.Expect("no list sum > 100 && count >= 2", () => CheckLister(lister))
         select Case.Closed;
 

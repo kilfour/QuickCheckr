@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.StringReduction;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -24,11 +25,11 @@ public class U_ValueObjects : CheckrTest<U_ValueObjects>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Value Object",
             Fuzzr.String().Select(a => new BookTitle(a)),
-            Shrink.OnType<BookTitle>(s => s.Simplify(
+            Shrinkr.For<BookTitle>().Reduce(
                 Reduce.Map(
                     Reduce.MinimizeStringTo(1),
                     (BookTitle title) => title.Value,
-                    (_, value) => new BookTitle(value)))))
+                    (_, value) => new BookTitle(value))))
         from traceOne in Checkr.Trace("Original", a => a.Show(input))
         from expect in Checkr.Expect("Does not contain a.", () => !input.Value.Contains('a'))
         select Case.Closed;

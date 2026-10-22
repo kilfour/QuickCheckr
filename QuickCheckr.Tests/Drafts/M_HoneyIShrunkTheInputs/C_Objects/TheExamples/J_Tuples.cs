@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -25,7 +26,7 @@ public class J_Tuples : CheckrTest<J_Tuples>
             from b in Fuzzr.Int()
             from c in Fuzzr.Int()
             select (a, b, c),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from irrelevant in Checkr.Input("Irrelevant",
             from a in Fuzzr.Int()
             from b in Fuzzr.Int()

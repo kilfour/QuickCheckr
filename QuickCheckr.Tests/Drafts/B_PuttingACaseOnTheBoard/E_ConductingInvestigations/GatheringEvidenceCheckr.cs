@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Diagnostics;
 using QuickCheckr.Tests.Docs.A_Guide.E_HorsesAgain.Model;
 using QuickFuzzr;
@@ -40,7 +41,7 @@ public class GatheringEvidenceCheckr
 
     private static readonly CheckrOf<Case> CreateCourse =
         from name in Checkr.Input("Course Name", NameFuzzr.For("Course"),
-            Shrink.None<string>())
+            Shrinkr.For<string>().Classify(Try.None<string>()))
         from course in Checkr.Act("Create Course", () => new Course(name))
         from checkName in Checkr.Expect("Course Name Set", () => course.Name == name)
         from toPool in Poolr.Add("Store Course", Checkr.Capture(() => course))

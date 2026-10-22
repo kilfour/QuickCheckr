@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.WhenThingsGoWrong;
 using QuickFuzzr;

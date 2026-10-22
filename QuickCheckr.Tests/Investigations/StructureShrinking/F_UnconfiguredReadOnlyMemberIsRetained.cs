@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
@@ -29,11 +30,9 @@ public class F_UnconfiguredReadOnlyMemberIsRetained
         from request in Checkr.Input(
             "Request",
             Fuzzr.Constant(new Request(42, new Note("irrelevant"))),
-            Shrink.OnType<Request>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        request => request.Code,
-                        (request, code) => new Request(code, request.Note)))))
+            Shrinkr.For<Request>().Traverse(
+                    Traversal.Member((Request request) => request.Code,
+                        (request, code) => new Request(code, request.Note))))
         from expect in Checkr.Expect(
             "Code is not 42",
             () => request.Code != 42)

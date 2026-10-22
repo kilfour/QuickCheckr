@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -24,16 +25,12 @@ public class B_NestedReconstruction : CheckrTest<B_NestedReconstruction>
         from envelope in Checkr.Input(
             "Envelope",
             Fuzzr.Constant(new Envelope(new Payload([1, 42, 2]))),
-            Shrink.OnType<Envelope>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        envelope => envelope.Payload,
-                        (envelope, payload) => new Envelope(payload)))),
-            Shrink.OnType<Payload>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        payload => payload.Values,
-                        (payload, values) => new Payload(values)))))
+            Shrinkr.For<Envelope>().Traverse(
+                    Traversal.Member((Envelope envelope) => envelope.Payload,
+                        (envelope, payload) => new Envelope(payload))),
+            Shrinkr.For<Payload>().Traverse(
+                    Traversal.Member((Payload payload) => payload.Values,
+                        (payload, values) => new Payload(values))))
         from expect in Checkr.Expect(
             "Payload does not contain 42",
             () => !envelope.Payload.Values.Contains(42))

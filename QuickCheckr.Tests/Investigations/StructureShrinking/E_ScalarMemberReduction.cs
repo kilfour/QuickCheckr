@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Tests.Tools;
@@ -27,11 +28,9 @@ public class E_ScalarMemberReduction : CheckrTest<E_ScalarMemberReduction>
         from limit in Checkr.Input(
             "Limit",
             Fuzzr.Constant(new Limit(999)),
-            Shrink.OnType<Limit>(
-                traversal => traversal.Using(
-                    traversal.Member(
-                        limit => limit.Value,
-                        (limit, value) => new Limit(value)))))
+            Shrinkr.For<Limit>().Traverse(
+                    Traversal.Member((Limit limit) => limit.Value,
+                        (limit, value) => new Limit(value))))
         from expect in Checkr.Expect(
             "Limit is below 10",
             () => limit.Value < 10)

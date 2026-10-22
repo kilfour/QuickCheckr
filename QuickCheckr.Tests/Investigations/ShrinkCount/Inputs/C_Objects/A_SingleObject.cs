@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
@@ -20,7 +21,7 @@ public class A_SingleObject : CheckrTest<A_SingleObject>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Answer", Fuzzr.Constant(42))
-        from irrelevant in Checkr.Input("Irrelevant", Fuzzr.One<Thing>(), Shrink.Values((Thing)null!))
+        from irrelevant in Checkr.Input("Irrelevant", Fuzzr.One<Thing>(), Shrinkr.For<Thing>().Classify(Try.Values((Thing)null!)))
         from expect in Checkr.Expect("Fails", () => input != 42)
         select Case.Closed;
 

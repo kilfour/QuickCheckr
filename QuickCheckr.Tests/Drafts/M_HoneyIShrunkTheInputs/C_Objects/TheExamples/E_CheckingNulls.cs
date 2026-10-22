@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
@@ -150,9 +151,9 @@ This tells you that the shrinker reached a `null` value that it cannot safely re
     {
         return
             from everything in Checkr.Input("Everything", TheLifeFuzzr,
-                Shrink.OnType<TheUniverse.Life?>(s => s.Classify(Try.Fuzzr(TheLifeFuzzr))))
+                Shrinkr.For<TheUniverse.Life?>().Classify(Try.Fuzzr(TheLifeFuzzr)))
             from irrelevant in Checkr.Input("Irrelevant", TheLifeFuzzr,
-                Shrink.OnType<TheUniverse.Life?>(s => s.Classify(Try.Fuzzr(TheLifeFuzzr))))
+                Shrinkr.For<TheUniverse.Life?>().Classify(Try.Fuzzr(TheLifeFuzzr)))
             from universe in Checkr.Capture(() => new TheUniverse { Everything = everything, Irrelevant = irrelevant })
             from trace in Checkr.Trace("The Universe", a => a.Show(universe))
             from theAnswer in Checkr.Act("The Answer", () => universe.GetTheAnswer())

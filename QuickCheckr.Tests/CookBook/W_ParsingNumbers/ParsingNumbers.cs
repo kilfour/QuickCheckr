@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.StringReduction;
 using QuickCheckr.Tests.CookBook.W_ParsingNumbers.Model;
@@ -42,7 +43,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Expression",
             ParseFuzzr.Expression(),
-            Shrink.OnType<string>(s => s.Simplify(
+            Shrinkr.For<string>().Reduce(
                 // remove whitespace
                 Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined(),
                 // remove delimiters
@@ -56,7 +57,7 @@ public class ParsingNumbers : CheckrTest<ParsingNumbers>
                 from rhs in Stringr.AtleastOnce(char.IsDigit).Remove()
                 select Selection.Defined,
                 // clean up unary minus noise
-                Stringr.AtleastOnce('-').Replace(t => "-").Defined())))
+                Stringr.AtleastOnce('-').Replace(t => "-").Defined()))
         from deliberate in Checkr.Deliberate(() => input.Length)
         from until in Trackr.DeliberateUntil(4)
         from oracleResult in Checkr.Act("Oracle Result", () => LostIn.Translation(input).Eval())

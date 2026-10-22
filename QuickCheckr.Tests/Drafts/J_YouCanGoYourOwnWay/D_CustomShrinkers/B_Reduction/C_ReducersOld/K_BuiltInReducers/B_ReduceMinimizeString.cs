@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,7 +20,7 @@ public class B_ReduceMinimizeString : CheckrTest<B_ReduceMinimizeString>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from text in Checkr.Input("Text", Fuzzr.String(),
-            Shrink.OnType<string>(s => s.Simplify(Reduce.MinimizeString)))
+            Shrinkr.For<string>().Reduce(Reduce.MinimizeString))
         from expect in Checkr.Expect("no a and b", () => !(text.Contains('a') && text.Contains('b')))
         select Case.Closed;
 

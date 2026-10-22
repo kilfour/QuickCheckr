@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
@@ -21,11 +22,11 @@ public class D2_CollapsingOnlyWherePossible : CheckrTest<D2_CollapsingOnlyWhereP
         from turtle in Checkr.Input(
             "Turtle",
             TurtleFuzzr,
-            Shrink.Collapse<Turtle>(turtle => turtle.Down))
+            Shrinkr.For<Turtle>().Collapse(turtle => turtle.Down))
         from otherTurtle in Checkr.Input(
             "Other Turtle",
             Fuzzr.One<Turtle>(),
-            Shrink.Collapse<Turtle>(turtle => turtle.Down))
+            Shrinkr.For<Turtle>().Collapse(turtle => turtle.Down))
         from traceTurtle in Checkr.Trace("Turtle", a => a.Show(turtle))
         from traceOtherTurtle in Checkr.Trace("Other Turtle", a => a.Show(otherTurtle))
         from endsOnTurtle in Checkr.ExpectWhen(

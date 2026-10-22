@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -21,12 +22,12 @@ public class OnPath : CheckrTest<OnPath>
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from inter in Checkr.Input("Inter", Fuzzr.Constant(new Inter(42, 21)),
-            Shrink.When<int>(
-                s => s.As<Inter>(a => a.A).Target(),
-                s => s.Simplify(Reduce.Towards(3))),
-            Shrink.When<int>(
-                s => s.As<Inter>(a => a.B).Target(),
-                s => s.Simplify(Reduce.Towards(0))))
+            Shrinkr.For<int>()
+                .When(s => s.As<Inter>(a => a.A).Target())
+                .Reduce(Reduce.Towards(3)),
+            Shrinkr.For<int>()
+                .When(s => s.As<Inter>(a => a.B).Target())
+                .Reduce(Reduce.Towards(0)))
         from expect in Checkr.Expect("Sum smaller than 11.", () => inter.A + inter.B < 11)
         select Case.Closed;
 

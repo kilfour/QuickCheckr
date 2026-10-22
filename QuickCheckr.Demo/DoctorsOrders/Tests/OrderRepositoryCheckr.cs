@@ -1,4 +1,5 @@
 using QuickCheckr.Demo.DoctorsOrders.Source;
+using QuickCheckr.Shrinking;
 using QuickFuzzr;
 using QuickFuzzr.Strings;
 using WibblyWobbly;
@@ -73,7 +74,7 @@ public class OrderRepositoryCheckr
                 from customerForCountry in Poolr.OneOf<Customer>("Customer for Country filter")
                 from input in Checkr.Input("Query Input",
                     OrderQueryInputFuzzr,
-                    Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+                    Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
                 from query in Checkr.Capture(() => input.ToOrderQuery(customerForId, customerForCountry))
                 from verified in VerifyQuery(repository, query)
                 select query));

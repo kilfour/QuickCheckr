@@ -1,3 +1,4 @@
+using QuickCheckr.Shrinking;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.A_CandidateClassifiers;
 using QuickCheckr.Tests.Drafts.J_YouCanGoYourOwnWay.D_CustomShrinkers.A_Classification.B_PolicyBasedClassifiers;
@@ -38,7 +39,7 @@ It is a bit of a contrived example as the default classifiers handle this case j
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
         from answer in Checkr.Input("answer", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Classify(Try.Default<int>(), Try.Values(0, 1, 42))))
+            Shrinkr.For<int>().Classify(Try.Default<int>(), Try.Values(0, 1, 42)))
         from expect in Checkr.Expect("answer == 42", () => answer == 42)
         select Case.Closed;
 

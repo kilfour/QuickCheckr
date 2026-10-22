@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
+using QuickCheckr.Shrinking;
 using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -31,7 +32,7 @@ public class ReportModeFinalTrace : CheckrTest<ReportModeFinalTrace>
 
     protected override CheckrOf<Case> TheCheckr() =>
         from input in Checkr.Input("Input", Fuzzr.Int(),
-            Shrink.OnType<int>(s => s.Simplify(Reduce.TowardsZero)))
+            Shrinkr.For<int>().Reduce(Reduce.TowardsZero))
         from trace in Checkr.Trace("Input / 2", a => a.Show(input / 2))
         from expect in Checkr.Expect("Input > 10", () => input < 10)
         select Case.Closed;

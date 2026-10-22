@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
+using QuickCheckr.Shrinking;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickTestr.Bolts.ClerksOffice;
