@@ -6,7 +6,6 @@ using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.J_ReportMo
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
 using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
-using QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.F_TestFrameworkIntegration;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 
@@ -16,7 +15,7 @@ namespace QuickCheckr.Tests.Docs.B_PuttingACaseOnTheBoard.C_Configuration;
 [DocFile]
 [DocLink(typeof(A_ReportModeReference))]
 [DocLink(typeof(A_ShrinkModeReference))]
-[DocNavigation(typeof(PuttingACaseOnTheBoard), typeof(RunningACheckr), typeof(TestFrameworkIntegration))]
+[DocNavigation(typeof(PuttingACaseOnTheBoard), typeof(RunningACheckr), null)]
 [DocContent(
 @"QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
 You typically start from `CheckrConfig.Default()` and then tweak the parts you care about.

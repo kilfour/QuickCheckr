@@ -1,5 +1,5 @@
 # Configuration
-|[◀][RunningACheckr]|[△][PuttingACaseOnTheBoard]|[▶][TestFrameworkIntegration]|
+|[◀][RunningACheckr]|[△][PuttingACaseOnTheBoard]|▶|
 |---|---|---|
   
 QuickCheckr runs are configured through an immutable `CheckrConfig` record. 
@@ -121,5 +121,3 @@ You get the idea.
 [PuttingACaseOnTheBoard]: ../PuttingACaseOnTheBoard.md
 
 [RunningACheckr]: ../B_RunningACheckr/RunningACheckr.md
-
-[TestFrameworkIntegration]: ../F_TestFrameworkIntegration/TestFrameworkIntegration.md
