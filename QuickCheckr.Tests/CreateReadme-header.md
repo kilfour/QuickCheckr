@@ -16,24 +16,24 @@ But most C# code is not pure.
 
 > QuickCheckr is all about state and side-effects, because most C# code is all about state and side-effects.
 
-Instead of shrinking individual input values, QuickCheckr shrinks *behaviour*:
+QuickCheckr shrinks both individual input values and *behaviour*:
 sequences of inputs, actions, branching decisions, and state transitions.
 Failures are treated as things that *emerge over time*, not necessarily as the result of a single call.
 
 This comes with a non-trivial learning curve.
-To make shrinking meaningful, all state under test must be encapsulated and described explicitly.
+To make replay and shrinking meaningful, keep state under test in stashed objects or tracked pools, and express operations through the Checkr workflow.
 QuickCheckr uses `LINQ` composition to express this, which is familiar to most C# developers, but the idea of *stateful LINQ* may feel unusual at first.
 
-The payoff is that bugs which are invisible to traditional property-based tests, because no single operation fails in isolation, become both detectable *and explainable*.
+The payoff is that bugs which depend on a sequence of operations become both detectable *and explainable*.
 
 Below is a small, deliberately contrived example.
 A more realistic, end-to-end [scenario](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md) can be found at the end of the guide,
-but it is strongly recommended to start at the [beginning](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOut/CheckringThingsOut.md) and follow it step by step.
+but it is strongly recommended to start at the [beginning](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOutChapter/A_CheckringThingsOut.md) and follow it step by step.
 
 ## Example
 The following example demonstrates a class of bug that is easy to miss in traditional tests and difficult to express using classic property-based testing.
 
-No single call fails.  
+A call on a fresh instance succeeds.
 The failure only occurs after a *specific sequence* of operations has been performed on the same instance.  
 QuickCheckr is designed to explore and shrink exactly this kind of behaviour.  
 
