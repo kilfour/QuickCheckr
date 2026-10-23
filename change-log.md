@@ -5,6 +5,7 @@
 * Breaking change: replaced `Shrink.Collapse<T>(...)` with `Shrinkr.For<T>().Collapse(...)`. Fluent strategies are immutable; repeated configuration calls append options in declaration order, and repeated `.When(...)` calls combine conditions with AND.
 * Moved `Shrinkr`, `Shrinker`, and `Reduce` into the `QuickCheckr.Shrinking` namespace. String shrinkers accept Stringr selectors directly through `.Reduce(...)`.
 * Removed the redundant `ClassificationBuilder<T>`, `ReducerBuilder<T>`, and `TraversalBuilder<T>` types.
+* Reduced `EmptyCollectionWarning` from Important to Verbose. 
 
 
 ## 0.4.4: Getting in at the Deep End

@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    RunTest_Alternative
- Location:                Docs\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:117:1
+ Location:                Drafts\M_HoneyIShrunkTheInputs\C_Objects\TheExamples\E_CheckingNulls.cs:120:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1269557792
  ------------------------------------------------------------
   Executed: The Answer
-   - Input: Everything   = null
-   - Trace: The Universe = { Everything: null, Irrelevant: null }
- ===========================================================================
+   - Everything   = null
+   - The Universe = { Everything: null, Irrelevant: null }
+ ============================================================
   !! NullReferenceException: Object reference not set to an instance of an object.
- ===========================================================================
+ ============================================================

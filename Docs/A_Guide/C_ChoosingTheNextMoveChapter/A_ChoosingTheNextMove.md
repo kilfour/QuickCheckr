@@ -147,7 +147,7 @@ select Case.Closed;
  ================================
   !! Expectation Failed: is 42
  ================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - is 42: 1x
  ------------------------------------------------------------
 ```

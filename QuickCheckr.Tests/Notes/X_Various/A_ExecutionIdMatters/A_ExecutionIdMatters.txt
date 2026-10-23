@@ -1,35 +1,35 @@
  ------------------------------------------------------------
  Test:                    RunTestNoShrinking
- Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:23:1
+ Location:                Notes\X_Various\A_ExecutionIdMatters\A_ExecutionIdMatters.cs:22:1
  Original failing run:    4 executions
- Seed:                    342559779
+ Seed:                    663425775
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-1
-   - Input: Counter = 1
-   - Input: Name    = "AAA"
-   - Trace: Sut     = { Contacts: [ "AAA" ] }
+   - Name    = String-1
+   - Counter = 1
+   - Name    = "AAA"
+   - Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: Counter        = 2
-   - Input: Name           = "BBB"
-   - Trace: Sut            = { Contacts: [ "BBB" ] }
+   - Name to update = String-1
+   - Counter        = 2
+   - Name           = "BBB"
+   - Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-2
-   - Input: Counter = 3
-   - Input: Name    = "AAA"
-   - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
+   - Name    = String-2
+   - Counter = 3
+   - Name    = "AAA"
+   - Sut     = { Contacts: [ "BBB", "AAA" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-3
-   - Input: Counter = 4
-   - Input: Name    = "BBB"
-   - Trace: Sut     = { Contacts: [ "BBB", "AAA" ] }
+   - Name    = String-3
+   - Counter = 4
+   - Name    = "BBB"
+   - Sut     = { Contacts: [ "BBB", "AAA" ] }
  ========================================
   !! Expectation Failed: Count matches
  ========================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Count matches: 3x
  ------------------------------------------------------------

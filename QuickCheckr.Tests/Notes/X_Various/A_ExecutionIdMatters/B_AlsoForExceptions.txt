@@ -1,29 +1,22 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:20:1
+ Location:                Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:19:1
  Original failing run:    4 executions
  Minimal failing case:    3 executions (after 2 shrinks)
- Seed:                    1954794658
+ Seed:                    684737433
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-1
-   - Input: Counter = 1
+   - Name    = String-1
+   - Counter = 1
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: Counter        = 2
-   - Input: Name           = "BBB"
+   - Name to update = String-1
+   - Counter        = 2
+   - Name           = "BBB"
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-3
-   - Input: Counter = 4
-   - Input: Name    = "BBB"
- ===========================================================================
-  !! QuickPulse.Instruments.ComputerSaysNo: I'm afraid I can't do that BBB
-   at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.ContactBook.Add(String name) in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 69
-   at QuickCheckr.Tests.Notes.X_Various.A_ExecutionIdMatters.B_AlsoForExceptions.<>c__DisplayClass1_5.GetCheckr() in Notes\X_Various\A_ExecutionIdMatters\B_AlsoForExceptions.cs:line 55
-   at QuickCheckr.Checkr.<>c__DisplayClass2_0.Act() in CheckrAct.cs:line 24
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.TryCatch() in CheckrAct_Helper.cs:line 12
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, String key, Func`1 func, Action`1 onException) in UnderTheHood\TheCatcher.cs:line 15
- ===========================================================================
+   - Counter = 4
+   - Name    = "BBB"
+ ============================================================
+  !! ComputerSaysNo: I'm afraid I can't do that BBB
+ ============================================================

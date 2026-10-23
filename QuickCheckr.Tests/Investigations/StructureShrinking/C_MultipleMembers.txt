@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_MultipleMembers.cs:20:1
+ Location:                C_MultipleMembers.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 4 shrinks)
- Seed:                    1855640306
+ Seed:                    374760513
  ------------------------------------------------------------
   Executed:
    - Manifest = { Codes: [ 42 ], Tags: [ "required" ] }

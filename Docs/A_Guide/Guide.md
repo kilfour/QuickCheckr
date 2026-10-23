@@ -1,7 +1,4 @@
 # Guide
-|◀|△|[▶][PuttingACaseOnTheBoard]|
-|---|---|---|
-  
 **Welcome to the QuickCheckr Guide.**  
 
 This document walks through the core ideas of QuickCheckr,
@@ -27,8 +24,6 @@ but it also explores sequences of actions and reduces failures to the smallest s
   - An overview of pools and their usage.
 - [Bolting Horses][BoltingHorses]
   - A real-world example of hunting down a subtle invariant bug.  
-
-[PuttingACaseOnTheBoard]: ../../Drafts/B_PuttingACaseOnTheBoard/PuttingACaseOnTheBoard.md
 
 [CheckringThingsOut]: A_CheckringThingsOutChapter/A_CheckringThingsOut.md
 

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:29:1
+ Location:                Experimental\W_Warehouse\C_StepThree\WarehouseStepThree.cs:28:1
  Original failing run:    20 executions
  Minimal failing case:    6 executions (after 16 shrinks)
  Seed:                    1764635658
@@ -49,7 +49,7 @@
  ===============================================================
   !! Expectation Failed: No Stock Below Zero After Any Action
  ===============================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - No Stock Below Zero After Any Action: 19x
  - Stock Decreased After Order: 2x
  ------------------------------------------------------------

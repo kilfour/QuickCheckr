@@ -5,8 +5,7 @@
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    2014608033
  ------------------------------------------------------------
-  Executed:
-   - WARNING: Empty collection deemed irrelevant at input 'List Input'. If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
+  Executed
  =======================================
   !! Expectation Failed: Always fails
  =======================================

@@ -94,10 +94,6 @@ public class H
 
   Original:
     ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
-
-  WARNING: Empty collection deemed irrelevant at:
-       Input.Item: 1, 2, 3
-       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ------------------------------------------------------------
 ```
 ## Large Union List
@@ -213,11 +209,12 @@ select expr
 
 **The Shrinkr:**  
 ```csharp
-Shrink.When<int>(s => s
-    .As<Num>(a => a.Value)
-    .As<Term, Expr>(a => a.R)
-    .Value(t => t.Op == Operation.Div),
-s => s.Simplify(Reduce.Towards(1)))
+Shrinkr.For<int>()
+    .When(s => s
+        .As<Num>(a => a.Value)
+        .As<Term, Expr>(a => a.R)
+        .Value(t => t.Op == Operation.Div))
+    .Reduce(Reduce.Towards(1))
 ```
 
 **The Formatter:**  
@@ -319,10 +316,9 @@ select pair
 ```csharp
 public class The
 {
-    public static readonly Shrinker Shrinkr =
-        Shrink.OnType<Pair>(
-            s => s.Simplify(
-                Reduce.Function<Pair>(a => TowardsZero(a))));
+    public static readonly Shrinker Shrinker =
+        Shrinkr.For<Pair>()
+            .Reduce(Reduce.Function<Pair>(a => TowardsZero(a)));
 
     private static IEnumerable<Pair> TowardsZero(Pair input)
     {
@@ -346,7 +342,7 @@ The smallest falsified sample is `[10, 10]`
 **The Testr:**  
 ```csharp
 Testr.Named("Difference must not be zero.")
-    .For(TheFuzzr, Shrinkr)
+    .For(TheFuzzr, Shrinker)
     .Assert(a => a.A < 10 || a.A != a.B)
     .Run();
 ```
@@ -373,7 +369,7 @@ The smallest falsified sample is `[10, 6]`.
 **The Testr:**  
 ```csharp
 Testr.Named("Difference must not be small.")
-    .For(TheFuzzr, Shrinkr)
+    .For(TheFuzzr, Shrinker)
     .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) > 4 || a.A == a.B)
     .Run();
 ```
@@ -400,7 +396,7 @@ The smallest falsified sample is `[10, 9]`.
 **The Testr:**  
 ```csharp
 Testr.Named("Difference is not exactly 1.")
-    .For(TheFuzzr, Shrinkr)
+    .For(TheFuzzr, Shrinker)
     .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1)
     .Run();
 ```

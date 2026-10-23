@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                U_ValueObjects.cs:21:1
+ Location:                U_ValueObjects.cs:22:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1108652583

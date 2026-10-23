@@ -1,12 +1,12 @@
  ------------------------------------------------------------
  Test:                    RunTestSolution
- Location:                Drafts\Z_Issues\K_SystemTypes\SystemTypes.cs:58:1
+ Location:                Notes\Z_ToBeLookedAt\Z_Issues\K_SystemTypes\SystemTypes.cs:62:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    350297528
  ------------------------------------------------------------
   Executed:
-   - Input: A thing with a type = { Type: Int32 }
+   - A thing with a type = { Type: Int32 }
  ================================
   !! Expectation Failed: Fails
  ================================

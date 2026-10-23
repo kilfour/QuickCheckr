@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                D_RejectedReconstruction.cs:22:1
+ Location:                D_RejectedReconstruction.cs:23:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1696796102
+ Seed:                    1543792287
  ------------------------------------------------------------
   Executed:
    - Schedule = { Slots: [ 42 ] }

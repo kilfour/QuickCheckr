@@ -11,12 +11,12 @@ inputs and sequences of operations. You describe what the system can do and what
 should remain true. QuickCheckr runs those descriptions, looks for failures, and
 shrinks failing runs into smaller examples you can investigate.
 
-> QuickCheckr is all about state and side-effects, because most C# code is all about state and side-effects.
-
 A test is a composable LINQ query, called a **Checkr**. Its steps can generate
 inputs, call your code, choose between operations, and check expectations.
 The same building blocks work for a single function call or a workflow involving
 several objects and changing state.
+
+> QuickCheckr is all about state and side-effects, because most C# code is all about state and side-effects.
 
 ## How it works
 

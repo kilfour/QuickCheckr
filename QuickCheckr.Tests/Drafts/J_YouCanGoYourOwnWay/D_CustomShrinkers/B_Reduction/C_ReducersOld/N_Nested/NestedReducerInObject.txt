@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                NestedReducerInObject.cs:27:1
+ Location:                NestedReducerInObject.cs:28:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    686899245

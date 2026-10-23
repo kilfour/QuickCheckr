@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B1_TryCollectionOnShrink.cs:18:1
+ Location:                B1_TryCollectionOnShrink.cs:19:1
  Original failing run:    1 execution
  Seed:                    899182715
  ------------------------------------------------------------

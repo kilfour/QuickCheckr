@@ -180,7 +180,7 @@ private static readonly CheckrOf<Case> AssignedCoachesMustBeSuitable =
   !! Expectation Failed: Assigned Coach Must Be Suitable
        Coach-1
  ==========================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Course Name Set: 4x
  - Coach Name is set: 4x
  - Coach Skills Set: 2x

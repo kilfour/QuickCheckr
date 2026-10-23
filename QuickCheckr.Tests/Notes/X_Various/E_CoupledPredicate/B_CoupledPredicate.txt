@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                B_CoupledPredicate.cs:20:1
+ Location:                B_CoupledPredicate.cs:21:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    2017105380

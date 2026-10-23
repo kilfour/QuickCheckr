@@ -1,10 +1,10 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:71:1
+ Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:70:1
  Original failing run:    100 executions
  Seed:                    1273117969
  ------------------------------------------------------------
   Executed: Roll (100 Times)
- =================================================
-  !!  The Verifier Disagrees: Rolls: Contains 6
- =================================================
+ ================================================
+  !! The Verifier Disagrees: Rolls: Contains 6
+ ================================================

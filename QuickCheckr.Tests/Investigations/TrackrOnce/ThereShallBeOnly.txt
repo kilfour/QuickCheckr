@@ -3,14 +3,14 @@
  Location:                ThereShallBeOnly.cs:19:1
  Original failing run:    6 executions
  Minimal failing case:    1 execution (after 5 shrinks)
- Seed:                    1347764707
+ Seed:                    1016111113
  ------------------------------------------------------------
   Executed:
    - Counter-1 = 6
  ========================================
   !! Expectation Failed: counter1 <= 5
  ========================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - counter1 <= 5: 5x
  - counter2 <= 1: 1x
  ------------------------------------------------------------

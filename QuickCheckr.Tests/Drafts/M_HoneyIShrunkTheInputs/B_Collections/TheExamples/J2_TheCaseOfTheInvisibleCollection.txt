@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                J2_TheCaseOfTheInvisibleCollection.cs:18:1
+ Location:                J2_TheCaseOfTheInvisibleCollection.cs:19:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 1 shrink)
  Seed:                    169301180
@@ -15,6 +15,6 @@
  ================================
   !! Expectation Failed: Has 1
  ================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Has 1: 1x
  ------------------------------------------------------------

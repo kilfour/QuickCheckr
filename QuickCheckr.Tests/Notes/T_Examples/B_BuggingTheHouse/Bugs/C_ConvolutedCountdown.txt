@@ -1,18 +1,17 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\C_ConvolutedCountdown.cs:34:1
+ Location:                Notes\T_Examples\B_BuggingTheHouse\Bugs\C_ConvolutedCountdown.cs:33:1
  Original failing run:    84 executions
  Minimal failing case:    4 executions (after 81 shrinks)
  Seed:                    1141724745
  ------------------------------------------------------------
   Executed: BugHouse.Run (3 Times)
-   - Input: a = 6
+   - a = 6
  ------------------------------------------------------------
   Executed: BugHouse.Run
-   - WARNING: All inputs were considered irrelevant.
  =======================================
   !! Expectation Failed: Returns true
  =======================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Returns true: 83x
  ------------------------------------------------------------

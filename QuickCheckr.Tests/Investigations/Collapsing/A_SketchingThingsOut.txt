@@ -7,9 +7,6 @@
  ------------------------------------------------------------
   Executed:
    - lister = { Child: { Child: { Child: { Values: [ 11, 72, 27 ], Child: null } } } }
-   - WARNING: Empty collection deemed irrelevant at:
-       lister: Values, Child.Values, Child.Child.Values
-       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================================
   !! Expectation Failed: no list sum > 100 && count >= 2
  ==========================================================

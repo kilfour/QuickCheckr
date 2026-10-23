@@ -1,15 +1,15 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\Z_ToBeLookedAt\K_ConditionalExecution\Methods\CheckrActWhen.cs:17:1
+ Location:                Notes\Z_ToBeLookedAt\K_ConditionalExecution\Methods\CheckrActWhen.cs:16:1
  Original failing run:    3 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    625676917
  ------------------------------------------------------------
   Executed: Act
-   - Input: Counter = 3
+   - Counter = 3
  ===================================
   !! Expectation Failed: Not Null
  ===================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Not Null: 1x
  ------------------------------------------------------------

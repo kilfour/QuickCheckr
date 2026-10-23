@@ -1,13 +1,13 @@
  ------------------------------------------------------------
  Test:                    Example_Two
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:81:1
+ Location:                Drafts\H_OnShrinking\C_InputShrinking\InputShrinking.cs:98:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    231122398
  ------------------------------------------------------------
   Executed: Result
-   - Input: Input One   = 12
-   - Input: Input Three = 30
+   - Input One   = 12
+   - Input Three = 30
  ===========================================
   !! Expectation Failed: Should not be 42
  ===========================================

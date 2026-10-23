@@ -2,11 +2,10 @@
  Test:                    Example
  Location:                B_ExpectationShouldStop.cs:20:1
  Original failing run:    1 execution
- Seed:                    100057901
+ Seed:                    1781941638
  ------------------------------------------------------------
   Executed:
-   - To Pool: input.Answer = Int32-1
-   - Thing                 = null
+   - Thing = null
  ======================================
   !! Expectation Failed: Is not null
  ======================================

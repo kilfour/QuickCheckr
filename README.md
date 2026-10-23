@@ -46,8 +46,7 @@ The rule we want to check is simple: **the total must equal the sum of the curre
 items**, whatever operations came before it.
 
 Here's the implementation with the cache invalidation bug:
-
-
+  
 ```csharp
 public class ShoppingCart
 {
@@ -70,7 +69,7 @@ public class ShoppingCart
     }
 }
 ```
-The Checkr chooses between adding an item and clearing the cart, then checks the total after every operation:
+The Checkr chooses between adding an item and clearing the cart, then checks the total after every operation:  
 ```csharp
 from cart in Trackr.Stashed(() => new ShoppingCart())
 from operation in Checkr.OneOf(
@@ -82,7 +81,7 @@ from total in Checkr.Expect("Total matches items",
     expect => expect.Equal(cart.Items.Sum(), cart.Total))
 select Case.Closed;
 ```
-**The report:**
+**The report:**  
 ```text
 ------------------------------------------------------------
  Test:                    Example
@@ -100,7 +99,7 @@ select Case.Closed;
        Expected: 0
        Actual: 13
  ==============================================
- Passed Expectations (during initial run)
+ Passed Expectations (during initial run) 
  - Total matches items: 2x
  ------------------------------------------------------------
 ```
@@ -197,3 +196,4 @@ tells the story behind the library and its roots in QuickCheck.
 ## License
 
 [MIT](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE).
+  

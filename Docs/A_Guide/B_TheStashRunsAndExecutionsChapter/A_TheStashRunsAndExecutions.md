@@ -53,7 +53,7 @@ checkr.Run(100.Runs(), 10.ExecutionsPerRun());
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                C_DelayedDetonationFound.cs:93:1
+ Location:                C_DelayedDetonationFound.cs:84:1
  Original failing run:    3 executions
  Minimal failing case:    3 executions (after 2 shrinks)
  Seed:                    1854571642
@@ -65,7 +65,7 @@ checkr.Run(100.Runs(), 10.ExecutionsPerRun());
  ============================================================
   !! Exception: I'm sorry, Dave, I'm afraid I can't do that.
  ============================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Returns true: 2x
  ------------------------------------------------------------
 ```

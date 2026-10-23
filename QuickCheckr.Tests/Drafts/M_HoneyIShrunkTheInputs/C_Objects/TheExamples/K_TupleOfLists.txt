@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                K_TupleOfLists.cs:19:1
+ Location:                K_TupleOfLists.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
  Seed:                    1892439403
@@ -8,9 +8,6 @@
   Executed:
    - Tuple    = ( [ 42 ], _, _ )
    - Original = ( [ 42, 32 ], [ 17, 69 ], [ ] )
-   - WARNING: Empty collection deemed irrelevant at:
-       Tuple.Item: 2, 3
-       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

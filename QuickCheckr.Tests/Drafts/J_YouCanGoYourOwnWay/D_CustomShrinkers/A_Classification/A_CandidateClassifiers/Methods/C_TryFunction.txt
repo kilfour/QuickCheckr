@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                C_TryFunction.cs:22:1
+ Location:                C_TryFunction.cs:23:1
  Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
+ Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    161541321
  ------------------------------------------------------------
   Executed:
@@ -10,6 +10,6 @@
  =======================================
   !! Expectation Failed: counter != 2
  =======================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - counter != 2: 1x
  ------------------------------------------------------------

@@ -39,14 +39,14 @@ This makes it ideal for tests where you want to confirm that a whole series of o
 ```text
 ------------------------------------------------------------
  Test:                    RunTest
- Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:71:1
+ Location:                CookBook\L_TheLoadedDie\TheLoadedDie.cs:70:1
  Original failing run:    100 executions
  Seed:                    1273117969
  ------------------------------------------------------------
   Executed: Roll (100 Times)
- =================================================
-  !!  The Verifier Disagrees: Rolls: Contains 6
- =================================================
+ ================================================
+  !! The Verifier Disagrees: Rolls: Contains 6
+ ================================================
 ```
 Well, you probably saw this coming, but the die is bugged. `Random.Next` is upper-bound exclusive, so six is never rolled.  
 A common mistake, and the verifier pointed it out in above report.

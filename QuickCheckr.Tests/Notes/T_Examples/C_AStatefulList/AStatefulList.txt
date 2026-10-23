@@ -1,28 +1,28 @@
  ------------------------------------------------------------
  Test:                    RunTest
- Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:32:1
+ Location:                Notes\T_Examples\C_AStatefulList\AStatefulList.cs:31:1
  Original failing run:    9 executions
  Minimal failing case:    3 executions (after 6 shrinks)
  Seed:                    254875886
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item   = 3
-   - Trace: Before = [ ]
-   - Trace: After  = [ 3 ]
+   - Item   = 3
+   - Before = [ ]
+   - After  = [ 3 ]
  ------------------------------------------------------------
   Executed: Add
-   - Input: Item   = 3
-   - Trace: Before = [ 3 ]
-   - Trace: After  = [ 3, 3 ]
+   - Item   = 3
+   - Before = [ 3 ]
+   - After  = [ 3, 3 ]
  ------------------------------------------------------------
   Executed: Remove
-   - Input: Item   = 3
-   - Trace: Before = [ 3, 3 ]
-   - Trace: After  = [ 3 ]
+   - Item   = 3
+   - Before = [ 3, 3 ]
+   - After  = [ 3 ]
  =====================================================
   !! Expectation Failed: List Does Not Contain Item
  =====================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - List Does Not Contain Item: 4x
  - List Contains Item: 4x
  ------------------------------------------------------------

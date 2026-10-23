@@ -6,24 +6,24 @@
  Seed:                    1012196536
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-1
-   - Input: Counter = 1
-   - Trace: Sut     = { Contacts: [ "AAA" ] }
+   - Name    = String-1
+   - Counter = 1
+   - Sut     = { Contacts: [ "AAA" ] }
  ------------------------------------------------------------
   Executed: Update
-   -  Pool: Name to update = String-1
-   - Input: Counter        = 2
-   - Input: Name           = "BBB"
-   - Trace: Sut            = { Contacts: [ "BBB" ] }
+   - Name to update = String-1
+   - Counter        = 2
+   - Name           = "BBB"
+   - Sut            = { Contacts: [ "BBB" ] }
  ------------------------------------------------------------
   Executed: Add
-   -  Pool: Name    = String-3
-   - Input: Counter = 4
-   - Input: Name    = "BBB"
-   - Trace: Sut     = { Contacts: [ "BBB" ] }
+   - Name    = String-3
+   - Counter = 4
+   - Name    = "BBB"
+   - Sut     = { Contacts: [ "BBB" ] }
  ========================================
   !! Expectation Failed: Count matches
  ========================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Count matches: 3x
  ------------------------------------------------------------

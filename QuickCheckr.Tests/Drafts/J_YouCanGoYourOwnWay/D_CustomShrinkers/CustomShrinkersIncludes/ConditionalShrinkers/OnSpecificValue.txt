@@ -1,9 +1,9 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                OnSpecificValue.cs:19:1
+ Location:                OnSpecificValue.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 3 shrinks)
- Seed:                    82840361
+ Seed:                    1810614014
  ------------------------------------------------------------
   Executed:
    - Inter    = { B: 5 }

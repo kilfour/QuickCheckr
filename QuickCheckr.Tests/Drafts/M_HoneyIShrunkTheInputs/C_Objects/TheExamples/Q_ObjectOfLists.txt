@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Q_ObjectOfLists.cs:19:1
+ Location:                Q_ObjectOfLists.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 6 shrinks)
  Seed:                    1622405126
@@ -8,9 +8,6 @@
   Executed:
    - Museum   = { A: [ 42 ] }
    - Original = { A: [ 42, 6 ], B: [ 53, 25 ], C: [ ] }
-   - WARNING: Empty collection deemed irrelevant at:
-       Museum: B, C
-       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================================
   !! Expectation Failed: First list does not contain 42.
  ==========================================================

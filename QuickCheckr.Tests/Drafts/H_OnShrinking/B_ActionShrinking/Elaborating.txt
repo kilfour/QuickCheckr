@@ -1,8 +1,8 @@
  ------------------------------------------------------------
  Test:                    Elaborating
- Location:                Drafts\H_OnShrinking\B_ActionShrinking\ActionShrinking.cs:86:1
+ Location:                Drafts\H_OnShrinking\B_ActionShrinking\A_ActionShrinking.cs:67:1
  Original failing run:    1 execution
- Seed:                    711304214
+ Seed:                    1492097797
  ------------------------------------------------------------
   Executed: Act
  ===========================================

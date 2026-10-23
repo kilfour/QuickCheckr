@@ -10,6 +10,6 @@
  ===================================================
   !! Expectation Failed: Counter does not equal 3
  ===================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - Counter does not equal 3: 2x
  ------------------------------------------------------------

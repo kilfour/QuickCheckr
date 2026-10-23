@@ -1,10 +1,10 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\B_BuildingBlocks\S_TrackrVerify\TrackrVerify.cs:19:1
+ Location:                Notes\B_BuildingBlocks\S_TrackrVerify\TrackrVerify.cs:18:1
  Original failing run:    20 executions
  Seed:                    293407282
  ------------------------------------------------------------
   Executed: Roll (20 Times)
- ==========================================
-  !!  The Verifier Disagrees: Contains 3
- ==========================================
+ =========================================
+  !! The Verifier Disagrees: Contains 3
+ =========================================

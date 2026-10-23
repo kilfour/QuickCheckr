@@ -28,7 +28,7 @@ select enumerable.ToList();
 
 **The Checkr:**  
 ```csharp
-from showr in Showr.ForInput()
+from showr in Showr.ForInput() // <= Show original input value under the shrunk one.
 from input in Checkr.Input("Input", ListFuzzr())
 from result in Checkr.Act("Result",
     () => TheReverser.Reverses(TheReverser.Reverses(input)))

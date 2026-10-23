@@ -1,16 +1,5 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                TheNeedlerPattern.cs:23:1
- Original failing run:    2 executions
- Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    307579878
+ 1 Run
  ------------------------------------------------------------
-  Executed: start
-   - Input = 6
- ===================================
-  !! Expectation Failed: Is not 7
-       Task`1-231058368
- ===================================
  Passed Expectations
- - Is not 7: 1x
  ------------------------------------------------------------

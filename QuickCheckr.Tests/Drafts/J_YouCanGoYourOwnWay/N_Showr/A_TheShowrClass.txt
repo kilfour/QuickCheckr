@@ -1,25 +1,25 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Drafts\J_YouCanGoYourOwnWay\N_Showr\A_TheShowrClass.cs:28:1
+ Location:                Drafts\J_YouCanGoYourOwnWay\N_Showr\A_TheShowrClass.cs:27:1
  Original failing run:    2 executions
  Minimal failing case:    2 executions (after 3 shrinks)
  Seed:                    344916298
  ------------------------------------------------------------
   Executed: Add
-   - Input: a = 8
-                Int 8
-   - Input: b = 16
-                Int 16
+   - a = 8
+         Int 8
+   - b = 16
+         Int 16
  ------------------------------------------------------------
   Executed: Add
-   - Input: Counter = 2
-   - Input: a       = 1
-                      Int 1
-   - Input: b       = 17
-                      Int 17
+   - Counter = 2
+   - a       = 1
+               Int 1
+   - b       = 17
+               Int 17
  ================================================
   !! Expectation Failed: not 42 on execution 2
  ================================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - not 42 on execution 2: 1x
  ------------------------------------------------------------

@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ReportModeFinalTrace.cs:26:1
+ Location:                ReportModeFinalTrace.cs:27:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    1964562926

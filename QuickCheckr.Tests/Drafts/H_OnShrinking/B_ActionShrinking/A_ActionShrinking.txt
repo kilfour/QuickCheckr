@@ -1,0 +1,11 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                Drafts\H_OnShrinking\B_ActionShrinking\A_ActionShrinking.cs:35:1
+ Original failing run:    1 execution
+ Minimal failing case:    1 execution (after 2 shrinks)
+ Seed:                    684103824
+ ------------------------------------------------------------
+  Executed: Act Three
+ ============================================================
+  !! Exception: BOOM
+ ============================================================

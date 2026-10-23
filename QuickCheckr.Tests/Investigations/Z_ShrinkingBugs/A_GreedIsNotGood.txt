@@ -3,13 +3,13 @@
  Location:                A_GreedIsNotGood.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
- Seed:                    1636625885
+ Seed:                    1819975177
  ------------------------------------------------------------
   Executed:
    - List = [ _, 1 ]
  =============================================
   !! Expectation Failed: does not contain 1
  =============================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - input.Count == 2: 1x
  ------------------------------------------------------------

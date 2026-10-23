@@ -1,18 +1,18 @@
  ------------------------------------------------------------
  Test:                    RunTest_Deliberated
- Location:                Docs\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:113:1
- Original failing run:    7 executions
- Minimal failing case:    2 executions (after 5 shrinks)
- Seed:                    136908528
+ Location:                Drafts\B_PuttingACaseOnTheBoard\C_Configuration\F_DeliberationPolicy\DeliberationPolicyTests.cs:118:1
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    236596384
  ------------------------------------------------------------
   Executed: Deposit
-   - Input: Amount = 3
+   - Amount = 7
  ------------------------------------------------------------
   Executed: Withdraw
-   - Input: Amount = 2
+   - Amount = 6
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
- Passed Expectations
- - No Overdraft: 6x
+ Passed Expectations (during initial run) 
+ - No Overdraft: 2x
  ------------------------------------------------------------

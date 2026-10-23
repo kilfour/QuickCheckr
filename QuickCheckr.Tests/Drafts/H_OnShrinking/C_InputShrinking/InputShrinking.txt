@@ -1,12 +1,11 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Docs\H_OnShrinking\C_InputShrinking\InputShrinking.cs:39:1
+ Location:                Drafts\H_OnShrinking\C_InputShrinking\InputShrinking.cs:55:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 1 shrink)
  Seed:                    165641598
  ------------------------------------------------------------
-  Executed:
-   - WARNING: All inputs were considered irrelevant.
+  Executed
  =======================================
   !! Expectation Failed: Always Fails
  =======================================

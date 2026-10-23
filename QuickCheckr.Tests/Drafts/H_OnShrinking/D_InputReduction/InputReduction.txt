@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                InputReduction.cs:50:1
+ Location:                InputReduction.cs:51:1
  Original failing run:    2 executions
  Minimal failing case:    1 execution (after 2 shrinks)
  Seed:                    1684147193
@@ -11,6 +11,6 @@
  =======================================
   !! Expectation Failed: No Overdraft
  =======================================
- Passed Expectations
+ Passed Expectations (during initial run) 
  - No Overdraft: 1x
  ------------------------------------------------------------

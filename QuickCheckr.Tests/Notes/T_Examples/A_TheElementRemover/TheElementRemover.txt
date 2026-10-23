@@ -1,14 +1,14 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                Notes\T_Examples\A_TheElementRemover\TheElementRemover.cs:31:1
+ Location:                Notes\T_Examples\A_TheElementRemover\TheElementRemover.cs:30:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 7 shrinks)
  Seed:                    438724296
  ------------------------------------------------------------
   Executed: Delete from List
-   - Input: List                  = [ 5, 5 ]
-   - Input: Item to Remove        = 5
-   - Trace: List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
+   - List                  = [ 5, 5 ]
+   - Item to Remove        = 5
+   - List Before Shrinking = [ 2, 8, 0, 5, 5, 1, 8, 2, 9 ]
  ========================================================
   !! Expectation Failed: List Does Not Contain Element
  ========================================================

@@ -13,6 +13,4 @@
       Observed:
         Expected = -4
         Actual   = 4
-
-  WARNING: Reducer stopped at Input. Max steps (1024) exceeded.
  ------------------------------------------------------------

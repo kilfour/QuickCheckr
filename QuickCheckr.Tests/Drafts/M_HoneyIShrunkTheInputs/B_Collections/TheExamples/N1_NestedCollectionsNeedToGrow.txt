@@ -7,7 +7,6 @@
  ------------------------------------------------------------
   Executed:
    - Original = { A: [ 74, 41, 59 ] }
-   - WARNING: Empty collection deemed irrelevant at input 'Museum'. If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ==========================================
   !! Expectation Failed: List count >= 4
  ==========================================

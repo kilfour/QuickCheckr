@@ -50,7 +50,7 @@ public class ListReverse : CheckrTest<ListReverse>
 
     [CodeSnippet]
     protected override CheckrOf<Case> TheCheckr() =>
-        from showr in Showr.ForInput()
+        from showr in Showr.ForInput() // <= Show original input value under the shrunk one.
         from input in Checkr.Input("Input", ListFuzzr())
         from result in Checkr.Act("Result",
             () => TheReverser.Reverses(TheReverser.Reverses(input)))

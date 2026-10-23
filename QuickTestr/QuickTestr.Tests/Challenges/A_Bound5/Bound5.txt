@@ -8,8 +8,4 @@
 
   Original:
     ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
-
-  WARNING: Empty collection deemed irrelevant at:
-       Input.Item: 1, 2, 3
-       If emptiness may hide the failure's cause, provide a non-empty witness with Shrink.Values(...) or opt into sampling with Shrink.Fuzzr(...).
  ------------------------------------------------------------

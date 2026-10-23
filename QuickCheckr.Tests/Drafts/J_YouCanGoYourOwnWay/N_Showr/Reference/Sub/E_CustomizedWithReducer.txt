@@ -1,6 +1,6 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                E_CustomizedWithReducer.cs:19:1
+ Location:                E_CustomizedWithReducer.cs:20:1
  Original failing run:    1 execution
  Minimal failing case:    1 execution (after 8 shrinks)
  Seed:                    1611568796
@@ -13,6 +13,3 @@
  ============================================================
   !! DivideByZeroException: Attempted to divide by zero.
  ============================================================
- Passed Expectations
- - Not 42: 1x
- ------------------------------------------------------------
