@@ -2,8 +2,6 @@
 
 ### Doing
 - Testing ShrinkCount
-- Pool Shrinking
-- OneOfPool overload
 
 ### To Test
 

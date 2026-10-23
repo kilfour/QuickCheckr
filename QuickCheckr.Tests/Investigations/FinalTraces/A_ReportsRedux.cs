@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Protocol;
 using QuickCheckr.Shrinking;
@@ -5,7 +6,7 @@ using QuickCheckr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 
-namespace QuickCheckr.Tests.Investigations.G_GatheringEvidence;
+namespace QuickCheckr.Tests.Investigations.FinalTraces;
 
 [DocFile]
 public class A_ReportsRedux : CheckrTest<A_ReportsRedux>
