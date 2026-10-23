@@ -161,6 +161,16 @@ For meaningful replay, create state through the Checkr workflow and keep
 generated inputs and operations explicit. Each replay needs to reconstruct the
 scenario from fresh state.
 
+## QuickTestr
+
+[QuickTestr](https://github.com/kilfour/QuickCheckr/tree/main/QuickTestr) provides
+a smaller, guided API built on QuickCheckr for property checks, comparisons
+against a reference implementation, and lightweight model-based tests.
+If your test starts with "for all generated values, this should hold", its
+`Testr.Named(...).For(...).Assert(...).Run()` workflow is a good entry point.
+Use QuickCheckr directly when you want to compose the inputs, operations,
+expectations, and tracked state of a workflow yourself.
+
 ## Documentation
 
 The [guide](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)
