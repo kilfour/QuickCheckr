@@ -12,37 +12,29 @@ namespace QuickCheckr.Tests;
 public class CreateReadMe : BaseTest
 {
     [Fact]
-    [DocContent("**Buggy Code:**")]
-    [DocExample(typeof(BugHouse))]
-    [DocContent("**The Checkr:**")]
+    [DocExample(typeof(ShoppingCart))]
+    [DocContent("The Checkr chooses between adding an item and clearing the cart, then checks the total after every operation:")]
     [DocExample(typeof(CreateReadMe), nameof(GetCheckr))]
-    [DocContent("**Reports:**")]
+    [DocContent("**The report:**")]
     [DocCodeFile("CreateReadMe.txt", "text")]
     [DocRawFile("CreateReadme-footer.md")]
     public void Example()
     {
-        var article = Journalist.Publish(GetCheckr(), a => a.Run(1141724745, 100.ExecutionsPerRun()));
-        WriteAsserts(article);
-        WriteReport<CreateReadMe>(article, false);
+        var article = Journalist.Publish(GetCheckr(), a => a.Run(42, 100.ExecutionsPerRun()));
         Verify(article);
+        WriteReport<CreateReadMe>(article, false);
     }
 
     private static void Verify(Article article)
     {
+        Assert.True(article.ShrinkCount > 0);
         Assert.Equal(2, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(4, article.Execution(1).Read().ExecutionId);
-        Assert.Equal(3, article.Execution(1).Times);
-        Assert.Equal("BugHouse.Run", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("number", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("6", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal(84, article.Execution(2).Read().ExecutionId);
-        Assert.Equal(2, article.Execution(2).Times);
-        Assert.Equal("BugHouse.Run", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Returns true", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(84, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal("Add item", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Clear cart", article.Execution(2).Action(1).Read().Label);
+        Assert.Contains("Total matches items", article.FailureDescription());
+        Assert.Contains("Expected: 0", article.FailingExpectationMessages());
+        Assert.DoesNotContain("Actual: 0", article.FailingExpectationMessages());
     }
 
     [CodeSnippet]
@@ -50,24 +42,36 @@ public class CreateReadMe : BaseTest
     private static CheckrOf<Case> GetCheckr()
     {
         return
-        from bughouse in Trackr.Stashed(() => new BugHouse())
-        from number in Checkr.Input("number", Fuzzr.Int())
-        from output in Checkr.Act("BugHouse.Run", () => bughouse.Run(number))
-        from expect in Checkr.Expect("Returns true", () => output)
+        from cart in Trackr.Stashed(() => new ShoppingCart())
+        from operation in Checkr.OneOf(
+            from price in Checkr.Input("Price", Fuzzr.Int(1, 101))
+            from add in Checkr.Act("Add item", () => cart.Add(price))
+            select Case.Closed,
+            Checkr.Act("Clear cart", () => cart.Clear()))
+        from total in Checkr.Expect("Total matches items",
+            expect => expect.Equal(cart.Items.Sum(), cart.Total))
         select Case.Closed;
     }
 
     [CodeExample]
-    public class BugHouse
+    public class ShoppingCart
     {
-        private int count;
+        private readonly List<int> items = [];
+        private int? cachedTotal;
 
-        public bool Run(int number)
+        public IReadOnlyList<int> Items => items;
+        public int Total => cachedTotal ??= items.Sum();
+
+        public void Add(int price)
         {
-            if (count == 5) throw new Exception("Here's Johnny");
-            if (number == 6 && count != 3) count++;
-            if (count >= 3) count++;
-            return true;
+            items.Add(price);
+            cachedTotal = null;
+        }
+
+        public void Clear()
+        {
+            items.Clear();
+            // Bug: cachedTotal must also be invalidated.
         }
     }
 }

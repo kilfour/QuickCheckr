@@ -1,39 +1,47 @@
 > **CSI: .NET**
 
-Property-based testing for the pragmatic.  
+Property-based testing for the pragmatic.
 
 [![Docs](https://img.shields.io/badge/docs-QuickCheckr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/Guide.md)
 [![NuGet](https://img.shields.io/nuget/v/QuickCheckr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickCheckr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickCheckr/blob/main/LICENSE)
 
-**QuickCheckr** is inspired by Haskell's QuickCheck, but it is not a straight-up clone.  
-It borrows the *ideas* of property-based testing, not the algorithms, and was built from the ground up for the realities of day-to-day .NET code.
-
-If you are testing *pure* functions and are primarily interested in mathematically minimal counterexamples,
-there are excellent tools available, FsCheck being the obvious choice, even if it can feel slightly unwieldy in C#.
-
-But most C# code is not pure.
+**QuickCheckr** is a C# library for exploring how your code behaves with generated
+inputs and sequences of operations. You describe what the system can do and what
+should remain true. QuickCheckr runs those descriptions, looks for failures, and
+shrinks failing runs into smaller examples you can investigate.
 
 > QuickCheckr is all about state and side-effects, because most C# code is all about state and side-effects.
 
-QuickCheckr shrinks both individual input values and *behaviour*:
-sequences of inputs, actions, branching decisions, and state transitions.
-Failures are treated as things that *emerge over time*, not necessarily as the result of a single call.
+A test is a composable LINQ query, called a **Checkr**. Its steps can generate
+inputs, call your code, choose between operations, and check expectations.
+The same building blocks work for a single function call or a workflow involving
+several objects and changing state.
 
-This comes with a non-trivial learning curve.
-To make replay and shrinking meaningful, keep state under test in stashed objects or tracked pools, and express operations through the Checkr workflow.
-QuickCheckr uses `LINQ` composition to express this, which is familiar to most C# developers, but the idea of *stateful LINQ* may feel unusual at first.
+## How it works
 
-The payoff is that bugs which depend on a sequence of operations become both detectable *and explainable*.
+* **Describe the behaviour.** Use QuickFuzzr to generate inputs, actions to call
+  your code, and expectations to express its rules.
+* **Explore variations.** Run the query with fresh inputs, or choose between
+  operations to explore different paths. Stashed objects and tracked pools carry
+  state between executions within a run.
+* **Investigate a failure.** QuickCheckr replays the failing run and tries to
+  simplify its sequence and inputs while preserving the failure. The report shows
+  the remaining operations, relevant inputs, failed expectations, and a seed for
+  reproduction.
 
-Below is a small, deliberately contrived example.
-A more realistic, end-to-end [scenario](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/E_HorsesAgain/BoltingHorses.md) can be found at the end of the guide,
-but it is strongly recommended to start at the [beginning](https://github.com/kilfour/QuickCheckr/blob/main/Docs/A_Guide/A_CheckringThingsOutChapter/A_CheckringThingsOut.md) and follow it step by step.
+You control the operations and expectations. This lets you check a result against
+a reference implementation, verify a relationship between inputs and outputs, or
+keep checking an invariant as a system changes. Async operations are supported
+through execution, replay, and shrinking.
 
-## Example
-The following example demonstrates a class of bug that is easy to miss in traditional tests and difficult to express using classic property-based testing.
+## Example: a stale shopping cart total
 
-A call on a fresh instance succeeds.
-The failure only occurs after a *specific sequence* of operations has been performed on the same instance.  
-QuickCheckr is designed to explore and shrink exactly this kind of behaviour.  
+A shopping cart caches its total. Adding an item invalidates the cache, but
+clearing the cart forgets to do so. A test that only adds items passes; reading the
+total after adding and then clearing exposes the stale value.
 
+The rule we want to check is simple: **the total must equal the sum of the current
+items**, whatever operations came before it.
+
+Here's the implementation with the cache invalidation bug:

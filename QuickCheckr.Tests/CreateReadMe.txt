@@ -1,18 +1,19 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                CreateReadMe.cs:27:1
- Original failing run:    85 executions
- Minimal failing case:    5 executions (after 82 shrinks)
- Seed:                    1141724745
+ Location:                CreateReadMe.cs:23:1
+ Original failing run:    3 executions
+ Minimal failing case:    2 executions (after 1 shrink)
+ Seed:                    42
  ------------------------------------------------------------
-  Executed: BugHouse.Run (3 Times)
-   - Input: number = 6
+  Executed: Add item
+   - Price = 13
  ------------------------------------------------------------
-  Executed: BugHouse.Run (2 Times)
-   - WARNING: All inputs were considered irrelevant.
- ===========================================================================
-  !! Exception: Here's Johnny
- ===========================================================================
- Passed Expectations
- - Returns true: 84x
+  Executed: Clear cart
+ ==============================================
+  !! Expectation Failed: Total matches items
+       Expected: 0
+       Actual: 13
+ ==============================================
+ Passed Expectations (during initial run)
+ - Total matches items: 2x
  ------------------------------------------------------------
