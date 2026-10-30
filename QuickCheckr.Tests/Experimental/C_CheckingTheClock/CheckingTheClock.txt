@@ -1,0 +1,15 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                CheckingTheClock.cs:18:1
+ Original failing run:    1 execution
+ Seed:                    41897293
+ ------------------------------------------------------------
+  Executed: Fast, Slow
+ ================================================
+  !! Expectation Failed: Fast is really faster
+       Delta:       50 ms
+       First took:  00:00:00.0156695
+       Second took: 00:00:00.0134587
+       -----------------------------
+       Missed by:   00:00:00.0522108
+ ================================================

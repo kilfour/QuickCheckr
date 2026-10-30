@@ -1,3 +1,6 @@
+### 0.4.5: Keeping Up With the Checkrers
+* QuickCheckr compatibility update.
+
 ### 0.4.2: Keeping Up With the Checkrers
 * QuickCheckr compatibility update.
 

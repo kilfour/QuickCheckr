@@ -18,6 +18,37 @@ internal static class Evaluate
                 (ex) => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };
 
+    public static CheckrOf<Case> ExpectationWhen(
+        string key,
+        Func<bool> predicate,
+        Func<ExpectationContext, ExpectationResult> evaluate,
+        bool register) =>
+        state =>
+        {
+            if (register)
+                RegisterExpectation(key, state);
+            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
+                return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
+            return TheCatcher.InTheCheckr(state,
+                () => predicate()
+                    ? Expectation(key, evaluate(context), state)
+                    : CheckrResult.CaseOnly(state),
+                ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
+        };
+
+    public static CheckrOf<Case> Verification(
+        string key,
+        Func<ExpectationContext, ExpectationResult> evaluate) =>
+        state =>
+        {
+            state.Memory.KeyGuardian.Expects.Check(key);
+            if (!state.IsThisTheRunsLastExecution())
+                return CheckrResult.CaseOnly(state);
+            var context = new ExpectationContext(state.Editor);
+            return Verification(key, evaluate(context), state);
+        };
+
     public static CheckrOf<Case> ExpectationAsync(
         string key,
         Func<ExpectationContext, CancellationToken, Task<ExpectationResult>> evaluate,
@@ -36,25 +67,6 @@ internal static class Evaluate
                     state.CancellationToken.ThrowIfCancellationRequested();
                     return Expectation(key, result, state);
                 },
-                ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
-        };
-
-    public static CheckrOf<Case> ExpectationWhen(
-        string key,
-        Func<bool> predicate,
-        Func<ExpectationContext, ExpectationResult> evaluate,
-        bool register) =>
-        state =>
-        {
-            if (register)
-                RegisterExpectation(key, state);
-            if (state.EvidenceRecorder.ExpectationNeedsToBeSkipped(key))
-                return CheckrResult.CaseOnly(state);
-            var context = new ExpectationContext(state.Editor);
-            return TheCatcher.InTheCheckr(state,
-                () => predicate()
-                    ? Expectation(key, evaluate(context), state)
-                    : CheckrResult.CaseOnly(state),
                 ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
         };
 
@@ -82,18 +94,6 @@ internal static class Evaluate
                     return Expectation(key, result, state);
                 },
                 ex => state.EvidenceRecorder.ExpectationCrashed(key, ex));
-        };
-
-    public static CheckrOf<Case> Verification(
-        string key,
-        Func<ExpectationContext, ExpectationResult> evaluate) =>
-        state =>
-        {
-            state.Memory.KeyGuardian.Expects.Check(key);
-            if (!state.IsThisTheRunsLastExecution())
-                return CheckrResult.CaseOnly(state);
-            var context = new ExpectationContext(state.Editor);
-            return Verification(key, evaluate(context), state);
         };
 
     public static CheckrOf<Case> VerificationAsync(
@@ -136,8 +136,11 @@ internal static class Evaluate
         else
         {
             state.EvidenceRecorder.ExpectationFailed(
-                new ExpectationFailure(key, result.Messages, result.FailureIdentity?.Invoke()),
-                state.Memory.ShortTermMemory.CurrentExecutionNumber);
+                new ExpectationFailure(
+                    key,
+                    result.Messages,
+                    result.FailureIdentity?.Invoke()),
+                    state.Memory.ShortTermMemory.CurrentExecutionNumber);
         }
         return CheckrResult.CaseOnly(state);
     }
@@ -158,5 +161,4 @@ internal static class Evaluate
         }
         return CheckrResult.CaseOnly(state);
     }
-
 }
