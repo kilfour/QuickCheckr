@@ -4,7 +4,7 @@ using QuickPulse;
 
 namespace QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 
-internal sealed class CourtClerk : ITranscribe
+public sealed class CourtClerk : ITranscribe
 {
     public static CourtClerk Default() => new();
     private Decorum decorum = new();
