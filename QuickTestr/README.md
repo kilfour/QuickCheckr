@@ -74,8 +74,6 @@ Its niche is:
 * **Easy opt-in custom shrinking.**
 * **Integration with the QuickCheckr worldview.**
 
-In other words: less framework energy, more getting on with the test.
-
 ## Highlights
 
 * **Tiny DSL:** `Named`, `For`, `Assert`, `Run`, and a small set of focused extras.
