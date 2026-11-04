@@ -6,7 +6,6 @@ using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.J_Report
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.N_ShrinkMode.Reference;
 using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard.C_Configuration.P_Hint;
-using QuickCheckr.Tests.Drafts.B_PuttingACaseOnTheBoard;
 using QuickCheckr.Tests.Tools;
 using QuickPulse.Explains;
 

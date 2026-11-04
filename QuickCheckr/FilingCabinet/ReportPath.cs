@@ -1,5 +1,4 @@
 using QuickCheckr.Protocol;
-using QuickCheckr.UnderTheHood;
 
 namespace QuickCheckr.FilingCabinet;
 
