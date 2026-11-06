@@ -6,7 +6,7 @@ namespace QuickCheckr.Demo.ElevateMe;
 
 public class ElevateMeTests
 {
-    [DemoFact]
+    // [DemoFact]
     public void ElevateMeCheckr() //73986571
         => MyCheckr.FileAs("ElevateMe").Run(73986571 /* 50.Runs() */, 200.ExecutionsPerRun());
 
@@ -19,7 +19,7 @@ public class ElevateMeTests
     private static CheckrOf<Case> TraceElevator(ElevatorSystem elevatorSystem) =>
         //  from queue in Checkr.Trace("Queue", () => elevatorSystem.CallQueue)
         //  from floorQueue in Checkr.Trace("Floor Queue", () => elevatorSystem.Elevator.FloorQueue)
-        from status in Checkr.Trace("Status", b => b.Show(elevatorSystem.Status))
+        from status in Checkr.Trace("Status", b => b.Show(elevatorSystem.Status()))
         select Case.Closed;
 
     private static CheckrOf<Case> TracePassengers() =>

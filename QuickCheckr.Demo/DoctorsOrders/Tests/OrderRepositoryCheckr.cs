@@ -90,10 +90,26 @@ public class OrderRepositoryCheckr
 
     private static CheckrOf<Case> VerifyQuery(OrderRepository repository, OrderQuery query) =>
         from result in Checkr.Act("Find Orders", () => repository.FindOrders(query))
-        from allOrders in Poolr.All<OrderInfo>()
-        from model in Checkr.Capture(() => ApplyQuery(query, allOrders))
-        from expected in Checkr.Expect("Order Query", ctx => OrdersMatchResult(ctx, model, result))
+        from _ in OrdersMatchResult(query, result)
         select Case.Closed;
+
+    private static CheckrOf<Case> OrdersMatchResult(
+        OrderQuery query,
+        IReadOnlyCollection<Order> actual) =>
+        Poolr.Expect<OrderInfo>("Order Query", (orderInfos, context) =>
+        {
+            var expected = ApplyQuery(query, orderInfos);
+            if (expected.Count != actual.Count)
+                return context.Fail($"Expected {expected.Count} orders, but found {actual.Count}.");
+            var expectedList = expected.ToList();
+            var actualList = actual.ToList();
+            for (int i = 0; i < expectedList.Count; i++)
+            {
+                if (expectedList[i] != actualList[i])
+                    return context.Fail($"Order mismatch at index {i}: expected {expectedList[i]}, but found {actualList[i]}.");
+            }
+            return context.Pass();
+        });
 
     private static CheckrOf<CheckrOption> Requery(OrderRepository repository) =>
         Poolr.Has<OrderQuery>(
@@ -130,23 +146,6 @@ public class OrderRepositoryCheckr
             .ThenBy(o => o.Id)
             .Skip(query.Skip)
             .Take(query.Take)];
-
-    private static ExpectationResult OrdersMatchResult(
-        ExpectationContext context,
-        IReadOnlyCollection<Order> expected,
-        IReadOnlyCollection<Order> actual)
-    {
-        if (expected.Count != actual.Count)
-            return context.Fail($"Expected {expected.Count} orders, but found {actual.Count}.");
-        var expectedList = expected.ToList();
-        var actualList = actual.ToList();
-        for (int i = 0; i < expectedList.Count; i++)
-        {
-            if (expectedList[i] != actualList[i])
-                return context.Fail($"Order mismatch at index {i}: expected {expectedList[i]}, but found {actualList[i]}.");
-        }
-        return context.Pass();
-    }
 }
 
 
