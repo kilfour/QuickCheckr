@@ -17,8 +17,7 @@ public class PoolrAddMultipleLabels : CheckrTest<PoolrAddMultipleLabels>
     protected override CheckrOf<Case> TheCheckr() =>
         from pool1 in Poolr.Add("one", Checkr.Input("input one", Fuzzr.Constant(1)))
         from pool2 in Poolr.Add("two", Checkr.Input("input two", Fuzzr.Constant(2)))
-        from all in Poolr.All<int>()
-        from _ in Checkr.Expect("Count", a => all.Count == 2 ? a.Pass() : a.Fail(a.Show(all)))
+        from all in Poolr.Expect<int>("Count", (all, a) => all.Count == 2 ? a.Pass() : a.Fail(a.Show(all)))
         select Case.Closed;
 
     protected override void Verify(Article article)

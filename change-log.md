@@ -1,3 +1,6 @@
+## 0.4.6: Coming up for Air
+
+
 ## 0.4.5: Honey, I Changed the Shrinking API
 * Added fluent configuration helpers `ShrinkMode(...)`, `ReportMode(...)`, `WarningLevel(...)`, `MaxStepsPerReducer(...)`, `Custodian(...)`, and `Clerk(...)` on `CheckrOf<Case>` and `ConfiguredCheckr`. Helpers chain with `FileAs(...)` and preserve previously applied settings.
 * Breaking change: made `CheckrConfig` and `Configure(...)` internal. 

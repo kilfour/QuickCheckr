@@ -191,8 +191,7 @@ These are used to control the size of a pool amongst other things.")]
                             () => contactBook.Update(contact.Name, newName))
                         select contact with { Name = newName })))
                 // This expectation implicitly verifies that duplicates are not introduced. 
-            from model in Poolr.All<Contact>()
-            from count in Checkr.Expect("Count matches", () => model.Count == contactBook.Contacts.Count)
+            from model in Poolr.Expect<Contact>("Count matches", a => a.Count == contactBook.Contacts.Count)
             select Case.Closed;
     }
 

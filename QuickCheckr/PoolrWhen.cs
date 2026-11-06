@@ -1,7 +1,22 @@
+using QuickCheckr.UnderTheHood;
+
 namespace QuickCheckr;
 
 public static partial class Poolr
 {
+    public static CheckrOf<CheckrOption> When<T>(
+        string key,
+        Func<T, bool> predicate,
+        Func<T, PoolEntryOperations<T>, CheckrOf<Case>> checkr)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(checkr);
+        return When<T>(pool => pool.Any(predicate)).Then(
+            from element in OneOfElement(key, predicate)
+            from result in checkr(element.Value, new PoolEntryOperations<T>(element.Id))
+            select result);
+    }
+
     /// <summary>Creates an option that selects a matching pool value when executed.</summary>
     public static CheckrOf<CheckrOption> When<T>(
         string key,

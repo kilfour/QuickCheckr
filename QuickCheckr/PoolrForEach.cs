@@ -11,30 +11,26 @@ public static partial class Poolr
     public static CheckrOf<Case> ForEach<T>(Func<T, CheckrOf<Case>> checkr)
     {
         ArgumentNullException.ThrowIfNull(checkr);
-        return async state =>
-        {
-            var elements = state.Memory.GetPoolDictionary<T>().ToArray();
-            var parent = state.PoolIteration;
-            var scope = new PoolIterationScope(state, parent);
-            state.PoolIteration = scope;
-            try
-            {
-                foreach (var (id, value) in elements)
-                {
-                    state.CancellationToken.ThrowIfCancellationRequested();
-                    if (state.RunStopped) break;
-                    scope.StartElement($"{typeof(T).Name}-{id}");
-                    await checkr(value)(state).ConfigureAwait(false);
-                }
-                state.CancellationToken.ThrowIfCancellationRequested();
-            }
-            finally
-            {
-                state.PoolIteration = parent;
-            }
-            if (!state.RunStopped)
-                scope.Complete();
-            return CheckrResult.CaseOnly(state);
-        };
+        return ForEachElement<T>((_, value) => checkr(value));
+    }
+
+    public static CheckrOf<Case> ForEach<T>(Func<T, bool> predicate, Func<T, CheckrOf<Case>> checkr)
+    {
+        ArgumentNullException.ThrowIfNull(checkr);
+        return ForEachElement<T>((id, value) =>
+            predicate(value) ? checkr(value) : s => CheckrResult.CaseOnly(s));
+    }
+
+    public static CheckrOf<Case> ForEach<T>(Func<T, PoolEntryOperations<T>, CheckrOf<Case>> checkr)
+    {
+        ArgumentNullException.ThrowIfNull(checkr);
+        return ForEachElement<T>((id, value) => checkr(value, new PoolEntryOperations<T>(id)));
+    }
+
+    public static CheckrOf<Case> ForEach<T>(Func<T, bool> predicate, Func<T, PoolEntryOperations<T>, CheckrOf<Case>> checkr)
+    {
+        ArgumentNullException.ThrowIfNull(checkr);
+        return ForEachElement<T>((id, value) =>
+            predicate(value) ? checkr(value, new PoolEntryOperations<T>(id)) : s => CheckrResult.CaseOnly(s));
     }
 }
